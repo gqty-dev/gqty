@@ -1,5 +1,11 @@
 # gqless
 
+## 2.0.15
+
+### Patch Changes
+
+- 3f08372: publish fork
+
 ## 2.0.14
 
 ### Patch Changes

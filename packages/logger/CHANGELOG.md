@@ -1,5 +1,13 @@
 # @pablosz/gqless-logger
 
+## 2.0.12
+
+### Patch Changes
+
+- 3f08372: publish fork
+- Updated dependencies [3f08372]
+  - @pablosz/gqless@2.0.15
+
 ## 2.0.11
 
 ### Patch Changes

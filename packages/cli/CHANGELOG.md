@@ -1,5 +1,13 @@
 # @pablosz/gqless-cli
 
+## 2.0.17
+
+### Patch Changes
+
+- 3f08372: publish fork
+- Updated dependencies [3f08372]
+  - @pablosz/gqless@2.0.15
+
 ## 2.0.16
 
 ### Patch Changes
