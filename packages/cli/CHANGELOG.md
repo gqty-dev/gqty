@@ -1,5 +1,11 @@
 # @pablosz/gqless-cli
 
+## 2.0.18
+
+### Patch Changes
+
+- a88d4e8: fix generated schema use scoped gqless
+
 ## 2.0.17
 
 ### Patch Changes
