@@ -2,7 +2,7 @@ import { ReactNode, useEffect } from 'react';
 
 import { useOnFirstMount } from '../common';
 
-import type { GQlessClient, HydrateCacheOptions } from 'gqless';
+import type { GQlessClient, HydrateCacheOptions } from '@pablosz/gqless';
 import type { ReactClientOptionsWithDefaults } from '../utils';
 
 export interface UseHydrateCacheOptions extends Partial<HydrateCacheOptions> {

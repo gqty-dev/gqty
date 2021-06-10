@@ -2,7 +2,7 @@ import { useQuery, useTransactionQuery } from '../components/client';
 import { NoSSR } from '../components/NoSSR';
 import { Suspense, useState } from 'react';
 import { serializeError } from 'serialize-error';
-import { GQlessError } from 'gqless';
+import { GQlessError } from '@pablosz/gqless';
 import { Stack, Text } from '@chakra-ui/react';
 
 const ExpectedErrorComponent = () => {

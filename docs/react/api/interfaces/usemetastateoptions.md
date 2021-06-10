@@ -20,7 +20,7 @@ hide_title: true
 
 • `Optional` **filterSelections**: _BuildSelections_<T\>
 
-Defined in: [react/src/meta/useMetaState.ts:27](https://github.com/gqless/gqless/blob/master/packages/react/src/meta/useMetaState.ts#L27)
+Defined in: [react/src/meta/useMetaState.ts:27](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/meta/useMetaState.ts#L27)
 
 ---
 
@@ -34,7 +34,7 @@ Defined in: [react/src/meta/useMetaState.ts:27](https://github.com/gqless/gqless
 
 **Returns:** _void_
 
-Defined in: [react/src/meta/useMetaState.ts:17](https://github.com/gqless/gqless/blob/master/packages/react/src/meta/useMetaState.ts#L17)
+Defined in: [react/src/meta/useMetaState.ts:17](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/meta/useMetaState.ts#L17)
 
 ---
 
@@ -57,7 +57,7 @@ Defined in: [react/src/meta/useMetaState.ts:17](https://github.com/gqless/gqless
 
 **Returns:** _void_
 
-Defined in: [react/src/meta/useMetaState.ts:18](https://github.com/gqless/gqless/blob/master/packages/react/src/meta/useMetaState.ts#L18)
+Defined in: [react/src/meta/useMetaState.ts:18](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/meta/useMetaState.ts#L18)
 
 ---
 
@@ -79,7 +79,7 @@ Defined in: [react/src/meta/useMetaState.ts:18](https://github.com/gqless/gqless
 
 **Returns:** _void_
 
-Defined in: [react/src/meta/useMetaState.ts:23](https://github.com/gqless/gqless/blob/master/packages/react/src/meta/useMetaState.ts#L23)
+Defined in: [react/src/meta/useMetaState.ts:23](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/meta/useMetaState.ts#L23)
 
 ---
 
@@ -93,4 +93,4 @@ Defined in: [react/src/meta/useMetaState.ts:23](https://github.com/gqless/gqless
 
 **Returns:** _void_
 
-Defined in: [react/src/meta/useMetaState.ts:16](https://github.com/gqless/gqless/blob/master/packages/react/src/meta/useMetaState.ts#L16)
+Defined in: [react/src/meta/useMetaState.ts:16](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/meta/useMetaState.ts#L16)

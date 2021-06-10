@@ -4,7 +4,7 @@ import {
   Schema,
   SchemaUnionsKey,
   Type,
-} from 'gqless';
+} from '@pablosz/gqless';
 import {
   GraphQLEnumType,
   GraphQLField,
@@ -845,7 +845,7 @@ export async function generate(
 /**
  * GQLESS AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
  */
-${hasUnions ? 'import { SchemaUnionsKey } from "gqless";' : ''}
+${hasUnions ? 'import { SchemaUnionsKey } from "@pablosz/gqless";' : ''}
 
 ${typeDoc(
   'import("gqless").ScalarsEnumsHash'
@@ -866,7 +866,7 @@ export const generatedSchema = {${Object.entries(generatedSchema).reduceRight(
  */
   ${preImport}
 
-  ${hasUnions ? 'import { SchemaUnionsKey } from "gqless";' : ''}
+  ${hasUnions ? 'import { SchemaUnionsKey } from "@pablosz/gqless";' : ''}
 
   ${await codegenResultPromise}
 
@@ -952,15 +952,15 @@ export const generatedSchema = {${Object.entries(generatedSchema).reduceRight(
  * GQLESS: You can safely modify this file and Query Fetcher based on your needs
  */
 
-  ${react ? `import { createReactClient } from "@gqless/react"` : ''}
+  ${react ? `import { createReactClient } from "@pablosz/gqless-react"` : ''}
   ${
     subscriptions
-      ? `import { createSubscriptionsClient } from "@gqless/subscriptions"`
+      ? `import { createSubscriptionsClient } from "@pablosz/gqless-subscriptions"`
       : ''
   }
   import { createClient${
     isJavascriptOutput ? '' : ', QueryFetcher'
-  } } from "gqless";
+  } } from "@pablosz/gqless";
   import { generatedSchema, scalarsEnumsHash${
     isJavascriptOutput
       ? ''

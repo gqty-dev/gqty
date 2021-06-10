@@ -23,7 +23,7 @@ hide_title: true
 
 Current arguments used in the query
 
-Defined in: [react/src/query/usePaginatedQuery.ts:67](https://github.com/gqless/gqless/blob/master/packages/react/src/query/usePaginatedQuery.ts#L67)
+Defined in: [react/src/query/usePaginatedQuery.ts:67](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/query/usePaginatedQuery.ts#L67)
 
 ---
 
@@ -33,7 +33,7 @@ Defined in: [react/src/query/usePaginatedQuery.ts:67](https://github.com/gqless/
 
 Has the function been called
 
-Defined in: [react/src/query/usePaginatedQuery.ts:97](https://github.com/gqless/gqless/blob/master/packages/react/src/query/usePaginatedQuery.ts#L97)
+Defined in: [react/src/query/usePaginatedQuery.ts:97](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/query/usePaginatedQuery.ts#L97)
 
 ---
 
@@ -43,7 +43,7 @@ Defined in: [react/src/query/usePaginatedQuery.ts:97](https://github.com/gqless/
 
 Query Data
 
-Defined in: [react/src/query/usePaginatedQuery.ts:63](https://github.com/gqless/gqless/blob/master/packages/react/src/query/usePaginatedQuery.ts#L63)
+Defined in: [react/src/query/usePaginatedQuery.ts:63](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/query/usePaginatedQuery.ts#L63)
 
 ---
 
@@ -70,7 +70,7 @@ In the second parameter you can override the `"fetchPolicy"`, for example you ca
 
 **Returns:** TData \| _Promise_<TData\>
 
-Defined in: [react/src/query/usePaginatedQuery.ts:79](https://github.com/gqless/gqless/blob/master/packages/react/src/query/usePaginatedQuery.ts#L79)
+Defined in: [react/src/query/usePaginatedQuery.ts:79](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/query/usePaginatedQuery.ts#L79)
 
 ---
 
@@ -80,4 +80,4 @@ Defined in: [react/src/query/usePaginatedQuery.ts:79](https://github.com/gqless/
 
 Network fetch is loading
 
-Defined in: [react/src/query/usePaginatedQuery.ts:71](https://github.com/gqless/gqless/blob/master/packages/react/src/query/usePaginatedQuery.ts#L71)
+Defined in: [react/src/query/usePaginatedQuery.ts:71](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/query/usePaginatedQuery.ts#L71)

@@ -1,15 +1,15 @@
 /** @jsxImportSource @emotion/react */
 
-import { useRef } from "react";
+import { useRef } from 'react';
 
-import { uniqBy } from "@gqless/react";
+import { uniqBy } from '@pablosz/gqless-react';
 
 import {
   CursorConnectionArgs,
   useMutation,
   usePaginatedQuery,
-} from "../gqless";
-import { CreatePost } from "./CreatePost";
+} from '../gqless';
+import { CreatePost } from './CreatePost';
 
 const first = 5;
 
@@ -22,13 +22,13 @@ export function MyPosts() {
 
       return prepass(
         posts,
-        "nodes.title",
-        "pageInfo.hasNextPage",
-        "pageInfo.endCursor"
+        'nodes.title',
+        'pageInfo.hasNextPage',
+        'pageInfo.endCursor'
       );
     },
     {
-      fetchPolicy: "cache-and-network",
+      fetchPolicy: 'cache-and-network',
       initialArgs: {
         first,
       },
@@ -39,7 +39,7 @@ export function MyPosts() {
             nodes: sortBy(
               uniqBy([...incoming.nodes, ...existing.nodes], (v) => v.id),
               (v) => ~~v.id!,
-              "desc"
+              'desc'
             ),
           };
         }
@@ -70,7 +70,7 @@ export function MyPosts() {
   if (!data) return <p>Loading..</p>;
 
   return (
-    <div css={{ display: "flex", flexDirection: "column" }}>
+    <div css={{ display: 'flex', flexDirection: 'column' }}>
       <p>{data.nodes.length} Loaded Posts</p>
       <ul>
         {uniqBy(data.nodes, (v) => v.id).map((post) => {
@@ -102,7 +102,7 @@ export function MyPosts() {
             });
           }}
         >
-          More posts{isLoading && "..."}
+          More posts{isLoading && '...'}
         </button>
       )}
       <CreatePost fetchMore={fetchMore} />

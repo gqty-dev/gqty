@@ -20,7 +20,7 @@ hide_title: true
 
 • `Optional` **fetchPolicy**: [_LazyFetchPolicy_](../modules.md#lazyfetchpolicy)
 
-Defined in: [react/src/query/useLazyQuery.ts:18](https://github.com/gqless/gqless/blob/master/packages/react/src/query/useLazyQuery.ts#L18)
+Defined in: [react/src/query/useLazyQuery.ts:18](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/query/useLazyQuery.ts#L18)
 
 ---
 
@@ -40,7 +40,7 @@ Defined in: [react/src/query/useLazyQuery.ts:18](https://github.com/gqless/gqles
 
 **Returns:** _void_
 
-Defined in: [react/src/query/useLazyQuery.ts:16](https://github.com/gqless/gqless/blob/master/packages/react/src/query/useLazyQuery.ts#L16)
+Defined in: [react/src/query/useLazyQuery.ts:16](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/query/useLazyQuery.ts#L16)
 
 ---
 
@@ -48,7 +48,7 @@ Defined in: [react/src/query/useLazyQuery.ts:16](https://github.com/gqless/gqles
 
 • `Optional` **onError**: [_OnErrorHandler_](../modules.md#onerrorhandler)
 
-Defined in: [react/src/query/useLazyQuery.ts:17](https://github.com/gqless/gqless/blob/master/packages/react/src/query/useLazyQuery.ts#L17)
+Defined in: [react/src/query/useLazyQuery.ts:17](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/query/useLazyQuery.ts#L17)
 
 ---
 
@@ -56,7 +56,7 @@ Defined in: [react/src/query/useLazyQuery.ts:17](https://github.com/gqless/gqles
 
 • `Optional` **retry**: RetryOptions
 
-Defined in: [react/src/query/useLazyQuery.ts:19](https://github.com/gqless/gqless/blob/master/packages/react/src/query/useLazyQuery.ts#L19)
+Defined in: [react/src/query/useLazyQuery.ts:19](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/query/useLazyQuery.ts#L19)
 
 ---
 
@@ -64,4 +64,4 @@ Defined in: [react/src/query/useLazyQuery.ts:19](https://github.com/gqless/gqles
 
 • `Optional` **suspense**: _boolean_
 
-Defined in: [react/src/query/useLazyQuery.ts:20](https://github.com/gqless/gqless/blob/master/packages/react/src/query/useLazyQuery.ts#L20)
+Defined in: [react/src/query/useLazyQuery.ts:20](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/query/useLazyQuery.ts#L20)

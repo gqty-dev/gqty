@@ -22,7 +22,7 @@ The only **disadvantages** we see are basically:
 - It doesn't have autocomplete 😔
 
 ```ts
-import { prepass } from 'gqless';
+import { prepass } from '@pablosz/gqless';
 import { query } from '../gqless';
 
 prepass(
@@ -59,7 +59,7 @@ Given an object or an array of objects, create a new object/array with the speci
 ### Examples
 
 ```ts
-import { selectFields } from 'gqless';
+import { selectFields } from '@pablosz/gqless';
 import { query } from '../gqless';
 
 const dataPicked = selectFields(query.user, ['name', 'address.city']);
@@ -83,7 +83,7 @@ Given an object, pre-access the specified fields, and returns the object back.
 - It skips fields with arguments
 
 ```ts
-import { getFields, query, resolved } from 'gqless';
+import { getFields, query, resolved } from '@pablosz/gqless';
 
 const data = await resolved(() => {
   return getFields(query.user, 'name', 'email');
@@ -98,7 +98,7 @@ const data = await resolved(() => {
 We also have a helper to work with arrays, and works the same way as `getFields`.
 
 ```ts
-import { getArrayFields, query, resolved } from 'gqless';
+import { getArrayFields, query, resolved } from '@pablosz/gqless';
 
 const data = await resolved(() => {
   return getArrayFields(query.allUsers, 'name', 'email');
@@ -129,7 +129,7 @@ Removes all the `undefined`s in 1 level of your object or array.
 This next example is a perfectly safe place to use it, since here `id` and `name` will always be actual values in it's return value, not `undefined`.
 
 ```ts
-import { castNotSkeleton } from 'gqless';
+import { castNotSkeleton } from '@pablosz/gqless';
 import { resolved, query } from '../gqless';
 
 const data = await resolved(() => {
@@ -152,7 +152,7 @@ Removes all the `undefined`s **recursively** of your object or array.
 This next example is a perfectly safe place to use it, since here all the fields returned will always be actual values in it's return value, not `undefined`.
 
 ```ts
-import { castNotSkeletonDeep } from 'gqless';
+import { castNotSkeletonDeep } from '@pablosz/gqless';
 import { resolved, query } from '../gqless';
 
 const data = await resolved(() => {

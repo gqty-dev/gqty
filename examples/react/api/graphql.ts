@@ -6,7 +6,7 @@ import { codegenMercurius, gql } from 'mercurius-codegen';
 import { JsonDB } from 'node-json-db';
 import { GraphQLUpload } from 'graphql-upload';
 
-import { writeGenerate } from '@gqless/cli';
+import { writeGenerate } from '@pablosz/gqless-cli';
 
 import type { Dog, Human } from '../src/graphql/mercurius';
 

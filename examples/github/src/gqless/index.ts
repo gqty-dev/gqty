@@ -5,7 +5,7 @@
 import 'isomorphic-unfetch';
 import 'dotenv/config';
 
-import { createClient, QueryFetcher } from 'gqless';
+import { createClient, QueryFetcher } from '@pablosz/gqless';
 
 import {
   generatedSchema,

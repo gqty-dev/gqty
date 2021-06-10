@@ -20,4 +20,4 @@ hide_title: true
 
 **Returns:** _void_
 
-Defined in: [packages/gqless/src/Helpers/ssr.ts:22](https://github.com/gqless/gqless/blob/master/packages/gqless/src/Helpers/ssr.ts#L22)
+Defined in: [packages/gqless/src/Helpers/ssr.ts:22](https://github.com/PabloSzx/gqless/blob/master/packages/gqless/src/Helpers/ssr.ts#L22)

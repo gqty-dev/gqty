@@ -37,4 +37,4 @@ hide_title: true
 
 **Returns:** [_UsePaginatedQueryData_](usepaginatedquerydata.md)<TData, TArgs\>
 
-Defined in: [react/src/query/usePaginatedQuery.ts:176](https://github.com/gqless/gqless/blob/master/packages/react/src/query/usePaginatedQuery.ts#L176)
+Defined in: [react/src/query/usePaginatedQuery.ts:176](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/query/usePaginatedQuery.ts#L176)

@@ -1,5 +1,5 @@
-import { createClient, QueryFetcher, debounce } from 'gqless';
-import { createSubscriptionsClient } from '@gqless/subscriptions';
+import { createClient, QueryFetcher, debounce } from '@pablosz/gqless';
+import { createSubscriptionsClient } from '@pablosz/gqless-subscriptions';
 import { extractFiles } from 'extract-files';
 import {
   GeneratedSchema,

@@ -52,9 +52,9 @@ test('basic inspectWriteGenerate functionality', async () => {
        * GQLESS: You can safely modify this file and Query Fetcher based on your needs
        */
 
-      import { createReactClient } from '@gqless/react';
+      import { createReactClient } from '@pablosz/gqless-react';
 
-      import { createClient, QueryFetcher } from 'gqless';
+      import { createClient, QueryFetcher } from '@pablosz/gqless';
       import {
         generatedSchema,
         scalarsEnumsHash,
@@ -240,9 +240,9 @@ describe('from file', () => {
          * GQLESS: You can safely modify this file and Query Fetcher based on your needs
          */
 
-        import { createReactClient } from '@gqless/react';
+        import { createReactClient } from '@pablosz/gqless-react';
 
-        import { createClient, QueryFetcher } from 'gqless';
+        import { createClient, QueryFetcher } from '@pablosz/gqless';
         import {
           generatedSchema,
           scalarsEnumsHash,
@@ -425,9 +425,9 @@ describe('from file', () => {
          * GQLESS: You can safely modify this file and Query Fetcher based on your needs
          */
 
-        import { createReactClient } from '@gqless/react';
+        import { createReactClient } from '@pablosz/gqless-react';
 
-        import { createClient, QueryFetcher } from 'gqless';
+        import { createClient, QueryFetcher } from '@pablosz/gqless';
         import {
           generatedSchema,
           scalarsEnumsHash,
@@ -609,9 +609,9 @@ describe('from file', () => {
          * GQLESS: You can safely modify this file and Query Fetcher based on your needs
          */
 
-        import { createReactClient } from '@gqless/react';
+        import { createReactClient } from '@pablosz/gqless-react';
 
-        import { createClient, QueryFetcher } from 'gqless';
+        import { createClient, QueryFetcher } from '@pablosz/gqless';
         import {
           generatedSchema,
           scalarsEnumsHash,
@@ -830,9 +830,9 @@ test('specify generateOptions to inspectWriteGenerate', async () => {
        * GQLESS: You can safely modify this file and Query Fetcher based on your needs
        */
 
-      import { createReactClient } from '@gqless/react';
+      import { createReactClient } from '@pablosz/gqless-react';
 
-      import { createClient, QueryFetcher } from 'gqless';
+      import { createClient, QueryFetcher } from '@pablosz/gqless';
       import {
         generatedSchema,
         scalarsEnumsHash,
@@ -1176,9 +1176,9 @@ describe('CLI behavior', () => {
          * GQLESS: You can safely modify this file and Query Fetcher based on your needs
          */
 
-        import { createReactClient } from '@gqless/react';
+        import { createReactClient } from '@pablosz/gqless-react';
 
-        import { createClient, QueryFetcher } from 'gqless';
+        import { createClient, QueryFetcher } from '@pablosz/gqless';
         import {
           generatedSchema,
           scalarsEnumsHash,

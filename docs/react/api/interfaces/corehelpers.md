@@ -34,7 +34,7 @@ hide_title: true
 
 Defined in: gqless/dist/Helpers/casters.d.ts:21
 
-Defined in: [react/src/common.ts:520](https://github.com/gqless/gqless/blob/master/packages/react/src/common.ts#L520)
+Defined in: [react/src/common.ts:520](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/common.ts#L520)
 
 ---
 
@@ -62,7 +62,7 @@ Defined in: [react/src/common.ts:520](https://github.com/gqless/gqless/blob/mast
 
 Defined in: gqless/dist/Helpers/casters.d.ts:17
 
-Defined in: [react/src/common.ts:521](https://github.com/gqless/gqless/blob/master/packages/react/src/common.ts#L521)
+Defined in: [react/src/common.ts:521](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/common.ts#L521)
 
 ---
 
@@ -93,7 +93,7 @@ Defined in: [react/src/common.ts:521](https://github.com/gqless/gqless/blob/mast
 
 Defined in: gqless/dist/Helpers/getFields.d.ts:2
 
-Defined in: [react/src/common.ts:518](https://github.com/gqless/gqless/blob/master/packages/react/src/common.ts#L518)
+Defined in: [react/src/common.ts:518](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/common.ts#L518)
 
 ---
 
@@ -123,7 +123,7 @@ Defined in: [react/src/common.ts:518](https://github.com/gqless/gqless/blob/mast
 
 Defined in: gqless/dist/Helpers/getFields.d.ts:1
 
-Defined in: [react/src/common.ts:517](https://github.com/gqless/gqless/blob/master/packages/react/src/common.ts#L517)
+Defined in: [react/src/common.ts:517](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/common.ts#L517)
 
 ---
 
@@ -152,7 +152,7 @@ Defined in: [react/src/common.ts:517](https://github.com/gqless/gqless/blob/mast
 
 Defined in: gqless/dist/Helpers/prepass.d.ts:5
 
-Defined in: [react/src/common.ts:516](https://github.com/gqless/gqless/blob/master/packages/react/src/common.ts#L516)
+Defined in: [react/src/common.ts:516](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/common.ts#L516)
 
 ---
 
@@ -182,4 +182,4 @@ Defined in: [react/src/common.ts:516](https://github.com/gqless/gqless/blob/mast
 
 Defined in: gqless/dist/Helpers/selectFields.d.ts:1
 
-Defined in: [react/src/common.ts:519](https://github.com/gqless/gqless/blob/master/packages/react/src/common.ts#L519)
+Defined in: [react/src/common.ts:519](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/common.ts#L519)

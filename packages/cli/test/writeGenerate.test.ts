@@ -247,9 +247,9 @@ test('creates dir, generates code and writes new file', async () => {
        * GQLESS: You can safely modify this file and Query Fetcher based on your needs
        */
 
-      import { createReactClient } from '@gqless/react';
+      import { createReactClient } from '@pablosz/gqless-react';
 
-      import { createClient, QueryFetcher } from 'gqless';
+      import { createClient, QueryFetcher } from '@pablosz/gqless';
       import {
         generatedSchema,
         scalarsEnumsHash,

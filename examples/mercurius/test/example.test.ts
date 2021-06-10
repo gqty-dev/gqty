@@ -1,7 +1,7 @@
 import { createMercuriusTestClient } from 'mercurius-integration-testing';
 import { waitForExpect } from 'test-utils';
 
-import { selectFields } from 'gqless';
+import { selectFields } from '@pablosz/gqless';
 
 import { app, codegen } from '../src';
 import {

@@ -22,7 +22,7 @@ Define default 'fetchPolicy' hooks behaviour
 
 **`default`** "network-only"
 
-Defined in: [react/src/client.ts:115](https://github.com/gqless/gqless/blob/master/packages/react/src/client.ts#L115)
+Defined in: [react/src/client.ts:115](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/client.ts#L115)
 
 ---
 
@@ -38,7 +38,7 @@ Enable/Disable by default 'React Suspense' behavior for useLazyQuery hook
 
 **`default`** false
 
-Defined in: [react/src/client.ts:55](https://github.com/gqless/gqless/blob/master/packages/react/src/client.ts#L55)
+Defined in: [react/src/client.ts:55](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/client.ts#L55)
 
 ---
 
@@ -54,7 +54,7 @@ Enable/Disable by default 'React Suspense' behavior for useMutation hook
 
 **`default`** false
 
-Defined in: [react/src/client.ts:75](https://github.com/gqless/gqless/blob/master/packages/react/src/client.ts#L75)
+Defined in: [react/src/client.ts:75](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/client.ts#L75)
 
 ---
 
@@ -70,7 +70,7 @@ Define default 'fetchPolicy' hooks behaviour
 
 **`default`** "cache-first"
 
-Defined in: [react/src/client.ts:125](https://github.com/gqless/gqless/blob/master/packages/react/src/client.ts#L125)
+Defined in: [react/src/client.ts:125](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/client.ts#L125)
 
 ---
 
@@ -86,7 +86,7 @@ Enable/Disable by default 'React Suspense' behavior for usePaginatedQuery hooks
 
 **`default`** false
 
-Defined in: [react/src/client.ts:95](https://github.com/gqless/gqless/blob/master/packages/react/src/client.ts#L95)
+Defined in: [react/src/client.ts:95](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/client.ts#L95)
 
 ---
 
@@ -102,7 +102,7 @@ Enable/Disable by default 'React Suspense' behavior for prepareQuery hooks
 
 **The _default value_ is obtained from the "`defaults.suspense`" value**
 
-Defined in: [react/src/client.ts:85](https://github.com/gqless/gqless/blob/master/packages/react/src/client.ts#L85)
+Defined in: [react/src/client.ts:85](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/client.ts#L85)
 
 ---
 
@@ -114,7 +114,7 @@ Refetch after SSR hydration
 
 **`default`** false
 
-Defined in: [react/src/client.ts:153](https://github.com/gqless/gqless/blob/master/packages/react/src/client.ts#L153)
+Defined in: [react/src/client.ts:153](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/client.ts#L153)
 
 ---
 
@@ -132,7 +132,7 @@ _You can override these defaults on a per-hook basis_
 
 **`default`** true
 
-Defined in: [react/src/client.ts:147](https://github.com/gqless/gqless/blob/master/packages/react/src/client.ts#L147)
+Defined in: [react/src/client.ts:147](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/client.ts#L147)
 
 ---
 
@@ -148,7 +148,7 @@ Defined in: [react/src/client.ts:147](https://github.com/gqless/gqless/blob/mast
 
 **`default`** false
 
-Defined in: [react/src/client.ts:135](https://github.com/gqless/gqless/blob/master/packages/react/src/client.ts#L135)
+Defined in: [react/src/client.ts:135](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/client.ts#L135)
 
 ---
 
@@ -164,7 +164,7 @@ Enable/Disable by default 'React Suspense' behavior
 
 **`default`** false
 
-Defined in: [react/src/client.ts:45](https://github.com/gqless/gqless/blob/master/packages/react/src/client.ts#L45)
+Defined in: [react/src/client.ts:45](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/client.ts#L45)
 
 ---
 
@@ -180,7 +180,7 @@ Define default 'fetchPolicy' hooks behaviour
 
 **`default`** "cache-first"
 
-Defined in: [react/src/client.ts:105](https://github.com/gqless/gqless/blob/master/packages/react/src/client.ts#L105)
+Defined in: [react/src/client.ts:105](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/client.ts#L105)
 
 ---
 
@@ -196,4 +196,4 @@ Enable/Disable by default 'React Suspense' behavior for useTransactionQuery hook
 
 **The _default value_ is obtained from the "`defaults.suspense`" value**
 
-Defined in: [react/src/client.ts:65](https://github.com/gqless/gqless/blob/master/packages/react/src/client.ts#L65)
+Defined in: [react/src/client.ts:65](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/client.ts#L65)

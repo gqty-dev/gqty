@@ -1,9 +1,9 @@
 /** @jsxImportSource @emotion/react */
 
-import { getFields } from "gqless";
-import { useRef } from "react";
+import { getFields } from '@pablosz/gqless';
+import { useRef } from 'react';
 
-import { CursorConnectionArgs, useMutation } from "../gqless";
+import { CursorConnectionArgs, useMutation } from '../gqless';
 
 export function CreatePost({
   fetchMore,
@@ -31,7 +31,7 @@ export function CreatePost({
   );
 
   return (
-    <form css={{ display: "flex", flexDirection: "column" }}>
+    <form css={{ display: 'flex', flexDirection: 'column' }}>
       <label>Input your new post title</label>
       <input disabled={isLoading} ref={inputRef} placeholder="Post Title" />
       <button
@@ -43,12 +43,12 @@ export function CreatePost({
           createPost({
             args: inputRef.current.value,
           }).then(() => {
-            inputRef.current!.value = "";
+            inputRef.current!.value = '';
             inputRef.current!.focus();
           });
         }}
       >
-        Create Post{isLoading && "..."}
+        Create Post{isLoading && '...'}
       </button>
     </form>
   );

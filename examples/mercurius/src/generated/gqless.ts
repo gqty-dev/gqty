@@ -1,6 +1,6 @@
 import { createMercuriusTestClient } from 'mercurius-integration-testing';
 
-import { createClient, QueryFetcher } from 'gqless';
+import { createClient, QueryFetcher } from '@pablosz/gqless';
 
 import { app } from '../';
 import {

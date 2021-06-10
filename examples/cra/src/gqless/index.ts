@@ -2,38 +2,38 @@
  * GQLESS: You can safely modify this file and Query Fetcher based on your needs
  */
 
-import { createReactClient } from "@gqless/react";
-import { createSubscriptionsClient } from "@gqless/subscriptions";
-import { createClient, QueryFetcher } from "gqless";
-import { createLogger } from "@gqless/logger";
+import { createReactClient } from '@pablosz/gqless-react';
+import { createSubscriptionsClient } from '@pablosz/gqless-subscriptions';
+import { createClient, QueryFetcher } from '@pablosz/gqless';
+import { createLogger } from '@pablosz/gqless-logger';
 import {
   generatedSchema,
   scalarsEnumsHash,
   GeneratedSchema,
   SchemaObjectTypes,
   SchemaObjectTypesNames,
-} from "./schema.generated";
+} from './schema.generated';
 
 const headers = {
-  "Content-Type": "application/json",
-  authorization: localStorage.getItem("auth-token") || "",
+  'Content-Type': 'application/json',
+  authorization: localStorage.getItem('auth-token') || '',
 };
 
 export function setAuthorizationToken(token: string | null | undefined) {
-  token = token || "";
-  localStorage.setItem("auth-token", token);
+  token = token || '';
+  localStorage.setItem('auth-token', token);
   return (headers.authorization = token);
 }
 
 const queryFetcher: QueryFetcher = async function (query, variables) {
-  const response = await fetch("https://examples-api.gqless.com/graphql", {
-    method: "POST",
+  const response = await fetch('https://examples-api.gqless.com/graphql', {
+    method: 'POST',
     headers,
     body: JSON.stringify({
       query,
       variables,
     }),
-    mode: "cors",
+    mode: 'cors',
   });
 
   const json = await response.json();
@@ -42,7 +42,7 @@ const queryFetcher: QueryFetcher = async function (query, variables) {
 };
 
 const subscriptionsClient = createSubscriptionsClient({
-  wsEndpoint: "wss://examples-api.gqless.com/graphql",
+  wsEndpoint: 'wss://examples-api.gqless.com/graphql',
 });
 
 export const client = createClient<
@@ -57,8 +57,8 @@ export const client = createClient<
   normalization: {
     identifier(obj) {
       switch (obj.__typename) {
-        case "AuthResult":
-          return "Auth";
+        case 'AuthResult':
+          return 'Auth';
         default:
           return;
       }
@@ -105,4 +105,4 @@ createLogger(client, {
   showCache: true,
 }).start();
 
-export * from "./schema.generated";
+export * from './schema.generated';

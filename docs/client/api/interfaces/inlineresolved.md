@@ -27,4 +27,4 @@ hide_title: true
 
 **Returns:** TData \| _Promise_<TData\>
 
-Defined in: [packages/gqless/src/Client/resolvers.ts:196](https://github.com/gqless/gqless/blob/master/packages/gqless/src/Client/resolvers.ts#L196)
+Defined in: [packages/gqless/src/Client/resolvers.ts:196](https://github.com/PabloSzx/gqless/blob/master/packages/gqless/src/Client/resolvers.ts#L196)

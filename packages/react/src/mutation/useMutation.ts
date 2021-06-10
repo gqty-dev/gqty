@@ -1,4 +1,9 @@
-import { doRetry, GQlessClient, GQlessError, RetryOptions } from 'gqless';
+import {
+  doRetry,
+  GQlessClient,
+  GQlessError,
+  RetryOptions,
+} from '@pablosz/gqless';
 import { Dispatch, useCallback, useMemo, useReducer, useRef } from 'react';
 
 import {

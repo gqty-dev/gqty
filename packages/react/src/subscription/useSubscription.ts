@@ -1,4 +1,4 @@
-import { GQlessClient } from 'gqless';
+import { GQlessClient } from '@pablosz/gqless';
 
 import {
   isAnySelectionIncluded,

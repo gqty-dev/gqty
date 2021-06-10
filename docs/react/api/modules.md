@@ -66,7 +66,7 @@ Renames and exports: [\_\_type](interfaces/usepaginatedquerymergeparams.md#__typ
 
 Ƭ **FetchPolicy**: `"cache-and-network"` \| `"cache-first"` \| `"network-only"` \| `"no-cache"`
 
-Defined in: [react/src/common.ts:152](https://github.com/gqless/gqless/blob/master/packages/react/src/common.ts#L152)
+Defined in: [react/src/common.ts:152](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/common.ts#L152)
 
 ---
 
@@ -74,7 +74,7 @@ Defined in: [react/src/common.ts:152](https://github.com/gqless/gqless/blob/mast
 
 Ƭ **LazyFetchPolicy**: _Exclude_<[_FetchPolicy_](modules.md#fetchpolicy), `"cache-first"`\>
 
-Defined in: [react/src/query/useLazyQuery.ts:13](https://github.com/gqless/gqless/blob/master/packages/react/src/query/useLazyQuery.ts#L13)
+Defined in: [react/src/query/useLazyQuery.ts:13](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/query/useLazyQuery.ts#L13)
 
 ---
 
@@ -94,7 +94,7 @@ Defined in: [react/src/query/useLazyQuery.ts:13](https://github.com/gqless/gqles
 
 **Returns:** _void_
 
-Defined in: [react/src/common.ts:513](https://github.com/gqless/gqless/blob/master/packages/react/src/common.ts#L513)
+Defined in: [react/src/common.ts:513](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/common.ts#L513)
 
 ---
 
@@ -102,7 +102,7 @@ Defined in: [react/src/common.ts:513](https://github.com/gqless/gqless/blob/mast
 
 Ƭ **PaginatedQueryFetchPolicy**: _Extract_<[_FetchPolicy_](modules.md#fetchpolicy), `"cache-first"` \| `"cache-and-network"` \| `"network-only"`\>
 
-Defined in: [react/src/query/usePaginatedQuery.ts:16](https://github.com/gqless/gqless/blob/master/packages/react/src/query/usePaginatedQuery.ts#L16)
+Defined in: [react/src/query/usePaginatedQuery.ts:16](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/query/usePaginatedQuery.ts#L16)
 
 ---
 
@@ -118,7 +118,7 @@ Props with `cacheSnapshot` that would be returned from `prepareReactRender`
 | :--- | :----------------------------------- | :------ |
 | `T`  | _Record_<string \| number, unknown\> | {}      |
 
-Defined in: [react/src/ssr/ssr.ts:25](https://github.com/gqless/gqless/blob/master/packages/react/src/ssr/ssr.ts#L25)
+Defined in: [react/src/ssr/ssr.ts:25](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/ssr/ssr.ts#L25)
 
 ---
 
@@ -133,7 +133,7 @@ Defined in: [react/src/ssr/ssr.ts:25](https://github.com/gqless/gqless/blob/mast
 | `GeneratedSchema`       | _object_ |
 | `GeneratedSchema.query` | _object_ |
 
-Defined in: [react/src/query/useQuery.ts:37](https://github.com/gqless/gqless/blob/master/packages/react/src/query/useQuery.ts#L37)
+Defined in: [react/src/query/useQuery.ts:37](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/query/useQuery.ts#L37)
 
 ---
 
@@ -148,7 +148,7 @@ Defined in: [react/src/query/useQuery.ts:37](https://github.com/gqless/gqless/bl
 | `TData`      |
 | `TVariables` |
 
-Defined in: [react/src/query/useTransactionQuery.ts:106](https://github.com/gqless/gqless/blob/master/packages/react/src/query/useTransactionQuery.ts#L106)
+Defined in: [react/src/query/useTransactionQuery.ts:106](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/query/useTransactionQuery.ts#L106)
 
 ## Variables
 
@@ -156,7 +156,7 @@ Defined in: [react/src/query/useTransactionQuery.ts:106](https://github.com/gqle
 
 • `Const` **coreHelpers**: [_CoreHelpers_](interfaces/corehelpers.md)
 
-Defined in: [react/src/common.ts:524](https://github.com/gqless/gqless/blob/master/packages/react/src/common.ts#L524)
+Defined in: [react/src/common.ts:524](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/common.ts#L524)
 
 ## Functions
 
@@ -182,4 +182,4 @@ Defined in: [react/src/common.ts:524](https://github.com/gqless/gqless/blob/mast
 
 **Returns:** [_ReactClient_](interfaces/reactclient.md)<GeneratedSchema\>
 
-Defined in: [react/src/client.ts:185](https://github.com/gqless/gqless/blob/master/packages/react/src/client.ts#L185)
+Defined in: [react/src/client.ts:185](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/client.ts#L185)

@@ -24,7 +24,7 @@ Cache snapshot, returned from `prepareReactRender`
 
 Overrides: Partial.cacheSnapshot
 
-Defined in: [react/src/ssr/ssr.ts:12](https://github.com/gqless/gqless/blob/master/packages/react/src/ssr/ssr.ts#L12)
+Defined in: [react/src/ssr/ssr.ts:12](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/ssr/ssr.ts#L12)
 
 ---
 
@@ -39,4 +39,4 @@ false
 
 Overrides: Partial.shouldRefetch
 
-Defined in: [react/src/ssr/ssr.ts:19](https://github.com/gqless/gqless/blob/master/packages/react/src/ssr/ssr.ts#L19)
+Defined in: [react/src/ssr/ssr.ts:19](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/ssr/ssr.ts#L19)

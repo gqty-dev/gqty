@@ -27,4 +27,4 @@ hide_title: true
 
 **Returns:** (`props`: P) => `null` \| _ReactElement_<any, string \| JSXElementConstructor<any\>\>
 
-Defined in: [react/src/query/hoc.tsx:18](https://github.com/gqless/gqless/blob/master/packages/react/src/query/hoc.tsx#L18)
+Defined in: [react/src/query/hoc.tsx:18](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/query/hoc.tsx#L18)

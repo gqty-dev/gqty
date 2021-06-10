@@ -5,7 +5,7 @@ import {
   resolved,
 } from '../src/gqless';
 import assert from 'assert';
-import { getFields, getArrayFields } from 'gqless';
+import { getFields, getArrayFields } from '@pablosz/gqless';
 
 test('works', async () => {
   expect(
@@ -487,7 +487,7 @@ test('works', async () => {
           "nameWithOwner": "gqless/gqless",
           "openGraphImageUrl": "https://repository-images.githubusercontent.com/168271241/10f11880-8ba6-11eb-8817-8d4dbe79a822",
           "projectsResourcePath": "/gqless/gqless/projects",
-          "projectsUrl": "https://github.com/gqless/gqless/projects",
+          "projectsUrl": "https://github.com/PabloSzx/gqless/projects",
           "pushedAt": "2021-03-30T17:58:52Z",
           "rebaseMergeAllowed": false,
           "resourcePath": "/gqless/gqless",
@@ -497,7 +497,7 @@ test('works', async () => {
           "stargazerCount": 2934,
           "tempCloneToken": "",
           "updatedAt": "2021-03-30T17:58:55Z",
-          "url": "https://github.com/gqless/gqless",
+          "url": "https://github.com/PabloSzx/gqless",
           "usesCustomOpenGraphImage": true,
           "viewerCanAdminister": true,
           "viewerCanCreateProjects": true,

@@ -5,7 +5,7 @@ import {
   RetryOptions,
   Selection,
   SelectionType,
-} from 'gqless';
+} from '@pablosz/gqless';
 import { useCallback, useMemo, useReducer, useRef, useState } from 'react';
 
 import { useIsomorphicLayoutEffect, useLazyRef } from '../common';

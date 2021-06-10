@@ -27,7 +27,7 @@ hide_title: true
 
 **Returns:** _void_
 
-Defined in: [packages/gqless/src/Cache/accessorCache.ts:30](https://github.com/gqless/gqless/blob/master/packages/gqless/src/Cache/accessorCache.ts#L30)
+Defined in: [packages/gqless/src/Cache/accessorCache.ts:30](https://github.com/PabloSzx/gqless/blob/master/packages/gqless/src/Cache/accessorCache.ts#L30)
 
 ---
 
@@ -48,7 +48,7 @@ Defined in: [packages/gqless/src/Cache/accessorCache.ts:30](https://github.com/g
 
 **Returns:** _void_
 
-Defined in: [packages/gqless/src/Cache/accessorCache.ts:23](https://github.com/gqless/gqless/blob/master/packages/gqless/src/Cache/accessorCache.ts#L23)
+Defined in: [packages/gqless/src/Cache/accessorCache.ts:23](https://github.com/PabloSzx/gqless/blob/master/packages/gqless/src/Cache/accessorCache.ts#L23)
 
 ---
 
@@ -70,7 +70,7 @@ Defined in: [packages/gqless/src/Cache/accessorCache.ts:23](https://github.com/g
 
 **Returns:** ProxyAccessor
 
-Defined in: [packages/gqless/src/Cache/accessorCache.ts:11](https://github.com/gqless/gqless/blob/master/packages/gqless/src/Cache/accessorCache.ts#L11)
+Defined in: [packages/gqless/src/Cache/accessorCache.ts:11](https://github.com/PabloSzx/gqless/blob/master/packages/gqless/src/Cache/accessorCache.ts#L11)
 
 ---
 
@@ -92,7 +92,7 @@ Defined in: [packages/gqless/src/Cache/accessorCache.ts:11](https://github.com/g
 
 **Returns:** ProxyAccessor
 
-Defined in: [packages/gqless/src/Cache/accessorCache.ts:16](https://github.com/gqless/gqless/blob/master/packages/gqless/src/Cache/accessorCache.ts#L16)
+Defined in: [packages/gqless/src/Cache/accessorCache.ts:16](https://github.com/PabloSzx/gqless/blob/master/packages/gqless/src/Cache/accessorCache.ts#L16)
 
 ---
 
@@ -112,7 +112,7 @@ Defined in: [packages/gqless/src/Cache/accessorCache.ts:16](https://github.com/g
 
 **Returns:** _undefined_ \| [_Selection_](../classes/selection.md)
 
-Defined in: [packages/gqless/src/Cache/accessorCache.ts:22](https://github.com/gqless/gqless/blob/master/packages/gqless/src/Cache/accessorCache.ts#L22)
+Defined in: [packages/gqless/src/Cache/accessorCache.ts:22](https://github.com/PabloSzx/gqless/blob/master/packages/gqless/src/Cache/accessorCache.ts#L22)
 
 ---
 
@@ -132,7 +132,7 @@ Defined in: [packages/gqless/src/Cache/accessorCache.ts:22](https://github.com/g
 
 **Returns:** _undefined_ \| _Set_<[_Selection_](../classes/selection.md)\>
 
-Defined in: [packages/gqless/src/Cache/accessorCache.ts:27](https://github.com/gqless/gqless/blob/master/packages/gqless/src/Cache/accessorCache.ts#L27)
+Defined in: [packages/gqless/src/Cache/accessorCache.ts:27](https://github.com/PabloSzx/gqless/blob/master/packages/gqless/src/Cache/accessorCache.ts#L27)
 
 ---
 
@@ -152,4 +152,4 @@ Defined in: [packages/gqless/src/Cache/accessorCache.ts:27](https://github.com/g
 
 **Returns:** obj is ProxyAccessor
 
-Defined in: [packages/gqless/src/Cache/accessorCache.ts:21](https://github.com/gqless/gqless/blob/master/packages/gqless/src/Cache/accessorCache.ts#L21)
+Defined in: [packages/gqless/src/Cache/accessorCache.ts:21](https://github.com/PabloSzx/gqless/blob/master/packages/gqless/src/Cache/accessorCache.ts#L21)

@@ -1,5 +1,5 @@
-import type { GQlessClient, GQlessError, Selection } from 'gqless';
-import type { SchedulerPromiseValue } from 'gqless/dist/Scheduler';
+import type { GQlessClient, GQlessError, Selection } from '@pablosz/gqless';
+import type { SchedulerPromiseValue } from '@pablosz/gqless/dist/Scheduler';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import {

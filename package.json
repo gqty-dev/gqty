@@ -3,7 +3,7 @@
   "private": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/gqless/gqless.git"
+    "url": "https://github.com/PabloSzx/gqless.git"
   },
   "license": "MIT",
   "type": "module",
@@ -24,6 +24,7 @@
     "docs:build": "pnpm build:website && pretty-quick",
     "prepare": "husky install",
     "pretty": "pretty-quick",
+    "pretty:all": "prettier --write \"**/*.{ts,tsx}\"",
     "publish:all": "changeset version && pnpm i && pnpm test && pnpm -r publish --access public",
     "test": "jest --clearCache && pnpm test -r --no-sort --no-bail --stream",
     "website": "pnpm -r --filter website start",

@@ -1,8 +1,8 @@
 /** @jsxImportSource @emotion/react */
 
-import { Fragment, Suspense, useState } from "react";
+import { Fragment, Suspense, useState } from 'react';
 
-import { useQuery, graphql, query } from "../gqless";
+import { useQuery, graphql, query } from '../gqless';
 
 function NamesList({ n }: { n: number }) {
   const { namesList } = useQuery();
@@ -27,7 +27,7 @@ function Names() {
         value={n}
         onChange={(ev) => setN(Math.max(ev.target.valueAsNumber, 0))}
         css={{
-          width: "100px",
+          width: '100px',
         }}
         type="number"
       />
@@ -44,7 +44,7 @@ const HelloWorld = graphql(
     return (
       <h1
         css={{
-          fontSize: "2em",
+          fontSize: '2em',
         }}
       >
         {query.hello}

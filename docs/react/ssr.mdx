@@ -26,7 +26,7 @@ Made with **[Next.js SSR Data Fetching](https://nextjs.org/docs/basic-features/d
 > If you are using `staleWhileRevalidate` in your application, **You should always set 'shouldRefetch' as false**, since that feature will always do the refetch anyways.
 
 ```tsx
-import { PropsWithServerCache } from '@gqless/react';
+import { PropsWithServerCache } from '@pablosz/gqless-react';
 import { GetStaticProps } from 'next';
 import { prepareReactRender, useHydrateCache, useQuery } from '../gqless';
 
@@ -100,7 +100,7 @@ const { pathname } = useRouter() || {};
 Here you can either manually set the values of the router, or simply let it be `{}`, and all it's properties are simply going to be undefined.
 
 ```tsx
-import type { PropsWithServerCache } from '@gqless/react';
+import type { PropsWithServerCache } from '@pablosz/gqless-react';
 import type { GetServerSideProps } from 'next';
 import { useHydrateCache, prepareReactRender } from '../gqless';
 

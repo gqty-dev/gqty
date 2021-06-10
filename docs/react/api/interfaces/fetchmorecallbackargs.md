@@ -21,7 +21,7 @@ hide_title: true
 
 • **existingArgs**: TArgs
 
-Defined in: [react/src/query/usePaginatedQuery.ts:167](https://github.com/gqless/gqless/blob/master/packages/react/src/query/usePaginatedQuery.ts#L167)
+Defined in: [react/src/query/usePaginatedQuery.ts:167](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/query/usePaginatedQuery.ts#L167)
 
 ---
 
@@ -29,4 +29,4 @@ Defined in: [react/src/query/usePaginatedQuery.ts:167](https://github.com/gqless
 
 • **existingData**: _undefined_ \| TData
 
-Defined in: [react/src/query/usePaginatedQuery.ts:166](https://github.com/gqless/gqless/blob/master/packages/react/src/query/usePaginatedQuery.ts#L166)
+Defined in: [react/src/query/usePaginatedQuery.ts:166](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/query/usePaginatedQuery.ts#L166)

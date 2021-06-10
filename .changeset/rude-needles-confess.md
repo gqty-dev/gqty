@@ -2,4 +2,4 @@
 '@gqless/react': patch
 ---
 
-fix update loop https://github.com/gqless/gqless/pull/223
+fix update loop https://github.com/PabloSzx/gqless/pull/223

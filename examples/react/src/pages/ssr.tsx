@@ -1,6 +1,6 @@
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
 
-import { PropsWithServerCache } from '@gqless/react';
+import { PropsWithServerCache } from '@pablosz/gqless-react';
 
 import {
   graphql,

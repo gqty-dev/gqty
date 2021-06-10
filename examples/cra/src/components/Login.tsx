@@ -1,10 +1,10 @@
 /** @jsxImportSource @emotion/react */
 
-import { prepass } from "gqless";
-import { useRef } from "react";
+import { prepass } from '@pablosz/gqless';
+import { useRef } from 'react';
 
-import { useMutation } from "../gqless";
-import { useCurrentUser } from "../hooks/currentUser";
+import { useMutation } from '../gqless';
+import { useCurrentUser } from '../hooks/currentUser';
 
 export function Login() {
   const { currentUser } = useCurrentUser();
@@ -16,9 +16,9 @@ export function Login() {
             email,
           },
         }),
-        "user.email",
-        "error",
-        "token"
+        'user.email',
+        'error',
+        'token'
       );
     }
   );
@@ -30,25 +30,25 @@ export function Login() {
 
   return (
     <div>
-      {errorMessage ? <p css={{ color: "red" }}>{errorMessage}</p> : null}
+      {errorMessage ? <p css={{ color: 'red' }}>{errorMessage}</p> : null}
       <form
-        css={{ display: "flex", flexDirection: "column", maxWidth: "350px" }}
+        css={{ display: 'flex', flexDirection: 'column', maxWidth: '350px' }}
       >
         <label>Email</label>
         <input
-          css={{ fontSize: "1.2em" }}
+          css={{ fontSize: '1.2em' }}
           ref={inputRef}
           placeholder="Put your email"
         />
 
         <button
           css={{
-            marginTop: "5px",
-            backgroundColor: "rgb(0,0, 100)",
-            color: "white",
-            borderRadius: "5px",
-            padding: "5px",
-            fontWeight: "bold",
+            marginTop: '5px',
+            backgroundColor: 'rgb(0,0, 100)',
+            color: 'white',
+            borderRadius: '5px',
+            padding: '5px',
+            fontWeight: 'bold',
           }}
           disabled={isLoading}
           onClick={(ev) => {

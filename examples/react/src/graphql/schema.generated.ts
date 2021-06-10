@@ -2,7 +2,7 @@
  * GQLESS AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
  */
 
-import { ScalarsEnumsHash, SchemaUnionsKey } from 'gqless';
+import { ScalarsEnumsHash, SchemaUnionsKey } from '@pablosz/gqless';
 
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = {

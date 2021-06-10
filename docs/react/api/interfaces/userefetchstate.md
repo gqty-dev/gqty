@@ -22,7 +22,7 @@ hide_title: true
 
 Inherited from: UseRefetchReducerState.error
 
-Defined in: [react/src/query/useRefetch.ts:20](https://github.com/gqless/gqless/blob/master/packages/react/src/query/useRefetch.ts#L20)
+Defined in: [react/src/query/useRefetch.ts:20](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/query/useRefetch.ts#L20)
 
 ---
 
@@ -32,7 +32,7 @@ Defined in: [react/src/query/useRefetch.ts:20](https://github.com/gqless/gqless/
 
 Inherited from: UseRefetchReducerState.isLoading
 
-Defined in: [react/src/query/useRefetch.ts:19](https://github.com/gqless/gqless/blob/master/packages/react/src/query/useRefetch.ts#L19)
+Defined in: [react/src/query/useRefetch.ts:19](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/query/useRefetch.ts#L19)
 
 ---
 
@@ -46,7 +46,7 @@ Defined in: [react/src/query/useRefetch.ts:19](https://github.com/gqless/gqless/
 
 **Returns:** _void_
 
-Defined in: [react/src/query/useRefetch.ts:67](https://github.com/gqless/gqless/blob/master/packages/react/src/query/useRefetch.ts#L67)
+Defined in: [react/src/query/useRefetch.ts:67](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/query/useRefetch.ts#L67)
 
 ---
 
@@ -60,4 +60,4 @@ Defined in: [react/src/query/useRefetch.ts:67](https://github.com/gqless/gqless/
 
 **Returns:** _void_
 
-Defined in: [react/src/query/useRefetch.ts:68](https://github.com/gqless/gqless/blob/master/packages/react/src/query/useRefetch.ts#L68)
+Defined in: [react/src/query/useRefetch.ts:68](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/query/useRefetch.ts#L68)

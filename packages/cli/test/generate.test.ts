@@ -133,9 +133,9 @@ test('basic functionality works', async () => {
      * GQLESS: You can safely modify this file and Query Fetcher based on your needs
      */
 
-    import { createReactClient } from '@gqless/react';
-    import { createSubscriptionsClient } from '@gqless/subscriptions';
-    import { createClient, QueryFetcher } from 'gqless';
+    import { createReactClient } from '@pablosz/gqless-react';
+    import { createSubscriptionsClient } from '@pablosz/gqless-subscriptions';
+    import { createClient, QueryFetcher } from '@pablosz/gqless';
     import {
       generatedSchema,
       scalarsEnumsHash,
@@ -299,9 +299,9 @@ test('custom scalars works', async () => {
      * GQLESS: You can safely modify this file and Query Fetcher based on your needs
      */
 
-    import { createReactClient } from '@gqless/react';
+    import { createReactClient } from '@pablosz/gqless-react';
 
-    import { createClient, QueryFetcher } from 'gqless';
+    import { createClient, QueryFetcher } from '@pablosz/gqless';
     import {
       generatedSchema,
       scalarsEnumsHash,
@@ -573,7 +573,7 @@ describe('feature complete app', () => {
        * GQLESS AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
        */
 
-      import { SchemaUnionsKey } from 'gqless';
+      import { SchemaUnionsKey } from '@pablosz/gqless';
 
       export type Maybe<T> = T | null;
       export type Exact<T extends { [key: string]: unknown }> = {
@@ -1194,9 +1194,9 @@ test('javascript output works', async () => {
      * GQLESS: You can safely modify this file and Query Fetcher based on your needs
      */
 
-    import { createReactClient } from '@gqless/react';
-    import { createSubscriptionsClient } from '@gqless/subscriptions';
-    import { createClient } from 'gqless';
+    import { createReactClient } from '@pablosz/gqless-react';
+    import { createSubscriptionsClient } from '@pablosz/gqless-subscriptions';
+    import { createClient } from '@pablosz/gqless';
     import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
     /**
@@ -1287,7 +1287,7 @@ test('javascript output works', async () => {
     "/**
      * GQLESS AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
      */
-    import { SchemaUnionsKey } from 'gqless';
+    import { SchemaUnionsKey } from '@pablosz/gqless';
 
     /**
      * @type {import(\\"gqless\\").ScalarsEnumsHash}
@@ -1355,7 +1355,7 @@ test('javascript output works', async () => {
      * GQLESS AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
      */
 
-    import { SchemaUnionsKey } from 'gqless';
+    import { SchemaUnionsKey } from '@pablosz/gqless';
 
     export type Maybe<T> = T | null;
     export type Exact<T extends { [key: string]: unknown }> = {
@@ -1492,9 +1492,9 @@ test('ignoreArgs transform', async () => {
      * GQLESS: You can safely modify this file and Query Fetcher based on your needs
      */
 
-    import { createReactClient } from '@gqless/react';
+    import { createReactClient } from '@pablosz/gqless-react';
 
-    import { createClient, QueryFetcher } from 'gqless';
+    import { createClient, QueryFetcher } from '@pablosz/gqless';
     import {
       generatedSchema,
       scalarsEnumsHash,

@@ -21,4 +21,4 @@ hide_title: true
 
 **Returns:** GeneratedSchema[``"subscription"``]
 
-Defined in: [react/src/subscription/useSubscription.ts:15](https://github.com/gqless/gqless/blob/master/packages/react/src/subscription/useSubscription.ts#L15)
+Defined in: [react/src/subscription/useSubscription.ts:15](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/subscription/useSubscription.ts#L15)

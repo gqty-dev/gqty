@@ -21,4 +21,4 @@ hide_title: true
 
 **Returns:** [_Selection_](../classes/selection.md)
 
-Defined in: [packages/gqless/src/Selection/SelectionBuilder.ts:17](https://github.com/gqless/gqless/blob/master/packages/gqless/src/Selection/SelectionBuilder.ts#L17)
+Defined in: [packages/gqless/src/Selection/SelectionBuilder.ts:17](https://github.com/PabloSzx/gqless/blob/master/packages/gqless/src/Selection/SelectionBuilder.ts#L17)

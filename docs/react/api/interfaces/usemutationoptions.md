@@ -22,7 +22,7 @@ hide_title: true
 
 Await refetch resolutions before calling the mutation actually complete
 
-Defined in: [react/src/mutation/useMutation.ts:30](https://github.com/gqless/gqless/blob/master/packages/react/src/mutation/useMutation.ts#L30)
+Defined in: [react/src/mutation/useMutation.ts:30](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/mutation/useMutation.ts#L30)
 
 ---
 
@@ -30,7 +30,7 @@ Defined in: [react/src/mutation/useMutation.ts:30](https://github.com/gqless/gql
 
 • `Optional` **noCache**: _boolean_
 
-Defined in: [react/src/mutation/useMutation.ts:12](https://github.com/gqless/gqless/blob/master/packages/react/src/mutation/useMutation.ts#L12)
+Defined in: [react/src/mutation/useMutation.ts:12](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/mutation/useMutation.ts#L12)
 
 ---
 
@@ -43,7 +43,7 @@ for example, files uploading
 
 **`default`** false
 
-Defined in: [react/src/mutation/useMutation.ts:41](https://github.com/gqless/gqless/blob/master/packages/react/src/mutation/useMutation.ts#L41)
+Defined in: [react/src/mutation/useMutation.ts:41](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/mutation/useMutation.ts#L41)
 
 ---
 
@@ -63,7 +63,7 @@ Defined in: [react/src/mutation/useMutation.ts:41](https://github.com/gqless/gql
 
 **Returns:** _void_
 
-Defined in: [react/src/mutation/useMutation.ts:13](https://github.com/gqless/gqless/blob/master/packages/react/src/mutation/useMutation.ts#L13)
+Defined in: [react/src/mutation/useMutation.ts:13](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/mutation/useMutation.ts#L13)
 
 ---
 
@@ -71,7 +71,7 @@ Defined in: [react/src/mutation/useMutation.ts:13](https://github.com/gqless/gql
 
 • `Optional` **onError**: [_OnErrorHandler_](../modules.md#onerrorhandler)
 
-Defined in: [react/src/mutation/useMutation.ts:14](https://github.com/gqless/gqless/blob/master/packages/react/src/mutation/useMutation.ts#L14)
+Defined in: [react/src/mutation/useMutation.ts:14](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/mutation/useMutation.ts#L14)
 
 ---
 
@@ -83,7 +83,7 @@ Refetch specific queries after mutation completion.
 
 You can give functions or parts of the schema to be refetched
 
-Defined in: [react/src/mutation/useMutation.ts:26](https://github.com/gqless/gqless/blob/master/packages/react/src/mutation/useMutation.ts#L26)
+Defined in: [react/src/mutation/useMutation.ts:26](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/mutation/useMutation.ts#L26)
 
 ---
 
@@ -95,7 +95,7 @@ Retry behaviour
 
 **`default`** false
 
-Defined in: [react/src/mutation/useMutation.ts:20](https://github.com/gqless/gqless/blob/master/packages/react/src/mutation/useMutation.ts#L20)
+Defined in: [react/src/mutation/useMutation.ts:20](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/mutation/useMutation.ts#L20)
 
 ---
 
@@ -105,4 +105,4 @@ Defined in: [react/src/mutation/useMutation.ts:20](https://github.com/gqless/gql
 
 Enable suspense behavior
 
-Defined in: [react/src/mutation/useMutation.ts:34](https://github.com/gqless/gqless/blob/master/packages/react/src/mutation/useMutation.ts#L34)
+Defined in: [react/src/mutation/useMutation.ts:34](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/mutation/useMutation.ts#L34)

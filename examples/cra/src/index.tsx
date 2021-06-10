@@ -1,19 +1,19 @@
 /** @jsxImportSource @emotion/react */
 
-import "./index.css";
+import './index.css';
 
-import { Fragment, Suspense } from "react";
-import { render } from "react-dom";
-import { BrowserRouter as Router, Link, Route, Switch } from "react-router-dom";
+import { Fragment, Suspense } from 'react';
+import { render } from 'react-dom';
+import { BrowserRouter as Router, Link, Route, Switch } from 'react-router-dom';
 
-import { Hello } from "./components/Hello";
-import { Login } from "./components/Login";
-import { MyPosts } from "./components/MyPosts";
-import { Register } from "./components/Register";
-import { setAuthorizationToken } from "./gqless";
-import { useCurrentUser } from "./hooks/currentUser";
+import { Hello } from './components/Hello';
+import { Login } from './components/Login';
+import { MyPosts } from './components/MyPosts';
+import { Register } from './components/Register';
+import { setAuthorizationToken } from './gqless';
+import { useCurrentUser } from './hooks/currentUser';
 
-const hashHref = "#";
+const hashHref = '#';
 function NavigationAuth() {
   const { currentUser } = useCurrentUser();
 
@@ -57,12 +57,12 @@ function Navigation() {
     <nav>
       <ul
         css={{
-          display: "flex",
-          flexWrap: "wrap",
-          justifyContent: "space-around",
-          listStyle: "none",
+          display: 'flex',
+          flexWrap: 'wrap',
+          justifyContent: 'space-around',
+          listStyle: 'none',
           li: {
-            padding: "5px",
+            padding: '5px',
           },
         }}
       >
@@ -80,7 +80,7 @@ function Navigation() {
 function App() {
   const { currentUser } = useCurrentUser(false);
   return (
-    <div css={{ display: "flex", flexDirection: "column" }}>
+    <div css={{ display: 'flex', flexDirection: 'column' }}>
       <Router>
         <Navigation />
 
@@ -107,4 +107,4 @@ function App() {
   );
 }
 
-render(<App />, document.getElementById("root"));
+render(<App />, document.getElementById('root'));

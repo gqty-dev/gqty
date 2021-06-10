@@ -20,7 +20,7 @@ hide_title: true
 
 • **data**: _undefined_ \| TData
 
-Defined in: [react/src/query/useLazyQuery.ts:24](https://github.com/gqless/gqless/blob/master/packages/react/src/query/useLazyQuery.ts#L24)
+Defined in: [react/src/query/useLazyQuery.ts:24](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/query/useLazyQuery.ts#L24)
 
 ---
 
@@ -28,7 +28,7 @@ Defined in: [react/src/query/useLazyQuery.ts:24](https://github.com/gqless/gqles
 
 • `Optional` **error**: _GQlessError_
 
-Defined in: [react/src/query/useLazyQuery.ts:25](https://github.com/gqless/gqless/blob/master/packages/react/src/query/useLazyQuery.ts#L25)
+Defined in: [react/src/query/useLazyQuery.ts:25](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/query/useLazyQuery.ts#L25)
 
 ---
 
@@ -36,7 +36,7 @@ Defined in: [react/src/query/useLazyQuery.ts:25](https://github.com/gqless/gqles
 
 • **isCalled**: _boolean_
 
-Defined in: [react/src/query/useLazyQuery.ts:27](https://github.com/gqless/gqless/blob/master/packages/react/src/query/useLazyQuery.ts#L27)
+Defined in: [react/src/query/useLazyQuery.ts:27](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/query/useLazyQuery.ts#L27)
 
 ---
 
@@ -44,4 +44,4 @@ Defined in: [react/src/query/useLazyQuery.ts:27](https://github.com/gqless/gqles
 
 • **isLoading**: _boolean_
 
-Defined in: [react/src/query/useLazyQuery.ts:26](https://github.com/gqless/gqless/blob/master/packages/react/src/query/useLazyQuery.ts#L26)
+Defined in: [react/src/query/useLazyQuery.ts:26](https://github.com/PabloSzx/gqless/blob/master/packages/react/src/query/useLazyQuery.ts#L26)
