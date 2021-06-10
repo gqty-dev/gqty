@@ -82,7 +82,7 @@ try {
       ),
       'upload',
       '--owner',
-      'gqless',
+      'PabloSzx',
       '--repo',
       'gqless',
       '--tag',
