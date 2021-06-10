@@ -1,21 +1,21 @@
 /**
- * @type {import("@gqless/cli").GQlessConfig}
+ * @type {import("@pablosz/gqless-cli").GQlessConfig}
  */
 const config = {
   enumsAsStrings: true,
   react: true,
   scalarTypes: {
-    DateTime: "string",
-    NonNegativeInt: "number",
-    NonEmptyString: "string",
-    EmailAddress: "string",
+    DateTime: 'string',
+    NonNegativeInt: 'number',
+    NonEmptyString: 'string',
+    EmailAddress: 'string',
   },
-  preImport: "",
+  preImport: '',
   introspection: {
-    endpoint: "https://examples-api.gqless.com/graphql",
+    endpoint: 'https://examples-api.gqless.com/graphql',
     headers: {},
   },
-  destination: "./src/gqless/index.ts",
+  destination: './src/gqless/index.ts',
   subscriptions: true,
   javascriptOutput: false,
 };

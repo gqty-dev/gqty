@@ -1253,7 +1253,7 @@ test('javascript output works', async () => {
     } = client;
 
     /**
-     * @type {import(\\"@gqless/react\\").ReactClient<import(\\"./schema.generated\\").GeneratedSchema>}
+     * @type {import(\\"@pablosz/gqless-react\\").ReactClient<import(\\"./schema.generated\\").GeneratedSchema>}
      */
     const reactClient = createReactClient(client, {
       defaults: {

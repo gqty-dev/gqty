@@ -893,7 +893,7 @@ export const generatedSchema = {${Object.entries(generatedSchema).reduceRight(
     if (isJavascriptOutput) {
       reactClientCode = `
       ${typeDoc(
-        'import("@gqless/react").ReactClient<import("./schema.generated").GeneratedSchema>'
+        'import("@pablosz/gqless-react").ReactClient<import("./schema.generated").GeneratedSchema>'
       )}const reactClient = createReactClient(client, {
         defaults: {
           // Set this flag as "true" if your usage involves React Suspense

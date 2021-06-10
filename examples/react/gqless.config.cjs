@@ -1,5 +1,5 @@
 /**
- * @type {import("@gqless/cli").GQlessConfig}
+ * @type {import("@pablosz/gqless-cli").GQlessConfig}
  */
 const config = {
   enumsAsStrings: false,

@@ -1,4 +1,4 @@
-# @gqless/subscriptions
+# @pablosz/gqless-subscriptions
 
 ## 1.0.11
 

@@ -1,4 +1,4 @@
-# @gqless/react
+# @pablosz/gqless-react
 
 ## 2.0.15
 

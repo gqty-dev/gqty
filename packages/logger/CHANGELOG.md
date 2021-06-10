@@ -1,4 +1,4 @@
-# @gqless/logger
+# @pablosz/gqless-logger
 
 ## 2.0.11
 

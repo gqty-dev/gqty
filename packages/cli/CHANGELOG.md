@@ -1,4 +1,4 @@
-# @gqless/cli
+# @pablosz/gqless-cli
 
 ## 2.0.16
 

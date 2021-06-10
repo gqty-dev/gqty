@@ -10,7 +10,7 @@ You can improve the development experience using a `Logger` of your GQless usage
 ## Installation
 
 ```bash yarn2npm
-yarn add @gqless/logger
+yarn add @pablosz/gqless-logger
 ```
 
 ## Usage
@@ -19,7 +19,7 @@ yarn add @gqless/logger
 import { client } from '../gqless';
 
 if (process.env.NODE_ENV === 'development') {
-  import('@gqless/logger').then(({ createLogger }) => {
+  import('@pablosz/gqless-logger').then(({ createLogger }) => {
     const logger = createLogger(client, {
       // Custom options...
     });

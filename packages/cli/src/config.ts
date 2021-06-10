@@ -233,7 +233,7 @@ export const gqlessConfigPromise: Promise<{
                   defaultFilePath,
                   await format(`
                       /**
-                       * @type {import("@gqless/cli").GQlessConfig}
+                       * @type {import("@pablosz/gqless-cli").GQlessConfig}
                        */
                       const config = ${JSON.stringify(config)};
                       
