@@ -64,7 +64,7 @@ test('basic functionality works', async () => {
       Float: number;
     }
 
-    export const scalarsEnumsHash: import('gqless').ScalarsEnumsHash = {
+    export const scalarsEnumsHash: import('@pablosz/gqless').ScalarsEnumsHash = {
       String: true,
       Int: true,
       Boolean: true,
@@ -398,7 +398,7 @@ test('custom scalars works', async () => {
       Custom: 'hello world';
     }
 
-    export const scalarsEnumsHash: import('gqless').ScalarsEnumsHash = {
+    export const scalarsEnumsHash: import('@pablosz/gqless').ScalarsEnumsHash = {
       Custom: true,
       Boolean: true,
       String: true,
@@ -616,7 +616,7 @@ describe('feature complete app', () => {
         scal?: Maybe<Scalars['ExampleScalar']>;
       }
 
-      export const scalarsEnumsHash: import('gqless').ScalarsEnumsHash = {
+      export const scalarsEnumsHash: import('@pablosz/gqless').ScalarsEnumsHash = {
         ExampleScalar: true,
         GreetingsEnum: true,
         OtherEnum: true,
@@ -940,7 +940,7 @@ describe('mutation', () => {
         Float: number;
       }
 
-      export const scalarsEnumsHash: import('gqless').ScalarsEnumsHash = {
+      export const scalarsEnumsHash: import('@pablosz/gqless').ScalarsEnumsHash = {
         String: true,
         Boolean: true,
       };
@@ -1070,7 +1070,7 @@ describe('subscription', () => {
         Float: number;
       }
 
-      export const scalarsEnumsHash: import('gqless').ScalarsEnumsHash = {
+      export const scalarsEnumsHash: import('@pablosz/gqless').ScalarsEnumsHash = {
         String: true,
         Boolean: true,
       };
@@ -1200,7 +1200,7 @@ test('javascript output works', async () => {
     import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
     /**
-     * @type {import(\\"gqless\\").QueryFetcher}
+     * @type {import(\\"@pablosz/gqless\\").QueryFetcher}
      */
     const queryFetcher = async function (query, variables) {
       // Modify \\"/api/graphql\\" if needed
@@ -1234,7 +1234,7 @@ test('javascript output works', async () => {
         : undefined;
 
     /**
-     * @type {import(\\"gqless\\").GQlessClient<import(\\"./schema.generated\\").GeneratedSchema>}
+     * @type {import(\\"@pablosz/gqless\\").GQlessClient<import(\\"./schema.generated\\").GeneratedSchema>}
      */
     export const client = createClient({
       schema: generatedSchema,
@@ -1290,7 +1290,7 @@ test('javascript output works', async () => {
     import { SchemaUnionsKey } from '@pablosz/gqless';
 
     /**
-     * @type {import(\\"gqless\\").ScalarsEnumsHash}
+     * @type {import(\\"@pablosz/gqless\\").ScalarsEnumsHash}
      */
     export const scalarsEnumsHash = { String: true, Int: true, Boolean: true };
 
@@ -1374,7 +1374,7 @@ test('javascript output works', async () => {
       Float: number;
     }
 
-    export declare const scalarsEnumsHash: import('gqless').ScalarsEnumsHash;
+    export declare const scalarsEnumsHash: import('@pablosz/gqless').ScalarsEnumsHash;
     export declare const generatedSchema: {
       query: { __typename: { __type: 'String!' }; hello: { __type: 'String!' } };
       mutation: {};
@@ -1594,7 +1594,7 @@ test('ignoreArgs transform', async () => {
      */
 
     /**
-     * @type {import(\\"gqless\\").ScalarsEnumsHash}
+     * @type {import(\\"@pablosz/gqless\\").ScalarsEnumsHash}
      */
     export const scalarsEnumsHash = { String: true, Int: true, Boolean: true };
 
@@ -1631,7 +1631,7 @@ test('ignoreArgs transform', async () => {
       Float: number;
     }
 
-    export const scalarsEnumsHash: import('gqless').ScalarsEnumsHash = {
+    export const scalarsEnumsHash: import('@pablosz/gqless').ScalarsEnumsHash = {
       String: true,
       Int: true,
       Boolean: true,

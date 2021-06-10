@@ -86,7 +86,7 @@ test('generates code and writes existing file', async () => {
         Float: number;
       }
 
-      export const scalarsEnumsHash: import('gqless').ScalarsEnumsHash = {
+      export const scalarsEnumsHash: import('@pablosz/gqless').ScalarsEnumsHash = {
         String: true,
         Boolean: true,
       };
@@ -191,7 +191,7 @@ test('creates dir, generates code and writes new file', async () => {
         Float: number;
       }
 
-      export const scalarsEnumsHash: import('gqless').ScalarsEnumsHash = {
+      export const scalarsEnumsHash: import('@pablosz/gqless').ScalarsEnumsHash = {
         String: true,
         Boolean: true,
       };

@@ -154,7 +154,7 @@ test('basic inspectWriteGenerate functionality', async () => {
         Float: number;
       }
 
-      export const scalarsEnumsHash: import('gqless').ScalarsEnumsHash = {
+      export const scalarsEnumsHash: import('@pablosz/gqless').ScalarsEnumsHash = {
         String: true,
         Boolean: true,
       };
@@ -337,7 +337,7 @@ describe('from file', () => {
           Float: number;
         }
 
-        export const scalarsEnumsHash: import('gqless').ScalarsEnumsHash = {
+        export const scalarsEnumsHash: import('@pablosz/gqless').ScalarsEnumsHash = {
           Int: true,
           Boolean: true,
           String: true,
@@ -522,7 +522,7 @@ describe('from file', () => {
           Float: number;
         }
 
-        export const scalarsEnumsHash: import('gqless').ScalarsEnumsHash = {
+        export const scalarsEnumsHash: import('@pablosz/gqless').ScalarsEnumsHash = {
           String: true,
           Boolean: true,
         };
@@ -706,7 +706,7 @@ describe('from file', () => {
           Float: number;
         }
 
-        export const scalarsEnumsHash: import('gqless').ScalarsEnumsHash = {
+        export const scalarsEnumsHash: import('@pablosz/gqless').ScalarsEnumsHash = {
           String: true,
           Boolean: true,
         };
@@ -929,7 +929,7 @@ test('specify generateOptions to inspectWriteGenerate', async () => {
         Float: number;
       }
 
-      export const scalarsEnumsHash: import('gqless').ScalarsEnumsHash = {
+      export const scalarsEnumsHash: import('@pablosz/gqless').ScalarsEnumsHash = {
         String: true,
         Boolean: true,
       };
@@ -1065,7 +1065,7 @@ describe('inspect headers', () => {
           Float: number;
         }
 
-        export const scalarsEnumsHash: import('gqless').ScalarsEnumsHash = {
+        export const scalarsEnumsHash: import('@pablosz/gqless').ScalarsEnumsHash = {
           String: true,
           Boolean: true,
         };
@@ -1278,7 +1278,7 @@ describe('CLI behavior', () => {
           Float: number;
         }
 
-        export const scalarsEnumsHash: import('gqless').ScalarsEnumsHash = {
+        export const scalarsEnumsHash: import('@pablosz/gqless').ScalarsEnumsHash = {
           String: true,
           Boolean: true,
         };

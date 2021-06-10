@@ -817,7 +817,8 @@ export async function generate(
   const queryFetcher = `
     ${
       isJavascriptOutput
-        ? typeDoc('import("gqless").QueryFetcher') + 'const queryFetcher'
+        ? typeDoc('import("@pablosz/gqless").QueryFetcher') +
+          'const queryFetcher'
         : 'const queryFetcher : QueryFetcher'
     } = async function (query, variables) {
         // Modify "${endpoint}" if needed
@@ -848,7 +849,7 @@ export async function generate(
 ${hasUnions ? 'import { SchemaUnionsKey } from "@pablosz/gqless";' : ''}
 
 ${typeDoc(
-  'import("gqless").ScalarsEnumsHash'
+  'import("@pablosz/gqless").ScalarsEnumsHash'
 )}export const scalarsEnumsHash = ${JSON.stringify(scalarsEnumsHash)};
 
 export const generatedSchema = {${Object.entries(generatedSchema).reduceRight(
@@ -872,7 +873,7 @@ export const generatedSchema = {${Object.entries(generatedSchema).reduceRight(
 
   export${
     isJavascriptOutput ? ' declare' : ''
-  } const scalarsEnumsHash: import("gqless").ScalarsEnumsHash${
+  } const scalarsEnumsHash: import("@pablosz/gqless").ScalarsEnumsHash${
       isJavascriptOutput ? ';' : ` = ${JSON.stringify(scalarsEnumsHash)};`
     }
   export${isJavascriptOutput ? ' declare' : ''} const generatedSchema ${
@@ -989,7 +990,7 @@ export const generatedSchema = {${Object.entries(generatedSchema).reduceRight(
   ${
     isJavascriptOutput
       ? `${typeDoc(
-          'import("gqless").GQlessClient<import("./schema.generated").GeneratedSchema>'
+          'import("@pablosz/gqless").GQlessClient<import("./schema.generated").GeneratedSchema>'
         )}export const client = createClient({
         schema: generatedSchema,
         scalarsEnumsHash, 

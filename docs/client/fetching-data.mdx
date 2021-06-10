@@ -29,7 +29,7 @@ resolved(() => {
     // data == string
   })
   .catch((err) => {
-    // err == import("gqless").GQlessError
+    // err == import("@pablosz/gqless").GQlessError
   });
 ```
 
@@ -117,7 +117,7 @@ async function Example() {
   query.helloWorld;
 
   await client.scheduler.resolving?.promise.then(({ error }) => {
-    // error == import("gqless").GQlessError | undefined
+    // error == import("@pablosz/gqless").GQlessError | undefined
     if (error) {
       throw error;
     }
