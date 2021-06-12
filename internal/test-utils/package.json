@@ -16,7 +16,7 @@
     "prepare": "pnpm build",
     "size": "size-limit",
     "start": "nodemon --exec \"concurrently pnpm:build tsc\" -w src/index.ts",
-    "test": "jest --config jest.config.ts"
+    "test": "jest --config local.jest.config.js"
   },
   "dependencies": {
     "@rollup/plugin-babel": "^5.3.0",

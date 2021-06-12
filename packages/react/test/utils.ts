@@ -12,9 +12,9 @@ import {
   Schema,
   SchemaUnionsKey,
   SubscriptionsClient,
-} from '../../gqless';
-import { generate } from '../../cli';
-import { createSubscriptionsClient } from '../../subscriptions';
+} from '../../gqless/src/index';
+import { generate } from '../../cli/src/generate';
+import { createSubscriptionsClient } from '../../subscriptions/src/index';
 import { createReactClient } from '../src';
 
 type ObjectTypesNames = 'Human' | 'Query' | 'Mutation' | 'Subscription';

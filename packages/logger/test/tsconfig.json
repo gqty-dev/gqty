@@ -4,7 +4,12 @@
     "module": "commonjs",
     "strict": true,
     "esModuleInterop": true,
-    "jsx": "react"
+    "jsx": "react",
+    "baseUrl": ".",
+    "paths": {
+      "@pablosz/gqless": ["../../gqless/src/index.ts"],
+      "@pablosz/gqless/*": ["../../gqless/src/*"]
+    }
   },
   "include": ["**/*.ts", "**/*.tsx"]
 }

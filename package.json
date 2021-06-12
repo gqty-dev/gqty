@@ -26,7 +26,7 @@
     "pretty": "pretty-quick",
     "pretty:all": "prettier --write \"**/*.{ts,tsx}\"",
     "publish:all": "changeset version && pnpm i && pnpm test && pnpm -r publish --access public",
-    "test": "jest --clearCache && pnpm test -r --no-sort --no-bail --stream --",
+    "test": "pnpm test -r --workspace-concurrency=2 --no-sort --no-bail --stream --",
     "website": "pnpm -r --filter website start",
     "website:build": "pnpm -r --filter website docs:build && pretty-quick"
   },

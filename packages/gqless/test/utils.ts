@@ -1,8 +1,8 @@
 import getPort from 'get-port';
 import { createTestApp, gql } from 'test-utils';
 
-import { generate } from '../../cli';
-import { createSubscriptionsClient } from '../../subscriptions';
+import { generate } from '../../cli/src/generate';
+import { createSubscriptionsClient } from '../../subscriptions/src/index';
 import {
   ClientOptions,
   createClient,

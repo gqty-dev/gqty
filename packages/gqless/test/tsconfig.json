@@ -1,8 +1,10 @@
 {
-  "extends": "../tsconfig.json",
   "compilerOptions": {
-    "rootDir": "../",
-    "declaration": false
+    "target": "es2019",
+    "module": "commonjs",
+    "strict": true,
+    "esModuleInterop": true,
+    "jsx": "react"
   },
   "include": ["**/*.ts", "**/*.tsx"]
 }

@@ -1,14 +1,22 @@
+const { pathsToModuleNameMapper } = require('ts-jest/utils');
+const { compilerOptions } = require('../../tsconfig.json');
+
+const moduleNameMapper = pathsToModuleNameMapper(compilerOptions.paths, {
+  prefix: '<rootDir>/../../',
+});
+
 /**
  * @type {import("@jest/types").Config.InitialOptions}
  */
 const defaultConfig = {
   globals: {
-    'ts-jest': {},
+    'ts-jest': {
+      tsconfig: './test/tsconfig.json',
+    },
   },
-  transform: {
-    '.(ts|tsx)$': require.resolve('ts-jest/dist'),
-  },
+  preset: 'ts-jest',
   transformIgnorePatterns: ['[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$'],
+  modulePathIgnorePatterns: ['/dist/'],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   testEnvironment: 'node',
   testMatch: ['**/test/**/*.test.ts', '**/test/**/*.test.tsx'],
@@ -22,6 +30,7 @@ const defaultConfig = {
     require.resolve('jest-watch-typeahead/testname'),
   ],
   restoreMocks: true,
+  moduleNameMapper,
 };
 
 exports.default = defaultConfig;
