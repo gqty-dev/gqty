@@ -9,7 +9,19 @@
     "esModuleInterop": true,
     "allowJs": true,
     "jsx": "react",
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "noUnusedLocals": true /* Report errors on unused locals. */,
+    "noUnusedParameters": true /* Report errors on unused parameters. */,
+    "noImplicitReturns": true /* Report error when not all code paths in function return a value. */,
+    "noFallthroughCasesInSwitch": true /* Report errors for fallthrough cases in switch statement. */,
+    // "noUncheckedIndexedAccess": true /* Include 'undefined' in index signature results */,
+    "baseUrl": ".",
+    "paths": {
+      "@pablosz/gqless": ["packages/gqless/src/index.ts"],
+      "@pablosz/gqless/*": ["packages/gqless/src/*"],
+      "@pablosz/gqless-cli": ["packages/cli/src/index.ts"],
+      "@pablosz/gqless-cli/*": ["packages/cli/src/*"]
+    }
   },
   "include": ["packages", "internal", "examples/mercurius"],
   "exclude": ["**/dist", "**/test", "**/website"]

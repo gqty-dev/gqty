@@ -1,5 +1,5 @@
 import type { GQlessClient, GQlessError } from '@pablosz/gqless';
-import type { SchedulerPromiseValue } from '@pablosz/gqless/dist/Scheduler';
+import type { SchedulerPromiseValue } from '@pablosz/gqless/Scheduler';
 
 import {
   useForceUpdate,
@@ -111,7 +111,7 @@ export function createPrepareQuery<
         );
 
         return await preload(
-          //@ts-expect-error
+          //@ts-ignore
           args
         );
       } finally {

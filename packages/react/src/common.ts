@@ -12,10 +12,10 @@ import {
   ResolveOptions,
   Selection,
 } from '@pablosz/gqless';
-import { ProxyAccessor } from '@pablosz/gqless/dist/Cache';
-import { EventHandler } from '@pablosz/gqless/dist/Events';
-import { InterceptorManager } from '@pablosz/gqless/dist/Interceptor';
-import { Scheduler } from '@pablosz/gqless/dist/Scheduler';
+import { ProxyAccessor } from '@pablosz/gqless/Cache';
+import { EventHandler } from '@pablosz/gqless/Events';
+import { InterceptorManager } from '@pablosz/gqless/Interceptor';
+import { Scheduler } from '@pablosz/gqless/Scheduler';
 import {
   MutableRefObject,
   useCallback,
