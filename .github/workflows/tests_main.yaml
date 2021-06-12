@@ -1,12 +1,14 @@
 name: Tests
 
 on:
-  pull_request:
+  push:
     paths-ignore:
       - 'docs/**'
       - 'internal/website/**'
       - '.vscode/**'
       - '.husky/**'
+    branches:
+      - 'master'
 
 env:
   CI: true
@@ -19,7 +21,7 @@ jobs:
     strategy:
       matrix:
         node: [12, 14, 16]
-        os: [ubuntu-latest]
+        os: [ubuntu-latest, windows-latest, macOS-latest]
     steps:
       - name: Checkout code
         uses: actions/checkout@v2

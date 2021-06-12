@@ -38,7 +38,7 @@ jobs:
         run: npm i pnpm@latest -g
 
       - name: Install Dependencies
-        run: pnpm i --frozen-lockfile
+        run: pnpm i
 
       - name: Test everything
         run: pnpm test:ci
