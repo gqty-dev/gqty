@@ -1,11 +1,16 @@
 {
   "compilerOptions": {
+    "rootDir": ".",
+    "outDir": "dist",
+    "declaration": true,
     "target": "es2020",
     "module": "CommonJS",
     "strict": true,
     "esModuleInterop": true,
-    "noEmit": true,
-    "checkJs": true,
-    "allowJs": true
-  }
+    "allowJs": true,
+    "jsx": "react",
+    "skipLibCheck": true
+  },
+  "include": ["packages", "internal", "examples/mercurius"],
+  "exclude": ["**/dist", "**/test", "**/website"]
 }

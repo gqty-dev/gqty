@@ -8,9 +8,19 @@
     "url": "https://github.com/PabloSzx/gqless.git"
   },
   "license": "MIT",
-  "author": "GQless <opensource@gqless.com>",
+  "author": "PabloSzx <pablosaez1995@gmail.com>",
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs"
+    },
+    "./*": {
+      "require": "./dist/*.js",
+      "import": "./dist/*.mjs"
+    }
+  },
   "main": "dist/index.js",
-  "module": "dist/gqless.esm.js",
+  "module": "dist/index.mjs",
   "typings": "dist/index.d.ts",
   "files": [
     "dist",
@@ -18,14 +28,14 @@
   ],
   "scripts": {
     "analyze": "size-limit --why",
-    "build": "build gqless",
+    "build": "bob-esbuild build",
     "dev": "nodemon",
     "dev:nodemon": "tsup src -d dist && node dist/QueryBuilder/buildQuery.js",
     "playground": "jest test/playground.test.ts --watch --no-coverage",
-    "prepare": "build gqless",
+    "prepare": "bob-esbuild build",
     "postpublish": "gh-release",
     "size": "size-limit",
-    "start": "watch gqless",
+    "start": "bob-esbuild watch",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:watch-coverage": "rimraf coverage && mkdirp coverage/lcov-report && concurrently --raw \"jest --watchAll\" \"serve -l 8787 coverage/lcov-report\" \"wait-on tcp:8787 coverage/lcov-report/index.html && open-cli http://localhost:8787\""
@@ -49,7 +59,7 @@
     "@types/tsc-watch": "^4.2.0",
     "@types/wait-on": "^5.2.0",
     "@types/ws": "^7.4.1",
-    "build-utils": "workspace:*",
+    "bob-esbuild-cli": "^0.1.26",
     "concurrently": "^6.0.2",
     "cross-env": "^7.0.3",
     "get-port": "^5.1.1",
@@ -79,6 +89,9 @@
     "graphql": {
       "optional": true
     }
+  },
+  "publishConfig": {
+    "directory": "dist"
   },
   "size-limit": [
     {

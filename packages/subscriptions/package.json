@@ -6,19 +6,29 @@
     "type": "git",
     "url": "https://github.com/PabloSzx/gqless.git"
   },
-  "author": "GQless <opensource@gqless.com>",
+  "author": "PabloSzx <pablosaez1995@gmail.com>",
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs"
+    },
+    "./*": {
+      "require": "./dist/*.js",
+      "import": "./dist/*.mjs"
+    }
+  },
   "main": "dist/index.js",
-  "module": "dist/gqless-subscriptions.esm.js",
+  "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
   "files": [
     "dist",
     "src"
   ],
   "scripts": {
-    "build": "build gqless-subscriptions",
-    "prepare": "build gqless-subscriptions",
+    "build": "bob-esbuild build",
+    "prepare": "bob-esbuild build",
     "postpublish": "gh-release",
-    "start": "watch gqless-buscriptions",
+    "start": "bob-esbuild watch",
     "test": "jest"
   },
   "dependencies": {
@@ -26,9 +36,9 @@
     "ws": "^7.4.5"
   },
   "devDependencies": {
-    "@types/ws": "^7.4.1",
-    "build-utils": "workspace:*",
     "@pablosz/gqless": "workspace:^2.0.15",
+    "@types/ws": "^7.4.1",
+    "bob-esbuild-cli": "^0.1.26",
     "graphql": "^15.5.0",
     "test-utils": "workspace:^0.1.0",
     "tslib": "^2.2.0",
@@ -42,5 +52,8 @@
     "graphql": {
       "optional": true
     }
+  },
+  "publishConfig": {
+    "directory": "dist"
   }
 }

@@ -2,14 +2,24 @@
   "name": "@pablosz/gqless-logger",
   "version": "2.0.12",
   "homepage": "https://gqless.com",
-  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/PabloSzx/gqless.git"
   },
-  "author": "GQless <opensource@gqless.com>",
+  "license": "MIT",
+  "author": "PabloSzx <pablosaez1995@gmail.com>",
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs"
+    },
+    "./*": {
+      "require": "./dist/*.js",
+      "import": "./dist/*.mjs"
+    }
+  },
   "main": "dist/index.js",
-  "module": "dist/gqless-logger.esm.js",
+  "module": "dist/index.mjs",
   "typings": "dist/index.d.ts",
   "files": [
     "dist",
@@ -17,11 +27,11 @@
   ],
   "scripts": {
     "analyze": "size-limit --why",
-    "build": "build gqless-logger",
-    "prepare": "build gqless-logger",
+    "build": "bob-esbuild build",
+    "prepare": "bob-esbuild build",
     "postpublish": "gh-release",
     "size": "size-limit",
-    "start": "watch gqless-logger",
+    "start": "bob-esbuild watch",
     "test": "jest",
     "test:watch": "jest --watch"
   },
@@ -30,10 +40,10 @@
     "serialize-error": "^8.1.0"
   },
   "devDependencies": {
+    "@pablosz/gqless": "workspace:^2.0.15",
     "@size-limit/preset-small-lib": "^4.10.2",
     "@types/prettier": "^2.2.3",
-    "build-utils": "workspace:*",
-    "@pablosz/gqless": "workspace:^2.0.15",
+    "bob-esbuild-cli": "^0.1.26",
     "jest": "^26.6.3",
     "rimraf": "^3.0.2",
     "size-limit": "^4.10.2",
@@ -45,7 +55,10 @@
     "@pablosz/gqless": "workspace:^2.0.15"
   },
   "engines": {
-    "node": ">=10"
+    "node": ">=12"
+  },
+  "publishConfig": {
+    "directory": "dist"
   },
   "size-limit": [
     {

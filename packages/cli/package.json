@@ -7,9 +7,19 @@
     "url": "https://github.com/PabloSzx/gqless.git"
   },
   "license": "MIT",
-  "author": "GQless <opensource@gqless.com>",
+  "author": "PabloSzx <pablosaez1995@gmail.com>",
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs"
+    },
+    "./*": {
+      "require": "./dist/*.js",
+      "import": "./dist/*.mjs"
+    }
+  },
   "main": "dist/index.js",
-  "module": "dist/gqless-cli.esm.js",
+  "module": "dist/index.mjs",
   "typings": "dist/index.d.ts",
   "bin": {
     "gqless": "bin/gqless.js"
@@ -20,11 +30,11 @@
   ],
   "scripts": {
     "analyze": "size-limit --why",
-    "build": "build gqless-cli",
-    "prepare": "build gqless-cli",
+    "build": "bob-esbuild build",
+    "prepare": "bob-esbuild build",
     "postpublish": "gh-release",
     "size": "size-limit",
-    "start": "watch gqless-cli",
+    "start": "bob-esbuild watch",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:watch-coverage": "rimraf coverage && mkdirp coverage/lcov-report && concurrently --raw \"jest --watchAll\" \"serve -l 8787 coverage/lcov-report\" \"wait-on tcp:8787 coverage/lcov-report/index.html && open-cli http://localhost:8787\""
@@ -35,17 +45,18 @@
     "@graphql-tools/delegate": "^7.1.2",
     "@graphql-tools/utils": "^7.7.3",
     "@graphql-tools/wrap": "^7.0.5",
+    "@pablosz/gqless": "workspace:^2.0.15",
     "commander": "^7.2.0",
     "cosmiconfig": "^7.0.0",
     "cross-fetch": "^3.1.4",
-    "@pablosz/gqless": "workspace:^2.0.15",
     "mkdirp": "^1.0.4",
     "prettier": "^2.2.1"
   },
   "devDependencies": {
     "@size-limit/preset-small-lib": "^4.10.2",
     "@types/mkdirp": "^1.0.1",
-    "build-utils": "workspace:*",
+    "bob-esbuild-cli": "^0.1.26",
+    "changesets-github-release": "^0.0.1",
     "graphql": "^15.5.0",
     "open-cli": "^6.0.1",
     "rimraf": "^3.0.2",
@@ -66,7 +77,15 @@
     }
   },
   "engines": {
-    "node": ">=10"
+    "node": ">=12"
+  },
+  "publishConfig": {
+    "directory": "dist"
+  },
+  "buildConfig": {
+    "copy": [
+      "bin"
+    ]
   },
   "size-limit": [
     {

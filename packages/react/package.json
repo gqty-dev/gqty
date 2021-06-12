@@ -7,9 +7,19 @@
     "url": "https://github.com/PabloSzx/gqless.git"
   },
   "license": "MIT",
-  "author": "GQless <opensource@gqless.com>",
+  "author": "PabloSzx <pablosaez1995@gmail.com>",
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs"
+    },
+    "./*": {
+      "require": "./dist/*.js",
+      "import": "./dist/*.mjs"
+    }
+  },
   "main": "dist/index.js",
-  "module": "dist/gqless-react.esm.js",
+  "module": "dist/index.mjs",
   "typings": "dist/index.d.ts",
   "files": [
     "dist",
@@ -17,12 +27,12 @@
   ],
   "scripts": {
     "analyze": "size-limit --why",
-    "build": "build gqless-react",
-    "prepare": "build gqless-react",
+    "build": "bob-esbuild build",
+    "prepare": "bob-esbuild build",
     "postpublish": "gh-release",
     "size": "size-limit",
-    "start": "watch gqless-react",
-    "start:with:example": "watch gqless-react --onSuccess \"pnpm -r --filter react-example dev\"",
+    "start": "bob-esbuild watch",
+    "start:with:example": "bob-esbuild watch --onSuccess \"pnpm -r --filter react-example dev\"",
     "test": "jest",
     "test:watch": "jest --watch"
   },
@@ -30,6 +40,7 @@
     "react-ssr-prepass": "^1.4.0"
   },
   "devDependencies": {
+    "@pablosz/gqless": "workspace:^2.0.15",
     "@size-limit/preset-small-lib": "^4.10.2",
     "@testing-library/jest-dom": "^5.11.10",
     "@testing-library/react": "^11.2.6",
@@ -38,9 +49,8 @@
     "@types/lodash": "^4.14.168",
     "@types/react": "^17.0.3",
     "@types/react-dom": "^17.0.3",
-    "build-utils": "workspace:*",
+    "bob-esbuild-cli": "^0.1.26",
     "get-port": "^5.1.1",
-    "@pablosz/gqless": "workspace:^2.0.15",
     "graphql": "^15.5.0",
     "jest": "^26.6.3",
     "react": "^17.0.2",
@@ -67,7 +77,10 @@
     }
   },
   "engines": {
-    "node": ">=10"
+    "node": ">=12"
+  },
+  "publishConfig": {
+    "directory": "dist"
   },
   "size-limit": [
     {

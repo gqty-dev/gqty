@@ -3,9 +3,19 @@
   "version": "0.1.0",
   "private": true,
   "license": "MIT",
-  "author": "GQless <opensource@gqless.com>",
+  "author": "PabloSzx <pablosaez1995@gmail.com>",
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs"
+    },
+    "./*": {
+      "require": "./dist/*.js",
+      "import": "./dist/*.mjs"
+    }
+  },
   "main": "dist/index.js",
-  "module": "dist/mercurius-example.esm.js",
+  "module": "dist/index.mjs",
   "typings": "dist/index.d.ts",
   "files": [
     "dist",
@@ -13,19 +23,20 @@
   ],
   "scripts": {
     "analyze": "size-limit --why",
-    "build": "build mercurius",
+    "build": "bob-esbuild build",
     "generate": "ts-node --skip-project generate.ts",
     "listen": "node listen.js",
+    "prepare": "bob-esbuild build",
     "size": "size-limit",
-    "start": "watch mercurius",
+    "start": "bob-esbuild watch",
     "test": "jest",
-    "test:watch": "watch mercurius"
+    "test:watch": "bob-esbuild watch"
   },
   "dependencies": {
-    "@pablosz/gqless-cli": "workspace:^2.0.18",
     "@graphql-typed-document-node/core": "^3.1.0",
-    "fastify": "^3.14.2",
     "@pablosz/gqless": "workspace:^2.0.15",
+    "@pablosz/gqless-cli": "workspace:^2.0.18",
+    "fastify": "^3.14.2",
     "graphql": "^15.5.0",
     "lodash": "^4.17.21",
     "mercurius": "^7.4.0",
@@ -37,7 +48,7 @@
     "@size-limit/preset-small-lib": "^4.10.2",
     "@types/lodash": "^4.14.168",
     "@types/randomstring": "^1.1.6",
-    "build-utils": "workspace:*",
+    "bob-esbuild-cli": "^0.1.26",
     "jest": "^26.6.3",
     "mercurius-integration-testing": "^3.1.3",
     "size-limit": "^4.10.2",
@@ -46,7 +57,7 @@
     "typescript": "^4.2.4"
   },
   "engines": {
-    "node": ">=10"
+    "node": ">=12"
   },
   "size-limit": [
     {
