@@ -50,5 +50,7 @@ jobs:
         run: pnpm --version
       - name: Install dependencies and build
         run: pnpm install
+      - name: Global Jest
+        run: pnpm i -g jest
       - name: Test everything
-        run: pnpm test --workspace-concurrency 1
+        run: pnpm test:ci

@@ -24,6 +24,15 @@ jobs:
         uses: actions/setup-node@master
         with:
           node-version: 14.x
+      - name: Cache pnpm modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-pnpm-modules
+        with:
+          path: ~/.pnpm-store
+          key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('./pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-build-${{ env.cache-name }}-
 
       - name: install pnpm
         run: npm i pnpm@latest -g
@@ -32,7 +41,7 @@ jobs:
         run: pnpm i --frozen-lockfile
 
       - name: Test everything
-        run: pnpm test
+        run: pnpm test:ci
 
       - name: Create Release Pull Request or Publish to npm
         id: changesets
