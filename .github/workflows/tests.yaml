@@ -1,6 +1,12 @@
 name: Tests
 
 on:
+  push:
+    paths-ignore:
+      - 'docs/**'
+      - 'internal/website/**'
+      - '.vscode/**'
+      - '.husky/**'
   pull_request:
     paths-ignore:
       - 'docs/**'
