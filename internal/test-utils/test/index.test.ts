@@ -34,7 +34,8 @@ test('create test app with codegen', async () => {
       encoding: 'utf-8',
     })
   ).toMatchInlineSnapshot(`
-    "import { GraphQLResolveInfo } from 'graphql';
+    "import type { GraphQLResolveInfo } from 'graphql';
+    import type { MercuriusContext } from 'mercurius';
     export type Maybe<T> = T | null;
     export type Exact<T extends { [key: string]: unknown }> = {
       [K in keyof T]: T[K];
@@ -188,13 +189,13 @@ test('create test app with codegen', async () => {
     };
 
     export type QueryResolvers<
-      ContextType = any,
+      ContextType = MercuriusContext,
       ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']
     > = {
       hello?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     };
 
-    export type Resolvers<ContextType = any> = {
+    export type Resolvers<ContextType = MercuriusContext> = {
       Query?: QueryResolvers<ContextType>;
     };
 
@@ -202,7 +203,7 @@ test('create test app with codegen', async () => {
      * @deprecated
      * Use \\"Resolvers\\" root object instead. If you wish to get \\"IResolvers\\", add \\"typesPrefix: I\\" to your config.
      */
-    export type IResolvers<ContextType = any> = Resolvers<ContextType>;
+    export type IResolvers<ContextType = MercuriusContext> = Resolvers<ContextType>;
 
     export interface Loaders {}
 

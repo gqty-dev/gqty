@@ -92,14 +92,8 @@ test('basic inspectWriteGenerate functionality', async () => {
         queryFetcher,
       });
 
-      export const {
-        query,
-        mutation,
-        mutate,
-        subscription,
-        resolved,
-        refetch,
-      } = client;
+      export const { query, mutation, mutate, subscription, resolved, refetch } =
+        client;
 
       export const {
         graphql,
@@ -280,14 +274,8 @@ describe('from file', () => {
           queryFetcher,
         });
 
-        export const {
-          query,
-          mutation,
-          mutate,
-          subscription,
-          resolved,
-          refetch,
-        } = client;
+        export const { query, mutation, mutate, subscription, resolved, refetch } =
+          client;
 
         export const {
           graphql,
@@ -465,14 +453,8 @@ describe('from file', () => {
           queryFetcher,
         });
 
-        export const {
-          query,
-          mutation,
-          mutate,
-          subscription,
-          resolved,
-          refetch,
-        } = client;
+        export const { query, mutation, mutate, subscription, resolved, refetch } =
+          client;
 
         export const {
           graphql,
@@ -649,14 +631,8 @@ describe('from file', () => {
           queryFetcher,
         });
 
-        export const {
-          query,
-          mutation,
-          mutate,
-          subscription,
-          resolved,
-          refetch,
-        } = client;
+        export const { query, mutation, mutate, subscription, resolved, refetch } =
+          client;
 
         export const {
           graphql,
@@ -870,14 +846,8 @@ test('specify generateOptions to inspectWriteGenerate', async () => {
         queryFetcher,
       });
 
-      export const {
-        query,
-        mutation,
-        mutate,
-        subscription,
-        resolved,
-        refetch,
-      } = client;
+      export const { query, mutation, mutate, subscription, resolved, refetch } =
+        client;
 
       export const {
         graphql,
@@ -1216,14 +1186,8 @@ describe('CLI behavior', () => {
           queryFetcher,
         });
 
-        export const {
-          query,
-          mutation,
-          mutate,
-          subscription,
-          resolved,
-          refetch,
-        } = client;
+        export const { query, mutation, mutate, subscription, resolved, refetch } =
+          client;
 
         export const {
           graphql,

@@ -1,9 +1,10 @@
-import {
+import type {
   GraphQLResolveInfo,
   GraphQLScalarType,
   GraphQLScalarTypeConfig,
 } from 'graphql';
-import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
+import type { MercuriusContext } from 'mercurius';
+import type { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = {
   [K in keyof T]: T[K];
@@ -306,7 +307,7 @@ export type ResolversParentTypes = {
 };
 
 export type NamedEntityResolvers<
-  ContextType = any,
+  ContextType = MercuriusContext,
   ParentType extends ResolversParentTypes['NamedEntity'] = ResolversParentTypes['NamedEntity']
 > = {
   resolveType: TypeResolveFn<'Human', ParentType, ContextType>;
@@ -325,7 +326,7 @@ export interface ExampleScalarScalarConfig
 }
 
 export type QueryResolvers<
-  ContextType = any,
+  ContextType = MercuriusContext,
   ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']
 > = {
   simpleString?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -386,7 +387,7 @@ export type QueryResolvers<
 };
 
 export type MutationResolvers<
-  ContextType = any,
+  ContextType = MercuriusContext,
   ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']
 > = {
   increment?: Resolver<
@@ -398,7 +399,7 @@ export type MutationResolvers<
 };
 
 export type HumanResolvers<
-  ContextType = any,
+  ContextType = MercuriusContext,
   ParentType extends ResolversParentTypes['Human'] = ResolversParentTypes['Human']
 > = {
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -425,7 +426,7 @@ export type HumanResolvers<
 };
 
 export type AResolvers<
-  ContextType = any,
+  ContextType = MercuriusContext,
   ParentType extends ResolversParentTypes['A'] = ResolversParentTypes['A']
 > = {
   a?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -440,7 +441,7 @@ export type AResolvers<
 };
 
 export type BResolvers<
-  ContextType = any,
+  ContextType = MercuriusContext,
   ParentType extends ResolversParentTypes['B'] = ResolversParentTypes['B']
 > = {
   b?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -455,7 +456,7 @@ export type BResolvers<
 };
 
 export type CResolvers<
-  ContextType = any,
+  ContextType = MercuriusContext,
   ParentType extends ResolversParentTypes['C'] = ResolversParentTypes['C']
 > = {
   c?: Resolver<ResolversTypes['GreetingsEnum'], ParentType, ContextType>;
@@ -464,13 +465,13 @@ export type CResolvers<
 };
 
 export type TestUnionResolvers<
-  ContextType = any,
+  ContextType = MercuriusContext,
   ParentType extends ResolversParentTypes['TestUnion'] = ResolversParentTypes['TestUnion']
 > = {
   resolveType: TypeResolveFn<'A' | 'B' | 'C', ParentType, ContextType>;
 };
 
-export type Resolvers<ContextType = any> = {
+export type Resolvers<ContextType = MercuriusContext> = {
   NamedEntity?: NamedEntityResolvers<ContextType>;
   ExampleScalar?: GraphQLScalarType;
   Query?: QueryResolvers<ContextType>;
@@ -486,7 +487,7 @@ export type Resolvers<ContextType = any> = {
  * @deprecated
  * Use "Resolvers" root object instead. If you wish to get "IResolvers", add "typesPrefix: I" to your config.
  */
-export type IResolvers<ContextType = any> = Resolvers<ContextType>;
+export type IResolvers<ContextType = MercuriusContext> = Resolvers<ContextType>;
 
 type Loader<TReturn, TObj, TParams, TContext> = (
   queries: Array<{
@@ -578,10 +579,7 @@ export type multipleArgsQuery = { __typename?: 'Query' } & {
   a2: { __typename?: 'Human' } & Pick<Human, 'name'>;
 };
 
-export const simpleStringDocument: DocumentNode<
-  simpleStringQuery,
-  simpleStringQueryVariables
-> = {
+export const simpleStringDocument = {
   kind: 'Document',
   definitions: [
     {
@@ -645,11 +643,8 @@ export const simpleStringDocument: DocumentNode<
       },
     },
   ],
-};
-export const arrayObjectArgsDocument: DocumentNode<
-  arrayObjectArgsQuery,
-  arrayObjectArgsQueryVariables
-> = {
+} as unknown as DocumentNode<simpleStringQuery, simpleStringQueryVariables>;
+export const arrayObjectArgsDocument = {
   kind: 'Document',
   definitions: [
     {
@@ -703,11 +698,11 @@ export const arrayObjectArgsDocument: DocumentNode<
       },
     },
   ],
-};
-export const multipleArgsDocument: DocumentNode<
-  multipleArgsQuery,
-  multipleArgsQueryVariables
-> = {
+} as unknown as DocumentNode<
+  arrayObjectArgsQuery,
+  arrayObjectArgsQueryVariables
+>;
+export const multipleArgsDocument = {
   kind: 'Document',
   definitions: [
     {
@@ -766,7 +761,7 @@ export const multipleArgsDocument: DocumentNode<
       },
     },
   ],
-};
+} as unknown as DocumentNode<multipleArgsQuery, multipleArgsQueryVariables>;
 declare module 'mercurius' {
   interface IResolvers
     extends Resolvers<import('mercurius').MercuriusContext> {}

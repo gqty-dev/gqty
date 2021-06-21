@@ -27,18 +27,14 @@ test('basic functionality works', async () => {
 
   const shouldBeIncluded = '// This should be included';
 
-  const {
-    schemaCode,
-    clientCode,
-    generatedSchema,
-    scalarsEnumsHash,
-  } = await generate(server.graphql.schema, {
-    preImport: `
+  const { schemaCode, clientCode, generatedSchema, scalarsEnumsHash } =
+    await generate(server.graphql.schema, {
+      preImport: `
         ${shouldBeIncluded}
         `,
-    react: true,
-    subscriptions: true,
-  });
+      react: true,
+      subscriptions: true,
+    });
 
   expect(schemaCode).toMatchInlineSnapshot(`
     "/**
@@ -186,14 +182,8 @@ test('basic functionality works', async () => {
       subscriptionsClient,
     });
 
-    export const {
-      query,
-      mutation,
-      mutate,
-      subscription,
-      resolved,
-      refetch,
-    } = client;
+    export const { query, mutation, mutate, subscription, resolved, refetch } =
+      client;
 
     export const {
       graphql,
@@ -283,16 +273,12 @@ test('custom scalars works', async () => {
 
   await isReady;
 
-  const {
-    schemaCode,
-    clientCode,
-    generatedSchema,
-    scalarsEnumsHash,
-  } = await generate(server.graphql.schema, {
-    scalarTypes: {
-      Custom: '"hello world"',
-    },
-  });
+  const { schemaCode, clientCode, generatedSchema, scalarsEnumsHash } =
+    await generate(server.graphql.schema, {
+      scalarTypes: {
+        Custom: '"hello world"',
+      },
+    });
 
   expect(clientCode).toMatchInlineSnapshot(`
     "/**
@@ -339,14 +325,8 @@ test('custom scalars works', async () => {
       queryFetcher,
     });
 
-    export const {
-      query,
-      mutation,
-      mutate,
-      subscription,
-      resolved,
-      refetch,
-    } = client;
+    export const { query, mutation, mutate, subscription, resolved, refetch } =
+      client;
 
     export const {
       graphql,
@@ -1243,14 +1223,8 @@ test('javascript output works', async () => {
       subscriptionsClient,
     });
 
-    export const {
-      query,
-      mutation,
-      mutate,
-      subscription,
-      resolved,
-      refetch,
-    } = client;
+    export const { query, mutation, mutate, subscription, resolved, refetch } =
+      client;
 
     /**
      * @type {import(\\"@pablosz/gqless-react\\").ReactClient<import(\\"./schema.generated\\").GeneratedSchema>}
@@ -1532,14 +1506,8 @@ test('ignoreArgs transform', async () => {
       queryFetcher,
     });
 
-    export const {
-      query,
-      mutation,
-      mutate,
-      subscription,
-      resolved,
-      refetch,
-    } = client;
+    export const { query, mutation, mutate, subscription, resolved, refetch } =
+      client;
 
     export const {
       graphql,

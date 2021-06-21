@@ -287,14 +287,8 @@ test('creates dir, generates code and writes new file', async () => {
         queryFetcher,
       });
 
-      export const {
-        query,
-        mutation,
-        mutate,
-        subscription,
-        resolved,
-        refetch,
-      } = client;
+      export const { query, mutation, mutate, subscription, resolved, refetch } =
+        client;
 
       export const {
         graphql,
