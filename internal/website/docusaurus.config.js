@@ -150,40 +150,5 @@ module.exports = {
       },
     ],
   ],
-  plugins: process.env.SKIP_TYPEDOC
-    ? [require.resolve('./fix-typedoc-plugin.js')]
-    : [
-        [
-          'docusaurus-plugin-typedoc',
-          {
-            id: 'client',
-            entryPoints: ['../../packages/gqless/src/index.ts'],
-            tsconfig: '../../packages/gqless/tsconfig.json',
-            docsRoot: '../../docs',
-            out: 'client/api',
-            sidebar: {
-              sidebarFile: 'sidebars/client.js',
-              fullNames: true,
-            },
-            allReflectionsHaveOwnDocument: false,
-          },
-        ],
-        [
-          'docusaurus-plugin-typedoc',
-          {
-            id: 'react',
-            entryPoints: ['../../packages/react/src/index.tsx'],
-            tsconfig: '../../packages/react/tsconfig.json',
-            docsRoot: '../../docs',
-            out: 'react/api',
-            sidebar: {
-              sidebarFile: 'sidebars/react.js',
-              fullNames: true,
-            },
-            allReflectionsHaveOwnDocument: false,
-          },
-        ],
-        require.resolve('./fix-typedoc-plugin.js'),
-      ],
   stylesheets: ['/fonts.css'],
 };

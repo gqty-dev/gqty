@@ -25,11 +25,6 @@ module.exports = {
         'react/suspense',
         'react/ssr',
         'react/meta',
-        {
-          type: 'category',
-          label: 'API Reference',
-          items: require('./sidebars/react.js'),
-        },
       ],
     },
     {
@@ -44,11 +39,6 @@ module.exports = {
         'client/persistence',
         'client/helper-functions',
         'client/graphql-upload',
-        {
-          type: 'category',
-          label: 'API Reference',
-          items: require('./sidebars/client.js'),
-        },
       ],
     },
     {
