@@ -5,7 +5,7 @@ import { introspectSchema, wrapSchema } from '@graphql-tools/wrap';
 
 import { gqtyConfigPromise, defaultConfig } from './config';
 
-import type { AsyncExecutor } from '@graphql-tools/delegate';
+import type { AsyncExecutor } from '@graphql-tools/utils';
 export interface IntrospectionOptions {
   /**
    * Endpoint of the remote GraphQL API or schema file
