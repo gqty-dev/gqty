@@ -40,9 +40,6 @@ jobs:
       - name: Install Dependencies
         run: pnpm i
 
-      - name: Test everything
-        run: pnpm test:ci
-
       - name: Create Release Pull Request or Publish to npm
         id: changesets
         uses: changesets/action@master
