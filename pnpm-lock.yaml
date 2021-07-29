@@ -362,7 +362,7 @@ importers:
       '@types/react-helmet': ^6.1.2
       '@types/react-router-dom': ^5.1.8
       cross-env: ^7.0.3
-      docusaurus-plugin-typedoc: ^0.12.1
+      docusaurus-plugin-typedoc: ^0.15.3
       file-loader: ^6.2.0
       framer-motion: ^4.1.17
       globby: ^11.0.4
@@ -395,7 +395,7 @@ importers:
       '@types/react-helmet': 6.1.2
       '@types/react-router-dom': 5.1.8
       cross-env: 7.0.3
-      docusaurus-plugin-typedoc: 0.12.1_a09bd81c9f7590c6318437e0c34209b8
+      docusaurus-plugin-typedoc: 0.15.3_a09bd81c9f7590c6318437e0c34209b8
       file-loader: 6.2.0
       framer-motion: 4.1.17_react-dom@17.0.2+react@17.0.2
       globby: 11.0.4
@@ -8053,7 +8053,7 @@ packages:
   /axios/0.21.1:
     resolution: {integrity: sha512-dKQiRHxGD9PPRIUNIWvZhPTPpl1rf/OxTYKsqKUDjBwYylTvV7SjSHJb9ratfyzM6wCdLCOYLzs73qpg5c4iGA==}
     dependencies:
-      follow-redirects: 1.14.1
+      follow-redirects: 1.14.1_debug@4.3.2
     transitivePeerDependencies:
       - debug
 
@@ -10888,11 +10888,11 @@ packages:
       esutils: 2.0.3
     dev: false
 
-  /docusaurus-plugin-typedoc/0.12.1_a09bd81c9f7590c6318437e0c34209b8:
-    resolution: {integrity: sha512-m8VNiz2Q+5AhMPWJ2+eHYFTYSY1FvNDmXWt/s2kgH7k9CUGSBUx3pVgFNXLeVkgmh7Omuog903lv0lo5B2MX7A==}
+  /docusaurus-plugin-typedoc/0.15.3_a09bd81c9f7590c6318437e0c34209b8:
+    resolution: {integrity: sha512-iS3pWa1whGujrQqhXf/0UnG010n6N43LA/g7bM6b9OQosSB59KJIvNP98dbC+ihIGI3mjEnkVbvre8JEBy5yXg==}
     peerDependencies:
-      typedoc: '>=0.20.19'
-      typedoc-plugin-markdown: '>=3.6.0'
+      typedoc: '>=0.21.0'
+      typedoc-plugin-markdown: '>=3.10.0'
     dependencies:
       typedoc: 0.20.37_typescript@4.3.5
       typedoc-plugin-markdown: 3.10.4_typedoc@0.20.37
@@ -12398,15 +12398,6 @@ packages:
       - supports-color
     dev: true
 
-  /follow-redirects/1.14.1:
-    resolution: {integrity: sha512-HWqDgT7ZEkqRzBvc2s64vSZ/hfOceEol3ac/7tKwzuvEyWx3/4UegXh5oBOIotkGsObyk3xznnSRVADBgWSQVg==}
-    engines: {node: '>=4.0'}
-    peerDependencies:
-      debug: '*'
-    peerDependenciesMeta:
-      debug:
-        optional: true
-
   /follow-redirects/1.14.1_debug@3.2.7:
     resolution: {integrity: sha512-HWqDgT7ZEkqRzBvc2s64vSZ/hfOceEol3ac/7tKwzuvEyWx3/4UegXh5oBOIotkGsObyk3xznnSRVADBgWSQVg==}
     engines: {node: '>=4.0'}
@@ -12418,6 +12409,17 @@ packages:
     dependencies:
       debug: 3.2.7
     dev: true
+
+  /follow-redirects/1.14.1_debug@4.3.2:
+    resolution: {integrity: sha512-HWqDgT7ZEkqRzBvc2s64vSZ/hfOceEol3ac/7tKwzuvEyWx3/4UegXh5oBOIotkGsObyk3xznnSRVADBgWSQVg==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+    dependencies:
+      debug: 4.3.2_supports-color@6.1.0
 
   /for-in/1.0.2:
     resolution: {integrity: sha1-gQaNKVqBQuwKxybG4iAMMPttXoA=}
@@ -13537,7 +13539,7 @@ packages:
     engines: {node: '>=8.0.0'}
     dependencies:
       eventemitter3: 4.0.7
-      follow-redirects: 1.14.1
+      follow-redirects: 1.14.1_debug@4.3.2
       requires-port: 1.0.0
     transitivePeerDependencies:
       - debug
