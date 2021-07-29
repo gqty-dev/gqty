@@ -4,7 +4,7 @@ import {
   Schema,
   SchemaUnionsKey,
   Type,
-} from '@pablosz/gqless';
+} from 'gqty';
 import {
   GraphQLEnumType,
   GraphQLField,
@@ -28,7 +28,7 @@ import { codegen } from '@graphql-codegen/core';
 import * as typescriptPlugin from '@graphql-codegen/typescript';
 import { printSchemaWithDirectives } from '@graphql-tools/utils';
 
-import { defaultConfig, DUMMY_ENDPOINT, gqlessConfigPromise } from './config';
+import { defaultConfig, DUMMY_ENDPOINT, gqtyConfigPromise } from './config';
 import { formatPrettier } from './prettier';
 
 export interface GenerateOptions {
@@ -77,7 +77,7 @@ export interface GenerateOptions {
 
 export interface TransformSchemaOptions {
   /**
-   * Get a field in which every argument is optional, if this functions return "true", gqless will _always__ ignore it's arguments,
+   * Get a field in which every argument is optional, if this functions return "true", gqty will _always__ ignore it's arguments,
    * and you won't be able to specify them
    */
   ignoreArgs?: (type: GraphQLField<unknown, unknown>) => boolean;
@@ -103,34 +103,33 @@ export async function generate(
   scalarsEnumsHash: ScalarsEnumsHash;
   isJavascriptOutput: boolean;
 }> {
-  const gqlessConfig = (await gqlessConfigPromise).config;
+  const gqtyConfig = (await gqtyConfigPromise).config;
 
   const isJavascriptOutput =
     javascriptOutput ??
-    gqlessConfig.javascriptOutput ??
+    gqtyConfig.javascriptOutput ??
     defaultConfig.javascriptOutput;
 
   if (isJavascriptOutput) {
-    if (gqlessConfig.enumsAsStrings) {
+    if (gqtyConfig.enumsAsStrings) {
       console.warn(
         `"enumsAsStrings" is automatically set as "true" with "javascriptOutput" enabled.`
       );
     }
     enumsAsStrings = true;
   } else {
-    enumsAsStrings ??= gqlessConfig.enumsAsStrings ?? false;
+    enumsAsStrings ??= gqtyConfig.enumsAsStrings ?? false;
   }
 
-  scalarTypes ||= gqlessConfig.scalarTypes || defaultConfig.scalarTypes;
+  scalarTypes ||= gqtyConfig.scalarTypes || defaultConfig.scalarTypes;
   endpoint ||=
-    gqlessConfig.introspection?.endpoint ??
-    defaultConfig.introspection.endpoint;
+    gqtyConfig.introspection?.endpoint ?? defaultConfig.introspection.endpoint;
   if (endpoint === DUMMY_ENDPOINT) {
     endpoint = '/api/graphql';
   }
-  react ??= gqlessConfig.react ?? defaultConfig.react;
-  preImport ??= gqlessConfig.preImport ?? defaultConfig.preImport;
-  subscriptions ??= gqlessConfig.subscriptions ?? defaultConfig.subscriptions;
+  react ??= gqtyConfig.react ?? defaultConfig.react;
+  preImport ??= gqtyConfig.preImport ?? defaultConfig.preImport;
+  subscriptions ??= gqtyConfig.subscriptions ?? defaultConfig.subscriptions;
 
   const { format } = formatPrettier({
     parser: 'typescript',
@@ -140,7 +139,7 @@ export async function generate(
     schema: parse(printSchemaWithDirectives(schema)),
     config: {} as typescriptPlugin.TypeScriptPluginConfig,
     documents: [],
-    filename: 'gqless.generated.ts',
+    filename: 'gqty.generated.ts',
     pluginMap: {
       typescript: typescriptPlugin,
     },
@@ -430,26 +429,25 @@ export async function generate(
       if (hasArgs) {
         objectFieldsArgsDescriptions[fieldName] ||= {};
 
-        schemaType[
-          fieldName
-        ].__args = interfaceValue.__args = gqlType.args.reduce((acum, arg) => {
-          acum[arg.name] = arg.type.toString();
-          if (
-            arg.description ||
-            arg.deprecationReason ||
-            arg.defaultValue != null
-          ) {
-            objectFieldsArgsDescriptions[fieldName][arg.name] = {
-              defaultValue:
-                arg.defaultValue != null
-                  ? JSON.stringify(arg.defaultValue)
-                  : null,
-              deprecated: arg.deprecationReason,
-              description: arg.description,
-            };
-          }
-          return acum;
-        }, {} as Record<string, string>);
+        schemaType[fieldName].__args = interfaceValue.__args =
+          gqlType.args.reduce((acum, arg) => {
+            acum[arg.name] = arg.type.toString();
+            if (
+              arg.description ||
+              arg.deprecationReason ||
+              arg.defaultValue != null
+            ) {
+              objectFieldsArgsDescriptions[fieldName][arg.name] = {
+                defaultValue:
+                  arg.defaultValue != null
+                    ? JSON.stringify(arg.defaultValue)
+                    : null,
+                deprecated: arg.deprecationReason,
+                description: arg.description,
+              };
+            }
+            return acum;
+          }, {} as Record<string, string>);
       }
 
       if (gqlType.description || gqlType.isDeprecated) {
@@ -817,8 +815,7 @@ export async function generate(
   const queryFetcher = `
     ${
       isJavascriptOutput
-        ? typeDoc('import("@pablosz/gqless").QueryFetcher') +
-          'const queryFetcher'
+        ? typeDoc('import("gqty").QueryFetcher') + 'const queryFetcher'
         : 'const queryFetcher : QueryFetcher'
     } = async function (query, variables) {
         // Modify "${endpoint}" if needed
@@ -844,12 +841,12 @@ export async function generate(
 
   const javascriptSchemaCode = await format(`
 /**
- * GQLESS AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+ * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
  */
-${hasUnions ? 'import { SchemaUnionsKey } from "@pablosz/gqless";' : ''}
+${hasUnions ? 'import { SchemaUnionsKey } from "gqty";' : ''}
 
 ${typeDoc(
-  'import("@pablosz/gqless").ScalarsEnumsHash'
+  'import("gqty").ScalarsEnumsHash'
 )}export const scalarsEnumsHash = ${JSON.stringify(scalarsEnumsHash)};
 
 export const generatedSchema = {${Object.entries(generatedSchema).reduceRight(
@@ -863,17 +860,17 @@ export const generatedSchema = {${Object.entries(generatedSchema).reduceRight(
   const schemaCode = await format(
     `
 /**
- * GQLESS AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+ * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
  */
   ${preImport}
 
-  ${hasUnions ? 'import { SchemaUnionsKey } from "@pablosz/gqless";' : ''}
+  ${hasUnions ? 'import { SchemaUnionsKey } from "gqty";' : ''}
 
   ${await codegenResultPromise}
 
   export${
     isJavascriptOutput ? ' declare' : ''
-  } const scalarsEnumsHash: import("@pablosz/gqless").ScalarsEnumsHash${
+  } const scalarsEnumsHash: import("gqty").ScalarsEnumsHash${
       isJavascriptOutput ? ';' : ` = ${JSON.stringify(scalarsEnumsHash)};`
     }
   export${isJavascriptOutput ? ' declare' : ''} const generatedSchema ${
@@ -894,7 +891,7 @@ export const generatedSchema = {${Object.entries(generatedSchema).reduceRight(
     if (isJavascriptOutput) {
       reactClientCode = `
       ${typeDoc(
-        'import("@pablosz/gqless-react").ReactClient<import("./schema.generated").GeneratedSchema>'
+        'import("@gqty/react").ReactClient<import("./schema.generated").GeneratedSchema>'
       )}const reactClient = createReactClient(client, {
         defaults: {
           // Set this flag as "true" if your usage involves React Suspense
@@ -950,18 +947,18 @@ export const generatedSchema = {${Object.entries(generatedSchema).reduceRight(
   const clientCode = await format(
     `
 /**
- * GQLESS: You can safely modify this file and Query Fetcher based on your needs
+ * GQTY: You can safely modify this file and Query Fetcher based on your needs
  */
 
-  ${react ? `import { createReactClient } from "@pablosz/gqless-react"` : ''}
+  ${react ? `import { createReactClient } from "@gqty/react"` : ''}
   ${
     subscriptions
-      ? `import { createSubscriptionsClient } from "@pablosz/gqless-subscriptions"`
+      ? `import { createSubscriptionsClient } from "@gqty/subscriptions"`
       : ''
   }
   import { createClient${
     isJavascriptOutput ? '' : ', QueryFetcher'
-  } } from "@pablosz/gqless";
+  } } from "gqty";
   import { generatedSchema, scalarsEnumsHash${
     isJavascriptOutput
       ? ''
@@ -990,7 +987,7 @@ export const generatedSchema = {${Object.entries(generatedSchema).reduceRight(
   ${
     isJavascriptOutput
       ? `${typeDoc(
-          'import("@pablosz/gqless").GQlessClient<import("./schema.generated").GeneratedSchema>'
+          'import("gqty").GQtyClient<import("./schema.generated").GeneratedSchema>'
         )}export const client = createClient({
         schema: generatedSchema,
         scalarsEnumsHash, 

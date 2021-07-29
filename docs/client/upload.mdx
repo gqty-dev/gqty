@@ -4,7 +4,7 @@ title: GraphQL Upload
 sidebar_label: GraphQL Upload
 ---
 
-In GQless you can add `File Upload` support easily, following the [GraphQL multipart request specification](https://github.com/jaydenseric/graphql-multipart-request-spec).
+In GQty you can add `File Upload` support easily, following the [GraphQL multipart request specification](https://github.com/jaydenseric/graphql-multipart-request-spec).
 
 ## Preparation
 
@@ -83,11 +83,11 @@ const queryFetcher: QueryFetcher = async function (query, variables) {
 
 ### Core
 
-Since the images are not serializable, GQless might be confused while
+Since the images are not serializable, GQty might be confused while
 using them, that's why you have to specify a special option `nonSerializableVariables` in your [`resolved`](/client/fetching-data#resolved)s
 
 ```ts
-import { resolved, mutation } from '../gqless';
+import { resolved, mutation } from '../gqty';
 
 resolved(
   () => {
@@ -112,7 +112,7 @@ resolved(
 
 ### React
 
-Since the images are not serializable, GQless might be confused while
+Since the images are not serializable, GQty might be confused while
 using them, that's why you have to specify a special option `nonSerializableVariables` in your [`useMutation`](/react/mutations)s
 
 ```ts

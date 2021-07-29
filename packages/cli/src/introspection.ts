@@ -3,7 +3,7 @@ import { print } from 'graphql';
 
 import { introspectSchema, wrapSchema } from '@graphql-tools/wrap';
 
-import { gqlessConfigPromise, defaultConfig } from './config';
+import { gqtyConfigPromise, defaultConfig } from './config';
 
 import type { AsyncExecutor } from '@graphql-tools/delegate';
 export interface IntrospectionOptions {
@@ -29,7 +29,7 @@ export const getRemoteSchema = async (
 ) => {
   const executor: AsyncExecutor = async ({ document, variables }) => {
     headers ||=
-      (await gqlessConfigPromise).config.introspection?.headers ||
+      (await gqtyConfigPromise).config.introspection?.headers ||
       defaultConfig.introspection.headers;
     const query = print(document);
     const fetchResult = await fetch(endpoint, {

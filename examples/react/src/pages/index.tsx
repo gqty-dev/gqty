@@ -1,6 +1,6 @@
 import { Suspense, useReducer } from 'react';
 
-import { query } from '../graphql/gqless';
+import { query } from '../graphql/gqty';
 import NormalizedPage from './normalized';
 import {
   graphql,
@@ -8,7 +8,7 @@ import {
   useRefetch,
   useTransactionQuery,
 } from '../components/client';
-import { selectFields } from '@pablosz/gqless';
+import { selectFields } from 'gqty';
 import { Button, Stack, Text } from '@chakra-ui/react';
 
 const Comp = graphql(function Asd() {

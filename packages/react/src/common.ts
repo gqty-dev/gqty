@@ -5,17 +5,17 @@ import {
   selectFields,
   castNotSkeleton,
   castNotSkeletonDeep,
-} from '@pablosz/gqless';
+} from 'gqty';
 import {
   BuildSelectionInput,
-  GQlessError,
+  GQtyError,
   ResolveOptions,
   Selection,
-} from '@pablosz/gqless';
-import { ProxyAccessor } from '@pablosz/gqless/Cache';
-import { EventHandler } from '@pablosz/gqless/Events';
-import { InterceptorManager } from '@pablosz/gqless/Interceptor';
-import { Scheduler } from '@pablosz/gqless/Scheduler';
+} from 'gqty';
+import { ProxyAccessor } from 'gqty/Cache';
+import { EventHandler } from 'gqty/Events';
+import { InterceptorManager } from 'gqty/Interceptor';
+import { Scheduler } from 'gqty/Scheduler';
 import {
   MutableRefObject,
   useCallback,
@@ -386,9 +386,8 @@ export function useInterceptSelections({
 
   const interceptor = createInterceptor();
 
-  const enabledStaleWhileRevalidate = hasEnabledStaleWhileRevalidate(
-    staleWhileRevalidate
-  );
+  const enabledStaleWhileRevalidate =
+    hasEnabledStaleWhileRevalidate(staleWhileRevalidate);
   const cacheRefetchSelections = enabledStaleWhileRevalidate
     ? new Set<Selection>()
     : null;
@@ -510,7 +509,7 @@ export function useSuspensePromise(optsRef: {
   return setPromise;
 }
 
-export type OnErrorHandler = (error: GQlessError) => void;
+export type OnErrorHandler = (error: GQtyError) => void;
 
 export interface CoreHelpers {
   prepass: typeof prepass;

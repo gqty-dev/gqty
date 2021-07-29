@@ -4,7 +4,7 @@ title: Programmatic usage of CLI
 sidebar_label: Programmatic usage
 ---
 
-**@pablosz/gqless-cli** has also a complete programmatic API, which allows you to generate the client with custom scripts.
+**@gqty/cli** has also a complete programmatic API, which allows you to generate the client with custom scripts.
 
 ## `inspectWriteGenerate`
 
@@ -13,10 +13,10 @@ Basically calling CLI functionality programmatically.
 All the fields are optional, and it will always read from the [Configuration](/cli/config) if any field is not specified.
 
 ```tsx
-import { inspectWriteGenerate } from '@pablosz/gqless-cli';
+import { inspectWriteGenerate } from '@gqty/cli';
 
 await inspectWriteGenerate({
-  destination: './src/gqless/index.ts',
+  destination: './src/gqty/index.ts',
   generateOptions: {
     preImport: '',
     scalarTypes: {
@@ -39,7 +39,7 @@ If you have direct access to the [GraphQLSchema](https://graphql.org/graphql-js/
 All the `GenerateOptions` are optional, and it will always read from the [Configuration](/cli/config) if any field is not specified.
 
 ```tsx
-import { writeGenerate } from '@pablosz/gqless-cli';
+import { writeGenerate } from '@gqty/cli';
 
 // You get the `schema` from somewhere...
 
@@ -47,7 +47,7 @@ await writeGenerate(
   // Required
   schema,
   // Destination, Required
-  './src/gqless/index.ts',
+  './src/gqty/index.ts',
   // GenerateOptions, optional
   {
     preImport: '',
@@ -58,7 +58,7 @@ await writeGenerate(
     enumsAsStrings: false,
     subscriptions: false,
   },
-  // What to do if a gqless client file already exists, Optional
+  // What to do if a gqty client file already exists, Optional
   (existingFile) => {
     // existingFile == string
   }
@@ -72,29 +72,25 @@ If you have direct access to the [GraphQLSchema](https://graphql.org/graphql-js/
 All the GenerateOptions are optional, and it will always read from the [Configuration](/cli/config) if any field is not specified.
 
 ```tsx
-import { generate } from '@pablosz/gqless-cli';
+import { generate } from '@gqty/cli';
 
 // You get the `schema` from somewhere...
 
-const {
-  clientCode,
-  schemaCode,
-  generatedSchema,
-  scalarsEnumsHash,
-} = await generate(
-  // Required
-  schema,
-  // GenerateOptions, optional
-  {
-    preImport: '',
-    scalarTypes: {
-      DateTime: 'string',
-    },
-    react: true,
-    enumsAsStrings: false,
-    subscriptions: false,
-  }
-);
+const { clientCode, schemaCode, generatedSchema, scalarsEnumsHash } =
+  await generate(
+    // Required
+    schema,
+    // GenerateOptions, optional
+    {
+      preImport: '',
+      scalarTypes: {
+        DateTime: 'string',
+      },
+      react: true,
+      enumsAsStrings: false,
+      subscriptions: false,
+    }
+  );
 ```
 
 ## `getRemoteSchema`
@@ -104,7 +100,7 @@ Inspect a remote GraphQL API
 If the headers are not specified, it will look for [Configuration](/cli/config).
 
 ```tsx
-import { getRemoteSchema } from '@pablosz/gqless-cli';
+import { getRemoteSchema } from '@gqty/cli';
 
 const schema = await getRemoteSchema(
   // Endpoint, required

@@ -49,12 +49,12 @@ test('basic inspectWriteGenerate functionality', async () => {
       ).replace(new RegExp(endpoint, 'g'), '/graphql')
     ).toMatchInlineSnapshot(`
       "/**
-       * GQLESS: You can safely modify this file and Query Fetcher based on your needs
+       * GQTY: You can safely modify this file and Query Fetcher based on your needs
        */
 
-      import { createReactClient } from '@pablosz/gqless-react';
+      import { createReactClient } from '@gqty/react';
 
-      import { createClient, QueryFetcher } from '@pablosz/gqless';
+      import { createClient, QueryFetcher } from 'gqty';
       import {
         generatedSchema,
         scalarsEnumsHash,
@@ -128,7 +128,7 @@ test('basic inspectWriteGenerate functionality', async () => {
       })
     ).toMatchInlineSnapshot(`
       "/**
-       * GQLESS AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+       * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
        */
 
       export type Maybe<T> = T | null;
@@ -148,7 +148,7 @@ test('basic inspectWriteGenerate functionality', async () => {
         Float: number;
       }
 
-      export const scalarsEnumsHash: import('@pablosz/gqless').ScalarsEnumsHash = {
+      export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
         String: true,
         Boolean: true,
       };
@@ -231,12 +231,12 @@ describe('from file', () => {
         )
       ).toMatchInlineSnapshot(`
         "/**
-         * GQLESS: You can safely modify this file and Query Fetcher based on your needs
+         * GQTY: You can safely modify this file and Query Fetcher based on your needs
          */
 
-        import { createReactClient } from '@pablosz/gqless-react';
+        import { createReactClient } from '@gqty/react';
 
-        import { createClient, QueryFetcher } from '@pablosz/gqless';
+        import { createClient, QueryFetcher } from 'gqty';
         import {
           generatedSchema,
           scalarsEnumsHash,
@@ -305,7 +305,7 @@ describe('from file', () => {
       `);
       expect(generatedFileContentSchema).toMatchInlineSnapshot(`
         "/**
-         * GQLESS AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+         * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
          */
 
         export type Maybe<T> = T | null;
@@ -325,7 +325,7 @@ describe('from file', () => {
           Float: number;
         }
 
-        export const scalarsEnumsHash: import('@pablosz/gqless').ScalarsEnumsHash = {
+        export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
           Int: true,
           Boolean: true,
           String: true,
@@ -410,12 +410,12 @@ describe('from file', () => {
         )
       ).toMatchInlineSnapshot(`
         "/**
-         * GQLESS: You can safely modify this file and Query Fetcher based on your needs
+         * GQTY: You can safely modify this file and Query Fetcher based on your needs
          */
 
-        import { createReactClient } from '@pablosz/gqless-react';
+        import { createReactClient } from '@gqty/react';
 
-        import { createClient, QueryFetcher } from '@pablosz/gqless';
+        import { createClient, QueryFetcher } from 'gqty';
         import {
           generatedSchema,
           scalarsEnumsHash,
@@ -484,7 +484,7 @@ describe('from file', () => {
       `);
       expect(generatedFileContentSchema).toMatchInlineSnapshot(`
         "/**
-         * GQLESS AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+         * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
          */
 
         export type Maybe<T> = T | null;
@@ -504,7 +504,7 @@ describe('from file', () => {
           Float: number;
         }
 
-        export const scalarsEnumsHash: import('@pablosz/gqless').ScalarsEnumsHash = {
+        export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
           String: true,
           Boolean: true,
         };
@@ -588,12 +588,12 @@ describe('from file', () => {
         )
       ).toMatchInlineSnapshot(`
         "/**
-         * GQLESS: You can safely modify this file and Query Fetcher based on your needs
+         * GQTY: You can safely modify this file and Query Fetcher based on your needs
          */
 
-        import { createReactClient } from '@pablosz/gqless-react';
+        import { createReactClient } from '@gqty/react';
 
-        import { createClient, QueryFetcher } from '@pablosz/gqless';
+        import { createClient, QueryFetcher } from 'gqty';
         import {
           generatedSchema,
           scalarsEnumsHash,
@@ -662,7 +662,7 @@ describe('from file', () => {
       `);
       expect(generatedFileContentSchema).toMatchInlineSnapshot(`
         "/**
-         * GQLESS AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+         * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
          */
 
         export type Maybe<T> = T | null;
@@ -682,7 +682,7 @@ describe('from file', () => {
           Float: number;
         }
 
-        export const scalarsEnumsHash: import('@pablosz/gqless').ScalarsEnumsHash = {
+        export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
           String: true,
           Boolean: true,
         };
@@ -803,12 +803,12 @@ test('specify generateOptions to inspectWriteGenerate', async () => {
       generatedFileContentClient.replace(new RegExp(endpoint, 'g'), '/graphql')
     ).toMatchInlineSnapshot(`
       "/**
-       * GQLESS: You can safely modify this file and Query Fetcher based on your needs
+       * GQTY: You can safely modify this file and Query Fetcher based on your needs
        */
 
-      import { createReactClient } from '@pablosz/gqless-react';
+      import { createReactClient } from '@gqty/react';
 
-      import { createClient, QueryFetcher } from '@pablosz/gqless';
+      import { createClient, QueryFetcher } from 'gqty';
       import {
         generatedSchema,
         scalarsEnumsHash,
@@ -877,7 +877,7 @@ test('specify generateOptions to inspectWriteGenerate', async () => {
     `);
     expect(generatedFileContentSchema).toMatchInlineSnapshot(`
       "/**
-       * GQLESS AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+       * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
        */
 
       // This should be included
@@ -899,7 +899,7 @@ test('specify generateOptions to inspectWriteGenerate', async () => {
         Float: number;
       }
 
-      export const scalarsEnumsHash: import('@pablosz/gqless').ScalarsEnumsHash = {
+      export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
         String: true,
         Boolean: true,
       };
@@ -1014,7 +1014,7 @@ describe('inspect headers', () => {
 
       expect(generatedFileContent).toMatchInlineSnapshot(`
         "/**
-         * GQLESS AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+         * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
          */
         // This should be included
 
@@ -1035,7 +1035,7 @@ describe('inspect headers', () => {
           Float: number;
         }
 
-        export const scalarsEnumsHash: import('@pablosz/gqless').ScalarsEnumsHash = {
+        export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
           String: true,
           Boolean: true,
         };
@@ -1143,12 +1143,12 @@ describe('CLI behavior', () => {
         ).replace(new RegExp(endpoint, 'g'), '/graphql')
       ).toMatchInlineSnapshot(`
         "/**
-         * GQLESS: You can safely modify this file and Query Fetcher based on your needs
+         * GQTY: You can safely modify this file and Query Fetcher based on your needs
          */
 
-        import { createReactClient } from '@pablosz/gqless-react';
+        import { createReactClient } from '@gqty/react';
 
-        import { createClient, QueryFetcher } from '@pablosz/gqless';
+        import { createClient, QueryFetcher } from 'gqty';
         import {
           generatedSchema,
           scalarsEnumsHash,
@@ -1222,7 +1222,7 @@ describe('CLI behavior', () => {
         })
       ).toMatchInlineSnapshot(`
         "/**
-         * GQLESS AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+         * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
          */
 
         export type Maybe<T> = T | null;
@@ -1242,7 +1242,7 @@ describe('CLI behavior', () => {
           Float: number;
         }
 
-        export const scalarsEnumsHash: import('@pablosz/gqless').ScalarsEnumsHash = {
+        export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
           String: true,
           Boolean: true,
         };

@@ -2,13 +2,9 @@
 
 import { useRef } from 'react';
 
-import { uniqBy } from '@pablosz/gqless-react';
+import { uniqBy } from '@gqty/react';
 
-import {
-  CursorConnectionArgs,
-  useMutation,
-  usePaginatedQuery,
-} from '../gqless';
+import { CursorConnectionArgs, useMutation, usePaginatedQuery } from '../gqty';
 import { CreatePost } from './CreatePost';
 
 const first = 5;

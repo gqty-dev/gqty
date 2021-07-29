@@ -1,4 +1,4 @@
-import { writeGenerate } from '@pablosz/gqless-cli';
+import { writeGenerate } from '@gqty/cli';
 import { app } from './src';
 
 (async () => {
@@ -6,7 +6,7 @@ import { app } from './src';
 
   const destinationPath = await writeGenerate(
     app.graphql.schema,
-    './src/generated/gqless.ts',
+    './src/generated/gqty.ts',
     {
       scalarTypes: {
         ExampleScalar: 'string',
@@ -14,5 +14,5 @@ import { app } from './src';
     }
   );
 
-  console.log(`gqless schema generated at ${destinationPath}`);
+  console.log(`gqty schema generated at ${destinationPath}`);
 })();

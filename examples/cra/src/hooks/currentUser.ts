@@ -1,4 +1,4 @@
-import { setAuthorizationToken, useQuery } from '../gqless';
+import { setAuthorizationToken, useQuery } from '../gqty';
 import { useEffect } from 'react';
 
 export function useCurrentUser(suspense = true) {

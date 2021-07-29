@@ -1,5 +1,5 @@
-import { createClient, QueryFetcher, debounce } from '@pablosz/gqless';
-import { createSubscriptionsClient } from '@pablosz/gqless-subscriptions';
+import { createClient, QueryFetcher, debounce } from 'gqty';
+import { createSubscriptionsClient } from '@gqty/subscriptions';
 import { extractFiles } from 'extract-files';
 import {
   GeneratedSchema,
@@ -98,9 +98,9 @@ export const client = createClient<
 });
 
 if (typeof window !== 'undefined') {
-  client.restorePersistence(localStorage.getItem('gqless-cache'), 'v1');
+  client.restorePersistence(localStorage.getItem('gqty-cache'), 'v1');
   const backup = debounce(() => {
-    localStorage.setItem('gqless-cache', client.backupPersistence('v1'));
+    localStorage.setItem('gqty-cache', client.backupPersistence('v1'));
   }, 1000);
 
   client.eventHandler.onFetchSubscribe((promise) => promise.then(backup));
@@ -108,13 +108,7 @@ if (typeof window !== 'undefined') {
   client.eventHandler.onCacheChangeSubscribe(backup);
 }
 
-export const {
-  query,
-  mutation,
-  mutate,
-  subscription,
-  resolved,
-  refetch,
-} = client;
+export const { query, mutation, mutate, subscription, resolved, refetch } =
+  client;
 
 export * from './schema.generated';

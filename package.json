@@ -1,9 +1,9 @@
 {
-  "name": "gqless_monorepo",
+  "name": "gqty_monorepo",
   "private": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/PabloSzx/gqless.git"
+    "url": "https://github.com/PabloSzx/gqty.git"
   },
   "license": "MIT",
   "type": "module",
@@ -16,7 +16,7 @@
     "ci:version": "changeset version && pnpm i --no-frozen-lockfile --lockfile-only --ignore-scripts",
     "clean": "rimraf packages/*/dist packages/*/coverage packages/*/.nyc_output packages/*/*.tsbuildinfo",
     "dev": "pnpm clean && node dev.mjs",
-    "dev:mercurius": "pnpm -r exec --filter gqless -- tsc -m commonjs && concurrently \"pnpm -r --filter mercurius-example test:watch\" \"pnpm -r --filter gqless start\"",
+    "dev:mercurius": "pnpm -r exec --filter gqty -- tsc -m commonjs && concurrently \"pnpm -r --filter mercurius-example test:watch\" \"pnpm -r --filter gqty start\"",
     "dev:nodemon": "pnpm prepare -r --no-bail && pnpm test -r --no-bail --no-sort --stream",
     "dev:react": "node dev-react.mjs",
     "dev:start": "pnpm start -r --no-bail --no-sort",

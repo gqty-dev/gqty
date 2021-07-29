@@ -69,11 +69,10 @@ importers:
       '@emotion/css': ^11.1.3
       '@emotion/react': ^11.4.0
       '@emotion/styled': ^11.3.0
-      '@pablosz/gqless': workspace:^2.0.15
-      '@pablosz/gqless-cli': workspace:^2.0.18
-      '@pablosz/gqless-logger': workspace:^2.0.12
-      '@pablosz/gqless-react': workspace:^2.0.16
-      '@pablosz/gqless-subscriptions': workspace:^1.0.12
+      '@gqty/cli': workspace:^1.0.0
+      '@gqty/logger': workspace:^1.0.0
+      '@gqty/react': workspace:^1.0.0
+      '@gqty/subscriptions': workspace:^1.0.0
       '@testing-library/jest-dom': ^5.14.1
       '@testing-library/react': ^11.2.7
       '@testing-library/user-event': ^13.1.9
@@ -83,6 +82,7 @@ importers:
       '@types/react-dom': ^17.0.8
       '@types/react-router-dom': ^5.1.7
       framer-motion: ^4.1.17
+      gqty: workspace:^1.0.0
       graphql: ^15.5.1
       prop-types: ^15.7.2
       react: ^17.0.2
@@ -97,11 +97,10 @@ importers:
       '@emotion/css': 11.1.3_@babel+core@7.14.6
       '@emotion/react': 11.4.0_81862478866c67faf6c62f3dd0cd029f
       '@emotion/styled': 11.3.0_9040e47581cdc4ea30d85a9c9daeae52
-      '@pablosz/gqless': link:../../packages/gqless
-      '@pablosz/gqless-cli': link:../../packages/cli
-      '@pablosz/gqless-logger': link:../../packages/logger
-      '@pablosz/gqless-react': link:../../packages/react
-      '@pablosz/gqless-subscriptions': link:../../packages/subscriptions
+      '@gqty/cli': link:../../packages/cli
+      '@gqty/logger': link:../../packages/logger
+      '@gqty/react': link:../../packages/react
+      '@gqty/subscriptions': link:../../packages/subscriptions
       '@testing-library/jest-dom': 5.14.1
       '@testing-library/react': 11.2.7_react-dom@17.0.2+react@17.0.2
       '@testing-library/user-event': 13.1.9
@@ -111,6 +110,7 @@ importers:
       '@types/react-dom': 17.0.8
       '@types/react-router-dom': 5.1.7
       framer-motion: 4.1.17_react-dom@17.0.2+react@17.0.2
+      gqty: link:../../packages/gqty
       graphql: 15.5.1
       prop-types: 15.7.2
       react: 17.0.2
@@ -123,16 +123,16 @@ importers:
 
   examples/github:
     specifiers:
-      '@pablosz/gqless': workspace:^2.0.15
-      '@pablosz/gqless-cli': workspace:^2.0.18
+      '@gqty/cli': workspace:^1.0.0
       dotenv: ^8.6.0
+      gqty: workspace:^1.0.0
       isomorphic-unfetch: ^3.1.0
       jest: ^26.6.3
       test-utils: workspace:^0.1.0
     dependencies:
-      '@pablosz/gqless': link:../../packages/gqless
-      '@pablosz/gqless-cli': link:../../packages/cli
+      '@gqty/cli': link:../../packages/cli
       dotenv: 8.6.0
+      gqty: link:../../packages/gqty
       test-utils: link:../../internal/test-utils
     devDependencies:
       isomorphic-unfetch: 3.1.0
@@ -140,14 +140,14 @@ importers:
 
   examples/mercurius:
     specifiers:
+      '@gqty/cli': workspace:^1.0.0
       '@graphql-typed-document-node/core': ^3.1.0
-      '@pablosz/gqless': workspace:^2.0.15
-      '@pablosz/gqless-cli': workspace:^2.0.18
       '@size-limit/preset-small-lib': ^4.12.0
       '@types/lodash': ^4.14.170
       '@types/randomstring': ^1.1.6
       bob-esbuild-cli: ^0.1.27
       fastify: ^3.18.0
+      gqty: workspace:^1.0.0
       graphql: ^15.5.1
       jest: ^26.6.3
       lodash: ^4.17.21
@@ -161,10 +161,10 @@ importers:
       tslib: ^2.3.0
       typescript: ^4.2.4
     dependencies:
+      '@gqty/cli': link:../../packages/cli
       '@graphql-typed-document-node/core': 3.1.0_graphql@15.5.1
-      '@pablosz/gqless': link:../../packages/gqless
-      '@pablosz/gqless-cli': link:../../packages/cli
       fastify: 3.18.0
+      gqty: link:../../packages/gqty
       graphql: 15.5.1
       lodash: 4.17.21
       mercurius: 7.9.1_72ef9f06cb99540da679cbf1bf7a3256
@@ -188,11 +188,10 @@ importers:
       '@chakra-ui/react': ^1.6.4
       '@emotion/react': ^11.4.0
       '@emotion/styled': ^11.3.0
-      '@pablosz/gqless': workspace:^2.0.15
-      '@pablosz/gqless-cli': workspace:^2.0.18
-      '@pablosz/gqless-logger': workspace:^2.0.12
-      '@pablosz/gqless-react': workspace:^2.0.16
-      '@pablosz/gqless-subscriptions': workspace:^1.0.12
+      '@gqty/cli': workspace:^1.0.0
+      '@gqty/logger': workspace:^1.0.0
+      '@gqty/react': workspace:^1.0.0
+      '@gqty/subscriptions': workspace:^1.0.0
       '@react-native-async-storage/async-storage': ^1.15.5
       '@types/extract-files': ^8.1.0
       '@types/faker': ^5.5.6
@@ -209,6 +208,7 @@ importers:
       fastify: ^3.18.0
       fastify-nextjs: ^5.4.1
       framer-motion: ^4.1.17
+      gqty: workspace:^1.0.0
       graphql: ^15.5.1
       graphql-upload: ^11.0.0
       jest: ^26.6.3
@@ -237,11 +237,10 @@ importers:
       '@chakra-ui/react': 1.6.4_1d20feb8407b5d497be6490ee7e493c6
       '@emotion/react': 11.4.0_189cc19b8edfe5959338b863f6e5c247
       '@emotion/styled': 11.3.0_3d30eb7fe446b0e582df4c9643515bd8
-      '@pablosz/gqless': link:../../packages/gqless
-      '@pablosz/gqless-cli': link:../../packages/cli
-      '@pablosz/gqless-logger': link:../../packages/logger
-      '@pablosz/gqless-react': link:../../packages/react
-      '@pablosz/gqless-subscriptions': link:../../packages/subscriptions
+      '@gqty/cli': link:../../packages/cli
+      '@gqty/logger': link:../../packages/logger
+      '@gqty/react': link:../../packages/react
+      '@gqty/subscriptions': link:../../packages/subscriptions
       '@react-native-async-storage/async-storage': 1.15.5
       '@types/extract-files': 8.1.0
       altair-fastify-plugin: 4.0.6_fastify@3.18.0
@@ -251,6 +250,7 @@ importers:
       fastify: 3.18.0
       fastify-nextjs: 5.4.1_next@10.2.3
       framer-motion: 4.1.17_react-dom@17.0.2+react@17.0.2
+      gqty: link:../../packages/gqty
       graphql: 15.5.1
       graphql-upload: 11.0.0_graphql@15.5.1
       localforage: 1.9.0
@@ -423,7 +423,6 @@ importers:
       '@graphql-tools/delegate': ^7.1.5
       '@graphql-tools/utils': ^7.10.0
       '@graphql-tools/wrap': ^7.0.8
-      '@pablosz/gqless': workspace:^2.0.15
       '@size-limit/preset-small-lib': ^4.12.0
       '@types/mkdirp': ^1.0.1
       bob-esbuild-cli: ^0.1.27
@@ -431,6 +430,7 @@ importers:
       commander: ^7.2.0
       cosmiconfig: ^7.0.0
       cross-fetch: ^3.1.4
+      gqty: workspace:^1.0.0
       graphql: ^15.5.1
       mkdirp: ^1.0.4
       open-cli: ^6.0.1
@@ -449,10 +449,10 @@ importers:
       '@graphql-tools/delegate': 7.1.5_graphql@15.5.1
       '@graphql-tools/utils': 7.10.0_graphql@15.5.1
       '@graphql-tools/wrap': 7.0.8_graphql@15.5.1
-      '@pablosz/gqless': link:../gqless
       commander: 7.2.0
       cosmiconfig: 7.0.0
       cross-fetch: 3.1.4
+      gqty: link:../gqty
       mkdirp: 1.0.4
       prettier: 2.3.1
     devDependencies:
@@ -471,7 +471,7 @@ importers:
       typescript: 4.3.4
       wait-on: 5.3.0
 
-  packages/gqless:
+  packages/gqty:
     specifiers:
       '@rollup/plugin-typescript': ^8.2.1
       '@size-limit/preset-small-lib': ^4.12.0
@@ -554,10 +554,10 @@ importers:
 
   packages/logger:
     specifiers:
-      '@pablosz/gqless': workspace:^2.0.15
       '@size-limit/preset-small-lib': ^4.12.0
       '@types/prettier': ^2.3.0
       bob-esbuild-cli: ^0.1.27
+      gqty: workspace:^1.0.0
       jest: ^26.6.3
       prettier: ^2.2.1
       rimraf: ^3.0.2
@@ -570,10 +570,10 @@ importers:
       prettier: 2.3.1
       serialize-error: 8.1.0
     devDependencies:
-      '@pablosz/gqless': link:../gqless
       '@size-limit/preset-small-lib': 4.12.0_000e5b4cce043622d8d19f365c863ee0
       '@types/prettier': 2.3.0
       bob-esbuild-cli: 0.1.27_83f53b0a0c5616d3fa00ed4e30b9ce1b
+      gqty: link:../gqty
       jest: 26.6.3_f08c36f5b29888a2cee6694088d3f0e6
       rimraf: 3.0.2
       size-limit: 4.12.0
@@ -583,7 +583,6 @@ importers:
 
   packages/react:
     specifiers:
-      '@pablosz/gqless': workspace:^2.0.15
       '@size-limit/preset-small-lib': ^4.12.0
       '@testing-library/jest-dom': ^5.14.1
       '@testing-library/react': ^11.2.7
@@ -594,6 +593,7 @@ importers:
       '@types/react-dom': ^17.0.8
       bob-esbuild-cli: ^0.1.27
       get-port: ^5.1.1
+      gqty: workspace:^1.0.0
       graphql: ^15.5.1
       jest: ^26.6.3
       react: ^17.0.2
@@ -609,7 +609,6 @@ importers:
     dependencies:
       react-ssr-prepass: 1.4.0_react@17.0.2
     devDependencies:
-      '@pablosz/gqless': link:../gqless
       '@size-limit/preset-small-lib': 4.12.0_000e5b4cce043622d8d19f365c863ee0
       '@testing-library/jest-dom': 5.14.1
       '@testing-library/react': 11.2.7_react-dom@17.0.2+react@17.0.2
@@ -620,6 +619,7 @@ importers:
       '@types/react-dom': 17.0.8
       bob-esbuild-cli: 0.1.27_83f53b0a0c5616d3fa00ed4e30b9ce1b
       get-port: 5.1.1
+      gqty: link:../gqty
       graphql: 15.5.1
       jest: 26.6.3_f08c36f5b29888a2cee6694088d3f0e6
       react: 17.0.2
@@ -634,9 +634,9 @@ importers:
 
   packages/subscriptions:
     specifiers:
-      '@pablosz/gqless': workspace:^2.0.15
       '@types/ws': ^7.4.5
       bob-esbuild-cli: ^0.1.27
+      gqty: workspace:^1.0.0
       graphql: ^15.5.1
       isomorphic-ws: ^4.0.1
       test-utils: workspace:^0.1.0
@@ -647,9 +647,9 @@ importers:
       isomorphic-ws: 4.0.1_ws@7.5.0
       ws: 7.5.0_72ef9f06cb99540da679cbf1bf7a3256
     devDependencies:
-      '@pablosz/gqless': link:../gqless
       '@types/ws': 7.4.5
       bob-esbuild-cli: 0.1.27_83f53b0a0c5616d3fa00ed4e30b9ce1b
+      gqty: link:../gqty
       graphql: 15.5.1
       test-utils: link:../../internal/test-utils
       tslib: 2.3.0
@@ -7751,7 +7751,7 @@ packages:
   /axios/0.21.1:
     resolution: {integrity: sha512-dKQiRHxGD9PPRIUNIWvZhPTPpl1rf/OxTYKsqKUDjBwYylTvV7SjSHJb9ratfyzM6wCdLCOYLzs73qpg5c4iGA==}
     dependencies:
-      follow-redirects: 1.14.1_debug@4.3.1
+      follow-redirects: 1.14.1
     transitivePeerDependencies:
       - debug
 
@@ -12067,6 +12067,15 @@ packages:
       - supports-color
     dev: true
 
+  /follow-redirects/1.14.1:
+    resolution: {integrity: sha512-HWqDgT7ZEkqRzBvc2s64vSZ/hfOceEol3ac/7tKwzuvEyWx3/4UegXh5oBOIotkGsObyk3xznnSRVADBgWSQVg==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+
   /follow-redirects/1.14.1_debug@3.2.7:
     resolution: {integrity: sha512-HWqDgT7ZEkqRzBvc2s64vSZ/hfOceEol3ac/7tKwzuvEyWx3/4UegXh5oBOIotkGsObyk3xznnSRVADBgWSQVg==}
     engines: {node: '>=4.0'}
@@ -12078,17 +12087,6 @@ packages:
     dependencies:
       debug: 3.2.7
     dev: true
-
-  /follow-redirects/1.14.1_debug@4.3.1:
-    resolution: {integrity: sha512-HWqDgT7ZEkqRzBvc2s64vSZ/hfOceEol3ac/7tKwzuvEyWx3/4UegXh5oBOIotkGsObyk3xznnSRVADBgWSQVg==}
-    engines: {node: '>=4.0'}
-    peerDependencies:
-      debug: '*'
-    peerDependenciesMeta:
-      debug:
-        optional: true
-    dependencies:
-      debug: 4.3.1_supports-color@6.1.0
 
   /for-in/1.0.2:
     resolution: {integrity: sha1-gQaNKVqBQuwKxybG4iAMMPttXoA=}
@@ -13195,7 +13193,7 @@ packages:
     engines: {node: '>=8.0.0'}
     dependencies:
       eventemitter3: 4.0.7
-      follow-redirects: 1.14.1_debug@4.3.1
+      follow-redirects: 1.14.1
       requires-port: 1.0.0
     transitivePeerDependencies:
       - debug

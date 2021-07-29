@@ -1,7 +1,7 @@
-import { createLogger } from '@pablosz/gqless-logger';
+import { createLogger } from '@gqty/logger';
 
-import { createReactClient } from '@pablosz/gqless-react';
-import { client, GeneratedSchema } from '../graphql/gqless';
+import { createReactClient } from '@gqty/react';
+import { client, GeneratedSchema } from '../graphql/gqty';
 
 export const {
   useTransactionQuery,

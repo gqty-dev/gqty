@@ -6,7 +6,7 @@ import { __innerState } from './innerState';
 import type { GenerateOptions } from './generate';
 import type { IntrospectionOptions } from './introspection';
 
-export type GQlessConfig = Omit<GenerateOptions, 'endpoint'> & {
+export type GQtyConfig = Omit<GenerateOptions, 'endpoint'> & {
   /**
    * Introspection options
    */
@@ -29,7 +29,7 @@ function isStringRecord(v: unknown): v is Record<string, string> {
 
 export const DUMMY_ENDPOINT = 'SPECIFY_ENDPOINT_OR_SCHEMA_FILE_PATH_HERE';
 
-export const defaultConfig: Required<GQlessConfig> = {
+export const defaultConfig: Required<GQtyConfig> = {
   react: true,
   scalarTypes: {
     DateTime: 'string',
@@ -38,7 +38,7 @@ export const defaultConfig: Required<GQlessConfig> = {
     endpoint: DUMMY_ENDPOINT,
     headers: {} as Record<string, string>,
   },
-  destination: './src/gqless/index.ts',
+  destination: './src/gqty/index.ts',
   subscriptions: false,
   javascriptOutput: false,
   enumsAsStrings: false,
@@ -60,9 +60,9 @@ function warnConfig(
   );
 }
 
-export function getValidConfig(v: unknown): GQlessConfig {
+export function getValidConfig(v: unknown): GQtyConfig {
   if (isPlainObject(v)) {
-    const newConfig: GQlessConfig = {};
+    const newConfig: GQtyConfig = {};
 
     if (typeof v.javascriptOutput === 'boolean') {
       newConfig.javascriptOutput = v.javascriptOutput;
@@ -169,7 +169,7 @@ export function getValidConfig(v: unknown): GQlessConfig {
   }
 }
 
-const defaultFilePath = resolve(process.cwd(), 'gqless.config.cjs');
+const defaultFilePath = resolve(process.cwd(), 'gqty.config.cjs');
 
 type DeepReadonly<T> = T extends (infer R)[]
   ? DeepReadonlyArray<R>
@@ -185,29 +185,25 @@ type DeepReadonlyObject<T> = {
   readonly [P in keyof T]: DeepReadonly<T[P]>;
 };
 
-const defaultGQlessConfig = {
+const defaultGQtyConfig = {
   filepath: defaultFilePath,
   config: defaultConfig,
 };
 
-export const gqlessConfigPromise: Promise<{
+export const gqtyConfigPromise: Promise<{
   filepath: string;
-  config: DeepReadonly<GQlessConfig>;
+  config: DeepReadonly<GQtyConfig>;
 }> = new Promise(async (resolve) => {
   /* istanbul ignore else */
   if (process.env.NODE_ENV === 'test') {
     setTimeout(() => {
-      resolve(defaultGQlessConfig);
+      resolve(defaultGQtyConfig);
     }, 10);
   } else {
     import('cosmiconfig')
       .then(({ cosmiconfig }) => {
-        cosmiconfig('gqless', {
-          searchPlaces: [
-            'gqless.config.cjs',
-            'gqless.config.js',
-            'package.json',
-          ],
+        cosmiconfig('gqty', {
+          searchPlaces: ['gqty.config.cjs', 'gqty.config.js', 'package.json'],
         })
           .search()
           .then(async (config) => {
@@ -225,7 +221,7 @@ export const gqlessConfigPromise: Promise<{
                   parser: 'typescript',
                 });
 
-                const config: GQlessConfig = { ...defaultConfig };
+                const config: GQtyConfig = { ...defaultConfig };
                 delete config.preImport;
                 delete config.enumsAsStrings;
 
@@ -233,7 +229,7 @@ export const gqlessConfigPromise: Promise<{
                   defaultFilePath,
                   await format(`
                       /**
-                       * @type {import("@pablosz/gqless-cli").GQlessConfig}
+                       * @type {import("@gqty/cli").GQtyConfig}
                        */
                       const config = ${JSON.stringify(config)};
                       
@@ -251,8 +247,8 @@ export const gqlessConfigPromise: Promise<{
               filepath: config.filepath,
             });
           })
-          .catch(() => defaultGQlessConfig);
+          .catch(() => defaultGQtyConfig);
       })
-      .catch(() => defaultGQlessConfig);
+      .catch(() => defaultGQtyConfig);
   }
 });

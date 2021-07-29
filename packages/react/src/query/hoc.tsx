@@ -3,7 +3,7 @@ import React, { ReactElement, Suspense, SuspenseProps } from 'react';
 import { OnErrorHandler, useInterceptSelections } from '../common';
 import { ReactClientOptionsWithDefaults } from '../utils';
 
-import type { GQlessClient } from '@pablosz/gqless';
+import type { GQtyClient } from 'gqty';
 
 export interface GraphQLHOCOptions {
   suspense?:
@@ -23,7 +23,7 @@ export interface GraphQLHOC {
 }
 
 export function createGraphqlHOC(
-  { scheduler, eventHandler, interceptorManager }: GQlessClient<any>,
+  { scheduler, eventHandler, interceptorManager }: GQtyClient<any>,
   {
     defaults: {
       suspense: defaultSuspense,

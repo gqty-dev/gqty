@@ -1,10 +1,10 @@
 {
-  "name": "@pablosz/gqless-react",
-  "version": "2.0.16",
-  "homepage": "https://gqless.com",
+  "name": "@gqty/react",
+  "version": "1.0.0",
+  "homepage": "https://gqty.dev",
   "repository": {
     "type": "git",
-    "url": "https://github.com/PabloSzx/gqless.git"
+    "url": "https://github.com/PabloSzx/gqty.git"
   },
   "license": "MIT",
   "author": "PabloSzx <pablosaez1995@gmail.com>",
@@ -40,7 +40,7 @@
     "react-ssr-prepass": "^1.4.0"
   },
   "devDependencies": {
-    "@pablosz/gqless": "workspace:^2.0.15",
+    "gqty": "workspace:^1.0.0",
     "@size-limit/preset-small-lib": "^4.12.0",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
@@ -64,7 +64,7 @@
     "typescript": "^4.3.4"
   },
   "peerDependencies": {
-    "@pablosz/gqless": "workspace:^2.0.15",
+    "gqty": "workspace:^1.0.0",
     "graphql": "^15.5.0",
     "react": ">=16.8"
   },
@@ -84,11 +84,11 @@
   },
   "size-limit": [
     {
-      "path": "dist/gqless-react.cjs.production.min.js",
+      "path": "dist/gqty-react.cjs.production.min.js",
       "limit": "10 KB"
     },
     {
-      "path": "dist/gqless-react.esm.js",
+      "path": "dist/gqty-react.esm.js",
       "limit": "10 KB"
     }
   ]

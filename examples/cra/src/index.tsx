@@ -10,7 +10,7 @@ import { Hello } from './components/Hello';
 import { Login } from './components/Login';
 import { MyPosts } from './components/MyPosts';
 import { Register } from './components/Register';
-import { setAuthorizationToken } from './gqless';
+import { setAuthorizationToken } from './gqty';
 import { useCurrentUser } from './hooks/currentUser';
 
 const hashHref = '#';

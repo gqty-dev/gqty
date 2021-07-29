@@ -1,10 +1,10 @@
 import {
   doRetry,
-  GQlessClient,
-  GQlessError,
+  GQtyClient,
+  GQtyError,
   ResolveOptions,
   RetryOptions,
-} from '@pablosz/gqless';
+} from 'gqty';
 import {
   Dispatch,
   useCallback,
@@ -28,7 +28,7 @@ import { ReactClientOptionsWithDefaults } from '../utils';
 
 export interface UseTransactionQueryState<TData> {
   data: TData | undefined;
-  error?: GQlessError;
+  error?: GQtyError;
   isLoading: boolean;
   isCalled: boolean;
 }
@@ -36,7 +36,7 @@ export interface UseTransactionQueryState<TData> {
 type UseTransactionQueryReducerAction<TData> =
   | { type: 'cache-found'; data: TData }
   | { type: 'success'; data: TData }
-  | { type: 'failure'; error: GQlessError }
+  | { type: 'failure'; error: GQtyError }
   | { type: 'loading' }
   | {
       type: 'done';
@@ -137,7 +137,7 @@ export function createUseTransactionQuery<
     subscription: object;
   }
 >(
-  client: GQlessClient<GeneratedSchema>,
+  client: GQtyClient<GeneratedSchema>,
   {
     defaults: {
       transactionFetchPolicy: defaultFetchPolicy,
@@ -149,295 +149,298 @@ export function createUseTransactionQuery<
   const { resolved, eventHandler, refetch } = client;
   const clientQuery: GeneratedSchema['query'] = client.query;
 
-  const useTransactionQuery: UseTransactionQuery<GeneratedSchema> = function useTransactionQuery<
-    TData,
-    TVariables
-  >(
-    fn: (query: typeof clientQuery, variables: TVariables) => TData,
-    ...[queryOptions]: undefined extends TVariables
-      ? [UseTransactionQueryOptions<TData, TVariables>?]
-      : [UseTransactionQueryOptions<TData, TVariables>]
-  ) {
-    const rejectedPromise = useRef<unknown>();
+  const useTransactionQuery: UseTransactionQuery<GeneratedSchema> =
+    function useTransactionQuery<TData, TVariables>(
+      fn: (query: typeof clientQuery, variables: TVariables) => TData,
+      ...[queryOptions]: undefined extends TVariables
+        ? [UseTransactionQueryOptions<TData, TVariables>?]
+        : [UseTransactionQueryOptions<TData, TVariables>]
+    ) {
+      const rejectedPromise = useRef<unknown>();
 
-    if (rejectedPromise.current) throw rejectedPromise.current;
+      if (rejectedPromise.current) throw rejectedPromise.current;
 
-    const opts = Object.assign({}, queryOptions);
+      const opts = Object.assign({}, queryOptions);
 
-    opts.fetchPolicy ??= defaultFetchPolicy;
-    opts.retry ??= defaultRetry;
-    opts.suspense ??= defaultSuspense;
+      opts.fetchPolicy ??= defaultFetchPolicy;
+      opts.retry ??= defaultRetry;
+      opts.suspense ??= defaultSuspense;
 
-    opts.notifyOnNetworkStatusChange ??= true;
+      opts.notifyOnNetworkStatusChange ??= true;
 
-    const optsRef = useRef(opts);
-    optsRef.current = opts;
+      const optsRef = useRef(opts);
+      optsRef.current = opts;
 
-    const setSuspensePromise = useSuspensePromise(optsRef);
+      const setSuspensePromise = useSuspensePromise(optsRef);
 
-    const { skip, pollInterval = 0, fetchPolicy, variables } = opts;
+      const { skip, pollInterval = 0, fetchPolicy, variables } = opts;
 
-    const hookSelections = useSelectionsState();
+      const hookSelections = useSelectionsState();
 
-    const resolveOptions = useMemo<ResolveOptions<TData>>(() => {
-      return fetchPolicyDefaultResolveOptions(fetchPolicy);
-    }, [fetchPolicy]);
+      const resolveOptions = useMemo<ResolveOptions<TData>>(() => {
+        return fetchPolicyDefaultResolveOptions(fetchPolicy);
+      }, [fetchPolicy]);
 
-    const [state, dispatchReducer] = useReducer(
-      UseTransactionQueryReducer,
-      opts,
-      InitUseTransactionQueryReducer
-    ) as [
-      UseTransactionQueryState<TData>,
-      Dispatch<UseTransactionQueryReducerAction<TData>>
-    ];
-    const dispatch = useDeferDispatch(dispatchReducer);
+      const [state, dispatchReducer] = useReducer(
+        UseTransactionQueryReducer,
+        opts,
+        InitUseTransactionQueryReducer
+      ) as [
+        UseTransactionQueryState<TData>,
+        Dispatch<UseTransactionQueryReducerAction<TData>>
+      ];
+      const dispatch = useDeferDispatch(dispatchReducer);
 
-    const stateRef = useRef(state);
-    stateRef.current = state;
+      const stateRef = useRef(state);
+      stateRef.current = state;
 
-    const fnRef = useRef(fn);
-    fnRef.current = fn;
+      const fnRef = useRef(fn);
+      fnRef.current = fn;
 
-    const isFetching = useRef(false);
+      const isFetching = useRef(false);
 
-    const pendingPromise = useRef<ReturnType<typeof queryCallback>>();
+      const pendingPromise = useRef<ReturnType<typeof queryCallback>>();
 
-    const queryCallback = useCallback(
-      (
-        resolveOptsArg: Omit<
-          ResolveOptions<TData>,
-          'onSelection' | 'onCacheData'
-        > = {},
-        fetchPolicyArg: FetchPolicy | undefined = fetchPolicy,
-        cacheChangeCall?: boolean
-      ) => {
-        if (skip) {
-          return Promise.resolve(
-            dispatch({
-              type: 'done',
-            })
-          );
-        }
+      const queryCallback = useCallback(
+        (
+          resolveOptsArg: Omit<
+            ResolveOptions<TData>,
+            'onSelection' | 'onCacheData'
+          > = {},
+          fetchPolicyArg: FetchPolicy | undefined = fetchPolicy,
+          cacheChangeCall?: boolean
+        ) => {
+          if (skip) {
+            return Promise.resolve(
+              dispatch({
+                type: 'done',
+              })
+            );
+          }
 
-        stateRef.current.isCalled = true;
+          stateRef.current.isCalled = true;
 
-        const fn = () => fnRef.current(clientQuery, optsRef.current.variables!);
+          const fn = () =>
+            fnRef.current(clientQuery, optsRef.current.variables!);
 
-        stateRef.current.isLoading = false;
+          stateRef.current.isLoading = false;
 
-        let instaResolved = false;
-        const promise = resolved<TData>(fn, {
-          ...resolveOptions,
-          ...resolveOptsArg,
-          onSelection(selection) {
-            hookSelections.add(selection);
-          },
-          onEmptyResolve() {
-            instaResolved = true;
-          },
-          onCacheData(data): boolean {
-            switch (fetchPolicyArg) {
-              case 'cache-and-network': {
-                stateRef.current.isLoading = true;
+          let instaResolved = false;
+          const promise = resolved<TData>(fn, {
+            ...resolveOptions,
+            ...resolveOptsArg,
+            onSelection(selection) {
+              hookSelections.add(selection);
+            },
+            onEmptyResolve() {
+              instaResolved = true;
+            },
+            onCacheData(data): boolean {
+              switch (fetchPolicyArg) {
+                case 'cache-and-network': {
+                  stateRef.current.isLoading = true;
+                  dispatch({
+                    type: 'cache-found',
+                    data,
+                  });
+                  stateRef.current.data = data;
+                  return true;
+                }
+                case 'cache-first': {
+                  instaResolved = true;
+
+                  if (cacheChangeCall) {
+                    dispatch({
+                      type: 'success',
+                      data,
+                    });
+                  }
+
+                  stateRef.current.data = data;
+                  return false;
+                }
+                default: {
+                  return true;
+                }
+              }
+            },
+            onNoCacheFound() {
+              isFetching.current = true;
+              dispatch({
+                type: 'loading',
+              });
+              stateRef.current.isLoading = true;
+            },
+          }).then(
+            (data) => {
+              pendingPromise.current = undefined;
+              optsRef.current.onCompleted?.(data);
+              isFetching.current = false;
+              if (
+                stateRef.current.isLoading ||
+                stateRef.current.data !== data
+              ) {
                 dispatch({
-                  type: 'cache-found',
+                  type: 'success',
                   data,
                 });
                 stateRef.current.data = data;
-                return true;
               }
-              case 'cache-first': {
-                instaResolved = true;
+              stateRef.current.isLoading = false;
+            },
+            (err: unknown) => {
+              pendingPromise.current = undefined;
+              isFetching.current = false;
+              const error = GQtyError.create(err, useTransactionQuery);
+              optsRef.current.onError?.(error);
+              dispatch({
+                type: 'failure',
+                error,
+              });
+              stateRef.current.error = error;
+              stateRef.current.isLoading = false;
 
-                if (cacheChangeCall) {
-                  dispatch({
-                    type: 'success',
-                    data,
-                  });
-                }
+              return error;
+            }
+          );
 
-                stateRef.current.data = data;
-                return false;
-              }
-              default: {
-                return true;
+          if (instaResolved) return;
+
+          pendingPromise.current = promise;
+          return promise;
+        },
+        [fetchPolicy, skip, stateRef, resolveOptions, fnRef, dispatch, optsRef]
+      );
+
+      const serializedVariables = useMemo(() => {
+        return variables ? JSON.stringify(variables) : '';
+      }, [variables]);
+
+      const queryCallbackWithPromise = useCallback(
+        (inlineCall?: boolean) => {
+          if (skip) return;
+
+          const promise = queryCallback()?.then((result) => {
+            if (result instanceof GQtyError) {
+              if (optsRef.current.retry) {
+                doRetry(optsRef.current.retry, {
+                  async onRetry() {
+                    const retryPromise = queryCallback({
+                      refetch: true,
+                    })?.then((result) => {
+                      if (result instanceof GQtyError) throw result;
+                    });
+
+                    if (retryPromise) {
+                      setSuspensePromise(retryPromise);
+
+                      await retryPromise;
+                    }
+                  },
+                });
+              } else if (optsRef.current.suspense) {
+                throw result;
               }
             }
-          },
-          onNoCacheFound() {
-            isFetching.current = true;
+          });
+
+          if (promise) {
+            if (inlineCall) {
+              Promise.resolve().then(() => {
+                setSuspensePromise(promise);
+              });
+            } else {
+              setSuspensePromise(promise);
+            }
+          }
+        },
+        [queryCallback, skip, setSuspensePromise, optsRef]
+      );
+
+      if (!state.isCalled && !skip) {
+        queryCallbackWithPromise(true);
+      }
+
+      useUpdateEffect(() => {
+        queryCallbackWithPromise();
+      }, [queryCallbackWithPromise, serializedVariables]);
+
+      useEffect(() => {
+        if (skip || pollInterval <= 0) return;
+
+        let isMounted = true;
+
+        const interval = setInterval(() => {
+          if (isFetching.current) return;
+
+          isFetching.current = true;
+
+          if (isMounted && optsRef.current.notifyOnNetworkStatusChange)
             dispatch({
               type: 'loading',
             });
-            stateRef.current.isLoading = true;
-          },
-        }).then(
-          (data) => {
-            pendingPromise.current = undefined;
-            optsRef.current.onCompleted?.(data);
-            isFetching.current = false;
-            if (stateRef.current.isLoading || stateRef.current.data !== data) {
-              dispatch({
-                type: 'success',
-                data,
-              });
-              stateRef.current.data = data;
+
+          const fn = () =>
+            fnRef.current(clientQuery, optsRef.current.variables!);
+
+          (resolveOptions.noCache
+            ? resolved<TData>(fn, resolveOptions)
+            : refetch<TData>(fn)
+          ).then(
+            (data) => {
+              pendingPromise.current = undefined;
+              isFetching.current = false;
+              if (isMounted)
+                dispatch({
+                  type: 'success',
+                  data,
+                });
+            },
+            (err) => {
+              pendingPromise.current = undefined;
+              isFetching.current = false;
+              if (isMounted)
+                dispatch({
+                  type: 'failure',
+                  error: GQtyError.create(err, useTransactionQuery),
+                });
             }
-            stateRef.current.isLoading = false;
-          },
-          (err: unknown) => {
-            pendingPromise.current = undefined;
-            isFetching.current = false;
-            const error = GQlessError.create(err, useTransactionQuery);
-            optsRef.current.onError?.(error);
-            dispatch({
-              type: 'failure',
-              error,
-            });
-            stateRef.current.error = error;
-            stateRef.current.isLoading = false;
+          );
+        }, pollInterval);
 
-            return error;
-          }
-        );
+        return () => {
+          isMounted = false;
+          clearInterval(interval);
+        };
+      }, [
+        pollInterval,
+        skip,
+        resolveOptions,
+        optsRef,
+        fnRef,
+        dispatch,
+        isFetching,
+      ]);
 
-        if (instaResolved) return;
+      useSubscribeCacheChanges({
+        hookSelections,
+        eventHandler,
+        shouldSubscribe: fetchPolicy !== 'no-cache',
+        onChange() {
+          if (pendingPromise.current) return;
 
-        pendingPromise.current = promise;
-        return promise;
-      },
-      [fetchPolicy, skip, stateRef, resolveOptions, fnRef, dispatch, optsRef]
-    );
+          queryCallback(
+            {
+              refetch: false,
+            },
+            'cache-first',
+            true
+          );
+        },
+      });
 
-    const serializedVariables = useMemo(() => {
-      return variables ? JSON.stringify(variables) : '';
-    }, [variables]);
-
-    const queryCallbackWithPromise = useCallback(
-      (inlineCall?: boolean) => {
-        if (skip) return;
-
-        const promise = queryCallback()?.then((result) => {
-          if (result instanceof GQlessError) {
-            if (optsRef.current.retry) {
-              doRetry(optsRef.current.retry, {
-                async onRetry() {
-                  const retryPromise = queryCallback({
-                    refetch: true,
-                  })?.then((result) => {
-                    if (result instanceof GQlessError) throw result;
-                  });
-
-                  if (retryPromise) {
-                    setSuspensePromise(retryPromise);
-
-                    await retryPromise;
-                  }
-                },
-              });
-            } else if (optsRef.current.suspense) {
-              throw result;
-            }
-          }
-        });
-
-        if (promise) {
-          if (inlineCall) {
-            Promise.resolve().then(() => {
-              setSuspensePromise(promise);
-            });
-          } else {
-            setSuspensePromise(promise);
-          }
-        }
-      },
-      [queryCallback, skip, setSuspensePromise, optsRef]
-    );
-
-    if (!state.isCalled && !skip) {
-      queryCallbackWithPromise(true);
-    }
-
-    useUpdateEffect(() => {
-      queryCallbackWithPromise();
-    }, [queryCallbackWithPromise, serializedVariables]);
-
-    useEffect(() => {
-      if (skip || pollInterval <= 0) return;
-
-      let isMounted = true;
-
-      const interval = setInterval(() => {
-        if (isFetching.current) return;
-
-        isFetching.current = true;
-
-        if (isMounted && optsRef.current.notifyOnNetworkStatusChange)
-          dispatch({
-            type: 'loading',
-          });
-
-        const fn = () => fnRef.current(clientQuery, optsRef.current.variables!);
-
-        (resolveOptions.noCache
-          ? resolved<TData>(fn, resolveOptions)
-          : refetch<TData>(fn)
-        ).then(
-          (data) => {
-            pendingPromise.current = undefined;
-            isFetching.current = false;
-            if (isMounted)
-              dispatch({
-                type: 'success',
-                data,
-              });
-          },
-          (err) => {
-            pendingPromise.current = undefined;
-            isFetching.current = false;
-            if (isMounted)
-              dispatch({
-                type: 'failure',
-                error: GQlessError.create(err, useTransactionQuery),
-              });
-          }
-        );
-      }, pollInterval);
-
-      return () => {
-        isMounted = false;
-        clearInterval(interval);
-      };
-    }, [
-      pollInterval,
-      skip,
-      resolveOptions,
-      optsRef,
-      fnRef,
-      dispatch,
-      isFetching,
-    ]);
-
-    useSubscribeCacheChanges({
-      hookSelections,
-      eventHandler,
-      shouldSubscribe: fetchPolicy !== 'no-cache',
-      onChange() {
-        if (pendingPromise.current) return;
-
-        queryCallback(
-          {
-            refetch: false,
-          },
-          'cache-first',
-          true
-        );
-      },
-    });
-
-    return state;
-  };
+      return state;
+    };
 
   return useTransactionQuery;
 }

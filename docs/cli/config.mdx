@@ -6,19 +6,19 @@ sidebar_label: Configuration
 
 The `CLI` looks for 3 places of configuration files/property, in this respective order:
 
-1. `gqless.config.cjs`
-2. `gqless.config.js`
-3. `gqless` property inside `package.json`
+1. `gqty.config.cjs`
+2. `gqty.config.js`
+3. `gqty` property inside `package.json`
 
-And since it's using [cosmiconfig](https://github.com/davidtheclark/cosmiconfig) to resolve it, if you are using GQless in a monorepo, having it in the root of your monorepo might be enough :tada:.
+And since it's using [cosmiconfig](https://github.com/davidtheclark/cosmiconfig) to resolve it, if you are using GQty in a monorepo, having it in the root of your monorepo might be enough :tada:.
 
 ## Default Config
 
-The default configuration file, which is automatically generated after the first execution of `gqless generate`, should look like this:
+The default configuration file, which is automatically generated after the first execution of `gqty generate`, should look like this:
 
 ```js
 /**
- * @type {import("@pablosz/gqless-cli").GQlessConfig}
+ * @type {import("@gqty/cli").GQtyConfig}
  */
 const config = {
   enumsAsStrings: false,
@@ -29,7 +29,7 @@ const config = {
     endpoint: 'SPECIFY_ENDPOINT_OR_SCHEMA_FILE_PATH_HERE',
     headers: {},
   },
-  destination: './src/gqless/index.ts',
+  destination: './src/gqty/index.ts',
   subscriptions: false,
 };
 

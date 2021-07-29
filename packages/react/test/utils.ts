@@ -12,7 +12,7 @@ import {
   Schema,
   SchemaUnionsKey,
   SubscriptionsClient,
-} from '../../gqless/src/index';
+} from '../../gqty/src/index';
 import { generate } from '../../cli/src/generate';
 import { createSubscriptionsClient } from '../../subscriptions/src/index';
 import { createReactClient } from '../src';
@@ -104,7 +104,11 @@ export const createReactTestClient = async (
   };
   let nFetchCalls = 0;
   let throwTry = 0;
-  const { server, client: mercuriusTestClient, isReady } = createTestApp({
+  const {
+    server,
+    client: mercuriusTestClient,
+    isReady,
+  } = createTestApp({
     schema: gql`
       type Query {
         hello: String!

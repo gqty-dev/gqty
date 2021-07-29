@@ -9,7 +9,7 @@ import {
 } from '@chakra-ui/react';
 
 import { graphql, refetch, useTransactionQuery } from '../components/client';
-import { Dog, query } from '../graphql/gqless';
+import { Dog, query } from '../graphql/gqty';
 
 const DogComp = ({ dog }: { dog: Dog }) => {
   const { data: transactionData } = useTransactionQuery(

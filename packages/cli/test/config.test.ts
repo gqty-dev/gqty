@@ -1,11 +1,11 @@
-import { getValidConfig, GQlessConfig } from '../src/config';
+import { getValidConfig, GQtyConfig } from '../src/config';
 
 test('completely valid config', () => {
   const spy = jest.spyOn(console, 'warn').mockImplementation();
 
   try {
     getValidConfig({
-      destination: './gqless',
+      destination: './gqty',
       enumsAsStrings: true,
       introspection: {
         headers: {
@@ -21,7 +21,7 @@ test('completely valid config', () => {
       },
       subscriptions: true,
       other: undefined,
-    } as GQlessConfig);
+    } as GQtyConfig);
 
     expect(spy).toBeCalledTimes(0);
   } finally {
@@ -38,7 +38,7 @@ test('completely invalid config', () => {
       switch (++nCall) {
         case 1:
           expect(message).toMatchInlineSnapshot(
-            `"Warning, invalid config destination, got: 123, expected string. \\"./src/gqless/index.ts\\" used instead."`
+            `"Warning, invalid config destination, got: 123, expected string. \\"./src/gqty/index.ts\\" used instead."`
           );
           break;
         case 2:
@@ -116,7 +116,7 @@ test('completely invalid config', () => {
                 \\"endpoint\\": \\"SPECIFY_ENDPOINT_OR_SCHEMA_FILE_PATH_HERE\\",
                 \\"headers\\": {}
               },
-              \\"destination\\": \\"./src/gqless/index.ts\\",
+              \\"destination\\": \\"./src/gqty/index.ts\\",
               \\"subscriptions\\": false,
               \\"javascriptOutput\\": false,
               \\"enumsAsStrings\\": false,

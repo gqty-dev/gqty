@@ -4,7 +4,7 @@ import { useDebounce } from 'react-use';
 import { Stack, Text } from '@chakra-ui/react';
 
 import { usePaginatedQuery } from '../components/client';
-import { ConnectionArgs } from '../graphql/gqless';
+import { ConnectionArgs } from '../graphql/gqty';
 
 const first = 20;
 

@@ -26,9 +26,9 @@ Made with **[Next.js SSR Data Fetching](https://nextjs.org/docs/basic-features/d
 > If you are using `staleWhileRevalidate` in your application, **You should always set 'shouldRefetch' as false**, since that feature will always do the refetch anyways.
 
 ```tsx
-import { PropsWithServerCache } from '@pablosz/gqless-react';
+import { PropsWithServerCache } from '@gqty/react';
 import { GetStaticProps } from 'next';
-import { prepareReactRender, useHydrateCache, useQuery } from '../gqless';
+import { prepareReactRender, useHydrateCache, useQuery } from '../gqty';
 
 type PageProps = PropsWithServerCache<{
   name: string;
@@ -100,33 +100,34 @@ const { pathname } = useRouter() || {};
 Here you can either manually set the values of the router, or simply let it be `{}`, and all it's properties are simply going to be undefined.
 
 ```tsx
-import type { PropsWithServerCache } from '@pablosz/gqless-react';
+import type { PropsWithServerCache } from '@gqty/react';
 import type { GetServerSideProps } from 'next';
-import { useHydrateCache, prepareReactRender } from '../gqless';
+import { useHydrateCache, prepareReactRender } from '../gqty';
 
 import { useRouter } from 'next/router';
 
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
 
-export const getServerSideProps: GetServerSideProps<PropsWithServerCache> = async ({}) => {
-  const { cacheSnapshot } = await prepareReactRender(
-    <RouterContext.Provider
-      value={
-        {
-          pathname: '/page',
-        } as any
-      }
-    >
-      <Page />
-    </RouterContext.Provider>
-  );
+export const getServerSideProps: GetServerSideProps<PropsWithServerCache> =
+  async ({}) => {
+    const { cacheSnapshot } = await prepareReactRender(
+      <RouterContext.Provider
+        value={
+          {
+            pathname: '/page',
+          } as any
+        }
+      >
+        <Page />
+      </RouterContext.Provider>
+    );
 
-  return {
-    props: {
-      cacheSnapshot,
-    },
+    return {
+      props: {
+        cacheSnapshot,
+      },
+    };
   };
-};
 
 export default function Page({ cacheSnapshot }: PropsWithServerCache) {
   // ...

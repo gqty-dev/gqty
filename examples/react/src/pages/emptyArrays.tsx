@@ -1,6 +1,6 @@
 import { ListItem, OrderedList, Stack } from '@chakra-ui/react';
 import { graphql } from '../components/client';
-import { query } from '../graphql/gqless';
+import { query } from '../graphql/gqty';
 
 export default graphql(
   function EmptyArrays() {

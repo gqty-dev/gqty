@@ -6,7 +6,7 @@ import { codegenMercurius, gql } from 'mercurius-codegen';
 import { JsonDB } from 'node-json-db';
 import { GraphQLUpload } from 'graphql-upload';
 
-import { writeGenerate } from '@pablosz/gqless-cli';
+import { writeGenerate } from '@gqty/cli';
 
 import type { Dog, Human } from '../src/graphql/mercurius';
 
@@ -412,7 +412,7 @@ export async function register(app: FastifyInstance) {
 
   await app.ready();
 
-  writeGenerate(app.graphql.schema, './src/graphql/gqless.ts', {}).catch(
+  writeGenerate(app.graphql.schema, './src/graphql/gqty.ts', {}).catch(
     console.error
   );
 }

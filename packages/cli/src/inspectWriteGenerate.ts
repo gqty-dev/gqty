@@ -8,7 +8,7 @@ import {
 } from 'graphql';
 import { resolve } from 'path';
 
-import { defaultConfig, DUMMY_ENDPOINT, gqlessConfigPromise } from './config';
+import { defaultConfig, DUMMY_ENDPOINT, gqtyConfigPromise } from './config';
 
 import type { GenerateOptions, TransformSchemaOptions } from './generate';
 
@@ -29,7 +29,7 @@ export async function inspectWriteGenerate({
   endpoint?: string;
   /**
    * File path destination
-   * @example './src/gqless/index.ts'
+   * @example './src/gqty/index.ts'
    */
   destination?: string;
   /**
@@ -59,7 +59,7 @@ export async function inspectWriteGenerate({
     endpoint = './schema.gql';
     defaultConfig.introspection.endpoint = endpoint;
   } else {
-    const { config, filepath } = await gqlessConfigPromise;
+    const { config, filepath } = await gqtyConfigPromise;
 
     const configIntrospectionEndpoint =
       config.introspection && config.introspection.endpoint;
@@ -72,7 +72,7 @@ export async function inspectWriteGenerate({
     } else {
       console.error(
         `\nPlease modify "${
-          filepath.endsWith('package.json') ? 'gqless' : 'config'
+          filepath.endsWith('package.json') ? 'gqty' : 'config'
         }.introspection.endpoint" in: "${filepath}".`
       );
       throw Error(
@@ -82,7 +82,7 @@ export async function inspectWriteGenerate({
   }
 
   if (!destination) {
-    const configDestination = (await gqlessConfigPromise).config.destination;
+    const configDestination = (await gqtyConfigPromise).config.destination;
 
     destination = configDestination || defaultConfig.destination;
   }
@@ -97,7 +97,9 @@ export async function inspectWriteGenerate({
   defaultConfig.introspection.headers = headers || {};
 
   if (endpoint.startsWith('http://') || endpoint.startsWith('https://')) {
-    schema = await (await import('./introspection')).getRemoteSchema(endpoint, {
+    schema = await (
+      await import('./introspection')
+    ).getRemoteSchema(endpoint, {
       headers,
     });
   } else {
@@ -140,16 +142,17 @@ export async function inspectWriteGenerate({
     }
   }
 
-  const generatedPath = await (await import('./writeGenerate')).writeGenerate(
+  const generatedPath = await (
+    await import('./writeGenerate')
+  ).writeGenerate(
     schema,
     destination,
     genOptions,
     async (existingFile) => {
       const subscriptions =
         genOptions.subscriptions ??
-        (await gqlessConfigPromise).config.subscriptions;
-      const react =
-        genOptions.react ?? (await gqlessConfigPromise).config.react;
+        (await gqtyConfigPromise).config.subscriptions;
+      const react = genOptions.react ?? (await gqtyConfigPromise).config.react;
 
       const advice = `\nIf you meant to change this, please remove "${destination}" and re-run code generation.`;
 

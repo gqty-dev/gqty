@@ -1,6 +1,6 @@
 # The MIT License (MIT)
 
-Copyright © `2021` `GQless`
+Copyright © `2021` `GQty`
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation

@@ -1,6 +1,6 @@
 import { RouterContext } from 'next/dist/next-server/lib/router-context';
 
-import { PropsWithServerCache } from '@pablosz/gqless-react';
+import { PropsWithServerCache } from '@gqty/react';
 
 import {
   graphql,
@@ -11,19 +11,20 @@ import { default as RefetchPage } from './refetch';
 
 import type { GetServerSideProps } from 'next';
 
-export const getServerSideProps: GetServerSideProps<PropsWithServerCache> = async ({}) => {
-  const { cacheSnapshot } = await prepareReactRender(
-    <RouterContext.Provider value={{} as any}>
-      <RefetchPage />
-    </RouterContext.Provider>
-  );
+export const getServerSideProps: GetServerSideProps<PropsWithServerCache> =
+  async ({}) => {
+    const { cacheSnapshot } = await prepareReactRender(
+      <RouterContext.Provider value={{} as any}>
+        <RefetchPage />
+      </RouterContext.Provider>
+    );
 
-  return {
-    props: {
-      cacheSnapshot,
-    },
+    return {
+      props: {
+        cacheSnapshot,
+      },
+    };
   };
-};
 
 export default graphql(
   function SSRPage({ cacheSnapshot }: PropsWithServerCache) {

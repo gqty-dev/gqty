@@ -1,10 +1,10 @@
 {
-  "name": "@pablosz/gqless-logger",
-  "version": "2.0.12",
-  "homepage": "https://gqless.com",
+  "name": "@gqty/logger",
+  "version": "1.0.0",
+  "homepage": "https://gqty.dev",
   "repository": {
     "type": "git",
-    "url": "https://github.com/PabloSzx/gqless.git"
+    "url": "https://github.com/PabloSzx/gqty.git"
   },
   "license": "MIT",
   "author": "PabloSzx <pablosaez1995@gmail.com>",
@@ -40,7 +40,7 @@
     "serialize-error": "^8.1.0"
   },
   "devDependencies": {
-    "@pablosz/gqless": "workspace:^2.0.15",
+    "gqty": "workspace:^1.0.0",
     "@size-limit/preset-small-lib": "^4.12.0",
     "@types/prettier": "^2.3.0",
     "bob-esbuild-cli": "^0.1.27",
@@ -52,7 +52,7 @@
     "typescript": "^4.3.4"
   },
   "peerDependencies": {
-    "@pablosz/gqless": "workspace:^2.0.15"
+    "gqty": "workspace:^1.0.0"
   },
   "engines": {
     "node": ">=12"
@@ -62,11 +62,11 @@
   },
   "size-limit": [
     {
-      "path": "dist/gqless-logger.cjs.production.min.js",
+      "path": "dist/gqty-logger.cjs.production.min.js",
       "limit": "260 KB"
     },
     {
-      "path": "dist/gqless-logger.esm.js",
+      "path": "dist/gqty-logger.esm.js",
       "limit": "260 KB"
     }
   ]

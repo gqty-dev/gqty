@@ -1,4 +1,4 @@
-import { GQlessClient } from '@pablosz/gqless';
+import { GQtyClient } from 'gqty';
 
 import {
   isAnySelectionIncluded,
@@ -23,7 +23,7 @@ export function createUseSubscription<
     subscription: object;
   }
 >(
-  client: GQlessClient<GeneratedSchema>,
+  client: GQtyClient<GeneratedSchema>,
   _opts: ReactClientOptionsWithDefaults
 ): UseSubscription<GeneratedSchema> {
   const {
@@ -35,75 +35,76 @@ export function createUseSubscription<
   const clientSubscription: GeneratedSchema['subscription'] =
     client.subscription;
 
-  const useSubscription: UseSubscription<GeneratedSchema> = function useSubscription() {
-    const forceUpdate = useForceUpdate();
-    const hookSelections = useSelectionsState();
+  const useSubscription: UseSubscription<GeneratedSchema> =
+    function useSubscription() {
+      const forceUpdate = useForceUpdate();
+      const hookSelections = useSelectionsState();
 
-    const interceptor = createInterceptor();
+      const interceptor = createInterceptor();
 
-    Promise.resolve(interceptor).then(removeInterceptor);
+      Promise.resolve(interceptor).then(removeInterceptor);
 
-    interceptor.selectionAddListeners.add((selection) => {
-      if (selection.type === 2) hookSelections.add(selection);
-    });
-
-    useIsomorphicLayoutEffect(() => {
-      removeInterceptor(interceptor);
-    });
-
-    useIsomorphicLayoutEffect(() => {
-      if (!subscriptionsClient) return;
-
-      let isMounted = true;
-
-      const unsubscribeCache = eventHandler.onCacheChangeSubscribe(
-        ({ selection }) => {
-          if (!isMounted || forceUpdate.wasCalled.current) return;
-
-          if (hookSelections.has(selection)) forceUpdate();
-        }
-      );
-
-      const unsubErrors = scheduler.errors.subscribeErrors((data) => {
-        if (
-          isMounted &&
-          data.type === 'new_error' &&
-          !forceUpdate.wasCalled.current &&
-          isAnySelectionIncluded(data.selections, hookSelections)
-        ) {
-          forceUpdate();
-        }
+      interceptor.selectionAddListeners.add((selection) => {
+        if (selection.type === 2) hookSelections.add(selection);
       });
 
-      return () => {
-        isMounted = false;
-        unsubErrors();
-        unsubscribeCache();
-        subscriptionsClient
-          .unsubscribe(hookSelections)
-          .then((operationsIds) => {
-            if (eventHandler.hasFetchSubscribers && operationsIds.length) {
-              const arraySelections = Array.from(hookSelections);
-              for (const id of operationsIds) {
-                eventHandler.sendFetchPromise(
-                  Promise.resolve({
-                    query: '',
-                    variables: undefined,
-                    cacheSnapshot: client.cache,
-                    selections: arraySelections,
-                    type: 'subscription',
-                    label: `[id=${id}] [unsubscribe]`,
-                  }),
-                  arraySelections
-                );
-              }
-            }
-          });
-      };
-    }, [hookSelections, forceUpdate]);
+      useIsomorphicLayoutEffect(() => {
+        removeInterceptor(interceptor);
+      });
 
-    return clientSubscription;
-  };
+      useIsomorphicLayoutEffect(() => {
+        if (!subscriptionsClient) return;
+
+        let isMounted = true;
+
+        const unsubscribeCache = eventHandler.onCacheChangeSubscribe(
+          ({ selection }) => {
+            if (!isMounted || forceUpdate.wasCalled.current) return;
+
+            if (hookSelections.has(selection)) forceUpdate();
+          }
+        );
+
+        const unsubErrors = scheduler.errors.subscribeErrors((data) => {
+          if (
+            isMounted &&
+            data.type === 'new_error' &&
+            !forceUpdate.wasCalled.current &&
+            isAnySelectionIncluded(data.selections, hookSelections)
+          ) {
+            forceUpdate();
+          }
+        });
+
+        return () => {
+          isMounted = false;
+          unsubErrors();
+          unsubscribeCache();
+          subscriptionsClient
+            .unsubscribe(hookSelections)
+            .then((operationsIds) => {
+              if (eventHandler.hasFetchSubscribers && operationsIds.length) {
+                const arraySelections = Array.from(hookSelections);
+                for (const id of operationsIds) {
+                  eventHandler.sendFetchPromise(
+                    Promise.resolve({
+                      query: '',
+                      variables: undefined,
+                      cacheSnapshot: client.cache,
+                      selections: arraySelections,
+                      type: 'subscription',
+                      label: `[id=${id}] [unsubscribe]`,
+                    }),
+                    arraySelections
+                  );
+                }
+              }
+            });
+        };
+      }, [hookSelections, forceUpdate]);
+
+      return clientSubscription;
+    };
 
   return useSubscription;
 }

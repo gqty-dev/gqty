@@ -3,23 +3,23 @@ id: logger
 title: Logger
 ---
 
-You can improve the development experience using a `Logger` of your GQless usage, which will print relevant information about the requests made to your GraphQL API Server.
+You can improve the development experience using a `Logger` of your GQty usage, which will print relevant information about the requests made to your GraphQL API Server.
 
 ![Logger screenshot](/img/logger.png)
 
 ## Installation
 
 ```bash yarn2npm
-yarn add @pablosz/gqless-logger
+yarn add @gqty/logger
 ```
 
 ## Usage
 
 ```ts
-import { client } from '../gqless';
+import { client } from '../gqty';
 
 if (process.env.NODE_ENV === 'development') {
-  import('@pablosz/gqless-logger').then(({ createLogger }) => {
+  import('@gqty/logger').then(({ createLogger }) => {
     const logger = createLogger(client, {
       // Custom options...
     });

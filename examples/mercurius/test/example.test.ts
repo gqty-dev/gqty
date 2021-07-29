@@ -1,7 +1,7 @@
 import { createMercuriusTestClient } from 'mercurius-integration-testing';
 import { waitForExpect } from 'test-utils';
 
-import { selectFields } from '@pablosz/gqless';
+import { selectFields } from 'gqty';
 
 import { app, codegen } from '../src';
 import {
@@ -10,7 +10,7 @@ import {
   mutation,
   query,
   resolved,
-} from '../src/generated/gqless';
+} from '../src/generated/gqty';
 import {
   arrayObjectArgsDocument,
   multipleArgsDocument,
@@ -55,7 +55,7 @@ test('multiple args', async () => {
   });
 });
 
-describe('gqless integration tests', () => {
+describe('gqty integration tests', () => {
   test('generatedClient', async () => {
     const anon = generatedClient.query.objectWithArgs({
       who: 'anon',

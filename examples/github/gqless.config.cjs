@@ -1,7 +1,7 @@
 require('dotenv').config();
 
 /**
- * @type {import("@pablosz/gqless-cli").GQlessConfig}
+ * @type {import("@gqty/cli").GQtyConfig}
  */
 const config = {
   enumsAsStrings: false,
@@ -24,7 +24,7 @@ const config = {
       authorization: `bearer ${process.env.GITHUB_TOKEN}`,
     },
   },
-  destination: './src/gqless/index.ts',
+  destination: './src/gqty/index.ts',
   subscriptions: false,
   javascriptOutput: false,
 };

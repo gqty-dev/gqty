@@ -1,4 +1,4 @@
-import type { GQlessClient } from '@pablosz/gqless';
+import type { GQtyClient } from 'gqty';
 import { Dispatch, useCallback, useMemo, useReducer, useRef } from 'react';
 
 import {
@@ -195,7 +195,7 @@ export function createUsePaginatedQuery<
     query: clientQuery,
     inlineResolved,
     eventHandler,
-  }: GQlessClient<GeneratedSchema>,
+  }: GQtyClient<GeneratedSchema>,
   {
     defaults: {
       paginatedQueryFetchPolicy: defaultFetchPolicy,
@@ -271,9 +271,11 @@ export function createUsePaginatedQuery<
         let args: TArgs =
           newArgs !== undefined
             ? typeof newArgs === 'function'
-              ? (stateRef.current.args = (newArgs as (
-                  data: FetchMoreCallbackArgs<TData, TArgs>
-                ) => TArgs)({
+              ? (stateRef.current.args = (
+                  newArgs as (
+                    data: FetchMoreCallbackArgs<TData, TArgs>
+                  ) => TArgs
+                )({
                   existingData: stateRef.current.data,
                   existingArgs: stateRef.current.args,
                 }))

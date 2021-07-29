@@ -2,7 +2,7 @@ import { existsSync, promises } from 'fs';
 import { GraphQLSchema } from 'graphql';
 import mkdirp from 'mkdirp';
 import { dirname, resolve } from 'path';
-import { defaultConfig, gqlessConfigPromise } from './config';
+import { defaultConfig, gqtyConfigPromise } from './config';
 
 import { generate, GenerateOptions, TransformSchemaOptions } from './generate';
 
@@ -100,7 +100,7 @@ export async function writeGenerate(
 ) {
   const isJavascriptOutput =
     generateOptions.javascriptOutput ??
-    (await gqlessConfigPromise).config.javascriptOutput ??
+    (await gqtyConfigPromise).config.javascriptOutput ??
     defaultConfig.javascriptOutput;
 
   if (isJavascriptOutput) {

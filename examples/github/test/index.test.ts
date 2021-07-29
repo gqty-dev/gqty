@@ -3,9 +3,9 @@ import {
   query,
   RepositoryOrderField,
   resolved,
-} from '../src/gqless';
+} from '../src/gqty';
 import assert from 'assert';
-import { getFields, getArrayFields } from '@pablosz/gqless';
+import { getFields, getArrayFields } from 'gqty';
 
 test('works', async () => {
   expect(
@@ -466,7 +466,7 @@ test('works', async () => {
           "hasIssuesEnabled": true,
           "hasProjectsEnabled": true,
           "hasWikiEnabled": false,
-          "homepageUrl": "https://gqless.com",
+          "homepageUrl": "https://gqty.dev",
           "id": "MDEwOlJlcG9zaXRvcnkxNjgyNzEyNDE=",
           "isArchived": false,
           "isBlankIssuesEnabled": true,
@@ -483,21 +483,21 @@ test('works', async () => {
           "lockReason": null,
           "mergeCommitAllowed": true,
           "mirrorUrl": null,
-          "name": "gqless",
-          "nameWithOwner": "gqless/gqless",
+          "name": "gqty",
+          "nameWithOwner": "gqty/gqty",
           "openGraphImageUrl": "https://repository-images.githubusercontent.com/168271241/10f11880-8ba6-11eb-8817-8d4dbe79a822",
-          "projectsResourcePath": "/gqless/gqless/projects",
-          "projectsUrl": "https://github.com/PabloSzx/gqless/projects",
+          "projectsResourcePath": "/gqty/gqty/projects",
+          "projectsUrl": "https://github.com/PabloSzx/gqty/projects",
           "pushedAt": "2021-03-30T17:58:52Z",
           "rebaseMergeAllowed": false,
-          "resourcePath": "/gqless/gqless",
+          "resourcePath": "/gqty/gqty",
           "securityPolicyUrl": null,
           "squashMergeAllowed": true,
-          "sshUrl": "git@github.com:gqless/gqless.git",
+          "sshUrl": "git@github.com:gqty/gqty.git",
           "stargazerCount": 2934,
           "tempCloneToken": "",
           "updatedAt": "2021-03-30T17:58:55Z",
-          "url": "https://github.com/PabloSzx/gqless",
+          "url": "https://github.com/PabloSzx/gqty",
           "usesCustomOpenGraphImage": true,
           "viewerCanAdminister": true,
           "viewerCanCreateProjects": true,

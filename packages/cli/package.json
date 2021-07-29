@@ -1,10 +1,10 @@
 {
-  "name": "@pablosz/gqless-cli",
-  "version": "2.0.18",
-  "homepage": "https://gqless.com",
+  "name": "@gqty/cli",
+  "version": "1.0.0",
+  "homepage": "https://gqty.dev",
   "repository": {
     "type": "git",
-    "url": "https://github.com/PabloSzx/gqless.git"
+    "url": "https://github.com/PabloSzx/gqty.git"
   },
   "license": "MIT",
   "author": "PabloSzx <pablosaez1995@gmail.com>",
@@ -22,7 +22,7 @@
   "module": "dist/index.mjs",
   "typings": "dist/index.d.ts",
   "bin": {
-    "gqless": "bin/gqless.js"
+    "gqty": "bin/gqty.js"
   },
   "files": [
     "dist",
@@ -45,7 +45,7 @@
     "@graphql-tools/delegate": "^7.1.5",
     "@graphql-tools/utils": "^7.10.0",
     "@graphql-tools/wrap": "^7.0.8",
-    "@pablosz/gqless": "workspace:^2.0.15",
+    "gqty": "workspace:^1.0.0",
     "commander": "^7.2.0",
     "cosmiconfig": "^7.0.0",
     "cross-fetch": "^3.1.4",
@@ -89,11 +89,11 @@
   },
   "size-limit": [
     {
-      "path": "dist/gqless-cli.cjs.production.min.js",
+      "path": "dist/gqty-cli.cjs.production.min.js",
       "limit": "10 KB"
     },
     {
-      "path": "dist/gqless-cli.esm.js",
+      "path": "dist/gqty-cli.esm.js",
       "limit": "10 KB"
     }
   ]

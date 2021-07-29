@@ -7,18 +7,18 @@ title: Getting started
 
 1. Go to the root of your project, and run:
    ```bash yarn2npm
-   yarn add @pablosz/gqless
-   yarn add -D @pablosz/gqless-cli graphql
+   yarn add gqty
+   yarn add -D @gqty/cli graphql
    ```
 2. Next, add a `script` field to your package.json:
    ```json
    {
      "scripts": {
-       "generate": "gqless generate"
+       "generate": "gqty generate"
      }
    }
    ```
-3. Then run the script once, to create a `gqless.config.cjs` file:
+3. Then run the script once, to create a `gqty.config.cjs` file:
    ```bash yarn2npm
    yarn generate
    ```
@@ -27,11 +27,11 @@ title: Getting started
 
 > The default config should look something like this:
 >
-> _can also be specified in `package.json` via `gqless` key_
+> _can also be specified in `package.json` via `gqty` key_
 >
 > ```js
 > /**
-> * @type {import("@pablosz/gqless-cli").GQlessConfig}
+> * @type {import("@gqty/cli").GQtyConfig}
 > */
 > const config = {,
 >  react: true,
@@ -40,7 +40,7 @@ title: Getting started
 >    endpoint: 'SPECIFY_ENDPOINT_OR_SCHEMA_FILE_PATH_HERE',
 >    headers: {},
 >  },
->  destination: './src/gqless/index.ts',
+>  destination: './src/gqty/index.ts',
 >  subscriptions: false,
 > };
 >
@@ -56,14 +56,14 @@ yarn generate
 The output should look like this:
 
 ```bash
-src/gqless
+src/gqty
 ├── schema.generated.ts # Will be overwritten when you codegen again
-└── index.ts # GQless client is exported from here, safe to modify options
+└── index.ts # GQty client is exported from here, safe to modify options
 ```
 
 ## Getting started
 
-Configure the `fetch()` call to your GraphQL server, located inside the `queryFetcher()` method within `src/gqless/index.ts`. You might for instance want to dynamically generate the URL depending on environment, or connect it up to your apps authorization.
+Configure the `fetch()` call to your GraphQL server, located inside the `queryFetcher()` method within `src/gqty/index.ts`. You might for instance want to dynamically generate the URL depending on environment, or connect it up to your apps authorization.
 
 ## Usage
 

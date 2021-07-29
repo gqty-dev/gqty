@@ -1,3 +1,3 @@
-# @pablosz/gqless-react
+# @gqty/react
 
-## Visit [https://gqless.com/react/fetching-data](https://gqless.com/react/fetching-data)
+## Visit [https://gqty.dev/react/fetching-data](https://gqty.dev/react/fetching-data)

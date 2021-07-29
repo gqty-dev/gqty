@@ -1,5 +1,5 @@
-import type { GQlessClient, GQlessError } from '@pablosz/gqless';
-import type { SchedulerPromiseValue } from '@pablosz/gqless/Scheduler';
+import type { GQtyClient, GQtyError } from 'gqty';
+import type { SchedulerPromiseValue } from 'gqty/Scheduler';
 
 import {
   useForceUpdate,
@@ -28,11 +28,9 @@ export interface PreparedQuery<
       ? [Parameters<TFunction>['1']?]
       : [Parameters<TFunction>['1']]
   ): Promise<ReturnType<TFunction>>;
-  usePrepared(
-    opts?: UsePreparedQueryOptions
-  ): {
+  usePrepared(opts?: UsePreparedQueryOptions): {
     data: ReturnType<TFunction> | undefined;
-    error?: GQlessError | undefined;
+    error?: GQtyError | undefined;
     isLoading: boolean;
     isRefetching: boolean;
     called: boolean;
@@ -57,7 +55,7 @@ export function createPrepareQuery<
     subscription: object;
   }
 >(
-  { prefetch, query, refetch: refetchClient }: GQlessClient<GeneratedSchema>,
+  { prefetch, query, refetch: refetchClient }: GQtyClient<GeneratedSchema>,
   {
     defaults: { preparedSuspense: defaultSuspense },
   }: ReactClientOptionsWithDefaults
@@ -69,7 +67,7 @@ export function createPrepareQuery<
   >(fn: TFunction): PreparedQuery<GeneratedSchema, TFunction> {
     const state: {
       data: ReturnType<TFunction> | typeof emptyDataSymbol;
-      error?: GQlessError;
+      error?: GQtyError;
       isLoading: boolean;
       isRefetching: boolean;
       called: boolean;

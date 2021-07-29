@@ -1,9 +1,9 @@
 /** @jsxImportSource @emotion/react */
 
-import { prepass } from '@pablosz/gqless';
+import { prepass } from 'gqty';
 import { useRef } from 'react';
 
-import { useMutation } from '../gqless';
+import { useMutation } from '../gqty';
 import { useCurrentUser } from '../hooks/currentUser';
 
 export function Login() {

@@ -5,7 +5,7 @@ title: How it works
 
 ## Skeleton render & values
 
-GQless performs a invisible render (called the skeleton render) of all components, to identify the data they need. During this render, all scalars & enums are returned as `undefined` (aka. skeleton values).
+GQty performs a invisible render (called the skeleton render) of all components, to identify the data they need. During this render, all scalars & enums are returned as `undefined` (aka. skeleton values).
 Once the response from the server arrives, these skeleton values are replaced with actual ones.
 
 ### Interplay with Lists & Keys
@@ -39,14 +39,14 @@ query.users.map((user) => (
 
 ## How does it work?
 
-GQless performs a invisible render of all components, to identify the data they need. Once the data is fetched — scalars, nulls, and array sizes are filled in.
+GQty performs a invisible render of all components, to identify the data they need. Once the data is fetched — scalars, nulls, and array sizes are filled in.
 
 ## Will it affect bundle size?
 
 In the code-generated files, an object representation of the schema is outputted - negligible for most apps. This could be optimized in the future by stripping out unused parts.
 
-The gqless packages are lightweight and don't require external dependencies.
+The gqty packages are lightweight and don't require external dependencies.
 
 ## How fast is it?
 
-Very fast, gqless's architecture was designed with performance in mind. Unlike other clients, queries are generated directly - instead of outputting intermediate AST.
+Very fast, gqty's architecture was designed with performance in mind. Unlike other clients, queries are generated directly - instead of outputting intermediate AST.

@@ -1,3 +1,3 @@
-# @pablosz/gqless-logger
+# @gqty/logger
 
-## Visit [https://gqless.com/development/logger](https://gqless.com/development/logger)
+## Visit [https://gqty.dev/development/logger](https://gqty.dev/development/logger)

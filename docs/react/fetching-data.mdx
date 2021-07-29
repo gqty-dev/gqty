@@ -6,7 +6,7 @@ sidebar_label: Fetching Data
 
 ## `useQuery`
 
-[React hook](https://reactjs.org/docs/hooks-intro.html) that uses the main design of GQless.
+[React hook](https://reactjs.org/docs/hooks-intro.html) that uses the main design of GQty.
 
 This hook returns the core `query` object, and it will detect the usage of it, and **suspend** _(if enabled)_ when the data is being fetched for the first time, and update the component when any of the requested data changes.
 
@@ -22,7 +22,7 @@ Check [API Reference](/react/api/interfaces/usequery)
 
 ```tsx
 import { Suspense } from 'react';
-import { useQuery } from '../gqless';
+import { useQuery } from '../gqty';
 
 function Example() {
   const query = useQuery({
@@ -33,7 +33,7 @@ function Example() {
     // If you put an object to trigger re-validation on-demand, it should be a `memoized` value from `useMemo`
     staleWhileRevalidate: true,
 
-    // ((error: GQlessError) => void) | undefined
+    // ((error: GQtyError) => void) | undefined
     onError(error) {},
   });
 
@@ -54,7 +54,7 @@ function Container() {
 See [Non-Suspense usage](/react/suspense#non-suspense-usage) for more details
 
 ```tsx
-import { useQuery } from '../gqless';
+import { useQuery } from '../gqty';
 
 function Example() {
   const query = useQuery({
@@ -65,7 +65,7 @@ function Example() {
     // If you put an object to trigger re-validation on-demand, it should be a `memoized` value from `useMemo`
     staleWhileRevalidate: true,
 
-    // ((error: GQlessError) => void) | undefined
+    // ((error: GQtyError) => void) | undefined
     onError(error) {},
   });
 
@@ -95,7 +95,7 @@ Since it's a function called before the hook itself returned, the returned value
 #### Suspense example
 
 ```tsx
-import { useQuery } from '../gqless';
+import { useQuery } from '../gqty';
 
 function ExampleSuspense() {
   const query = useQuery({
@@ -135,7 +135,7 @@ function ExampleSuspense() {
 #### Non-Suspense example
 
 ```tsx
-import { useQuery } from '../gqless';
+import { useQuery } from '../gqty';
 
 function Example() {
   const query = useQuery({
@@ -185,7 +185,7 @@ For this function it is expected to use the `query` object exported by the core 
 
 ```tsx
 import { Suspense } from 'react';
-import { graphql, query } from '../gqless';
+import { graphql, query } from '../gqty';
 
 const Example = graphql(
   function Example() {
@@ -195,7 +195,7 @@ const Example = graphql(
     // boolean | { fallback: NonNullable<ReactNode> | null } | undefined
     suspense: true,
 
-    // ((error: GQlessError) => void) | undefined
+    // ((error: GQtyError) => void) | undefined
     onError(error) {},
 
     // boolean | undefined
@@ -242,7 +242,7 @@ Paginated focused queries, in which you specify a function and initial arguments
 ### Example
 
 ```tsx
-import { usePaginatedQuery, ConnectionArgs } from '../gqless';
+import { usePaginatedQuery, ConnectionArgs } from '../gqty';
 
 // ...
 
@@ -335,7 +335,7 @@ Alternative to `graphql` and `useQuery` that works via pre-defined functions, wh
 ### Example
 
 ```tsx
-import { useTransactionQuery } from '../gqless';
+import { useTransactionQuery } from '../gqty';
 
 // ...
 
@@ -385,7 +385,7 @@ Queries meant to be called in response of events, like button clicks.
 - Partial [Fetch policy](#fetch-policy) support (no `'cache-first'`)
 
 ```tsx
-import { useLazyQuery } from '../gqless';
+import { useLazyQuery } from '../gqty';
 
 function Example() {
   const [getName, { isLoading, data }] = useLazyQuery(
@@ -435,7 +435,7 @@ Check [API Reference](http://localhost:3000/react/api/interfaces/userefetch)
 ### Example with functions
 
 ```tsx
-import { useRefetch, useQuery } from '../gqless';
+import { useRefetch, useQuery } from '../gqty';
 
 function Example() {
   const refetch = useRefetch();
@@ -463,7 +463,7 @@ In this case, you have to specify an **object type**, **scalars won't work** (fo
 It will automatically refetch **everything** previously requested under that tree
 
 ```tsx
-import { useRefetch, useQuery } from '../gqless';
+import { useRefetch, useQuery } from '../gqty';
 
 function Example() {
   const refetch = useRefetch();
@@ -503,7 +503,7 @@ Prepare queries on **module-level**.
 
 ```tsx
 import { useState } from 'react';
-import { prepareQuery } from '../gqless';
+import { prepareQuery } from '../gqty';
 
 const { preload, refetch, usePrepared, callback } = prepareQuery((query) => {
   return query.helloWorld;

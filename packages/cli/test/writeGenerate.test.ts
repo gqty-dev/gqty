@@ -65,7 +65,7 @@ test('generates code and writes existing file', async () => {
 
     expect(generatedContent).toMatchInlineSnapshot(`
       "/**
-       * GQLESS AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+       * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
        */
       // This should be included
 
@@ -86,7 +86,7 @@ test('generates code and writes existing file', async () => {
         Float: number;
       }
 
-      export const scalarsEnumsHash: import('@pablosz/gqless').ScalarsEnumsHash = {
+      export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
         String: true,
         Boolean: true,
       };
@@ -170,7 +170,7 @@ test('creates dir, generates code and writes new file', async () => {
 
     expect(generatedContentSchema).toMatchInlineSnapshot(`
       "/**
-       * GQLESS AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+       * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
        */
       // This should be included
 
@@ -191,7 +191,7 @@ test('creates dir, generates code and writes new file', async () => {
         Float: number;
       }
 
-      export const scalarsEnumsHash: import('@pablosz/gqless').ScalarsEnumsHash = {
+      export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
         String: true,
         Boolean: true,
       };
@@ -244,12 +244,12 @@ test('creates dir, generates code and writes new file', async () => {
 
     expect(generatedContentClient).toMatchInlineSnapshot(`
       "/**
-       * GQLESS: You can safely modify this file and Query Fetcher based on your needs
+       * GQTY: You can safely modify this file and Query Fetcher based on your needs
        */
 
-      import { createReactClient } from '@pablosz/gqless-react';
+      import { createReactClient } from '@gqty/react';
 
-      import { createClient, QueryFetcher } from '@pablosz/gqless';
+      import { createClient, QueryFetcher } from 'gqty';
       import {
         generatedSchema,
         scalarsEnumsHash,

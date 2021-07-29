@@ -10,7 +10,7 @@ import {
 } from '@chakra-ui/react';
 
 import { graphql, useMutation } from '../components/client';
-import { query } from '../graphql/gqless';
+import { query } from '../graphql/gqty';
 
 let nRender = 0;
 let commitedRender = 0;

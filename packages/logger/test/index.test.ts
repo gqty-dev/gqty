@@ -1,4 +1,4 @@
-import { createClient } from '@pablosz/gqless';
+import { createClient } from 'gqty';
 import { createTestApp, gql } from 'test-utils';
 
 import { createLogger } from '../src';
@@ -22,7 +22,7 @@ describe('logger', () => {
       },
     },
   });
-  const gqlessClient = createClient<{
+  const gqtyClient = createClient<{
     query: {
       hello: (args: { hello: string }) => string;
       throw?: boolean;
@@ -55,7 +55,7 @@ describe('logger', () => {
   test('default options', async () => {
     await isReady;
 
-    const logger = createLogger(gqlessClient);
+    const logger = createLogger(gqtyClient);
 
     const stop = logger.start();
 
@@ -67,8 +67,8 @@ describe('logger', () => {
     const spyError = jest.spyOn(console, 'error').mockImplementation();
 
     try {
-      const dataPromise = gqlessClient.resolved(() => {
-        return gqlessClient.query.hello({ hello: 'hello' });
+      const dataPromise = gqtyClient.resolved(() => {
+        return gqtyClient.query.hello({ hello: 'hello' });
       });
 
       const data = await dataPromise;
@@ -81,8 +81,8 @@ describe('logger', () => {
 
       expect(data).toBe('hello world');
 
-      const errorPromise = gqlessClient.resolved(() => {
-        return gqlessClient.query.throw;
+      const errorPromise = gqtyClient.resolved(() => {
+        return gqtyClient.query.throw;
       });
 
       await errorPromise.catch(() => {});
@@ -104,7 +104,7 @@ describe('logger', () => {
   });
 
   test('disabled options', async () => {
-    const logger = createLogger(gqlessClient, {
+    const logger = createLogger(gqtyClient, {
       showCache: false,
       showSelections: false,
     });
@@ -119,9 +119,9 @@ describe('logger', () => {
     const spyError = jest.spyOn(console, 'error').mockImplementation();
 
     try {
-      const dataPromise = gqlessClient.resolved(
+      const dataPromise = gqtyClient.resolved(
         () => {
-          return gqlessClient.query.hello({ hello: 'hello' });
+          return gqtyClient.query.hello({ hello: 'hello' });
         },
         {
           noCache: true,
@@ -138,9 +138,9 @@ describe('logger', () => {
 
       expect(data).toBe('hello world');
 
-      const errorPromise = gqlessClient.resolved(
+      const errorPromise = gqtyClient.resolved(
         () => {
-          return gqlessClient.query.throw;
+          return gqtyClient.query.throw;
         },
         {
           noCache: true,
@@ -166,7 +166,7 @@ describe('logger', () => {
   });
 
   test('stringified JSON', async () => {
-    const logger = createLogger(gqlessClient, {
+    const logger = createLogger(gqtyClient, {
       stringifyJSON: true,
     });
 
@@ -180,9 +180,9 @@ describe('logger', () => {
     const spyError = jest.spyOn(console, 'error').mockImplementation();
 
     try {
-      const dataPromise = gqlessClient.resolved(
+      const dataPromise = gqtyClient.resolved(
         () => {
-          return gqlessClient.query.hello({ hello: 'hello' });
+          return gqtyClient.query.hello({ hello: 'hello' });
         },
         {
           noCache: true,
@@ -199,9 +199,9 @@ describe('logger', () => {
 
       expect(data).toBe('hello world');
 
-      const errorPromise = gqlessClient.resolved(
+      const errorPromise = gqtyClient.resolved(
         () => {
-          return gqlessClient.query.throw;
+          return gqtyClient.query.throw;
         },
         {
           noCache: true,

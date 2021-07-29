@@ -1,6 +1,6 @@
 import { Button, Stack, Text } from '@chakra-ui/react';
 import { useTransactionQuery } from '../components/client';
-import { mutate } from '../graphql/gqless';
+import { mutate } from '../graphql/gqty';
 
 let nRenders = 0;
 export default function TransactionQuery1() {

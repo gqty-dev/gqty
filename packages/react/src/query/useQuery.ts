@@ -1,4 +1,4 @@
-import { GQlessClient, prepass } from '@pablosz/gqless';
+import { GQtyClient, prepass } from 'gqty';
 import { useMemo, useState } from 'react';
 
 import {
@@ -34,11 +34,10 @@ export interface UseQueryState {
   readonly isLoading: boolean;
 }
 
-export type UseQueryReturnValue<
-  GeneratedSchema extends { query: object }
-> = GeneratedSchema['query'] & {
-  $state: UseQueryState;
-};
+export type UseQueryReturnValue<GeneratedSchema extends { query: object }> =
+  GeneratedSchema['query'] & {
+    $state: UseQueryState;
+  };
 export interface UseQuery<GeneratedSchema extends { query: object }> {
   (
     options?: UseQueryOptions<GeneratedSchema>
@@ -51,7 +50,7 @@ export function createUseQuery<
     mutation: object;
     subscription: object;
   }
->(client: GQlessClient<GeneratedSchema>, opts: ReactClientOptionsWithDefaults) {
+>(client: GQtyClient<GeneratedSchema>, opts: ReactClientOptionsWithDefaults) {
   const {
     suspense: defaultSuspense,
     staleWhileRevalidate: defaultStaleWhileRevalidate,
@@ -109,12 +108,12 @@ export function createUseQuery<
     }
 
     return useMemo<UseQueryReturnValue<GeneratedSchema>>(() => {
-      const gqlessProxy = Symbol('gqless-proxy');
+      const gqtyProxy = Symbol('gqty-proxy');
       return new Proxy(
         Object.keys(clientQuery).reduce(
           (acum, value) => {
             //@ts-expect-error
-            acum[value] = gqlessProxy;
+            acum[value] = gqtyProxy;
             return acum;
           },
           {

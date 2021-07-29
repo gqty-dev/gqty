@@ -1,9 +1,9 @@
 import {
-  GQlessError,
+  GQtyError,
   Selection,
   SubscribeEvents,
   SubscriptionsClient,
-} from '@pablosz/gqless';
+} from 'gqty';
 
 import {
   Client,
@@ -94,7 +94,7 @@ export function createSubscriptionsClient({
                 if (errors?.length) {
                   onError({
                     data,
-                    error: GQlessError.fromGraphQLErrors(errors),
+                    error: GQtyError.fromGraphQLErrors(errors),
                   });
                 } else if (data) {
                   onData(data);

@@ -1,9 +1,9 @@
 /** @jsxImportSource @emotion/react */
 
-import { getFields } from '@pablosz/gqless';
+import { getFields } from 'gqty';
 import { useRef } from 'react';
 
-import { CursorConnectionArgs, useMutation } from '../gqless';
+import { CursorConnectionArgs, useMutation } from '../gqty';
 
 export function CreatePost({
   fetchMore,

@@ -5,7 +5,7 @@ title: Helper Functions
 
 ## `prepass`
 
-A common pattern to do while using GQless is to just access manually some specified fields, so GQless can pick up your requirements faster.
+A common pattern to do while using GQty is to just access manually some specified fields, so GQty can pick up your requirements faster.
 That allows preventing some possible "waterfalling", or simply to make sure to get all the fields requested in the same query,
 specially while using conditionals on possible nulls in your GraphQL Schema.
 
@@ -22,8 +22,8 @@ The only **disadvantages** we see are basically:
 - It doesn't have autocomplete 😔
 
 ```ts
-import { prepass } from '@pablosz/gqless';
-import { query } from '../gqless';
+import { prepass } from 'gqty';
+import { query } from '../gqty';
 
 prepass(
   query.user,
@@ -59,8 +59,8 @@ Given an object or an array of objects, create a new object/array with the speci
 ### Examples
 
 ```ts
-import { selectFields } from '@pablosz/gqless';
-import { query } from '../gqless';
+import { selectFields } from 'gqty';
+import { query } from '../gqty';
 
 const dataPicked = selectFields(query.user, ['name', 'address.city']);
 
@@ -83,7 +83,7 @@ Given an object, pre-access the specified fields, and returns the object back.
 - It skips fields with arguments
 
 ```ts
-import { getFields, query, resolved } from '@pablosz/gqless';
+import { getFields, query, resolved } from 'gqty';
 
 const data = await resolved(() => {
   return getFields(query.user, 'name', 'email');
@@ -98,7 +98,7 @@ const data = await resolved(() => {
 We also have a helper to work with arrays, and works the same way as `getFields`.
 
 ```ts
-import { getArrayFields, query, resolved } from '@pablosz/gqless';
+import { getArrayFields, query, resolved } from 'gqty';
 
 const data = await resolved(() => {
   return getArrayFields(query.allUsers, 'name', 'email');
@@ -111,7 +111,7 @@ const data = await resolved(() => {
 ## Type Casters
 
 If you find too annoying having to deal with `undefined` everywhere when
-by logic you can be completely sure that in runtime you are not dealing with actual `undefined`s, GQless also exports no-op functions
+by logic you can be completely sure that in runtime you are not dealing with actual `undefined`s, GQty also exports no-op functions
 with useful types that removes your `undefined`s.
 
 :::caution
@@ -129,8 +129,8 @@ Removes all the `undefined`s in 1 level of your object or array.
 This next example is a perfectly safe place to use it, since here `id` and `name` will always be actual values in it's return value, not `undefined`.
 
 ```ts
-import { castNotSkeleton } from '@pablosz/gqless';
-import { resolved, query } from '../gqless';
+import { castNotSkeleton } from 'gqty';
+import { resolved, query } from '../gqty';
 
 const data = await resolved(() => {
   const { id, name } = query.user;
@@ -152,8 +152,8 @@ Removes all the `undefined`s **recursively** of your object or array.
 This next example is a perfectly safe place to use it, since here all the fields returned will always be actual values in it's return value, not `undefined`.
 
 ```ts
-import { castNotSkeletonDeep } from '@pablosz/gqless';
-import { resolved, query } from '../gqless';
+import { castNotSkeletonDeep } from 'gqty';
+import { resolved, query } from '../gqty';
 
 const data = await resolved(() => {
   const { id, name, dogs } = query.user;

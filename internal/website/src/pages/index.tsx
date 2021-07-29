@@ -178,7 +178,7 @@ function IndexPage() {
               style={{
                 maxWidth: '80vw',
               }}
-              alt="gqless Logo"
+              alt="gqty Logo"
             />
           </Overflow>
           <Overflow>
@@ -202,7 +202,7 @@ function IndexPage() {
           </Example>
           <ResultArrow animate={arrow} />
           <Example
-            title="GQless brings it to life"
+            title="GQty brings it to life"
             animate={queries}
             initial={initial}
           >

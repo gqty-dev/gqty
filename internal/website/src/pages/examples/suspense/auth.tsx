@@ -23,7 +23,7 @@ export default function Page() {
     switch (hash) {
       case '#headers': {
         return {
-          file: 'src/gqless/index.ts',
+          file: 'src/gqty/index.ts',
           initialPath: '/login',
         };
       }
@@ -63,7 +63,7 @@ export default function Page() {
         <UnorderedList>
           <ListItem>
             Handling of authorization headers in fetch:{' '}
-            <Link to="#headers">src/gqless/index.ts</Link>
+            <Link to="#headers">src/gqty/index.ts</Link>
           </ListItem>
           <ListItem>
             Login: <Link to="#login">src/Components/Login.tsx</Link>

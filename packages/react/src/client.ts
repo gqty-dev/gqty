@@ -23,7 +23,7 @@ import {
   UseSubscription,
 } from './subscription/useSubscription';
 
-import type { RetryOptions, GQlessClient } from '@pablosz/gqless';
+import type { RetryOptions, GQtyClient } from 'gqty';
 import type { FetchPolicy } from './common';
 import type { ReactClientOptionsWithDefaults } from './utils';
 import {
@@ -189,7 +189,7 @@ export function createReactClient<
     subscription: object;
   }
 >(
-  client: GQlessClient<GeneratedSchema>,
+  client: GQtyClient<GeneratedSchema>,
   optsCreate: CreateReactClientOptions = {}
 ): ReactClient<GeneratedSchema> {
   const { suspense = false } = (optsCreate.defaults ||= {});

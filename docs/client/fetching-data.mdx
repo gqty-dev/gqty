@@ -5,9 +5,9 @@ title: Fetching data
 
 > #### Prerequisites
 >
-> Make sure you've completed [Getting Started](/getting-started) first. `../gqless` refers to the generated directory.
+> Make sure you've completed [Getting Started](/getting-started) first. `../gqty` refers to the generated directory.
 
-GQless is a framework-agnostic GraphQL client, and can be used anywhere _(we might add more bindings for other Frontend frameworks in the future)_.
+GQty is a framework-agnostic GraphQL client, and can be used anywhere _(we might add more bindings for other Frontend frameworks in the future)_.
 
 ## Fetching data
 
@@ -17,10 +17,10 @@ Accepts a callback, which will be recursively executed, until the data has been 
 The final result of the callback is returned as a promise.
 
 If your request has any error, either from syntax or from the GraphQL API,
-it will always throw an instance of [`GQlessError`](/client/api/classes/GQlessError) _(which is itself, an instance of [`Error`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error))_
+it will always throw an instance of [`GQtyError`](/client/api/classes/GQtyError) _(which is itself, an instance of [`Error`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error))_
 
 ```ts
-import { query, resolved } from '../gqless';
+import { query, resolved } from '../gqty';
 
 resolved(() => {
   return query.helloWorld!;
@@ -29,7 +29,7 @@ resolved(() => {
     // data == string
   })
   .catch((err) => {
-    // err == import("@pablosz/gqless").GQlessError
+    // err == import("gqty").GQtyError
   });
 ```
 
@@ -69,7 +69,7 @@ On the other hand, when used with a **function**, it calls the function (using t
 and returns whatever the function gave back as a promise.
 
 ```ts
-import { query, refetch, resolved } from '../gqless';
+import { query, refetch, resolved } from '../gqty';
 
 // ...
 
@@ -93,10 +93,10 @@ const refetchedUser = await refetch(query.user);
 
 ## Using the Scheduler directly
 
-GQless exposes the Scheduler API, which is used by the helper functions above.
+GQty exposes the Scheduler API, which is used by the helper functions above.
 
 ```ts
-import { query, client } from '../gqless';
+import { query, client } from '../gqty';
 
 async function Example() {
   query.helloWorld;
@@ -110,14 +110,14 @@ async function Example() {
 
 ### Error handling
 
-The scheduler resolves to a promise of a [`GQlessError`](/client/api/classes/GQlessError):
+The scheduler resolves to a promise of a [`GQtyError`](/client/api/classes/GQtyError):
 
 ```ts
 async function Example() {
   query.helloWorld;
 
   await client.scheduler.resolving?.promise.then(({ error }) => {
-    // error == import("@pablosz/gqless").GQlessError | undefined
+    // error == import("gqty").GQtyError | undefined
     if (error) {
       throw error;
     }

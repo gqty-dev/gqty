@@ -3,10 +3,10 @@ id: javascript
 title: JavaScript Output
 ---
 
-Although the focus of GQless is to be used in [TypeScript](https://www.typescriptlang.org/),
+Although the focus of GQty is to be used in [TypeScript](https://www.typescriptlang.org/),
 it's completely possible to use it in JavaScript projects, outputting valid JavaScript code,
 alongside it's type-definitions, and using [JSDoc](https://www.typescriptlang.org/docs/handbook/jsdoc-supported-types.html)
-to be able to use a typed GQless.
+to be able to use a typed GQty.
 
 We recommend taking a look at [Type Checking JavaScript files](https://www.typescriptlang.org/docs/handbook/type-checking-javascript-files.html), [allowJs](https://www.typescriptlang.org/tsconfig#allowJs) and [checkJs](https://www.typescriptlang.org/tsconfig#checkJs).
 
@@ -16,14 +16,14 @@ To enable `JavaScript Output` you have to especify an extra `javascriptOutput` p
 
 ```js
 /**
- * @type {import("@pablosz/gqless-cli").GQlessConfig}
+ * @type {import("@gqty/cli").GQtyConfig}
  */
 const config = {
   // It should be set as 'true' or removed.
   enumsAsStrings: true,
 
   // You have to specify the '.js' extension
-  destination: './src/gqless/index.js',
+  destination: './src/gqty/index.js',
 
   // This has to be set as 'true'
   javascriptOutput: true,
@@ -35,10 +35,10 @@ module.exports = config;
 And the client will be created following the structure:
 
 ```bash
-src/gqless
+src/gqty
 ├── schema.generated.d.ts # Generated schema, you shouldn't modify it manually
 ├── schema.generated.js # Generated schema, you shouldn't modify it manually
-└── index.js # gqless client is exported from here, you can safely modify it based on your needs
+└── index.js # gqty client is exported from here, you can safely modify it based on your needs
 ```
 
 ## Usage
@@ -46,7 +46,7 @@ src/gqless
 The usage should be exactly the same:
 
 ```js
-import { query, resolved } from './gqless/index.js';
+import { query, resolved } from './gqty/index.js';
 
 resolved(() => {
   const dogsNames = query.dogs.map((dog) => {
@@ -72,7 +72,7 @@ With the caveat that, even if the autocomplete might allow you to import the typ
 To use the types, you have to use the [JSDoc](https://www.typescriptlang.org/docs/handbook/jsdoc-supported-types.html) [`@type`](https://www.typescriptlang.org/docs/handbook/jsdoc-supported-types.html#type):
 
 ```js
-import { query, resolved } from '../gqless';
+import { query, resolved } from '../gqty';
 
 // ...
 
@@ -90,7 +90,7 @@ const user = await resolved((query) => {
 
 function readUserData(
   /**
-   * @type {import("./gqless").User}
+   * @type {import("./gqty").User}
    */
   user
 ) {

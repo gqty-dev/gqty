@@ -7,26 +7,26 @@ import waitOn from 'wait-on';
 const relativeWorkerPath = './internal/build-utils/src/rollup-watch-worker.mjs';
 const workerURL = new URL(relativeWorkerPath, import.meta.url);
 const core = new Worker(workerURL, {
-  workerData: { name: 'gqless', directory: 'packages/gqless' },
+  workerData: { name: 'gqty', directory: 'packages/gqty' },
 });
 
 const subscriptions = new Worker(workerURL, {
   workerData: {
-    name: 'gqless-subscriptions',
+    name: 'gqty-subscriptions',
     directory: 'packages/subscriptions',
   },
 });
 
 const react = new Worker(workerURL, {
   workerData: {
-    name: 'gqless-react',
+    name: 'gqty-react',
     directory: 'packages/react',
   },
 });
 
 const logger = new Worker(workerURL, {
   workerData: {
-    name: 'gqless-logger',
+    name: 'gqty-logger',
     directory: 'packages/logger',
   },
 });
@@ -34,8 +34,8 @@ const logger = new Worker(workerURL, {
 core.postMessage({
   type: 'start',
   value: {
-    name: 'gqless',
-    directory: 'packages/gqless',
+    name: 'gqty',
+    directory: 'packages/gqty',
   },
 });
 

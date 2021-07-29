@@ -1,3 +1,3 @@
-# @pablosz/gqless-cli
+# @gqty/cli
 
-## Visit [https://gqless.com/cli/codegen](https://gqless.com/cli/codegen)
+## Visit [https://gqty.dev/cli/codegen](https://gqty.dev/cli/codegen)

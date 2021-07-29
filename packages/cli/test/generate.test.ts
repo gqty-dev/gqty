@@ -38,7 +38,7 @@ test('basic functionality works', async () => {
 
   expect(schemaCode).toMatchInlineSnapshot(`
     "/**
-     * GQLESS AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+     * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
      */
 
     // This should be included
@@ -60,7 +60,7 @@ test('basic functionality works', async () => {
       Float: number;
     }
 
-    export const scalarsEnumsHash: import('@pablosz/gqless').ScalarsEnumsHash = {
+    export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
       String: true,
       Int: true,
       Boolean: true,
@@ -126,12 +126,12 @@ test('basic functionality works', async () => {
 
   expect(clientCode).toMatchInlineSnapshot(`
     "/**
-     * GQLESS: You can safely modify this file and Query Fetcher based on your needs
+     * GQTY: You can safely modify this file and Query Fetcher based on your needs
      */
 
-    import { createReactClient } from '@pablosz/gqless-react';
-    import { createSubscriptionsClient } from '@pablosz/gqless-subscriptions';
-    import { createClient, QueryFetcher } from '@pablosz/gqless';
+    import { createReactClient } from '@gqty/react';
+    import { createSubscriptionsClient } from '@gqty/subscriptions';
+    import { createClient, QueryFetcher } from 'gqty';
     import {
       generatedSchema,
       scalarsEnumsHash,
@@ -282,12 +282,12 @@ test('custom scalars works', async () => {
 
   expect(clientCode).toMatchInlineSnapshot(`
     "/**
-     * GQLESS: You can safely modify this file and Query Fetcher based on your needs
+     * GQTY: You can safely modify this file and Query Fetcher based on your needs
      */
 
-    import { createReactClient } from '@pablosz/gqless-react';
+    import { createReactClient } from '@gqty/react';
 
-    import { createClient, QueryFetcher } from '@pablosz/gqless';
+    import { createClient, QueryFetcher } from 'gqty';
     import {
       generatedSchema,
       scalarsEnumsHash,
@@ -357,7 +357,7 @@ test('custom scalars works', async () => {
 
   expect(schemaCode).toMatchInlineSnapshot(`
     "/**
-     * GQLESS AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+     * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
      */
 
     export type Maybe<T> = T | null;
@@ -378,7 +378,7 @@ test('custom scalars works', async () => {
       Custom: 'hello world';
     }
 
-    export const scalarsEnumsHash: import('@pablosz/gqless').ScalarsEnumsHash = {
+    export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
       Custom: true,
       Boolean: true,
       String: true,
@@ -550,10 +550,10 @@ describe('feature complete app', () => {
 
     expect(schemaCode).toMatchInlineSnapshot(`
       "/**
-       * GQLESS AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+       * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
        */
 
-      import { SchemaUnionsKey } from '@pablosz/gqless';
+      import { SchemaUnionsKey } from 'gqty';
 
       export type Maybe<T> = T | null;
       export type Exact<T extends { [key: string]: unknown }> = {
@@ -596,7 +596,7 @@ describe('feature complete app', () => {
         scal?: Maybe<Scalars['ExampleScalar']>;
       }
 
-      export const scalarsEnumsHash: import('@pablosz/gqless').ScalarsEnumsHash = {
+      export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
         ExampleScalar: true,
         GreetingsEnum: true,
         OtherEnum: true,
@@ -900,7 +900,7 @@ describe('mutation', () => {
 
     expect(schemaCode).toMatchInlineSnapshot(`
       "/**
-       * GQLESS AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+       * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
        */
 
       export type Maybe<T> = T | null;
@@ -920,7 +920,7 @@ describe('mutation', () => {
         Float: number;
       }
 
-      export const scalarsEnumsHash: import('@pablosz/gqless').ScalarsEnumsHash = {
+      export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
         String: true,
         Boolean: true,
       };
@@ -1030,7 +1030,7 @@ describe('subscription', () => {
 
     expect(schemaCode).toMatchInlineSnapshot(`
       "/**
-       * GQLESS AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+       * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
        */
 
       export type Maybe<T> = T | null;
@@ -1050,7 +1050,7 @@ describe('subscription', () => {
         Float: number;
       }
 
-      export const scalarsEnumsHash: import('@pablosz/gqless').ScalarsEnumsHash = {
+      export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
         String: true,
         Boolean: true,
       };
@@ -1171,16 +1171,16 @@ test('javascript output works', async () => {
 
   expect(clientCode).toMatchInlineSnapshot(`
     "/**
-     * GQLESS: You can safely modify this file and Query Fetcher based on your needs
+     * GQTY: You can safely modify this file and Query Fetcher based on your needs
      */
 
-    import { createReactClient } from '@pablosz/gqless-react';
-    import { createSubscriptionsClient } from '@pablosz/gqless-subscriptions';
-    import { createClient } from '@pablosz/gqless';
+    import { createReactClient } from '@gqty/react';
+    import { createSubscriptionsClient } from '@gqty/subscriptions';
+    import { createClient } from 'gqty';
     import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
     /**
-     * @type {import(\\"@pablosz/gqless\\").QueryFetcher}
+     * @type {import(\\"gqty\\").QueryFetcher}
      */
     const queryFetcher = async function (query, variables) {
       // Modify \\"/api/graphql\\" if needed
@@ -1214,7 +1214,7 @@ test('javascript output works', async () => {
         : undefined;
 
     /**
-     * @type {import(\\"@pablosz/gqless\\").GQlessClient<import(\\"./schema.generated\\").GeneratedSchema>}
+     * @type {import(\\"gqty\\").GQtyClient<import(\\"./schema.generated\\").GeneratedSchema>}
      */
     export const client = createClient({
       schema: generatedSchema,
@@ -1227,7 +1227,7 @@ test('javascript output works', async () => {
       client;
 
     /**
-     * @type {import(\\"@pablosz/gqless-react\\").ReactClient<import(\\"./schema.generated\\").GeneratedSchema>}
+     * @type {import(\\"@gqty/react\\").ReactClient<import(\\"./schema.generated\\").GeneratedSchema>}
      */
     const reactClient = createReactClient(client, {
       defaults: {
@@ -1259,12 +1259,12 @@ test('javascript output works', async () => {
   `);
   expect(javascriptSchemaCode).toMatchInlineSnapshot(`
     "/**
-     * GQLESS AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+     * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
      */
-    import { SchemaUnionsKey } from '@pablosz/gqless';
+    import { SchemaUnionsKey } from 'gqty';
 
     /**
-     * @type {import(\\"@pablosz/gqless\\").ScalarsEnumsHash}
+     * @type {import(\\"gqty\\").ScalarsEnumsHash}
      */
     export const scalarsEnumsHash = { String: true, Int: true, Boolean: true };
 
@@ -1326,10 +1326,10 @@ test('javascript output works', async () => {
   `);
   expect(schemaCode).toMatchInlineSnapshot(`
     "/**
-     * GQLESS AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+     * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
      */
 
-    import { SchemaUnionsKey } from '@pablosz/gqless';
+    import { SchemaUnionsKey } from 'gqty';
 
     export type Maybe<T> = T | null;
     export type Exact<T extends { [key: string]: unknown }> = {
@@ -1348,7 +1348,7 @@ test('javascript output works', async () => {
       Float: number;
     }
 
-    export declare const scalarsEnumsHash: import('@pablosz/gqless').ScalarsEnumsHash;
+    export declare const scalarsEnumsHash: import('gqty').ScalarsEnumsHash;
     export declare const generatedSchema: {
       query: { __typename: { __type: 'String!' }; hello: { __type: 'String!' } };
       mutation: {};
@@ -1463,12 +1463,12 @@ test('ignoreArgs transform', async () => {
 
   expect(clientCode).toMatchInlineSnapshot(`
     "/**
-     * GQLESS: You can safely modify this file and Query Fetcher based on your needs
+     * GQTY: You can safely modify this file and Query Fetcher based on your needs
      */
 
-    import { createReactClient } from '@pablosz/gqless-react';
+    import { createReactClient } from '@gqty/react';
 
-    import { createClient, QueryFetcher } from '@pablosz/gqless';
+    import { createClient, QueryFetcher } from 'gqty';
     import {
       generatedSchema,
       scalarsEnumsHash,
@@ -1558,11 +1558,11 @@ test('ignoreArgs transform', async () => {
   `);
   expect(javascriptSchemaCode).toMatchInlineSnapshot(`
     "/**
-     * GQLESS AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+     * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
      */
 
     /**
-     * @type {import(\\"@pablosz/gqless\\").ScalarsEnumsHash}
+     * @type {import(\\"gqty\\").ScalarsEnumsHash}
      */
     export const scalarsEnumsHash = { String: true, Int: true, Boolean: true };
 
@@ -1579,7 +1579,7 @@ test('ignoreArgs transform', async () => {
   `);
   expect(schemaCode).toMatchInlineSnapshot(`
     "/**
-     * GQLESS AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+     * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
      */
 
     export type Maybe<T> = T | null;
@@ -1599,7 +1599,7 @@ test('ignoreArgs transform', async () => {
       Float: number;
     }
 
-    export const scalarsEnumsHash: import('@pablosz/gqless').ScalarsEnumsHash = {
+    export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
       String: true,
       Int: true,
       Boolean: true,

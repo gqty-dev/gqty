@@ -33,7 +33,7 @@ createClient<GeneratedSchema, SchemaObjectTypesNames, SchemaObjectTypes>({
 
 ## `RetryOptions`
 
-By default GQless has a retry policy of `3` max retries, with a delay of a standard back-off delay `(attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000)` ms.
+By default GQty has a retry policy of `3` max retries, with a delay of a standard back-off delay `(attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000)` ms.
 
 You can customize it this way:
 
@@ -45,7 +45,7 @@ You can customize it this way:
 
 ## Normalization
 
-GQless has support for normalization, which helps to reduce data redundancy and improve data integrity across all the cache.
+GQty has support for normalization, which helps to reduce data redundancy and improve data integrity across all the cache.
 
 It is `enabled` by default, but you can disable it, which will disable the need of automatically fetching `__typename` and `id's` and all the computing logic needed to support it.
 
@@ -56,7 +56,7 @@ createClient<GeneratedSchema, SchemaObjectTypes, SchemaObjectTypesNames>({
 });
 ```
 
-But often enough, it's very useful, and keep in mind that `Normalization` in GQless is highly customizable:
+But often enough, it's very useful, and keep in mind that `Normalization` in GQty is highly customizable:
 
 ### Identifier
 
@@ -93,7 +93,7 @@ createClient<GeneratedSchema, SchemaObjectTypes, SchemaObjectTypesNames>({
 
 Auto-fetch & object identifier customization.
 
-> Keep in mind that GQless already checks your schema and looks for the fields **id** or **\_\_id**
+> Keep in mind that GQty already checks your schema and looks for the fields **id** or **\_\_id**
 > and it add thems **automatically**.
 
 Set custom **id's** of any object type in your schema.

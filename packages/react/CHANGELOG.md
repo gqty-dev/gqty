@@ -1,28 +1,28 @@
-# @pablosz/gqless-react
+# @gqty/react
 
 ## 2.0.16
 
 ### Patch Changes
 
 - 3f08372: publish fork
-- 184a074: fix update loop https://github.com/PabloSzx/gqless/pull/223
+- 184a074: fix update loop https://github.com/PabloSzx/gqty/pull/223
 - Updated dependencies [3f08372]
-  - @pablosz/gqless@2.0.15
+  - gqty@2.0.15
 
 ## 2.0.15
 
 ### Patch Changes
 
 - 4a3d5ef: fix useQuery's prepare update
-- af6a437: - Rename `gqlessConfig` to `GQlessConfig` (so it's consistent with the new logo)
-  - Rename `gqlessError` to `GQlessError`
+- af6a437: - Rename `gqtyConfig` to `GQtyConfig` (so it's consistent with the new logo)
+  - Rename `gqtyError` to `GQtyError`
   - Remove `endpoint` option from the configuration, and instead always defaults to introspection one
     - It's confusing why theres two of them, and the user can change it later by modifying the file anyway
 - 4a3d5ef: fix args state usePaginatedQuery
 - 4a3d5ef: detach react default retry in useMutation
 - Updated dependencies [4a3d5ef]
 - Updated dependencies [af6a437]
-  - gqless@2.0.13
+  - gqty@2.0.13
 
 ## 2.0.14
 
@@ -30,7 +30,7 @@
 
 - f14df08: fix `forceUpdate` race condition
 - Updated dependencies [c45ca0d]
-  - gqless@2.0.12
+  - gqty@2.0.12
 
 ## 2.0.13
 
@@ -46,7 +46,7 @@
 - Updated dependencies [85a389c]
 - Updated dependencies [cca9d02]
 - Updated dependencies [0904297]
-  - gqless@2.0.11
+  - gqty@2.0.11
 
 ## 2.0.11
 
@@ -54,14 +54,14 @@
 
 - c486bec: fix useTransactionQuery suspense & fetchPolicy
 - Updated dependencies [65c4d32]
-  - gqless@2.0.10
+  - gqty@2.0.10
 
 ## 2.0.10
 
 ### Patch Changes
 
 - Updated dependencies [6a9269f]
-  - gqless@2.0.9
+  - gqty@2.0.9
 
 ## 2.0.9
 
@@ -71,7 +71,7 @@
 - Updated dependencies [c74442e]
 - Updated dependencies [d78f2ab]
 - Updated dependencies [0ffaa9d]
-  - gqless@2.0.8
+  - gqty@2.0.8
 
 ## 2.0.8
 
@@ -82,7 +82,7 @@
 - Updated dependencies [ff66195]
 - Updated dependencies [63fd3ea]
 - Updated dependencies [40d2101]
-  - gqless@2.0.7
+  - gqty@2.0.7
 
 ## 2.0.7
 
@@ -91,14 +91,14 @@
 - 173e11d: add subscriptions to events
 - Updated dependencies [173e11d]
 - Updated dependencies [c613410]
-  - gqless@2.0.6
+  - gqty@2.0.6
 
 ## 2.0.6
 
 ### Patch Changes
 
 - Updated dependencies [6fef085]
-  - gqless@2.0.5
+  - gqty@2.0.5
 
 ## 2.0.5
 
@@ -106,7 +106,7 @@
 
 - 2bf4ce2: add useQuery "prepare" helper
 - Updated dependencies [2bf4ce2]
-  - gqless@2.0.4
+  - gqty@2.0.4
 
 ## 2.0.4
 
@@ -114,20 +114,20 @@
 
 - 27f9ece: set "graphql" as optional peerDependency
 - Updated dependencies [27f9ece]
-  - gqless@2.0.3
+  - gqty@2.0.3
 
 ## 2.0.3
 
 ### Patch Changes
 
 - Updated dependencies [c06ef80]
-  - gqless@2.0.2
+  - gqty@2.0.2
 
 ## 2.0.2
 
 ### Patch Changes
 
-- 5f29d52: change useQuery's "gqlessState" to "$state"
+- 5f29d52: change useQuery's "gqtyState" to "$state"
 
 ## 2.0.1
 
@@ -135,4 +135,4 @@
 
 - a57cab4: official beta v2 publish
 - Updated dependencies [a57cab4]
-  - gqless@2.0.1
+  - gqty@2.0.1

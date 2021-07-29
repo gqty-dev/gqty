@@ -1,7 +1,7 @@
 import { spawn, execSync } from 'child_process';
 import fkill from 'fkill';
 
-execSync('pnpm -r exec --filter @pablosz/gqless -- tsc -m commonjs', {
+execSync('pnpm -r exec --filter gqty -- tsc -m commonjs', {
   stdio: 'inherit',
 });
 

@@ -1,3 +1,3 @@
 # Contributing
 
-Check [https://gqless.com/contributing](https://gqless.com/contributing)
+Check [https://gqty.dev/contributing](https://gqty.dev/contributing)

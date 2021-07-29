@@ -1,11 +1,11 @@
 import {
   doRetry,
-  GQlessClient,
-  GQlessError,
+  GQtyClient,
+  GQtyError,
   RetryOptions,
   Selection,
   SelectionType,
-} from '@pablosz/gqless';
+} from 'gqty';
 import { useCallback, useMemo, useReducer, useRef, useState } from 'react';
 
 import { useIsomorphicLayoutEffect, useLazyRef } from '../common';
@@ -17,7 +17,7 @@ function initSelectionsState() {
 
 interface UseRefetchReducerState {
   isLoading: boolean;
-  error?: GQlessError;
+  error?: GQtyError;
 }
 
 type UseRefetchReducerAction =
@@ -29,7 +29,7 @@ type UseRefetchReducerAction =
     }
   | {
       type: 'error';
-      error: GQlessError;
+      error: GQtyError;
     };
 
 function UseRefetchReducer(
@@ -82,7 +82,7 @@ export interface UseRefetch {
 }
 
 export function createUseRefetch(
-  client: GQlessClient<any>,
+  client: GQtyClient<any>,
   { defaults: { retry: defaultRetry } }: ReactClientOptionsWithDefaults
 ) {
   const { interceptorManager, buildAndFetchSelections, refetch } = client;
@@ -167,7 +167,7 @@ export function createUseRefetch(
 
             return refetchData;
           } catch (err) {
-            const error = GQlessError.create(err, useRefetch);
+            const error = GQtyError.create(err, useRefetch);
             dispatch({
               type: 'error',
               error,
@@ -196,7 +196,7 @@ export function createUseRefetch(
             type: 'done',
           });
         } catch (err) {
-          const error = GQlessError.create(err, useRefetch);
+          const error = GQtyError.create(err, useRefetch);
           dispatch({
             type: 'error',
             error,

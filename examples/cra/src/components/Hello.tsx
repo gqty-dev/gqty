@@ -2,7 +2,7 @@
 
 import { Fragment, Suspense, useState } from 'react';
 
-import { useQuery, graphql, query } from '../gqless';
+import { useQuery, graphql, query } from '../gqty';
 
 function NamesList({ n }: { n: number }) {
   const { namesList } = useQuery();

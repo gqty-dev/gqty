@@ -1,6 +1,6 @@
 import { Stack, Text } from '@chakra-ui/react';
 import { useQuery, buildSelection } from '../components/client';
-import { query } from '../graphql/gqless';
+import { query } from '../graphql/gqty';
 
 query.dogs;
 

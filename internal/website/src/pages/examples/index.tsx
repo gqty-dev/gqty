@@ -14,12 +14,12 @@ export default function Page() {
         <Heading as="h1">API</Heading>
         <Text>
           All the examples made here are around a playground API specially made
-          to showcase usual usage of GraphQL APIs in <b>gqless</b>.
+          to showcase usual usage of GraphQL APIs in <b>gqty</b>.
         </Text>
         <Text>
           You can also check it{' '}
-          <Link to="http://examples-api.gqless.com">
-            http://examples-api.gqless.com
+          <Link to="http://examples-api.gqty.dev">
+            http://examples-api.gqty.dev
           </Link>{' '}
           and play with it, since it also offers a playground using{' '}
           <Link to="https://altair.sirmuel.design/">Altair GraphQL Client</Link>{' '}
@@ -36,19 +36,17 @@ export default function Page() {
           <Link to="https://codesandbox.io/">
             <b>CodeSandbox</b>
           </Link>
-          , which allows you to modify the examples and play with gqless{' '}
+          , which allows you to modify the examples and play with gqty{' '}
           <b>without installing anything</b>.
         </Text>
         <Heading as="h2">Examples</Heading>
         <Text>
           We are planning to add more examples about all the different expected
-          usages of <b>gqless</b>.
+          usages of <b>gqty</b>.
         </Text>
         <Text>
           And we encourage you to open a new{' '}
-          <Link to="https://github.com/PabloSzx/gqless/issues">
-            GitHub issue
-          </Link>{' '}
+          <Link to="https://github.com/PabloSzx/gqty/issues">GitHub issue</Link>{' '}
           to request some examples about specific issues you might have, and you
           will also be helping everyone.
         </Text>
@@ -58,7 +56,7 @@ export default function Page() {
         <Heading as="h3" fontSize="1.3em" display="flex" alignItems="center">
           <FaCircle fontSize="0.8rem" />{' '}
           <Text as="span" marginLeft="0.4rem">
-            gqless in React Suspense
+            gqty in React Suspense
           </Text>
         </Heading>
 
