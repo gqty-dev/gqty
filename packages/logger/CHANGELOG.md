@@ -1,5 +1,13 @@
 # @gqty/logger
 
+## 1.0.1
+
+### Patch Changes
+
+- 3784c2b: release
+- Updated dependencies [3784c2b]
+  - gqty@1.0.1
+
 ## 2.0.12
 
 ### Patch Changes
