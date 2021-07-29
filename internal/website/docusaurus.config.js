@@ -151,4 +151,5 @@ module.exports = {
     ],
   ],
   stylesheets: ['/fonts.css'],
+  onBrokenLinks: 'warn',
 };
