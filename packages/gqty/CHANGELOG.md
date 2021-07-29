@@ -1,5 +1,11 @@
 # gqty
 
+## 1.0.1
+
+### Patch Changes
+
+- 3784c2b: release
+
 ## 2.0.15
 
 ### Patch Changes
