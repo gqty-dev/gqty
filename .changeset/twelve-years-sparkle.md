@@ -6,4 +6,4 @@
 '@gqty/subscriptions': patch
 ---
 
-improve build & support ESM
+release
