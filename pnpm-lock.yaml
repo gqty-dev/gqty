@@ -354,7 +354,7 @@ importers:
       '@emotion/styled': ^11.3.0
       '@mdx-js/react': ^1.6.22
       '@tsconfig/docusaurus': ^1.0.2
-      '@types/mdx-js__react': ^1.5.3
+      '@types/mdx-js__react': ^1.5.4
       '@types/react': ^17.0.11
       '@types/react-dom': ^17.0.8
       '@types/react-helmet': ^6.1.1
@@ -413,7 +413,7 @@ importers:
       typescript: 4.3.4
       url-loader: 4.1.1_file-loader@6.2.0
     devDependencies:
-      '@types/mdx-js__react': 1.5.3
+      '@types/mdx-js__react': 1.5.4
       '@types/react-dom': 17.0.8
 
   packages/cli:
@@ -6550,8 +6550,8 @@ packages:
       '@types/unist': 2.0.3
     dev: false
 
-  /@types/mdx-js__react/1.5.3:
-    resolution: {integrity: sha512-flP0BpS5rXnEbkU5ih79ARaI/+rK10Iee+zxTaWYtoiyc2+f1EJ8EnYgMmXHdAuI7OX4J9/hdoXfrfrri0AT+Q==}
+  /@types/mdx-js__react/1.5.4:
+    resolution: {integrity: sha512-hce+Hymj3cEMOma13eQRhpT3mhQrOkN4CAYEwKWB/qj2BiuUrrTpCkOShEERGmLVgDc3nxF4Dc0k7W999EQxnQ==}
     dependencies:
       '@types/react': 17.0.11
     dev: true
@@ -7751,7 +7751,7 @@ packages:
   /axios/0.21.1:
     resolution: {integrity: sha512-dKQiRHxGD9PPRIUNIWvZhPTPpl1rf/OxTYKsqKUDjBwYylTvV7SjSHJb9ratfyzM6wCdLCOYLzs73qpg5c4iGA==}
     dependencies:
-      follow-redirects: 1.14.1_debug@4.3.1
+      follow-redirects: 1.14.1
     transitivePeerDependencies:
       - debug
 
@@ -12067,6 +12067,15 @@ packages:
       - supports-color
     dev: true
 
+  /follow-redirects/1.14.1:
+    resolution: {integrity: sha512-HWqDgT7ZEkqRzBvc2s64vSZ/hfOceEol3ac/7tKwzuvEyWx3/4UegXh5oBOIotkGsObyk3xznnSRVADBgWSQVg==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+
   /follow-redirects/1.14.1_debug@3.2.7:
     resolution: {integrity: sha512-HWqDgT7ZEkqRzBvc2s64vSZ/hfOceEol3ac/7tKwzuvEyWx3/4UegXh5oBOIotkGsObyk3xznnSRVADBgWSQVg==}
     engines: {node: '>=4.0'}
@@ -12078,17 +12087,6 @@ packages:
     dependencies:
       debug: 3.2.7
     dev: true
-
-  /follow-redirects/1.14.1_debug@4.3.1:
-    resolution: {integrity: sha512-HWqDgT7ZEkqRzBvc2s64vSZ/hfOceEol3ac/7tKwzuvEyWx3/4UegXh5oBOIotkGsObyk3xznnSRVADBgWSQVg==}
-    engines: {node: '>=4.0'}
-    peerDependencies:
-      debug: '*'
-    peerDependenciesMeta:
-      debug:
-        optional: true
-    dependencies:
-      debug: 4.3.1_supports-color@6.1.0
 
   /for-in/1.0.2:
     resolution: {integrity: sha1-gQaNKVqBQuwKxybG4iAMMPttXoA=}
@@ -13195,7 +13193,7 @@ packages:
     engines: {node: '>=8.0.0'}
     dependencies:
       eventemitter3: 4.0.7
-      follow-redirects: 1.14.1_debug@4.3.1
+      follow-redirects: 1.14.1
       requires-port: 1.0.0
     transitivePeerDependencies:
       - debug
