@@ -13,7 +13,7 @@
     "build:website": "pnpm -r --filter website docs:build",
     "changeset": "changeset",
     "ci:release": "pnpm -r publish --access public --no-git-checks",
-    "ci:version": "changeset version && pnpm i --no-frozen-lockfile --lockfile-only --ignore-scripts",
+    "ci:version": "changeset version && pnpm i --no-frozen-lockfile --lockfile-only --ignore-scripts && pnpm update -r \"@gqty/*\" gqty",
     "clean": "rimraf packages/*/dist packages/*/coverage packages/*/.nyc_output packages/*/*.tsbuildinfo",
     "dev": "pnpm clean && node dev.mjs",
     "dev:mercurius": "pnpm -r exec --filter gqty -- tsc -m commonjs && concurrently \"pnpm -r --filter mercurius-example test:watch\" \"pnpm -r --filter gqty start\"",
