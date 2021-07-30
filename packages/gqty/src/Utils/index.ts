@@ -29,4 +29,4 @@ export function isEmptyObject(obj: object) {
 export * from './debounce';
 export * from './object';
 export * from './cycle';
-export { default as mergeWith } from 'lodash/mergeWith';
+export { default as mergeWith } from 'lodash/mergeWith.js';

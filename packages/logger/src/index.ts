@@ -1,6 +1,6 @@
-import parserJSON from 'prettier/parser-babel';
-import parserGraphQL from 'prettier/parser-graphql';
-import prettier from 'prettier/standalone';
+import parserJSON from 'prettier/parser-babel.js';
+import parserGraphQL from 'prettier/parser-graphql.js';
+import prettier from 'prettier/standalone.js';
 import { serializeError } from 'serialize-error';
 
 import type { GQtyClient } from 'gqty';
