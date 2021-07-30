@@ -1,5 +1,11 @@
 # gqty
 
+## 1.0.2
+
+### Patch Changes
+
+- 25aceae: fix ESM import with extension
+
 ## 1.0.1
 
 ### Patch Changes

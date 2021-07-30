@@ -1,5 +1,13 @@
 # @gqty/logger
 
+## 1.0.2
+
+### Patch Changes
+
+- 25aceae: fix ESM import with extension
+- Updated dependencies [25aceae]
+  - gqty@1.0.2
+
 ## 1.0.1
 
 ### Patch Changes
