@@ -478,7 +478,7 @@ importers:
       '@rollup/plugin-typescript': ^8.2.4
       '@size-limit/preset-small-lib': ^5.0.2
       '@types/concurrently': ^6.2.1
-      '@types/lodash': ^4.14.171
+      '@types/lodash': ^4.14.172
       '@types/lodash-es': ^4.17.4
       '@types/mkdirp': ^1.0.2
       '@types/node': ^16.4.7
@@ -520,7 +520,7 @@ importers:
       '@rollup/plugin-typescript': 8.2.4_tslib@2.3.0+typescript@4.3.5
       '@size-limit/preset-small-lib': 5.0.2_a16e693b89b93234031713d257cbc50a
       '@types/concurrently': 6.2.1
-      '@types/lodash': 4.14.171
+      '@types/lodash': 4.14.172
       '@types/lodash-es': 4.17.4
       '@types/mkdirp': 1.0.2
       '@types/node': 16.4.7
@@ -590,7 +590,7 @@ importers:
       '@testing-library/react': ^12.0.0
       '@testing-library/react-hooks': ^7.0.1
       '@types/jest': ^26.0.24
-      '@types/lodash': ^4.14.171
+      '@types/lodash': ^4.14.172
       '@types/react': ^17.0.15
       '@types/react-dom': ^17.0.9
       bob-esbuild-cli: ^0.1.27
@@ -616,7 +616,7 @@ importers:
       '@testing-library/react': 12.0.0_react-dom@17.0.2+react@17.0.2
       '@testing-library/react-hooks': 7.0.1_fc2bb8a5b006d3f25c5f84ea777e678d
       '@types/jest': 26.0.24
-      '@types/lodash': 4.14.171
+      '@types/lodash': 4.14.172
       '@types/react': 17.0.15
       '@types/react-dom': 17.0.9
       bob-esbuild-cli: 0.1.27_f2063b572686d2161cbb68d9f9612f30
@@ -6681,6 +6681,10 @@ packages:
   /@types/lodash/4.14.171:
     resolution: {integrity: sha512-7eQ2xYLLI/LsicL2nejW9Wyko3lcpN6O/z0ZLHrEQsg280zIdCv1t/0m6UtBjUHokCGBQ3gYTbHzDkZ1xOBwwg==}
 
+  /@types/lodash/4.14.172:
+    resolution: {integrity: sha512-/BHF5HAx3em7/KkzVKm3LrsD6HZAXuXO1AJZQ3cRRBZj4oHZDviWPYu0aEplAqDFNHZPW6d3G7KN+ONcCCC7pw==}
+    dev: true
+
   /@types/mdast/3.0.7:
     resolution: {integrity: sha512-YwR7OK8aPmaBvMMUi+pZXBNoW2unbVbfok4YRqGMJBe1dpDlzpRkJrYEYmvjxgs5JhuQmKfDexrN98u941Zasg==}
     dependencies:
@@ -8053,7 +8057,7 @@ packages:
   /axios/0.21.1:
     resolution: {integrity: sha512-dKQiRHxGD9PPRIUNIWvZhPTPpl1rf/OxTYKsqKUDjBwYylTvV7SjSHJb9ratfyzM6wCdLCOYLzs73qpg5c4iGA==}
     dependencies:
-      follow-redirects: 1.14.1
+      follow-redirects: 1.14.1_debug@4.3.2
     transitivePeerDependencies:
       - debug
 
@@ -12398,15 +12402,6 @@ packages:
       - supports-color
     dev: true
 
-  /follow-redirects/1.14.1:
-    resolution: {integrity: sha512-HWqDgT7ZEkqRzBvc2s64vSZ/hfOceEol3ac/7tKwzuvEyWx3/4UegXh5oBOIotkGsObyk3xznnSRVADBgWSQVg==}
-    engines: {node: '>=4.0'}
-    peerDependencies:
-      debug: '*'
-    peerDependenciesMeta:
-      debug:
-        optional: true
-
   /follow-redirects/1.14.1_debug@3.2.7:
     resolution: {integrity: sha512-HWqDgT7ZEkqRzBvc2s64vSZ/hfOceEol3ac/7tKwzuvEyWx3/4UegXh5oBOIotkGsObyk3xznnSRVADBgWSQVg==}
     engines: {node: '>=4.0'}
@@ -12418,6 +12413,17 @@ packages:
     dependencies:
       debug: 3.2.7
     dev: true
+
+  /follow-redirects/1.14.1_debug@4.3.2:
+    resolution: {integrity: sha512-HWqDgT7ZEkqRzBvc2s64vSZ/hfOceEol3ac/7tKwzuvEyWx3/4UegXh5oBOIotkGsObyk3xznnSRVADBgWSQVg==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+    dependencies:
+      debug: 4.3.2_supports-color@6.1.0
 
   /for-in/1.0.2:
     resolution: {integrity: sha1-gQaNKVqBQuwKxybG4iAMMPttXoA=}
@@ -13537,7 +13543,7 @@ packages:
     engines: {node: '>=8.0.0'}
     dependencies:
       eventemitter3: 4.0.7
-      follow-redirects: 1.14.1
+      follow-redirects: 1.14.1_debug@4.3.2
       requires-port: 1.0.0
     transitivePeerDependencies:
       - debug
