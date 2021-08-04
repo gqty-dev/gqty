@@ -33,7 +33,7 @@ importers:
       ts-jest: ^27.0.4
       ts-node: ^10.1.0
       tslib: ^2.3.0
-      tsup: ^4.12.5
+      tsup: ^4.13.1
       typescript: ^4.3.5
       utf-8-validate: ^5.0.5
       wait-on: ^6.0.0
@@ -46,7 +46,7 @@ importers:
       ts-jest: 27.0.4_jest@27.0.6+typescript@4.3.5
       ts-node: 10.1.0_f2063b572686d2161cbb68d9f9612f30
       tslib: 2.3.0
-      tsup: 4.12.5_ts-node@10.1.0+typescript@4.3.5
+      tsup: 4.13.1_ts-node@10.1.0+typescript@4.3.5
       typescript: 4.3.5
       utf-8-validate: 5.0.5
       wait-on: 6.0.0
@@ -312,7 +312,7 @@ importers:
       size-limit: ^5.0.2
       ts-jest: ^27.0.4
       tslib: ^2.3.0
-      tsup: ^4.12.5
+      tsup: ^4.13.1
       typescript: ^4.3.5
       wait-for-expect: ^3.0.2
     dependencies:
@@ -342,7 +342,7 @@ importers:
       rimraf: 3.0.2
       size-limit: 5.0.2
       tslib: 2.3.0
-      tsup: 4.12.5_ts-node@10.1.0+typescript@4.3.5
+      tsup: 4.13.1_ts-node@10.1.0+typescript@4.3.5
       typescript: 4.3.5
 
   internal/website:
@@ -509,7 +509,7 @@ importers:
       test-utils: workspace:^0.1.0
       tsc-watch: ^4.4.0
       tslib: ^2.3.0
-      tsup: ^4.12.5
+      tsup: ^4.13.1
       typescript: ^4.3.5
       wait-on: ^6.0.0
       ws: ^7.5.3
@@ -549,7 +549,7 @@ importers:
       test-utils: link:../../internal/test-utils
       tsc-watch: 4.4.0_typescript@4.3.5
       tslib: 2.3.0
-      tsup: 4.12.5_ts-node@10.1.0+typescript@4.3.5
+      tsup: 4.13.1_ts-node@10.1.0+typescript@4.3.5
       typescript: 4.3.5
       wait-on: 6.0.0
       ws: 7.5.3_72ef9f06cb99540da679cbf1bf7a3256
@@ -22291,6 +22291,34 @@ packages:
 
   /tsup/4.12.5_ts-node@10.1.0+typescript@4.3.5:
     resolution: {integrity: sha512-3f0StcX+trOZvgaY/iU11U8HvvQ4v/LLgoP9OmxtOQVXP8e/Q8FSk69d0bXFb2pHB77CmVxvqiWdwybELQfx1A==}
+    hasBin: true
+    peerDependencies:
+      typescript: ^4.2.3
+    peerDependenciesMeta:
+      typescript:
+        optional: true
+    dependencies:
+      cac: 6.7.3
+      chalk: 4.1.1
+      chokidar: 3.5.2
+      debug: 4.3.2
+      esbuild: 0.12.17
+      execa: 5.1.1
+      globby: 11.0.4
+      joycon: 3.0.1
+      postcss-load-config: 3.1.0_ts-node@10.1.0
+      resolve-from: 5.0.0
+      rollup: 2.55.1
+      sucrase: 3.20.0
+      tree-kill: 1.2.2
+      typescript: 4.3.5
+    transitivePeerDependencies:
+      - supports-color
+      - ts-node
+    dev: true
+
+  /tsup/4.13.1_ts-node@10.1.0+typescript@4.3.5:
+    resolution: {integrity: sha512-OSJjTe8Kj+mm0gagg6Ory5vNm2NkQ11IfaDMjgGA3DDco0c2G5kObLkqmRDTmvFqw24mF2knfDMnq7vEuD5+7w==}
     hasBin: true
     peerDependencies:
       typescript: ^4.2.3
