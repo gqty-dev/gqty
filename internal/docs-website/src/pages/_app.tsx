@@ -59,7 +59,7 @@ const theme = extendTheme({
   styles,
 });
 
-const accentColor = '#1CC8EE';
+const accentColor = '#C00B84';
 
 const serializedMdx = process.env.SERIALIZED_MDX_ROUTES;
 const mdxRoutes = { data: serializedMdx && JSON.parse(serializedMdx) };
@@ -91,16 +91,16 @@ function AppContent(appProps: AppProps) {
           },
           {
             children: 'Docs',
-            title: 'View examples',
+            title: 'Check Documentation',
             href: '/docs',
-            onClick: (e) => handlePushRoute('/docs', e),
+            onClick: (e) => handlePushRoute('/docs/getting-started', e),
           },
         ]}
         cta={{
           children: 'Get Started',
-          title: 'Start using The Guild Docs',
-          href: 'https://github.com/the-guild-org/the-guild-docs',
-          onClick: (e) => handlePushRoute('/docs', e),
+          title: 'Start using GQty',
+          href: '/docs/getting-started',
+          onClick: (e) => handlePushRoute('/docs/getting-started', e),
           target: '_blank',
           rel: 'noopener noreferrer',
         }}
@@ -127,10 +127,10 @@ const AppContentWrapper = appWithTranslation(function TranslatedApp(appProps) {
 });
 
 const defaultSeo: AppSeoProps = {
-  title: 'Guild Docs',
-  description: 'Guild Docs Example',
+  title: 'GQty',
+  description: 'a GraphQL client built for rapid iteration.',
   logo: {
-    url: 'https://the-guild-docs.vercel.app/assets/subheader-logo.png',
+    url: 'https://gqty.dev/logo.png',
     width: 50,
     height: 54,
   },

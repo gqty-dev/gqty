@@ -4,7 +4,7 @@ title: Fetching data with React
 sidebar_label: Fetching Data
 ---
 
-## `useQuery`
+## useQuery
 
 [React hook](https://reactjs.org/docs/hooks-intro.html) that uses the main design of GQty.
 
@@ -169,7 +169,7 @@ function Example() {
 }
 ```
 
-## `graphql` HOC
+## graphql HOC
 
 `graphql` is a [Higher-Order Component](https://reactjs.org/docs/higher-order-components.html) alternative to [useQuery](#usequery), designed specially for [Suspense usage](/react/suspense).
 
@@ -226,7 +226,7 @@ On the other hand, [useQuery](#usequery) enables very nice composability, but it
 
 And it's important to note that for `Non-Suspense` usage we encourage to always use [useQuery](#usequery).
 
-## `usePaginatedQuery`
+## usePaginatedQuery
 
 Paginated focused queries, in which you specify a function and initial arguments, which is going to be automatically called on first-render or via custom `fetchMore` calls.
 
@@ -319,7 +319,7 @@ function Example() {
 
 Check [API Reference](/react/api/interfaces/usepaginatedquery)
 
-## `useTransactionQuery`
+## useTransactionQuery
 
 Alternative to `graphql` and `useQuery` that works via pre-defined functions, which allows for extra features that are not available in `useQuery` & `graphql HOC`.
 
@@ -374,7 +374,7 @@ function Example() {
 
 Check [API Reference](/react/api/interfaces/usetransactionquery)
 
-## `useLazyQuery`
+## useLazyQuery
 
 Queries meant to be called in response of events, like button clicks.
 
@@ -426,7 +426,7 @@ function Example() {
 
 Check [API Reference](/react/api/interfaces/uselazyquery)
 
-## `useRefetch`
+## useRefetch
 
 Refetch giving specific parts of the schema or via functions
 
@@ -486,7 +486,7 @@ function Example() {
 }
 ```
 
-## `prepareQuery`
+## prepareQuery
 
 Prepare queries on **module-level**.
 

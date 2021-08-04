@@ -15,7 +15,7 @@ GQty is a framework-agnostic GraphQL client, and can be used anywhere _(we might
 
 ## Fetching data
 
-### `resolved`
+### resolved
 
 Accepts a callback, which will be recursively executed, until the data has been fetched (or an error occurs).
 The final result of the callback is returned as a promise.
@@ -39,7 +39,7 @@ resolved(() => {
 
 You can specify options in the second argument, like forcing a refetch or isolating from existing cache, see [**ResolveOptions**](/client/api/interfaces/resolveoptions).
 
-### `inlineResolved`
+### inlineResolved
 
 `inlineResolved` is the exact same as [resolved](#resolved), but it returns the data straight away if it can.
 
@@ -62,7 +62,7 @@ if (possibleData instanceof Promise) {
 
 ## Refetching data
 
-### `refetch`
+### refetch
 
 A special function that accepts object proxies, or functions.
 

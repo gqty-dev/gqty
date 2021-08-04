@@ -6,16 +6,15 @@ export default function Index() {
   return (
     <>
       <HeroGradient
-        title="The Guild Docs"
-        description="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed at gravida lacus"
+        title="GQty"
+        description="a GraphQL client built for rapid iteration."
         link={{
-          href: '/docs',
+          href: '/docs/getting-started',
           children: 'Get Started',
-          title: 'Get started with The Guild Docs',
-          onClick: (e) => handlePushRoute('/docs', e),
+          title: 'Get started with GQty',
+          onClick: (e) => handlePushRoute('/docs/getting-started', e),
         }}
-        version="0.0.12"
-        colors={['#000000', '#1CC8EE']}
+        colors={['#EC4CB7', '#C00B84']}
       />
 
       <InfoList

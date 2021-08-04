@@ -7,23 +7,26 @@ import { getRoutes } from '../../../routes';
 
 import type { GetStaticPaths, GetStaticProps } from 'next';
 
-export default MDXPage(function PostPage({
-  content,
-  TOC,
-  MetaHead,
-  BottomNavigation,
-}) {
-  return (
-    <>
-      <Head>{MetaHead}</Head>
-      <DocsContent>{content}</DocsContent>
-      <DocsTOC>
-        <TOC />
-        <BottomNavigation />
-      </DocsTOC>
-    </>
-  );
-});
+export default MDXPage(
+  function PostPage({ content, TOC, MetaHead, BottomNavigation }) {
+    return (
+      <>
+        <Head>{MetaHead}</Head>
+        <DocsContent>{content}</DocsContent>
+        <DocsTOC>
+          <TOC />
+          <BottomNavigation />
+        </DocsTOC>
+      </>
+    );
+  },
+  {
+    renderTitle(title) {
+      if (!title) return 'GQty';
+      return `${title} - GQty`;
+    },
+  }
+);
 
 export const getStaticProps: GetStaticProps = (ctx) => {
   return MDXProps(

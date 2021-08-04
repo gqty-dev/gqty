@@ -18,9 +18,8 @@ title: Getting started
    }
    ```
 3. Then run the script once, to create a `gqty.config.cjs` file:
-   ```bash yarn2npm
-   yarn generate
-   ```
+
+<PackageRun scripts="generate" />
 
 ## Configuring Codegen
 
@@ -48,9 +47,7 @@ module.exports = config;
 
 Point `introspection.endpoint` to your GraphQL API, _adding headers for authorization if necessary_. Then run the generate command again, to fetch your schema and output to the `destination` file:
 
-```bash yarn2npm
-yarn generate
-```
+<PackageRun scripts="generate" />
 
 The output should look like this:
 

@@ -8,13 +8,13 @@ sidebar_label: Server-Side Rendering
 
 These functions are meant to be used together, in different steps of your application.
 
-### `prepareReactRender`
+### prepareReactRender
 
 Function designed to be used before the React Render is being made, for example, in places like [getStaticProps](https://nextjs.org/docs/basic-features/data-fetching#getstaticprops-static-generation) or [getServerSideProps](https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering) of [Next.js](https://nextjs.org/)
 
 Internally it uses [react-ssr-prepass](https://github.com/FormidableLabs/react-ssr-prepass)
 
-### `useHydrateCache`
+### useHydrateCache
 
 Function designed to be placed at the very top of the hydrated component
 

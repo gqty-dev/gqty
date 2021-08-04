@@ -22,7 +22,7 @@ createClient<GeneratedSchema, SchemaObjectTypesNames, SchemaObjectTypes>({
 });
 ```
 
-## `ClientOptions`
+## ClientOptions
 
 | Name                  | Type                                                  | Default Value | Description                                                                                    |
 | --------------------- | ----------------------------------------------------- | ------------- | ---------------------------------------------------------------------------------------------- |
@@ -31,7 +31,7 @@ createClient<GeneratedSchema, SchemaObjectTypesNames, SchemaObjectTypes>({
 | normalization         | `boolean` or [`NormalizationOptions`](#normalization) | `true`        | Enable, disable and configure [Normalization](#normalization)                                  |
 | subscriptionsClient   | [`SubscriptionsClient`](/client/subscriptions)        | `undefined`   | Subscriptions client                                                                           |
 
-## `RetryOptions`
+## RetryOptions
 
 By default GQty has a retry policy of `3` max retries, with a delay of a standard back-off delay `(attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000)` ms.
 
