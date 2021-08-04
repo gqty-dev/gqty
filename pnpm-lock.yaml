@@ -377,7 +377,7 @@ importers:
       regenerator-runtime: ^0.13.9
       rimraf: ^3.0.2
       serve: ^12.0.0
-      typedoc: 0.20.37
+      typedoc: 0.21.5
       typedoc-plugin-markdown: ^3.10.4
       typescript: ^4.3.5
       url-loader: ^4.1.1
@@ -395,7 +395,7 @@ importers:
       '@types/react-helmet': 6.1.2
       '@types/react-router-dom': 5.1.8
       cross-env: 7.0.3
-      docusaurus-plugin-typedoc: 0.12.1_a09bd81c9f7590c6318437e0c34209b8
+      docusaurus-plugin-typedoc: 0.12.1_a0e69128c258e41b73f7b1b325300732
       file-loader: 6.2.0
       framer-motion: 4.1.17_react-dom@17.0.2+react@17.0.2
       globby: 11.0.4
@@ -410,8 +410,8 @@ importers:
       regenerator-runtime: 0.13.9
       rimraf: 3.0.2
       serve: 12.0.0
-      typedoc: 0.20.37_typescript@4.3.5
-      typedoc-plugin-markdown: 3.10.4_typedoc@0.20.37
+      typedoc: 0.21.5_typescript@4.3.5
+      typedoc-plugin-markdown: 3.10.4_typedoc@0.21.5
       typescript: 4.3.5
       url-loader: 4.1.1_file-loader@6.2.0
     devDependencies:
@@ -9249,11 +9249,6 @@ packages:
   /colorette/1.2.2:
     resolution: {integrity: sha512-MKGMzyfeuutC/ZJ1cba9NqcNpfeqMUcYmyF1ZFY6/Cn7CNSAKx6a+s48sqLqyAiZuaP2TcqMhoo+dlwFnVxT9w==}
 
-  /colors/1.4.0:
-    resolution: {integrity: sha512-a+UqTh4kgZg/SlGvfbzDHpgRu7AAQOmmqRHJnxhRZICKFUT91brVhNNt58CMWU9PsBbv3PDCZUHbVxuDiH2mtA==}
-    engines: {node: '>=0.1.90'}
-    dev: false
-
   /combine-promises/1.1.0:
     resolution: {integrity: sha512-ZI9jvcLDxqwaXEixOhArm3r7ReIivsXkpbyEWyeOhzz1QS0iSgBPnWvEqvIQtYyamGCYA88gFhmUrs9hrrQ0pg==}
     engines: {node: '>=10'}
@@ -10423,14 +10418,14 @@ packages:
       esutils: 2.0.3
     dev: false
 
-  /docusaurus-plugin-typedoc/0.12.1_a09bd81c9f7590c6318437e0c34209b8:
+  /docusaurus-plugin-typedoc/0.12.1_a0e69128c258e41b73f7b1b325300732:
     resolution: {integrity: sha512-m8VNiz2Q+5AhMPWJ2+eHYFTYSY1FvNDmXWt/s2kgH7k9CUGSBUx3pVgFNXLeVkgmh7Omuog903lv0lo5B2MX7A==}
     peerDependencies:
       typedoc: '>=0.20.19'
       typedoc-plugin-markdown: '>=3.6.0'
     dependencies:
-      typedoc: 0.20.37_typescript@4.3.5
-      typedoc-plugin-markdown: 3.10.4_typedoc@0.20.37
+      typedoc: 0.21.5_typescript@4.3.5
+      typedoc-plugin-markdown: 3.10.4_typedoc@0.21.5
     dev: false
 
   /dom-accessibility-api/0.5.6:
@@ -15069,9 +15064,9 @@ packages:
     resolution: {integrity: sha512-8z4efJYk43E0upd0NbVXwgSTQs6cT3T06etieCMEg7dRbzCbxUCK/GHlX8mhHRDcp+OLlHkPKsvqQTCvsRl2cg==}
     dev: false
 
-  /marked/2.0.7:
-    resolution: {integrity: sha512-BJXxkuIfJchcXOJWTT2DOL+yFWifFv2yGYOUzvXg8Qz610QKw+sHCvTMYwA+qWGhlA2uivBezChZ/pBy1tWdkQ==}
-    engines: {node: '>= 8.16.2'}
+  /marked/2.1.3:
+    resolution: {integrity: sha512-/Q+7MGzaETqifOMWYEA7HVMaZb4XbcRfaOzcSsHZEith83KGlvaSG33u0SKu89Mj5h+T8V2hM+8O45Qc5XTgwA==}
+    engines: {node: '>= 10'}
     hasBin: true
     dev: false
 
@@ -20960,31 +20955,28 @@ packages:
     engines: {node: '>= 8'}
     dev: false
 
-  /typedoc-plugin-markdown/3.10.4_typedoc@0.20.37:
+  /typedoc-plugin-markdown/3.10.4_typedoc@0.21.5:
     resolution: {integrity: sha512-if9w7S9fXLg73AYi/EoRSEhTOZlg3I8mIP8YEmvzSE33VrNXC9/hA0nVcLEwFVJeQY7ay6z67I6kW0KIv7LjeA==}
     peerDependencies:
       typedoc: '>=0.21.2'
     dependencies:
       handlebars: 4.7.7
-      typedoc: 0.20.37_typescript@4.3.5
+      typedoc: 0.21.5_typescript@4.3.5
     dev: false
 
-  /typedoc/0.20.37_typescript@4.3.5:
-    resolution: {integrity: sha512-9+qDhdc4X00qTNOtii6QX2z7ndAeWVOso7w3MPSoSJdXlVhpwPfm1yEp4ooKuWA9fiQILR8FKkyjmeqa13hBbw==}
-    engines: {node: '>= 10.8.0'}
+  /typedoc/0.21.5_typescript@4.3.5:
+    resolution: {integrity: sha512-uRDRmYheE5Iju9Zz0X50pTASTpBorIHFt02F5Y8Dt4eBt55h3mwk1CBSY2+EfwBxY16N4Xm7f8KXhnfFZ0AmBw==}
+    engines: {node: '>= 12.10.0'}
     hasBin: true
     peerDependencies:
-      typescript: 3.9.x || 4.0.x || 4.1.x || 4.2.x
+      typescript: 4.0.x || 4.1.x || 4.2.x || 4.3.x
     dependencies:
-      colors: 1.4.0
-      fs-extra: 9.1.0
+      glob: 7.1.7
       handlebars: 4.7.7
-      lodash: 4.17.21
       lunr: 2.3.9
-      marked: 2.0.7
+      marked: 2.1.3
       minimatch: 3.0.4
       progress: 2.0.3
-      shelljs: 0.8.4
       shiki: 0.9.6
       typedoc-default-themes: 0.12.10
       typescript: 4.3.5
