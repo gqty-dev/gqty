@@ -510,7 +510,7 @@ importers:
       gqty: workspace:^1.0.2
       graphql: ^15.5.1
       mkdirp: ^1.0.4
-      open-cli: ^6.0.1
+      open-cli: ^7.0.0
       prettier: ^2.3.2
       rimraf: ^3.0.2
       serve: ^12.0.0
@@ -538,7 +538,7 @@ importers:
       bob-esbuild-cli: 0.2.1_7f6f678fc559032ea568b444ed44ca56
       changesets-github-release: 0.0.3
       graphql: 15.5.1
-      open-cli: 6.0.1
+      open-cli: 7.0.0
       rimraf: 3.0.2
       serve: 12.0.0
       size-limit: 5.0.2
@@ -575,7 +575,7 @@ importers:
       mercurius: ^8.1.1
       mkdirp: ^1.0.4
       nodemon: ^2.0.12
-      open-cli: ^6.0.1
+      open-cli: ^7.0.0
       react: ^17.0.2
       react-dom: ^17.0.2
       rimraf: ^3.0.2
@@ -615,7 +615,7 @@ importers:
       mercurius: 8.1.1_72ef9f06cb99540da679cbf1bf7a3256
       mkdirp: 1.0.4
       nodemon: 2.0.12
-      open-cli: 6.0.1
+      open-cli: 7.0.0
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
       rimraf: 3.0.2
@@ -8148,7 +8148,7 @@ packages:
   /axios/0.21.1:
     resolution: {integrity: sha512-dKQiRHxGD9PPRIUNIWvZhPTPpl1rf/OxTYKsqKUDjBwYylTvV7SjSHJb9ratfyzM6wCdLCOYLzs73qpg5c4iGA==}
     dependencies:
-      follow-redirects: 1.14.1
+      follow-redirects: 1.14.1_debug@4.3.2
     transitivePeerDependencies:
       - debug
 
@@ -12156,15 +12156,6 @@ packages:
       - supports-color
     dev: true
 
-  /follow-redirects/1.14.1:
-    resolution: {integrity: sha512-HWqDgT7ZEkqRzBvc2s64vSZ/hfOceEol3ac/7tKwzuvEyWx3/4UegXh5oBOIotkGsObyk3xznnSRVADBgWSQVg==}
-    engines: {node: '>=4.0'}
-    peerDependencies:
-      debug: '*'
-    peerDependenciesMeta:
-      debug:
-        optional: true
-
   /follow-redirects/1.14.1_debug@4.3.2:
     resolution: {integrity: sha512-HWqDgT7ZEkqRzBvc2s64vSZ/hfOceEol3ac/7tKwzuvEyWx3/4UegXh5oBOIotkGsObyk3xznnSRVADBgWSQVg==}
     engines: {node: '>=4.0'}
@@ -12175,7 +12166,6 @@ packages:
         optional: true
     dependencies:
       debug: 4.3.2_supports-color@6.1.0
-    dev: false
 
   /for-in/1.0.2:
     resolution: {integrity: sha1-gQaNKVqBQuwKxybG4iAMMPttXoA=}
