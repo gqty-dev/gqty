@@ -6,10 +6,9 @@ title: Getting started
 ## Installation
 
 1. Go to the root of your project, and run:
-   ```bash yarn2npm
-   yarn add gqty
-   yarn add -D @gqty/cli graphql
-   ```
+
+<PackageInstall packages={['gqty graphql', '-D @gqty/cli']} />
+
 2. Next, add a `script` field to your package.json:
    ```json
    {
@@ -25,27 +24,27 @@ title: Getting started
 
 ## Configuring Codegen
 
-> The default config should look something like this:
+The default config should look something like this:
+
+> _Can also be specified in `package.json` via `gqty` key_
+
+```js
+/**
+* @type {import("@gqty/cli").GQtyConfig}
+*/
+const config = {,
+ react: true,
+ scalarTypes: { DateTime: 'string' },
+ introspection: {
+   endpoint: 'SPECIFY_ENDPOINT_OR_SCHEMA_FILE_PATH_HERE',
+   headers: {},
+ },
+ destination: './src/gqty/index.ts',
+ subscriptions: false,
+};
 >
-> _can also be specified in `package.json` via `gqty` key_
->
-> ```js
-> /**
-> * @type {import("@gqty/cli").GQtyConfig}
-> */
-> const config = {,
->  react: true,
->  scalarTypes: { DateTime: 'string' },
->  introspection: {
->    endpoint: 'SPECIFY_ENDPOINT_OR_SCHEMA_FILE_PATH_HERE',
->    headers: {},
->  },
->  destination: './src/gqty/index.ts',
->  subscriptions: false,
-> };
->
-> module.exports = config;
-> ```
+module.exports = config;
+```
 
 Point `introspection.endpoint` to your GraphQL API, _adding headers for authorization if necessary_. Then run the generate command again, to fetch your schema and output to the `destination` file:
 
@@ -69,6 +68,10 @@ Configure the `fetch()` call to your GraphQL server, located inside the `queryFe
 
 See one of the following for more:
 
-### [Using with React](/react/fetching-data)
+<Box fontSize="1.5em" textDecor="underline">
 
-### [Using the standalone Client](/client/fetching-data)
+- [**Using with React**](/react/fetching-data)
+
+- [**Using the standalone Client**](/client/fetching-data)
+
+</Box>
