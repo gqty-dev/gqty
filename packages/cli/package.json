@@ -40,11 +40,11 @@
     "test:watch-coverage": "rimraf coverage && mkdirp coverage/lcov-report && concurrently --raw \"jest --watchAll\" \"serve -l 8787 coverage/lcov-report\" \"wait-on tcp:8787 coverage/lcov-report/index.html && open-cli http://localhost:8787\""
   },
   "dependencies": {
-    "@graphql-codegen/core": "^1.17.10",
-    "@graphql-codegen/typescript": "^1.23.0",
-    "@graphql-tools/delegate": "^8.0.3",
-    "@graphql-tools/utils": "^8.0.1",
-    "@graphql-tools/wrap": "^8.0.3",
+    "@graphql-codegen/core": "^2.0.0",
+    "@graphql-codegen/typescript": "^2.0.0",
+    "@graphql-tools/delegate": "^8.0.4",
+    "@graphql-tools/utils": "^8.0.2",
+    "@graphql-tools/wrap": "^8.0.4",
     "commander": "^8.1.0",
     "cosmiconfig": "^7.0.0",
     "cross-fetch": "^3.1.4",
@@ -55,7 +55,7 @@
   "devDependencies": {
     "@size-limit/preset-small-lib": "^5.0.2",
     "@types/mkdirp": "^1.0.2",
-    "bob-esbuild-cli": "^0.1.27",
+    "bob-esbuild-cli": "^0.2.1",
     "changesets-github-release": "^0.0.3",
     "graphql": "^15.5.1",
     "open-cli": "^6.0.1",
