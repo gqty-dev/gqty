@@ -54,4 +54,5 @@ export const { buildApp, registerModule, gql } = CreateApp({
     ],
   },
   buildContext,
+  cors: true,
 });
