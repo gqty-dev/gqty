@@ -10,7 +10,7 @@ sidebar_label: Programmatic usage
 
 Basically calling CLI functionality programmatically.
 
-All the fields are optional, and it will always read from the [Configuration](/cli/config) if any field is not specified.
+All the fields are optional, and it will always read from the [Configuration](/docs/cli/config) if any field is not specified.
 
 ```tsx
 import { inspectWriteGenerate } from '@gqty/cli';
@@ -36,7 +36,7 @@ await inspectWriteGenerate({
 
 If you have direct access to the [GraphQLSchema](https://graphql.org/graphql-js/type/#graphqlschema) from [graphql-js](https://github.com/graphql/graphql-js), you can give it to this function and it will do the rest.
 
-All the `GenerateOptions` are optional, and it will always read from the [Configuration](/cli/config) if any field is not specified.
+All the `GenerateOptions` are optional, and it will always read from the [Configuration](/docs/cli/config) if any field is not specified.
 
 ```tsx
 import { writeGenerate } from '@gqty/cli';
@@ -69,7 +69,7 @@ await writeGenerate(
 
 If you have direct access to the [GraphQLSchema](https://graphql.org/graphql-js/type/#graphqlschema) from [graphql-js](https://github.com/graphql/graphql-js), you can give it to this function and it generates the code and simply return it.
 
-All the GenerateOptions are optional, and it will always read from the [Configuration](/cli/config) if any field is not specified.
+All the GenerateOptions are optional, and it will always read from the [Configuration](/docs/cli/config) if any field is not specified.
 
 ```tsx
 import { generate } from '@gqty/cli';
@@ -97,7 +97,7 @@ const { clientCode, schemaCode, generatedSchema, scalarsEnumsHash } =
 
 Inspect a remote GraphQL API
 
-If the headers are not specified, it will look for [Configuration](/cli/config).
+If the headers are not specified, it will look for [Configuration](/docs/cli/config).
 
 ```tsx
 import { getRemoteSchema } from '@gqty/cli';

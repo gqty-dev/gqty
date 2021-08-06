@@ -41,16 +41,16 @@ module.exports = config;
 | Name                   | Type                    | Description                                                                                                                                                               |
 | ---------------------- | ----------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | enumsAsStrings         | `boolean`               | Whether to use enums as simple string types, or as the default [Object String Enums of TypeScript](https://www.typescriptlang.org/docs/handbook/enums.html#string-enums). |
-| react                  | `boolean`               | Whether to add the [React](/react/fetching-data) bindings to the first-generated client.                                                                                  |
+| react                  | `boolean`               | Whether to add the [React](/docs/react/fetching-data) bindings to the first-generated client.                                                                             |
 | scalarTypes            | `Record<string,string>` | Mapping of Custom Scalar Types to TypeScript, since by default, **any custom scalar will be casted as `any`**.                                                            |
 | preImport              | `string`                | Code to be added at the very beginning of the generated `schema file`, useful for adding custom imported types in custom scalars.                                         |
 | introspection.endpoint | `string`                | Endpoint from where the introspection of the target GraphQL API, it can be an `http`/`https` endpoint, or the path of a `.gql` GraphQL schema file.                       |
 | introspection.headers  | `Record<string,string>` | Custom headers to be added to `http`/`https` introspection, normally for authorization purposes.                                                                          |
 | destination            | `string`                | **File destination** of the generated client. Keep in mind that the generated schema always will be alongside this destination, but named `schema.generated.ts`.          |
-| subscriptions          | `boolean`               | Whether to add [Subscriptions](/client/subscriptions) support to the client.                                                                                              |
+| subscriptions          | `boolean`               | Whether to add [Subscriptions](/docs/client/subscriptions) support to the client.                                                                                         |
 
 ---
 
-- See [JavaScript Output](/cli/javascript)
-- See [Programmatic Usage](/cli/programmatic)
-- See [Codegen](/cli/codegen)
+- See [JavaScript Output](/docs/cli/javascript)
+- See [Programmatic Usage](/docs/cli/programmatic)
+- See [Codegen](/docs/cli/codegen)

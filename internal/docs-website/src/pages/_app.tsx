@@ -4,7 +4,12 @@ import '../../public/style.css';
 
 import { appWithTranslation } from 'next-i18next';
 
-import { extendTheme, theme as chakraTheme, Box } from '@chakra-ui/react';
+import {
+  extendTheme,
+  theme as chakraTheme,
+  Box,
+  chakra,
+} from '@chakra-ui/react';
 import { mode } from '@chakra-ui/theme-tools';
 import {
   ExtendComponents,
@@ -14,14 +19,49 @@ import {
   AppSeoProps,
 } from '@guild-docs/client';
 import { Header, Subheader, Footer } from '@theguild/components';
-
+import Router from 'next/router';
 import type { AppProps } from 'next/app';
+
+const BaseAnchor = chakra('a', {
+  baseStyle: {
+    color: '#2f77c9',
+    _hover: {
+      textDecoration: 'underline',
+    },
+  },
+});
+
+const a: typeof BaseAnchor = (props) => {
+  const localHref =
+    typeof props.href === 'string' && props.href.startsWith('/')
+      ? props.href
+      : undefined;
+  return (
+    <BaseAnchor
+      onClick={
+        localHref &&
+        ((ev) => {
+          ev.preventDefault();
+          Router.push(localHref);
+        })
+      }
+      onMouseOver={
+        localHref &&
+        (() => {
+          Router.prefetch(localHref);
+        })
+      }
+      {...props}
+    />
+  );
+};
 
 ExtendComponents({
   HelloWorld() {
     return <p>Hello World!</p>;
   },
   Box,
+  a,
 });
 
 const styles: typeof chakraTheme['styles'] = {
@@ -112,6 +152,19 @@ function AppContent(appProps: AppProps) {
           mdxRoutes={mdxRoutes}
           mdxNavigationProps={{
             defaultOpenDepth: 2,
+            wrapperProps({ depth }) {
+              return depth === 0
+                ? {
+                    height: 'calc(100vh - 240px)',
+                    overflowY: 'auto',
+                  }
+                : {};
+            },
+            summaryLabelProps() {
+              return {
+                textTransform: 'none',
+              };
+            },
           }}
         />
       ) : (

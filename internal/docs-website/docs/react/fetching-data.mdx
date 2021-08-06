@@ -10,7 +10,7 @@ sidebar_label: Fetching Data
 
 This hook returns the core `query` object, and it will detect the usage of it, and **suspend** _(if enabled)_ when the data is being fetched for the first time, and update the component when any of the requested data changes.
 
-Check [API Reference](/react/api/interfaces/usequery)
+Check [API Reference](/docs/react/api/interfaces/usequery)
 
 ### Features
 
@@ -51,7 +51,7 @@ function Container() {
 
 ### Non-Suspense Example
 
-See [Non-Suspense usage](/react/suspense#non-suspense-usage) for more details
+See [Non-Suspense usage](/docs/react/suspense#non-suspense-usage) for more details
 
 ```tsx
 import { useQuery } from '../gqty';
@@ -81,11 +81,11 @@ function Example() {
 
 `useQuery` offers a nice helper that allows for good optimizations, allowing you to do a _prepass_ over specific parts of your expected query, before your component ends rendering the first time.
 
-It's basically a function that is called right before the `useQuery` returns, allowing your component to either [`Suspend immediately`](/react/suspense) or add a conditional render using the `$state.isLoading` property.
+It's basically a function that is called right before the `useQuery` returns, allowing your component to either [`Suspend immediately`](/docs/react/suspense) or add a conditional render using the `$state.isLoading` property.
 
 The function receives as parameters:
 
-- The [`prepass`](/client/helper-functions#prepass) helper.
+- The [`prepass`](/docs/client/helper-functions#prepass) helper.
 - Your auto-generated `query` object.
 
 :::caution
@@ -171,7 +171,7 @@ function Example() {
 
 ## graphql HOC
 
-`graphql` is a [Higher-Order Component](https://reactjs.org/docs/higher-order-components.html) alternative to [useQuery](#usequery), designed specially for [Suspense usage](/react/suspense).
+`graphql` is a [Higher-Order Component](https://reactjs.org/docs/higher-order-components.html) alternative to [useQuery](#usequery), designed specially for [Suspense usage](/docs/react/suspense).
 
 For this function it is expected to use the `query` object exported by the core client, and it will detect the usage of it, and **suspend** _(if enabled)_ when the data is being fetched for the first time, and update the component when any of the requested data changes.
 
@@ -214,7 +214,7 @@ function Container() {
 }
 ```
 
-Check [API Reference](/react/api/interfaces/graphqlhoc)
+Check [API Reference](/docs/react/api/interfaces/graphqlhoc)
 
 ## Difference between "useQuery" and "graphql"
 
@@ -233,11 +233,11 @@ Paginated focused queries, in which you specify a function and initial arguments
 ### Features
 
 - Suspense support
-- Partial [Fetch policy](/react/fetching-data#fetch-policy) support (`'cache-first'`, `'cache-and-network'` or `'network-only'`)
+- Partial [Fetch policy](/docs/react/fetching-data#fetch-policy) support (`'cache-first'`, `'cache-and-network'` or `'network-only'`)
 - Custom data merge function, with included `uniqBy` & `sortBy` helpers.
 - If no new args are defined in your `fetchMore` call, the previous or initial args are used.
 - You can override the existing `fetchPolicy` in the second parameter of `fetchMore`, for example, to force a `refetch`.
-- The [helper functions](/client/helper-functions) are included in third parameter of main function.
+- The [helper functions](/docs/client/helper-functions) are included in third parameter of main function.
 
 ### Example
 
@@ -317,7 +317,7 @@ function Example() {
 }
 ```
 
-Check [API Reference](/react/api/interfaces/usepaginatedquery)
+Check [API Reference](/docs/react/api/interfaces/usepaginatedquery)
 
 ## useTransactionQuery
 
@@ -372,7 +372,7 @@ function Example() {
 }
 ```
 
-Check [API Reference](/react/api/interfaces/usetransactionquery)
+Check [API Reference](/docs/react/api/interfaces/usetransactionquery)
 
 ## useLazyQuery
 
@@ -424,7 +424,7 @@ function Example() {
 }
 ```
 
-Check [API Reference](/react/api/interfaces/uselazyquery)
+Check [API Reference](/docs/react/api/interfaces/uselazyquery)
 
 ## useRefetch
 
@@ -493,7 +493,7 @@ Prepare queries on **module-level**.
 ### Features
 
 - Enable **Render as you fetch** pattern
-- **Re-using** the callbacks in [_useTransactionQuery_](/react/fetching-data#usetransactionquery) & [_useLazyQuery_](/react/fetching-data#uselazyquery)
+- **Re-using** the callbacks in [_useTransactionQuery_](/docs/react/fetching-data#usetransactionquery) & [_useLazyQuery_](/docs/react/fetching-data#uselazyquery)
 - Composition
 - Prefetching
 - Refetching
@@ -538,7 +538,7 @@ function Container() {
 }
 ```
 
-Check [API Reference](/react/api/interfaces/preparequery)
+Check [API Reference](/docs/react/api/interfaces/preparequery)
 
 ## Fetch Policy
 

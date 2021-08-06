@@ -14,7 +14,7 @@ First, install `@gqty/subscriptions` into your project's dependencies:
 
 ## Usage
 
-If you activated `subscriptions` in the [CLI Configuration](/cli/config) you should have something like this in your generated client file:
+If you activated `subscriptions` in the [CLI Configuration](/docs/cli/config) you should have something like this in your generated client file:
 
 ```ts
 const subscriptionsClient =
@@ -41,7 +41,7 @@ export const client = createClient<
 });
 ```
 
-It basically enables subscriptions only on client side, in case you are using [SSR](/react/ssr).
+It basically enables subscriptions only on client side, in case you are using [SSR](/docs/react/ssr).
 
 It's important to note that `wsEndpoint` can be a `string`, a `function` that returns a `string` or and an `async function` that returns a `string`.
 

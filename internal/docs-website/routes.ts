@@ -5,7 +5,50 @@ export function getRoutes(): IRoutes {
     _: {
       docs: {
         $name: 'Docs',
-        $routes: [],
+        $routes: ['$intro', 'getting-started', '$react'],
+        _: {
+          intro: {
+            $name: 'Introduction',
+            $routes: [
+              'README',
+              'how-it-works',
+              'features',
+              'new-in-2',
+              'contributing',
+            ],
+          },
+          react: {
+            $name: 'Usage with React',
+            $routes: [
+              'fetching-data',
+              'mutations',
+              'subscriptions',
+              'config',
+              'suspense',
+              'ssr',
+              'meta',
+            ],
+          },
+          client: {
+            $name: 'Core Client',
+            $routes: [
+              'fetching-data',
+              'mutations',
+              'subscriptions',
+              'config',
+              'persistence',
+              'helper-functions',
+              'upload',
+            ],
+          },
+          cli: {
+            $name: 'CLI',
+            $routes: ['config', 'codegen', 'javascript', 'programmatic'],
+          },
+          development: {
+            $name: 'Development Tools',
+          },
+        },
       },
     },
   };

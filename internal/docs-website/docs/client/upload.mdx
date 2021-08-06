@@ -81,7 +81,7 @@ const queryFetcher: QueryFetcher = async function (query, variables) {
 ### Core
 
 Since the images are not serializable, GQty might be confused while
-using them, that's why you have to specify a special option `nonSerializableVariables` in your [`resolved`](/client/fetching-data#resolved)s
+using them, that's why you have to specify a special option `nonSerializableVariables` in your [`resolved`](/docs/client/fetching-data#resolved)s
 
 ```ts
 import { resolved, mutation } from '../gqty';
@@ -110,7 +110,7 @@ resolved(
 ### React
 
 Since the images are not serializable, GQty might be confused while
-using them, that's why you have to specify a special option `nonSerializableVariables` in your [`useMutation`](/react/mutations)s
+using them, that's why you have to specify a special option `nonSerializableVariables` in your [`useMutation`](/docs/react/mutations)s
 
 ```ts
 const [uploadFile, { isLoading, data, error }] = useMutation(
