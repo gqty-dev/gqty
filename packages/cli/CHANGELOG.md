@@ -1,5 +1,11 @@
 # @gqty/cli
 
+## 1.0.2
+
+### Patch Changes
+
+- 0f9e0e8: fix build
+
 ## 1.0.1
 
 ### Patch Changes
