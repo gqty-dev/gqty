@@ -1,0 +1,29 @@
+FROM quay.io/bitnami/node:14
+
+EXPOSE 8090
+
+RUN npm install -g pnpm
+
+WORKDIR /home/gqty
+
+COPY pnpm-lock.yaml /home/gqty/
+
+RUN pnpm fetch
+
+COPY package.json /home/gqty/
+
+RUN pnpm i
+
+COPY prisma /home/gqty/prisma
+
+RUN pnpm db:prepare
+
+COPY src /home/gqty/src
+
+COPY tsup.config.ts /home/gqty/
+
+RUN pnpm build
+
+ENV NODE_ENV=production
+
+CMD node ./dist/index.js
