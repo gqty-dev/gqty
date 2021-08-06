@@ -1,16 +1,18 @@
-#!/usr/bin/env node
-
-const { program } = require('commander');
-
-const {
-  inspectWriteGenerate,
-  defaultConfig,
-  __innerState,
-} = require('../dist/index');
+import { program } from 'commander';
+import { readFileSync } from 'fs';
+import { inspectWriteGenerate, defaultConfig, __innerState } from './index';
 
 __innerState.isCLI = true;
 
-program.version(require('../package.json').version).description('CLI for gqty');
+program
+  .version(
+    JSON.parse(
+      readFileSync('../package.json', {
+        encoding: 'utf-8',
+      })
+    ).version
+  )
+  .description('CLI for gqty');
 
 program
   .command('generate [endpoint] [destination]')
