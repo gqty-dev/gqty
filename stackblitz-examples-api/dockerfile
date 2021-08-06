@@ -20,8 +20,6 @@ RUN pnpm db:prepare
 
 COPY src /home/gqty/src
 
-COPY tsup.config.ts /home/gqty/
-
 RUN pnpm build
 
 ENV NODE_ENV=production
