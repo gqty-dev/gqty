@@ -1,5 +1,11 @@
 # @gqty/cli
 
+## 1.0.3
+
+### Patch Changes
+
+- f0315c4: fix js target
+
 ## 1.0.2
 
 ### Patch Changes
