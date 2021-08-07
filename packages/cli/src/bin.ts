@@ -1,5 +1,6 @@
 import { program } from 'commander';
 import { readFileSync } from 'fs';
+import { resolve } from 'path';
 import { inspectWriteGenerate, defaultConfig, __innerState } from './index';
 
 __innerState.isCLI = true;
@@ -7,7 +8,7 @@ __innerState.isCLI = true;
 program
   .version(
     JSON.parse(
-      readFileSync('../package.json', {
+      readFileSync(resolve(__dirname, '../package.json'), {
         encoding: 'utf-8',
       })
     ).version
