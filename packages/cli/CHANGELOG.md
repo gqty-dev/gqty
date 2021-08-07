@@ -1,5 +1,11 @@
 # @gqty/cli
 
+## 1.0.4
+
+### Patch Changes
+
+- bd31ab8: fix cli package json read
+
 ## 1.0.3
 
 ### Patch Changes
