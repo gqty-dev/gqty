@@ -23,6 +23,20 @@ A field whose value conforms to the standard internet email address format as sp
 """
 scalar EmailAddress @specifiedBy(url: "https://www.w3.org/Protocols/rfc822/")
 
+input LoginInput {
+  email: EmailAddress!
+}
+
+input RegisterInput {
+  email: EmailAddress!
+}
+
+type AuthResult {
+  user: User
+  error: String
+  token: String
+}
+
 type Category {
   id: ID!
   name: String
@@ -63,6 +77,7 @@ type User {
   id: ID!
   name: String
   role: UserRole!
+  email: String!
   "Posts created by user"
   posts(input: CursorConnectionArgs!): PostsConnection!
 }
@@ -84,6 +99,8 @@ type CursorPageInfo {
 type Query {
   hello: String!
   namesList(n: Int = 10): [String!]!
+  "Current authenticated user"
+  currentUser: AuthResult!
   "Get all published posts"
   publicPosts(input: CursorConnectionArgs!): PostsConnection!
   "Get all current created categories"
@@ -92,6 +109,10 @@ type Query {
 
 type Mutation {
   hello: String!
+  "Login user"
+  login(input: LoginInput!): AuthResult!
+  "Register user"
+  register(input: RegisterInput!): AuthResult!
   "[Authenticated] Create new post"
   createPost(post: PostCreate!): Post!
   "[Authenticated] Update existing post"

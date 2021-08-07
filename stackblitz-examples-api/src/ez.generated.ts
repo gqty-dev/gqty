@@ -41,6 +41,21 @@ export type Scalars = {
   EmailAddress: string;
 };
 
+export type LoginInput = {
+  email: Scalars['EmailAddress'];
+};
+
+export type RegisterInput = {
+  email: Scalars['EmailAddress'];
+};
+
+export type AuthResult = {
+  __typename?: 'AuthResult';
+  user?: Maybe<User>;
+  error?: Maybe<Scalars['String']>;
+  token?: Maybe<Scalars['String']>;
+};
+
 export type Category = {
   __typename?: 'Category';
   id: Scalars['ID'];
@@ -86,6 +101,7 @@ export type User = {
   id: Scalars['ID'];
   name?: Maybe<Scalars['String']>;
   role: UserRole;
+  email: Scalars['String'];
   /** Posts created by user */
   posts: PostsConnection;
 };
@@ -113,6 +129,8 @@ export type Query = {
   __typename?: 'Query';
   hello: Scalars['String'];
   namesList: Array<Scalars['String']>;
+  /** Current authenticated user */
+  currentUser: AuthResult;
   /** Get all published posts */
   publicPosts: PostsConnection;
   /** Get all current created categories */
@@ -130,6 +148,10 @@ export type QueryPublicPostsArgs = {
 export type Mutation = {
   __typename?: 'Mutation';
   hello: Scalars['String'];
+  /** Login user */
+  login: AuthResult;
+  /** Register user */
+  register: AuthResult;
   /** [Authenticated] Create new post */
   createPost: Post;
   /** [Authenticated] Update existing post */
@@ -137,6 +159,14 @@ export type Mutation = {
   /** [Authenticated] Remove own post */
   removeOwnPost: Scalars['Boolean'];
   setName: User;
+};
+
+export type MutationLoginArgs = {
+  input: LoginInput;
+};
+
+export type MutationRegisterArgs = {
+  input: RegisterInput;
 };
 
 export type MutationCreatePostArgs = {
@@ -259,9 +289,12 @@ export type ResolversTypes = {
   NonEmptyString: ResolverTypeWrapper<Scalars['NonEmptyString']>;
   DateTime: ResolverTypeWrapper<Scalars['DateTime']>;
   EmailAddress: ResolverTypeWrapper<Scalars['EmailAddress']>;
+  LoginInput: LoginInput;
+  RegisterInput: RegisterInput;
+  AuthResult: ResolverTypeWrapper<AuthResult>;
+  String: ResolverTypeWrapper<Scalars['String']>;
   Category: ResolverTypeWrapper<Category>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
-  String: ResolverTypeWrapper<Scalars['String']>;
   Post: ResolverTypeWrapper<Post>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   PostCreate: PostCreate;
@@ -282,9 +315,12 @@ export type ResolversParentTypes = {
   NonEmptyString: Scalars['NonEmptyString'];
   DateTime: Scalars['DateTime'];
   EmailAddress: Scalars['EmailAddress'];
+  LoginInput: LoginInput;
+  RegisterInput: RegisterInput;
+  AuthResult: AuthResult;
+  String: Scalars['String'];
   Category: Category;
   ID: Scalars['ID'];
-  String: Scalars['String'];
   Post: Post;
   Boolean: Scalars['Boolean'];
   PostCreate: PostCreate;
@@ -317,6 +353,16 @@ export interface EmailAddressScalarConfig
   extends GraphQLScalarTypeConfig<ResolversTypes['EmailAddress'], any> {
   name: 'EmailAddress';
 }
+
+export type AuthResultResolvers<
+  ContextType = EZContext,
+  ParentType extends ResolversParentTypes['AuthResult'] = ResolversParentTypes['AuthResult']
+> = {
+  user?: Resolver<Maybe<ResolversTypes['User']>, ParentType, ContextType>;
+  error?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  token?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
 
 export type CategoryResolvers<
   ContextType = EZContext,
@@ -369,6 +415,7 @@ export type UserResolvers<
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   role?: Resolver<ResolversTypes['UserRole'], ParentType, ContextType>;
+  email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   posts?: Resolver<
     ResolversTypes['PostsConnection'],
     ParentType,
@@ -412,6 +459,7 @@ export type QueryResolvers<
     ContextType,
     RequireFields<QueryNamesListArgs, 'n'>
   >;
+  currentUser?: Resolver<ResolversTypes['AuthResult'], ParentType, ContextType>;
   publicPosts?: Resolver<
     ResolversTypes['PostsConnection'],
     ParentType,
@@ -430,6 +478,18 @@ export type MutationResolvers<
   ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']
 > = {
   hello?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  login?: Resolver<
+    ResolversTypes['AuthResult'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationLoginArgs, 'input'>
+  >;
+  register?: Resolver<
+    ResolversTypes['AuthResult'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationRegisterArgs, 'input'>
+  >;
   createPost?: Resolver<
     ResolversTypes['Post'],
     ParentType,
@@ -461,6 +521,7 @@ export type Resolvers<ContextType = EZContext> = {
   NonEmptyString?: GraphQLScalarType;
   DateTime?: GraphQLScalarType;
   EmailAddress?: GraphQLScalarType;
+  AuthResult?: AuthResultResolvers<ContextType>;
   Category?: CategoryResolvers<ContextType>;
   Post?: PostResolvers<ContextType>;
   PostsConnection?: PostsConnectionResolvers<ContextType>;
