@@ -20,7 +20,7 @@ importers:
       bob-esbuild-cli: ^0.2.4
       bufferutil: ^4.0.3
       changesets-github-release: ^0.0.3
-      concurrently: ^6.2.0
+      concurrently: ^6.2.1
       esbuild: ^0.12.18
       fkill: ^7.2.1
       husky: ^7.0.1
@@ -58,7 +58,7 @@ importers:
       bob-esbuild: 0.2.4_dea0625f6d31b223e93dc3dc354b8b43
       bob-esbuild-cli: 0.2.4_dea0625f6d31b223e93dc3dc354b8b43
       changesets-github-release: 0.0.3
-      concurrently: 6.2.0
+      concurrently: 6.2.1
       fkill: 7.2.1
       husky: 7.0.1
       prettier: 2.3.2
@@ -304,7 +304,7 @@ importers:
       '@types/node': ^16.4.13
       '@types/react': ^17.0.16
       '@types/react-dom': ^17.0.9
-      concurrently: ^6.2.0
+      concurrently: ^6.2.1
       cross-env: ^7.0.3
       csstype: ^3.0.8
       esbuild: ^0.12.18
@@ -354,7 +354,7 @@ importers:
       '@types/node': 16.4.13
       '@types/react': 17.0.16
       '@types/react-dom': 17.0.9
-      concurrently: 6.2.0
+      concurrently: 6.2.1
       cross-env: 7.0.3
       esbuild: 0.12.18
       esbuild-register: 2.6.0
@@ -371,7 +371,7 @@ importers:
       '@types/jest': ^26.0.24
       '@types/randomstring': ^1.1.7
       bob-esbuild-cli: ^0.2.4
-      concurrently: ^6.2.0
+      concurrently: ^6.2.1
       cross-env: ^7.0.3
       esbuild: ^0.12.18
       fastify: ^3.20.1
@@ -415,7 +415,7 @@ importers:
       '@size-limit/preset-small-lib': 5.0.2_a16e693b89b93234031713d257cbc50a
       '@types/randomstring': 1.1.7
       bob-esbuild-cli: 0.2.4_dea0625f6d31b223e93dc3dc354b8b43
-      concurrently: 6.2.0
+      concurrently: 6.2.1
       rimraf: 3.0.2
       size-limit: 5.0.2
       tslib: 2.3.0
@@ -567,7 +567,7 @@ importers:
       '@types/wait-on': ^5.3.1
       '@types/ws': ^7.4.7
       bob-esbuild-cli: ^0.2.4
-      concurrently: ^6.2.0
+      concurrently: ^6.2.1
       cross-env: ^7.0.3
       get-port: ^5.1.1
       graphql: ^15.5.1
@@ -609,7 +609,7 @@ importers:
       '@types/wait-on': 5.3.1
       '@types/ws': 7.4.7
       bob-esbuild-cli: 0.2.4_dea0625f6d31b223e93dc3dc354b8b43
-      concurrently: 6.2.0
+      concurrently: 6.2.1
       cross-env: 7.0.3
       get-port: 5.1.1
       graphql: 15.5.1
@@ -10182,6 +10182,22 @@ packages:
 
   /concurrently/6.2.0:
     resolution: {integrity: sha512-v9I4Y3wFoXCSY2L73yYgwA9ESrQMpRn80jMcqMgHx720Hecz2GZAvTI6bREVST6lkddNypDKRN22qhK0X8Y00g==}
+    engines: {node: '>=10.0.0'}
+    hasBin: true
+    dependencies:
+      chalk: 4.1.2
+      date-fns: 2.23.0
+      lodash: 4.17.21
+      read-pkg: 5.2.0
+      rxjs: 6.6.7
+      spawn-command: 0.0.2-1
+      supports-color: 8.1.1
+      tree-kill: 1.2.2
+      yargs: 16.2.0
+    dev: true
+
+  /concurrently/6.2.1:
+    resolution: {integrity: sha512-emgwhH+ezkuYKSHZQ+AkgEpoUZZlbpPVYCVv7YZx0r+T7fny1H03r2nYRebpi2DudHR4n1Rgbo2YTxKOxVJ4+g==}
     engines: {node: '>=10.0.0'}
     hasBin: true
     dependencies:
