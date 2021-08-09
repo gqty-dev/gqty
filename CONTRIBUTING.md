@@ -1,3 +1,3 @@
 # Contributing
 
-Check [https://gqty.dev/contributing](https://gqty.dev/contributing)
+Check [https://gqty.dev/docs/intro/contributing](https://gqty.dev/docs/intro/contributing)

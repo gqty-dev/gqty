@@ -1,3 +1,3 @@
 # @gqty/react
 
-## Visit [https://gqty.dev/react/fetching-data](https://gqty.dev/react/fetching-data)
+## Visit [https://gqty.dev/docs/react/fetching-data](https://gqty.dev/docs/react/fetching-data)

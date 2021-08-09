@@ -32,10 +32,16 @@ const BaseAnchor = chakra('a', {
 });
 
 const a: typeof BaseAnchor = (props) => {
+  let shouldClientSideNav = false;
+
   const localHref =
     typeof props.href === 'string' && !props.href.startsWith('http')
       ? (() => {
           let newHref = props.href.replace('.md', '');
+
+          if (!newHref.startsWith('.')) {
+            shouldClientSideNav = true;
+          }
 
           return newHref;
         })()
@@ -46,6 +52,7 @@ const a: typeof BaseAnchor = (props) => {
       {...props}
       href={localHref || props.href}
       onClick={
+        shouldClientSideNav &&
         localHref &&
         ((ev) => {
           ev.preventDefault();
@@ -53,6 +60,7 @@ const a: typeof BaseAnchor = (props) => {
         })
       }
       onMouseOver={
+        shouldClientSideNav &&
         localHref &&
         (() => {
           Router.prefetch(localHref);

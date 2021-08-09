@@ -1,3 +1,3 @@
 # @gqty/cli
 
-## Visit [https://gqty.dev/cli/codegen](https://gqty.dev/cli/codegen)
+## Visit [https://gqty.dev/docs/cli/codegen](https://gqty.dev/docs/cli/codegen)

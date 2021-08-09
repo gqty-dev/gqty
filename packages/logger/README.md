@@ -1,3 +1,3 @@
 # @gqty/logger
 
-## Visit [https://gqty.dev/development/logger](https://gqty.dev/development/logger)
+## Visit [https://gqty.dev/docs/development/logger](https://gqty.dev/docs/development/logger)

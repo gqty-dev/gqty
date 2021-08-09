@@ -1,3 +1,3 @@
 # @gqty/subscription
 
-## Visit [https://gqty.dev/core/subscriptions](https://gqty.dev/core/subscriptions)
+## Visit [https://gqty.dev/docs/client/subscriptions](https://gqty.dev/docs/client/subscriptions)
