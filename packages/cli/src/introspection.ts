@@ -17,6 +17,8 @@ export interface IntrospectionOptions {
   headers?: Record<string, string>;
 }
 
+import type { GraphQLSchema } from 'graphql';
+
 export const getRemoteSchema = async (
   /**
    * Endpoint of the remote GraphQL API
@@ -26,7 +28,7 @@ export const getRemoteSchema = async (
    * Specify options for the introspection
    */
   { headers }: Pick<IntrospectionOptions, 'headers'> = {}
-) => {
+): Promise<GraphQLSchema> => {
   const executor: AsyncExecutor = async ({ document, variables }) => {
     headers ||=
       (await gqtyConfigPromise).config.introspection?.headers ||

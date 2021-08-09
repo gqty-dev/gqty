@@ -33,11 +33,18 @@ const BaseAnchor = chakra('a', {
 
 const a: typeof BaseAnchor = (props) => {
   const localHref =
-    typeof props.href === 'string' && props.href.startsWith('/')
-      ? props.href
+    typeof props.href === 'string' && !props.href.startsWith('http')
+      ? (() => {
+          let newHref = props.href.replace('.md', '');
+
+          return newHref;
+        })()
       : undefined;
+
   return (
     <BaseAnchor
+      {...props}
+      href={localHref || props.href}
       onClick={
         localHref &&
         ((ev) => {
@@ -51,7 +58,6 @@ const a: typeof BaseAnchor = (props) => {
           Router.prefetch(localHref);
         })
       }
-      {...props}
     />
   );
 };
@@ -166,9 +172,9 @@ function AppContent(appProps: AppProps) {
                   }
                 : {};
             },
-            summaryLabelProps() {
+            summaryLabelProps({ depth }) {
               return {
-                textTransform: 'none',
+                textTransform: depth >= 2 ? 'capitalize' : 'none',
               };
             },
           }}
