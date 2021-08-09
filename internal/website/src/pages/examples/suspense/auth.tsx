@@ -6,21 +6,22 @@ import {
   Stack,
   Text,
   UnorderedList,
+  Link as ChakraLink,
 } from '@chakra-ui/react';
-import Link from '@docusaurus/Link';
-import { useLocation } from '@docusaurus/router';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 
-import { ExamplesPage } from '../../../components/Examples/App';
+import { WithExamplePage } from '../../../components/Examples/App';
 import {
   CodeSandboxEmbed,
   EmbedProps,
 } from '../../../components/Examples/Embed';
 
-export default function Page() {
-  const { hash } = useLocation();
+export default WithExamplePage(function Page() {
+  const { query = {} } = useRouter();
 
   const { file, initialPath } = useMemo<EmbedProps>(() => {
-    switch (hash) {
+    switch (query.hash) {
       case '#headers': {
         return {
           file: 'src/gqty/index.ts',
@@ -46,14 +47,14 @@ export default function Page() {
           initialPath: '/login',
         };
     }
-  }, [hash]);
+  }, [query.hash]);
   return (
-    <ExamplesPage title="Example React Suspense Query">
+    <>
       <Heading as="h1">GraphQL Authentication in React Suspense</Heading>
 
       <Text>
         In this example you can check some examples of{' '}
-        <Link to="/react/mutations">useMutation</Link> inside a authentication
+        <Link href="/react/mutations">useMutation</Link> inside a authentication
         inside GraphQL Flow.
       </Text>
       <Stack>
@@ -63,21 +64,33 @@ export default function Page() {
         <UnorderedList>
           <ListItem>
             Handling of authorization headers in fetch:{' '}
-            <Link to="#headers">src/gqty/index.ts</Link>
+            <Link href="#headers">
+              <ChakraLink color="blue.500">src/gqty/index.ts</ChakraLink>
+            </Link>
           </ListItem>
           <ListItem>
-            Login: <Link to="#login">src/Components/Login.tsx</Link>
+            Login:{' '}
+            <Link href="#login">
+              <ChakraLink color="blue.500">src/Components/Login.tsx</ChakraLink>
+            </Link>
           </ListItem>
           <ListItem>
-            Register: <Link to="#register">src/Components/Register.tsx</Link>
+            Register:{' '}
+            <Link href="#register">
+              <ChakraLink color="blue.500">
+                src/Components/Register.tsx
+              </ChakraLink>
+            </Link>
           </ListItem>
           <ListItem>
             Checking if user is authenticated:{' '}
-            <Link to="#currentUser">src/hooks/currentUser.ts</Link>
+            <Link href="#currentUser">
+              <ChakraLink color="blue.500">src/hooks/currentUser.ts</ChakraLink>
+            </Link>
           </ListItem>
         </UnorderedList>
       </Stack>
       <CodeSandboxEmbed file={file} initialPath={initialPath} />
-    </ExamplesPage>
+    </>
   );
-}
+});

@@ -1,53 +1,58 @@
 {
   "name": "website",
-  "version": "0.1.0",
-  "private": true,
-  "license": "MIT",
   "scripts": {
-    "build:docs": "cross-env DOCUSAURUS_NO_DUPLICATE_TITLE_WARNING=false docusaurus build",
-    "ci:build": "cross-env SKIP_TYPEDOC=true DOCUSAURUS_NO_DUPLICATE_TITLE_WARNING=false docusaurus build",
-    "docs:build": "cross-env DOCUSAURUS_NO_DUPLICATE_TITLE_WARNING=false docusaurus build",
-    "fix-typedoc": "node fix-typedoc.js",
-    "prepare-lock": "npm install --package-lock-only",
-    "serve": "serve build -l 3000",
-    "start": "docusaurus start --host 0.0.0.0 --no-open"
+    "build:docs": "next build",
+    "dev:docs": "concurrently -r \"next-remote-watch ./docs ./src/pages/_app.tsx ./src/pages/_document.tsx\" \"wait-on -s 1 http://localhost:3000 && open-cli http://localhost:3000\"",
+    "next": "next",
+    "start": "next start",
+    "analyze": "cross-env ANALYZE=true next build"
+  },
+  "pnpm": {
+    "overrides": {
+      "esbuild": "^0.12.9"
+    }
+  },
+  "resolutions": {
+    "esbuild": "^0.12.9"
+  },
+  "devDependencies": {
+    "@next/bundle-analyzer": "^11.0.1",
+    "@types/concurrently": "^6.2.1",
+    "@types/mdx-js__react": "^1.5.4",
+    "@types/node": "^16.4.13",
+    "@types/react": "^17.0.16",
+    "@types/react-dom": "^17.0.9",
+    "concurrently": "^6.2.1",
+    "cross-env": "^7.0.3",
+    "esbuild": "^0.12.19",
+    "esbuild-register": "^2.6.0",
+    "next-remote-watch": "^1.0.0",
+    "open-cli": "^7.0.0",
+    "typescript": "^4.3.5",
+    "wait-on": "^6.0.0"
   },
   "dependencies": {
+    "@chakra-ui/icons": "^1.0.15",
     "@chakra-ui/react": "^1.6.6",
-    "@docusaurus/core": "2.0.0-beta.1",
-    "@docusaurus/module-type-aliases": "2.0.0-beta.1",
-    "@docusaurus/preset-classic": "2.0.0-beta.1",
-    "@emotion/core": "^11.0.0",
+    "@chakra-ui/theme-tools": "^1.1.9",
+    "@chakra-ui/utils": "^1.8.2",
     "@emotion/react": "^11.4.1",
     "@emotion/styled": "^11.3.0",
+    "@guild-docs/client": "^0.2.27",
+    "@guild-docs/server": "^0.2.25",
     "@mdx-js/react": "^1.6.22",
-    "@tsconfig/docusaurus": "^1.0.3",
-    "@types/react": "^17.0.16",
-    "@types/react-helmet": "^6.1.2",
-    "@types/react-router-dom": "^5.1.8",
-    "cross-env": "^7.0.3",
-    "docusaurus-plugin-typedoc": "0.12.1",
-    "file-loader": "^6.2.0",
+    "@theguild/components": "^1.4.7",
+    "csstype": "^3.0.8",
     "framer-motion": "^4.1.17",
-    "globby": "^11.0.4",
-    "npm-to-yarn": "^1.0.1",
-    "prettier": "^2.3.2",
-    "pretty-quick": "^3.1.1",
-    "prism-react-renderer": "^1.2.1",
+    "next": "^11.0.1",
+    "next-i18next": "^8.5.5",
+    "next-seo": "^4.26.0",
+    "prism-themes": "^1.8.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
     "react-icons": "^4.2.0",
     "react-use": "^17.2.4",
-    "regenerator-runtime": "^0.13.9",
-    "rimraf": "^3.0.2",
-    "serve": "^12.0.0",
-    "typedoc": "0.20.37",
-    "typedoc-plugin-markdown": "^3.10.4",
-    "typescript": "^4.3.5",
-    "url-loader": "^4.1.1"
-  },
-  "devDependencies": {
-    "@types/mdx-js__react": "^1.5.4",
-    "@types/react-dom": "^17.0.9"
+    "remark-admonitions": "^1.2.1",
+    "remark-prism": "^1.3.6"
   }
 }

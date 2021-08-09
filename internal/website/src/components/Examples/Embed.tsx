@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useWindowSize } from 'react-use';
 
 import { Box, Spinner, Stack } from '@chakra-ui/react';
@@ -51,11 +51,11 @@ export function CodeSandboxEmbed({ file, initialPath }: EmbedProps) {
 
   if (!file.startsWith('/')) file = '/' + file;
 
-  const src = `https://codesandbox.io/embed/prod-framework-b3m2q?fontsize=14&hidenavigation=1&module=${encodeURIComponent(
+  const src = `https://codesandbox.io/embed/sharp-forest-nbt0q?fontsize=14&hidenavigation=1&module=${encodeURIComponent(
     file
   )}&theme=dark&initialpath=${encodeURIComponent(initialPath)}`;
 
-  const frameHeight = height - 150;
+  const frameHeight = height - 250;
 
   return (
     <Stack height="100%" width="100%">

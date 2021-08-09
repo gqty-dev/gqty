@@ -130,6 +130,12 @@ function AppContent(appProps: AppProps) {
             onClick: (e) => handlePushRoute('/', e),
           },
           {
+            children: 'Examples',
+            title: 'Check Examples',
+            href: '/examples',
+            onClick: (e) => handlePushRoute('/examples', e),
+          },
+          {
             children: 'Docs',
             title: 'Check Documentation',
             href: '/docs',

@@ -1,4 +1,3 @@
-import React from 'react';
 import { FaAngleRight, FaReact } from 'react-icons/fa';
 
 import { Flex, FlexProps, Spacer, Stack } from '@chakra-ui/react';

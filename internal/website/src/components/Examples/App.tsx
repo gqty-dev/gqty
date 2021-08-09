@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect } from 'react';
+import { FC, ReactNode, useEffect } from 'react';
 import { HiOutlineMenu } from 'react-icons/hi';
 
 import {
@@ -12,9 +12,6 @@ import {
   useBreakpointValue,
   useDisclosure,
 } from '@chakra-ui/react';
-import { ChakraProvider, extendTheme, useColorMode } from '@chakra-ui/react';
-import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
-import Layout from '@theme/Layout';
 
 import { Sidebar } from './Sidebar';
 
@@ -63,52 +60,28 @@ const Topbar = () => {
   );
 };
 
-function useSyncThemes() {
-  const { setColorMode } = useColorMode();
-  useEffect(() => {
-    const htmlElement = document.getElementsByTagName('html')[0];
+export function WithExamplePage<T>(Cmp: FC<T>) {
+  return function WithExamplePage(props: T) {
+    return (
+      <Flex flexDirection="column" width="100%">
+        <Topbar />
+        <Flex flex="1" m="2px" paddingX={['1em', '2em', '2em', '5em']}>
+          <Sidebar display={{ base: 'none', md: 'flex' }} />
 
-    const observer = new MutationObserver((mutations) => {
-      for (const _m of mutations.filter(
-        (v) => v.attributeName === 'data-theme'
-      )) {
-        setColorMode(htmlElement.getAttribute('data-theme'));
-      }
-    });
-
-    observer.observe(htmlElement, {
-      attributes: true,
-    });
-
-    return () => {
-      observer.disconnect();
-    };
-  }, [setColorMode]);
-}
-
-type AppChildren = ReactNode | ReactNode[];
-
-const App = ({ children }: { children?: AppChildren }) => {
-  useSyncThemes();
-  return (
-    <Flex flexDirection="column">
-      <Topbar />
-      <Flex flex="1" m="2px">
-        <Sidebar display={{ base: 'none', md: 'flex' }} />
-
-        <Box
-          overflowY="auto"
-          borderWidth="2px"
-          p="1rem"
-          h="full"
-          w="full"
-          position="relative"
-          children={children}
-        />
+          <Box
+            overflowY="auto"
+            borderWidth="2px"
+            p="2rem"
+            h="full"
+            w="full"
+            position="relative"
+            children={<Cmp {...props} />}
+          />
+        </Flex>
       </Flex>
-    </Flex>
-  );
-};
+    );
+  };
+}
 
 const useMobileMenuState = () => {
   const { isOpen, onClose, onOpen } = useDisclosure();
@@ -120,31 +93,3 @@ const useMobileMenuState = () => {
   }, [isMobile, onClose]);
   return { isOpen, onClose, onOpen };
 };
-
-const theme = extendTheme({
-  styles: {
-    global: {
-      body: null,
-    },
-  },
-});
-
-export function ExamplesPage({
-  children,
-  title,
-}: {
-  children?: AppChildren;
-
-  title: string;
-}) {
-  const context = useDocusaurusContext();
-
-  const { siteConfig = {} } = context;
-  return (
-    <Layout title={title} description={siteConfig.tagline}>
-      <ChakraProvider theme={theme} resetCSS={false}>
-        <App children={children} />
-      </ChakraProvider>
-    </Layout>
-  );
-}
