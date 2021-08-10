@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://gqty.dev">
-    <img src="internal/website/static/img/logo.png" height="150" alt="gqty">
+    <img src="internal/website/public/logo.png" height="150" alt="gqty">
   </a>
 </p>
 
@@ -9,12 +9,9 @@
   <a href="https://gqty.dev">
     <img alt="Documentation" src="https://img.shields.io/badge/documentation-documentation?color=C00B84">
   </a>
-  <a href="https://discord.gg/9DNNPedhbx">
-    <img alt="Discord" src="https://img.shields.io/discord/793628688439836694?color=7289d9&label=discord">
-  </a>
-  <a href="https://twitter.com/gqtydev">
-    <img alt="Twitter" src="https://img.shields.io/twitter/follow/gqtydev?label=%40gqtydev&style=flat&logo=twitter&color=00acee">
-  </a>
+    <a href="https://discord.gg/U967mp5qbQ">
+    <img alt="Discord" src="https://img.shields.io/discord/874477141834739762?color=7289d9&label=discord">
+  </a>  
 </h2>
 
 <a href="https://gqty.dev">
