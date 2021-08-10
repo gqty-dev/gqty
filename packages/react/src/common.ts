@@ -43,7 +43,7 @@ export const useIsomorphicLayoutEffect = IS_BROWSER
 
 const updateReducer = (num: number): number => (num + 1) % 1_000_000;
 
-export function useForceUpdate() {
+export function useForceUpdate({ doTimeout }: { doTimeout?: boolean } = {}) {
   const [, update] = useReducer(updateReducer, 0);
 
   const wasCalled = useRef(false);
@@ -57,13 +57,17 @@ export function useForceUpdate() {
       () => {
         if (wasCalled.current) return;
         wasCalled.current = true;
-        Promise.resolve().then(update);
+        if (doTimeout) {
+          setTimeout(update, 0);
+        } else {
+          Promise.resolve().then(update);
+        }
       },
       {
         wasCalled,
       }
     );
-  }, [update, wasCalled]);
+  }, [update, wasCalled, doTimeout]);
 }
 
 const InitSymbol: any = Symbol();

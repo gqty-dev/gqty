@@ -37,7 +37,9 @@ export function createUseSubscription<
 
   const useSubscription: UseSubscription<GeneratedSchema> =
     function useSubscription() {
-      const forceUpdate = useForceUpdate();
+      const forceUpdate = useForceUpdate({
+        doTimeout: true,
+      });
       const hookSelections = useSelectionsState();
 
       const interceptor = createInterceptor();
