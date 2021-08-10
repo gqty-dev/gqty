@@ -1,5 +1,12 @@
 # gqty
 
+## 1.0.3
+
+### Patch Changes
+
+- e6afb46: fix refetch array on initially empty state
+- 4c66ab2: fix prepareRender await
+
 ## 1.0.2
 
 ### Patch Changes
