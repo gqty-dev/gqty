@@ -563,3 +563,31 @@ export function sortBy<TNode>(
 
   return orderedList;
 }
+
+export const useIsWindowVisible = ({ lazy }: { lazy?: boolean } = {}) => {
+  const [isVisible, setIsVisible] = useState(true);
+  const ref = useRef(true);
+
+  useEffect(() => {
+    const onVisibilityChange = () => {
+      const isVisible = document.visibilityState === 'visible';
+      ref.current = isVisible;
+      !lazy && setIsVisible(isVisible);
+    };
+
+    onVisibilityChange();
+
+    document.addEventListener('visibilitychange', onVisibilityChange);
+
+    return () => {
+      document.removeEventListener('visibilitychange', onVisibilityChange);
+    };
+  }, [setIsVisible, lazy]);
+
+  return useMemo(() => {
+    return {
+      isVisible,
+      ref,
+    };
+  }, [isVisible, ref]);
+};

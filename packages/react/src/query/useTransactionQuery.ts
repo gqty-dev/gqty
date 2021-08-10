@@ -19,6 +19,7 @@ import {
   fetchPolicyDefaultResolveOptions,
   OnErrorHandler,
   useDeferDispatch,
+  useIsWindowVisible,
   useSelectionsState,
   useSubscribeCacheChanges,
   useSuspensePromise,
@@ -106,7 +107,16 @@ function InitUseTransactionQueryReducer<TData, TVariables>({
 export type UseTransactionQueryOptions<TData, TVariables> = {
   fetchPolicy?: FetchPolicy;
   skip?: boolean;
+  /**
+   * Frequency in milliseconds of polling/refetch of the query
+   */
   pollInterval?: number;
+  /**
+   * If it should do polling while on background
+   *
+   * @default false
+   */
+  pollInBackground?: boolean;
   notifyOnNetworkStatusChange?: boolean;
   variables?: TVariables;
   onCompleted?: (data: TData) => void;
@@ -174,6 +184,10 @@ export function createUseTransactionQuery<
       const setSuspensePromise = useSuspensePromise(optsRef);
 
       const { skip, pollInterval = 0, fetchPolicy, variables } = opts;
+
+      const isWindowVisible = useIsWindowVisible({
+        lazy: true,
+      });
 
       const hookSelections = useSelectionsState();
 
@@ -373,6 +387,14 @@ export function createUseTransactionQuery<
         const interval = setInterval(() => {
           if (isFetching.current) return;
 
+          // Skip polling while on background
+          if (
+            !optsRef.current.pollInBackground &&
+            !isWindowVisible.ref.current
+          ) {
+            return;
+          }
+
           isFetching.current = true;
 
           if (isMounted && optsRef.current.notifyOnNetworkStatusChange)
@@ -420,6 +442,7 @@ export function createUseTransactionQuery<
         fnRef,
         dispatch,
         isFetching,
+        isWindowVisible,
       ]);
 
       useSubscribeCacheChanges({
