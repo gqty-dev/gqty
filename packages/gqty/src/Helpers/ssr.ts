@@ -76,13 +76,11 @@ export function createSSRHelpers({
   };
 
   const prepareRender = async (render: () => Promise<unknown> | unknown) => {
-    let renderPromise: Promise<unknown> | unknown | undefined;
-
     const interceptor = innerState.interceptorManager.createInterceptor();
     let prevIgnoreCache = innerState.allowCache;
     try {
       innerState.allowCache = false;
-      renderPromise = await render();
+      await render();
     } finally {
       innerState.interceptorManager.removeInterceptor(interceptor);
       innerState.allowCache = prevIgnoreCache;
