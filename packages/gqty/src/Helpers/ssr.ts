@@ -82,14 +82,13 @@ export function createSSRHelpers({
     let prevIgnoreCache = innerState.allowCache;
     try {
       innerState.allowCache = false;
-      renderPromise = render();
+      renderPromise = await render();
     } finally {
       innerState.interceptorManager.removeInterceptor(interceptor);
       innerState.allowCache = prevIgnoreCache;
     }
 
     await Promise.all([
-      renderPromise,
       ...innerState.scheduler.pendingSelectionsGroupsPromises.values(),
     ]);
 
