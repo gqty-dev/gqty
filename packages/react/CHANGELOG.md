@@ -1,5 +1,18 @@
 # @gqty/react
 
+## 1.1.0
+
+### Minor Changes
+
+- d3d0d38: [useTransactionQuery] add "pollInBackground" and default-disable background polling
+
+### Patch Changes
+
+- 327362d: forceUpdate timeout for useSubscription
+- Updated dependencies [e6afb46]
+- Updated dependencies [4c66ab2]
+  - gqty@1.0.3
+
 ## 1.0.1
 
 ### Patch Changes
