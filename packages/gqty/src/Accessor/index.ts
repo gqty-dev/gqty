@@ -308,7 +308,11 @@ export function createAccessorCreators<
     if (innerState.allowCache && arrayCacheValue === null) return null;
 
     const proxyValue: unknown[] =
-      arrayCacheValue === undefined || !Array.isArray(arrayCacheValue)
+      arrayCacheValue === undefined ||
+      !Array.isArray(arrayCacheValue) ||
+      (!innerState.allowCache &&
+        Array.isArray(arrayCacheValue) &&
+        arrayCacheValue.length === 0)
         ? proxySymbolArray
         : arrayCacheValue;
 
