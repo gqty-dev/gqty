@@ -21,9 +21,10 @@ export interface TrackOptions {
 }
 
 export interface Track {
-  <Data>(callback: (info: TrackCallInfo) => Data, options?: TrackOptions): {
+  <TData>(callback: (info: TrackCallInfo) => TData, options?: TrackOptions): {
     stop: () => void;
     selections: Set<Selection>;
+    data: { current: TData | undefined };
   };
 }
 
@@ -40,12 +41,13 @@ export function createTracker(
     clientCache,
   } = innerState;
 
-  function track<Data>(
-    callback: (info: TrackCallInfo) => Data,
+  function track<TData>(
+    callback: (info: TrackCallInfo) => TData,
     { onError, refetch }: TrackOptions = {}
   ): {
     stop: () => void;
     selections: Set<Selection>;
+    data: { current: TData | undefined };
   } {
     const trackerSelections = new Set<Selection>();
 
@@ -57,6 +59,8 @@ export function createTracker(
 
       onError && onError(GQtyError.create(err, callback));
     }
+
+    const data = { current: undefined as TData | undefined };
 
     function main(info: TrackCallInfo) {
       const interceptor = createInterceptor();
@@ -72,7 +76,11 @@ export function createTracker(
           innerState.allowCache = false;
         }
 
-        Promise.resolve(callback(info)).catch(callOnError);
+        Promise.resolve(callback(info))
+          .then((value) => {
+            data.current = value;
+          })
+          .catch(callOnError);
       } catch (err) {
         callOnError(err);
       } finally {
@@ -168,6 +176,7 @@ export function createTracker(
         stopSubscriptions?.();
       },
       selections: trackerSelections,
+      data,
     };
   }
 

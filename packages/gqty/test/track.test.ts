@@ -11,10 +11,12 @@ describe('normal queries', () => {
 
     let error: unknown;
 
-    const { stop, selections } = track(
+    const { stop, selections, data } = track(
       () => {
         ++nCalls;
         lastData = query.nFetchCalls;
+
+        return lastData;
       },
       {
         onError(err) {
@@ -23,11 +25,15 @@ describe('normal queries', () => {
       }
     );
 
+    expect(data.current).toBe(undefined);
+
     expect(nCalls).toBe(1);
 
     await waitForExpect(() => {
       expect(lastData).toBe(1);
     });
+
+    expect(data.current).toBe(1);
 
     expect(nCalls).toBe(2);
 
@@ -37,6 +43,8 @@ describe('normal queries', () => {
       expect(lastData).toBe(44);
     });
 
+    expect(data.current).toBe(44);
+
     expect(nCalls).toBe(3);
 
     await refetch(query);
@@ -45,16 +53,20 @@ describe('normal queries', () => {
       expect(lastData).toBe(2);
     });
 
+    expect(data.current).toBe(2);
+
     expect(nCalls).toBe(4);
 
     expect(selections.size).toBe(1);
 
     stop();
 
-    const { stop: stop2 } = track(
+    const { stop: stop2, data: data2 } = track(
       () => {
         ++nCalls;
         lastData = query.nFetchCalls;
+
+        return lastData;
       },
       {
         onError(err) {
@@ -64,11 +76,15 @@ describe('normal queries', () => {
       }
     );
 
+    expect(data2.current).toBe(undefined);
+
     expect(nCalls).toBe(5);
 
     await waitForExpect(() => {
       expect(lastData).toBe(3);
     });
+
+    expect(data2.current).toBe(3);
 
     expect(nCalls).toBe(6);
 
