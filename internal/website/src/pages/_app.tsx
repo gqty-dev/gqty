@@ -138,6 +138,13 @@ function AppContent(appProps: AppProps) {
             onClick: (e) => handlePushRoute('/examples', e),
           },
           {
+            children: 'GitHub',
+            href: 'https://github.com/gqty-dev/gqty',
+            target: '_blank',
+            rel: 'noopener norefereer',
+            title: "Head to the project's GitHub",
+          },
+          {
             children: 'Docs',
             title: 'Check Documentation',
             href: '/docs',
