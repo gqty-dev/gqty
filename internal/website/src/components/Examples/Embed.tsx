@@ -51,7 +51,7 @@ export function CodeSandboxEmbed({ file, initialPath }: EmbedProps) {
 
   if (!file.startsWith('/')) file = '/' + file;
 
-  const src = `https://codesandbox.io/embed/sharp-forest-nbt0q?fontsize=14&hidenavigation=1&module=${encodeURIComponent(
+  const src = `https://codesandbox.io/embed/gqty-sandbox-forked-zswf1?fontsize=14&hidenavigation=1&module=${encodeURIComponent(
     file
   )}&theme=dark&initialpath=${encodeURIComponent(initialPath)}`;
 
