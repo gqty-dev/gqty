@@ -8,7 +8,7 @@ import {
   useDeferDispatch,
   useSuspensePromise,
 } from '../common';
-import { ReactClientOptionsWithDefaults } from '../utils';
+import type { ReactClientOptionsWithDefaults } from '../utils';
 
 export type LazyFetchPolicy = Exclude<FetchPolicy, 'cache-first'>;
 

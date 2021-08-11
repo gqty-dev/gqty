@@ -12,10 +12,10 @@ import {
   ResolveOptions,
   Selection,
 } from 'gqty';
-import { ProxyAccessor } from 'gqty/Cache';
-import { EventHandler } from 'gqty/Events';
-import { InterceptorManager } from 'gqty/Interceptor';
-import { Scheduler } from 'gqty/Scheduler';
+import type { ProxyAccessor } from 'gqty/Cache';
+import type { EventHandler } from 'gqty/Events';
+import type { InterceptorManager } from 'gqty/Interceptor';
+import type { Scheduler } from 'gqty/Scheduler';
 import {
   MutableRefObject,
   useCallback,

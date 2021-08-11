@@ -1,4 +1,4 @@
-import { Selection } from '../Selection';
+import type { Selection } from '../Selection';
 import { get, isObject, mergeWith, PlainObject, set } from '../Utils';
 
 import type { NormalizationHandler } from '../Normalization';

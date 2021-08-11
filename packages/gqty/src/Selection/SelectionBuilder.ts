@@ -1,5 +1,5 @@
-import { SchemaUnion } from '../Accessor';
-import { InnerClientState } from '../Client/client';
+import type { SchemaUnion } from '../Accessor';
+import type { InnerClientState } from '../Client/client';
 import { GQtyError } from '../Error';
 import { parseSchemaType, Type } from '../Schema/types';
 import { isInteger } from '../Utils';

@@ -2,18 +2,18 @@ import type { ExecutionResult, GraphQLError } from 'graphql';
 import { CacheInstance, createCache } from '../Cache';
 import { GQtyError } from '../Error';
 import { doRetry } from '../Error/retry';
-import { FetchEventData } from '../Events';
-import { NormalizationHandler } from '../Normalization';
+import type { FetchEventData } from '../Events';
+import type { NormalizationHandler } from '../Normalization';
 import { createQueryBuilder } from '../QueryBuilder';
-import { SchedulerPromiseValue } from '../Scheduler';
-import { Selection } from '../Selection/selection';
+import type { SchedulerPromiseValue } from '../Scheduler';
+import type { Selection } from '../Selection/selection';
 import {
   createSelectionManager,
   SelectionManager,
   separateSelectionTypes,
 } from '../Selection/SelectionManager';
 import { createDeferredPromise, DeferredPromise, get } from '../Utils';
-import {
+import type {
   InnerClientState,
   SubscribeEvents,
   SubscriptionsClient,

@@ -1,5 +1,5 @@
 import { existsSync, promises } from 'fs';
-import { GraphQLSchema } from 'graphql';
+import type { GraphQLSchema } from 'graphql';
 import mkdirp from 'mkdirp';
 import { dirname, resolve } from 'path';
 import { defaultConfig, gqtyConfigPromise } from './config';

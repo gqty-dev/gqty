@@ -6,7 +6,7 @@ import {
   useInterceptSelections,
   useIsomorphicLayoutEffect,
 } from '../common';
-import { ReactClientOptionsWithDefaults } from '../utils';
+import type { ReactClientOptionsWithDefaults } from '../utils';
 
 export interface UseQueryPrepareHelpers<
   GeneratedSchema extends {

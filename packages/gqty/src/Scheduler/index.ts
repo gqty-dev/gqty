@@ -1,5 +1,5 @@
-import { GQtyError } from '../Error';
-import { InterceptorManager } from '../Interceptor';
+import type { GQtyError } from '../Error';
+import type { InterceptorManager } from '../Interceptor';
 import { Selection } from '../Selection';
 import { createDeferredPromise, DeferredPromise } from '../Utils';
 import { debounce } from '../Utils/debounce';

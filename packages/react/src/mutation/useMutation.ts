@@ -6,7 +6,7 @@ import {
   useDeferDispatch,
   useSuspensePromise,
 } from '../common';
-import { ReactClientOptionsWithDefaults } from '../utils';
+import type { ReactClientOptionsWithDefaults } from '../utils';
 
 export interface UseMutationOptions<TData> {
   noCache?: boolean;

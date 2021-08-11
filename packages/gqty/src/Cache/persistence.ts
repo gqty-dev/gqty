@@ -1,9 +1,9 @@
-import {
+import type {
   SelectionManager,
   SelectionsBackup,
 } from '../Selection/SelectionManager';
 import { decycle, isPlainObject, retrocycle } from '../Utils';
-import { CacheInstance } from './dataCache';
+import type { CacheInstance } from './dataCache';
 
 export interface PersistenceHelpers {
   backupPersistence(version?: string): string;

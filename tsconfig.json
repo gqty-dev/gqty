@@ -20,7 +20,8 @@
       "gqty/*": ["packages/gqty/src/*"],
       "@gqty/cli": ["packages/cli/src/index.ts"],
       "@gqty/cli/*": ["packages/cli/src/*"]
-    }
+    },
+    "importsNotUsedAsValues": "error"
   },
   "include": ["packages", "internal", "examples/mercurius"],
   "exclude": ["**/dist", "**/test", "**/website", "**/docs-website"]

@@ -25,7 +25,7 @@ import {
   useSuspensePromise,
   useUpdateEffect,
 } from '../common';
-import { ReactClientOptionsWithDefaults } from '../utils';
+import type { ReactClientOptionsWithDefaults } from '../utils';
 
 export interface UseTransactionQueryState<TData> {
   data: TData | undefined;

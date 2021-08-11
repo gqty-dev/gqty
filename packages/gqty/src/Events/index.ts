@@ -1,8 +1,8 @@
-import { ExecutionResult } from 'graphql';
+import type { ExecutionResult } from 'graphql';
 
-import { CacheType } from '../Cache';
-import { GQtyError } from '../Error';
-import { Selection } from '../Selection';
+import type { CacheType } from '../Cache';
+import type { GQtyError } from '../Error';
+import type { Selection } from '../Selection';
 
 export interface FetchEventData {
   label?: string;

@@ -1,5 +1,5 @@
-import { ProxyAccessor } from '../Cache';
-import { InnerClientState } from '../Client/client';
+import type { ProxyAccessor } from '../Cache';
+import type { InnerClientState } from '../Client/client';
 import { GQtyError } from '../Error';
 import {
   DeepPartial,

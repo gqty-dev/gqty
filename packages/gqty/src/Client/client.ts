@@ -28,8 +28,8 @@ import {
   NormalizationOptions,
 } from '../Normalization';
 import { createScheduler, Scheduler } from '../Scheduler';
-import { QueryFetcher, ScalarsEnumsHash, Schema } from '../Schema/types';
-import { Selection } from '../Selection/selection';
+import type { QueryFetcher, ScalarsEnumsHash, Schema } from '../Schema/types';
+import type { Selection } from '../Selection/selection';
 import {
   BuildSelection,
   createSelectionBuilder,
@@ -308,7 +308,7 @@ export function createClient<
     globalInterceptor.removeSelections(selections);
     try {
       await resolvePromise;
-    } catch (error) {
+    } catch (error: any) {
       /* istanbul ignore else */
       if (resolvingPromise) {
         resolvingPromise.resolve({

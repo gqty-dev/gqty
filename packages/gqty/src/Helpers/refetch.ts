@@ -1,5 +1,5 @@
-import { InnerClientState } from '../Client/client';
-import { InlineResolveOptions, Resolvers } from '../Client/resolvers';
+import type { InnerClientState } from '../Client/client';
+import type { InlineResolveOptions, Resolvers } from '../Client/resolvers';
 
 export function isFunction<T>(v: T | (() => T)): v is () => T {
   return typeof v === 'function';

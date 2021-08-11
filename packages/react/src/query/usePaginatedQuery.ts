@@ -11,7 +11,7 @@ import {
   uniqBy,
   sortBy,
 } from '../common';
-import { ReactClientOptionsWithDefaults } from '../utils';
+import type { ReactClientOptionsWithDefaults } from '../utils';
 
 export type PaginatedQueryFetchPolicy = Extract<
   FetchPolicy,

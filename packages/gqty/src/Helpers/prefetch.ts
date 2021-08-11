@@ -1,5 +1,5 @@
-import { InnerClientState } from '../Client/client';
-import { SchedulerPromiseValue } from '../Scheduler';
+import type { InnerClientState } from '../Client/client';
+import type { SchedulerPromiseValue } from '../Scheduler';
 
 export interface Prefetch<
   GeneratedSchema extends {

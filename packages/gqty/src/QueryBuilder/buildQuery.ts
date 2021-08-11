@@ -1,4 +1,4 @@
-import { Selection } from '../Selection';
+import type { Selection } from '../Selection';
 import { set } from '../Utils';
 import { serializeVariables } from '../Utils/cachedJSON';
 

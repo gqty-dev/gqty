@@ -1,7 +1,7 @@
 import React, { ReactElement, Suspense, SuspenseProps } from 'react';
 
 import { OnErrorHandler, useInterceptSelections } from '../common';
-import { ReactClientOptionsWithDefaults } from '../utils';
+import type { ReactClientOptionsWithDefaults } from '../utils';
 
 import type { GQtyClient } from 'gqty';
 

@@ -9,7 +9,7 @@ import {
 import { useCallback, useMemo, useReducer, useRef, useState } from 'react';
 
 import { useIsomorphicLayoutEffect, useLazyRef } from '../common';
-import { ReactClientOptionsWithDefaults } from '../utils';
+import type { ReactClientOptionsWithDefaults } from '../utils';
 
 function initSelectionsState() {
   return new Set<Selection>();

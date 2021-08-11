@@ -1,7 +1,7 @@
-import { CacheType } from '../Cache';
-import { EventHandler } from '../Events';
+import type { CacheType } from '../Cache';
+import type { EventHandler } from '../Events';
 import { parseSchemaType, ScalarsEnumsHash, Schema, Type } from '../Schema';
-import { Selection } from '../Selection';
+import type { Selection } from '../Selection';
 import {
   deepAssign,
   DeepPartial,
@@ -219,7 +219,7 @@ export function createNormalizationHandler(
 
         if (
           (normalizedObject = normalizedCache[id]) &&
-          normalizedObject !== currentValue
+          normalizedObject !== (currentValue as unknown)
         ) {
           if (container && containerKey != null) {
             container[containerKey] = normalizedObject;
@@ -265,9 +265,9 @@ export function createNormalizationHandler(
           if (id) {
             const currentValueNormalizedCache = normalizedCache[id];
 
-            if (currentValueNormalizedCache !== value) {
+            if (currentValueNormalizedCache !== (value as unknown)) {
               if (currentValueNormalizedCache) {
-                normalizedCache[id] = data = deepAssign(
+                normalizedCache[id] = data = deepAssign<any>(
                   {},
                   [currentValueNormalizedCache, value],
                   (targetValue, sourceValue): object | void => {
@@ -281,7 +281,7 @@ export function createNormalizationHandler(
                   }
                 );
               } else {
-                normalizedCache[id] = value;
+                normalizedCache[id] = value as any;
               }
 
               if (eventHandler) {
@@ -318,7 +318,7 @@ export function createNormalizationHandler(
       if (idNewValue === idCurrentValue) {
         const currentObject = normalizedCache[idNewValue];
 
-        if (currentObject !== incomingValue) {
+        if (currentObject !== (incomingValue as unknown)) {
           return (normalizedCache[idNewValue] = mergeWith(
             {},
             currentObject,

@@ -1,4 +1,4 @@
-import { GQtyClient } from 'gqty';
+import type { GQtyClient } from 'gqty';
 
 import {
   isAnySelectionIncluded,
@@ -6,7 +6,7 @@ import {
   useIsomorphicLayoutEffect,
   useSelectionsState,
 } from '../common';
-import { ReactClientOptionsWithDefaults } from '../utils';
+import type { ReactClientOptionsWithDefaults } from '../utils';
 
 export interface UseSubscription<
   GeneratedSchema extends {
