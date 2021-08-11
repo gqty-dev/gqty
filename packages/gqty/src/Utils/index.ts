@@ -30,3 +30,4 @@ export * from './debounce';
 export * from './object';
 export * from './cycle';
 export { default as mergeWith } from 'lodash/mergeWith.js';
+export * from './selectionsInclude';
