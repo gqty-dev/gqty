@@ -20,6 +20,8 @@ RUN pnpm db:prepare
 
 COPY src /home/gqty/src
 
+RUN pnpm typecheck
+
 RUN pnpm build
 
 ENV NODE_ENV=production

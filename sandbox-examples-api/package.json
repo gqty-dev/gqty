@@ -1,6 +1,7 @@
 {
   "name": "examples-api",
   "version": "1.0.0",
+  "private": true,
   "homepage": "https://github.com/gqless/examples-api#readme",
   "bugs": {
     "url": "https://github.com/gqless/examples-api/issues"
@@ -9,16 +10,16 @@
     "type": "git",
     "url": "git+https://github.com/gqless/examples-api.git"
   },
-  "private": true,
   "license": "MIT",
   "author": "PabloSz <pablosaez1995@gmail.com>",
   "type": "module",
   "main": "dist/index.js",
   "scripts": {
     "build": "tsup",
+    "db:prepare": "prisma generate",
     "dev": "tsup --watch --onSuccess \"node dist/index.js\"",
     "start": "node dist/index.js",
-    "db:prepare": "prisma generate"
+    "typecheck": "prisma generate && tsc"
   },
   "dependencies": {
     "@graphql-ez/fastify": "^0.8.2",
@@ -55,7 +56,7 @@
     "@types/node": "^16.6.1",
     "@types/node-schedule": "^1.3.2",
     "tsup": "^4.13.1",
-    "typescript": "^4.3.5"
+    "typescript": "^4.4.1-rc"
   },
   "tsup": {
     "format": [
