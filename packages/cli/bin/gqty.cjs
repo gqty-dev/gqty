@@ -1,3 +1,3 @@
 #!/usr/bin/env node
 
-require('../dist/bin/gqty.js');
+require('../dist/bin/gqty.cjs');
