@@ -15,6 +15,7 @@ const defaultConfig = {
     },
   },
   preset: 'ts-jest',
+  transform: { '\\.[jt]sx?$': 'es-jest' },
   transformIgnorePatterns: ['[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$'],
   modulePathIgnorePatterns: ['/dist/'],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
