@@ -21,7 +21,7 @@ Accepts a callback, which will be recursively executed, until the data has been 
 The final result of the callback is returned as a promise.
 
 If your request has any error, either from syntax or from the GraphQL API,
-it will always throw an instance of [`GQtyError`](/docs/client/api/classes/GQtyError) _(which is itself, an instance of [`Error`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error))_
+it will always throw an instance of `GQtyError` _(which is itself, an instance of [`Error`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Error))_
 
 ```ts
 import { query, resolved } from '../gqty';
@@ -37,7 +37,7 @@ resolved(() => {
   });
 ```
 
-You can specify options in the second argument, like forcing a refetch or isolating from existing cache, see [**ResolveOptions**](/docs/client/api/interfaces/resolveoptions).
+You can specify options in the second argument, like forcing a refetch or isolating from existing cache.
 
 ### inlineResolved
 
@@ -114,7 +114,7 @@ async function Example() {
 
 ### Error handling
 
-The scheduler resolves to a promise of a [`GQtyError`](/docs/client/api/classes/GQtyError):
+The scheduler resolves to a promise of a `GQtyError`:
 
 ```ts
 async function Example() {

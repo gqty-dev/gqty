@@ -10,8 +10,6 @@ sidebar_label: Fetching Data
 
 This hook returns the core `query` object, and it will detect the usage of it, and **suspend** _(if enabled)_ when the data is being fetched for the first time, and update the component when any of the requested data changes.
 
-Check [API Reference](/docs/react/api/interfaces/usequery)
-
 ### Features
 
 - **Composability**
@@ -214,8 +212,6 @@ function Container() {
 }
 ```
 
-Check [API Reference](/docs/react/api/interfaces/graphqlhoc)
-
 ## Difference between "useQuery" and "graphql"
 
 If you read both, you could see that both do similar stuff, but enable different things based on it's nature and React constraints.
@@ -317,8 +313,6 @@ function Example() {
 }
 ```
 
-Check [API Reference](/docs/react/api/interfaces/usepaginatedquery)
-
 ## useTransactionQuery
 
 Alternative to `graphql` and `useQuery` that works via pre-defined functions, which allows for extra features that are not available in `useQuery` & `graphql HOC`.
@@ -372,8 +366,6 @@ function Example() {
 }
 ```
 
-Check [API Reference](/docs/react/api/interfaces/usetransactionquery)
-
 ## useLazyQuery
 
 Queries meant to be called in response of events, like button clicks.
@@ -424,13 +416,9 @@ function Example() {
 }
 ```
 
-Check [API Reference](/docs/react/api/interfaces/uselazyquery)
-
 ## useRefetch
 
 Refetch giving specific parts of the schema or via functions
-
-Check [API Reference](http://localhost:3000/react/api/interfaces/userefetch)
 
 ### Example with functions
 
@@ -537,8 +525,6 @@ function Container() {
   );
 }
 ```
-
-Check [API Reference](/docs/react/api/interfaces/preparequery)
 
 ## Fetch Policy
 
