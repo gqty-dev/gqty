@@ -1,1 +1,1 @@
-# Stackblitz Examples API
+# GQty Sandbox Examples API
