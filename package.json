@@ -27,7 +27,7 @@
     "pretty:all": "prettier --write \"**/*.{ts,tsx}\"",
     "publish:all": "changeset version && pnpm i && pnpm test && pnpm -r publish --access public",
     "test": "pnpm test -r --no-sort --no-bail --stream --",
-    "test:ci": "pnpm test -r --workspace-concurrency=1 --no-sort --no-bail --stream --",
+    "test:ci": "pnpm test -r --workspace-concurrency=0 --no-sort --no-bail --stream --",
     "typecheck": "bob-esbuild tsc",
     "website": "pnpm -r --filter website start",
     "website:build": "pnpm -r --filter website docs:build && pretty-quick"
