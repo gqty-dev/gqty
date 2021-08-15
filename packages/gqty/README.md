@@ -1,4 +1,4 @@
-# [GQty](https://gqty.dev) [![Documentation](https://img.shields.io/badge/documentation-documentation?color=C00B84)](https://gqty.dev) [![Twitter](https://img.shields.io/twitter/follow/gqtydev?label=%40gqtydev&style=flat&logo=twitter&color=00acee)](https://twitter.com/gqtydev)
+# [GQty](https://gqty.dev) [![Documentation](https://img.shields.io/badge/documentation-documentation?color=C00B84)](https://gqty.dev)
 
 > GQty is a fully-featured GraphQL client, which lowers the barrier of entry towards using GraphQL.
 
