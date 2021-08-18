@@ -46,6 +46,7 @@ import {
   Resolvers,
   RetryOptions,
 } from './resolvers';
+import { createTracker, Track } from '../Helpers/track';
 
 export interface InnerClientState {
   allowCache: boolean;
@@ -205,6 +206,7 @@ export interface GQtyClient<
   buildSelection: BuildSelection;
   subscriptionsClient: SubscriptionsClient | undefined;
   prefetch: Prefetch<GeneratedSchema>;
+  track: Track;
 }
 
 export type {
@@ -383,6 +385,8 @@ export function createClient<
     selectionManager
   );
 
+  const tracker = createTracker(innerState, subscriptionsClient);
+
   return {
     query,
     mutation,
@@ -404,5 +408,6 @@ export function createClient<
     subscriptionsClient,
     prefetch,
     ...persistenceHelpers,
+    ...tracker,
   };
 }

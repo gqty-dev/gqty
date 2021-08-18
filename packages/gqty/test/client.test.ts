@@ -300,7 +300,7 @@ describe('error handling', () => {
       await resolved(() => query.hello);
 
       throw Error("shouldn't reach here");
-    } catch (err) {
+    } catch (err: any) {
       expect(err.message).toBe('expected network error');
     }
   });

@@ -60,6 +60,49 @@ if (possibleData instanceof Promise) {
 }
 ```
 
+## track
+
+The function `track` accepts a callback that gets automatically called every time related data arrives or related cache changes, particularly useful for subscriptions, but it also works for queries.
+
+The returned function `stop` unsubscribes and stops tracking and `data` is an object that has a field `.current` that has the latest returned value from the callback.
+
+```ts
+import { track, subscription } from '../gqty';
+
+const { stop, data } = track(() => {
+  return subscription.newNotification;
+});
+
+// data.current === string | undefined
+
+setTimeout(() => {
+  stop();
+}, 5000);
+```
+
+### track options
+
+```ts
+track(
+  (info) => {
+    /**
+     * info === { type: "initial" | "cache_change" }
+     **/
+  },
+  {
+    onError(err) {
+      /**
+       * err === GQtyError
+       **/
+
+      console.error(err);
+    },
+    // Refetch on initial call
+    refetch: true,
+  }
+);
+```
+
 ## Refetching data
 
 ### refetch
