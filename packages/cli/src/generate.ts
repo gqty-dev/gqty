@@ -1003,7 +1003,7 @@ export const generatedSchema = {${Object.entries(generatedSchema).reduceRight(
   }
   
 
-  export const { query, mutation, mutate, subscription, resolved, refetch } = client;
+  export const { query, mutation, mutate, subscription, resolved, refetch, track } = client;
 
   ${reactClientCode}
 
