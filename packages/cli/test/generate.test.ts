@@ -79,7 +79,7 @@ test('basic functionality works', async () => {
      * Query
      */
     export interface Query {
-      __typename: 'Query' | undefined;
+      __typename?: 'Query';
       /**
        * Hello field
        */
@@ -96,11 +96,11 @@ test('basic functionality works', async () => {
     }
 
     export interface Mutation {
-      __typename: 'Mutation' | undefined;
+      __typename?: 'Mutation';
     }
 
     export interface Subscription {
-      __typename: 'Subscription' | undefined;
+      __typename?: 'Subscription';
     }
 
     export interface SchemaObjectTypes {
@@ -125,100 +125,100 @@ test('basic functionality works', async () => {
   `);
 
   expect(clientCode).toMatchInlineSnapshot(`
-"/**
- * GQTY: You can safely modify this file and Query Fetcher based on your needs
- */
+    "/**
+     * GQTY: You can safely modify this file and Query Fetcher based on your needs
+     */
 
-import { createReactClient } from '@gqty/react';
-import { createSubscriptionsClient } from '@gqty/subscriptions';
-import { createClient, QueryFetcher } from 'gqty';
-import {
-  generatedSchema,
-  scalarsEnumsHash,
-  GeneratedSchema,
-  SchemaObjectTypes,
-  SchemaObjectTypesNames,
-} from './schema.generated';
+    import { createReactClient } from '@gqty/react';
+    import { createSubscriptionsClient } from '@gqty/subscriptions';
+    import { createClient, QueryFetcher } from 'gqty';
+    import {
+      generatedSchema,
+      scalarsEnumsHash,
+      GeneratedSchema,
+      SchemaObjectTypes,
+      SchemaObjectTypesNames,
+    } from './schema.generated';
 
-const queryFetcher: QueryFetcher = async function (query, variables) {
-  // Modify \\"/api/graphql\\" if needed
-  const response = await fetch('/api/graphql', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      query,
-      variables,
-    }),
-    mode: 'cors',
-  });
-
-  const json = await response.json();
-
-  return json;
-};
-
-const subscriptionsClient =
-  typeof window !== 'undefined'
-    ? createSubscriptionsClient({
-        wsEndpoint: () => {
-          // Modify if needed
-          const url = new URL('/api/graphql', window.location.href);
-          url.protocol = url.protocol.replace('http', 'ws');
-          return url.href;
+    const queryFetcher: QueryFetcher = async function (query, variables) {
+      // Modify \\"/api/graphql\\" if needed
+      const response = await fetch('/api/graphql', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-      })
-    : undefined;
+        body: JSON.stringify({
+          query,
+          variables,
+        }),
+        mode: 'cors',
+      });
 
-export const client = createClient<
-  GeneratedSchema,
-  SchemaObjectTypesNames,
-  SchemaObjectTypes
->({
-  schema: generatedSchema,
-  scalarsEnumsHash,
-  queryFetcher,
-  subscriptionsClient,
-});
+      const json = await response.json();
 
-export const {
-  query,
-  mutation,
-  mutate,
-  subscription,
-  resolved,
-  refetch,
-  track,
-} = client;
+      return json;
+    };
 
-export const {
-  graphql,
-  useQuery,
-  usePaginatedQuery,
-  useTransactionQuery,
-  useLazyQuery,
-  useRefetch,
-  useMutation,
-  useMetaState,
-  prepareReactRender,
-  useHydrateCache,
-  prepareQuery,
-  useSubscription,
-} = createReactClient<GeneratedSchema>(client, {
-  defaults: {
-    // Set this flag as \\"true\\" if your usage involves React Suspense
-    // Keep in mind that you can overwrite it in a per-hook basis
-    suspense: false,
+    const subscriptionsClient =
+      typeof window !== 'undefined'
+        ? createSubscriptionsClient({
+            wsEndpoint: () => {
+              // Modify if needed
+              const url = new URL('/api/graphql', window.location.href);
+              url.protocol = url.protocol.replace('http', 'ws');
+              return url.href;
+            },
+          })
+        : undefined;
 
-    // Set this flag based on your needs
-    staleWhileRevalidate: false,
-  },
-});
+    export const client = createClient<
+      GeneratedSchema,
+      SchemaObjectTypesNames,
+      SchemaObjectTypes
+    >({
+      schema: generatedSchema,
+      scalarsEnumsHash,
+      queryFetcher,
+      subscriptionsClient,
+    });
 
-export * from './schema.generated';
-"
-`);
+    export const {
+      query,
+      mutation,
+      mutate,
+      subscription,
+      resolved,
+      refetch,
+      track,
+    } = client;
+
+    export const {
+      graphql,
+      useQuery,
+      usePaginatedQuery,
+      useTransactionQuery,
+      useLazyQuery,
+      useRefetch,
+      useMutation,
+      useMetaState,
+      prepareReactRender,
+      useHydrateCache,
+      prepareQuery,
+      useSubscription,
+    } = createReactClient<GeneratedSchema>(client, {
+      defaults: {
+        // Set this flag as \\"true\\" if your usage involves React Suspense
+        // Keep in mind that you can overwrite it in a per-hook basis
+        suspense: false,
+
+        // Set this flag based on your needs
+        staleWhileRevalidate: false,
+      },
+    });
+
+    export * from './schema.generated';
+    "
+  `);
 
   expect(JSON.stringify(generatedSchema, null, 2)).toMatchInlineSnapshot(`
     "{
@@ -288,86 +288,86 @@ test('custom scalars works', async () => {
     });
 
   expect(clientCode).toMatchInlineSnapshot(`
-"/**
- * GQTY: You can safely modify this file and Query Fetcher based on your needs
- */
+    "/**
+     * GQTY: You can safely modify this file and Query Fetcher based on your needs
+     */
 
-import { createReactClient } from '@gqty/react';
+    import { createReactClient } from '@gqty/react';
 
-import { createClient, QueryFetcher } from 'gqty';
-import {
-  generatedSchema,
-  scalarsEnumsHash,
-  GeneratedSchema,
-  SchemaObjectTypes,
-  SchemaObjectTypesNames,
-} from './schema.generated';
+    import { createClient, QueryFetcher } from 'gqty';
+    import {
+      generatedSchema,
+      scalarsEnumsHash,
+      GeneratedSchema,
+      SchemaObjectTypes,
+      SchemaObjectTypesNames,
+    } from './schema.generated';
 
-const queryFetcher: QueryFetcher = async function (query, variables) {
-  // Modify \\"/api/graphql\\" if needed
-  const response = await fetch('/api/graphql', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
+    const queryFetcher: QueryFetcher = async function (query, variables) {
+      // Modify \\"/api/graphql\\" if needed
+      const response = await fetch('/api/graphql', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          query,
+          variables,
+        }),
+        mode: 'cors',
+      });
+
+      const json = await response.json();
+
+      return json;
+    };
+
+    export const client = createClient<
+      GeneratedSchema,
+      SchemaObjectTypesNames,
+      SchemaObjectTypes
+    >({
+      schema: generatedSchema,
+      scalarsEnumsHash,
+      queryFetcher,
+    });
+
+    export const {
       query,
-      variables,
-    }),
-    mode: 'cors',
-  });
+      mutation,
+      mutate,
+      subscription,
+      resolved,
+      refetch,
+      track,
+    } = client;
 
-  const json = await response.json();
+    export const {
+      graphql,
+      useQuery,
+      usePaginatedQuery,
+      useTransactionQuery,
+      useLazyQuery,
+      useRefetch,
+      useMutation,
+      useMetaState,
+      prepareReactRender,
+      useHydrateCache,
+      prepareQuery,
+    } = createReactClient<GeneratedSchema>(client, {
+      defaults: {
+        // Set this flag as \\"true\\" if your usage involves React Suspense
+        // Keep in mind that you can overwrite it in a per-hook basis
+        suspense: false,
 
-  return json;
-};
+        // Set this flag based on your needs
+        staleWhileRevalidate: false,
+      },
+    });
 
-export const client = createClient<
-  GeneratedSchema,
-  SchemaObjectTypesNames,
-  SchemaObjectTypes
->({
-  schema: generatedSchema,
-  scalarsEnumsHash,
-  queryFetcher,
-});
-
-export const {
-  query,
-  mutation,
-  mutate,
-  subscription,
-  resolved,
-  refetch,
-  track,
-} = client;
-
-export const {
-  graphql,
-  useQuery,
-  usePaginatedQuery,
-  useTransactionQuery,
-  useLazyQuery,
-  useRefetch,
-  useMutation,
-  useMetaState,
-  prepareReactRender,
-  useHydrateCache,
-  prepareQuery,
-} = createReactClient<GeneratedSchema>(client, {
-  defaults: {
-    // Set this flag as \\"true\\" if your usage involves React Suspense
-    // Keep in mind that you can overwrite it in a per-hook basis
-    suspense: false,
-
-    // Set this flag based on your needs
-    staleWhileRevalidate: false,
-  },
-});
-
-export * from './schema.generated';
-"
-`);
+    export * from './schema.generated';
+    "
+  `);
 
   expect(schemaCode).toMatchInlineSnapshot(`
     "/**
@@ -404,16 +404,16 @@ export * from './schema.generated';
     } as const;
 
     export interface Query {
-      __typename: 'Query' | undefined;
+      __typename?: 'Query';
       hello: ScalarsEnums['Custom'];
     }
 
     export interface Mutation {
-      __typename: 'Mutation' | undefined;
+      __typename?: 'Mutation';
     }
 
     export interface Subscription {
-      __typename: 'Subscription' | undefined;
+      __typename?: 'Subscription';
     }
 
     export interface SchemaObjectTypes {
@@ -687,7 +687,7 @@ describe('feature complete app', () => {
       } as const;
 
       export interface Query {
-        __typename: 'Query' | undefined;
+        __typename?: 'Query';
         simpleString: ScalarsEnums['String'];
         stringWithArgs: (args: {
           hello: Scalars['String'];
@@ -729,19 +729,19 @@ describe('feature complete app', () => {
       }
 
       export interface Mutation {
-        __typename: 'Mutation' | undefined;
+        __typename?: 'Mutation';
         increment: (args: { n: Scalars['Int'] }) => ScalarsEnums['Int'];
       }
 
       export interface Subscription {
-        __typename: 'Subscription' | undefined;
+        __typename?: 'Subscription';
       }
 
       /**
        * Named Entity
        */
       export interface NamedEntity {
-        __typename: 'NamedEntity' | undefined;
+        __typename?: 'NamedEntity';
         /**
          * Named Entity Name
          */
@@ -764,7 +764,7 @@ describe('feature complete app', () => {
       }
 
       export interface Human extends Omit<NamedEntity, '__typename'> {
-        __typename: 'Human' | undefined;
+        __typename?: 'Human';
         name: ScalarsEnums['String'];
         other?: Maybe<ScalarsEnums['String']>;
         father: Human;
@@ -777,7 +777,7 @@ describe('feature complete app', () => {
       }
 
       export interface OtherHuman {
-        __typename: 'OtherHuman' | undefined;
+        __typename?: 'OtherHuman';
         name: ScalarsEnums['String'];
         other?: Maybe<ScalarsEnums['String']>;
         withArgs: (args: {
@@ -805,7 +805,7 @@ describe('feature complete app', () => {
 
       export type HumanType =
         | {
-            __typename: 'Human' | undefined;
+            __typename?: 'Human';
             father: Human;
             fieldWithArgs: (args: { id: Scalars['Int'] }) => ScalarsEnums['Int'];
             name: ScalarsEnums['String'];
@@ -817,7 +817,7 @@ describe('feature complete app', () => {
             withArgs2: (args?: { a?: Maybe<Scalars['Int']> }) => ScalarsEnums['Int'];
           }
         | {
-            __typename: 'OtherHuman' | undefined;
+            __typename?: 'OtherHuman';
             father?: undefined;
             fieldWithArgs?: undefined;
             name: ScalarsEnums['String'];
@@ -948,17 +948,17 @@ describe('mutation', () => {
       } as const;
 
       export interface Query {
-        __typename: 'Query' | undefined;
+        __typename?: 'Query';
         hello: ScalarsEnums['String'];
       }
 
       export interface Mutation {
-        __typename: 'Mutation' | undefined;
+        __typename?: 'Mutation';
         helloMutation: (args: { hello: Scalars['String'] }) => ScalarsEnums['String'];
       }
 
       export interface Subscription {
-        __typename: 'Subscription' | undefined;
+        __typename?: 'Subscription';
       }
 
       export interface SchemaObjectTypes {
@@ -1078,16 +1078,16 @@ describe('subscription', () => {
       } as const;
 
       export interface Query {
-        __typename: 'Query' | undefined;
+        __typename?: 'Query';
         hello: ScalarsEnums['String'];
       }
 
       export interface Mutation {
-        __typename: 'Mutation' | undefined;
+        __typename?: 'Mutation';
       }
 
       export interface Subscription {
-        __typename: 'Subscription' | undefined;
+        __typename?: 'Subscription';
         newNotification: ScalarsEnums['String'];
       }
 
@@ -1184,100 +1184,100 @@ test('javascript output works', async () => {
   expect(isJavascriptOutput).toBe(true);
 
   expect(clientCode).toMatchInlineSnapshot(`
-"/**
- * GQTY: You can safely modify this file and Query Fetcher based on your needs
- */
+    "/**
+     * GQTY: You can safely modify this file and Query Fetcher based on your needs
+     */
 
-import { createReactClient } from '@gqty/react';
-import { createSubscriptionsClient } from '@gqty/subscriptions';
-import { createClient } from 'gqty';
-import { generatedSchema, scalarsEnumsHash } from './schema.generated';
+    import { createReactClient } from '@gqty/react';
+    import { createSubscriptionsClient } from '@gqty/subscriptions';
+    import { createClient } from 'gqty';
+    import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
-/**
- * @type {import(\\"gqty\\").QueryFetcher}
- */
-const queryFetcher = async function (query, variables) {
-  // Modify \\"/api/graphql\\" if needed
-  const response = await fetch('/api/graphql', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      query,
-      variables,
-    }),
-    mode: 'cors',
-  });
-
-  const json = await response.json();
-
-  return json;
-};
-
-const subscriptionsClient =
-  typeof window !== 'undefined'
-    ? createSubscriptionsClient({
-        wsEndpoint: () => {
-          // Modify if needed
-          const url = new URL('/api/graphql', window.location.href);
-          url.protocol = url.protocol.replace('http', 'ws');
-          return url.href;
+    /**
+     * @type {import(\\"gqty\\").QueryFetcher}
+     */
+    const queryFetcher = async function (query, variables) {
+      // Modify \\"/api/graphql\\" if needed
+      const response = await fetch('/api/graphql', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
         },
-      })
-    : undefined;
+        body: JSON.stringify({
+          query,
+          variables,
+        }),
+        mode: 'cors',
+      });
 
-/**
- * @type {import(\\"gqty\\").GQtyClient<import(\\"./schema.generated\\").GeneratedSchema>}
- */
-export const client = createClient({
-  schema: generatedSchema,
-  scalarsEnumsHash,
-  queryFetcher,
-  subscriptionsClient,
-});
+      const json = await response.json();
 
-export const {
-  query,
-  mutation,
-  mutate,
-  subscription,
-  resolved,
-  refetch,
-  track,
-} = client;
+      return json;
+    };
 
-/**
- * @type {import(\\"@gqty/react\\").ReactClient<import(\\"./schema.generated\\").GeneratedSchema>}
- */
-const reactClient = createReactClient(client, {
-  defaults: {
-    // Set this flag as \\"true\\" if your usage involves React Suspense
-    // Keep in mind that you can overwrite it in a per-hook basis
-    suspense: false,
+    const subscriptionsClient =
+      typeof window !== 'undefined'
+        ? createSubscriptionsClient({
+            wsEndpoint: () => {
+              // Modify if needed
+              const url = new URL('/api/graphql', window.location.href);
+              url.protocol = url.protocol.replace('http', 'ws');
+              return url.href;
+            },
+          })
+        : undefined;
 
-    // Set this flag based on your needs
-    staleWhileRevalidate: false,
-  },
-});
+    /**
+     * @type {import(\\"gqty\\").GQtyClient<import(\\"./schema.generated\\").GeneratedSchema>}
+     */
+    export const client = createClient({
+      schema: generatedSchema,
+      scalarsEnumsHash,
+      queryFetcher,
+      subscriptionsClient,
+    });
 
-export const {
-  graphql,
-  useQuery,
-  usePaginatedQuery,
-  useTransactionQuery,
-  useLazyQuery,
-  useRefetch,
-  useMutation,
-  useMetaState,
-  prepareReactRender,
-  useHydrateCache,
-  prepareQuery,
-} = reactClient;
+    export const {
+      query,
+      mutation,
+      mutate,
+      subscription,
+      resolved,
+      refetch,
+      track,
+    } = client;
 
-export * from './schema.generated';
-"
-`);
+    /**
+     * @type {import(\\"@gqty/react\\").ReactClient<import(\\"./schema.generated\\").GeneratedSchema>}
+     */
+    const reactClient = createReactClient(client, {
+      defaults: {
+        // Set this flag as \\"true\\" if your usage involves React Suspense
+        // Keep in mind that you can overwrite it in a per-hook basis
+        suspense: false,
+
+        // Set this flag based on your needs
+        staleWhileRevalidate: false,
+      },
+    });
+
+    export const {
+      graphql,
+      useQuery,
+      usePaginatedQuery,
+      useTransactionQuery,
+      useLazyQuery,
+      useRefetch,
+      useMutation,
+      useMetaState,
+      prepareReactRender,
+      useHydrateCache,
+      prepareQuery,
+    } = reactClient;
+
+    export * from './schema.generated';
+    "
+  `);
   expect(javascriptSchemaCode).toMatchInlineSnapshot(`
     "/**
      * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
@@ -1383,26 +1383,26 @@ export * from './schema.generated';
     };
 
     export interface Query {
-      __typename: 'Query' | undefined;
+      __typename?: 'Query';
       hello: ScalarsEnums['String'];
     }
 
     export interface Mutation {
-      __typename: 'Mutation' | undefined;
+      __typename?: 'Mutation';
     }
 
     export interface Subscription {
-      __typename: 'Subscription' | undefined;
+      __typename?: 'Subscription';
       newNotification: ScalarsEnums['String'];
     }
 
     export interface A {
-      __typename: 'A' | undefined;
+      __typename?: 'A';
       a?: Maybe<ScalarsEnums['String']>;
     }
 
     export interface B {
-      __typename: 'B' | undefined;
+      __typename?: 'B';
       b?: Maybe<ScalarsEnums['Int']>;
     }
 
@@ -1421,16 +1421,8 @@ export * from './schema.generated';
       | 'B';
 
     export type C =
-      | {
-          __typename: 'A' | undefined;
-          a?: Maybe<ScalarsEnums['String']>;
-          b?: undefined;
-        }
-      | {
-          __typename: 'B' | undefined;
-          a?: undefined;
-          b?: Maybe<ScalarsEnums['Int']>;
-        };
+      | { __typename?: 'A'; a?: Maybe<ScalarsEnums['String']>; b?: undefined }
+      | { __typename?: 'B'; a?: undefined; b?: Maybe<ScalarsEnums['Int']> };
 
     export interface GeneratedSchema {
       query: Query;
@@ -1483,86 +1475,86 @@ test('ignoreArgs transform', async () => {
   expect(isCalled).toBe(true);
 
   expect(clientCode).toMatchInlineSnapshot(`
-"/**
- * GQTY: You can safely modify this file and Query Fetcher based on your needs
- */
+    "/**
+     * GQTY: You can safely modify this file and Query Fetcher based on your needs
+     */
 
-import { createReactClient } from '@gqty/react';
+    import { createReactClient } from '@gqty/react';
 
-import { createClient, QueryFetcher } from 'gqty';
-import {
-  generatedSchema,
-  scalarsEnumsHash,
-  GeneratedSchema,
-  SchemaObjectTypes,
-  SchemaObjectTypesNames,
-} from './schema.generated';
+    import { createClient, QueryFetcher } from 'gqty';
+    import {
+      generatedSchema,
+      scalarsEnumsHash,
+      GeneratedSchema,
+      SchemaObjectTypes,
+      SchemaObjectTypesNames,
+    } from './schema.generated';
 
-const queryFetcher: QueryFetcher = async function (query, variables) {
-  // Modify \\"/api/graphql\\" if needed
-  const response = await fetch('/api/graphql', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
+    const queryFetcher: QueryFetcher = async function (query, variables) {
+      // Modify \\"/api/graphql\\" if needed
+      const response = await fetch('/api/graphql', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          query,
+          variables,
+        }),
+        mode: 'cors',
+      });
+
+      const json = await response.json();
+
+      return json;
+    };
+
+    export const client = createClient<
+      GeneratedSchema,
+      SchemaObjectTypesNames,
+      SchemaObjectTypes
+    >({
+      schema: generatedSchema,
+      scalarsEnumsHash,
+      queryFetcher,
+    });
+
+    export const {
       query,
-      variables,
-    }),
-    mode: 'cors',
-  });
+      mutation,
+      mutate,
+      subscription,
+      resolved,
+      refetch,
+      track,
+    } = client;
 
-  const json = await response.json();
+    export const {
+      graphql,
+      useQuery,
+      usePaginatedQuery,
+      useTransactionQuery,
+      useLazyQuery,
+      useRefetch,
+      useMutation,
+      useMetaState,
+      prepareReactRender,
+      useHydrateCache,
+      prepareQuery,
+    } = createReactClient<GeneratedSchema>(client, {
+      defaults: {
+        // Set this flag as \\"true\\" if your usage involves React Suspense
+        // Keep in mind that you can overwrite it in a per-hook basis
+        suspense: false,
 
-  return json;
-};
+        // Set this flag based on your needs
+        staleWhileRevalidate: false,
+      },
+    });
 
-export const client = createClient<
-  GeneratedSchema,
-  SchemaObjectTypesNames,
-  SchemaObjectTypes
->({
-  schema: generatedSchema,
-  scalarsEnumsHash,
-  queryFetcher,
-});
-
-export const {
-  query,
-  mutation,
-  mutate,
-  subscription,
-  resolved,
-  refetch,
-  track,
-} = client;
-
-export const {
-  graphql,
-  useQuery,
-  usePaginatedQuery,
-  useTransactionQuery,
-  useLazyQuery,
-  useRefetch,
-  useMutation,
-  useMetaState,
-  prepareReactRender,
-  useHydrateCache,
-  prepareQuery,
-} = createReactClient<GeneratedSchema>(client, {
-  defaults: {
-    // Set this flag as \\"true\\" if your usage involves React Suspense
-    // Keep in mind that you can overwrite it in a per-hook basis
-    suspense: false,
-
-    // Set this flag based on your needs
-    staleWhileRevalidate: false,
-  },
-});
-
-export * from './schema.generated';
-"
-`);
+    export * from './schema.generated';
+    "
+  `);
   expect(generatedSchema).toMatchInlineSnapshot(`
     Object {
       "mutation": Object {},
@@ -1643,7 +1635,7 @@ export * from './schema.generated';
     } as const;
 
     export interface Query {
-      __typename: 'Query' | undefined;
+      __typename?: 'Query';
       asd: ScalarsEnums['String'];
       zxc: (args: {
         optional?: Maybe<Scalars['String']>;
@@ -1652,11 +1644,11 @@ export * from './schema.generated';
     }
 
     export interface Mutation {
-      __typename: 'Mutation' | undefined;
+      __typename?: 'Mutation';
     }
 
     export interface Subscription {
-      __typename: 'Subscription' | undefined;
+      __typename?: 'Subscription';
     }
 
     export interface SchemaObjectTypes {

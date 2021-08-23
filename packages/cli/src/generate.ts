@@ -613,57 +613,58 @@ export async function generate(
               .join(', ')
           : ''
       }{ 
-        __typename: "${typeName}" | undefined; ${Object.entries(
-        typeValue
-      ).reduce((acum, [fieldKey, fieldValue]) => {
-        if (fieldKey === '__typename') {
-          objectTypeMap.set(fieldKey, `: "${typeName}" | undefined`);
+        __typename?: "${typeName}"; ${Object.entries(typeValue).reduce(
+        (acum, [fieldKey, fieldValue]) => {
+          if (fieldKey === '__typename') {
+            objectTypeMap.set(fieldKey, `?: "${typeName}"`);
+            return acum;
+          }
+
+          const fieldValueProps = parseSchemaType(fieldValue.__type);
+          const typeToReturn = parseFinalType(fieldValueProps);
+          let finalType: string;
+          if (fieldValue.__args) {
+            const argsEntries = Object.entries(fieldValue.__args);
+            let onlyNullableArgs = true;
+            const argTypes = argsEntries.reduce(
+              (acum, [argKey, argValue], index) => {
+                const argValueProps = parseSchemaType(argValue);
+                const connector = argValueProps.isNullable ? '?:' : ':';
+
+                if (!argValueProps.isNullable) {
+                  onlyNullableArgs = false;
+                }
+
+                const argTypeValue = parseArgType(argValueProps);
+
+                acum += `${addDescription([
+                  typeName,
+                  fieldKey,
+                  argKey,
+                ])}${argKey}${connector} ${argTypeValue}`;
+                if (index < argsEntries.length - 1) {
+                  acum += '; ';
+                }
+                return acum;
+              },
+              ''
+            );
+            const argsConnector = onlyNullableArgs ? '?:' : ':';
+            finalType = `: (args${argsConnector} {${argTypes}}) => ${typeToReturn}`;
+          } else {
+            const connector = fieldValueProps.isNullable ? '?:' : ':';
+            finalType = `${connector} ${typeToReturn}`;
+          }
+
+          objectTypeMap.set(fieldKey, finalType);
+
+          acum +=
+            '\n' + addDescription([typeName, fieldKey]) + fieldKey + finalType;
+
           return acum;
-        }
-
-        const fieldValueProps = parseSchemaType(fieldValue.__type);
-        const typeToReturn = parseFinalType(fieldValueProps);
-        let finalType: string;
-        if (fieldValue.__args) {
-          const argsEntries = Object.entries(fieldValue.__args);
-          let onlyNullableArgs = true;
-          const argTypes = argsEntries.reduce(
-            (acum, [argKey, argValue], index) => {
-              const argValueProps = parseSchemaType(argValue);
-              const connector = argValueProps.isNullable ? '?:' : ':';
-
-              if (!argValueProps.isNullable) {
-                onlyNullableArgs = false;
-              }
-
-              const argTypeValue = parseArgType(argValueProps);
-
-              acum += `${addDescription([
-                typeName,
-                fieldKey,
-                argKey,
-              ])}${argKey}${connector} ${argTypeValue}`;
-              if (index < argsEntries.length - 1) {
-                acum += '; ';
-              }
-              return acum;
-            },
-            ''
-          );
-          const argsConnector = onlyNullableArgs ? '?:' : ':';
-          finalType = `: (args${argsConnector} {${argTypes}}) => ${typeToReturn}`;
-        } else {
-          const connector = fieldValueProps.isNullable ? '?:' : ':';
-          finalType = `${connector} ${typeToReturn}`;
-        }
-
-        objectTypeMap.set(fieldKey, finalType);
-
-        acum +=
-          '\n' + addDescription([typeName, fieldKey]) + fieldKey + finalType;
-
-        return acum;
-      }, '')}
+        },
+        ''
+      )}
       }
       `;
 

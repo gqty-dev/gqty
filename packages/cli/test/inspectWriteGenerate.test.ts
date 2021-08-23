@@ -166,16 +166,16 @@ test('basic inspectWriteGenerate functionality', async () => {
       } as const;
 
       export interface Query {
-        __typename: 'Query' | undefined;
+        __typename?: 'Query';
         hello: ScalarsEnums['String'];
       }
 
       export interface Mutation {
-        __typename: 'Mutation' | undefined;
+        __typename?: 'Mutation';
       }
 
       export interface Subscription {
-        __typename: 'Subscription' | undefined;
+        __typename?: 'Subscription';
       }
 
       export interface SchemaObjectTypes {
@@ -351,16 +351,16 @@ describe('from file', () => {
         } as const;
 
         export interface Query {
-          __typename: 'Query' | undefined;
+          __typename?: 'Query';
           hello: ScalarsEnums['Int'];
         }
 
         export interface Mutation {
-          __typename: 'Mutation' | undefined;
+          __typename?: 'Mutation';
         }
 
         export interface Subscription {
-          __typename: 'Subscription' | undefined;
+          __typename?: 'Subscription';
         }
 
         export interface SchemaObjectTypes {
@@ -536,16 +536,16 @@ describe('from file', () => {
         } as const;
 
         export interface Query {
-          __typename: 'Query' | undefined;
+          __typename?: 'Query';
           hello: ScalarsEnums['String'];
         }
 
         export interface Mutation {
-          __typename: 'Mutation' | undefined;
+          __typename?: 'Mutation';
         }
 
         export interface Subscription {
-          __typename: 'Subscription' | undefined;
+          __typename?: 'Subscription';
         }
 
         export interface SchemaObjectTypes {
@@ -721,16 +721,16 @@ describe('from file', () => {
         } as const;
 
         export interface Query {
-          __typename: 'Query' | undefined;
+          __typename?: 'Query';
           hello: ScalarsEnums['String'];
         }
 
         export interface Mutation {
-          __typename: 'Mutation' | undefined;
+          __typename?: 'Mutation';
         }
 
         export interface Subscription {
-          __typename: 'Subscription' | undefined;
+          __typename?: 'Subscription';
         }
 
         export interface SchemaObjectTypes {
@@ -945,16 +945,16 @@ test('specify generateOptions to inspectWriteGenerate', async () => {
       } as const;
 
       export interface Query {
-        __typename: 'Query' | undefined;
+        __typename?: 'Query';
         hello: ScalarsEnums['String'];
       }
 
       export interface Mutation {
-        __typename: 'Mutation' | undefined;
+        __typename?: 'Mutation';
       }
 
       export interface Subscription {
-        __typename: 'Subscription' | undefined;
+        __typename?: 'Subscription';
       }
 
       export interface SchemaObjectTypes {
@@ -1081,16 +1081,16 @@ describe('inspect headers', () => {
         } as const;
 
         export interface Query {
-          __typename: 'Query' | undefined;
+          __typename?: 'Query';
           hello: ScalarsEnums['String'];
         }
 
         export interface Mutation {
-          __typename: 'Mutation' | undefined;
+          __typename?: 'Mutation';
         }
 
         export interface Subscription {
-          __typename: 'Subscription' | undefined;
+          __typename?: 'Subscription';
         }
 
         export interface SchemaObjectTypes {
@@ -1295,16 +1295,16 @@ describe('CLI behavior', () => {
         } as const;
 
         export interface Query {
-          __typename: 'Query' | undefined;
+          __typename?: 'Query';
           hello: ScalarsEnums['String'];
         }
 
         export interface Mutation {
-          __typename: 'Mutation' | undefined;
+          __typename?: 'Mutation';
         }
 
         export interface Subscription {
-          __typename: 'Subscription' | undefined;
+          __typename?: 'Subscription';
         }
 
         export interface SchemaObjectTypes {
