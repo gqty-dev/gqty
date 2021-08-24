@@ -86,9 +86,7 @@ The function receives as parameters:
 - The [`prepass`](/docs/client/helper-functions#prepass) helper.
 - Your auto-generated `query` object.
 
-:::caution
-Since it's a function called before the hook itself returned, the returned value/values **are `undefined`**, and unfortunately `TypeScript` can't know that.
-:::
+> Since it's a function called before the hook itself returned, the returned value/values **are `undefined`**, and unfortunately `TypeScript` can't know that.
 
 #### Suspense example
 
