@@ -136,64 +136,77 @@ function AppContent(appProps: AppProps) {
 
   return (
     <>
-      <Header accentColor={accentColor} activeLink="/open-source" themeSwitch />
       <ClassNames>
         {({ css }) => {
           return (
-            <Subheader
-              activeLink={router.asPath}
-              logoProps={{
-                className: css({
-                  img: {
-                    width: '6rem',
+            <>
+              <Header
+                accentColor={accentColor}
+                activeLink="/open-source"
+                themeSwitch
+                containerProps={{
+                  className: css({
+                    menu: {
+                      display: 'none',
+                    },
+                  }),
+                }}
+              />
+              <Subheader
+                activeLink={router.asPath}
+                logoProps={{
+                  className: css({
+                    img: {
+                      width: '6rem',
+                    },
+                  }),
+                }}
+                product={{
+                  title: '',
+                  description: '',
+                  image: {
+                    src: '/logo/logo.svg',
+                    alt: 'Docs',
                   },
-                }),
-              }}
-              product={{
-                title: '',
-                description: '',
-                image: {
-                  src: '/logo/logo.svg',
-                  alt: 'Docs',
-                },
-                onClick: (e) => handlePushRoute('/', e),
-              }}
-              links={[
-                {
-                  children: 'Home',
-                  title: 'Read about Guild Docs',
-                  href: '/',
                   onClick: (e) => handlePushRoute('/', e),
-                },
-                {
-                  children: 'Examples',
-                  title: 'Check Examples',
-                  href: '/examples',
-                  onClick: (e) => handlePushRoute('/examples', e),
-                },
-                {
-                  children: 'GitHub',
-                  href: 'https://github.com/gqty-dev/gqty',
-                  target: '_blank',
-                  rel: 'noopener norefereer',
-                  title: "Head to the project's GitHub",
-                },
-                {
-                  children: 'Docs',
-                  title: 'Check Documentation',
-                  href: '/docs',
+                }}
+                links={[
+                  {
+                    children: 'Home',
+                    title: 'Read about Guild Docs',
+                    href: '/',
+                    onClick: (e) => handlePushRoute('/', e),
+                  },
+                  {
+                    children: 'Examples',
+                    title: 'Check Examples',
+                    href: '/examples',
+                    onClick: (e) => handlePushRoute('/examples', e),
+                  },
+                  {
+                    children: 'GitHub',
+                    href: 'https://github.com/gqty-dev/gqty',
+                    target: '_blank',
+                    rel: 'noopener norefereer',
+                    title: "Head to the project's GitHub",
+                  },
+                  {
+                    children: 'Docs',
+                    title: 'Check Documentation',
+                    href: '/docs',
+                    onClick: (e) => handlePushRoute('/docs/getting-started', e),
+                  },
+                ]}
+                cta={{
+                  children: 'Get Started',
+                  title: 'Start using GQty',
+                  href: '/docs/getting-started',
                   onClick: (e) => handlePushRoute('/docs/getting-started', e),
-                },
-              ]}
-              cta={{
-                children: 'Get Started',
-                title: 'Start using GQty',
-                href: '/docs/getting-started',
-                onClick: (e) => handlePushRoute('/docs/getting-started', e),
-                target: '_blank',
-                rel: 'noopener noreferrer',
-              }}
-            />
+                  target: '_blank',
+                  rel: 'noopener noreferrer',
+                }}
+              />
+            </>
           );
         }}
       </ClassNames>

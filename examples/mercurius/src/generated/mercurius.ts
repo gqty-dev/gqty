@@ -33,8 +33,8 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  ExampleScalar: any;
   _FieldSet: any;
+  ExampleScalar: any;
 };
 
 export type NamedEntity = {
@@ -162,23 +162,9 @@ export type ResolverTypeWrapper<T> = Promise<T> | T;
 export type ResolverWithResolve<TResult, TParent, TContext, TArgs> = {
   resolve: ResolverFn<TResult, TParent, TContext, TArgs>;
 };
-
-export type LegacyStitchingResolver<TResult, TParent, TContext, TArgs> = {
-  fragment: string;
-  resolve: ResolverFn<TResult, TParent, TContext, TArgs>;
-};
-
-export type NewStitchingResolver<TResult, TParent, TContext, TArgs> = {
-  selectionSet: string;
-  resolve: ResolverFn<TResult, TParent, TContext, TArgs>;
-};
-export type StitchingResolver<TResult, TParent, TContext, TArgs> =
-  | LegacyStitchingResolver<TResult, TParent, TContext, TArgs>
-  | NewStitchingResolver<TResult, TParent, TContext, TArgs>;
 export type Resolver<TResult, TParent = {}, TContext = {}, TArgs = {}> =
   | ResolverFn<TResult, TParent, TContext, TArgs>
-  | ResolverWithResolve<TResult, TParent, TContext, TArgs>
-  | StitchingResolver<TResult, TParent, TContext, TArgs>;
+  | ResolverWithResolve<TResult, TParent, TContext, TArgs>;
 
 export type SubscriptionSubscribeFn<TResult, TParent, TContext, TArgs> = (
   parent: TParent,
@@ -488,12 +474,6 @@ export type Resolvers<ContextType = MercuriusContext> = {
   TestUnion?: TestUnionResolvers<ContextType>;
 };
 
-/**
- * @deprecated
- * Use "Resolvers" root object instead. If you wish to get "IResolvers", add "typesPrefix: I" to your config.
- */
-export type IResolvers<ContextType = MercuriusContext> = Resolvers<ContextType>;
-
 type Loader<TReturn, TObj, TParams, TContext> = (
   queries: Array<{
     obj: TObj;
@@ -554,34 +534,37 @@ export interface Loaders<
 }
 export type simpleStringQueryVariables = Exact<{ [key: string]: never }>;
 
-export type simpleStringQuery = { __typename?: 'Query' } & Pick<
-  Query,
-  'simpleString'
-> & {
-    union: Array<
-      | ({ __typename: 'A' } & Pick<A, 'a'>)
-      | ({ __typename: 'B' } & Pick<B, 'b'>)
-      | ({ __typename: 'C' } & Pick<C, 'c'>)
-    >;
-  };
+export type simpleStringQuery = {
+  __typename?: 'Query';
+  simpleString: string;
+  union: Array<
+    | { __typename: 'A'; a: string }
+    | { __typename: 'B'; b: number }
+    | { __typename: 'C'; c: GreetingsEnum }
+  >;
+};
 
 export type arrayObjectArgsQueryVariables = Exact<{ [key: string]: never }>;
 
-export type arrayObjectArgsQuery = { __typename?: 'Query' } & {
-  arrayObjectArgs: Array<
-    { __typename?: 'Human' } & Pick<Human, 'name'> & {
-        father: { __typename?: 'Human' } & Pick<Human, 'name'> & {
-            father: { __typename?: 'Human' } & Pick<Human, 'name'>;
-          };
-      }
-  >;
+export type arrayObjectArgsQuery = {
+  __typename?: 'Query';
+  arrayObjectArgs: Array<{
+    __typename?: 'Human';
+    name: string;
+    father: {
+      __typename?: 'Human';
+      name: string;
+      father: { __typename?: 'Human'; name: string };
+    };
+  }>;
 };
 
 export type multipleArgsQueryVariables = Exact<{ [key: string]: never }>;
 
-export type multipleArgsQuery = { __typename?: 'Query' } & {
-  a1: { __typename?: 'Human' } & { zxc: Human['name']; abc: Human['name'] };
-  a2: { __typename?: 'Human' } & Pick<Human, 'name'>;
+export type multipleArgsQuery = {
+  __typename?: 'Query';
+  a1: { __typename?: 'Human'; zxc: string; abc: string };
+  a2: { __typename?: 'Human'; name: string };
 };
 
 export const simpleStringDocument = {
