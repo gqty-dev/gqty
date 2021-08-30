@@ -694,7 +694,7 @@ importers:
       '@graphql-ez/plugin-modules': ^0.8.0
       '@graphql-ez/plugin-scalars': ^0.7.0
       '@graphql-ez/plugin-voyager': ^0.5.0
-      '@graphql-ez/plugin-websockets': ^0.9.1
+      '@graphql-ez/plugin-websockets': ^0.9.3
       '@prisma/client': ^2.30.0
       '@types/faker': ^5.5.8
       '@types/jsonwebtoken': ^8.5.5
@@ -728,7 +728,7 @@ importers:
       '@graphql-ez/plugin-modules': 0.8.0_48a1caca828235c6f53bcceb694ab444
       '@graphql-ez/plugin-scalars': 0.7.0_48a1caca828235c6f53bcceb694ab444
       '@graphql-ez/plugin-voyager': 0.5.0_48a1caca828235c6f53bcceb694ab444
-      '@graphql-ez/plugin-websockets': 0.9.1_c95c96d59d4dc5b49d363be89f3e4ba9
+      '@graphql-ez/plugin-websockets': 0.9.3_c95c96d59d4dc5b49d363be89f3e4ba9
       '@prisma/client': 2.30.0_prisma@2.30.0
       date-fns: 2.23.0
       dotenv: 10.0.0
@@ -4727,14 +4727,14 @@ packages:
       - graphql
     dev: false
 
-  /@graphql-ez/plugin-websockets/0.9.1_c95c96d59d4dc5b49d363be89f3e4ba9:
-    resolution: {integrity: sha512-MY4mY08IQDj7DqhjwPaKJAZ5/tielWcj+I/VhyaKgEE8y6UtpwVoFC4FgXcWfzBxwi8xV+RMpk1YdK11GCLLNg==}
+  /@graphql-ez/plugin-websockets/0.9.3_c95c96d59d4dc5b49d363be89f3e4ba9:
+    resolution: {integrity: sha512-GQ+cQonUJ3FduJrn7QelaYzQZ24+jW3F5LSpRWNZSdVuQc8OMG5p9Cb0xDcQp4Dy/KVsWqJjPi4bJvpj368Byg==}
     engines: {node: ^12.20.0 || >=14.13.0}
     peerDependencies:
       graphql: '*'
-      graphql-ez: ^0.12.4
+      graphql-ez: ^0.12.6
     dependencies:
-      '@graphql-ez/utils': 0.1.1_9c0646195fc3876e22af7db2b47fb172
+      '@graphql-ez/utils': 0.1.2_9c0646195fc3876e22af7db2b47fb172
       '@types/ws': 7.4.7
       graphql: 15.5.1
       graphql-ez: 0.12.4_9c0646195fc3876e22af7db2b47fb172
@@ -4749,6 +4749,16 @@ packages:
 
   /@graphql-ez/utils/0.1.1_9c0646195fc3876e22af7db2b47fb172:
     resolution: {integrity: sha512-5wWfQeOQ+StQfLvhmVRahNagTq8S6T/N3FLQ2e1OUM9lO6v0epcjXaB/OVSZM/74/6WAcCaxF/PomoesmP6a/g==}
+    peerDependencies:
+      '@types/node': '*'
+      graphql: '*'
+    dependencies:
+      '@types/node': 16.7.4
+      graphql: 15.5.1
+    dev: false
+
+  /@graphql-ez/utils/0.1.2_9c0646195fc3876e22af7db2b47fb172:
+    resolution: {integrity: sha512-kxmKVZYkp2zUEIGLblUrFYxWKPMKWZKaa2CG3AReImFyO5RtOYCCAveyCetY7k6FnbyrSDqSgiJRRpEmdujsGw==}
     peerDependencies:
       '@types/node': '*'
       graphql: '*'
