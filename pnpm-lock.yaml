@@ -400,7 +400,7 @@ importers:
       next-i18next: ^8.6.0
       next-remote-watch: ^1.0.0
       next-seo: ^4.26.0
-      open-cli: ^7.0.0
+      open-cli: ^7.0.1
       react: ^17.0.2
       react-dom: ^17.0.2
       react-icons: ^4.2.0
@@ -443,7 +443,7 @@ importers:
       esbuild: 0.12.24
       esbuild-register: 3.0.0_esbuild@0.12.24
       next-remote-watch: 1.0.0
-      open-cli: 7.0.0
+      open-cli: 7.0.1
       typescript: 4.4.2
       wait-on: 6.0.0
 
@@ -464,7 +464,7 @@ importers:
       gqty: workspace:^1.0.3
       graphql: ^15.5.1
       mkdirp: ^1.0.4
-      open-cli: ^7.0.0
+      open-cli: ^7.0.1
       prettier: ^2.3.2
       rimraf: ^3.0.2
       serve: ^12.0.0
@@ -492,7 +492,7 @@ importers:
       bob-esbuild-cli: 1.0.1_bob-esbuild@1.2.3
       changesets-github-release: 0.0.3
       graphql: 15.5.1
-      open-cli: 7.0.0
+      open-cli: 7.0.1
       rimraf: 3.0.2
       serve: 12.0.0
       size-limit: 5.0.3
@@ -529,7 +529,7 @@ importers:
       mercurius: ^8.1.3
       mkdirp: ^1.0.4
       nodemon: ^2.0.12
-      open-cli: ^7.0.0
+      open-cli: ^7.0.1
       react: ^17.0.2
       react-dom: ^17.0.2
       rimraf: ^3.0.2
@@ -569,7 +569,7 @@ importers:
       mercurius: 8.1.3_72ef9f06cb99540da679cbf1bf7a3256
       mkdirp: 1.0.4
       nodemon: 2.0.12
-      open-cli: 7.0.0
+      open-cli: 7.0.1
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
       rimraf: 3.0.2
@@ -16106,6 +16106,18 @@ packages:
 
   /open-cli/7.0.0:
     resolution: {integrity: sha512-VxL1HWSsufFSxdcOq5Ijkd1sjK7XnmCI1QF1bYk4va3JI2nl+wLTTgOZ4i1OyNljb9rLoqajtFNCl91DmiIkQw==}
+    engines: {node: '>=14.13'}
+    hasBin: true
+    dependencies:
+      file-type: 16.5.3
+      get-stdin: 9.0.0
+      meow: 10.1.1
+      open: 8.2.1
+      tempy: 1.0.1
+    dev: true
+
+  /open-cli/7.0.1:
+    resolution: {integrity: sha512-w//Mb5nLGTu9aIAsAehgxV+CGEkd+P3CbdoTW8y2coQ/fmGXBSrea0i4RBqGnd9prSPX1akrBYc0e3NnWM4SPA==}
     engines: {node: '>=14.13'}
     hasBin: true
     dependencies:
