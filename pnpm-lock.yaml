@@ -689,7 +689,7 @@ importers:
   sandbox-examples-api:
     specifiers:
       '@graphql-ez/fastify': ^0.9.3
-      '@graphql-ez/plugin-altair': ^0.5.1
+      '@graphql-ez/plugin-altair': ^0.7.1
       '@graphql-ez/plugin-codegen': ^0.7.0
       '@graphql-ez/plugin-modules': ^0.8.0
       '@graphql-ez/plugin-scalars': ^0.7.0
@@ -723,7 +723,7 @@ importers:
       typescript: ^4.4.2
     dependencies:
       '@graphql-ez/fastify': 0.9.3_ab1f00d54763c1ddaae6795448a5fa74
-      '@graphql-ez/plugin-altair': 0.5.1_48a1caca828235c6f53bcceb694ab444
+      '@graphql-ez/plugin-altair': 0.7.1_48a1caca828235c6f53bcceb694ab444
       '@graphql-ez/plugin-codegen': 0.7.0_48a1caca828235c6f53bcceb694ab444
       '@graphql-ez/plugin-modules': 0.8.0_48a1caca828235c6f53bcceb694ab444
       '@graphql-ez/plugin-scalars': 0.7.0_48a1caca828235c6f53bcceb694ab444
@@ -4638,19 +4638,19 @@ packages:
       graphql-ez: 0.12.4_9c0646195fc3876e22af7db2b47fb172
     dev: false
 
-  /@graphql-ez/plugin-altair/0.5.1_48a1caca828235c6f53bcceb694ab444:
-    resolution: {integrity: sha512-a6EJkcOYKQNpvJjwJn7DEYEfujdyLibF35sSbQUP6zFD2mENt0eEb0BPdBf9TY0JOTbUPWPJe1jN0hI2rnAgYg==}
+  /@graphql-ez/plugin-altair/0.7.1_48a1caca828235c6f53bcceb694ab444:
+    resolution: {integrity: sha512-CUFfw7gToprWsW/2FluPDIh09oOf1sr6FDMUAumcN64mO+Nbz++t0mXue3ZVecdsP91vLRLE0xPorzubKaitIg==}
     engines: {node: ^12.20.0 || >=14.13.0}
     peerDependencies:
       '@types/node': '*'
-      graphql-ez: ^0.12.4
+      graphql-ez: ^0.12.7
     dependencies:
-      '@graphql-ez/utils': 0.1.1_9c0646195fc3876e22af7db2b47fb172
+      '@graphql-ez/utils': 0.1.2_9c0646195fc3876e22af7db2b47fb172
       '@types/node': 16.7.4
       altair-static-slim: 4.0.9
+      cross-fetch: 3.1.4
       graphql-ez: 0.12.4_9c0646195fc3876e22af7db2b47fb172
       mime-types: 2.1.32
-      node-fetch: 2.6.1
     transitivePeerDependencies:
       - graphql
     dev: false
@@ -4749,6 +4749,16 @@ packages:
 
   /@graphql-ez/utils/0.1.1_9c0646195fc3876e22af7db2b47fb172:
     resolution: {integrity: sha512-5wWfQeOQ+StQfLvhmVRahNagTq8S6T/N3FLQ2e1OUM9lO6v0epcjXaB/OVSZM/74/6WAcCaxF/PomoesmP6a/g==}
+    peerDependencies:
+      '@types/node': '*'
+      graphql: '*'
+    dependencies:
+      '@types/node': 16.7.4
+      graphql: 15.5.1
+    dev: false
+
+  /@graphql-ez/utils/0.1.2_9c0646195fc3876e22af7db2b47fb172:
+    resolution: {integrity: sha512-kxmKVZYkp2zUEIGLblUrFYxWKPMKWZKaa2CG3AReImFyO5RtOYCCAveyCetY7k6FnbyrSDqSgiJRRpEmdujsGw==}
     peerDependencies:
       '@types/node': '*'
       graphql: '*'
@@ -7839,7 +7849,7 @@ packages:
   /axios/0.21.1:
     resolution: {integrity: sha512-dKQiRHxGD9PPRIUNIWvZhPTPpl1rf/OxTYKsqKUDjBwYylTvV7SjSHJb9ratfyzM6wCdLCOYLzs73qpg5c4iGA==}
     dependencies:
-      follow-redirects: 1.14.2_debug@4.3.2
+      follow-redirects: 1.14.2
     transitivePeerDependencies:
       - debug
 
@@ -11664,7 +11674,7 @@ packages:
       - supports-color
     dev: true
 
-  /follow-redirects/1.14.2_debug@4.3.2:
+  /follow-redirects/1.14.2:
     resolution: {integrity: sha512-yLR6WaE2lbF0x4K2qE2p9PEXKLDjUjnR/xmjS3wHAYxtlsI9MLLBJUZirAHKzUZDGLxje7w/cXR49WOUo4rbsA==}
     engines: {node: '>=4.0'}
     peerDependencies:
@@ -11672,8 +11682,6 @@ packages:
     peerDependenciesMeta:
       debug:
         optional: true
-    dependencies:
-      debug: 4.3.2_supports-color@6.1.0
 
   /for-in/1.0.2:
     resolution: {integrity: sha1-gQaNKVqBQuwKxybG4iAMMPttXoA=}
@@ -12634,7 +12642,7 @@ packages:
     engines: {node: '>=8.0.0'}
     dependencies:
       eventemitter3: 4.0.7
-      follow-redirects: 1.14.2_debug@4.3.2
+      follow-redirects: 1.14.2
       requires-port: 1.0.0
     transitivePeerDependencies:
       - debug
