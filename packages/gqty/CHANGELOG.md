@@ -1,5 +1,11 @@
 # gqty
 
+## 1.1.0
+
+### Minor Changes
+
+- a216972: add "track" helper, specially useful subscriptions and tracking cache state
+
 ## 1.0.3
 
 ### Patch Changes
