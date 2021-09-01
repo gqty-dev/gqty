@@ -1,5 +1,16 @@
 # @gqty/cli
 
+## 1.1.0
+
+### Minor Changes
+
+- f860c01: change \_\_typename undefined to optional undefined
+
+### Patch Changes
+
+- Updated dependencies [a216972]
+  - gqty@1.1.0
+
 ## 1.0.4
 
 ### Patch Changes
