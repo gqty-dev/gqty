@@ -1,11 +1,13 @@
-import { globby } from 'globby';
-import { dirname } from 'path';
-import { fileURLToPath } from 'url';
 import chalk from 'chalk';
+import { execSync } from 'child_process';
+import { globby } from 'globby';
+import { dirname, resolve } from 'path';
+import { fileURLToPath } from 'url';
 
 async function main() {
+  const cwd = dirname(fileURLToPath(import.meta.url));
   const mjsFiles = await globby(['../packages/**/dist/*.mjs'], {
-    cwd: dirname(fileURLToPath(import.meta.url)),
+    cwd,
   });
 
   const ok = [];
@@ -13,22 +15,27 @@ async function main() {
 
   let i = 0;
   await Promise.all(
-    mjsFiles
-      .filter((v) => !v.endsWith('bin.mjs'))
-      .map((mjsFile) => {
-        const mjsPath = `./${mjsFile}`;
-        return import(mjsPath)
-          .then(() => {
-            ok.push(mjsPath);
-          })
-          .catch((err) => {
-            const color = i++ % 2 === 0 ? chalk.magenta : chalk.red;
-            console.error(color('\n\n-----\n' + i + '\n'));
-            console.error(mjsPath, err);
-            console.error(color('\n-----\n\n'));
-            fail.push(mjsPath);
-          });
-      })
+    mjsFiles.map((mjsFile) => {
+      if (mjsFile.endsWith('bin.mjs')) {
+        execSync(`node ${resolve(cwd, mjsFile)} --help`, {
+          stdio: 'inherit',
+        });
+
+        return;
+      }
+      const mjsPath = `./${mjsFile}`;
+      return import(mjsPath)
+        .then(() => {
+          ok.push(mjsPath);
+        })
+        .catch((err) => {
+          const color = i++ % 2 === 0 ? chalk.magenta : chalk.red;
+          console.error(color('\n\n-----\n' + i + '\n'));
+          console.error(mjsPath, err);
+          console.error(color('\n-----\n\n'));
+          fail.push(mjsPath);
+        });
+    })
   );
   ok.length && console.log(chalk.blue(`${ok.length} OK: ${ok.join(' | ')}`));
   fail.length &&

@@ -52,5 +52,7 @@ jobs:
         run: pnpm install
       - name: Global Jest
         run: pnpm i -g jest
+      - name: Test ESM
+        run: node scripts/test-esm.mjs
       - name: Test everything
         run: pnpm test:ci
