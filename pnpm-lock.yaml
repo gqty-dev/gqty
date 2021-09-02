@@ -23,10 +23,12 @@ importers:
       bob-esbuild: ^1.2.3
       bob-esbuild-cli: ^1.0.1
       bufferutil: ^4.0.3
+      chalk: ^4.1.2
       changesets-github-release: ^0.0.4
       concurrently: ^6.2.1
       esbuild: ^0.12.24
       fkill: ^7.2.1
+      globby: ^12.0.2
       husky: ^7.0.2
       jest: ^27.1.0
       nodemon: ^2.0.12
@@ -61,9 +63,11 @@ importers:
       '@types/node': 16.7.10
       bob-esbuild: 1.2.3_737b1ec089c67d77c879529dd12190ba
       bob-esbuild-cli: 1.0.1_bob-esbuild@1.2.3
+      chalk: 4.1.2
       changesets-github-release: 0.0.4
       concurrently: 6.2.1
       fkill: 7.2.1
+      globby: 12.0.2
       husky: 7.0.2
       prettier: 2.3.2
       pretty-quick: 3.1.1_prettier@2.3.2
@@ -7661,6 +7665,11 @@ packages:
     resolution: {integrity: sha512-HGyxoOTYUyCM6stUe6EJgnd4EoewAI7zMdfqO+kGjnlZmBDz/cR5pf8r/cR4Wq60sL/p0IkcjUEEPwS3GFrIyw==}
     engines: {node: '>=8'}
 
+  /array-union/3.0.1:
+    resolution: {integrity: sha512-1OvF9IbWwaeiM9VhzYXVQacMibxpXOMYVNIvMtKRyX9SImBXpKcFr8XvFDeEslCyuH/t6KRt7HEO94AlP8Iatw==}
+    engines: {node: '>=12'}
+    dev: true
+
   /array-uniq/1.0.2:
     resolution: {integrity: sha1-X8w3OSB3VyPP1k1lxkvvU7+eum0=}
     engines: {node: '>=0.10.0'}
@@ -7884,7 +7893,7 @@ packages:
   /axios/0.21.1:
     resolution: {integrity: sha512-dKQiRHxGD9PPRIUNIWvZhPTPpl1rf/OxTYKsqKUDjBwYylTvV7SjSHJb9ratfyzM6wCdLCOYLzs73qpg5c4iGA==}
     dependencies:
-      follow-redirects: 1.14.2_debug@4.3.2
+      follow-redirects: 1.14.2
     transitivePeerDependencies:
       - debug
 
@@ -11708,6 +11717,15 @@ packages:
       - supports-color
     dev: true
 
+  /follow-redirects/1.14.2:
+    resolution: {integrity: sha512-yLR6WaE2lbF0x4K2qE2p9PEXKLDjUjnR/xmjS3wHAYxtlsI9MLLBJUZirAHKzUZDGLxje7w/cXR49WOUo4rbsA==}
+    engines: {node: '>=4.0'}
+    peerDependencies:
+      debug: '*'
+    peerDependenciesMeta:
+      debug:
+        optional: true
+
   /follow-redirects/1.14.2_debug@4.3.2:
     resolution: {integrity: sha512-yLR6WaE2lbF0x4K2qE2p9PEXKLDjUjnR/xmjS3wHAYxtlsI9MLLBJUZirAHKzUZDGLxje7w/cXR49WOUo4rbsA==}
     engines: {node: '>=4.0'}
@@ -11718,6 +11736,7 @@ packages:
         optional: true
     dependencies:
       debug: 4.3.2_supports-color@6.1.0
+    dev: false
 
   /for-in/1.0.2:
     resolution: {integrity: sha1-gQaNKVqBQuwKxybG4iAMMPttXoA=}
@@ -12085,6 +12104,18 @@ packages:
       ignore: 5.1.8
       merge2: 1.4.1
       slash: 3.0.0
+
+  /globby/12.0.2:
+    resolution: {integrity: sha512-lAsmb/5Lww4r7MM9nCCliDZVIKbZTavrsunAsHLr9oHthrZP1qi7/gAnHOsUs9bLvEt2vKVJhHmxuL7QbDuPdQ==}
+    engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
+    dependencies:
+      array-union: 3.0.1
+      dir-glob: 3.0.1
+      fast-glob: 3.2.7
+      ignore: 5.1.8
+      merge2: 1.4.1
+      slash: 4.0.0
+    dev: true
 
   /globby/6.1.0:
     resolution: {integrity: sha1-9abXDoOV4hyFj7BInWTfAkJNUGw=}
@@ -19660,6 +19691,11 @@ packages:
   /slash/3.0.0:
     resolution: {integrity: sha512-g9Q1haeby36OSStwb4ntCGGGaKsaVSjQ68fBxoQcutl5fS1vuY18H3wSt3jFyFtrkx+Kz0V1G85A4MyAdDMi2Q==}
     engines: {node: '>=8'}
+
+  /slash/4.0.0:
+    resolution: {integrity: sha512-3dOsAHXXUkQTpOYcoAxLIorMTp4gIQr5IW3iVb7A7lFIp0VHhnynm9izx6TssdrIcVIESAlVjtnO2K8bg+Coew==}
+    engines: {node: '>=12'}
+    dev: true
 
   /slice-ansi/4.0.0:
     resolution: {integrity: sha512-qMCMfhY040cVHT43K9BFygqYbUPFZKHOg7K73mtTWJRb8pyP3fzf4Ixd5SzdEJQ6MRUg/WBnOLxghZtKKurENQ==}
