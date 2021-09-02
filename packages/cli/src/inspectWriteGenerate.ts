@@ -66,7 +66,7 @@ export async function inspectWriteGenerate({
 
     if (
       configIntrospectionEndpoint &&
-      configIntrospectionEndpoint !== defaultConfig.introspection.endpoint
+      configIntrospectionEndpoint !== DUMMY_ENDPOINT
     ) {
       endpoint = configIntrospectionEndpoint;
     } else {
