@@ -1,5 +1,11 @@
 # @gqty/cli
 
+## 1.1.1
+
+### Patch Changes
+
+- cad0d92: fix false positive error after second call on inspectWriteGenerate
+
 ## 1.1.0
 
 ### Minor Changes
