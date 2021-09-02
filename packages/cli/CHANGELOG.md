@@ -1,5 +1,11 @@
 # @gqty/cli
 
+## 1.1.2
+
+### Patch Changes
+
+- d097ae3: fix ESM build
+
 ## 1.1.1
 
 ### Patch Changes
