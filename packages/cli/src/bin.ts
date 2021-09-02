@@ -1,16 +1,20 @@
 import { program } from 'commander';
 import { readFileSync } from 'fs';
-import { resolve } from 'path';
-import { inspectWriteGenerate, defaultConfig, __innerState } from './index';
+import { dirname, resolve } from 'path';
+import { fileURLToPath } from 'url';
+import { defaultConfig, inspectWriteGenerate, __innerState } from './index';
 
 __innerState.isCLI = true;
 
 program
   .version(
     JSON.parse(
-      readFileSync(resolve(__dirname, '../package.json'), {
-        encoding: 'utf-8',
-      })
+      readFileSync(
+        resolve(dirname(fileURLToPath(import.meta.url)), '../package.json'),
+        {
+          encoding: 'utf-8',
+        }
+      )
     ).version
   )
   .description('CLI for gqty');

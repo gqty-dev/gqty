@@ -1,9 +1,6 @@
-import {
-  format as prettierFormat,
-  Options as PrettierOptions,
-  resolveConfig,
-} from 'prettier';
+import prettier, { Options as PrettierOptions } from 'prettier';
 
+const { format: prettierFormat, resolveConfig } = prettier;
 const commonConfig = resolveConfig(process.cwd());
 
 export function formatPrettier(
