@@ -9,7 +9,8 @@ export const config: import('bob-esbuild').BobConfig = {
   verbose: true,
   esbuildPluginOptions: isCLIPackage
     ? {
-        target: 'node12',
+        // Check https://github.com/evanw/esbuild/issues/1146
+        target: 'node13.2',
       }
     : undefined,
 };
