@@ -1,5 +1,11 @@
 # @gqty/cli
 
+## 1.1.3
+
+### Patch Changes
+
+- 9faebb6: fix dynamic import transpilation
+
 ## 1.1.2
 
 ### Patch Changes
