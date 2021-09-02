@@ -13,10 +13,24 @@ You can improve the development experience using a `Logger` of your GQty usage, 
 
 ## Usage
 
-```ts
-import { client } from '../gqty';
+> You can add the logger besided the generated client, or import it from another file
 
-if (process.env.NODE_ENV === 'development') {
+> /src/gqty/index.ts
+
+```ts
+// ...
+
+export const client = createClient<
+  GeneratedSchema,
+  SchemaObjectTypesNames,
+  SchemaObjectTypes
+>({
+  schema: generatedSchema,
+  scalarsEnumsHash,
+  queryFetcher,
+});
+
+if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
   import('@gqty/logger').then(({ createLogger }) => {
     const logger = createLogger(client, {
       // Custom options...
