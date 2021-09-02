@@ -414,7 +414,7 @@ importers:
       react-icons: ^4.2.0
       react-use: ^17.3.1
       remark-admonitions: ^1.2.1
-      shiki: ^0.9.9
+      shiki: ^0.9.10
       typescript: ^4.4.2
       wait-on: ^6.0.0
     dependencies:
@@ -425,7 +425,7 @@ importers:
       '@emotion/react': 11.4.1_4cd822c6044f4c1a7e1f1fea0e728f12
       '@emotion/styled': 11.3.0_4a13a1c8be6e32a351380640be5b202d
       '@guild-docs/client': 1.0.3_a75a056809185f997002969d86fed3ff
-      '@guild-docs/server': 1.0.1_108bc0d756fba58414045d99cbb3317b
+      '@guild-docs/server': 1.0.1_f22216af79effd1bef1bd0ffd07958dd
       '@mdx-js/react': 1.6.22_react@17.0.2
       '@theguild/components': 1.4.8_4bf6e8ab7c92976cf71570951582caf0
       csstype: 3.0.8
@@ -438,7 +438,7 @@ importers:
       react-icons: 4.2.0_react@17.0.2
       react-use: 17.3.1_react-dom@17.0.2+react@17.0.2
       remark-admonitions: 1.2.1
-      shiki: 0.9.9
+      shiki: 0.9.10
     devDependencies:
       '@next/bundle-analyzer': 11.1.2_72ef9f06cb99540da679cbf1bf7a3256
       '@types/concurrently': 6.2.1
@@ -5020,7 +5020,7 @@ packages:
       - supports-color
     dev: false
 
-  /@guild-docs/server/1.0.1_108bc0d756fba58414045d99cbb3317b:
+  /@guild-docs/server/1.0.1_f22216af79effd1bef1bd0ffd07958dd:
     resolution: {integrity: sha512-f12E9JTdsDYcIHXmvJnqDd0dzESZ4PAI/C9zpvFgA8ZHdZeOsmqljh6EtGVyJIl9QyuIm4zCWplMrT+3zpJh0Q==}
     peerDependencies:
       next: ^11.1.0
@@ -5031,7 +5031,7 @@ packages:
       shiki: ^0.9.6
     dependencies:
       '@guild-docs/types': 1.0.0_8f2f02ce12db77e60fdb85f6cdcc98fe
-      '@stefanprobst/remark-shiki': 1.1.1_shiki@0.9.9
+      '@stefanprobst/remark-shiki': 1.1.1_shiki@0.9.10
       github-slugger: 1.4.0
       globby: 11.0.4
       gray-matter: 4.0.3
@@ -5045,7 +5045,7 @@ packages:
       remark-admonitions: 1.2.1
       remark-emoji: 3.0.1
       remark-slug: 7.0.0
-      shiki: 0.9.9
+      shiki: 0.9.10
       tiny-lru: 7.0.6
     transitivePeerDependencies:
       - '@chakra-ui/react'
@@ -6124,13 +6124,13 @@ packages:
       - webpack-command
     dev: true
 
-  /@stefanprobst/remark-shiki/1.1.1_shiki@0.9.9:
+  /@stefanprobst/remark-shiki/1.1.1_shiki@0.9.10:
     resolution: {integrity: sha512-IYRnxc3PkIMzBBsHHadEsAfml9OgFxkvHRPh5l2Trq7mCMpB0Sz/BT443DHrTtV+3S8WK02e9TUohPBUhywJ1A==}
     engines: {node: '>=12.9', yarn: ^1}
     peerDependencies:
       shiki: ^0.9.6
     dependencies:
-      shiki: 0.9.9
+      shiki: 0.9.10
       unified: 9.2.2
       unist-util-visit: 2.0.3
     dev: false
@@ -19619,8 +19619,8 @@ packages:
     resolution: {integrity: sha512-mRz/m/JVscCrkMyPqHc/bczi3OQHkLTqXHEFu0zDhK/qfv3UcOA4SVmRCLmos4bhjr9ekVQubj/R7waKapmiQg==}
     dev: false
 
-  /shiki/0.9.9:
-    resolution: {integrity: sha512-xqmbBqdXlm05t7cdenDGPADOt6v2jj51GE7cbKmDXCupRw4DzF0QNkiWgNkd+0IvquZWiVP3pEnZgunwVatoPg==}
+  /shiki/0.9.10:
+    resolution: {integrity: sha512-xeM7Oc6hY+6iW5O/T5hor8ul7mEprzyl5y4r5zthEHToQNw7MIhREMgU3r2gKDB0NaMLNrkcEQagudCdzE13Lg==}
     dependencies:
       json5: 2.2.0
       onigasm: 2.2.5
