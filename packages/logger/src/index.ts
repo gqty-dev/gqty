@@ -74,6 +74,9 @@ export function createLogger(
 
   const eventHandler = client.eventHandler;
 
+  let idMapper = 0;
+  const QueryIdMapper: Record<string, number> = {};
+
   async function onFetch(dataPromise: Promise<FetchEventData>) {
     const startTime = Date.now();
 
@@ -88,12 +91,15 @@ export function createLogger(
       label,
     } = await dataPromise;
 
+    const queryId = (QueryIdMapper[query] ||= ++idMapper);
+
     const fetchTime = Date.now() - startTime;
 
     console.groupCollapsed(
       ...format(
         ['GraphQL ', 'color: gray'],
         [type + ' ', `color: ${error ? 'red' : '#03A9F4'}; font-weight: bold`],
+        ['ID ' + queryId + ' ', 'color: green'],
         ...(label ? [[label + ' ', 'color: green']] : []),
         [`(${fetchTime}ms)`, 'color: gray'],
         [` ${selections.length} selections`, 'color: gray'],
