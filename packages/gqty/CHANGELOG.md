@@ -1,5 +1,11 @@
 # gqty
 
+## 1.1.1
+
+### Patch Changes
+
+- 6703c2f: fix undefined object types names
+
 ## 1.1.0
 
 ### Minor Changes

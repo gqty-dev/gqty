@@ -1,5 +1,13 @@
 # @gqty/logger
 
+## 1.0.3
+
+### Patch Changes
+
+- cc39983: Add incremental ID to log
+- Updated dependencies [6703c2f]
+  - gqty@1.1.1
+
 ## 1.0.2
 
 ### Patch Changes
