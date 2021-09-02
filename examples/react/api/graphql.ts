@@ -5,6 +5,7 @@ import mercurius, { IResolvers, MercuriusLoaders } from 'mercurius';
 import { codegenMercurius, gql } from 'mercurius-codegen';
 import { JsonDB } from 'node-json-db';
 import { GraphQLUpload } from 'graphql-upload';
+import { seed } from 'faker';
 
 import { writeGenerate } from '@gqty/cli';
 
@@ -15,7 +16,7 @@ export const sleep = (amount: number) =>
 
 const db = new JsonDB('db.json', true, true, '/');
 
-faker.seed(2021);
+// seed(2021);
 
 const paginatedData: {
   id: string;

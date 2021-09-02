@@ -25,7 +25,11 @@ app
     logLevel: 'error',
     dir: resolve(__dirname, '../'),
   })
-  .after(() => {
+  .then(() => {
+    if (!app.next) {
+      console.error('Next.js could not be registered');
+      process.exit(1);
+    }
     try {
       app.next('/*');
     } catch (err) {

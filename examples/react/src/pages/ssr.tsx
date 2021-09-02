@@ -1,5 +1,3 @@
-import { RouterContext } from 'next/dist/next-server/lib/router-context';
-
 import { PropsWithServerCache } from '@gqty/react';
 
 import {
@@ -14,9 +12,9 @@ import type { GetServerSideProps } from 'next';
 export const getServerSideProps: GetServerSideProps<PropsWithServerCache> =
   async ({}) => {
     const { cacheSnapshot } = await prepareReactRender(
-      <RouterContext.Provider value={{} as any}>
+      <>
         <RefetchPage />
-      </RouterContext.Provider>
+      </>
     );
 
     return {

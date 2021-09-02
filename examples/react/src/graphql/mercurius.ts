@@ -1,9 +1,10 @@
 import { FileUpload } from 'graphql-upload';
-import {
+import type {
   GraphQLResolveInfo,
   GraphQLScalarType,
   GraphQLScalarTypeConfig,
 } from 'graphql';
+import type { MercuriusContext } from 'mercurius';
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = {
   [K in keyof T]: T[K];
@@ -31,9 +32,9 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  /** The `Upload` scalar type represents a file upload. */
-  Upload: Promise<FileUpload>;
   _FieldSet: any;
+  /** The `Upload` scalar type represents a file upload. */
+  Upload: any;
 };
 
 /** Dog Type */
@@ -173,21 +174,12 @@ export enum DogType {
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
 
-export type LegacyStitchingResolver<TResult, TParent, TContext, TArgs> = {
-  fragment: string;
+export type ResolverWithResolve<TResult, TParent, TContext, TArgs> = {
   resolve: ResolverFn<TResult, TParent, TContext, TArgs>;
 };
-
-export type NewStitchingResolver<TResult, TParent, TContext, TArgs> = {
-  selectionSet: string;
-  resolve: ResolverFn<TResult, TParent, TContext, TArgs>;
-};
-export type StitchingResolver<TResult, TParent, TContext, TArgs> =
-  | LegacyStitchingResolver<TResult, TParent, TContext, TArgs>
-  | NewStitchingResolver<TResult, TParent, TContext, TArgs>;
 export type Resolver<TResult, TParent = {}, TContext = {}, TArgs = {}> =
   | ResolverFn<TResult, TParent, TContext, TArgs>
-  | StitchingResolver<TResult, TParent, TContext, TArgs>;
+  | ResolverWithResolve<TResult, TParent, TContext, TArgs>;
 
 export type SubscriptionSubscribeFn<TResult, TParent, TContext, TArgs> = (
   parent: TParent,
@@ -323,7 +315,7 @@ export interface UploadScalarConfig
 }
 
 export type DogResolvers<
-  ContextType = any,
+  ContextType = MercuriusContext,
   ParentType extends ResolversParentTypes['Dog'] = ResolversParentTypes['Dog']
 > = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
@@ -333,7 +325,7 @@ export type DogResolvers<
 };
 
 export type HumanResolvers<
-  ContextType = any,
+  ContextType = MercuriusContext,
   ParentType extends ResolversParentTypes['Human'] = ResolversParentTypes['Human']
 > = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
@@ -349,7 +341,7 @@ export type HumanResolvers<
 };
 
 export type QueryResolvers<
-  ContextType = any,
+  ContextType = MercuriusContext,
   ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']
 > = {
   expectedError?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
@@ -388,7 +380,7 @@ export type QueryResolvers<
 };
 
 export type MutationResolvers<
-  ContextType = any,
+  ContextType = MercuriusContext,
   ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']
 > = {
   renameDog?: Resolver<
@@ -430,7 +422,7 @@ export type MutationResolvers<
 };
 
 export type SubscriptionResolvers<
-  ContextType = any,
+  ContextType = MercuriusContext,
   ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']
 > = {
   newNotification?: SubscriptionResolver<
@@ -442,7 +434,7 @@ export type SubscriptionResolvers<
 };
 
 export type HumansConnectionResolvers<
-  ContextType = any,
+  ContextType = MercuriusContext,
   ParentType extends ResolversParentTypes['HumansConnection'] = ResolversParentTypes['HumansConnection']
 > = {
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
@@ -451,7 +443,7 @@ export type HumansConnectionResolvers<
 };
 
 export type PageInfoResolvers<
-  ContextType = any,
+  ContextType = MercuriusContext,
   ParentType extends ResolversParentTypes['PageInfo'] = ResolversParentTypes['PageInfo']
 > = {
   hasPreviousPage?: Resolver<
@@ -474,13 +466,13 @@ export type PageInfoResolvers<
 };
 
 export type SpeciesResolvers<
-  ContextType = any,
+  ContextType = MercuriusContext,
   ParentType extends ResolversParentTypes['Species'] = ResolversParentTypes['Species']
 > = {
   resolveType: TypeResolveFn<'Human' | 'Dog', ParentType, ContextType>;
 };
 
-export type Resolvers<ContextType = any> = {
+export type Resolvers<ContextType = MercuriusContext> = {
   Upload?: GraphQLScalarType;
   Dog?: DogResolvers<ContextType>;
   Human?: HumanResolvers<ContextType>;
@@ -491,12 +483,6 @@ export type Resolvers<ContextType = any> = {
   PageInfo?: PageInfoResolvers<ContextType>;
   Species?: SpeciesResolvers<ContextType>;
 };
-
-/**
- * @deprecated
- * Use "Resolvers" root object instead. If you wish to get "IResolvers", add "typesPrefix: I" to your config.
- */
-export type IResolvers<ContextType = any> = Resolvers<ContextType>;
 
 type Loader<TReturn, TObj, TParams, TContext> = (
   queries: Array<{

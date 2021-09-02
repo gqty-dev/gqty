@@ -2,7 +2,7 @@
  * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
  */
 
-import { ScalarsEnumsHash, SchemaUnionsKey } from 'gqty';
+import { SchemaUnionsKey } from 'gqty';
 
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = {
@@ -44,7 +44,7 @@ export enum DogType {
   Other = 'Other',
 }
 
-export const scalarsEnumsHash: ScalarsEnumsHash = {
+export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
   Upload: true,
   ID: true,
   String: true,
@@ -123,7 +123,7 @@ export const generatedSchema = {
  * Query Type
  */
 export interface Query {
-  __typename: 'Query' | undefined;
+  __typename?: 'Query';
   /**
    * Expected Error!
    */
@@ -150,7 +150,7 @@ export interface Query {
  * Mutation
  */
 export interface Mutation {
-  __typename: 'Mutation' | undefined;
+  __typename?: 'Mutation';
   renameDog: (args: {
     /**
      * Dog Id
@@ -171,7 +171,7 @@ export interface Mutation {
 }
 
 export interface Subscription {
-  __typename: 'Subscription' | undefined;
+  __typename?: 'Subscription';
   newNotification: ScalarsEnums['String'];
 }
 
@@ -179,7 +179,7 @@ export interface Subscription {
  * Dog Type
  */
 export interface Dog {
-  __typename: 'Dog' | undefined;
+  __typename?: 'Dog';
   id: ScalarsEnums['ID'];
   name: ScalarsEnums['String'];
   owner?: Maybe<Human>;
@@ -189,7 +189,7 @@ export interface Dog {
  * Human Type
  */
 export interface Human {
-  __typename: 'Human' | undefined;
+  __typename?: 'Human';
   id: ScalarsEnums['ID'];
   /**
    * Human Name
@@ -211,7 +211,7 @@ export interface Human {
  * Humans Connection
  */
 export interface HumansConnection {
-  __typename: 'HumansConnection' | undefined;
+  __typename?: 'HumansConnection';
   pageInfo: PageInfo;
   nodes: Array<Human>;
 }
@@ -220,7 +220,7 @@ export interface HumansConnection {
  * Page Info Object
  */
 export interface PageInfo {
-  __typename: 'PageInfo' | undefined;
+  __typename?: 'PageInfo';
   hasPreviousPage: ScalarsEnums['Boolean'];
   hasNextPage: ScalarsEnums['Boolean'];
   startCursor?: Maybe<ScalarsEnums['String']>;
@@ -247,7 +247,7 @@ export type SchemaObjectTypesNames =
 
 export type Species =
   | {
-      __typename: 'Human' | undefined;
+      __typename?: 'Human';
       dogs?: Maybe<Array<Dog>>;
       /**
        * @deprecated No longer supported
@@ -266,7 +266,7 @@ export type Species =
       owner?: undefined;
     }
   | {
-      __typename: 'Dog' | undefined;
+      __typename?: 'Dog';
       dogs?: undefined;
       fieldWithArg?: undefined;
       id: ScalarsEnums['ID'];
