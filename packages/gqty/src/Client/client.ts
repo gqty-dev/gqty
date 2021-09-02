@@ -135,7 +135,7 @@ export interface ClientOptions<
   ObjectTypesNames extends string = never,
   SchemaObjectTypes extends {
     [P in ObjectTypesNames]: {
-      __typename: P | undefined;
+      __typename?: P;
     };
   } = never
 > {
@@ -237,7 +237,7 @@ export function createClient<
   ObjectTypesNames extends string = never,
   ObjectTypes extends {
     [P in ObjectTypesNames]: {
-      __typename: P | undefined;
+      __typename?: P;
     };
   } = never
 >({
