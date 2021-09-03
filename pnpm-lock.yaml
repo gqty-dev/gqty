@@ -389,7 +389,7 @@ importers:
       '@emotion/react': ^11.4.1
       '@emotion/styled': ^11.3.0
       '@guild-docs/client': ^1.0.4
-      '@guild-docs/server': ^1.0.2
+      '@guild-docs/server': ^1.0.3
       '@mdx-js/react': ^1.6.22
       '@next/bundle-analyzer': ^11.1.2
       '@theguild/components': ^1.4.8
@@ -425,7 +425,7 @@ importers:
       '@emotion/react': 11.4.1_4cd822c6044f4c1a7e1f1fea0e728f12
       '@emotion/styled': 11.3.0_4a13a1c8be6e32a351380640be5b202d
       '@guild-docs/client': 1.0.4_a75a056809185f997002969d86fed3ff
-      '@guild-docs/server': 1.0.2_f22216af79effd1bef1bd0ffd07958dd
+      '@guild-docs/server': 1.0.3_f22216af79effd1bef1bd0ffd07958dd
       '@mdx-js/react': 1.6.22_react@17.0.2
       '@theguild/components': 1.4.8_4bf6e8ab7c92976cf71570951582caf0
       csstype: 3.0.8
@@ -1496,7 +1496,7 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.12.9
-      '@babel/helper-plugin-utils': 7.10.4
+      '@babel/helper-plugin-utils': 7.14.5
       '@babel/plugin-syntax-object-rest-spread': 7.8.3_@babel+core@7.12.9
       '@babel/plugin-transform-parameters': 7.14.5_@babel+core@7.12.9
     dev: false
@@ -5020,8 +5020,8 @@ packages:
       - supports-color
     dev: false
 
-  /@guild-docs/server/1.0.2_f22216af79effd1bef1bd0ffd07958dd:
-    resolution: {integrity: sha512-0hEcMzsL+QVtTI2EEMU/iAbY1F3cwf6coOE1DbdQzNesSXVTR6l/xfWM9/gf7BUWkYoitzqqms8R5GwcCcapow==}
+  /@guild-docs/server/1.0.3_f22216af79effd1bef1bd0ffd07958dd:
+    resolution: {integrity: sha512-Njy71Jot8S0cD3ifVzMUSJMUFvrLKAB/cM4WCp+RfhGtu/q40wHa7l2ELXKQdqAnEsFJw44oA59PbSsYArEb/Q==}
     peerDependencies:
       next: ^11.1.0
       next-i18next: ^8.6.0
@@ -5031,7 +5031,6 @@ packages:
       shiki: ^0.9.7
     dependencies:
       '@guild-docs/types': 1.0.0_8f2f02ce12db77e60fdb85f6cdcc98fe
-      '@stefanprobst/remark-shiki': 2.0.0_shiki@0.9.10
       github-slugger: 1.4.0
       globby: 11.0.4
       gray-matter: 4.0.3
@@ -5047,6 +5046,8 @@ packages:
       remark-slug: 7.0.0
       shiki: 0.9.10
       tiny-lru: 7.0.6
+      unified: 10.1.0
+      unist-util-visit: 4.0.0
     transitivePeerDependencies:
       - '@chakra-ui/react'
       - '@types/react'
@@ -6123,17 +6124,6 @@ packages:
       - webpack-cli
       - webpack-command
     dev: true
-
-  /@stefanprobst/remark-shiki/2.0.0_shiki@0.9.10:
-    resolution: {integrity: sha512-5IpwIZDVaXUXGqUorewHZ1V79iYEB5RgvHgb1KqL++bV6DD5flA1TZQGrvnhmRXhMMLng0tdEQz3Zyk9lsnIzg==}
-    engines: {node: 14.x, yarn: 1.x}
-    peerDependencies:
-      shiki: ^0.9.6
-    dependencies:
-      shiki: 0.9.10
-      unified: 10.1.0
-      unist-util-visit: 4.0.0
-    dev: false
 
   /@surma/rollup-plugin-off-main-thread/1.4.2:
     resolution: {integrity: sha512-yBMPqmd1yEJo/280PAMkychuaALyQ9Lkb5q1ck3mjJrFuEobIfhnQ4J3mbvBoISmR3SWMWV+cGB/I0lCQee79A==}
