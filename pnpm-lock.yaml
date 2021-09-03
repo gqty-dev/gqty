@@ -458,7 +458,7 @@ importers:
   packages/cli:
     specifiers:
       '@graphql-codegen/core': ^2.1.0
-      '@graphql-codegen/typescript': ^2.1.2
+      '@graphql-codegen/typescript': ^2.2.0
       '@graphql-tools/delegate': ^8.2.0
       '@graphql-tools/utils': ^8.2.1
       '@graphql-tools/wrap': ^8.1.0
@@ -484,7 +484,7 @@ importers:
       wait-on: ^6.0.0
     dependencies:
       '@graphql-codegen/core': 2.1.0_graphql@15.5.2
-      '@graphql-codegen/typescript': 2.1.2_graphql@15.5.2
+      '@graphql-codegen/typescript': 2.2.0_graphql@15.5.2
       '@graphql-tools/delegate': 8.2.0_graphql@15.5.2
       '@graphql-tools/utils': 8.2.1_graphql@15.5.2
       '@graphql-tools/wrap': 8.1.0_graphql@15.5.2
@@ -4605,6 +4605,20 @@ packages:
       - supports-color
     dev: false
 
+  /@graphql-codegen/typescript/2.2.0_graphql@15.5.2:
+    resolution: {integrity: sha512-36F7DDFpIenvziyCyu9pS7ztb122TRz4mPQGklDycdz97fyYy/7yLyTTNTfX9T4+RaNBfbL80U1CcqxYgnF9yQ==}
+    peerDependencies:
+      graphql: ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0
+    dependencies:
+      '@graphql-codegen/plugin-helpers': 2.1.1_graphql@15.5.2
+      '@graphql-codegen/visitor-plugin-common': 2.2.0_graphql@15.5.2
+      auto-bind: 4.0.0
+      graphql: 15.5.2
+      tslib: 2.3.1
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
   /@graphql-codegen/visitor-plugin-common/2.1.2_graphql@15.5.2:
     resolution: {integrity: sha512-Mij8zXxA6nEL5wafCL9pVITFsmYnNIgkJ0B929cnAKHMFw0qU6ms1PkNCh7Or1ekWtu+RYQq/2tkCT//1HZASw==}
     peerDependencies:
@@ -4614,6 +4628,26 @@ packages:
       '@graphql-tools/optimize': 1.1.0_graphql@15.5.2
       '@graphql-tools/relay-operation-optimizer': 6.4.0_graphql@15.5.2
       '@graphql-tools/utils': 8.1.2_graphql@15.5.2
+      auto-bind: 4.0.0
+      change-case-all: 1.0.14
+      dependency-graph: 0.11.0
+      graphql: 15.5.2
+      graphql-tag: 2.12.5_graphql@15.5.2
+      parse-filepath: 1.0.2
+      tslib: 2.3.1
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
+  /@graphql-codegen/visitor-plugin-common/2.2.0_graphql@15.5.2:
+    resolution: {integrity: sha512-DxLWp+Y7PRb2BnNK4U/bhNPYzU90SVpt/9MM/bVB/cl93bFxxqtKJhuu7UhsP9QdlT1uJ++gN5EOYbPxJrDshw==}
+    peerDependencies:
+      graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0
+    dependencies:
+      '@graphql-codegen/plugin-helpers': 2.1.1_graphql@15.5.2
+      '@graphql-tools/optimize': 1.1.0_graphql@15.5.2
+      '@graphql-tools/relay-operation-optimizer': 6.4.0_graphql@15.5.2
+      '@graphql-tools/utils': 8.2.1_graphql@15.5.2
       auto-bind: 4.0.0
       change-case-all: 1.0.14
       dependency-graph: 0.11.0
