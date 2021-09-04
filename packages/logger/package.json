@@ -29,6 +29,7 @@
   "scripts": {
     "analyze": "size-limit --why",
     "build": "bob-esbuild build",
+    "dev": "bob-esbuild watch",
     "prepare": "bob-esbuild build",
     "postpublish": "gh-release",
     "size": "size-limit",
