@@ -700,7 +700,7 @@ importers:
       '@graphql-ez/plugin-altair': ^0.7.1
       '@graphql-ez/plugin-codegen': ^0.7.0
       '@graphql-ez/plugin-modules': ^0.8.0
-      '@graphql-ez/plugin-scalars': ^0.7.1
+      '@graphql-ez/plugin-scalars': ^0.7.2
       '@graphql-ez/plugin-voyager': ^0.7.1
       '@graphql-ez/plugin-websockets': ^0.9.3
       '@prisma/client': ^2.30.3
@@ -734,7 +734,7 @@ importers:
       '@graphql-ez/plugin-altair': 0.7.1_37ae0dc5a472d46afbbf0110e56b5e93
       '@graphql-ez/plugin-codegen': 0.7.0_37ae0dc5a472d46afbbf0110e56b5e93
       '@graphql-ez/plugin-modules': 0.8.0_37ae0dc5a472d46afbbf0110e56b5e93
-      '@graphql-ez/plugin-scalars': 0.7.1_37ae0dc5a472d46afbbf0110e56b5e93
+      '@graphql-ez/plugin-scalars': 0.7.2_37ae0dc5a472d46afbbf0110e56b5e93
       '@graphql-ez/plugin-voyager': 0.7.1_37ae0dc5a472d46afbbf0110e56b5e93
       '@graphql-ez/plugin-websockets': 0.9.3_a8a4f01f6c3504c80d0a598071f6e8ad
       '@prisma/client': 2.30.3_prisma@2.30.3
@@ -4736,15 +4736,15 @@ packages:
       - '@types/node'
     dev: false
 
-  /@graphql-ez/plugin-scalars/0.7.1_37ae0dc5a472d46afbbf0110e56b5e93:
-    resolution: {integrity: sha512-k7BEbiGmjKjoq7lfB/73zaPWpCOpbeIna41zbJqN57KiAAgIRZXR3JQIleiSQo9RyWJrxzKf24nYJ6XD1JLWnA==}
+  /@graphql-ez/plugin-scalars/0.7.2_37ae0dc5a472d46afbbf0110e56b5e93:
+    resolution: {integrity: sha512-Hwj+doWuDHZ5JQKxO0MW9oY1QgdqayAmjc5JDZEPNE8EcKCI41lK3MjNd2mmAA1AnkIKj1SpdIUeN0ZnBdVsnA==}
     engines: {node: ^12.20.0 || >=14.13.0}
     peerDependencies:
       graphql: '*'
       graphql-ez: ^0.12.5
     dependencies:
       '@graphql-ez/utils': 0.1.2_b217e939e9b0d1017b9ede9ab1ccbd94
-      '@graphql-tools/utils': 8.2.1_graphql@15.5.2
+      '@graphql-tools/utils': 8.2.2_graphql@15.5.2
       graphql: 15.5.2
       graphql-ez: 0.12.7_b217e939e9b0d1017b9ede9ab1ccbd94
       graphql-scalars: 1.10.0_graphql@15.5.2
@@ -4971,6 +4971,15 @@ packages:
 
   /@graphql-tools/utils/8.2.1_graphql@15.5.2:
     resolution: {integrity: sha512-xjyetFpDy2/MY8P4+NiE7i1czCrAI36Twjm+jcoBfPctMnJegZkZnLfepmjwYQ92Sv9hnhr+x52OUQAddj29CQ==}
+    peerDependencies:
+      graphql: ^14.0.0 || ^15.0.0 || ^16.0.0
+    dependencies:
+      graphql: 15.5.2
+      tslib: 2.3.1
+    dev: false
+
+  /@graphql-tools/utils/8.2.2_graphql@15.5.2:
+    resolution: {integrity: sha512-29FFY5U4lpXuBiW9dRvuWnBVwGhWbGLa2leZcAMU/Pz47Cr/QLZGVgpLBV9rt+Gbs7wyIJM7t7EuksPs0RDm3g==}
     peerDependencies:
       graphql: ^14.0.0 || ^15.0.0 || ^16.0.0
     dependencies:
