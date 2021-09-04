@@ -1,5 +1,13 @@
 # @gqty/react
 
+## 1.1.1
+
+### Patch Changes
+
+- 1fc2672: add "sideEffects: false" for improved tree-shaking
+- Updated dependencies [1fc2672]
+  - gqty@1.1.2
+
 ## 1.1.0
 
 ### Minor Changes

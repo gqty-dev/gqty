@@ -1,5 +1,13 @@
 # @gqty/subscriptions
 
+## 1.0.2
+
+### Patch Changes
+
+- 1fc2672: add "sideEffects: false" for improved tree-shaking
+- Updated dependencies [1fc2672]
+  - gqty@1.1.2
+
 ## 1.0.1
 
 ### Patch Changes
