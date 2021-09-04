@@ -1,5 +1,11 @@
 # gqty
 
+## 1.1.2
+
+### Patch Changes
+
+- 1fc2672: add "sideEffects: false" for improved tree-shaking
+
 ## 1.1.1
 
 ### Patch Changes

@@ -1,5 +1,13 @@
 # @gqty/cli
 
+## 1.1.4
+
+### Patch Changes
+
+- 5446d83: Fix/Improve config loading
+- Updated dependencies [1fc2672]
+  - gqty@1.1.2
+
 ## 1.1.3
 
 ### Patch Changes
