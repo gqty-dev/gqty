@@ -2,5 +2,15 @@
   "extends": ["config:base"],
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "rangeStrategy": "bump",
-  "ignoreDeps": ["pnpm", "node"]
+  "ignoreDeps": ["pnpm", "node"],
+  "ignorePaths": ["**/node_modules/**"],
+  "patch": {
+    "automerge": true
+  },
+  "packageRules": [
+    {
+      "matchPackagePrefixes": ["@types/", "@graphql-ez/"],
+      "automerge": true
+    }
+  ]
 }
