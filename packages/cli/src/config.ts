@@ -1,9 +1,9 @@
+import { cosmiconfig, Loader } from 'cosmiconfig';
 import { promises } from 'fs';
+import { createRequire } from 'module';
 import { resolve } from 'path';
-
-import { __innerState } from './innerState';
-
 import type { GenerateOptions } from './generate';
+import { __innerState } from './innerState';
 import type { IntrospectionOptions } from './introspection';
 
 export type GQtyConfig = Omit<GenerateOptions, 'endpoint'> & {
@@ -194,61 +194,68 @@ export const gqtyConfigPromise: Promise<{
   filepath: string;
   config: DeepReadonly<GQtyConfig>;
 }> = new Promise(async (resolve) => {
-  /* istanbul ignore else */
-  if (process.env.NODE_ENV === 'test') {
-    setTimeout(() => {
-      resolve(defaultGQtyConfig);
-    }, 10);
-  } else {
-    import('cosmiconfig')
-      .then(({ cosmiconfig }) => {
-        cosmiconfig('gqty', {
-          searchPlaces: ['gqty.config.cjs', 'gqty.config.js', 'package.json'],
-        })
-          .search()
-          .then(async (config) => {
-            if (!config || config.isEmpty) {
-              const filepath = config?.filepath || defaultFilePath;
+  try {
+    /* istanbul ignore else */
+    if (process.env.NODE_ENV === 'test') {
+      setTimeout(() => {
+        resolve(defaultGQtyConfig);
+      }, 10);
+    } else {
+      const cjsLoader: Loader = (filePath) => {
+        const requireConfig = createRequire(import.meta.url);
 
-              const NODE_ENV = process.env['NODE_ENV'];
+        return requireConfig(filePath);
+      };
+      const config = await cosmiconfig('gqty', {
+        searchPlaces: ['gqty.config.cjs', 'gqty.config.js', 'package.json'],
+        loaders: {
+          '.cjs': cjsLoader,
+          '.js': cjsLoader,
+        },
+      }).search();
 
-              if (
-                NODE_ENV !== 'test' &&
-                NODE_ENV !== 'production' &&
-                __innerState.isCLI
-              ) {
-                const { format } = (await import('./prettier')).formatPrettier({
-                  parser: 'typescript',
-                });
+      if (!config || config.isEmpty) {
+        const filepath = config?.filepath || defaultFilePath;
 
-                const config: GQtyConfig = { ...defaultConfig };
-                delete config.preImport;
-                delete config.enumsAsStrings;
+        const NODE_ENV = process.env['NODE_ENV'];
 
-                await promises.writeFile(
-                  defaultFilePath,
-                  await format(`
+        if (
+          NODE_ENV !== 'test' &&
+          NODE_ENV !== 'production' &&
+          __innerState.isCLI
+        ) {
+          const { format } = (await import('./prettier')).formatPrettier({
+            parser: 'typescript',
+          });
+
+          const config: GQtyConfig = { ...defaultConfig };
+          delete config.preImport;
+          delete config.enumsAsStrings;
+
+          await promises.writeFile(
+            defaultFilePath,
+            await format(`
                       /**
                        * @type {import("@gqty/cli").GQtyConfig}
                        */
                       const config = ${JSON.stringify(config)};
                       
                       module.exports = config;`)
-                );
-              }
-              return resolve({
-                filepath,
-                config: defaultConfig,
-              });
-            }
+          );
+        }
+        return resolve({
+          filepath,
+          config: defaultConfig,
+        });
+      }
 
-            resolve({
-              config: getValidConfig(config.config),
-              filepath: config.filepath,
-            });
-          })
-          .catch(() => defaultGQtyConfig);
-      })
-      .catch(() => defaultGQtyConfig);
+      resolve({
+        config: getValidConfig(config.config),
+        filepath: config.filepath,
+      });
+    }
+  } catch (err) {
+    console.error(err);
+    resolve(defaultGQtyConfig);
   }
 });
