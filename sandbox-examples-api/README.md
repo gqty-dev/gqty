@@ -1,1 +1,0 @@
-# GQty Sandbox Examples API
