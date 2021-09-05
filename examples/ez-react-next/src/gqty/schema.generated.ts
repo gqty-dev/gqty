@@ -21,17 +21,28 @@ export interface Scalars {
 
 export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
   String: true,
+  ID: true,
   Boolean: true,
 };
 export const generatedSchema = {
-  query: { __typename: { __type: 'String!' }, hello: { __type: 'String!' } },
+  query: {
+    __typename: { __type: 'String!' },
+    hello: { __type: 'String!' },
+    user: { __type: 'User!' },
+  },
   mutation: {},
   subscription: {},
+  User: {
+    __typename: { __type: 'String!' },
+    id: { __type: 'ID!' },
+    users: { __type: '[User!]!' },
+  },
 } as const;
 
 export interface Query {
   __typename?: 'Query';
   hello: ScalarsEnums['String'];
+  user: User;
 }
 
 export interface Mutation {
@@ -42,12 +53,23 @@ export interface Subscription {
   __typename?: 'Subscription';
 }
 
+export interface User {
+  __typename?: 'User';
+  id: ScalarsEnums['ID'];
+  users: Array<User>;
+}
+
 export interface SchemaObjectTypes {
   Query: Query;
   Mutation: Mutation;
   Subscription: Subscription;
+  User: User;
 }
-export type SchemaObjectTypesNames = 'Query' | 'Mutation' | 'Subscription';
+export type SchemaObjectTypesNames =
+  | 'Query'
+  | 'Mutation'
+  | 'Subscription'
+  | 'User';
 
 export interface GeneratedSchema {
   query: Query;

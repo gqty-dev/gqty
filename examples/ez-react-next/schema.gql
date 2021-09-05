@@ -4,4 +4,10 @@ schema {
 
 type Query {
   hello: String!
+  user: User!
+}
+
+type User {
+  id: ID!
+  users: [User!]!
 }
