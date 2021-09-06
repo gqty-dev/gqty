@@ -375,7 +375,7 @@ importers:
       '@emotion/react': ^11.4.1
       '@emotion/styled': ^11.3.0
       '@guild-docs/client': ^1.0.4
-      '@guild-docs/server': ^1.0.3
+      '@guild-docs/server': ^1.0.4
       '@mdx-js/react': ^1.6.22
       '@next/bundle-analyzer': ^11.1.2
       '@theguild/components': ^1.4.8
@@ -411,7 +411,7 @@ importers:
       '@emotion/react': 11.4.1_6e44cfea672f844fe365824ce49901bd
       '@emotion/styled': 11.3.0_17d2c1c118fdd49ec5ea34ebe26bbb6d
       '@guild-docs/client': 1.0.4_fae295576eb62675b337d9e13ee527bd
-      '@guild-docs/server': 1.0.3_9a83ca8c58935f330b2dd660c2978f96
+      '@guild-docs/server': 1.0.4_9a83ca8c58935f330b2dd660c2978f96
       '@mdx-js/react': 1.6.22_react@17.0.2
       '@theguild/components': 1.4.8_0ecb60ffa0d4ea2f13dcddcde00f7235
       csstype: 3.0.8
@@ -1053,7 +1053,7 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.12.9
-      '@babel/helper-plugin-utils': 7.10.4
+      '@babel/helper-plugin-utils': 7.14.5
       '@babel/plugin-syntax-object-rest-spread': 7.8.3_@babel+core@7.12.9
       '@babel/plugin-transform-parameters': 7.15.4_@babel+core@7.12.9
     dev: false
@@ -3093,11 +3093,11 @@ packages:
       - supports-color
     dev: false
 
-  /@guild-docs/server/1.0.3_9a83ca8c58935f330b2dd660c2978f96:
-    resolution: {integrity: sha512-Njy71Jot8S0cD3ifVzMUSJMUFvrLKAB/cM4WCp+RfhGtu/q40wHa7l2ELXKQdqAnEsFJw44oA59PbSsYArEb/Q==}
+  /@guild-docs/server/1.0.4_9a83ca8c58935f330b2dd660c2978f96:
+    resolution: {integrity: sha512-oC9/f1N9J9zbHbYLajMqXSiDYKs4vhFUFTRHAvxyCKlPu+L0iYlEyw4Ad7yVRIpRvB6u32CkrXReipPBQgtSHw==}
     peerDependencies:
       next: ^11.1.0
-      next-i18next: ^8.6.0
+      next-i18next: ^8.7.0
       react: ^17.0.2
       react-dom: ^17.0.2
       remark-admonitions: ^1.2.1
@@ -3110,7 +3110,7 @@ packages:
       next: 11.1.2_01b6e46c81e6fda6a6d233df547d9171
       next-i18next: 8.7.0_next@11.1.2+react@17.0.2
       next-mdx-remote: 3.0.4_react-dom@17.0.2+react@17.0.2
-      node-fetch: 2.6.1
+      node-fetch: 2.6.2
       npms.io: 2.1.0
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
@@ -10638,6 +10638,11 @@ packages:
   /node-fetch/2.6.1:
     resolution: {integrity: sha512-V4aYg89jEoVRxRb2fJdAg8FHvI7cEyYdVAh94HH0UIK8oJxUfkjlDQN9RbMx+bEjP7+ggMiFRprSti032Oipxw==}
     engines: {node: 4.x || >=6.0.0}
+
+  /node-fetch/2.6.2:
+    resolution: {integrity: sha512-aLoxToI6RfZ+0NOjmWAgn9+LEd30YCkJKFSyWacNZdEKTit/ZMcKjGkTRo8uWEsnIb/hfKecNPEbln02PdWbcA==}
+    engines: {node: 4.x || >=6.0.0}
+    dev: false
 
   /node-gyp-build/4.2.3:
     resolution: {integrity: sha512-MN6ZpzmfNCRM+3t57PTJHgHyw/h4OWnZ6mR8P5j/uZtqQr46RRuDE/P+g3n0YR/AiYXeWixZZzaip77gdICfRg==}
