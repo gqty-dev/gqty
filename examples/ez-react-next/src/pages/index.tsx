@@ -9,7 +9,7 @@ export default function Index() {
       <p>{user.id}</p>
       <div>
         {user.users.map((v) => (
-          <p key={v.id}>{v.id}</p>
+          <p key={v.id ?? -1}>{v.id}</p>
         ))}
       </div>
       <button

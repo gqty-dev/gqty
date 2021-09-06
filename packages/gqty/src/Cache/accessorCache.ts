@@ -1,4 +1,4 @@
-import type { Selection } from '../Selection';
+import { Selection } from '../Selection';
 
 export interface ProxyAccessor extends Object {
   __proxy?: undefined;
@@ -46,12 +46,9 @@ export function createAccessorCache(): AccessorCache {
 
   const selectionProxyMap = new WeakMap<ProxyAccessor, Selection>();
 
-  const accessorSelectionHistory = new WeakMap<ProxyAccessor, Set<Selection>>();
+  const selectionSetHistory = new Map<Selection, Set<Selection>>();
 
-  const accessorChildRelations = new WeakMap<
-    ProxyAccessor,
-    Set<ProxyAccessor>
-  >();
+  const selectionChildRelations = new Map<Selection, Set<Selection>>();
 
   function getAccessor(
     selection: Selection,
@@ -119,23 +116,36 @@ export function createAccessorCache(): AccessorCache {
     accessor: ProxyAccessor,
     selection: Selection
   ) {
-    let selectionSet = accessorSelectionHistory.get(accessor);
+    const accessorSelection = getProxySelection(accessor);
+
+    if (!accessorSelection) return;
+
+    let selectionSet = selectionSetHistory.get(accessorSelection);
 
     if (selectionSet == null) {
       selectionSet = new Set();
-      accessorSelectionHistory.set(accessor, selectionSet);
+      selectionSetHistory.set(accessorSelection, selectionSet);
     }
 
     selectionSet.add(selection);
   }
 
-  function getSelectionSetHistory(accessor: ProxyAccessor) {
-    let selections = accessorSelectionHistory.get(accessor);
+  function getSelectionSetHistory(
+    accessorOrSelection: ProxyAccessor | Selection
+  ) {
+    const accessorSelection =
+      accessorOrSelection instanceof Selection
+        ? accessorOrSelection
+        : getProxySelection(accessorOrSelection);
 
-    const childs = accessorChildRelations.get(accessor);
+    if (!accessorSelection) return;
+
+    let selections = selectionSetHistory.get(accessorSelection);
+
+    const childs = selectionChildRelations.get(accessorSelection);
 
     if (childs) {
-      const selectionsWithChilds = selections || (selections = new Set());
+      const selectionsWithChilds = (selections ||= new Set());
 
       childs.forEach((childAccessor) => {
         const childSelections = getSelectionSetHistory(childAccessor);
@@ -156,14 +166,22 @@ export function createAccessorCache(): AccessorCache {
   ) {
     if (!child) return;
 
-    let childs = accessorChildRelations.get(parent);
+    const parentSelection = getProxySelection(parent);
+
+    const childSelection = getProxySelection(child);
+
+    if (!parentSelection) return;
+
+    if (!childSelection) return;
+
+    let childs = selectionChildRelations.get(parentSelection);
 
     if (childs == null) {
       childs = new Set();
-      accessorChildRelations.set(parent, childs);
+      selectionChildRelations.set(parentSelection, childs);
     }
 
-    childs.add(child);
+    childs.add(childSelection);
   }
 
   return {

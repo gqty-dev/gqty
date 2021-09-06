@@ -45,13 +45,8 @@ export class Selection {
     unions,
     id,
   }: SelectionConstructorArgs) {
-    this.key = key;
-    this.args = args;
-    this.argTypes = argTypes;
-    this.type = type || prevSelection?.type || SelectionType.Query;
-    this.alias = alias;
-    this.unions = unions;
     this.id = id + '';
+    this.key = key;
 
     const pathKey = alias || key;
 
@@ -78,5 +73,12 @@ export class Selection {
     if (this.selectionsList.length === this.noIndexSelections.length) {
       this.noIndexSelections = this.selectionsList;
     }
+
+    this.alias = alias;
+    this.args = args;
+    this.argTypes = argTypes;
+    this.unions = unions;
+
+    this.type = type || prevSelection?.type || SelectionType.Query;
   }
 }
