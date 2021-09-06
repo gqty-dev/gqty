@@ -1,5 +1,11 @@
 # gqty
 
+## 1.1.3
+
+### Patch Changes
+
+- 3b9c614: Improve refetch selection history logic
+
 ## 1.1.2
 
 ### Patch Changes
