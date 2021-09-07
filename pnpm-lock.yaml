@@ -444,7 +444,7 @@ importers:
   packages/cli:
     specifiers:
       '@graphql-codegen/core': ^2.1.0
-      '@graphql-codegen/typescript': ^2.2.0
+      '@graphql-codegen/typescript': ^2.2.1
       '@graphql-tools/delegate': ^8.2.1
       '@graphql-tools/utils': ^8.2.2
       '@graphql-tools/wrap': ^8.1.0
@@ -470,7 +470,7 @@ importers:
       wait-on: ^6.0.0
     dependencies:
       '@graphql-codegen/core': 2.1.0_graphql@15.5.3
-      '@graphql-codegen/typescript': 2.2.0_graphql@15.5.3
+      '@graphql-codegen/typescript': 2.2.1_graphql@15.5.3
       '@graphql-tools/delegate': 8.2.1_graphql@15.5.3
       '@graphql-tools/utils': 8.2.2_graphql@15.5.3
       '@graphql-tools/wrap': 8.1.0_graphql@15.5.3
@@ -2781,6 +2781,20 @@ packages:
 
   /@graphql-codegen/typescript/2.2.0_graphql@15.5.3:
     resolution: {integrity: sha512-36F7DDFpIenvziyCyu9pS7ztb122TRz4mPQGklDycdz97fyYy/7yLyTTNTfX9T4+RaNBfbL80U1CcqxYgnF9yQ==}
+    peerDependencies:
+      graphql: ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0
+    dependencies:
+      '@graphql-codegen/plugin-helpers': 2.1.1_graphql@15.5.3
+      '@graphql-codegen/visitor-plugin-common': 2.2.0_graphql@15.5.3
+      auto-bind: 4.0.0
+      graphql: 15.5.3
+      tslib: 2.3.1
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
+  /@graphql-codegen/typescript/2.2.1_graphql@15.5.3:
+    resolution: {integrity: sha512-U3sJwgw+x9pascy9BTdD+MiLLyvDfldQYahaJBBmaA3OuTihn+GMiOC5+zaoizf5PN5M6pjs2H4aejXbvUWw/A==}
     peerDependencies:
       graphql: ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0
     dependencies:
