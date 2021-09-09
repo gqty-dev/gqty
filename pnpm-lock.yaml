@@ -82,7 +82,7 @@ importers:
       '@graphql-ez/nextjs': ^0.9.4
       '@graphql-ez/plugin-codegen': ^0.7.3
       '@graphql-ez/plugin-graphiql': ^0.9.1
-      '@graphql-ez/plugin-schema': ^0.7.2
+      '@graphql-ez/plugin-schema': ^0.7.3
       '@types/node': '>=16.7.4'
       '@types/react': ^17.0.20
       '@types/react-dom': ^17.0.9
@@ -102,7 +102,7 @@ importers:
       '@graphql-ez/nextjs': 0.9.4_6d40e3bf8dbd1925ee636ae2edb96d1b
       '@graphql-ez/plugin-codegen': 0.7.3_c681ae4ef4b4c3fb142bd73dd1e8cc7f
       '@graphql-ez/plugin-graphiql': 0.9.1_c681ae4ef4b4c3fb142bd73dd1e8cc7f
-      '@graphql-ez/plugin-schema': 0.7.2_c681ae4ef4b4c3fb142bd73dd1e8cc7f
+      '@graphql-ez/plugin-schema': 0.7.3_c681ae4ef4b4c3fb142bd73dd1e8cc7f
       gqty: link:../../packages/gqty
       graphql: 15.5.3
       graphql-ez: 0.12.7_7015bb160524463e6f3a35b8df07c8b6
@@ -2884,12 +2884,12 @@ packages:
       - graphql
     dev: false
 
-  /@graphql-ez/plugin-schema/0.7.2_c681ae4ef4b4c3fb142bd73dd1e8cc7f:
-    resolution: {integrity: sha512-l/LjdQoATgtLnUj9nFbgxoSSjrr10YhCreb7kKKg5C8L1tuAme3Py1wSe+ybqglwYsD4xJSTr/T8bIDQ3MuOYQ==}
+  /@graphql-ez/plugin-schema/0.7.3_c681ae4ef4b4c3fb142bd73dd1e8cc7f:
+    resolution: {integrity: sha512-40qamfjyQ0qIuAmc3SlE5VRApd+CG0CBPPe91bnKJPrdgqAcCeiAdqEtiz3DnG3QSJhWZS+HdgCMux1/+bwqTQ==}
     engines: {node: ^12.20.0 || >=14.13.0}
     peerDependencies:
       graphql: '*'
-      graphql-ez: ^0.12.5
+      graphql-ez: ^0.13.0
     dependencies:
       '@graphql-ez/utils': 0.1.2_7015bb160524463e6f3a35b8df07c8b6
       '@graphql-tools/schema': 8.2.0_graphql@15.5.3
