@@ -80,7 +80,7 @@ importers:
       '@gqty/logger': workspace:^1.0.4
       '@gqty/react': workspace:^1.1.1
       '@graphql-ez/nextjs': ^0.9.4
-      '@graphql-ez/plugin-codegen': ^0.7.2
+      '@graphql-ez/plugin-codegen': ^0.7.3
       '@graphql-ez/plugin-graphiql': ^0.9.1
       '@graphql-ez/plugin-schema': ^0.7.2
       '@types/node': '>=16.7.4'
@@ -100,7 +100,7 @@ importers:
       '@gqty/logger': link:../../packages/logger
       '@gqty/react': link:../../packages/react
       '@graphql-ez/nextjs': 0.9.4_6d40e3bf8dbd1925ee636ae2edb96d1b
-      '@graphql-ez/plugin-codegen': 0.7.2_c681ae4ef4b4c3fb142bd73dd1e8cc7f
+      '@graphql-ez/plugin-codegen': 0.7.3_c681ae4ef4b4c3fb142bd73dd1e8cc7f
       '@graphql-ez/plugin-graphiql': 0.9.1_c681ae4ef4b4c3fb142bd73dd1e8cc7f
       '@graphql-ez/plugin-schema': 0.7.2_c681ae4ef4b4c3fb142bd73dd1e8cc7f
       gqty: link:../../packages/gqty
@@ -2844,22 +2844,22 @@ packages:
       next: 11.1.2_01b6e46c81e6fda6a6d233df547d9171
     dev: false
 
-  /@graphql-ez/plugin-codegen/0.7.2_c681ae4ef4b4c3fb142bd73dd1e8cc7f:
-    resolution: {integrity: sha512-VbdAhKx5n+M0lOaJZDpadunWFf9gWxWrc9+tZVY8ekXbxuSZAlz8vl5rqdBjbroJmE2782WoT8qjwTZRBLSm7Q==}
+  /@graphql-ez/plugin-codegen/0.7.3_c681ae4ef4b4c3fb142bd73dd1e8cc7f:
+    resolution: {integrity: sha512-vmVXVBFOoIyjjt7UQmTLY2SVfBNoPVn5sy28WgvqRuVQ1/Zaiamhrz2wVqRejZeHJKZMS36WCy+w/W9OlUu6sw==}
     engines: {node: ^12.20.0 || >=14.13.0}
     peerDependencies:
       graphql: '*'
-      graphql-ez: ^0.12.0
+      graphql-ez: ^0.13.0
     dependencies:
       '@graphql-codegen/core': 2.1.0_graphql@15.5.3
       '@graphql-codegen/plugin-helpers': 2.1.1_graphql@15.5.3
       '@graphql-codegen/typed-document-node': 2.1.3_graphql@15.5.3
-      '@graphql-codegen/typescript': 2.2.0_graphql@15.5.3
+      '@graphql-codegen/typescript': 2.2.1_graphql@15.5.3
       '@graphql-codegen/typescript-operations': 2.1.3_graphql@15.5.3
       '@graphql-codegen/typescript-resolvers': 2.2.0_graphql@15.5.3
       '@graphql-ez/utils': 0.1.2_7015bb160524463e6f3a35b8df07c8b6
       '@graphql-tools/graphql-file-loader': 7.1.0_graphql@15.5.3
-      '@graphql-tools/load': 7.2.0_graphql@15.5.3
+      '@graphql-tools/load': 7.3.0_graphql@15.5.3
       '@graphql-tools/utils': 8.2.2_graphql@15.5.3
       graphql: 15.5.3
       graphql-ez: 0.12.7_7015bb160524463e6f3a35b8df07c8b6
@@ -2970,8 +2970,8 @@ packages:
       unixify: 1.0.0
     dev: false
 
-  /@graphql-tools/load/7.2.0_graphql@15.5.3:
-    resolution: {integrity: sha512-wpMjONVcE47jjlTkoivOnl/WPxcDUyfyN+3++UOijrdSSzuItwmaWo14e+Egqd5Uz/wWlLPwfbSatbcN0rDKuQ==}
+  /@graphql-tools/load/7.3.0_graphql@15.5.3:
+    resolution: {integrity: sha512-ZVipT7yzOpf/DJ2sLI3xGwnULVFp/icu7RFEgDo2ZX0WHiS7EjWZ0cegxEm87+WN4fMwpiysRLzWx67VIHwKGA==}
     peerDependencies:
       graphql: ^14.0.0 || ^15.0.0 || ^16.0.0
     dependencies:
