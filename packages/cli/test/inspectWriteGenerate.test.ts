@@ -142,10 +142,12 @@ test('basic inspectWriteGenerate functionality', async () => {
       export type Exact<T extends { [key: string]: unknown }> = {
         [K in keyof T]: T[K];
       };
-      export type MakeOptional<T, K extends keyof T> = Omit<T, K> &
-        { [SubKey in K]?: Maybe<T[SubKey]> };
-      export type MakeMaybe<T, K extends keyof T> = Omit<T, K> &
-        { [SubKey in K]: Maybe<T[SubKey]> };
+      export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
+        [SubKey in K]?: Maybe<T[SubKey]>;
+      };
+      export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
+        [SubKey in K]: Maybe<T[SubKey]>;
+      };
       /** All built-in and custom scalars, mapped to their actual values */
       export interface Scalars {
         ID: string;
@@ -326,10 +328,12 @@ describe('from file', () => {
         export type Exact<T extends { [key: string]: unknown }> = {
           [K in keyof T]: T[K];
         };
-        export type MakeOptional<T, K extends keyof T> = Omit<T, K> &
-          { [SubKey in K]?: Maybe<T[SubKey]> };
-        export type MakeMaybe<T, K extends keyof T> = Omit<T, K> &
-          { [SubKey in K]: Maybe<T[SubKey]> };
+        export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
+          [SubKey in K]?: Maybe<T[SubKey]>;
+        };
+        export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
+          [SubKey in K]: Maybe<T[SubKey]>;
+        };
         /** All built-in and custom scalars, mapped to their actual values */
         export interface Scalars {
           ID: string;
@@ -512,10 +516,12 @@ describe('from file', () => {
         export type Exact<T extends { [key: string]: unknown }> = {
           [K in keyof T]: T[K];
         };
-        export type MakeOptional<T, K extends keyof T> = Omit<T, K> &
-          { [SubKey in K]?: Maybe<T[SubKey]> };
-        export type MakeMaybe<T, K extends keyof T> = Omit<T, K> &
-          { [SubKey in K]: Maybe<T[SubKey]> };
+        export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
+          [SubKey in K]?: Maybe<T[SubKey]>;
+        };
+        export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
+          [SubKey in K]: Maybe<T[SubKey]>;
+        };
         /** All built-in and custom scalars, mapped to their actual values */
         export interface Scalars {
           ID: string;
@@ -697,10 +703,12 @@ describe('from file', () => {
         export type Exact<T extends { [key: string]: unknown }> = {
           [K in keyof T]: T[K];
         };
-        export type MakeOptional<T, K extends keyof T> = Omit<T, K> &
-          { [SubKey in K]?: Maybe<T[SubKey]> };
-        export type MakeMaybe<T, K extends keyof T> = Omit<T, K> &
-          { [SubKey in K]: Maybe<T[SubKey]> };
+        export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
+          [SubKey in K]?: Maybe<T[SubKey]>;
+        };
+        export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
+          [SubKey in K]: Maybe<T[SubKey]>;
+        };
         /** All built-in and custom scalars, mapped to their actual values */
         export interface Scalars {
           ID: string;
@@ -921,10 +929,12 @@ test('specify generateOptions to inspectWriteGenerate', async () => {
       export type Exact<T extends { [key: string]: unknown }> = {
         [K in keyof T]: T[K];
       };
-      export type MakeOptional<T, K extends keyof T> = Omit<T, K> &
-        { [SubKey in K]?: Maybe<T[SubKey]> };
-      export type MakeMaybe<T, K extends keyof T> = Omit<T, K> &
-        { [SubKey in K]: Maybe<T[SubKey]> };
+      export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
+        [SubKey in K]?: Maybe<T[SubKey]>;
+      };
+      export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
+        [SubKey in K]: Maybe<T[SubKey]>;
+      };
       /** All built-in and custom scalars, mapped to their actual values */
       export interface Scalars {
         ID: string;
@@ -1057,10 +1067,12 @@ describe('inspect headers', () => {
         export type Exact<T extends { [key: string]: unknown }> = {
           [K in keyof T]: T[K];
         };
-        export type MakeOptional<T, K extends keyof T> = Omit<T, K> &
-          { [SubKey in K]?: Maybe<T[SubKey]> };
-        export type MakeMaybe<T, K extends keyof T> = Omit<T, K> &
-          { [SubKey in K]: Maybe<T[SubKey]> };
+        export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
+          [SubKey in K]?: Maybe<T[SubKey]>;
+        };
+        export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
+          [SubKey in K]: Maybe<T[SubKey]>;
+        };
         /** All built-in and custom scalars, mapped to their actual values */
         export interface Scalars {
           ID: string;
@@ -1271,10 +1283,12 @@ describe('CLI behavior', () => {
         export type Exact<T extends { [key: string]: unknown }> = {
           [K in keyof T]: T[K];
         };
-        export type MakeOptional<T, K extends keyof T> = Omit<T, K> &
-          { [SubKey in K]?: Maybe<T[SubKey]> };
-        export type MakeMaybe<T, K extends keyof T> = Omit<T, K> &
-          { [SubKey in K]: Maybe<T[SubKey]> };
+        export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
+          [SubKey in K]?: Maybe<T[SubKey]>;
+        };
+        export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
+          [SubKey in K]: Maybe<T[SubKey]>;
+        };
         /** All built-in and custom scalars, mapped to their actual values */
         export interface Scalars {
           ID: string;

@@ -47,10 +47,12 @@ test('basic functionality works', async () => {
     export type Exact<T extends { [key: string]: unknown }> = {
       [K in keyof T]: T[K];
     };
-    export type MakeOptional<T, K extends keyof T> = Omit<T, K> &
-      { [SubKey in K]?: Maybe<T[SubKey]> };
-    export type MakeMaybe<T, K extends keyof T> = Omit<T, K> &
-      { [SubKey in K]: Maybe<T[SubKey]> };
+    export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
+      [SubKey in K]?: Maybe<T[SubKey]>;
+    };
+    export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
+      [SubKey in K]: Maybe<T[SubKey]>;
+    };
     /** All built-in and custom scalars, mapped to their actual values */
     export interface Scalars {
       ID: string;
@@ -378,10 +380,12 @@ test('custom scalars works', async () => {
     export type Exact<T extends { [key: string]: unknown }> = {
       [K in keyof T]: T[K];
     };
-    export type MakeOptional<T, K extends keyof T> = Omit<T, K> &
-      { [SubKey in K]?: Maybe<T[SubKey]> };
-    export type MakeMaybe<T, K extends keyof T> = Omit<T, K> &
-      { [SubKey in K]: Maybe<T[SubKey]> };
+    export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
+      [SubKey in K]?: Maybe<T[SubKey]>;
+    };
+    export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
+      [SubKey in K]: Maybe<T[SubKey]>;
+    };
     /** All built-in and custom scalars, mapped to their actual values */
     export interface Scalars {
       ID: string;
@@ -573,10 +577,12 @@ describe('feature complete app', () => {
       export type Exact<T extends { [key: string]: unknown }> = {
         [K in keyof T]: T[K];
       };
-      export type MakeOptional<T, K extends keyof T> = Omit<T, K> &
-        { [SubKey in K]?: Maybe<T[SubKey]> };
-      export type MakeMaybe<T, K extends keyof T> = Omit<T, K> &
-        { [SubKey in K]: Maybe<T[SubKey]> };
+      export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
+        [SubKey in K]?: Maybe<T[SubKey]>;
+      };
+      export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
+        [SubKey in K]: Maybe<T[SubKey]>;
+      };
       /** All built-in and custom scalars, mapped to their actual values */
       export interface Scalars {
         ID: string;
@@ -880,8 +886,8 @@ test('prettier detects invalid code', async () => {
       preImport: `
         con a; // invalid code
         `,
-    })
-  ).rejects.toThrow("';' expected. (6:13)");
+    }).catch((err) => err.message.split('\n')[0])
+  ).resolves.toBe(`Unexpected keyword or identifier. (6:9)`);
 });
 
 describe('mutation', () => {
@@ -921,10 +927,12 @@ describe('mutation', () => {
       export type Exact<T extends { [key: string]: unknown }> = {
         [K in keyof T]: T[K];
       };
-      export type MakeOptional<T, K extends keyof T> = Omit<T, K> &
-        { [SubKey in K]?: Maybe<T[SubKey]> };
-      export type MakeMaybe<T, K extends keyof T> = Omit<T, K> &
-        { [SubKey in K]: Maybe<T[SubKey]> };
+      export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
+        [SubKey in K]?: Maybe<T[SubKey]>;
+      };
+      export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
+        [SubKey in K]: Maybe<T[SubKey]>;
+      };
       /** All built-in and custom scalars, mapped to their actual values */
       export interface Scalars {
         ID: string;
@@ -1051,10 +1059,12 @@ describe('subscription', () => {
       export type Exact<T extends { [key: string]: unknown }> = {
         [K in keyof T]: T[K];
       };
-      export type MakeOptional<T, K extends keyof T> = Omit<T, K> &
-        { [SubKey in K]?: Maybe<T[SubKey]> };
-      export type MakeMaybe<T, K extends keyof T> = Omit<T, K> &
-        { [SubKey in K]: Maybe<T[SubKey]> };
+      export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
+        [SubKey in K]?: Maybe<T[SubKey]>;
+      };
+      export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
+        [SubKey in K]: Maybe<T[SubKey]>;
+      };
       /** All built-in and custom scalars, mapped to their actual values */
       export interface Scalars {
         ID: string;
@@ -1356,10 +1366,12 @@ test('javascript output works', async () => {
     export type Exact<T extends { [key: string]: unknown }> = {
       [K in keyof T]: T[K];
     };
-    export type MakeOptional<T, K extends keyof T> = Omit<T, K> &
-      { [SubKey in K]?: Maybe<T[SubKey]> };
-    export type MakeMaybe<T, K extends keyof T> = Omit<T, K> &
-      { [SubKey in K]: Maybe<T[SubKey]> };
+    export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
+      [SubKey in K]?: Maybe<T[SubKey]>;
+    };
+    export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
+      [SubKey in K]: Maybe<T[SubKey]>;
+    };
     /** All built-in and custom scalars, mapped to their actual values */
     export interface Scalars {
       ID: string;
@@ -1606,10 +1618,12 @@ test('ignoreArgs transform', async () => {
     export type Exact<T extends { [key: string]: unknown }> = {
       [K in keyof T]: T[K];
     };
-    export type MakeOptional<T, K extends keyof T> = Omit<T, K> &
-      { [SubKey in K]?: Maybe<T[SubKey]> };
-    export type MakeMaybe<T, K extends keyof T> = Omit<T, K> &
-      { [SubKey in K]: Maybe<T[SubKey]> };
+    export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
+      [SubKey in K]?: Maybe<T[SubKey]>;
+    };
+    export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
+      [SubKey in K]: Maybe<T[SubKey]>;
+    };
     /** All built-in and custom scalars, mapped to their actual values */
     export interface Scalars {
       ID: string;
