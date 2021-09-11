@@ -21,7 +21,7 @@ importers:
       '@babel/plugin-proposal-optional-chaining': ^7.14.5
       '@changesets/cli': ^2.17.0
       '@types/node': '>=16.7.4'
-      bob-esbuild: ^1.2.3
+      bob-esbuild: ^1.3.0
       bob-esbuild-cli: ^1.0.1
       bufferutil: ^4.0.3
       chalk: ^4.1.2
@@ -61,8 +61,8 @@ importers:
       '@babel/plugin-proposal-optional-chaining': 7.14.5
       '@changesets/cli': 2.17.0
       '@types/node': 16.9.0
-      bob-esbuild: 1.2.3_9a8cc85b2d96f040413d5b20218085f6
-      bob-esbuild-cli: 1.0.1_bob-esbuild@1.2.3
+      bob-esbuild: 1.3.0_9a8cc85b2d96f040413d5b20218085f6
+      bob-esbuild-cli: 1.0.1_bob-esbuild@1.3.0
       chalk: 4.1.2
       changesets-github-release: 0.0.4
       concurrently: 6.2.1
@@ -173,7 +173,7 @@ importers:
       '@size-limit/preset-small-lib': 5.0.3_e40c9c62de787a2809ae1c64b13ef5a6
       '@types/lodash': 4.14.172
       '@types/randomstring': 1.1.7
-      bob-esbuild-cli: 1.0.1_bob-esbuild@1.2.3
+      bob-esbuild-cli: 1.0.1_bob-esbuild@1.3.0
       jest: 27.1.1_d1ccac96904892d8c5bb2a71cac787db
       mercurius-integration-testing: 3.2.0_2fefe9a5aceecead99fcdb2a43b1344f
       size-limit: 5.0.3
@@ -357,7 +357,7 @@ importers:
       '@jest/types': 27.1.1
       '@size-limit/preset-small-lib': 5.0.3_e40c9c62de787a2809ae1c64b13ef5a6
       '@types/randomstring': 1.1.7
-      bob-esbuild-cli: 1.0.1_bob-esbuild@1.2.3
+      bob-esbuild-cli: 1.0.1_bob-esbuild@1.3.0
       concurrently: 6.2.1
       es-jest: 1.3.0
       rimraf: 3.0.2
@@ -483,7 +483,7 @@ importers:
     devDependencies:
       '@size-limit/preset-small-lib': 5.0.3_e40c9c62de787a2809ae1c64b13ef5a6
       '@types/mkdirp': 1.0.2
-      bob-esbuild-cli: 1.0.1_bob-esbuild@1.2.3
+      bob-esbuild-cli: 1.0.1_bob-esbuild@1.3.0
       changesets-github-release: 0.0.4
       graphql: 15.5.3
       open-cli: 7.0.1
@@ -551,7 +551,7 @@ importers:
       '@types/tsc-watch': 4.2.0
       '@types/wait-on': 5.3.1
       '@types/ws': 7.4.7
-      bob-esbuild-cli: 1.0.1_bob-esbuild@1.2.3
+      bob-esbuild-cli: 1.0.1_bob-esbuild@1.3.0
       concurrently: 6.2.1
       cross-env: 7.0.3
       get-port: 5.1.1
@@ -593,7 +593,7 @@ importers:
     devDependencies:
       '@size-limit/preset-small-lib': 5.0.3_e40c9c62de787a2809ae1c64b13ef5a6
       '@types/prettier': 2.3.2
-      bob-esbuild-cli: 1.0.1_bob-esbuild@1.2.3
+      bob-esbuild-cli: 1.0.1_bob-esbuild@1.3.0
       gqty: link:../gqty
       jest: 27.1.1_d1ccac96904892d8c5bb2a71cac787db
       rimraf: 3.0.2
@@ -638,7 +638,7 @@ importers:
       '@types/lodash': 4.14.172
       '@types/react': 17.0.20
       '@types/react-dom': 17.0.9
-      bob-esbuild-cli: 1.0.1_bob-esbuild@1.2.3
+      bob-esbuild-cli: 1.0.1_bob-esbuild@1.3.0
       get-port: 5.1.1
       gqty: link:../gqty
       graphql: 15.5.3
@@ -669,7 +669,7 @@ importers:
       ws: 8.2.2_72ef9f06cb99540da679cbf1bf7a3256
     devDependencies:
       '@types/ws': 7.4.7
-      bob-esbuild-cli: 1.0.1_bob-esbuild@1.2.3
+      bob-esbuild-cli: 1.0.1_bob-esbuild@1.3.0
       gqty: link:../gqty
       graphql: 15.5.3
       test-utils: link:../../internal/test-utils
@@ -5447,14 +5447,14 @@ packages:
   /bn.js/5.2.0:
     resolution: {integrity: sha512-D7iWRBvnZE8ecXiLj/9wbxH7Tk79fAh8IHaTNq1RWRixsS02W+5qS+iE9yq6RYl0asXx5tw0bLhmT5pIfbSquw==}
 
-  /bob-esbuild-cli/1.0.1_bob-esbuild@1.2.3:
+  /bob-esbuild-cli/1.0.1_bob-esbuild@1.3.0:
     resolution: {integrity: sha512-z1WBNCPNgwL9CaQ7sTA0xGCHX0xjLKhjvMHrBmBhk/Fl3fLX78qq14CarFCRPn8MUjDXc1KDRXYSfhVcdS/rDQ==}
     engines: {node: '>=12.0.0'}
     hasBin: true
     peerDependencies:
       bob-esbuild: ^1.0.0
     dependencies:
-      bob-esbuild: 1.2.3_9a8cc85b2d96f040413d5b20218085f6
+      bob-esbuild: 1.3.0_9a8cc85b2d96f040413d5b20218085f6
       commander: 8.1.0
     dev: true
 
@@ -5472,8 +5472,8 @@ packages:
       rollup: 2.56.3
     dev: true
 
-  /bob-esbuild/1.2.3_9a8cc85b2d96f040413d5b20218085f6:
-    resolution: {integrity: sha512-cLKIedYjbECm2SOtbuSjvXQ+Kmrjdfv5DN7iFxcuEXCon5cxwhpdbi9PA1A+7Iq6KFRle5Vo1KGj+oQY9493AQ==}
+  /bob-esbuild/1.3.0_9a8cc85b2d96f040413d5b20218085f6:
+    resolution: {integrity: sha512-EBKAuaEBRyf9RXmf2MtJ1z8A0n7PN9Q2hQzLN2j9bpo2kr82L4gZUYDapnWLlA1AgeQsiVf4xUNbU14cBxIE7g==}
     peerDependencies:
       typescript: '*'
     dependencies:
