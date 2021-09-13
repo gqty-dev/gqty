@@ -32,7 +32,7 @@ export function createTestApp(
           })
           .catch(reject);
       })
-    : ((server.ready() as unknown) as Promise<void>);
+    : (server.ready() as unknown as Promise<void>);
 
   const client = createMercuriusTestClient(server, {
     url: options.path,
