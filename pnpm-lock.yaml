@@ -400,7 +400,7 @@ importers:
       react-icons: ^4.2.0
       react-use: ^17.3.1
       remark-admonitions: ^1.2.1
-      shiki: ^0.9.10
+      shiki: ^0.9.11
       typescript: '>=4.4.2'
       wait-on: ^6.0.0
     dependencies:
@@ -411,7 +411,7 @@ importers:
       '@emotion/react': 11.4.1_6e44cfea672f844fe365824ce49901bd
       '@emotion/styled': 11.3.0_17d2c1c118fdd49ec5ea34ebe26bbb6d
       '@guild-docs/client': 1.0.5_38023718fb2be1d9a7a02f4b4fb4b737
-      '@guild-docs/server': 1.0.4_752d619767e650d53b2739590978cdad
+      '@guild-docs/server': 1.0.4_bfc0844d787178c52c83eacc4d303f6b
       '@mdx-js/react': 1.6.22_react@17.0.2
       '@theguild/components': 1.4.8_0ecb60ffa0d4ea2f13dcddcde00f7235
       csstype: 3.0.9
@@ -424,7 +424,7 @@ importers:
       react-icons: 4.2.0_react@17.0.2
       react-use: 17.3.1_react-dom@17.0.2+react@17.0.2
       remark-admonitions: 1.2.1
-      shiki: 0.9.10
+      shiki: 0.9.11
     devDependencies:
       '@next/bundle-analyzer': 11.1.2_72ef9f06cb99540da679cbf1bf7a3256
       '@types/concurrently': 6.2.1
@@ -3085,7 +3085,7 @@ packages:
       - supports-color
     dev: false
 
-  /@guild-docs/server/1.0.4_752d619767e650d53b2739590978cdad:
+  /@guild-docs/server/1.0.4_bfc0844d787178c52c83eacc4d303f6b:
     resolution: {integrity: sha512-oC9/f1N9J9zbHbYLajMqXSiDYKs4vhFUFTRHAvxyCKlPu+L0iYlEyw4Ad7yVRIpRvB6u32CkrXReipPBQgtSHw==}
     peerDependencies:
       next: ^11.1.0
@@ -3109,7 +3109,7 @@ packages:
       remark-admonitions: 1.2.1
       remark-emoji: 3.0.1
       remark-slug: 7.0.0
-      shiki: 0.9.10
+      shiki: 0.9.11
       tiny-lru: 7.0.6
       unified: 10.1.0
       unist-util-visit: 4.0.0
@@ -9736,7 +9736,6 @@ packages:
 
   /jsonc-parser/3.0.0:
     resolution: {integrity: sha512-fQzRfAbIBnR0IQvftw9FJveWiHp72Fg20giDrHz6TdfB12UH/uue0D3hm57UB5KgAVuniLMCaS8P1IMj9NR7cA==}
-    dev: true
 
   /jsonfile/4.0.0:
     resolution: {integrity: sha1-h3Gq4HmbZAdrdmQPygWPnBDjPss=}
@@ -12996,10 +12995,10 @@ packages:
     resolution: {integrity: sha512-mRz/m/JVscCrkMyPqHc/bczi3OQHkLTqXHEFu0zDhK/qfv3UcOA4SVmRCLmos4bhjr9ekVQubj/R7waKapmiQg==}
     dev: false
 
-  /shiki/0.9.10:
-    resolution: {integrity: sha512-xeM7Oc6hY+6iW5O/T5hor8ul7mEprzyl5y4r5zthEHToQNw7MIhREMgU3r2gKDB0NaMLNrkcEQagudCdzE13Lg==}
+  /shiki/0.9.11:
+    resolution: {integrity: sha512-tjruNTLFhU0hruCPoJP0y+B9LKOmcqUhTpxn7pcJB3fa+04gFChuEmxmrUfOJ7ZO6Jd+HwMnDHgY3lv3Tqonuw==}
     dependencies:
-      json5: 2.2.0
+      jsonc-parser: 3.0.0
       onigasm: 2.2.5
       vscode-textmate: 5.2.0
     dev: false
