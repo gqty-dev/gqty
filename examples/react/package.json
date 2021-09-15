@@ -5,7 +5,7 @@
   "scripts": {
     "build-example": "next build",
     "dev": "concurrently --raw \"pnpm dev:server\" \"wait-on -s 1 tcp:4141 && node ./open-browser.mjs\"",
-    "dev:server": "tsup api/server.ts --onSuccess \"node dist/server.js\" --watch --ignore-watch .next --ignore-watch db.json --ignore-watch src --ignore-watch last-browser-open",
+    "dev:server": "bob-ts-watch -f cjs -i api/server.ts -c \"node dist/server.js\"",
     "build": "next build",
     "start": "node dist/server.js"
   },
@@ -54,10 +54,10 @@
     "@types/node": "^16.9.1",
     "@types/react": "^17.0.21",
     "@types/react-dom": "^17.0.9",
+    "bob-ts": "^1.0.6",
     "concurrently": "^6.2.1",
     "jest": "^27.2.0",
     "open-cli": "^7.0.1",
-    "tsup": "^4.14.0",
     "typescript": "^4.4.3",
     "wait-on": "^6.0.0"
   }
