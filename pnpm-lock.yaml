@@ -40,7 +40,7 @@ importers:
       ts-jest: '>=27.0.5'
       ts-node: ^10.2.1
       tslib: ^2.3.1
-      tsup: ^4.14.0
+      tsup: ^5.0.0
       typescript: '>=4.4.2'
       utf-8-validate: ^5.0.5
       wait-on: ^6.0.0
@@ -52,7 +52,7 @@ importers:
       ts-jest: 27.0.5_jest@27.2.0+typescript@4.4.3
       ts-node: 10.2.1_c51a13cfa2c3195bf611f1652e33c9c1
       tslib: 2.3.1
-      tsup: 4.14.0_ts-node@10.2.1+typescript@4.4.3
+      tsup: 5.0.0_ts-node@10.2.1+typescript@4.4.3
       typescript: 4.4.3
       utf-8-validate: 5.0.5
       wait-on: 6.0.0
@@ -227,7 +227,7 @@ importers:
       react-ssr-prepass: ^1.4.0
       react-use: ^17.3.1
       serialize-error: ^8.1.0
-      tsup: ^4.14.0
+      tsup: ^5.0.0
       typescript: '>=4.4.2'
       use-error-boundary: ^2.0.6
       wait-on: ^6.0.0
@@ -278,7 +278,7 @@ importers:
       concurrently: 6.2.1
       jest: 27.2.0_d1ccac96904892d8c5bb2a71cac787db
       open-cli: 7.0.1
-      tsup: 4.14.0_ts-node@10.2.1+typescript@4.4.3
+      tsup: 5.0.0_ts-node@10.2.1+typescript@4.4.3
       typescript: 4.4.3
       wait-on: 6.0.0
 
@@ -333,7 +333,7 @@ importers:
       size-limit: ^5.0.3
       ts-jest: '>=27.0.5'
       tslib: ^2.3.1
-      tsup: ^4.14.0
+      tsup: ^5.0.0
       typescript: '>=4.4.2'
       wait-for-expect: ^3.0.2
     dependencies:
@@ -363,7 +363,7 @@ importers:
       rimraf: 3.0.2
       size-limit: 5.0.3
       tslib: 2.3.1
-      tsup: 4.14.0_ts-node@10.2.1+typescript@4.4.3
+      tsup: 5.0.0_ts-node@10.2.1+typescript@4.4.3
       typescript: 4.4.3
 
   internal/website:
@@ -530,7 +530,7 @@ importers:
       test-utils: workspace:^0.1.0
       tsc-watch: ^4.5.0
       tslib: ^2.3.1
-      tsup: ^4.14.0
+      tsup: ^5.0.0
       typescript: '>=4.4.2'
       wait-on: ^6.0.0
       ws: ^8.2.2
@@ -568,7 +568,7 @@ importers:
       test-utils: link:../../internal/test-utils
       tsc-watch: 4.5.0_typescript@4.4.3
       tslib: 2.3.1
-      tsup: 4.14.0_ts-node@10.2.1+typescript@4.4.3
+      tsup: 5.0.0_ts-node@10.2.1+typescript@4.4.3
       typescript: 4.4.3
       wait-on: 6.0.0
       ws: 8.2.2_72ef9f06cb99540da679cbf1bf7a3256
@@ -4805,6 +4805,7 @@ packages:
 
   /any-promise/1.3.0:
     resolution: {integrity: sha1-q8av7tzqUugJzcA3au0845Y10X8=}
+    dev: true
 
   /anymatch/2.0.0:
     resolution: {integrity: sha512-5teOsQWABXHHBFP9y3skS5P3d/WfWXpv3FUpy+LorMrNYaT9pI4oLMQX7jzQ2KklNpGpWHzdCXTDT2Y3XGlZBw==}
@@ -6096,6 +6097,7 @@ packages:
   /commander/4.1.1:
     resolution: {integrity: sha512-NOKm8xhkzAjzFx8B2v5OAHT+u5pRQc2UCa2Vq9jYL/31o2wi9mxBA7LIFs3sV5VSC49z6pEhfbMULvShKj26WA==}
     engines: {node: '>= 6'}
+    dev: true
 
   /commander/5.1.0:
     resolution: {integrity: sha512-P0CysNDQ7rtVw4QIQtm+MRxV66vKFSvlsQvGYXZWR3qFU0jlMKHZZZgw8e+8DSah4UDKMqnknRDQz+xuQXQ/Zg==}
@@ -8036,6 +8038,7 @@ packages:
       minimatch: 3.0.4
       once: 1.4.0
       path-is-absolute: 1.0.1
+    dev: true
 
   /glob/7.1.7:
     resolution: {integrity: sha512-OvD9ENzPLbegENnYP5UUfJIirTg4+XwMWGaQfQTY0JenxNvvIKP3U3/tAQSPIu/lHxXYSZmpXlUHeqAIdKzBLQ==}
@@ -10453,6 +10456,7 @@ packages:
       any-promise: 1.3.0
       object-assign: 4.1.1
       thenify-all: 1.6.0
+    dev: true
 
   /nan/2.15.0:
     resolution: {integrity: sha512-8ZtvEnA2c5aYCZYd1cvgdnU6cqwixRoYg70xPLWUws5ORTa/lnw+u4amixRS/Ac5U5mQVgp9pnlSUnbNWFaWZQ==}
@@ -13604,6 +13608,7 @@ packages:
       mz: 2.7.0
       pirates: 4.0.1
       ts-interface-checker: 0.1.13
+    dev: true
 
   /supports-color/5.5.0:
     resolution: {integrity: sha512-QjVjwdXIt408MIiAqCX4oUKsgU2EqAGzs2Ppkm4aQYbjm+ZEWEcW4SfFNTr4uMNZma0ey4f5lgLrkB0aX0QMow==}
@@ -13846,11 +13851,13 @@ packages:
     engines: {node: '>=0.8'}
     dependencies:
       thenify: 3.3.1
+    dev: true
 
   /thenify/3.3.1:
     resolution: {integrity: sha512-RVZSIV5IG10Hk3enotrhvz0T9em6cyHBLkH/YAZuKqd8hRkKhSfCGIcP2KUY0EPxndzANBmNllzWPwak+bheSw==}
     dependencies:
       any-promise: 1.3.0
+    dev: true
 
   /throat/6.0.1:
     resolution: {integrity: sha512-8hmiGIJMDlwjg7dlJ4yKGLK8EsYqKgPWbG3b4wjJddKNwc7N7Dpn08Df4szr/sZdMVeOstrdYSsqzX6BYbcB+w==}
@@ -14035,6 +14042,7 @@ packages:
 
   /ts-interface-checker/0.1.13:
     resolution: {integrity: sha512-Y/arvbn+rrz3JCKl9C4kVNfTfSm2/mEp5FSz5EsZSANGPSlQrpRI5M4PKF+mJnE52jOO90PnPSc3Ur3bTQw0gA==}
+    dev: true
 
   /ts-invariant/0.4.4:
     resolution: {integrity: sha512-uEtWkFM/sdZvRNNDL3Ehu4WVpwaulhwQszV8mrtcdeE8nN00BV9mAmQ88RkrBhFgl9gMgvjJLAQcZbnPXI9mlA==}
@@ -14184,8 +14192,8 @@ packages:
   /tslib/2.3.1:
     resolution: {integrity: sha512-77EbyPPpMz+FRFRuAFlWMtmgUWGe9UOG2Z25NqCwiIjRhOf5iKGuzSe5P2w1laq+FkRy4p+PCuVkJSGkzTEKVw==}
 
-  /tsup/4.14.0_ts-node@10.2.1+typescript@4.4.3:
-    resolution: {integrity: sha512-77rWdzhikTP9mQ34XMRzK83tw++LF6f4ox/HNERlgesB7g6g5VQ1iJlueG9O0P9HAZGVKavUwyoZv0+322p6rg==}
+  /tsup/5.0.0_ts-node@10.2.1+typescript@4.4.3:
+    resolution: {integrity: sha512-YBWLmwWkrFLsp0YqC9CRtgq5hbxoSlRP/A2jtgVwPcURBfU3hAxErnGfvhmRZe+FPEaspO6asQbkpZUXGAW8bQ==}
     hasBin: true
     peerDependencies:
       typescript: ^4.2.3
@@ -14204,7 +14212,6 @@ packages:
       postcss-load-config: 3.1.0_ts-node@10.2.1
       resolve-from: 5.0.0
       rollup: 2.56.3
-      sucrase: 3.20.1
       tree-kill: 1.2.2
       typescript: 4.4.3
     transitivePeerDependencies:
