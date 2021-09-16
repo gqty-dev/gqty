@@ -1,9 +1,7 @@
-import { createMercuriusTestClient } from 'mercurius-integration-testing';
 import { waitForExpect } from 'test-utils';
 
 import { selectFields } from 'gqty';
 
-import { app, codegen } from '../src';
 import {
   client as generatedClient,
   GreetingsEnum,
@@ -12,16 +10,17 @@ import {
   resolved,
 } from '../src/generated/gqty';
 import {
-  arrayObjectArgsDocument,
-  multipleArgsDocument,
-  simpleStringDocument,
-} from '../src/generated/mercurius';
+  ArrayObjectArgsDocument,
+  MultipleArgsDocument,
+  SimpleStringDocument,
+} from '../src/ez.generated';
 
-const testClient = createMercuriusTestClient(app);
+import { CreateTestClient, GlobalTeardown } from '@graphql-ez/fastify-testing';
+import { ezApp } from '../src';
 
-beforeAll(async () => {
-  await codegen();
-});
+const testClientPromise = CreateTestClient(ezApp);
+
+afterAll(GlobalTeardown);
 
 resolved(() => query.union.map((v) => selectFields(v)))
   .then((data) => {
@@ -30,17 +29,21 @@ resolved(() => query.union.map((v) => selectFields(v)))
   .catch(console.error);
 
 test('works', async () => {
-  await testClient.query(simpleStringDocument).then((response) => {
+  const testClient = await testClientPromise;
+
+  await testClient.query(SimpleStringDocument).then((response) => {
     expect(typeof response.data?.simpleString).toBe('string');
   });
 
-  await testClient.query(arrayObjectArgsDocument).then((resp) => {
+  await testClient.query(ArrayObjectArgsDocument).then((resp) => {
     expect(resp.errors).toBe(undefined);
   });
 });
 
 test('multiple args', async () => {
-  const response = await testClient.query(multipleArgsDocument);
+  const testClient = await testClientPromise;
+
+  const response = await testClient.query(MultipleArgsDocument);
 
   expect(response).toEqual({
     data: {

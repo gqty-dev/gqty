@@ -1,8 +1,6 @@
-import { createMercuriusTestClient } from 'mercurius-integration-testing';
-
 import { createClient, QueryFetcher } from 'gqty';
 
-import { app } from '..';
+import { ezApp } from '..';
 import {
   GeneratedSchema,
   generatedSchema,
@@ -11,8 +9,12 @@ import {
   SchemaObjectTypesNames,
 } from './schema.generated';
 
-const testClient = createMercuriusTestClient(app);
-const queryFetcher: QueryFetcher = function (query, variables) {
+import { CreateTestClient } from '@graphql-ez/fastify-testing';
+
+const testClientPromise = CreateTestClient(ezApp);
+const queryFetcher: QueryFetcher = async function (query, variables) {
+  const testClient = await testClientPromise;
+
   return testClient.query(query, {
     variables,
   });
