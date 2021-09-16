@@ -1,5 +1,5 @@
 import type { GraphQLResolveInfo } from 'graphql';
-import type { MercuriusContext } from 'mercurius';
+import type { EZContext } from 'graphql-ez';
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = {
   [K in keyof T]: T[K];
@@ -16,8 +16,8 @@ export type ResolverFn<TResult, TParent, TContext, TArgs> = (
   context: TContext,
   info: GraphQLResolveInfo
 ) =>
-  | Promise<import('mercurius-codegen').DeepPartial<TResult>>
-  | import('mercurius-codegen').DeepPartial<TResult>;
+  | Promise<import('graphql-ez').DeepPartial<TResult>>
+  | import('graphql-ez').DeepPartial<TResult>;
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -25,7 +25,6 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  _FieldSet: any;
 };
 
 export type Query = {
@@ -146,20 +145,16 @@ export type ResolversParentTypes = {
 };
 
 export type QueryResolvers<
-  ContextType = MercuriusContext,
+  ContextType = EZContext,
   ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']
 > = {
   hello?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
 };
 
-export type Resolvers<ContextType = MercuriusContext> = {
+export type Resolvers<ContextType = EZContext> = {
   Query?: QueryResolvers<ContextType>;
 };
 
-export interface Loaders {}
-
-declare module 'mercurius' {
-  interface IResolvers
-    extends Resolvers<import('mercurius').MercuriusContext> {}
-  interface MercuriusLoaders extends Loaders {}
+declare module 'graphql-ez' {
+  interface EZResolvers extends Resolvers<import('graphql-ez').EZContext> {}
 }

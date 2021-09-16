@@ -1,27 +1,28 @@
 import fs from 'fs';
 import path from 'path';
-import { createTestApp } from 'test-utils';
-
+import { createTestApp, gql } from 'test-utils';
 import { writeGenerate } from '../src/writeGenerate';
 import { getTempDir } from './utils';
 
-const { server, isReady } = createTestApp({
-  schema: `
-    type Query {
+const testAppPromise = createTestApp({
+  schema: {
+    typeDefs: gql`
+      type Query {
         hello: String!
-    }
+      }
     `,
-  resolvers: {
-    Query: {
-      hello() {
-        return 'hello world';
+    resolvers: {
+      Query: {
+        hello() {
+          return 'hello world';
+        },
       },
     },
   },
 });
 
 beforeAll(async () => {
-  await isReady;
+  await testAppPromise;
 });
 
 test('generates code and writes existing file', async () => {
@@ -34,18 +35,26 @@ test('generates code and writes existing file', async () => {
 
     const firstStats = await fs.promises.stat(tempDir.schemaPath);
 
-    await writeGenerate(server.graphql.schema, tempDir.clientPath, {
-      preImport: shouldBeIncluded,
-    });
+    await writeGenerate(
+      (await testAppPromise).getEnveloped().schema,
+      tempDir.clientPath,
+      {
+        preImport: shouldBeIncluded,
+      }
+    );
 
     const secondStats = await fs.promises.stat(tempDir.schemaPath);
 
     expect(secondStats.mtimeMs).toBeGreaterThan(firstStats.mtimeMs);
 
     // If the code didn't change, it shouldn't write anything
-    await writeGenerate(server.graphql.schema, tempDir.clientPath, {
-      preImport: shouldBeIncluded,
-    });
+    await writeGenerate(
+      (await testAppPromise).getEnveloped().schema,
+      tempDir.clientPath,
+      {
+        preImport: shouldBeIncluded,
+      }
+    );
 
     const thirdStats = await fs.promises.stat(tempDir.schemaPath);
 
@@ -148,7 +157,7 @@ test('creates dir, generates code and writes new file', async () => {
     const shouldBeIncluded = '// This should be included';
 
     const destinationPath = await writeGenerate(
-      server.graphql.schema,
+      (await testAppPromise).getEnveloped().schema,
       targetPath,
       {
         preImport: shouldBeIncluded,
@@ -339,7 +348,10 @@ test('generates code and writes existing file', async () => {
 
   try {
     try {
-      await writeGenerate(server.graphql.schema, tempDir.clientPath);
+      await writeGenerate(
+        (await testAppPromise).getEnveloped().schema,
+        tempDir.clientPath
+      );
 
       throw Error("shouldn't react");
     } catch (err: unknown) {

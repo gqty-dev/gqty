@@ -2,7 +2,6 @@ import * as randomstring from 'randomstring';
 
 export { default as waitForExpect } from 'wait-for-expect';
 
-export * as mercurius from 'mercurius';
 export * as fastify from 'fastify';
 
 export function assertIsDefined<T = unknown>(

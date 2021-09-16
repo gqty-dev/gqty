@@ -4,7 +4,7 @@ const isCLIPackage = process.cwd().endsWith(sep + 'cli');
 
 export const config: import('bob-esbuild').BobConfig = {
   tsc: {
-    dirs: ['packages/*', 'examples/mercurius'],
+    dirs: ['packages/*'],
   },
   verbose: true,
   esbuildPluginOptions: isCLIPackage

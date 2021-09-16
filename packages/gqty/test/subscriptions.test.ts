@@ -1,10 +1,9 @@
 import { waitForExpect } from 'test-utils';
-
 import { createDeferredPromise } from '../src/Utils';
 import { createTestClient } from './utils';
 
 test('subscriptions with scheduler', async () => {
-  const { subscription, mutation, scheduler, server } = await createTestClient(
+  const { subscription, mutation, scheduler } = await createTestClient(
     undefined,
     undefined,
     {
@@ -12,27 +11,23 @@ test('subscriptions with scheduler', async () => {
     }
   );
 
-  try {
-    subscription.newNotification;
+  subscription.newNotification;
 
-    await scheduler.resolving!.promise;
+  await scheduler.resolving!.promise;
 
-    mutation.sendNotification({
-      message: 'THIS_IS_A_MESSAGE',
-    });
+  mutation.sendNotification({
+    message: 'THIS_IS_A_MESSAGE',
+  });
 
-    await scheduler.resolving!.promise;
+  await scheduler.resolving!.promise;
 
-    await waitForExpect(() => {
-      expect(subscription.newNotification).toBe('THIS_IS_A_MESSAGE');
-    }, 1000);
-  } finally {
-    await server.close();
-  }
+  await waitForExpect(() => {
+    expect(subscription.newNotification).toBe('THIS_IS_A_MESSAGE');
+  }, 1000);
 });
 
 test('subscriptions with resolved', async () => {
-  const { resolved, subscription, mutate, subscriptionsClient, server } =
+  const { resolved, subscription, mutate, subscriptionsClient } =
     await createTestClient(undefined, undefined, {
       subscriptions: true,
     });
@@ -82,14 +77,15 @@ test('subscriptions with resolved', async () => {
 
     await dataPromise.promise.then((data) => expect(data).toBe('OK'));
   } finally {
-    (await unsubscribePromise.promise)();
-    await subscriptionsClient!.close();
-    await server.close();
+    await Promise.allSettled([
+      unsubscribePromise.promise.then((v) => v()),
+      subscriptionsClient?.close(),
+    ]);
   }
 }, 5000);
 
 test('multiple subscriptions with resolved', async () => {
-  const { resolved, subscription, mutate, subscriptionsClient, server } =
+  const { resolved, subscription, mutate, subscriptionsClient } =
     await createTestClient(undefined, undefined, {
       subscriptions: true,
     });
@@ -176,8 +172,9 @@ test('multiple subscriptions with resolved', async () => {
       expect(data).toStrictEqual(['new_human', 'new_dog'])
     );
   } finally {
-    (await unsubscribePromise.promise)();
-    await subscriptionsClient!.close();
-    await server.close();
+    await Promise.allSettled([
+      unsubscribePromise.promise.then((v) => v()),
+      subscriptionsClient!.close(),
+    ]);
   }
 }, 5000);
