@@ -1,10 +1,9 @@
-import { FileUpload } from 'graphql-upload';
 import type {
   GraphQLResolveInfo,
   GraphQLScalarType,
   GraphQLScalarTypeConfig,
 } from 'graphql';
-import type { MercuriusContext } from 'mercurius';
+import type { EZContext } from 'graphql-ez';
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = {
   [K in keyof T]: T[K];
@@ -21,8 +20,8 @@ export type ResolverFn<TResult, TParent, TContext, TArgs> = (
   context: TContext,
   info: GraphQLResolveInfo
 ) =>
-  | Promise<import('mercurius-codegen').DeepPartial<TResult>>
-  | import('mercurius-codegen').DeepPartial<TResult>;
+  | Promise<import('graphql-ez').DeepPartial<TResult>>
+  | import('graphql-ez').DeepPartial<TResult>;
 export type RequireFields<T, K extends keyof T> = {
   [X in Exclude<keyof T, K>]?: T[X];
 } & { [P in K]-?: NonNullable<T[P]> };
@@ -33,9 +32,8 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  _FieldSet: any;
   /** The `Upload` scalar type represents a file upload. */
-  Upload: any;
+  Upload: Promise<import('graphql-upload').FileUpload>;
 };
 
 /** Dog Type */
@@ -58,7 +56,7 @@ export type Human = {
 };
 
 /** Human Type */
-export type HumanfieldWithArgArgs = {
+export type HumanFieldWithArgArgs = {
   a?: Maybe<Scalars['String']>;
 };
 
@@ -81,7 +79,7 @@ export type Query = {
 };
 
 /** Query Type */
-export type QuerypaginatedHumansArgs = {
+export type QueryPaginatedHumansArgs = {
   input: ConnectionArgs;
 };
 
@@ -97,35 +95,35 @@ export type Mutation = {
 };
 
 /** Mutation */
-export type MutationrenameDogArgs = {
+export type MutationRenameDogArgs = {
   id: Scalars['ID'];
   name: Scalars['String'];
 };
 
 /** Mutation */
-export type MutationrenameHumanArgs = {
+export type MutationRenameHumanArgs = {
   id: Scalars['ID'];
   name: Scalars['String'];
 };
 
 /** Mutation */
-export type MutationotherArgs = {
-  arg: inputTypeExample;
+export type MutationOtherArgs = {
+  arg: InputTypeExample;
 };
 
 /** Mutation */
-export type MutationcreateHumanArgs = {
+export type MutationCreateHumanArgs = {
   id: Scalars['ID'];
   name: Scalars['String'];
 };
 
 /** Mutation */
-export type MutationsendNotificationArgs = {
+export type MutationSendNotificationArgs = {
   message: Scalars['String'];
 };
 
 /** Mutation */
-export type MutationuploadFileArgs = {
+export type MutationUploadFileArgs = {
   file: Scalars['Upload'];
 };
 
@@ -135,7 +133,7 @@ export type Subscription = {
 };
 
 /** Input Type Example XD */
-export type inputTypeExample = {
+export type InputTypeExample = {
   a: Scalars['String'];
   other?: Maybe<Scalars['Int']>;
 };
@@ -273,7 +271,6 @@ export type DirectiveResolverFn<
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
-  Upload: ResolverTypeWrapper<Scalars['Upload']>;
   Dog: ResolverTypeWrapper<Dog>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
   String: ResolverTypeWrapper<Scalars['String']>;
@@ -283,17 +280,17 @@ export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   Mutation: ResolverTypeWrapper<{}>;
   Subscription: ResolverTypeWrapper<{}>;
-  inputTypeExample: inputTypeExample;
+  inputTypeExample: InputTypeExample;
   HumansConnection: ResolverTypeWrapper<HumansConnection>;
   PageInfo: ResolverTypeWrapper<PageInfo>;
   ConnectionArgs: ConnectionArgs;
   Species: ResolversTypes['Human'] | ResolversTypes['Dog'];
   DogType: DogType;
+  Upload: ResolverTypeWrapper<Scalars['Upload']>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
-  Upload: Scalars['Upload'];
   Dog: Dog;
   ID: Scalars['ID'];
   String: Scalars['String'];
@@ -303,30 +300,26 @@ export type ResolversParentTypes = {
   Boolean: Scalars['Boolean'];
   Mutation: {};
   Subscription: {};
-  inputTypeExample: inputTypeExample;
+  inputTypeExample: InputTypeExample;
   HumansConnection: HumansConnection;
   PageInfo: PageInfo;
   ConnectionArgs: ConnectionArgs;
   Species: ResolversParentTypes['Human'] | ResolversParentTypes['Dog'];
+  Upload: Scalars['Upload'];
 };
 
-export interface UploadScalarConfig
-  extends GraphQLScalarTypeConfig<ResolversTypes['Upload'], any> {
-  name: 'Upload';
-}
-
 export type DogResolvers<
-  ContextType = MercuriusContext,
+  ContextType = EZContext,
   ParentType extends ResolversParentTypes['Dog'] = ResolversParentTypes['Dog']
 > = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   owner?: Resolver<Maybe<ResolversTypes['Human']>, ParentType, ContextType>;
-  isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type HumanResolvers<
-  ContextType = MercuriusContext,
+  ContextType = EZContext,
   ParentType extends ResolversParentTypes['Human'] = ResolversParentTypes['Human']
 > = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
@@ -336,13 +329,13 @@ export type HumanResolvers<
     Maybe<ResolversTypes['Int']>,
     ParentType,
     ContextType,
-    RequireFields<HumanfieldWithArgArgs, 'a'>
+    RequireFields<HumanFieldWithArgArgs, 'a'>
   >;
-  isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type QueryResolvers<
-  ContextType = MercuriusContext,
+  ContextType = EZContext,
   ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']
 > = {
   expectedError?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
@@ -366,7 +359,7 @@ export type QueryResolvers<
     ResolversTypes['HumansConnection'],
     ParentType,
     ContextType,
-    RequireFields<QuerypaginatedHumansArgs, 'input'>
+    RequireFields<QueryPaginatedHumansArgs, 'input'>
   >;
   emptyScalarArray?: Resolver<
     Array<ResolversTypes['Int']>,
@@ -381,49 +374,49 @@ export type QueryResolvers<
 };
 
 export type MutationResolvers<
-  ContextType = MercuriusContext,
+  ContextType = EZContext,
   ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']
 > = {
   renameDog?: Resolver<
     Maybe<ResolversTypes['Dog']>,
     ParentType,
     ContextType,
-    RequireFields<MutationrenameDogArgs, 'id' | 'name'>
+    RequireFields<MutationRenameDogArgs, 'id' | 'name'>
   >;
   renameHuman?: Resolver<
     Maybe<ResolversTypes['Human']>,
     ParentType,
     ContextType,
-    RequireFields<MutationrenameHumanArgs, 'id' | 'name'>
+    RequireFields<MutationRenameHumanArgs, 'id' | 'name'>
   >;
   other?: Resolver<
     Maybe<ResolversTypes['Int']>,
     ParentType,
     ContextType,
-    RequireFields<MutationotherArgs, 'arg'>
+    RequireFields<MutationOtherArgs, 'arg'>
   >;
   createHuman?: Resolver<
     ResolversTypes['Human'],
     ParentType,
     ContextType,
-    RequireFields<MutationcreateHumanArgs, 'id' | 'name'>
+    RequireFields<MutationCreateHumanArgs, 'id' | 'name'>
   >;
   sendNotification?: Resolver<
     ResolversTypes['Boolean'],
     ParentType,
     ContextType,
-    RequireFields<MutationsendNotificationArgs, 'message'>
+    RequireFields<MutationSendNotificationArgs, 'message'>
   >;
   uploadFile?: Resolver<
     ResolversTypes['String'],
     ParentType,
     ContextType,
-    RequireFields<MutationuploadFileArgs, 'file'>
+    RequireFields<MutationUploadFileArgs, 'file'>
   >;
 };
 
 export type SubscriptionResolvers<
-  ContextType = MercuriusContext,
+  ContextType = EZContext,
   ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']
 > = {
   newNotification?: SubscriptionResolver<
@@ -435,16 +428,16 @@ export type SubscriptionResolvers<
 };
 
 export type HumansConnectionResolvers<
-  ContextType = MercuriusContext,
+  ContextType = EZContext,
   ParentType extends ResolversParentTypes['HumansConnection'] = ResolversParentTypes['HumansConnection']
 > = {
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
   nodes?: Resolver<Array<ResolversTypes['Human']>, ParentType, ContextType>;
-  isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type PageInfoResolvers<
-  ContextType = MercuriusContext,
+  ContextType = EZContext,
   ParentType extends ResolversParentTypes['PageInfo'] = ResolversParentTypes['PageInfo']
 > = {
   hasPreviousPage?: Resolver<
@@ -463,18 +456,22 @@ export type PageInfoResolvers<
     ParentType,
     ContextType
   >;
-  isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type SpeciesResolvers<
-  ContextType = MercuriusContext,
+  ContextType = EZContext,
   ParentType extends ResolversParentTypes['Species'] = ResolversParentTypes['Species']
 > = {
-  resolveType: TypeResolveFn<'Human' | 'Dog', ParentType, ContextType>;
+  __resolveType: TypeResolveFn<'Human' | 'Dog', ParentType, ContextType>;
 };
 
-export type Resolvers<ContextType = MercuriusContext> = {
-  Upload?: GraphQLScalarType;
+export interface UploadScalarConfig
+  extends GraphQLScalarTypeConfig<ResolversTypes['Upload'], any> {
+  name: 'Upload';
+}
+
+export type Resolvers<ContextType = EZContext> = {
   Dog?: DogResolvers<ContextType>;
   Human?: HumanResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
@@ -483,77 +480,9 @@ export type Resolvers<ContextType = MercuriusContext> = {
   HumansConnection?: HumansConnectionResolvers<ContextType>;
   PageInfo?: PageInfoResolvers<ContextType>;
   Species?: SpeciesResolvers<ContextType>;
+  Upload?: GraphQLScalarType;
 };
 
-type Loader<TReturn, TObj, TParams, TContext> = (
-  queries: Array<{
-    obj: TObj;
-    params: TParams;
-  }>,
-  context: TContext & {
-    reply: import('fastify').FastifyReply;
-  }
-) => Promise<Array<import('mercurius-codegen').DeepPartial<TReturn>>>;
-type LoaderResolver<TReturn, TObj, TParams, TContext> =
-  | Loader<TReturn, TObj, TParams, TContext>
-  | {
-      loader: Loader<TReturn, TObj, TParams, TContext>;
-      opts?: {
-        cache?: boolean;
-      };
-    };
-export interface Loaders<
-  TContext = import('mercurius').MercuriusContext & {
-    reply: import('fastify').FastifyReply;
-  }
-> {
-  Dog?: {
-    id?: LoaderResolver<Scalars['ID'], Dog, {}, TContext>;
-    name?: LoaderResolver<Scalars['String'], Dog, {}, TContext>;
-    owner?: LoaderResolver<Maybe<Human>, Dog, {}, TContext>;
-  };
-
-  Human?: {
-    id?: LoaderResolver<Scalars['ID'], Human, {}, TContext>;
-    name?: LoaderResolver<Scalars['String'], Human, {}, TContext>;
-    dogs?: LoaderResolver<Maybe<Array<Dog>>, Human, {}, TContext>;
-    fieldWithArg?: LoaderResolver<
-      Maybe<Scalars['Int']>,
-      Human,
-      HumanfieldWithArgArgs,
-      TContext
-    >;
-  };
-
-  HumansConnection?: {
-    pageInfo?: LoaderResolver<PageInfo, HumansConnection, {}, TContext>;
-    nodes?: LoaderResolver<Array<Human>, HumansConnection, {}, TContext>;
-  };
-
-  PageInfo?: {
-    hasPreviousPage?: LoaderResolver<
-      Scalars['Boolean'],
-      PageInfo,
-      {},
-      TContext
-    >;
-    hasNextPage?: LoaderResolver<Scalars['Boolean'], PageInfo, {}, TContext>;
-    startCursor?: LoaderResolver<
-      Maybe<Scalars['String']>,
-      PageInfo,
-      {},
-      TContext
-    >;
-    endCursor?: LoaderResolver<
-      Maybe<Scalars['String']>,
-      PageInfo,
-      {},
-      TContext
-    >;
-  };
-}
-declare module 'mercurius' {
-  interface IResolvers
-    extends Resolvers<import('mercurius').MercuriusContext> {}
-  interface MercuriusLoaders extends Loaders {}
+declare module 'graphql-ez' {
+  interface EZResolvers extends Resolvers<import('graphql-ez').EZContext> {}
 }

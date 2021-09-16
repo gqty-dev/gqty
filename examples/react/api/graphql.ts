@@ -1,15 +1,99 @@
-import type { FastifyInstance } from 'fastify';
-import * as faker from 'faker';
-import { defaults, keyBy } from 'lodash';
-import mercurius, { IResolvers, MercuriusLoaders } from 'mercurius';
-import { codegenMercurius, gql } from 'mercurius-codegen';
-import { JsonDB } from 'node-json-db';
-import { GraphQLUpload } from 'graphql-upload';
-import { seed } from 'faker';
-
 import { writeGenerate } from '@gqty/cli';
+import { CreateApp } from '@graphql-ez/fastify';
+import { ezAltairIDE } from '@graphql-ez/plugin-altair/static';
+import { ezCodegen } from '@graphql-ez/plugin-codegen';
+import { ezDataLoader, InferDataLoader } from '@graphql-ez/plugin-dataloader';
+import { ezSchema } from '@graphql-ez/plugin-schema';
+import { ezUpload } from '@graphql-ez/plugin-upload';
+import { ezWebSockets } from '@graphql-ez/plugin-websockets';
+import * as faker from 'faker';
+import { seed } from 'faker';
+import { defaults, keyBy } from 'lodash';
+import { JsonDB } from 'node-json-db';
+import type { Dog, Human } from './ez.generated';
+import { InMemoryPubSub } from './pubsub';
 
-import type { Dog, Human } from '../src/graphql/mercurius';
+const pubsub = new InMemoryPubSub();
+
+seed(2021);
+
+export const {
+  registerTypeDefs,
+  gql,
+  registerResolvers,
+  registerDataLoader,
+  buildApp,
+} = CreateApp({
+  path: '/api/graphql',
+  ez: {
+    plugins: [
+      ezAltairIDE(),
+      ezCodegen({
+        outputSchema: true,
+        config: {
+          targetPath: './api/ez.generated.ts',
+        },
+      }),
+      ezSchema(),
+      ezUpload(),
+      ezDataLoader(),
+      ezWebSockets(),
+    ],
+  },
+  envelop: {
+    plugins: [
+      {
+        onSchemaChange({ schema }) {
+          writeGenerate(schema, './src/graphql/gqty.ts', {}).catch(
+            console.error
+          );
+        },
+      },
+    ],
+  },
+});
+
+const OwnerLoader = registerDataLoader('DogOwner', (DataLoader) => {
+  return new DataLoader(async (keys: readonly string[]) => {
+    const dogOwners: Record<string, string> = db.getData('/dogOwners');
+    const humans = keyBy(db.getData('/humans') as Array<Human>, 'id');
+    return keys.map((key) => {
+      return humans[dogOwners[key]];
+    });
+  });
+});
+
+const HumanDogsLoader = registerDataLoader('HumanDogs', (DataLoader) => {
+  return new DataLoader(async (keys: readonly string[]) => {
+    const dogOwners: Record<number, number> = db.getData('/dogOwners');
+
+    const dogs = db.getData('/dogs');
+
+    const humanDogs = Object.entries(dogOwners).reduce(
+      (acum, [dogId, humanId]) => {
+        defaults(acum, {
+          [humanId]: [],
+        });
+
+        const dog = dogs.find((v: Dog) => v.id == dogId);
+        if (dog) acum[humanId].push(dog);
+
+        return acum;
+      },
+      {} as Record<string, Dog[]>
+    );
+
+    return keys.map((id) => {
+      return humanDogs[id]?.map((dog) => dog);
+    });
+  });
+});
+
+declare module 'graphql-ez' {
+  interface EZContext
+    extends InferDataLoader<typeof OwnerLoader>,
+      InferDataLoader<typeof HumanDogsLoader> {}
+}
 
 export const sleep = (amount: number) =>
   new Promise<void>((resolve) => setTimeout(resolve, amount));
@@ -69,9 +153,7 @@ db.push('/dogOwners', {
   3: 2,
 });
 
-const schema = gql`
-  scalar Upload
-
+registerTypeDefs(gql`
   "Dog Type"
   type Dog {
     id: ID!
@@ -160,7 +242,7 @@ const schema = gql`
     Small
     Other @deprecated
   }
-`;
+`);
 
 let nTries = 0;
 
@@ -173,8 +255,17 @@ export const readStreamToBuffer = async (rs: import('fs').ReadStream) => {
   return Buffer.concat(chunks);
 };
 
-const resolvers: IResolvers = {
-  Upload: GraphQLUpload,
+registerResolvers({
+  Human: {
+    dogs({ id }, _args, { HumanDogs }) {
+      return HumanDogs.load(id);
+    },
+  },
+  Dog: {
+    owner({ id }, _args, { DogOwner }) {
+      return DogOwner.load(id);
+    },
+  },
   Query: {
     emptyHumanArray: () => [],
     emptyScalarArray: () => [],
@@ -316,14 +407,11 @@ const resolvers: IResolvers = {
 
       return null;
     },
-    sendNotification(_root, { message }: { message: string }, ctx) {
-      ctx.pubsub.publish<{
+    sendNotification(_root, { message }: { message: string }, _ctx) {
+      pubsub.publish<{
         newNotification: string;
-      }>({
-        topic: 'NOTIFICATION',
-        payload: {
-          newNotification: message,
-        },
+      }>('NOTIFICATION', {
+        newNotification: message,
       });
 
       return true;
@@ -338,8 +426,8 @@ const resolvers: IResolvers = {
   },
   Subscription: {
     newNotification: {
-      async *subscribe(_root, _args, ctx) {
-        const sub = await ctx.pubsub.subscribe<{
+      async *subscribe(_root, _args, _ctx) {
+        const sub = pubsub.subscribe<{
           newNotification: string;
         }>('NOTIFICATION');
 
@@ -353,67 +441,4 @@ const resolvers: IResolvers = {
       },
     },
   },
-};
-const loaders: MercuriusLoaders = {
-  Dog: {
-    async owner(queries) {
-      const dogOwners: Record<string, string> = db.getData('/dogOwners');
-      const humans = keyBy(db.getData('/humans') as Array<Human>, 'id');
-      return queries.map(({ obj }) => {
-        return humans[dogOwners[obj.id]];
-      });
-    },
-  },
-  Human: {
-    async dogs(queries) {
-      const dogOwners: Record<number, number> = db.getData('/dogOwners');
-
-      const dogs = db.getData('/dogs');
-
-      const humanDogs = Object.entries(dogOwners).reduce(
-        (acum, [dogId, humanId]) => {
-          defaults(acum, {
-            [humanId]: [],
-          });
-
-          const dog = dogs.find((v: Dog) => v.id == dogId);
-          if (dog) acum[humanId].push(dog);
-
-          return acum;
-        },
-        {} as Record<string, Dog[]>
-      );
-
-      return queries.map(({ obj }) => {
-        return humanDogs[obj.id]?.map((dog) => dog);
-      });
-    },
-  },
-};
-
-export async function register(app: FastifyInstance) {
-  app.register(mercurius, {
-    path: '/api/graphql',
-    schema,
-    resolvers,
-    loaders,
-    subscription: true,
-  });
-
-  codegenMercurius(app, {
-    targetPath: './src/graphql/mercurius.ts',
-    silent: true,
-    codegenConfig: {
-      scalarTypes: {
-        Upload: 'Promise<FileUpload>',
-      },
-    },
-    preImportCode: 'import { FileUpload } from "graphql-upload";',
-  }).catch(console.error);
-
-  await app.ready();
-
-  writeGenerate(app.graphql.schema, './src/graphql/gqty.ts', {}).catch(
-    console.error
-  );
-}
+});
