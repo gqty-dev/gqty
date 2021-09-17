@@ -1,35 +1,40 @@
 import fs from 'fs';
-import { createTestApp } from 'test-utils';
+import {
+  BuildContextArgs,
+  createTestApp,
+  GetEnvelopedFn,
+  gql,
+} from 'test-utils';
 import tmp from 'tmp-promise';
-
 import { inspectWriteGenerate } from '../src/inspectWriteGenerate';
 import { getTempDir } from './utils';
 
 const { readFile } = fs.promises;
-const { server, isReady } = createTestApp({
-  schema: `
-    type Query {
+const testAppPromise = createTestApp({
+  schema: {
+    typeDefs: gql`
+      type Query {
         hello: String!
-    }
+      }
     `,
-  resolvers: {
-    Query: {
-      hello() {
-        return 'hello world';
+    resolvers: {
+      Query: {
+        hello() {
+          return 'hello world';
+        },
       },
     },
   },
 });
 
 let endpoint: string;
+let getEnveloped: GetEnvelopedFn<unknown>;
 beforeAll(async () => {
-  await isReady;
+  const testApp = await testAppPromise;
 
-  endpoint = (await server.listen(0)) + '/graphql';
-});
+  getEnveloped = testApp.getEnveloped;
 
-afterAll(async () => {
-  server.close();
+  endpoint = testApp.endpoint;
 });
 
 test('basic inspectWriteGenerate functionality', async () => {
@@ -404,7 +409,7 @@ describe('from file', () => {
       await fs.promises.writeFile(
         tempFile.path,
         JSON.stringify(
-          graphqlSync(server.graphql.schema, getIntrospectionQuery())
+          graphqlSync(getEnveloped().schema, getIntrospectionQuery())
         )
       );
 
@@ -591,7 +596,7 @@ describe('from file', () => {
       await fs.promises.writeFile(
         tempFile.path,
         JSON.stringify(
-          graphqlSync(server.graphql.schema, getIntrospectionQuery()).data
+          graphqlSync(getEnveloped().schema, getIntrospectionQuery()).data
         )
       );
 
@@ -1006,20 +1011,22 @@ describe('inspect headers', () => {
 
   const secretToken = 'super secret token';
 
-  const { server, isReady } = createTestApp({
-    schema: `
-        type Query {
-            hello: String!
-        }
-        `,
-    resolvers: {
-      Query: {
-        hello() {
-          return 'hello world';
+  const testAppPromise = createTestApp({
+    schema: {
+      typeDefs: `
+      type Query {
+          hello: String!
+      }
+      `,
+      resolvers: {
+        Query: {
+          hello() {
+            return 'hello world';
+          },
         },
       },
     },
-    context: (req, _reply) => {
+    buildContext: ({ req }: BuildContextArgs) => {
       if (req.headers.authorization !== secretToken) {
         throw Error('Unauthorized!');
       }
@@ -1028,12 +1035,9 @@ describe('inspect headers', () => {
   });
 
   beforeAll(async () => {
-    await isReady;
-    endpoint = (await server.listen(0)) + '/graphql';
-  });
+    const testApp = await testAppPromise;
 
-  afterAll(async () => {
-    await server.close();
+    endpoint = testApp.endpoint;
   });
 
   test('specify headers to inspectWriteGenerate', async () => {
@@ -1149,9 +1153,9 @@ describe('inspect headers', () => {
           endpoint,
           destination: tempDir.clientPath,
         })
-      ).rejects.toEqual({
-        message: 'Unauthorized!',
-      });
+      ).rejects.toThrowErrorMatchingInlineSnapshot(
+        `"Could not obtain introspection result, received: {\\"statusCode\\":500,\\"error\\":\\"Internal Server Error\\",\\"message\\":\\"Unauthorized!\\"}"`
+      );
 
       const generatedFileContent = await readFile(tempDir.clientPath, {
         encoding: 'utf-8',

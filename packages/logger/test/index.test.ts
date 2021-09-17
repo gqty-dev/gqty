@@ -1,23 +1,24 @@
 import { createClient } from 'gqty';
 import { createTestApp, gql } from 'test-utils';
-
 import { createLogger } from '../src';
 
 describe('logger', () => {
-  const { client, isReady } = createTestApp({
-    schema: gql`
-      type Query {
-        hello(hello: String!): String!
-        throw: Boolean
-      }
-    `,
-    resolvers: {
-      Query: {
-        hello() {
-          return 'hello world';
-        },
-        async throw() {
-          throw Error('expected');
+  const testAppPromise = createTestApp({
+    schema: {
+      typeDefs: gql`
+        type Query {
+          hello(hello: String!): String!
+          throw: Boolean
+        }
+      `,
+      resolvers: {
+        Query: {
+          hello() {
+            return 'hello world';
+          },
+          async throw() {
+            throw Error('expected');
+          },
         },
       },
     },
@@ -49,12 +50,11 @@ describe('logger', () => {
       String: true,
       Boolean: true,
     },
-    queryFetcher: (query, variables) => client.query(query, { variables }),
+    queryFetcher: (query, variables) =>
+      testAppPromise.then((v) => v.query(query, { variables })),
   });
 
   test('default options', async () => {
-    await isReady;
-
     const logger = createLogger(gqtyClient);
 
     const stop = logger.start();

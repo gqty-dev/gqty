@@ -1,11 +1,10 @@
 import { writeGenerate } from '@gqty/cli';
-import { app } from './src';
+import { ezApp } from './src';
 
 (async () => {
-  await app.ready();
-
+  const getEnveloped = await ezApp.buildApp().getEnveloped;
   const destinationPath = await writeGenerate(
-    app.graphql.schema,
+    getEnveloped().schema,
     './src/generated/gqty.ts',
     {
       scalarTypes: {

@@ -1,47 +1,101 @@
-import fastify, { FastifyInstance } from 'fastify';
-import mercurius, { MercuriusOptions } from 'mercurius';
-import { createMercuriusTestClient } from 'mercurius-integration-testing';
+import {
+  createDeferredPromise,
+  FastifyAppOptions,
+  PromiseType,
+} from '@graphql-ez/fastify';
+import { CreateTestClient, GlobalTeardown } from '@graphql-ez/fastify-testing';
+import { CodegenOptions, ezCodegen } from '@graphql-ez/plugin-codegen';
+import { ezSchema, EZSchemaOptions } from '@graphql-ez/plugin-schema';
+import { ezWebSockets } from '@graphql-ez/plugin-websockets';
+import { InMemoryPubSub } from 'graphql-ez/pubsub';
 
-export function createTestApp(
-  options: MercuriusOptions,
-  {
-    codegenPath,
-  }: {
-    codegenPath?: string;
-  } = {}
-): {
-  server: FastifyInstance;
-  client: ReturnType<typeof createMercuriusTestClient>;
-  isReady: Promise<unknown>;
-} {
-  const server = fastify();
+typeof afterAll !== 'undefined' && afterAll(GlobalTeardown);
 
-  server.register(mercurius, options);
-
-  let isReady = codegenPath
-    ? new Promise<unknown>((resolve, reject) => {
-        import('mercurius-codegen')
-          .then(({ default: mercuriusCodegen }) => {
-            mercuriusCodegen(server, {
-              targetPath: codegenPath,
-              silent: true,
-              disable: false,
-            })
-              .then(resolve)
-              .catch(reject);
-          })
-          .catch(reject);
-      })
-    : (server.ready() as unknown as Promise<void>);
-
-  const client = createMercuriusTestClient(server, {
-    url: options.path,
-  });
-
-  return { server, client, isReady };
+interface PubSubCtx {
+  pubsub: InMemoryPubSub;
+}
+declare module 'graphql-ez' {
+  interface EZContext extends PubSubCtx {}
 }
 
-export * as mercurius from 'mercurius';
-export * as fastify from 'fastify';
+export type TestApp = PromiseType<ReturnType<typeof CreateTestClient>>;
 
-export { gql } from 'mercurius-codegen';
+export async function createTestApp(
+  {
+    schema,
+    codegen,
+    ...appOptions
+  }: Omit<FastifyAppOptions, 'schema'> & {
+    schema?: EZSchemaOptions['schema'];
+    codegen?: CodegenOptions;
+  },
+  {
+    codegenPath,
+    websockets,
+  }: {
+    codegenPath?: string;
+    websockets?: boolean;
+  } = {}
+): Promise<TestApp> {
+  const options = { ...appOptions };
+
+  const ezPlugins = [...(options.ez?.plugins || [])];
+
+  const envelopPlugins = [...(options.envelop?.plugins || [])];
+
+  const pubsub = new InMemoryPubSub();
+
+  envelopPlugins.push({
+    onContextBuilding({ extendContext }) {
+      extendContext({
+        pubsub,
+      });
+    },
+  });
+
+  let codegenDonePromise: Promise<void> | undefined;
+
+  if (codegenPath) {
+    const codegenDone = createDeferredPromise();
+    codegenDonePromise = codegenDone.promise;
+
+    ezPlugins.push(
+      ezCodegen({
+        config: {
+          targetPath: codegenPath,
+          onFinish() {
+            codegenDone.resolve();
+          },
+          onError(err) {
+            codegenDone.reject(err);
+          },
+        },
+        enableCodegen: true,
+      })
+    );
+  }
+
+  ezPlugins.push(
+    ezSchema({
+      schema,
+    })
+  );
+
+  if (websockets) {
+    ezPlugins.push(ezWebSockets('legacy'));
+  }
+
+  const client = await CreateTestClient({
+    ...options,
+    ez: { plugins: ezPlugins },
+    envelop: {
+      plugins: envelopPlugins,
+    },
+  });
+
+  await codegenDonePromise;
+  return client;
+}
+
+export * from '@graphql-ez/fastify';
+export * as fastify from 'fastify';

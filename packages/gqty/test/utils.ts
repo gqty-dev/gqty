@@ -1,5 +1,4 @@
-import getPort from 'get-port';
-import { createTestApp, gql } from 'test-utils';
+import { createTestApp, gql, TestApp } from 'test-utils';
 
 import { generate } from '../../cli/src/generate';
 import { createSubscriptionsClient } from '../../subscriptions/src/index';
@@ -11,6 +10,7 @@ import {
   Schema,
   SchemaUnionsKey,
   SubscriptionsClient,
+  GQtyClient,
 } from '../src';
 import { deepAssign } from '../src/Utils';
 
@@ -73,16 +73,44 @@ afterAll(async () => {
   await Promise.all(TeardownPromises);
 });
 
+type GeneratedSchema = {
+  query: {
+    hello: string;
+    stringArg: (args: { arg: string }) => string;
+    human: (args?: { name?: string }) => Human;
+    nullArray?: Maybe<Array<Maybe<Human>>>;
+    nullStringArray?: Maybe<Array<Maybe<string>>>;
+    nFetchCalls: number;
+    throw?: boolean;
+    throw2?: boolean;
+    time: string;
+    species: Array<Species>;
+    throwUntilThirdTry: boolean;
+    dogs: Array<Dog>;
+  };
+  mutation: {
+    sendNotification(args: { message: string }): boolean;
+    humanMutation: (args?: { nameArg?: string }) => Human;
+    createDog: (args?: { name?: string }) => Dog;
+  };
+  subscription: {
+    newNotification: string | null | undefined;
+    newHuman: Human;
+    newDog: Dog;
+  };
+};
+
 export interface TestClientConfig {
   artificialDelay?: number;
   subscriptions?: boolean;
 }
+
 export const createTestClient = async (
   addedToGeneratedSchema?: DeepPartial<Schema>,
   queryFetcher?: QueryFetcher,
   config?: TestClientConfig,
   clientConfig: Partial<ClientOptions<ObjectTypesNames, ObjectTypes>> = {}
-) => {
+): Promise<GQtyClient<GeneratedSchema> & { client: TestApp }> => {
   let dogId = 0;
   const dogs: { name: string; id: number }[] = [
     {
@@ -106,192 +134,183 @@ export const createTestClient = async (
   };
   let nFetchCalls = 0;
   let throwTry = 0;
-  const {
-    server,
-    client: mercuriusTestClient,
-    isReady,
-  } = createTestApp({
-    schema: gql`
-      type Query {
-        hello: String!
-        stringArg(arg: String!): String!
-        human(name: String): Human
-        nFetchCalls: Int!
-        throw: Boolean
-        throw2: Boolean
-        nullArray: [Human]
-        nullStringArray: [String]
-        time: String!
-        species: [Species!]!
-        throwUntilThirdTry: Boolean!
-        dogs: [Dog!]!
-      }
-      type Mutation {
-        sendNotification(message: String!): Boolean!
-        humanMutation(nameArg: String!): Human
-        createDog(name: String!): Dog!
-      }
-      type Subscription {
-        newNotification: String!
-        newHuman: Human!
-        newDog: Dog!
-      }
-      type Human {
-        id: ID
-        name: String!
-        father: Human!
-        nullFather: Human
-        sons: [Human!]!
-        dogs: [Dog!]!
-      }
-      type Dog {
-        id: ID
-        name: String!
-        owner: Human
-      }
-      union Species = Human | Dog
-    `,
-    resolvers: {
-      Query: {
-        throwUntilThirdTry() {
-          throwTry++;
-          if (throwTry < 3) {
-            throw Error('try again, throwTry=' + throwTry);
+  const client = await createTestApp(
+    {
+      schema: {
+        typeDefs: gql`
+          type Query {
+            hello: String!
+            stringArg(arg: String!): String!
+            human(name: String): Human
+            nFetchCalls: Int!
+            throw: Boolean
+            throw2: Boolean
+            nullArray: [Human]
+            nullStringArray: [String]
+            time: String!
+            species: [Species!]!
+            throwUntilThirdTry: Boolean!
+            dogs: [Dog!]!
           }
-          throwTry = 0;
-          return true;
-        },
-        stringArg(_root, { arg }: { arg: string }) {
-          return arg;
-        },
-        hello() {
-          return 'hello world';
-        },
-        human(_root, { name }: { name?: string }) {
-          return createHuman(name);
-        },
-        nFetchCalls() {
-          return nFetchCalls;
-        },
-        nullArray() {
-          return null;
-        },
-        nullStringArray() {
-          return null;
-        },
-        async throw() {
-          throw Error('expected error');
-        },
-        async throw2() {
-          throw Error('expected error 2');
-        },
-        time() {
-          return new Date().toISOString();
-        },
-        species() {
-          return [createHuman(), ...dogs];
-        },
-        dogs() {
-          return dogs;
-        },
-      },
-      Dog: {
-        owner({ name }: { name: string }) {
-          return createHuman(name + '-owner');
-        },
-      },
-      Mutation: {
-        sendNotification(_root, { message }: { message: string }, ctx) {
-          ctx.pubsub.publish({
-            topic: 'NOTIFICATION',
-            payload: {
-              newNotification: message,
+          type Mutation {
+            sendNotification(message: String!): Boolean!
+            humanMutation(nameArg: String!): Human
+            createDog(name: String!): Dog!
+          }
+          type Subscription {
+            newNotification: String!
+            newHuman: Human!
+            newDog: Dog!
+          }
+          type Human {
+            id: ID
+            name: String!
+            father: Human!
+            nullFather: Human
+            sons: [Human!]!
+            dogs: [Dog!]!
+          }
+          type Dog {
+            id: ID
+            name: String!
+            owner: Human
+          }
+          union Species = Human | Dog
+        `,
+        resolvers: {
+          Query: {
+            throwUntilThirdTry() {
+              throwTry++;
+              if (throwTry < 3) {
+                throw Error('try again, throwTry=' + throwTry);
+              }
+              throwTry = 0;
+              return true;
             },
-          });
-
-          return true;
-        },
-        humanMutation(_root, { nameArg }: { nameArg: string }, { pubsub }) {
-          const human = createHuman(nameArg);
-
-          pubsub.publish({
-            topic: 'NEW_HUMAN',
-            payload: {
-              newHuman: human,
+            stringArg(_root, { arg }: { arg: string }) {
+              return arg;
             },
-          });
-
-          return human;
-        },
-        createDog(_root, { name }: { name: string }, { pubsub }) {
-          const dog = {
-            id: ++dogId,
-            name,
-          };
-
-          pubsub.publish({
-            topic: 'NEW_DOG',
-            payload: {
-              newDog: dog,
+            hello() {
+              return 'hello world';
             },
-          });
+            human(_root, { name }: { name?: string }) {
+              return createHuman(name);
+            },
+            nFetchCalls() {
+              return nFetchCalls;
+            },
+            nullArray() {
+              return null;
+            },
+            nullStringArray() {
+              return null;
+            },
+            async throw() {
+              throw Error('expected error');
+            },
+            async throw2() {
+              throw Error('expected error 2');
+            },
+            time() {
+              return new Date().toISOString();
+            },
+            species() {
+              return [createHuman(), ...dogs];
+            },
+            dogs() {
+              return dogs;
+            },
+          },
+          Dog: {
+            owner({ name }: { name: string }) {
+              return createHuman(name + '-owner');
+            },
+          },
+          Mutation: {
+            sendNotification(_root, { message }: { message: string }, ctx) {
+              ctx.pubsub.publish('NOTIFICATION', {
+                newNotification: message,
+              });
 
-          return dog;
-        },
-      },
-      Subscription: {
-        newNotification: {
-          subscribe(_root, _args, ctx) {
-            return ctx.pubsub.subscribe('NOTIFICATION');
+              return true;
+            },
+            humanMutation(_root, { nameArg }: { nameArg: string }, { pubsub }) {
+              const human = createHuman(nameArg);
+
+              pubsub.publish('NEW_HUMAN', {
+                newHuman: human,
+              });
+
+              return human;
+            },
+            createDog(_root, { name }: { name: string }, { pubsub }) {
+              const dog = {
+                id: ++dogId,
+                name,
+              };
+
+              pubsub.publish('NEW_DOG', {
+                newDog: dog,
+              });
+
+              return dog;
+            },
+          },
+          Subscription: {
+            newNotification: {
+              subscribe(_root, _args, ctx) {
+                return ctx.pubsub.subscribe('NOTIFICATION');
+              },
+            },
+
+            newHuman: {
+              subscribe(_root, _args, ctx) {
+                return ctx.pubsub.subscribe('NEW_HUMAN');
+              },
+            },
+            newDog: {
+              subscribe(_root, _args, ctx) {
+                return ctx.pubsub.subscribe('NEW_DOG');
+              },
+            },
+          },
+          Human: {
+            father() {
+              return createHuman();
+            },
+            sons() {
+              return [createHuman(), createHuman()];
+            },
+            dogs() {
+              return dogs;
+            },
+          },
+          Species: {
+            __resolveType(v: Species) {
+              if ('father' in v) return 'Human';
+              return 'Dog';
+            },
           },
         },
+      },
+      async buildContext() {
+        nFetchCalls++;
 
-        newHuman: {
-          subscribe(_root, _args, ctx) {
-            return ctx.pubsub.subscribe('NEW_HUMAN');
-          },
-        },
-        newDog: {
-          subscribe(_root, _args, ctx) {
-            return ctx.pubsub.subscribe('NEW_DOG');
-          },
-        },
-      },
-      Human: {
-        father() {
-          return createHuman();
-        },
-        sons() {
-          return [createHuman(), createHuman()];
-        },
-        dogs() {
-          return dogs;
-        },
-      },
-      Species: {
-        resolveType(v: Species) {
-          if ('father' in v) return 'Human';
-          return 'Dog';
-        },
+        if (config?.artificialDelay) {
+          await new Promise((resolve) =>
+            setTimeout(resolve, config.artificialDelay)
+          );
+        }
+        return {};
       },
     },
-    async context() {
-      nFetchCalls++;
-
-      if (config?.artificialDelay) {
-        await new Promise((resolve) =>
-          setTimeout(resolve, config.artificialDelay)
-        );
-      }
-      return {};
-    },
-    subscription: true,
-  });
-
-  await isReady;
+    {
+      websockets: config?.subscriptions,
+    }
+  );
 
   const { generatedSchema, scalarsEnumsHash } = await generate(
-    server.graphql.schema
+    client.getEnveloped().schema
   );
 
   const [existingUnionKey] = Object.getOwnPropertySymbols(generatedSchema);
@@ -305,7 +324,7 @@ export const createTestClient = async (
 
   if (queryFetcher == null) {
     queryFetcher = (query, variables) => {
-      return mercuriusTestClient.query(query, {
+      return client.query(query, {
         variables,
       });
     };
@@ -313,29 +332,12 @@ export const createTestClient = async (
 
   let subscriptionsClient: SubscriptionsClient | undefined;
 
-  if (config?.subscriptions) {
-    let port: number;
-    const address = server.server.address();
-    if (typeof address === 'object' && address) {
-      port = address.port;
-    } else {
-      server.log.warn('Remember to close the app instance manually');
-
-      await server.listen((port = await getPort()));
-    }
-    subscriptionsClient = config?.subscriptions
-      ? createSubscriptionsClient({
-          wsEndpoint: `ws://127.0.0.1:${port}/graphql`,
-          reconnect: false,
-        })
-      : undefined;
-  }
-
-  TeardownPromises.push(
-    LazyPromise(() => {
-      server.close();
-    })
-  );
+  subscriptionsClient = config?.subscriptions
+    ? createSubscriptionsClient({
+        wsEndpoint: client.endpoint.replace('http:', 'ws:'),
+        reconnect: false,
+      })
+    : undefined;
 
   subscriptionsClient &&
     TeardownPromises.push(
@@ -344,34 +346,7 @@ export const createTestClient = async (
       })
     );
 
-  type GeneratedSchema = {
-    query: {
-      hello: string;
-      stringArg: (args: { arg: string }) => string;
-      human: (args?: { name?: string }) => Human;
-      nullArray?: Maybe<Array<Maybe<Human>>>;
-      nullStringArray?: Maybe<Array<Maybe<string>>>;
-      nFetchCalls: number;
-      throw?: boolean;
-      throw2?: boolean;
-      time: string;
-      species: Array<Species>;
-      throwUntilThirdTry: boolean;
-      dogs: Array<Dog>;
-    };
-    mutation: {
-      sendNotification(args: { message: string }): boolean;
-      humanMutation: (args?: { nameArg?: string }) => Human;
-      createDog: (args?: { name?: string }) => Dog;
-    };
-    subscription: {
-      newNotification: string | null | undefined;
-      newHuman: Human;
-      newDog: Dog;
-    };
-  };
-
-  return Object.assign(
+  const testClient = Object.assign(
     createClient<GeneratedSchema, ObjectTypesNames, ObjectTypes>({
       schema: deepAssign(generatedSchema, [addedToGeneratedSchema]) as Schema,
       scalarsEnumsHash,
@@ -380,10 +355,11 @@ export const createTestClient = async (
       ...clientConfig,
     }),
     {
-      server,
-      mercuriusTestClient,
+      client,
     }
   );
+
+  return testClient;
 };
 
 export const sleep = (amount: number) =>

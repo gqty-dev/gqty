@@ -1,18 +1,19 @@
 import { GraphQLObjectType, GraphQLSchema } from 'graphql';
-import { assertIsDefined, createTestApp } from 'test-utils';
-
+import { assertIsDefined, createTestApp, gql } from 'test-utils';
 import { getRemoteSchema } from '../src';
 
-const { server, isReady } = createTestApp({
-  schema: `
+const testAppPromise = createTestApp({
+  schema: {
+    typeDefs: gql`
       type Query {
-          hello: String!
+        hello: String!
       }
-      `,
-  resolvers: {
-    Query: {
-      hello() {
-        return 'hello world';
+    `,
+    resolvers: {
+      Query: {
+        hello() {
+          return 'hello world';
+        },
       },
     },
   },
@@ -20,13 +21,9 @@ const { server, isReady } = createTestApp({
 
 let endpoint: string;
 beforeAll(async () => {
-  await isReady;
+  const testApp = await testAppPromise;
 
-  endpoint = (await server.listen(0)) + '/graphql';
-});
-
-afterAll(async () => {
-  server.close();
+  endpoint = testApp.endpoint;
 });
 
 test('introspection works', async () => {

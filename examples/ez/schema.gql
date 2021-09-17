@@ -1,0 +1,71 @@
+schema {
+  query: Query
+  mutation: Mutation
+}
+
+interface NamedEntity {
+  name: String!
+  args(a: String): Int
+}
+
+scalar ExampleScalar
+
+enum GreetingsEnum {
+  Hello
+  Hi
+  Hey
+}
+
+input GreetingsInput {
+  language: String!
+  value: String
+  scal: ExampleScalar
+}
+
+type Query {
+  simpleString: String!
+  stringWithArgs(hello: String!): String!
+  stringNullableWithArgs(hello: String!, helloTwo: String): String
+  stringNullableWithArgsArray(hello: [String]!): String
+  object: Human
+  objectArray: [Human]
+  objectWithArgs(who: String!): Human!
+  arrayString: [String!]!
+  arrayObjectArgs(limit: Int!): [Human!]!
+  greetings: GreetingsEnum!
+  giveGreetingsInput(input: GreetingsInput!): String!
+  number: Int!
+  union: [TestUnion!]!
+}
+
+type Mutation {
+  increment(n: Int!): Int!
+}
+
+type Human implements NamedEntity {
+  name: String!
+  father: Human!
+  fieldWithArgs(id: Int!): Int!
+  sons: [Human!]
+  union: [TestUnion!]!
+  args(a: String): Int
+}
+
+type A {
+  a: String!
+  common(a: String): Int
+  z: String
+}
+
+type B {
+  b: Int!
+  common(b: Int): String
+  z: String
+}
+
+type C {
+  c: GreetingsEnum!
+  z: String
+}
+
+union TestUnion = A | B | C

@@ -1,15 +1,14 @@
 {
+  "extends": "../tsconfig.json",
   "compilerOptions": {
     "target": "es2019",
     "module": "commonjs",
     "strict": true,
     "esModuleInterop": true,
     "jsx": "react",
-    "baseUrl": ".",
-    "paths": {
-      "gqty": ["../../gqty/src/index.ts"],
-      "gqty/*": ["../../gqty/src/*"]
-    }
+    "declaration": false,
+    "noEmit": true
   },
-  "include": ["**/*.ts", "**/*.tsx"]
+  "include": ["**/*.ts", "**/*.tsx"],
+  "exclude": []
 }

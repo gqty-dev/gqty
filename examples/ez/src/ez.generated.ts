@@ -3,7 +3,7 @@ import type {
   GraphQLScalarType,
   GraphQLScalarTypeConfig,
 } from 'graphql';
-import type { MercuriusContext } from 'mercurius';
+import type { EZContext } from 'graphql-ez';
 import type { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
 export type Maybe<T> = T | null;
 export type Exact<T extends { [key: string]: unknown }> = {
@@ -21,8 +21,8 @@ export type ResolverFn<TResult, TParent, TContext, TArgs> = (
   context: TContext,
   info: GraphQLResolveInfo
 ) =>
-  | Promise<import('mercurius-codegen').DeepPartial<TResult>>
-  | import('mercurius-codegen').DeepPartial<TResult>;
+  | Promise<import('graphql-ez').DeepPartial<TResult>>
+  | import('graphql-ez').DeepPartial<TResult>;
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 export type RequireFields<T, K extends keyof T> = {
   [X in Exclude<keyof T, K>]?: T[X];
@@ -34,7 +34,6 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  _FieldSet: any;
   ExampleScalar: any;
 };
 
@@ -43,7 +42,7 @@ export type NamedEntity = {
   args?: Maybe<Scalars['Int']>;
 };
 
-export type NamedEntityargsArgs = {
+export type NamedEntityArgsArgs = {
   a?: Maybe<Scalars['String']>;
 };
 
@@ -76,28 +75,28 @@ export type Query = {
   union: Array<TestUnion>;
 };
 
-export type QuerystringWithArgsArgs = {
+export type QueryStringWithArgsArgs = {
   hello: Scalars['String'];
 };
 
-export type QuerystringNullableWithArgsArgs = {
+export type QueryStringNullableWithArgsArgs = {
   hello: Scalars['String'];
   helloTwo?: Maybe<Scalars['String']>;
 };
 
-export type QuerystringNullableWithArgsArrayArgs = {
+export type QueryStringNullableWithArgsArrayArgs = {
   hello: Array<Maybe<Scalars['String']>>;
 };
 
-export type QueryobjectWithArgsArgs = {
+export type QueryObjectWithArgsArgs = {
   who: Scalars['String'];
 };
 
-export type QueryarrayObjectArgsArgs = {
+export type QueryArrayObjectArgsArgs = {
   limit: Scalars['Int'];
 };
 
-export type QuerygiveGreetingsInputArgs = {
+export type QueryGiveGreetingsInputArgs = {
   input: GreetingsInput;
 };
 
@@ -106,7 +105,7 @@ export type Mutation = {
   increment: Scalars['Int'];
 };
 
-export type MutationincrementArgs = {
+export type MutationIncrementArgs = {
   n: Scalars['Int'];
 };
 
@@ -120,11 +119,11 @@ export type Human = NamedEntity & {
   args?: Maybe<Scalars['Int']>;
 };
 
-export type HumanfieldWithArgsArgs = {
+export type HumanFieldWithArgsArgs = {
   id: Scalars['Int'];
 };
 
-export type HumanargsArgs = {
+export type HumanArgsArgs = {
   a?: Maybe<Scalars['String']>;
 };
 
@@ -135,7 +134,7 @@ export type A = {
   z?: Maybe<Scalars['String']>;
 };
 
-export type AcommonArgs = {
+export type ACommonArgs = {
   a?: Maybe<Scalars['String']>;
 };
 
@@ -146,7 +145,7 @@ export type B = {
   z?: Maybe<Scalars['String']>;
 };
 
-export type BcommonArgs = {
+export type BCommonArgs = {
   b?: Maybe<Scalars['Int']>;
 };
 
@@ -299,16 +298,16 @@ export type ResolversParentTypes = {
 };
 
 export type NamedEntityResolvers<
-  ContextType = MercuriusContext,
+  ContextType = EZContext,
   ParentType extends ResolversParentTypes['NamedEntity'] = ResolversParentTypes['NamedEntity']
 > = {
-  resolveType: TypeResolveFn<'Human', ParentType, ContextType>;
+  __resolveType: TypeResolveFn<'Human', ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   args?: Resolver<
     Maybe<ResolversTypes['Int']>,
     ParentType,
     ContextType,
-    RequireFields<NamedEntityargsArgs, never>
+    RequireFields<NamedEntityArgsArgs, never>
   >;
 };
 
@@ -318,7 +317,7 @@ export interface ExampleScalarScalarConfig
 }
 
 export type QueryResolvers<
-  ContextType = MercuriusContext,
+  ContextType = EZContext,
   ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']
 > = {
   simpleString?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -326,19 +325,19 @@ export type QueryResolvers<
     ResolversTypes['String'],
     ParentType,
     ContextType,
-    RequireFields<QuerystringWithArgsArgs, 'hello'>
+    RequireFields<QueryStringWithArgsArgs, 'hello'>
   >;
   stringNullableWithArgs?: Resolver<
     Maybe<ResolversTypes['String']>,
     ParentType,
     ContextType,
-    RequireFields<QuerystringNullableWithArgsArgs, 'hello'>
+    RequireFields<QueryStringNullableWithArgsArgs, 'hello'>
   >;
   stringNullableWithArgsArray?: Resolver<
     Maybe<ResolversTypes['String']>,
     ParentType,
     ContextType,
-    RequireFields<QuerystringNullableWithArgsArrayArgs, 'hello'>
+    RequireFields<QueryStringNullableWithArgsArrayArgs, 'hello'>
   >;
   object?: Resolver<Maybe<ResolversTypes['Human']>, ParentType, ContextType>;
   objectArray?: Resolver<
@@ -350,7 +349,7 @@ export type QueryResolvers<
     ResolversTypes['Human'],
     ParentType,
     ContextType,
-    RequireFields<QueryobjectWithArgsArgs, 'who'>
+    RequireFields<QueryObjectWithArgsArgs, 'who'>
   >;
   arrayString?: Resolver<
     Array<ResolversTypes['String']>,
@@ -361,7 +360,7 @@ export type QueryResolvers<
     Array<ResolversTypes['Human']>,
     ParentType,
     ContextType,
-    RequireFields<QueryarrayObjectArgsArgs, 'limit'>
+    RequireFields<QueryArrayObjectArgsArgs, 'limit'>
   >;
   greetings?: Resolver<
     ResolversTypes['GreetingsEnum'],
@@ -372,26 +371,26 @@ export type QueryResolvers<
     ResolversTypes['String'],
     ParentType,
     ContextType,
-    RequireFields<QuerygiveGreetingsInputArgs, 'input'>
+    RequireFields<QueryGiveGreetingsInputArgs, 'input'>
   >;
   number?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   union?: Resolver<Array<ResolversTypes['TestUnion']>, ParentType, ContextType>;
 };
 
 export type MutationResolvers<
-  ContextType = MercuriusContext,
+  ContextType = EZContext,
   ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']
 > = {
   increment?: Resolver<
     ResolversTypes['Int'],
     ParentType,
     ContextType,
-    RequireFields<MutationincrementArgs, 'n'>
+    RequireFields<MutationIncrementArgs, 'n'>
   >;
 };
 
 export type HumanResolvers<
-  ContextType = MercuriusContext,
+  ContextType = EZContext,
   ParentType extends ResolversParentTypes['Human'] = ResolversParentTypes['Human']
 > = {
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -400,7 +399,7 @@ export type HumanResolvers<
     ResolversTypes['Int'],
     ParentType,
     ContextType,
-    RequireFields<HumanfieldWithArgsArgs, 'id'>
+    RequireFields<HumanFieldWithArgsArgs, 'id'>
   >;
   sons?: Resolver<
     Maybe<Array<ResolversTypes['Human']>>,
@@ -412,13 +411,13 @@ export type HumanResolvers<
     Maybe<ResolversTypes['Int']>,
     ParentType,
     ContextType,
-    RequireFields<HumanargsArgs, never>
+    RequireFields<HumanArgsArgs, never>
   >;
-  isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type AResolvers<
-  ContextType = MercuriusContext,
+  ContextType = EZContext,
   ParentType extends ResolversParentTypes['A'] = ResolversParentTypes['A']
 > = {
   a?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -426,14 +425,14 @@ export type AResolvers<
     Maybe<ResolversTypes['Int']>,
     ParentType,
     ContextType,
-    RequireFields<AcommonArgs, never>
+    RequireFields<ACommonArgs, never>
   >;
   z?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type BResolvers<
-  ContextType = MercuriusContext,
+  ContextType = EZContext,
   ParentType extends ResolversParentTypes['B'] = ResolversParentTypes['B']
 > = {
   b?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -441,29 +440,29 @@ export type BResolvers<
     Maybe<ResolversTypes['String']>,
     ParentType,
     ContextType,
-    RequireFields<BcommonArgs, never>
+    RequireFields<BCommonArgs, never>
   >;
   z?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type CResolvers<
-  ContextType = MercuriusContext,
+  ContextType = EZContext,
   ParentType extends ResolversParentTypes['C'] = ResolversParentTypes['C']
 > = {
   c?: Resolver<ResolversTypes['GreetingsEnum'], ParentType, ContextType>;
   z?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
 export type TestUnionResolvers<
-  ContextType = MercuriusContext,
+  ContextType = EZContext,
   ParentType extends ResolversParentTypes['TestUnion'] = ResolversParentTypes['TestUnion']
 > = {
-  resolveType: TypeResolveFn<'A' | 'B' | 'C', ParentType, ContextType>;
+  __resolveType: TypeResolveFn<'A' | 'B' | 'C', ParentType, ContextType>;
 };
 
-export type Resolvers<ContextType = MercuriusContext> = {
+export type Resolvers<ContextType = EZContext> = {
   NamedEntity?: NamedEntityResolvers<ContextType>;
   ExampleScalar?: GraphQLScalarType;
   Query?: QueryResolvers<ContextType>;
@@ -475,67 +474,9 @@ export type Resolvers<ContextType = MercuriusContext> = {
   TestUnion?: TestUnionResolvers<ContextType>;
 };
 
-type Loader<TReturn, TObj, TParams, TContext> = (
-  queries: Array<{
-    obj: TObj;
-    params: TParams;
-  }>,
-  context: TContext & {
-    reply: import('fastify').FastifyReply;
-  }
-) => Promise<Array<import('mercurius-codegen').DeepPartial<TReturn>>>;
-type LoaderResolver<TReturn, TObj, TParams, TContext> =
-  | Loader<TReturn, TObj, TParams, TContext>
-  | {
-      loader: Loader<TReturn, TObj, TParams, TContext>;
-      opts?: {
-        cache?: boolean;
-      };
-    };
-export interface Loaders<
-  TContext = import('mercurius').MercuriusContext & {
-    reply: import('fastify').FastifyReply;
-  }
-> {
-  Human?: {
-    name?: LoaderResolver<Scalars['String'], Human, {}, TContext>;
-    father?: LoaderResolver<Human, Human, {}, TContext>;
-    fieldWithArgs?: LoaderResolver<
-      Scalars['Int'],
-      Human,
-      HumanfieldWithArgsArgs,
-      TContext
-    >;
-    sons?: LoaderResolver<Maybe<Array<Human>>, Human, {}, TContext>;
-    union?: LoaderResolver<Array<TestUnion>, Human, {}, TContext>;
-    args?: LoaderResolver<
-      Maybe<Scalars['Int']>,
-      Human,
-      HumanargsArgs,
-      TContext
-    >;
-  };
+export type SimpleStringQueryVariables = Exact<{ [key: string]: never }>;
 
-  A?: {
-    a?: LoaderResolver<Scalars['String'], A, {}, TContext>;
-    common?: LoaderResolver<Maybe<Scalars['Int']>, A, AcommonArgs, TContext>;
-    z?: LoaderResolver<Maybe<Scalars['String']>, A, {}, TContext>;
-  };
-
-  B?: {
-    b?: LoaderResolver<Scalars['Int'], B, {}, TContext>;
-    common?: LoaderResolver<Maybe<Scalars['String']>, B, BcommonArgs, TContext>;
-    z?: LoaderResolver<Maybe<Scalars['String']>, B, {}, TContext>;
-  };
-
-  C?: {
-    c?: LoaderResolver<GreetingsEnum, C, {}, TContext>;
-    z?: LoaderResolver<Maybe<Scalars['String']>, C, {}, TContext>;
-  };
-}
-export type simpleStringQueryVariables = Exact<{ [key: string]: never }>;
-
-export type simpleStringQuery = {
+export type SimpleStringQuery = {
   __typename?: 'Query';
   simpleString: string;
   union: Array<
@@ -545,9 +486,9 @@ export type simpleStringQuery = {
   >;
 };
 
-export type arrayObjectArgsQueryVariables = Exact<{ [key: string]: never }>;
+export type ArrayObjectArgsQueryVariables = Exact<{ [key: string]: never }>;
 
-export type arrayObjectArgsQuery = {
+export type ArrayObjectArgsQuery = {
   __typename?: 'Query';
   arrayObjectArgs: Array<{
     __typename?: 'Human';
@@ -560,15 +501,15 @@ export type arrayObjectArgsQuery = {
   }>;
 };
 
-export type multipleArgsQueryVariables = Exact<{ [key: string]: never }>;
+export type MultipleArgsQueryVariables = Exact<{ [key: string]: never }>;
 
-export type multipleArgsQuery = {
+export type MultipleArgsQuery = {
   __typename?: 'Query';
   a1: { __typename?: 'Human'; zxc: string; abc: string };
   a2: { __typename?: 'Human'; name: string };
 };
 
-export const simpleStringDocument = {
+export const SimpleStringDocument = {
   kind: 'Document',
   definitions: [
     {
@@ -632,8 +573,8 @@ export const simpleStringDocument = {
       },
     },
   ],
-} as unknown as DocumentNode<simpleStringQuery, simpleStringQueryVariables>;
-export const arrayObjectArgsDocument = {
+} as unknown as DocumentNode<SimpleStringQuery, SimpleStringQueryVariables>;
+export const ArrayObjectArgsDocument = {
   kind: 'Document',
   definitions: [
     {
@@ -688,10 +629,10 @@ export const arrayObjectArgsDocument = {
     },
   ],
 } as unknown as DocumentNode<
-  arrayObjectArgsQuery,
-  arrayObjectArgsQueryVariables
+  ArrayObjectArgsQuery,
+  ArrayObjectArgsQueryVariables
 >;
-export const multipleArgsDocument = {
+export const MultipleArgsDocument = {
   kind: 'Document',
   definitions: [
     {
@@ -750,9 +691,8 @@ export const multipleArgsDocument = {
       },
     },
   ],
-} as unknown as DocumentNode<multipleArgsQuery, multipleArgsQueryVariables>;
-declare module 'mercurius' {
-  interface IResolvers
-    extends Resolvers<import('mercurius').MercuriusContext> {}
-  interface MercuriusLoaders extends Loaders {}
+} as unknown as DocumentNode<MultipleArgsQuery, MultipleArgsQueryVariables>;
+
+declare module 'graphql-ez' {
+  interface EZResolvers extends Resolvers<import('graphql-ez').EZContext> {}
 }

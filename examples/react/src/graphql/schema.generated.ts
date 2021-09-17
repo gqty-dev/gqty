@@ -47,12 +47,12 @@ export enum DogType {
 }
 
 export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
-  Upload: true,
   ID: true,
   String: true,
   Int: true,
   Boolean: true,
   DogType: true,
+  Upload: true,
 };
 export const generatedSchema = {
   query: {

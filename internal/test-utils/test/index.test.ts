@@ -7,17 +7,19 @@ const { readFile } = fs.promises;
 
 test('create test app with codegen', async () => {
   const codegenPath = resolve('./test/_generated.ts');
-  const { client, isReady } = createTestApp(
+  const client = await createTestApp(
     {
-      schema: `
-      type Query {
-        hello: String!
-      }
-      `,
-      resolvers: {
-        Query: {
-          hello(_root) {
-            return 'hello world';
+      schema: {
+        typeDefs: gql`
+          type Query {
+            hello: String!
+          }
+        `,
+        resolvers: {
+          Query: {
+            hello(_root) {
+              return 'hello world';
+            },
           },
         },
       },
@@ -27,15 +29,13 @@ test('create test app with codegen', async () => {
     }
   );
 
-  await isReady;
-
   expect(
     await readFile(codegenPath, {
       encoding: 'utf-8',
     })
   ).toMatchInlineSnapshot(`
     "import type { GraphQLResolveInfo } from 'graphql';
-    import type { MercuriusContext } from 'mercurius';
+    import type { EZContext } from 'graphql-ez';
     export type Maybe<T> = T | null;
     export type Exact<T extends { [key: string]: unknown }> = {
       [K in keyof T]: T[K];
@@ -52,8 +52,8 @@ test('create test app with codegen', async () => {
       context: TContext,
       info: GraphQLResolveInfo
     ) =>
-      | Promise<import('mercurius-codegen').DeepPartial<TResult>>
-      | import('mercurius-codegen').DeepPartial<TResult>;
+      | Promise<import('graphql-ez').DeepPartial<TResult>>
+      | import('graphql-ez').DeepPartial<TResult>;
     /** All built-in and custom scalars, mapped to their actual values */
     export type Scalars = {
       ID: string;
@@ -61,7 +61,6 @@ test('create test app with codegen', async () => {
       Boolean: boolean;
       Int: number;
       Float: number;
-      _FieldSet: any;
     };
 
     export type Query = {
@@ -182,22 +181,18 @@ test('create test app with codegen', async () => {
     };
 
     export type QueryResolvers<
-      ContextType = MercuriusContext,
+      ContextType = EZContext,
       ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']
     > = {
       hello?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     };
 
-    export type Resolvers<ContextType = MercuriusContext> = {
+    export type Resolvers<ContextType = EZContext> = {
       Query?: QueryResolvers<ContextType>;
     };
 
-    export interface Loaders {}
-
-    declare module 'mercurius' {
-      interface IResolvers
-        extends Resolvers<import('mercurius').MercuriusContext> {}
-      interface MercuriusLoaders extends Loaders {}
+    declare module 'graphql-ez' {
+      interface EZResolvers extends Resolvers<import('graphql-ez').EZContext> {}
     }
     "
   `);
@@ -220,22 +215,22 @@ test('create test app with codegen', async () => {
 });
 
 test('create test app without codegen', async () => {
-  const { client, isReady } = createTestApp({
-    schema: `
-      type Query {
-        hello: String!
-      }
+  const client = await createTestApp({
+    schema: {
+      typeDefs: gql`
+        type Query {
+          hello: String!
+        }
       `,
-    resolvers: {
-      Query: {
-        hello(_root) {
-          return 'hello world';
+      resolvers: {
+        Query: {
+          hello(_root) {
+            return 'hello world';
+          },
         },
       },
     },
   });
-
-  await isReady;
 
   await client
     .query(
@@ -295,11 +290,40 @@ test('gql', () => {
     }
   `;
 
-  expect(doc).toBe(`
-    query {
-      hello
-    }
-  `);
+  expect(doc).toMatchInlineSnapshot(`
+Object {
+  "definitions": Array [
+    Object {
+      "directives": Array [],
+      "kind": "OperationDefinition",
+      "name": undefined,
+      "operation": "query",
+      "selectionSet": Object {
+        "kind": "SelectionSet",
+        "selections": Array [
+          Object {
+            "alias": undefined,
+            "arguments": Array [],
+            "directives": Array [],
+            "kind": "Field",
+            "name": Object {
+              "kind": "Name",
+              "value": "hello",
+            },
+            "selectionSet": undefined,
+          },
+        ],
+      },
+      "variableDefinitions": Array [],
+    },
+  ],
+  "kind": "Document",
+  "loc": Object {
+    "end": 33,
+    "start": 0,
+  },
+}
+`);
 
   const doc2 = gql`
     query {
@@ -307,9 +331,38 @@ test('gql', () => {
     }
   `;
 
-  expect(doc2).toBe(`
-    query {
-      helloworld
-    }
-  `);
+  expect(doc2).toMatchInlineSnapshot(`
+Object {
+  "definitions": Array [
+    Object {
+      "directives": Array [],
+      "kind": "OperationDefinition",
+      "name": undefined,
+      "operation": "query",
+      "selectionSet": Object {
+        "kind": "SelectionSet",
+        "selections": Array [
+          Object {
+            "alias": undefined,
+            "arguments": Array [],
+            "directives": Array [],
+            "kind": "Field",
+            "name": Object {
+              "kind": "Name",
+              "value": "helloworld",
+            },
+            "selectionSet": undefined,
+          },
+        ],
+      },
+      "variableDefinitions": Array [],
+    },
+  ],
+  "kind": "Document",
+  "loc": Object {
+    "end": 38,
+    "start": 0,
+  },
+}
+`);
 });

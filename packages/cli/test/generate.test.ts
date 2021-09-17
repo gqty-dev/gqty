@@ -1,34 +1,33 @@
 import { createTestApp, gql } from 'test-utils';
-
 import { generate } from '../src';
 
 export const clientPreComment = '';
 
 test('basic functionality works', async () => {
-  const { server, isReady } = createTestApp({
-    schema: gql`
-      "Query"
-      type Query {
-        "Hello field"
-        hello: String!
-        deprecatedArg(arg: Int = 123): Int @deprecated
-      }
-    `,
-    resolvers: {
-      Query: {
-        hello() {
-          return 'hello world';
+  const { getEnveloped } = await createTestApp({
+    schema: {
+      typeDefs: gql`
+        "Query"
+        type Query {
+          "Hello field"
+          hello: String!
+          deprecatedArg(arg: Int = 123): Int @deprecated
+        }
+      `,
+      resolvers: {
+        Query: {
+          hello() {
+            return 'hello world';
+          },
         },
       },
     },
   });
 
-  await isReady;
-
   const shouldBeIncluded = '// This should be included';
 
   const { schemaCode, clientCode, generatedSchema, scalarsEnumsHash } =
-    await generate(server.graphql.schema, {
+    await generate(getEnveloped().schema, {
       preImport: `
         ${shouldBeIncluded}
         `,
@@ -264,26 +263,26 @@ test('basic functionality works', async () => {
 });
 
 test('custom scalars works', async () => {
-  const { server, isReady } = createTestApp({
-    schema: gql`
-      scalar Custom
-      type Query {
-        hello: Custom!
-      }
-    `,
-    resolvers: {
-      Query: {
-        hello() {
-          return 'hello world';
+  const { getEnveloped } = await createTestApp({
+    schema: {
+      typeDefs: gql`
+        scalar Custom
+        type Query {
+          hello: Custom!
+        }
+      `,
+      resolvers: {
+        Query: {
+          hello() {
+            return 'hello world';
+          },
         },
       },
     },
   });
 
-  await isReady;
-
   const { schemaCode, clientCode, generatedSchema, scalarsEnumsHash } =
-    await generate(server.graphql.schema, {
+    await generate(getEnveloped().schema, {
       scalarTypes: {
         Custom: '"hello world"',
       },
@@ -481,89 +480,95 @@ export interface Scalars {
 });
 
 describe('feature complete app', () => {
-  const { server, isReady } = createTestApp({
-    schema: gql`
-      scalar ExampleScalar
+  const testAppPromise = createTestApp({
+    schema: {
+      typeDefs: gql`
+        scalar ExampleScalar
 
-      "Greetings Enum"
-      enum GreetingsEnum {
-        "Hello"
-        Hello
-        "Hi"
-        Hi
-        "Hey"
-        Hey
-        Bye @deprecated
-      }
-      enum OtherEnum {
-        Other
-      }
-      "Greetings Input"
-      input GreetingsInput {
-        "Language"
-        language: String!
-        value: String = "Hello"
-        scal: ExampleScalar
-      }
-      type Query {
-        simpleString: String!
-        stringWithArgs(hello: String!): String!
-        stringNullableWithArgs(hello: String!, helloTwo: String = "Hi"): String
-        stringNullableWithArgsArray(hello: [String]!): String
-        object: Human
-        objectArray: [Human]
-        objectWithArgs("Who?" who: String!): Human!
-        arrayString: [String!]!
-        arrayObjectArgs(limit: Int = 10): [Human!]!
-        greetings: GreetingsEnum!
-        giveGreetingsInput(input: GreetingsInput!): String!
-        enumsInput(
-          nullableEnum: GreetingsEnum
-          notNullableEnum: GreetingsEnum!
-        ): GreetingsEnum
-        number: Int!
-      }
-      type Mutation {
-        increment(n: Int!): Int!
-      }
-      "Named Entity"
-      interface NamedEntity {
-        "Named Entity Name"
-        name: String!
-        other: String
-        withArgs(
-          """
-          A Arg
-          """
-          a: Int!
-          b: Int = 0
-        ): Int
-        withArgs2(a: Int): Int! @deprecated
-      }
-      type Human implements NamedEntity {
-        name: String!
-        other: String
-        father: Human!
-        fieldWithArgs(id: Int!): Int!
-        withArgs(a: Int!, b: Int): Int
-        withArgs2(a: Int): Int!
-      }
-      type OtherHuman {
-        name: String!
-        other: String
-        withArgs(a: Int!, b: Int): Int
-        withArgs2(a: Int): Int!
-      }
-      union HumanType = Human | OtherHuman
-    `,
-    resolvers: {},
+        "Greetings Enum"
+        enum GreetingsEnum {
+          "Hello"
+          Hello
+          "Hi"
+          Hi
+          "Hey"
+          Hey
+          Bye @deprecated
+        }
+        enum OtherEnum {
+          Other
+        }
+        "Greetings Input"
+        input GreetingsInput {
+          "Language"
+          language: String!
+          value: String = "Hello"
+          scal: ExampleScalar
+        }
+        type Query {
+          simpleString: String!
+          stringWithArgs(hello: String!): String!
+          stringNullableWithArgs(
+            hello: String!
+            helloTwo: String = "Hi"
+          ): String
+          stringNullableWithArgsArray(hello: [String]!): String
+          object: Human
+          objectArray: [Human]
+          objectWithArgs("Who?" who: String!): Human!
+          arrayString: [String!]!
+          arrayObjectArgs(limit: Int = 10): [Human!]!
+          greetings: GreetingsEnum!
+          giveGreetingsInput(input: GreetingsInput!): String!
+          enumsInput(
+            nullableEnum: GreetingsEnum
+            notNullableEnum: GreetingsEnum!
+          ): GreetingsEnum
+          number: Int!
+        }
+        type Mutation {
+          increment(n: Int!): Int!
+        }
+        "Named Entity"
+        interface NamedEntity {
+          "Named Entity Name"
+          name: String!
+          other: String
+          withArgs(
+            """
+            A Arg
+            """
+            a: Int!
+            b: Int = 0
+          ): Int
+          withArgs2(a: Int): Int! @deprecated
+        }
+        type Human implements NamedEntity {
+          name: String!
+          other: String
+          father: Human!
+          fieldWithArgs(id: Int!): Int!
+          withArgs(a: Int!, b: Int): Int
+          withArgs2(a: Int): Int!
+        }
+        type OtherHuman {
+          name: String!
+          other: String
+          withArgs(a: Int!, b: Int): Int
+          withArgs2(a: Int): Int!
+        }
+        union HumanType = Human | OtherHuman
+      `,
+      resolvers: {},
+    },
   });
   beforeAll(async () => {
-    await isReady;
+    await testAppPromise;
   });
   test('generate works', async () => {
+    const { getEnveloped } = await testAppPromise;
     const { schemaCode, generatedSchema, scalarsEnumsHash } = await generate(
-      server.graphql.schema
+      getEnveloped().schema
     );
 
     expect(schemaCode).toMatchInlineSnapshot(`
@@ -872,17 +877,18 @@ describe('feature complete app', () => {
 });
 
 test('prettier detects invalid code', async () => {
-  const { server, isReady } = createTestApp({
-    schema: gql`
-      type Query {
-        hello: String!
-      }
-    `,
+  const { getEnveloped } = await createTestApp({
+    schema: {
+      typeDefs: gql`
+        type Query {
+          hello: String!
+        }
+      `,
+    },
   });
-  await isReady;
 
   await expect(
-    generate(server.graphql.schema, {
+    generate(getEnveloped().schema, {
       preImport: `
         con a; // invalid code
         `,
@@ -891,31 +897,34 @@ test('prettier detects invalid code', async () => {
 });
 
 describe('mutation', () => {
-  const { server, isReady } = createTestApp({
-    schema: gql`
-      type Query {
-        hello: String!
-      }
-      type Mutation {
-        helloMutation(hello: String!): String!
-      }
-    `,
-    resolvers: {
-      Mutation: {
-        helloMutation(_root, { hello }: { hello: string }) {
-          return hello;
+  const testAppPromise = createTestApp({
+    schema: {
+      typeDefs: gql`
+        type Query {
+          hello: String!
+        }
+        type Mutation {
+          helloMutation(hello: String!): String!
+        }
+      `,
+      resolvers: {
+        Mutation: {
+          helloMutation(_root, { hello }: { hello: string }) {
+            return hello;
+          },
         },
       },
     },
   });
 
   beforeAll(async () => {
-    await isReady;
+    await testAppPromise;
   });
 
   test('generates mutation', async () => {
+    const { getEnveloped } = await testAppPromise;
     const { schemaCode, generatedSchema, scalarsEnumsHash } = await generate(
-      server.graphql.schema
+      getEnveloped().schema
     );
 
     expect(schemaCode).toMatchInlineSnapshot(`
@@ -1023,31 +1032,34 @@ describe('mutation', () => {
 });
 
 describe('subscription', () => {
-  const { server, isReady } = createTestApp({
-    schema: gql`
-      type Query {
-        hello: String!
-      }
-      type Subscription {
-        newNotification: String!
-      }
-    `,
-    resolvers: {
-      Query: {
-        hello() {
-          return 'hello world';
+  const testAppPromise = createTestApp({
+    schema: {
+      typeDefs: gql`
+        type Query {
+          hello: String!
+        }
+        type Subscription {
+          newNotification: String!
+        }
+      `,
+      resolvers: {
+        Query: {
+          hello() {
+            return 'hello world';
+          },
         },
       },
     },
   });
 
   beforeAll(async () => {
-    await isReady;
+    await testAppPromise;
   });
 
   test('generates subscription', async () => {
+    const { getEnveloped } = await testAppPromise;
     const { schemaCode, generatedSchema, scalarsEnumsHash } = await generate(
-      server.graphql.schema
+      getEnveloped().schema
     );
 
     expect(schemaCode).toMatchInlineSnapshot(`
@@ -1152,32 +1164,32 @@ describe('subscription', () => {
 });
 
 test('javascript output works', async () => {
-  const { server, isReady } = createTestApp({
-    schema: gql`
-      type A {
-        a: String
-      }
-      type B {
-        b: Int
-      }
-      union C = A | B
-      type Query {
-        hello: String!
-      }
-      type Subscription {
-        newNotification: String!
-      }
-    `,
-    resolvers: {
-      Query: {
-        hello() {
-          return 'hello world';
+  const { getEnveloped } = await createTestApp({
+    schema: {
+      typeDefs: gql`
+        type A {
+          a: String
+        }
+        type B {
+          b: Int
+        }
+        union C = A | B
+        type Query {
+          hello: String!
+        }
+        type Subscription {
+          newNotification: String!
+        }
+      `,
+      resolvers: {
+        Query: {
+          hello() {
+            return 'hello world';
+          },
         },
       },
     },
   });
-
-  await isReady;
 
   const {
     isJavascriptOutput,
@@ -1185,7 +1197,7 @@ test('javascript output works', async () => {
     javascriptSchemaCode,
     generatedSchema,
     schemaCode,
-  } = await generate(server.graphql.schema, {
+  } = await generate(getEnveloped().schema, {
     react: true,
     subscriptions: true,
     javascriptOutput: true,
@@ -1452,16 +1464,16 @@ test('javascript output works', async () => {
 });
 
 test('ignoreArgs transform', async () => {
-  const { server, isReady } = createTestApp({
-    schema: gql`
-      type Query {
-        asd(optional1: String, optional2: Int): String!
-        zxc(optional: String, required: Int!): Int
-      }
-    `,
+  const { getEnveloped } = await createTestApp({
+    schema: {
+      typeDefs: gql`
+        type Query {
+          asd(optional1: String, optional2: Int): String!
+          zxc(optional: String, required: Int!): Int
+        }
+      `,
+    },
   });
-
-  await isReady;
 
   let isCalled = false;
 
@@ -1472,7 +1484,7 @@ test('ignoreArgs transform', async () => {
     schemaCode,
     scalarsEnumsHash,
   } = await generate(
-    server.graphql.schema,
+    getEnveloped().schema,
     {},
     {
       ignoreArgs(field) {

@@ -2,21 +2,15 @@ import Fastify from 'fastify';
 import ms from 'ms';
 import FastifyNext from 'fastify-nextjs';
 import { resolve } from 'path';
-import mercuriusUpload from 'mercurius-upload';
-import AltairFastify from 'altair-fastify-plugin';
 
-import { register } from './graphql';
+import { buildApp } from './graphql';
 
 const app = Fastify({
   logger: true,
   pluginTimeout: ms('60 seconds'),
 });
 
-app.register(AltairFastify);
-
-app.register(mercuriusUpload, {});
-
-register(app).catch(console.error);
+app.register(buildApp().fastifyPlugin);
 
 console.log('> React example API server started.');
 
