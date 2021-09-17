@@ -1,13 +1,13 @@
 import {
-  FastifyAppOptions,
   createDeferredPromise,
+  FastifyAppOptions,
   PromiseType,
 } from '@graphql-ez/fastify';
 import { CreateTestClient, GlobalTeardown } from '@graphql-ez/fastify-testing';
 import { CodegenOptions, ezCodegen } from '@graphql-ez/plugin-codegen';
 import { ezSchema, EZSchemaOptions } from '@graphql-ez/plugin-schema';
 import { ezWebSockets } from '@graphql-ez/plugin-websockets';
-import { InMemoryPubSub } from './pubsub';
+import { InMemoryPubSub } from 'graphql-ez/pubsub';
 
 typeof afterAll !== 'undefined' && afterAll(GlobalTeardown);
 
@@ -98,5 +98,4 @@ export async function createTestApp(
 }
 
 export * from '@graphql-ez/fastify';
-
 export * as fastify from 'fastify';

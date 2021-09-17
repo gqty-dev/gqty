@@ -8,12 +8,16 @@ import { ezUpload } from '@graphql-ez/plugin-upload';
 import { ezWebSockets } from '@graphql-ez/plugin-websockets';
 import * as faker from 'faker';
 import { seed } from 'faker';
+import { StrictInMemoryPubSub } from 'graphql-ez/pubsub';
 import { defaults, keyBy } from 'lodash';
 import { JsonDB } from 'node-json-db';
 import type { Dog, Human } from './ez.generated';
-import { InMemoryPubSub } from './pubsub';
 
-const pubsub = new InMemoryPubSub();
+const pubsub = new StrictInMemoryPubSub<{
+  NOTIFICATION: {
+    newNotification: string;
+  };
+}>();
 
 seed(2021);
 
@@ -408,9 +412,7 @@ registerResolvers({
       return null;
     },
     sendNotification(_root, { message }: { message: string }, _ctx) {
-      pubsub.publish<{
-        newNotification: string;
-      }>('NOTIFICATION', {
+      pubsub.publish('NOTIFICATION', {
         newNotification: message,
       });
 
@@ -427,9 +429,7 @@ registerResolvers({
   Subscription: {
     newNotification: {
       async *subscribe(_root, _args, _ctx) {
-        const sub = pubsub.subscribe<{
-          newNotification: string;
-        }>('NOTIFICATION');
+        const sub = pubsub.subscribe('NOTIFICATION');
 
         for await (const data of sub) {
           if (data.newNotification === 'ERROR') {
