@@ -92,18 +92,49 @@ describe('interfaces and unions', () => {
     `);
   });
 
-  test('experiment', async () => {
+  test.only('experiment', async () => {
     const { resolved, query, queries } = testClient;
 
     expect(
       await resolved(() => {
-        return query.node({
+        const nodeA = query.node({
           type: 'A',
-          //@ts-ignore
-        }).a;
+        });
+        const a = nodeA.$on.A.a;
+        const __typename = nodeA.__typename;
+        const b = nodeA.$on.B.b;
+        return {
+          __typename,
+          a,
+          b,
+        };
       })
-    ).toMatchInlineSnapshot(`undefined`);
+    ).toMatchInlineSnapshot(`
+      Object {
+        "__typename": "A",
+        "a": undefined,
+        "b": undefined,
+      }
+    `);
 
-    expect(queries).toMatchInlineSnapshot(`Array []`);
+    expect(queries).toMatchInlineSnapshot(`
+Array [
+  Object {
+    "query": "query($type1:NodeType!){node0:node(type:$type1){__typename ...on A{id a}id ...on B{id b}}}",
+    "result": Object {
+      "data": Object {
+        "node0": Object {
+          "__typename": "A",
+          "a": 1,
+          "id": "1",
+        },
+      },
+    },
+    "variables": Object {
+      "type1": "A",
+    },
+  },
+]
+`);
   });
 });

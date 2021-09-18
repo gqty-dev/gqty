@@ -34,7 +34,11 @@ export class GQtyError extends Error {
     };
   }
 
-  static create(error: unknown, caller?: Function): GQtyError {
+  static create(
+    error: unknown,
+    // TODO: Remove caller from definitino
+    _caller?: Function
+  ): GQtyError {
     let newError: GQtyError;
 
     if (error instanceof GQtyError) newError = error;
@@ -44,10 +48,6 @@ export class GQtyError extends Error {
       newError = new GQtyError('Unexpected error type', {
         otherError: error,
       });
-
-    /* istanbul ignore else */
-    if (caller && Error.captureStackTrace!)
-      Error.captureStackTrace(newError, caller);
 
     return newError;
   }

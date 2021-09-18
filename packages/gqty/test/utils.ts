@@ -181,7 +181,11 @@ export const createTestClient = async (
   let nFetchCalls = 0;
   let throwTry = 0;
 
-  const queries: { query: string; variables?: Record<string, unknown> }[] = [];
+  const queries: {
+    query: string;
+    variables?: Record<string, unknown>;
+    result?: unknown;
+  }[] = [];
   const client = await createTestApp(
     {
       schema: {
@@ -460,14 +464,20 @@ export const createTestClient = async (
     );
 
   if (queryFetcher == null) {
-    queryFetcher = (query, variables) => {
-      queries.push({
-        query,
-        variables,
-      });
-      return client.query(query, {
-        variables,
-      });
+    queryFetcher = async (query, variables) => {
+      const index =
+        queries.push({
+          query,
+          variables,
+        }) - 1;
+      return client
+        .query<Record<string, any>>(query, {
+          variables,
+        })
+        .then((result) => {
+          queries[index].result = result;
+          return result;
+        });
     };
   }
 

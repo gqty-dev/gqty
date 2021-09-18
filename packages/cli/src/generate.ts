@@ -363,6 +363,10 @@ export async function generate(
     for (const objectType of unionTypes) {
       list.push(objectType.name);
     }
+
+    generatedSchema[type.name] = {
+      __typename: { __type: 'String!' },
+    };
   };
 
   const parseInputType = (type: GraphQLInputObjectType) => {
@@ -522,6 +526,9 @@ export async function generate(
 
   const unionsMapObj = Array.from(unionsMap.entries()).reduce(
     (acum, [key, value]) => {
+      generatedSchema[key]['$on'] = {
+        __type: `$${key}`,
+      };
       acum[key] = value;
       return acum;
     },

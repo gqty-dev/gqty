@@ -9,13 +9,7 @@ import {
   Type,
 } from '../Schema';
 import { Selection, SelectionType } from '../Selection';
-import {
-  decycle,
-  isInteger,
-  isObject,
-  isObjectWithType,
-  retrocycle,
-} from '../Utils';
+import { decycle, isInteger, isObject, retrocycle } from '../Utils';
 
 const ProxySymbol = Symbol('gqty-proxy');
 
@@ -480,20 +474,6 @@ export function createAccessorCreators<
     return cacheReference;
   }
 
-  function getTypename(selection: Selection): string | void {
-    const cacheValue: unknown =
-      innerState.clientCache.getCacheFromSelection(selection);
-
-    if (isObjectWithType(cacheValue)) return cacheValue.__typename;
-
-    interceptorManager.addSelection(
-      innerState.selectionManager.getSelection({
-        key: '__typename',
-        prevSelection: selection,
-      })
-    );
-  }
-
   const emptyScalarArray = Object.freeze([]);
 
   const querySelection = selectionManager.getSelection({
@@ -602,26 +582,35 @@ export function createAccessorCreators<
                   )
                 );
 
-            if (!proxyValue.hasOwnProperty(key))
-              return Reflect.get(target, key, receiver);
+            if (!proxyValue.hasOwnProperty(key)) {
+              if (
+                schemaValue instanceof SchemaUnion &&
+                key in schemaValue.types
+              ) {
+                return createAccessor(
+                  schemaValue.types[key],
+                  prevSelection,
+                  [key],
+                  key
+                );
+              } else {
+                return Reflect.get(target, key, receiver);
+              }
+            }
 
             if (schemaValue instanceof SchemaUnion) {
-              let unionTypeName = getTypename(prevSelection);
+              let unionTypeName = parentTypename;
 
               let objectType: Record<string, Type>;
 
               let selectionUnions: string[];
 
-              if (unionTypeName) {
-                objectType = schemaValue.types[unionTypeName];
-                selectionUnions = unionObjectTypesForSelections[
-                  unionTypeName
-                ] /* istanbul ignore next */ || [unionTypeName];
-              } else {
-                // TODO: Long term fix, this doesn't work if there is fields types/naming conflicts
-                ({ combinedTypes: objectType, typesNames: selectionUnions } =
-                  schemaValue.fieldsMap[key]);
-              }
+              if (!unionTypeName) throw Error('Invalid Union!');
+
+              objectType = schemaValue.types[unionTypeName];
+              selectionUnions = unionObjectTypesForSelections[
+                unionTypeName
+              ] /* istanbul ignore next */ || [unionTypeName];
 
               const proxy = createAccessor(
                 objectType,
@@ -633,7 +622,7 @@ export function createAccessorCreators<
               return proxy && Reflect.get(proxy, key);
             } else {
               const { __type, __args } = schemaValue[key];
-              const { pureType, isArray } = parseSchemaType(__type);
+              let { pureType, isArray } = parseSchemaType(__type);
 
               const resolve = (args?: {
                 argValues: Record<string, unknown>;
@@ -691,9 +680,12 @@ export function createAccessorCreators<
                   return cacheValue;
                 }
 
-                const typeValue: Record<string, Type> | SchemaUnion =
-                  // TODO: Here the interface is broken
-                  schema[pureType] || schemaUnions[pureType];
+                let typeValue: Record<string, Type> | SchemaUnion =
+                  schema[pureType];
+
+                if (!typeValue && pureType.startsWith('$')) {
+                  typeValue = schemaUnions[(pureType = pureType.slice(1))];
+                }
 
                 if (typeValue) {
                   const childAccessor = (
