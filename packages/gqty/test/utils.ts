@@ -143,7 +143,13 @@ export interface TestClientConfig {
   subscriptions?: boolean;
 }
 
-export type TestClient = GQtyClient<GeneratedSchema> & { client: TestApp };
+export type TestClient = GQtyClient<GeneratedSchema> & {
+  client: TestApp;
+  queries: {
+    query: string;
+    variables?: Record<string, unknown> | undefined;
+  }[];
+};
 
 export const createTestClient = async (
   addedToGeneratedSchema?: DeepPartial<Schema>,
@@ -174,6 +180,8 @@ export const createTestClient = async (
   };
   let nFetchCalls = 0;
   let throwTry = 0;
+
+  const queries: { query: string; variables?: Record<string, unknown> }[] = [];
   const client = await createTestApp(
     {
       schema: {
@@ -453,6 +461,10 @@ export const createTestClient = async (
 
   if (queryFetcher == null) {
     queryFetcher = (query, variables) => {
+      queries.push({
+        query,
+        variables,
+      });
       return client.query(query, {
         variables,
       });
@@ -485,6 +497,7 @@ export const createTestClient = async (
     }),
     {
       client,
+      queries,
     }
   );
 

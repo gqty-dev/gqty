@@ -8,6 +8,9 @@ import { CodegenOptions, ezCodegen } from '@graphql-ez/plugin-codegen';
 import { ezSchema, EZSchemaOptions } from '@graphql-ez/plugin-schema';
 import { ezWebSockets } from '@graphql-ez/plugin-websockets';
 import { InMemoryPubSub } from 'graphql-ez/pubsub';
+import { inspect } from 'util';
+
+inspect.defaultOptions.depth = null;
 
 typeof afterAll !== 'undefined' && afterAll(GlobalTeardown);
 
