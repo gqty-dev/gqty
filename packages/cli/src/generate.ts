@@ -279,6 +279,16 @@ export async function generate(
         type.name,
         interfaces.map((v) => v.name)
       );
+
+      for (const interfaceType of interfaces) {
+        let objectTypesList = unionsMap.get(interfaceType.name);
+
+        if (objectTypesList == null) {
+          unionsMap.set(interfaceType.name, (objectTypesList = []));
+        }
+
+        objectTypesList.push(type.name);
+      }
     }
 
     const schemaType: Record<string, Type> = {

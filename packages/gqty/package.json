@@ -37,7 +37,7 @@
     "size": "size-limit",
     "start": "bob-esbuild watch",
     "test": "jest",
-    "test:specific": "jest test/interfaces-unions.test.ts --watch --no-coverage",
+    "test:specific": "jest test/interfaces-unions.test.ts --watch --no-coverage -u",
     "test:watch": "jest --watch",
     "test:watch-coverage": "rimraf coverage && mkdirp coverage/lcov-report && concurrently --raw \"jest --watchAll\" \"serve -l 8787 coverage/lcov-report\" \"wait-on tcp:8787 coverage/lcov-report/index.html && open-cli http://localhost:8787\""
   },
