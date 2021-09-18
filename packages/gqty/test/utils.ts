@@ -73,7 +73,30 @@ afterAll(async () => {
   await Promise.all(TeardownPromises);
 });
 
-type GeneratedSchema = {
+export type Node = {
+  __typename?: 'A' | 'B' | 'C';
+  id?: string;
+};
+
+export interface A extends Node {
+  __typename?: 'A';
+  id?: string;
+  a?: number;
+}
+
+export interface B extends Node {
+  __typename?: 'B';
+  id?: string;
+  b?: number;
+}
+
+export interface C extends Node {
+  __typename?: 'C';
+  id?: string;
+  c?: number;
+}
+
+export type GeneratedSchema = {
   query: {
     hello: string;
     stringArg: (args: { arg: string }) => string;
@@ -87,6 +110,20 @@ type GeneratedSchema = {
     species: Array<Species>;
     throwUntilThirdTry: boolean;
     dogs: Array<Dog>;
+    node(args: { type: 'A' | 'B' | 'C' }): Node & {
+      $on: {
+        A: A;
+        B: B;
+        C: C;
+      };
+    };
+    union(args: { type: 'A' | 'B' | 'C' }): {
+      $on: {
+        A: A;
+        B: B;
+        C: C;
+      };
+    };
   };
   mutation: {
     sendNotification(args: { message: string }): boolean;
@@ -105,12 +142,14 @@ export interface TestClientConfig {
   subscriptions?: boolean;
 }
 
+export type TestClient = GQtyClient<GeneratedSchema> & { client: TestApp };
+
 export const createTestClient = async (
   addedToGeneratedSchema?: DeepPartial<Schema>,
   queryFetcher?: QueryFetcher,
   config?: TestClientConfig,
   clientConfig: Partial<ClientOptions<ObjectTypesNames, ObjectTypes>> = {}
-): Promise<GQtyClient<GeneratedSchema> & { client: TestApp }> => {
+): Promise<TestClient> => {
   let dogId = 0;
   const dogs: { name: string; id: number }[] = [
     {
@@ -176,8 +215,47 @@ export const createTestClient = async (
             owner: Human
           }
           union Species = Human | Dog
+
+          enum NodeType {
+            A
+            B
+            C
+          }
+          extend type Query {
+            node(type: NodeType!): Node!
+            union(type: NodeType!): ABC!
+          }
+
+          interface Node {
+            id: ID!
+          }
+
+          type A implements Node {
+            id: ID!
+
+            a: Int!
+          }
+
+          type B implements Node {
+            id: ID!
+
+            b: Int!
+          }
+
+          type C implements Node {
+            id: ID!
+
+            c: Int!
+          }
+
+          union ABC = A | B | C
         `,
         resolvers: {
+          Node: {
+            __resolveType(obj: { __typename: 'A' | 'B' | 'C' }) {
+              return obj.__typename;
+            },
+          },
           Query: {
             throwUntilThirdTry() {
               throwTry++;
@@ -219,6 +297,56 @@ export const createTestClient = async (
             },
             dogs() {
               return dogs;
+            },
+            node(
+              _root: never,
+              { type: __typename }: { type: 'A' | 'B' | 'C' }
+            ) {
+              switch (__typename) {
+                case 'A':
+                  return {
+                    __typename,
+                    id: 1,
+                    a: 1,
+                  };
+                case 'B':
+                  return {
+                    __typename,
+                    id: 2,
+                    b: 2,
+                  };
+                case 'C':
+                  return {
+                    __typename,
+                    id: 3,
+                    c: 3,
+                  };
+              }
+            },
+            union(
+              _root: never,
+              { type: __typename }: { type: 'A' | 'B' | 'C' }
+            ) {
+              switch (__typename) {
+                case 'A':
+                  return {
+                    __typename,
+                    id: 1,
+                    a: 1,
+                  };
+                case 'B':
+                  return {
+                    __typename,
+                    id: 2,
+                    b: 2,
+                  };
+                case 'C':
+                  return {
+                    __typename,
+                    id: 3,
+                    c: 3,
+                  };
+              }
             },
           },
           Dog: {
