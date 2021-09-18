@@ -50,11 +50,17 @@ export class Selection {
 
     const pathKey = alias || key;
 
-    this.cachePath = prevSelection
+    const isInterfaceUnionSelection = key === '$on';
+
+    this.cachePath = isInterfaceUnionSelection
+      ? prevSelection?.cachePath || []
+      : prevSelection
       ? [...prevSelection.cachePath, pathKey]
       : [pathKey];
 
-    this.pathString = prevSelection
+    this.pathString = isInterfaceUnionSelection
+      ? prevSelection?.pathString || ''
+      : prevSelection
       ? prevSelection.pathString + '.' + pathKey
       : pathKey.toString();
 

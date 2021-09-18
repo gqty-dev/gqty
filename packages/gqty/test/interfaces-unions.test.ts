@@ -1,6 +1,8 @@
 import { createTestClient, TestClient } from './utils';
 
-const testClientPromise = createTestClient();
+const testClientPromise = createTestClient(undefined, undefined, undefined, {
+  normalization: false,
+});
 
 let testClient: TestClient;
 beforeAll(async () => {
@@ -95,38 +97,38 @@ describe('interfaces and unions', () => {
   test.only('experiment', async () => {
     const { resolved, query, queries } = testClient;
 
-    expect(
-      await resolved(() => {
-        const nodeA = query.node({
-          type: 'A',
-        });
-        const a = nodeA.$on.A.a;
-        const __typename = nodeA.__typename;
-        const b = nodeA.$on.B.b;
-        return {
-          __typename,
-          a,
-          b,
-        };
-      })
-    ).toMatchInlineSnapshot(`
-      Object {
-        "__typename": "A",
-        "a": undefined,
-        "b": undefined,
-      }
-    `);
+    const nodeResult = await resolved(() => {
+      const nodeA = query.node({
+        type: 'A',
+      });
+      const a = nodeA.$on.A.a;
+      const __typename = nodeA.__typename;
+      const b = nodeA.$on.B.b;
+
+      return {
+        __typename,
+        a,
+        b,
+      };
+    });
+
+    expect(nodeResult).toMatchInlineSnapshot(`
+Object {
+  "__typename": "A",
+  "a": 1,
+  "b": undefined,
+}
+`);
 
     expect(queries).toMatchInlineSnapshot(`
 Array [
   Object {
-    "query": "query($type1:NodeType!){node0:node(type:$type1){__typename ...on A{id a}id ...on B{id b}}}",
+    "query": "query($type1:NodeType!){node0:node(type:$type1){...on A{a}__typename ...on B{b}}}",
     "result": Object {
       "data": Object {
         "node0": Object {
           "__typename": "A",
           "a": 1,
-          "id": "1",
         },
       },
     },
@@ -136,5 +138,11 @@ Array [
   },
 ]
 `);
+
+    expect(nodeResult).toStrictEqual({
+      __typename: 'A',
+      a: 1,
+      b: undefined,
+    });
   });
 });
