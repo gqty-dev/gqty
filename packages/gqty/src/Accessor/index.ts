@@ -692,6 +692,7 @@ export function createAccessorCreators<
                 }
 
                 const typeValue: Record<string, Type> | SchemaUnion =
+                  // TODO: Here the interface is broken
                   schema[pureType] || schemaUnions[pureType];
 
                 if (typeValue) {

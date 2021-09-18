@@ -91,4 +91,19 @@ describe('interfaces and unions', () => {
       }
     `);
   });
+
+  test('experiment', async () => {
+    const { resolved, query, queries } = testClient;
+
+    expect(
+      await resolved(() => {
+        return query.node({
+          type: 'A',
+          //@ts-ignore
+        }).a;
+      })
+    ).toMatchInlineSnapshot(`undefined`);
+
+    expect(queries).toMatchInlineSnapshot(`Array []`);
+  });
 });
