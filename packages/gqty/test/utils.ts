@@ -118,6 +118,7 @@ export type GeneratedSchema = {
       };
     };
     union(args: { type: 'A' | 'B' | 'C' }): {
+      __typename: 'A' | 'B' | 'C';
       $on: {
         A: A;
         B: B;
