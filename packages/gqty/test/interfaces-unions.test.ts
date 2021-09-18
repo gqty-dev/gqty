@@ -1,7 +1,7 @@
 import { createTestClient, TestClient } from './utils';
 
 const testClientPromise = createTestClient(undefined, undefined, undefined, {
-  normalization: false,
+  normalization: true,
 });
 
 let testClient: TestClient;
@@ -123,12 +123,13 @@ Object {
     expect(queries).toMatchInlineSnapshot(`
 Array [
   Object {
-    "query": "query($type1:NodeType!){node0:node(type:$type1){...on A{a}__typename ...on B{b}}}",
+    "query": "query($type1:NodeType!){node0:node(type:$type1){__typename ...on A{id a}id ...on B{id b}}}",
     "result": Object {
       "data": Object {
         "node0": Object {
           "__typename": "A",
           "a": 1,
+          "id": "1",
         },
       },
     },

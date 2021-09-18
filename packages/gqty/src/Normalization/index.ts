@@ -231,6 +231,7 @@ export function createNormalizationHandler(
     }
 
     for (const selectionValue of selection.selectionsList) {
+      if (selectionValue.key === '$on') continue;
       currentSelection = selectionValue;
       const key = selectionValue.alias || selectionValue.key;
 
