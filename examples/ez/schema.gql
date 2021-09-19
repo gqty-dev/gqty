@@ -5,7 +5,6 @@ schema {
 
 interface NamedEntity {
   name: String!
-  args(a: String): Int
 }
 
 scalar ExampleScalar
@@ -49,6 +48,11 @@ type Human implements NamedEntity {
   sons: [Human!]
   union: [TestUnion!]!
   args(a: String): Int
+}
+
+type Dog implements NamedEntity {
+  name: String!
+  owner: Human!
 }
 
 type A {

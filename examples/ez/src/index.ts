@@ -52,7 +52,6 @@ export const ezApp = CreateApp({
     registerTypeDefs(gql`
       interface NamedEntity {
         name: String!
-        args(a: String): Int
       }
       scalar ExampleScalar
 
@@ -91,6 +90,10 @@ export const ezApp = CreateApp({
         sons: [Human!]
         union: [TestUnion!]!
         args(a: String): Int
+      }
+      type Dog implements NamedEntity {
+        name: String!
+        owner: Human!
       }
       type A {
         a: String!
