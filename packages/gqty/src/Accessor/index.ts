@@ -9,7 +9,13 @@ import {
   Type,
 } from '../Schema';
 import { Selection, SelectionType } from '../Selection';
-import { decycle, isInteger, isObject, retrocycle } from '../Utils';
+import {
+  decycle,
+  isInteger,
+  isObject,
+  retrocycle,
+  isObjectWithType,
+} from '../Utils';
 
 const ProxySymbol = Symbol('gqty-proxy');
 
@@ -474,6 +480,20 @@ export function createAccessorCreators<
     return cacheReference;
   }
 
+  function getCacheTypename(selection: Selection): string | void {
+    const cacheValue: unknown =
+      innerState.clientCache.getCacheFromSelection(selection);
+
+    if (isObjectWithType(cacheValue)) return cacheValue.__typename;
+
+    interceptorManager.addSelection(
+      innerState.selectionManager.getSelection({
+        key: '__typename',
+        prevSelection: selection,
+      })
+    );
+  }
+
   const emptyScalarArray = Object.freeze([]);
 
   const querySelection = selectionManager.getSelection({
@@ -505,6 +525,8 @@ export function createAccessorCreators<
       prevSelection,
       getCacheValueReference(cacheValue, unions),
       () => {
+        const isUnionsInterfaceSelection = Boolean(unions && parentTypename);
+
         const autoFetchKeys =
           normalizationHandler && (parentTypename || unions)
             ? () => {
@@ -648,18 +670,36 @@ export function createAccessorCreators<
                     selection
                   );
 
+                  if (isUnionsInterfaceSelection) {
+                    interceptorManager.addSelection(
+                      innerState.selectionManager.getSelection({
+                        key: '__typename',
+                        prevSelection: prevSelection,
+                      })
+                    );
+                  }
+
                   if (cacheValue === undefined) {
                     innerState.foundValidCache = false;
 
+                    let unionTypename: string | undefined | void;
+                    const isUnionWithDifferentTypeResult =
+                      isUnionsInterfaceSelection
+                        ? !!(unionTypename = getCacheTypename(prevSelection)) &&
+                          unionTypename !== parentTypename
+                        : false;
+
                     /**
                      * If cache was not found & the selection doesn't have errors,
-                     * add the selection to the queue
+                     * add the selection to the queue, except when querying unions or interfaces
+                     * and the __typename doesn't correspond to the target object type
                      */
                     if (
                       // SelectionType.Subscription === 2
                       selection.type === 2 ||
-                      schedulerClientCache !== innerState.clientCache ||
-                      !schedulerErrorsMap.has(selection)
+                      (!isUnionWithDifferentTypeResult &&
+                        (schedulerClientCache !== innerState.clientCache ||
+                          !schedulerErrorsMap.has(selection)))
                     ) {
                       autoFetchKeys?.();
 
@@ -667,7 +707,11 @@ export function createAccessorCreators<
                     }
 
                     return isArray ? emptyScalarArray : undefined;
-                  } else if (!innerState.allowCache || selection.type === 2) {
+                  } else if (
+                    !innerState.allowCache ||
+                    // SelectionType.Subscription === 2
+                    selection.type === 2
+                  ) {
                     autoFetchKeys?.();
 
                     // Or if you are making the network fetch always
