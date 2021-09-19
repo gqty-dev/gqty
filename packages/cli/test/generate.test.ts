@@ -798,19 +798,15 @@ export interface SchemaObjectTypes {
   Query: Query;
   Mutation: Mutation;
   Subscription: Subscription;
-  NamedEntity: NamedEntity;
   Human: Human;
   OtherHuman: OtherHuman;
-  HumanType: HumanType;
 }
 export type SchemaObjectTypesNames =
   | 'Query'
   | 'Mutation'
   | 'Subscription'
-  | 'NamedEntity'
   | 'Human'
-  | 'OtherHuman'
-  | 'HumanType';
+  | 'OtherHuman';
 
 export interface $NamedEntity {
   Human: Human;
@@ -1615,15 +1611,13 @@ export interface SchemaObjectTypes {
   Subscription: Subscription;
   A: A;
   B: B;
-  C: C;
 }
 export type SchemaObjectTypesNames =
   | 'Query'
   | 'Mutation'
   | 'Subscription'
   | 'A'
-  | 'B'
-  | 'C';
+  | 'B';
 
 export interface $C {
   A: A;

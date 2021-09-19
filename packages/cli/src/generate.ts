@@ -615,7 +615,10 @@ export async function generate(
       if (inputTypeNames.has(typeName)) return acum;
 
       const objectTypeMap = new Map<string, string>();
-      objectTypeTSTypes.set(typeName, objectTypeMap);
+
+      if (!unionsAndInterfacesObjectTypesMap.has(typeName)) {
+        objectTypeTSTypes.set(typeName, objectTypeMap);
+      }
 
       const objectTypeInterfaces = interfacesOfObjectTypesMap.get(typeName);
 
