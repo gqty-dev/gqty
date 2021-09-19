@@ -1,14 +1,8 @@
 import { Stack, Text } from '@chakra-ui/react';
-import { useQuery, buildSelection } from '../components/client';
+import { useQuery } from '../components/client';
 import { query } from '../graphql/gqty';
 
 query.dogs;
-
-typeof window !== 'undefined' &&
-  console.log(
-    'selection',
-    buildSelection('query', 'dogs', 'owner', 'dogs', 'owner', 'name')
-  );
 
 export default function TestingStringArray() {
   const query = useQuery({

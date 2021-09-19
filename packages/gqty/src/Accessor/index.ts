@@ -40,10 +40,8 @@ export class SchemaUnion {
     {
       list: { objectTypeName: string; type: Record<string, Type> }[];
       typesNames: string[];
-      combinedTypes: Record<string, Type>;
     }
   >;
-  combinedTypes!: Record<string, Type>;
 }
 
 export type SchemaUnions = {
@@ -60,8 +58,6 @@ export function createSchemaUnions(schema: Readonly<Schema>): SchemaUnions {
     const fieldsSet = new Set<string>();
     const fieldsMap: SchemaUnion['fieldsMap'] = {};
 
-    const combinedTypes: Record<string, Type> = {};
-
     const types = unionTypes.reduce((typeAcum, objectTypeName) => {
       unionObjectTypesForSelections[objectTypeName] ||= [objectTypeName];
       const objectType = schema[objectTypeName];
@@ -71,17 +67,12 @@ export function createSchemaUnions(schema: Readonly<Schema>): SchemaUnions {
           fieldsMap[objectTypeFieldName] ||= {
             list: [],
             typesNames: [],
-            combinedTypes: {},
           };
           fieldsMap[objectTypeFieldName].list.push({
             type: objectType,
             objectTypeName,
           });
-          Object.assign(
-            fieldsMap[objectTypeFieldName].combinedTypes,
-            objectType
-          );
-          Object.assign(combinedTypes, objectType);
+
           fieldsSet.add(objectTypeFieldName);
         }
 
@@ -104,7 +95,6 @@ export function createSchemaUnions(schema: Readonly<Schema>): SchemaUnions {
         return fieldsAcum;
       }, {} as SchemaUnion['fieldsProxy']),
       fieldsMap,
-      combinedTypes,
     });
 
     return acum;

@@ -45,27 +45,13 @@ export type Dog = {
   name: string;
   owner?: Human;
 };
-export type Species =
-  | {
-      __typename: 'Human';
-      id?: string;
-      name: string;
-      father: Human;
-      nullFather?: Maybe<Human>;
-      sons: Human[];
-      dogs: Dog[];
-      owner?: undefined;
-    }
-  | {
-      __typename: 'Dog';
-      id?: string;
-      name: string;
-      owner?: Human;
-      father?: undefined;
-      nullFather?: undefined;
-      sons?: undefined;
-      dogs?: undefined;
-    };
+export type Species = {
+  __typename?: 'Human' | 'Dog';
+  $on: {
+    Human: Human;
+    Dog: Dog;
+  };
+};
 
 const TeardownPromises: Promise<unknown>[] = [];
 

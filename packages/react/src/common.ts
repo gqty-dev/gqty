@@ -1,15 +1,12 @@
 import {
-  prepass,
-  getFields,
-  getArrayFields,
-  selectFields,
   castNotSkeleton,
   castNotSkeletonDeep,
-} from 'gqty';
-import {
-  BuildSelectionInput,
+  getArrayFields,
+  getFields,
   GQtyError,
+  prepass,
   ResolveOptions,
+  selectFields,
   Selection,
 } from 'gqty';
 import type { ProxyAccessor } from 'gqty/Cache';
@@ -187,11 +184,10 @@ export function fetchPolicyDefaultResolveOptions(
   }
 }
 
-export type BuildSelections<T> = (Selection | BuildSelectionInput | T)[];
+export type BuildSelections<T> = (Selection | T)[];
 
 export function useBuildSelections(
   argSelections: BuildSelections<never> | null | undefined,
-  buildSelection: (...args: BuildSelectionInput) => Selection,
   getProxySelection: (proxy: ProxyAccessor) => Selection | undefined,
   caller: Function
 ) {
@@ -208,8 +204,6 @@ export function useBuildSelections(
             selectionsSet.add(filterValue);
           } else if ((selection = getProxySelection(filterValue))) {
             selectionsSet.add(selection);
-          } else if (Array.isArray(filterValue)) {
-            selectionsSet.add(buildSelection(...filterValue));
           }
         }
       } catch (err) {
