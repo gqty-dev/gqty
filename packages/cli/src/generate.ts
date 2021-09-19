@@ -268,23 +268,28 @@ export async function generate(
     scalarsEnumsHash[type.name] = true;
   };
 
-  const objectTypeInterfacesMap = new Map<string, string[]>();
+  const interfacesOfObjectTypesMap = new Map<string, string[]>();
 
   const parseObjectType = (type: GraphQLObjectType, typeName = type.name) => {
     const fields = type.getFields();
     const interfaces = type.getInterfaces();
 
     if (interfaces.length) {
-      objectTypeInterfacesMap.set(
+      interfacesOfObjectTypesMap.set(
         type.name,
         interfaces.map((v) => v.name)
       );
 
       for (const interfaceType of interfaces) {
-        let objectTypesList = unionsMap.get(interfaceType.name);
+        let objectTypesList = unionsAndInterfacesObjectTypesMap.get(
+          interfaceType.name
+        );
 
         if (objectTypesList == null) {
-          unionsMap.set(interfaceType.name, (objectTypesList = []));
+          unionsAndInterfacesObjectTypesMap.set(
+            interfaceType.name,
+            (objectTypesList = [])
+          );
         }
 
         objectTypesList.push(type.name);
@@ -352,13 +357,13 @@ export async function generate(
     generatedSchema[typeName] = schemaType;
   };
 
-  const unionsMap = new Map<string, string[]>();
+  const unionsAndInterfacesObjectTypesMap = new Map<string, string[]>();
 
   const parseUnionType = (type: GraphQLUnionType) => {
     const unionTypes = type.getTypes();
 
     const list: string[] = [];
-    unionsMap.set(type.name, list);
+    unionsAndInterfacesObjectTypesMap.set(type.name, list);
 
     for (const objectType of unionTypes) {
       list.push(objectType.name);
@@ -399,7 +404,6 @@ export async function generate(
   type InterfaceMapValue = {
     fieldName: string;
   } & Type;
-  const interfacesMap = new Map<string, InterfaceMapValue[]>();
 
   const parseInterfaceType = (type: GraphQLInterfaceType) => {
     const schemaType: Record<string, Type> = {
@@ -412,7 +416,7 @@ export async function generate(
 
     const objectFieldsArgsDescriptions: ArgsDescriptions = {};
 
-    const list = Object.entries(fields).map(([fieldName, gqlType]) => {
+    Object.entries(fields).forEach(([fieldName, gqlType]) => {
       const interfaceValue: InterfaceMapValue = {
         fieldName,
         __type: gqlType.type.toString(),
@@ -470,14 +474,10 @@ export async function generate(
           deprecated: gqlType.isDeprecated ? gqlType.deprecationReason : null,
         };
       }
-
-      return interfaceValue;
     });
     fieldsDescriptions.set(type.name, interfaceFieldDescriptions);
 
     fieldsArgsDescriptions.set(type.name, objectFieldsArgsDescriptions);
-
-    interfacesMap.set(type.name, list);
 
     generatedSchema[type.name] = schemaType;
   };
@@ -524,17 +524,16 @@ export async function generate(
     parseObjectType(subscriptionType, 'subscription');
   }
 
-  const unionsMapObj = Array.from(unionsMap.entries()).reduce(
-    (acum, [key, value]) => {
-      generatedSchema[key]['$on'] = {
-        __type: `$${key}`,
-      };
-      acum[key] = value;
-      return acum;
-    },
-    {} as Record<string, string[]>
-  );
-  if (unionsMap.size) {
+  const unionsMapObj = Array.from(
+    unionsAndInterfacesObjectTypesMap.entries()
+  ).reduce((acum, [key, value]) => {
+    generatedSchema[key]['$on'] = {
+      __type: `$${key}!`,
+    };
+    acum[key] = value;
+    return acum;
+  }, {} as Record<string, string[]>);
+  if (unionsAndInterfacesObjectTypesMap.size) {
     generatedSchema[SchemaUnionsKey] = unionsMapObj;
   }
 
@@ -618,19 +617,21 @@ export async function generate(
       const objectTypeMap = new Map<string, string>();
       objectTypeTSTypes.set(typeName, objectTypeMap);
 
-      const objectTypeInterfaces = objectTypeInterfacesMap.get(typeName);
+      const objectTypeInterfaces = interfacesOfObjectTypesMap.get(typeName);
+
+      const interfaceOrUnionsObjectTypes =
+        unionsAndInterfacesObjectTypesMap.get(typeName);
 
       acum += `
 
       ${addDescription(typeName)}export interface ${typeName} ${
-        objectTypeInterfaces
-          ? 'extends ' +
-            objectTypeInterfaces
-              .map((v) => `Omit<${v}, "__typename">`)
-              .join(', ')
-          : ''
+        objectTypeInterfaces ? 'extends ' + objectTypeInterfaces.join(', ') : ''
       }{ 
-        __typename?: "${typeName}"; ${Object.entries(typeValue).reduce(
+        __typename?: ${
+          interfaceOrUnionsObjectTypes
+            ? interfaceOrUnionsObjectTypes.map((v) => `"${v}"`).join(' | ')
+            : `"${typeName}"`
+        }; ${Object.entries(typeValue).reduce(
         (acum, [fieldKey, fieldValue]) => {
           if (fieldKey === '__typename') {
             objectTypeMap.set(fieldKey, `?: "${typeName}"`);
@@ -704,100 +705,16 @@ export async function generate(
     .join(' | ')};
   `;
 
-  if (unionsMap.size) {
+  if (unionsAndInterfacesObjectTypesMap.size) {
     typescriptTypes += `
-    ${Array.from(unionsMap.entries()).reduce((acum, [unionName, types]) => {
-      const allUnionFields = new Set<string>();
-      types.forEach((typeName) => {
-        const typeMap = objectTypeTSTypes.get(typeName);
-        /* istanbul ignore else */
-        if (typeMap) {
-          typeMap.forEach((_value, fieldName) => allUnionFields.add(fieldName));
-        }
-      });
-      const allUnionFieldsArray = Array.from(allUnionFields).sort();
+    ${Array.from(unionsAndInterfacesObjectTypesMap.entries()).reduce(
+      (acum, [unionInterfaceName, objectTypes]) => {
+        acum += `
+      export interface $${unionInterfaceName} {
+        ${objectTypes.map((typeName) => `${typeName}:${typeName}`).join('\n')}
+      }
+      `;
 
-      acum += `${addDescription(unionName)}export type ${unionName} = ${
-        types
-          .reduce((acumTypes, typeName) => {
-            const typeMap = objectTypeTSTypes.get(typeName);
-
-            /* istanbul ignore else */
-            if (typeMap) {
-              acumTypes.push(
-                `{ ${allUnionFieldsArray
-                  .map((fieldName) => {
-                    const foundType = typeMap.get(fieldName);
-
-                    return `${addDescription([
-                      typeName,
-                      fieldName,
-                    ])}${fieldName}${foundType || '?: undefined'}\n`;
-                  })
-                  .join('')} }`
-              );
-            }
-            return acumTypes;
-          }, [] as string[])
-          .join(' | ') /* istanbul ignore next */ || '{}'
-      };`;
-
-      return acum;
-    }, '')}
-    `;
-  }
-
-  if (interfacesMap.size) {
-    typescriptTypes += `
-    ${Array.from(interfacesMap.entries()).reduce(
-      (acum, [interfaceName, fields]) => {
-        acum += `${addDescription(
-          interfaceName
-        )}export interface ${interfaceName} {
-        ${fields.reduce((fieldAcum, { __type, fieldName, __args }) => {
-          const fieldValueProps = parseSchemaType(__type);
-          const typeToReturn = parseFinalType(fieldValueProps);
-
-          if (__args) {
-            const argsEntries = Object.entries(__args);
-            let onlyNullableArgs = true;
-            const argTypes = argsEntries.reduce(
-              (acum, [argKey, argValue], index) => {
-                const argValueProps = parseSchemaType(argValue);
-                const connector = argValueProps.isNullable ? '?:' : ':';
-
-                if (!argValueProps.isNullable) {
-                  onlyNullableArgs = false;
-                }
-
-                const argTypeValue = parseFinalType(argValueProps);
-
-                acum += `${argKey}${connector} ${argTypeValue}`;
-                if (index < argsEntries.length - 1) {
-                  acum += '; ';
-                }
-                return acum;
-              },
-              ''
-            );
-            const argsConnector = onlyNullableArgs ? '?:' : ':';
-            acum += `
-            ${addDescription([
-              interfaceName,
-              fieldName,
-            ])}${fieldName}: (args${argsConnector} {${argTypes}}) => ${typeToReturn}`;
-          } else {
-            const connector = fieldValueProps.isNullable ? '?:' : ':';
-            fieldAcum += `
-            ${addDescription([
-              interfaceName,
-              fieldName,
-            ])}${fieldName}${connector} ${typeToReturn}`;
-          }
-
-          return fieldAcum;
-        }, '')}
-      }`;
         return acum;
       },
       ''
@@ -855,7 +772,7 @@ export async function generate(
       };
     `;
 
-  const hasUnions = !!unionsMap.size;
+  const hasUnions = !!unionsAndInterfacesObjectTypesMap.size;
 
   const javascriptSchemaCode = await format(`
 /**
