@@ -9,10 +9,10 @@ export class GQtyError extends Error {
     {
       graphQLErrors,
       otherError,
-      caller,
     }: {
       graphQLErrors?: GQtyError['graphQLErrors'];
       otherError?: GQtyError['otherError'];
+      // TODO: Remove
       caller?: Function;
     } = {}
   ) {
@@ -20,10 +20,6 @@ export class GQtyError extends Error {
 
     if (graphQLErrors) this.graphQLErrors = graphQLErrors;
     if (otherError !== undefined) this.otherError = otherError;
-
-    /* istanbul ignore else */
-    if (caller && Error.captureStackTrace!)
-      Error.captureStackTrace(this, caller);
   }
 
   toJSON() {
@@ -41,13 +37,15 @@ export class GQtyError extends Error {
   ): GQtyError {
     let newError: GQtyError;
 
-    if (error instanceof GQtyError) newError = error;
-    else if (error instanceof Error)
+    if (error instanceof GQtyError) {
+      newError = error;
+    } else if (error instanceof Error) {
       newError = Object.assign(new GQtyError(error.message), error);
-    else
+    } else {
       newError = new GQtyError('Unexpected error type', {
         otherError: error,
       });
+    }
 
     return newError;
   }
