@@ -1,5 +1,13 @@
 # @gqty/cli
 
+## 2.0.1
+
+### Patch Changes
+
+- 28e2c09: [Bug fixing breaking change] Fix types and retrieval of unions/interfaces of different object types
+- Updated dependencies [28e2c09]
+  - gqty@2.0.1
+
 ## 2.0.0
 
 ### Major Changes

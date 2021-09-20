@@ -1,5 +1,11 @@
 # gqty
 
+## 2.0.1
+
+### Patch Changes
+
+- 28e2c09: [Bug fixing breaking change] Fix types and retrieval of unions/interfaces of different object types
+
 ## 2.0.0
 
 ### Major Changes
