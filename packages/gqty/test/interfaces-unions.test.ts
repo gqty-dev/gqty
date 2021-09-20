@@ -94,7 +94,7 @@ describe('interfaces and unions', () => {
     `);
   });
 
-  test.only('experiment', async () => {
+  test('experiment', async () => {
     const { resolved, query, queries } = testClient;
 
     const nodeResult = await resolved(() => {

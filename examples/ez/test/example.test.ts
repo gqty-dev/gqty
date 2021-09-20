@@ -22,12 +22,6 @@ const testClientPromise = CreateTestClient(ezApp);
 
 afterAll(GlobalTeardown);
 
-resolved(() => query.union.map((v) => selectFields(v)))
-  .then((data) => {
-    console.log(data);
-  })
-  .catch(console.error);
-
 test('works', async () => {
   const testClient = await testClientPromise;
 
