@@ -1,5 +1,18 @@
 # @gqty/react
 
+## 2.0.0-rc.0
+
+### Major Changes
+
+- 04d4b26: Remove undocumented "buildSelections"
+- eeaed61: Change previous unstable `Unions` support with new `"$on"` property with support for both `Unions` & `Interfaces`
+
+### Patch Changes
+
+- Updated dependencies [04d4b26]
+- Updated dependencies [eeaed61]
+  - gqty@2.0.0-rc.0
+
 ## 1.1.1
 
 ### Patch Changes

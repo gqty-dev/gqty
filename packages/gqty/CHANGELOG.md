@@ -1,5 +1,12 @@
 # gqty
 
+## 2.0.0-rc.0
+
+### Major Changes
+
+- 04d4b26: Remove undocumented "buildSelections"
+- eeaed61: Change previous unstable `Unions` support with new `"$on"` property with support for both `Unions` & `Interfaces`
+
 ## 1.1.3
 
 ### Patch Changes
