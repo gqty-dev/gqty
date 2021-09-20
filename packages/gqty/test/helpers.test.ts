@@ -21,22 +21,32 @@ describe('selectFields', () => {
     });
 
     expect(data).toMatchInlineSnapshot(`
-      Object {
-        "__typename": "Human",
-        "dogs": Array [
-          null,
-          null,
-        ],
-        "father": null,
-        "id": "1",
-        "name": "foo",
-        "nullFather": null,
-        "sons": Array [
-          null,
-          null,
-        ],
-      }
-    `);
+Object {
+  "__typename": "Human",
+  "dogs": Array [
+    null,
+    null,
+  ],
+  "father": null,
+  "id": "1",
+  "name": "foo",
+  "node": Array [
+    null,
+    null,
+    null,
+  ],
+  "nullFather": null,
+  "sons": Array [
+    null,
+    null,
+  ],
+  "union": Array [
+    null,
+    null,
+    null,
+  ],
+}
+`);
   });
 
   test('recursive *, depth 2', async () => {
@@ -53,74 +63,138 @@ describe('selectFields', () => {
     });
 
     expect(data).toMatchInlineSnapshot(`
-      Object {
-        "__typename": "Human",
-        "dogs": Array [
-          Object {
-            "__typename": "Dog",
-            "id": "1",
-            "name": "a",
-            "owner": null,
-          },
-          Object {
-            "__typename": "Dog",
-            "id": "2",
-            "name": "b",
-            "owner": null,
-          },
-        ],
-        "father": Object {
-          "__typename": "Human",
-          "dogs": Array [
-            null,
-            null,
-          ],
-          "father": null,
-          "id": "2",
-          "name": "default",
-          "nullFather": null,
-          "sons": Array [
-            null,
-            null,
-          ],
-        },
-        "id": "1",
-        "name": "foo",
-        "nullFather": null,
-        "sons": Array [
-          Object {
-            "__typename": "Human",
-            "dogs": Array [
-              null,
-              null,
-            ],
-            "father": null,
-            "id": "2",
-            "name": "default",
-            "nullFather": null,
-            "sons": Array [
-              null,
-              null,
-            ],
-          },
-          Object {
-            "__typename": "Human",
-            "dogs": Array [
-              null,
-              null,
-            ],
-            "father": null,
-            "id": "2",
-            "name": "default",
-            "nullFather": null,
-            "sons": Array [
-              null,
-              null,
-            ],
-          },
-        ],
-      }
-    `);
+Object {
+  "__typename": "Human",
+  "dogs": Array [
+    Object {
+      "__typename": "Dog",
+      "id": "1",
+      "name": "a",
+      "owner": null,
+    },
+    Object {
+      "__typename": "Dog",
+      "id": "2",
+      "name": "b",
+      "owner": null,
+    },
+  ],
+  "father": Object {
+    "__typename": "Human",
+    "dogs": Array [
+      null,
+      null,
+    ],
+    "father": null,
+    "id": "2",
+    "name": "default",
+    "node": Array [
+      null,
+      null,
+      null,
+    ],
+    "nullFather": null,
+    "sons": Array [
+      null,
+      null,
+    ],
+    "union": Array [
+      null,
+      null,
+      null,
+    ],
+  },
+  "id": "1",
+  "name": "foo",
+  "node": Array [
+    Object {
+      "$on": null,
+      "__typename": "A",
+      "id": "1",
+      "node": null,
+    },
+    Object {
+      "$on": null,
+      "__typename": "B",
+      "id": "2",
+      "node": null,
+    },
+    Object {
+      "$on": null,
+      "__typename": "C",
+      "id": "3",
+      "node": null,
+    },
+  ],
+  "nullFather": null,
+  "sons": Array [
+    Object {
+      "__typename": "Human",
+      "dogs": Array [
+        null,
+        null,
+      ],
+      "father": null,
+      "id": "2",
+      "name": "default",
+      "node": Array [
+        null,
+        null,
+        null,
+      ],
+      "nullFather": null,
+      "sons": Array [
+        null,
+        null,
+      ],
+      "union": Array [
+        null,
+        null,
+        null,
+      ],
+    },
+    Object {
+      "__typename": "Human",
+      "dogs": Array [
+        null,
+        null,
+      ],
+      "father": null,
+      "id": "2",
+      "name": "default",
+      "node": Array [
+        null,
+        null,
+        null,
+      ],
+      "nullFather": null,
+      "sons": Array [
+        null,
+        null,
+      ],
+      "union": Array [
+        null,
+        null,
+        null,
+      ],
+    },
+  ],
+  "union": Array [
+    Object {
+      "$on": null,
+      "__typename": "A",
+    },
+    Object {
+      "$on": null,
+      "__typename": "B",
+    },
+    Object {
+      "$on": null,
+      "__typename": "C",
+    },
+  ],
+}
+`);
   });
 
   test('named no recursive', async () => {
@@ -158,24 +232,34 @@ describe('selectFields', () => {
     });
 
     expect(data).toMatchInlineSnapshot(`
-      Object {
-        "father": Object {
-          "__typename": "Human",
-          "dogs": Array [
-            null,
-            null,
-          ],
-          "father": null,
-          "id": "2",
-          "name": "default",
-          "nullFather": null,
-          "sons": Array [
-            null,
-            null,
-          ],
-        },
-      }
-    `);
+Object {
+  "father": Object {
+    "__typename": "Human",
+    "dogs": Array [
+      null,
+      null,
+    ],
+    "father": null,
+    "id": "2",
+    "name": "default",
+    "node": Array [
+      null,
+      null,
+      null,
+    ],
+    "nullFather": null,
+    "sons": Array [
+      null,
+      null,
+    ],
+    "union": Array [
+      null,
+      null,
+      null,
+    ],
+  },
+}
+`);
   });
 
   test('named recursive, depth 2', async () => {
@@ -192,76 +276,140 @@ describe('selectFields', () => {
     });
 
     expect(data).toMatchInlineSnapshot(`
+Object {
+  "father": Object {
+    "__typename": "Human",
+    "dogs": Array [
       Object {
-        "father": Object {
-          "__typename": "Human",
-          "dogs": Array [
-            Object {
-              "__typename": "Dog",
-              "id": "1",
-              "name": "a",
-              "owner": null,
-            },
-            Object {
-              "__typename": "Dog",
-              "id": "2",
-              "name": "b",
-              "owner": null,
-            },
-          ],
-          "father": Object {
-            "__typename": "Human",
-            "dogs": Array [
-              null,
-              null,
-            ],
-            "father": null,
-            "id": "2",
-            "name": "default",
-            "nullFather": null,
-            "sons": Array [
-              null,
-              null,
-            ],
-          },
-          "id": "2",
-          "name": "default",
-          "nullFather": null,
-          "sons": Array [
-            Object {
-              "__typename": "Human",
-              "dogs": Array [
-                null,
-                null,
-              ],
-              "father": null,
-              "id": "2",
-              "name": "default",
-              "nullFather": null,
-              "sons": Array [
-                null,
-                null,
-              ],
-            },
-            Object {
-              "__typename": "Human",
-              "dogs": Array [
-                null,
-                null,
-              ],
-              "father": null,
-              "id": "2",
-              "name": "default",
-              "nullFather": null,
-              "sons": Array [
-                null,
-                null,
-              ],
-            },
-          ],
-        },
-      }
-    `);
+        "__typename": "Dog",
+        "id": "1",
+        "name": "a",
+        "owner": null,
+      },
+      Object {
+        "__typename": "Dog",
+        "id": "2",
+        "name": "b",
+        "owner": null,
+      },
+    ],
+    "father": Object {
+      "__typename": "Human",
+      "dogs": Array [
+        null,
+        null,
+      ],
+      "father": null,
+      "id": "2",
+      "name": "default",
+      "node": Array [
+        null,
+        null,
+        null,
+      ],
+      "nullFather": null,
+      "sons": Array [
+        null,
+        null,
+      ],
+      "union": Array [
+        null,
+        null,
+        null,
+      ],
+    },
+    "id": "2",
+    "name": "default",
+    "node": Array [
+      Object {
+        "$on": null,
+        "__typename": "A",
+        "id": "1",
+        "node": null,
+      },
+      Object {
+        "$on": null,
+        "__typename": "B",
+        "id": "2",
+        "node": null,
+      },
+      Object {
+        "$on": null,
+        "__typename": "C",
+        "id": "3",
+        "node": null,
+      },
+    ],
+    "nullFather": null,
+    "sons": Array [
+      Object {
+        "__typename": "Human",
+        "dogs": Array [
+          null,
+          null,
+        ],
+        "father": null,
+        "id": "2",
+        "name": "default",
+        "node": Array [
+          null,
+          null,
+          null,
+        ],
+        "nullFather": null,
+        "sons": Array [
+          null,
+          null,
+        ],
+        "union": Array [
+          null,
+          null,
+          null,
+        ],
+      },
+      Object {
+        "__typename": "Human",
+        "dogs": Array [
+          null,
+          null,
+        ],
+        "father": null,
+        "id": "2",
+        "name": "default",
+        "node": Array [
+          null,
+          null,
+          null,
+        ],
+        "nullFather": null,
+        "sons": Array [
+          null,
+          null,
+        ],
+        "union": Array [
+          null,
+          null,
+          null,
+        ],
+      },
+    ],
+    "union": Array [
+      Object {
+        "$on": null,
+        "__typename": "A",
+      },
+      Object {
+        "$on": null,
+        "__typename": "B",
+      },
+      Object {
+        "$on": null,
+        "__typename": "C",
+      },
+    ],
+  },
+}
+`);
   });
 
   test('named recursive - array', async () => {
@@ -291,39 +439,59 @@ describe('selectFields', () => {
     });
 
     expect(data).toMatchInlineSnapshot(`
-      Array [
-        Object {
-          "__typename": "Human",
-          "dogs": Array [
-            null,
-            null,
-          ],
-          "father": null,
-          "id": "1",
-          "name": "default",
-          "nullFather": null,
-          "sons": Array [
-            null,
-            null,
-          ],
-        },
-        Object {
-          "__typename": "Human",
-          "dogs": Array [
-            null,
-            null,
-          ],
-          "father": null,
-          "id": "1",
-          "name": "default",
-          "nullFather": null,
-          "sons": Array [
-            null,
-            null,
-          ],
-        },
-      ]
-    `);
+Array [
+  Object {
+    "__typename": "Human",
+    "dogs": Array [
+      null,
+      null,
+    ],
+    "father": null,
+    "id": "1",
+    "name": "default",
+    "node": Array [
+      null,
+      null,
+      null,
+    ],
+    "nullFather": null,
+    "sons": Array [
+      null,
+      null,
+    ],
+    "union": Array [
+      null,
+      null,
+      null,
+    ],
+  },
+  Object {
+    "__typename": "Human",
+    "dogs": Array [
+      null,
+      null,
+    ],
+    "father": null,
+    "id": "1",
+    "name": "default",
+    "node": Array [
+      null,
+      null,
+      null,
+    ],
+    "nullFather": null,
+    "sons": Array [
+      null,
+      null,
+    ],
+    "union": Array [
+      null,
+      null,
+      null,
+    ],
+  },
+]
+`);
   });
 
   test('empty named fields array', async () => {
@@ -355,41 +523,61 @@ describe('selectFields', () => {
     });
 
     expect(data).toMatchInlineSnapshot(`
-      Object {
-        "sons": Array [
-          Object {
-            "__typename": "Human",
-            "dogs": Array [
-              null,
-              null,
-            ],
-            "father": null,
-            "id": "1",
-            "name": "default",
-            "nullFather": null,
-            "sons": Array [
-              null,
-              null,
-            ],
-          },
-          Object {
-            "__typename": "Human",
-            "dogs": Array [
-              null,
-              null,
-            ],
-            "father": null,
-            "id": "1",
-            "name": "default",
-            "nullFather": null,
-            "sons": Array [
-              null,
-              null,
-            ],
-          },
-        ],
-      }
-    `);
+Object {
+  "sons": Array [
+    Object {
+      "__typename": "Human",
+      "dogs": Array [
+        null,
+        null,
+      ],
+      "father": null,
+      "id": "1",
+      "name": "default",
+      "node": Array [
+        null,
+        null,
+        null,
+      ],
+      "nullFather": null,
+      "sons": Array [
+        null,
+        null,
+      ],
+      "union": Array [
+        null,
+        null,
+        null,
+      ],
+    },
+    Object {
+      "__typename": "Human",
+      "dogs": Array [
+        null,
+        null,
+      ],
+      "father": null,
+      "id": "1",
+      "name": "default",
+      "node": Array [
+        null,
+        null,
+        null,
+      ],
+      "nullFather": null,
+      "sons": Array [
+        null,
+        null,
+      ],
+      "union": Array [
+        null,
+        null,
+        null,
+      ],
+    },
+  ],
+}
+`);
   });
 
   test('named fields array values - depth 2', async () => {
@@ -400,145 +588,273 @@ describe('selectFields', () => {
     });
 
     expect(data).toMatchInlineSnapshot(`
-      Object {
-        "sons": Array [
-          Object {
-            "__typename": "Human",
-            "dogs": Array [
-              Object {
-                "__typename": "Dog",
-                "id": "1",
-                "name": "a",
-                "owner": null,
-              },
-              Object {
-                "__typename": "Dog",
-                "id": "2",
-                "name": "b",
-                "owner": null,
-              },
-            ],
-            "father": Object {
-              "__typename": "Human",
-              "dogs": Array [
-                null,
-                null,
-              ],
-              "father": null,
-              "id": "1",
-              "name": "default",
-              "nullFather": null,
-              "sons": Array [
-                null,
-                null,
-              ],
-            },
-            "id": "1",
-            "name": "default",
-            "nullFather": null,
-            "sons": Array [
-              Object {
-                "__typename": "Human",
-                "dogs": Array [
-                  null,
-                  null,
-                ],
-                "father": null,
-                "id": "1",
-                "name": "default",
-                "nullFather": null,
-                "sons": Array [
-                  null,
-                  null,
-                ],
-              },
-              Object {
-                "__typename": "Human",
-                "dogs": Array [
-                  null,
-                  null,
-                ],
-                "father": null,
-                "id": "1",
-                "name": "default",
-                "nullFather": null,
-                "sons": Array [
-                  null,
-                  null,
-                ],
-              },
-            ],
-          },
-          Object {
-            "__typename": "Human",
-            "dogs": Array [
-              Object {
-                "__typename": "Dog",
-                "id": "1",
-                "name": "a",
-                "owner": null,
-              },
-              Object {
-                "__typename": "Dog",
-                "id": "2",
-                "name": "b",
-                "owner": null,
-              },
-            ],
-            "father": Object {
-              "__typename": "Human",
-              "dogs": Array [
-                null,
-                null,
-              ],
-              "father": null,
-              "id": "1",
-              "name": "default",
-              "nullFather": null,
-              "sons": Array [
-                null,
-                null,
-              ],
-            },
-            "id": "1",
-            "name": "default",
-            "nullFather": null,
-            "sons": Array [
-              Object {
-                "__typename": "Human",
-                "dogs": Array [
-                  null,
-                  null,
-                ],
-                "father": null,
-                "id": "1",
-                "name": "default",
-                "nullFather": null,
-                "sons": Array [
-                  null,
-                  null,
-                ],
-              },
-              Object {
-                "__typename": "Human",
-                "dogs": Array [
-                  null,
-                  null,
-                ],
-                "father": null,
-                "id": "1",
-                "name": "default",
-                "nullFather": null,
-                "sons": Array [
-                  null,
-                  null,
-                ],
-              },
-            ],
-          },
+Object {
+  "sons": Array [
+    Object {
+      "__typename": "Human",
+      "dogs": Array [
+        Object {
+          "__typename": "Dog",
+          "id": "1",
+          "name": "a",
+          "owner": null,
+        },
+        Object {
+          "__typename": "Dog",
+          "id": "2",
+          "name": "b",
+          "owner": null,
+        },
+      ],
+      "father": Object {
+        "__typename": "Human",
+        "dogs": Array [
+          null,
+          null,
         ],
-      }
-    `);
+        "father": null,
+        "id": "1",
+        "name": "default",
+        "node": Array [
+          null,
+          null,
+          null,
+        ],
+        "nullFather": null,
+        "sons": Array [
+          null,
+          null,
+        ],
+        "union": Array [
+          null,
+          null,
+          null,
+        ],
+      },
+      "id": "1",
+      "name": "default",
+      "node": Array [
+        Object {
+          "$on": null,
+          "__typename": "A",
+          "id": "1",
+          "node": null,
+        },
+        Object {
+          "$on": null,
+          "__typename": "B",
+          "id": "2",
+          "node": null,
+        },
+        Object {
+          "$on": null,
+          "__typename": "C",
+          "id": "3",
+          "node": null,
+        },
+      ],
+      "nullFather": null,
+      "sons": Array [
+        Object {
+          "__typename": "Human",
+          "dogs": Array [
+            null,
+            null,
+          ],
+          "father": null,
+          "id": "1",
+          "name": "default",
+          "node": Array [
+            null,
+            null,
+            null,
+          ],
+          "nullFather": null,
+          "sons": Array [
+            null,
+            null,
+          ],
+          "union": Array [
+            null,
+            null,
+            null,
+          ],
+        },
+        Object {
+          "__typename": "Human",
+          "dogs": Array [
+            null,
+            null,
+          ],
+          "father": null,
+          "id": "1",
+          "name": "default",
+          "node": Array [
+            null,
+            null,
+            null,
+          ],
+          "nullFather": null,
+          "sons": Array [
+            null,
+            null,
+          ],
+          "union": Array [
+            null,
+            null,
+            null,
+          ],
+        },
+      ],
+      "union": Array [
+        Object {
+          "$on": null,
+          "__typename": "A",
+        },
+        Object {
+          "$on": null,
+          "__typename": "B",
+        },
+        Object {
+          "$on": null,
+          "__typename": "C",
+        },
+      ],
+    },
+    Object {
+      "__typename": "Human",
+      "dogs": Array [
+        Object {
+          "__typename": "Dog",
+          "id": "1",
+          "name": "a",
+          "owner": null,
+        },
+        Object {
+          "__typename": "Dog",
+          "id": "2",
+          "name": "b",
+          "owner": null,
+        },
+      ],
+      "father": Object {
+        "__typename": "Human",
+        "dogs": Array [
+          null,
+          null,
+        ],
+        "father": null,
+        "id": "1",
+        "name": "default",
+        "node": Array [
+          null,
+          null,
+          null,
+        ],
+        "nullFather": null,
+        "sons": Array [
+          null,
+          null,
+        ],
+        "union": Array [
+          null,
+          null,
+          null,
+        ],
+      },
+      "id": "1",
+      "name": "default",
+      "node": Array [
+        Object {
+          "$on": null,
+          "__typename": "A",
+          "id": "1",
+          "node": null,
+        },
+        Object {
+          "$on": null,
+          "__typename": "B",
+          "id": "2",
+          "node": null,
+        },
+        Object {
+          "$on": null,
+          "__typename": "C",
+          "id": "3",
+          "node": null,
+        },
+      ],
+      "nullFather": null,
+      "sons": Array [
+        Object {
+          "__typename": "Human",
+          "dogs": Array [
+            null,
+            null,
+          ],
+          "father": null,
+          "id": "1",
+          "name": "default",
+          "node": Array [
+            null,
+            null,
+            null,
+          ],
+          "nullFather": null,
+          "sons": Array [
+            null,
+            null,
+          ],
+          "union": Array [
+            null,
+            null,
+            null,
+          ],
+        },
+        Object {
+          "__typename": "Human",
+          "dogs": Array [
+            null,
+            null,
+          ],
+          "father": null,
+          "id": "1",
+          "name": "default",
+          "node": Array [
+            null,
+            null,
+            null,
+          ],
+          "nullFather": null,
+          "sons": Array [
+            null,
+            null,
+          ],
+          "union": Array [
+            null,
+            null,
+            null,
+          ],
+        },
+      ],
+      "union": Array [
+        Object {
+          "$on": null,
+          "__typename": "A",
+        },
+        Object {
+          "$on": null,
+          "__typename": "B",
+        },
+        Object {
+          "$on": null,
+          "__typename": "C",
+        },
+      ],
+    },
+  ],
+}
+`);
   });
 
   test('named fields object values - depth 1', async () => {
@@ -549,24 +865,34 @@ describe('selectFields', () => {
     });
 
     expect(data).toMatchInlineSnapshot(`
-      Object {
-        "father": Object {
-          "__typename": "Human",
-          "dogs": Array [
-            null,
-            null,
-          ],
-          "father": null,
-          "id": "1",
-          "name": "default",
-          "nullFather": null,
-          "sons": Array [
-            null,
-            null,
-          ],
-        },
-      }
-    `);
+Object {
+  "father": Object {
+    "__typename": "Human",
+    "dogs": Array [
+      null,
+      null,
+    ],
+    "father": null,
+    "id": "1",
+    "name": "default",
+    "node": Array [
+      null,
+      null,
+      null,
+    ],
+    "nullFather": null,
+    "sons": Array [
+      null,
+      null,
+    ],
+    "union": Array [
+      null,
+      null,
+      null,
+    ],
+  },
+}
+`);
   });
 
   test('named fields object values - depth 2', async () => {
@@ -577,76 +903,140 @@ describe('selectFields', () => {
     });
 
     expect(data).toMatchInlineSnapshot(`
+Object {
+  "father": Object {
+    "__typename": "Human",
+    "dogs": Array [
       Object {
-        "father": Object {
-          "__typename": "Human",
-          "dogs": Array [
-            Object {
-              "__typename": "Dog",
-              "id": "1",
-              "name": "a",
-              "owner": null,
-            },
-            Object {
-              "__typename": "Dog",
-              "id": "2",
-              "name": "b",
-              "owner": null,
-            },
-          ],
-          "father": Object {
-            "__typename": "Human",
-            "dogs": Array [
-              null,
-              null,
-            ],
-            "father": null,
-            "id": "1",
-            "name": "default",
-            "nullFather": null,
-            "sons": Array [
-              null,
-              null,
-            ],
-          },
-          "id": "1",
-          "name": "default",
-          "nullFather": null,
-          "sons": Array [
-            Object {
-              "__typename": "Human",
-              "dogs": Array [
-                null,
-                null,
-              ],
-              "father": null,
-              "id": "1",
-              "name": "default",
-              "nullFather": null,
-              "sons": Array [
-                null,
-                null,
-              ],
-            },
-            Object {
-              "__typename": "Human",
-              "dogs": Array [
-                null,
-                null,
-              ],
-              "father": null,
-              "id": "1",
-              "name": "default",
-              "nullFather": null,
-              "sons": Array [
-                null,
-                null,
-              ],
-            },
-          ],
-        },
-      }
-    `);
+        "__typename": "Dog",
+        "id": "1",
+        "name": "a",
+        "owner": null,
+      },
+      Object {
+        "__typename": "Dog",
+        "id": "2",
+        "name": "b",
+        "owner": null,
+      },
+    ],
+    "father": Object {
+      "__typename": "Human",
+      "dogs": Array [
+        null,
+        null,
+      ],
+      "father": null,
+      "id": "1",
+      "name": "default",
+      "node": Array [
+        null,
+        null,
+        null,
+      ],
+      "nullFather": null,
+      "sons": Array [
+        null,
+        null,
+      ],
+      "union": Array [
+        null,
+        null,
+        null,
+      ],
+    },
+    "id": "1",
+    "name": "default",
+    "node": Array [
+      Object {
+        "$on": null,
+        "__typename": "A",
+        "id": "1",
+        "node": null,
+      },
+      Object {
+        "$on": null,
+        "__typename": "B",
+        "id": "2",
+        "node": null,
+      },
+      Object {
+        "$on": null,
+        "__typename": "C",
+        "id": "3",
+        "node": null,
+      },
+    ],
+    "nullFather": null,
+    "sons": Array [
+      Object {
+        "__typename": "Human",
+        "dogs": Array [
+          null,
+          null,
+        ],
+        "father": null,
+        "id": "1",
+        "name": "default",
+        "node": Array [
+          null,
+          null,
+          null,
+        ],
+        "nullFather": null,
+        "sons": Array [
+          null,
+          null,
+        ],
+        "union": Array [
+          null,
+          null,
+          null,
+        ],
+      },
+      Object {
+        "__typename": "Human",
+        "dogs": Array [
+          null,
+          null,
+        ],
+        "father": null,
+        "id": "1",
+        "name": "default",
+        "node": Array [
+          null,
+          null,
+          null,
+        ],
+        "nullFather": null,
+        "sons": Array [
+          null,
+          null,
+        ],
+        "union": Array [
+          null,
+          null,
+          null,
+        ],
+      },
+    ],
+    "union": Array [
+      Object {
+        "$on": null,
+        "__typename": "A",
+      },
+      Object {
+        "$on": null,
+        "__typename": "B",
+      },
+      Object {
+        "$on": null,
+        "__typename": "C",
+      },
+    ],
+  },
+}
+`);
   });
 
   test('named non-existent field', async () => {

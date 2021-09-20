@@ -254,8 +254,8 @@ export type SchemaObjectTypesNames =
   | 'PageInfo';
 
 export interface $Species {
-  Human: Human;
-  Dog: Dog;
+  Human?: Human;
+  Dog?: Dog;
 }
 
 export interface GeneratedSchema {

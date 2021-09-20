@@ -166,7 +166,7 @@ export interface NamedEntity {
   $on: $NamedEntity;
 }
 
-export interface Human extends NamedEntity {
+export interface Human {
   __typename?: 'Human';
   name: ScalarsEnums['String'];
   father: Human;
@@ -176,7 +176,7 @@ export interface Human extends NamedEntity {
   args: (args?: { a?: Maybe<Scalars['String']> }) => Maybe<ScalarsEnums['Int']>;
 }
 
-export interface Dog extends NamedEntity {
+export interface Dog {
   __typename?: 'Dog';
   name: ScalarsEnums['String'];
   owner: Human;
@@ -232,14 +232,14 @@ export type SchemaObjectTypesNames =
   | 'C';
 
 export interface $NamedEntity {
-  Human: Human;
-  Dog: Dog;
+  Human?: Human;
+  Dog?: Dog;
 }
 
 export interface $TestUnion {
-  A: A;
-  B: B;
-  C: C;
+  A?: A;
+  B?: B;
+  C?: C;
 }
 
 export interface GeneratedSchema {

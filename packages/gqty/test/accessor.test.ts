@@ -368,8 +368,8 @@ describe('unions support', () => {
       return query.species.map((v) => {
         const onSpecies = v.$on;
 
-        const dogName = onSpecies.Dog.name;
-        const humanName = onSpecies.Human.name;
+        const dogName = onSpecies.Dog?.name;
+        const humanName = onSpecies.Human?.name;
         return {
           __typename: v.__typename,
           name: dogName || humanName,
@@ -435,10 +435,71 @@ describe('mutate accessors', () => {
       father: humanHello,
       name: 'ModifiedOwner',
       sons: [humanHello],
+      node: [],
+      union: [],
     });
 
-    expect(JSON.stringify(owner)).toBe(
-      '{"__typename":"Human","dogs":[{"__typename":"Dog","name":"zxc","owner":{"name":"hello","father":[{"$ref":"$"}]}}],"father":{"name":"hello","father":{"$ref":"$"},"dogs":[{"__typename":"Dog","name":"zxc","owner":{"name":"hello","father":{"$ref":"$[\\"dogs\\"]"}}}]},"name":"ModifiedOwner","sons":[{"name":"hello","father":{"$ref":"$"},"dogs":[{"__typename":"Dog","name":"zxc","owner":{"name":"hello","father":{"$ref":"$[\\"dogs\\"]"}}}]}]}'
+    expect(JSON.stringify(owner, null, 2)).toMatchInlineSnapshot(
+      `
+      "{
+        \\"__typename\\": \\"Human\\",
+        \\"dogs\\": [
+          {
+            \\"__typename\\": \\"Dog\\",
+            \\"name\\": \\"zxc\\",
+            \\"owner\\": {
+              \\"name\\": \\"hello\\",
+              \\"father\\": [
+                {
+                  \\"$ref\\": \\"$\\"
+                }
+              ]
+            }
+          }
+        ],
+        \\"father\\": {
+          \\"name\\": \\"hello\\",
+          \\"father\\": {
+            \\"$ref\\": \\"$\\"
+          },
+          \\"dogs\\": [
+            {
+              \\"__typename\\": \\"Dog\\",
+              \\"name\\": \\"zxc\\",
+              \\"owner\\": {
+                \\"name\\": \\"hello\\",
+                \\"father\\": {
+                  \\"$ref\\": \\"$[\\\\\\"dogs\\\\\\"]\\"
+                }
+              }
+            }
+          ]
+        },
+        \\"name\\": \\"ModifiedOwner\\",
+        \\"sons\\": [
+          {
+            \\"name\\": \\"hello\\",
+            \\"father\\": {
+              \\"$ref\\": \\"$\\"
+            },
+            \\"dogs\\": [
+              {
+                \\"__typename\\": \\"Dog\\",
+                \\"name\\": \\"zxc\\",
+                \\"owner\\": {
+                  \\"name\\": \\"hello\\",
+                  \\"father\\": {
+                    \\"$ref\\": \\"$[\\\\\\"dogs\\\\\\"]\\"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        \\"node\\": [],
+        \\"union\\": []
+      }"
+    `
     );
   });
 });

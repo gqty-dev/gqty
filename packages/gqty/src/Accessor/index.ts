@@ -566,6 +566,12 @@ export function createAccessorCreators<
             if (schemaValue instanceof SchemaUnion) {
               if (!(key in schemaValue.types)) return;
 
+              if (innerState.allowCache) {
+                const typename = getCacheTypename(prevSelection);
+
+                if (typename && typename !== key) return;
+              }
+
               return createAccessor(
                 schemaValue.types[key],
                 prevSelection,

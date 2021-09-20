@@ -710,7 +710,7 @@ export async function generate(
       (acum, [unionInterfaceName, objectTypes]) => {
         acum += `
       export interface $${unionInterfaceName} {
-        ${objectTypes.map((typeName) => `${typeName}:${typeName}`).join('\n')}
+        ${objectTypes.map((typeName) => `${typeName}?:${typeName}`).join('\n')}
       }
       `;
 

@@ -809,13 +809,13 @@ export type SchemaObjectTypesNames =
   | 'OtherHuman';
 
 export interface $NamedEntity {
-  Human: Human;
-  OtherHuman: OtherHuman;
+  Human?: Human;
+  OtherHuman?: OtherHuman;
 }
 
 export interface $HumanType {
-  Human: Human;
-  OtherHuman: OtherHuman;
+  Human?: Human;
+  OtherHuman?: OtherHuman;
 }
 
 export interface GeneratedSchema {
@@ -1620,8 +1620,8 @@ export type SchemaObjectTypesNames =
   | 'B';
 
 export interface $C {
-  A: A;
-  B: B;
+  A?: A;
+  B?: B;
 }
 
 export interface GeneratedSchema {

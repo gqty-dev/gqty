@@ -50067,996 +50067,996 @@ export type SchemaObjectTypesNames =
   | 'WorkflowRun';
 
 export interface $Node {
-  AddedToProjectEvent: AddedToProjectEvent;
-  App: App;
-  AssignedEvent: AssignedEvent;
-  AutoMergeDisabledEvent: AutoMergeDisabledEvent;
-  AutoMergeEnabledEvent: AutoMergeEnabledEvent;
-  AutoRebaseEnabledEvent: AutoRebaseEnabledEvent;
-  AutoSquashEnabledEvent: AutoSquashEnabledEvent;
-  AutomaticBaseChangeFailedEvent: AutomaticBaseChangeFailedEvent;
-  AutomaticBaseChangeSucceededEvent: AutomaticBaseChangeSucceededEvent;
-  BaseRefChangedEvent: BaseRefChangedEvent;
-  BaseRefDeletedEvent: BaseRefDeletedEvent;
-  BaseRefForcePushedEvent: BaseRefForcePushedEvent;
-  Blob: Blob;
-  Bot: Bot;
-  BranchProtectionRule: BranchProtectionRule;
-  CWE: CWE;
-  CheckRun: CheckRun;
-  CheckSuite: CheckSuite;
-  ClosedEvent: ClosedEvent;
-  CodeOfConduct: CodeOfConduct;
-  CommentDeletedEvent: CommentDeletedEvent;
-  Commit: Commit;
-  CommitComment: CommitComment;
-  CommitCommentThread: CommitCommentThread;
-  ConnectedEvent: ConnectedEvent;
-  ConvertToDraftEvent: ConvertToDraftEvent;
-  ConvertedNoteToIssueEvent: ConvertedNoteToIssueEvent;
-  CrossReferencedEvent: CrossReferencedEvent;
-  DemilestonedEvent: DemilestonedEvent;
-  DeployKey: DeployKey;
-  DeployedEvent: DeployedEvent;
-  Deployment: Deployment;
-  DeploymentEnvironmentChangedEvent: DeploymentEnvironmentChangedEvent;
-  DeploymentReview: DeploymentReview;
-  DeploymentStatus: DeploymentStatus;
-  DisconnectedEvent: DisconnectedEvent;
-  Discussion: Discussion;
-  DiscussionCategory: DiscussionCategory;
-  DiscussionComment: DiscussionComment;
-  Enterprise: Enterprise;
-  EnterpriseAdministratorInvitation: EnterpriseAdministratorInvitation;
-  EnterpriseIdentityProvider: EnterpriseIdentityProvider;
-  EnterpriseRepositoryInfo: EnterpriseRepositoryInfo;
-  EnterpriseServerInstallation: EnterpriseServerInstallation;
-  EnterpriseServerUserAccount: EnterpriseServerUserAccount;
-  EnterpriseServerUserAccountEmail: EnterpriseServerUserAccountEmail;
-  EnterpriseServerUserAccountsUpload: EnterpriseServerUserAccountsUpload;
-  EnterpriseUserAccount: EnterpriseUserAccount;
-  Environment: Environment;
-  ExternalIdentity: ExternalIdentity;
-  Gist: Gist;
-  GistComment: GistComment;
-  HeadRefDeletedEvent: HeadRefDeletedEvent;
-  HeadRefForcePushedEvent: HeadRefForcePushedEvent;
-  HeadRefRestoredEvent: HeadRefRestoredEvent;
-  IpAllowListEntry: IpAllowListEntry;
-  Issue: Issue;
-  IssueComment: IssueComment;
-  Label: Label;
-  LabeledEvent: LabeledEvent;
-  Language: Language;
-  License: License;
-  LockedEvent: LockedEvent;
-  Mannequin: Mannequin;
-  MarkedAsDuplicateEvent: MarkedAsDuplicateEvent;
-  MarketplaceCategory: MarketplaceCategory;
-  MarketplaceListing: MarketplaceListing;
-  MembersCanDeleteReposClearAuditEntry: MembersCanDeleteReposClearAuditEntry;
-  MembersCanDeleteReposDisableAuditEntry: MembersCanDeleteReposDisableAuditEntry;
-  MembersCanDeleteReposEnableAuditEntry: MembersCanDeleteReposEnableAuditEntry;
-  MentionedEvent: MentionedEvent;
-  MergedEvent: MergedEvent;
-  Milestone: Milestone;
-  MilestonedEvent: MilestonedEvent;
-  MovedColumnsInProjectEvent: MovedColumnsInProjectEvent;
-  OauthApplicationCreateAuditEntry: OauthApplicationCreateAuditEntry;
-  OrgAddBillingManagerAuditEntry: OrgAddBillingManagerAuditEntry;
-  OrgAddMemberAuditEntry: OrgAddMemberAuditEntry;
-  OrgBlockUserAuditEntry: OrgBlockUserAuditEntry;
-  OrgConfigDisableCollaboratorsOnlyAuditEntry: OrgConfigDisableCollaboratorsOnlyAuditEntry;
-  OrgConfigEnableCollaboratorsOnlyAuditEntry: OrgConfigEnableCollaboratorsOnlyAuditEntry;
-  OrgCreateAuditEntry: OrgCreateAuditEntry;
-  OrgDisableOauthAppRestrictionsAuditEntry: OrgDisableOauthAppRestrictionsAuditEntry;
-  OrgDisableSamlAuditEntry: OrgDisableSamlAuditEntry;
-  OrgDisableTwoFactorRequirementAuditEntry: OrgDisableTwoFactorRequirementAuditEntry;
-  OrgEnableOauthAppRestrictionsAuditEntry: OrgEnableOauthAppRestrictionsAuditEntry;
-  OrgEnableSamlAuditEntry: OrgEnableSamlAuditEntry;
-  OrgEnableTwoFactorRequirementAuditEntry: OrgEnableTwoFactorRequirementAuditEntry;
-  OrgInviteMemberAuditEntry: OrgInviteMemberAuditEntry;
-  OrgInviteToBusinessAuditEntry: OrgInviteToBusinessAuditEntry;
-  OrgOauthAppAccessApprovedAuditEntry: OrgOauthAppAccessApprovedAuditEntry;
-  OrgOauthAppAccessDeniedAuditEntry: OrgOauthAppAccessDeniedAuditEntry;
-  OrgOauthAppAccessRequestedAuditEntry: OrgOauthAppAccessRequestedAuditEntry;
-  OrgRemoveBillingManagerAuditEntry: OrgRemoveBillingManagerAuditEntry;
-  OrgRemoveMemberAuditEntry: OrgRemoveMemberAuditEntry;
-  OrgRemoveOutsideCollaboratorAuditEntry: OrgRemoveOutsideCollaboratorAuditEntry;
-  OrgRestoreMemberAuditEntry: OrgRestoreMemberAuditEntry;
-  OrgUnblockUserAuditEntry: OrgUnblockUserAuditEntry;
-  OrgUpdateDefaultRepositoryPermissionAuditEntry: OrgUpdateDefaultRepositoryPermissionAuditEntry;
-  OrgUpdateMemberAuditEntry: OrgUpdateMemberAuditEntry;
-  OrgUpdateMemberRepositoryCreationPermissionAuditEntry: OrgUpdateMemberRepositoryCreationPermissionAuditEntry;
-  OrgUpdateMemberRepositoryInvitationPermissionAuditEntry: OrgUpdateMemberRepositoryInvitationPermissionAuditEntry;
-  Organization: Organization;
-  OrganizationIdentityProvider: OrganizationIdentityProvider;
-  OrganizationInvitation: OrganizationInvitation;
-  Package: Package;
-  PackageFile: PackageFile;
-  PackageTag: PackageTag;
-  PackageVersion: PackageVersion;
-  PinnedDiscussion: PinnedDiscussion;
-  PinnedEvent: PinnedEvent;
-  PinnedIssue: PinnedIssue;
-  PrivateRepositoryForkingDisableAuditEntry: PrivateRepositoryForkingDisableAuditEntry;
-  PrivateRepositoryForkingEnableAuditEntry: PrivateRepositoryForkingEnableAuditEntry;
-  Project: Project;
-  ProjectCard: ProjectCard;
-  ProjectColumn: ProjectColumn;
-  PublicKey: PublicKey;
-  PullRequest: PullRequest;
-  PullRequestCommit: PullRequestCommit;
-  PullRequestCommitCommentThread: PullRequestCommitCommentThread;
-  PullRequestReview: PullRequestReview;
-  PullRequestReviewComment: PullRequestReviewComment;
-  PullRequestReviewThread: PullRequestReviewThread;
-  Push: Push;
-  PushAllowance: PushAllowance;
-  Reaction: Reaction;
-  ReadyForReviewEvent: ReadyForReviewEvent;
-  Ref: Ref;
-  ReferencedEvent: ReferencedEvent;
-  Release: Release;
-  ReleaseAsset: ReleaseAsset;
-  RemovedFromProjectEvent: RemovedFromProjectEvent;
-  RenamedTitleEvent: RenamedTitleEvent;
-  ReopenedEvent: ReopenedEvent;
-  RepoAccessAuditEntry: RepoAccessAuditEntry;
-  RepoAddMemberAuditEntry: RepoAddMemberAuditEntry;
-  RepoAddTopicAuditEntry: RepoAddTopicAuditEntry;
-  RepoArchivedAuditEntry: RepoArchivedAuditEntry;
-  RepoChangeMergeSettingAuditEntry: RepoChangeMergeSettingAuditEntry;
-  RepoConfigDisableAnonymousGitAccessAuditEntry: RepoConfigDisableAnonymousGitAccessAuditEntry;
-  RepoConfigDisableCollaboratorsOnlyAuditEntry: RepoConfigDisableCollaboratorsOnlyAuditEntry;
-  RepoConfigDisableContributorsOnlyAuditEntry: RepoConfigDisableContributorsOnlyAuditEntry;
-  RepoConfigDisableSockpuppetDisallowedAuditEntry: RepoConfigDisableSockpuppetDisallowedAuditEntry;
-  RepoConfigEnableAnonymousGitAccessAuditEntry: RepoConfigEnableAnonymousGitAccessAuditEntry;
-  RepoConfigEnableCollaboratorsOnlyAuditEntry: RepoConfigEnableCollaboratorsOnlyAuditEntry;
-  RepoConfigEnableContributorsOnlyAuditEntry: RepoConfigEnableContributorsOnlyAuditEntry;
-  RepoConfigEnableSockpuppetDisallowedAuditEntry: RepoConfigEnableSockpuppetDisallowedAuditEntry;
-  RepoConfigLockAnonymousGitAccessAuditEntry: RepoConfigLockAnonymousGitAccessAuditEntry;
-  RepoConfigUnlockAnonymousGitAccessAuditEntry: RepoConfigUnlockAnonymousGitAccessAuditEntry;
-  RepoCreateAuditEntry: RepoCreateAuditEntry;
-  RepoDestroyAuditEntry: RepoDestroyAuditEntry;
-  RepoRemoveMemberAuditEntry: RepoRemoveMemberAuditEntry;
-  RepoRemoveTopicAuditEntry: RepoRemoveTopicAuditEntry;
-  Repository: Repository;
-  RepositoryInvitation: RepositoryInvitation;
-  RepositoryTopic: RepositoryTopic;
-  RepositoryVisibilityChangeDisableAuditEntry: RepositoryVisibilityChangeDisableAuditEntry;
-  RepositoryVisibilityChangeEnableAuditEntry: RepositoryVisibilityChangeEnableAuditEntry;
-  RepositoryVulnerabilityAlert: RepositoryVulnerabilityAlert;
-  ReviewDismissalAllowance: ReviewDismissalAllowance;
-  ReviewDismissedEvent: ReviewDismissedEvent;
-  ReviewRequest: ReviewRequest;
-  ReviewRequestRemovedEvent: ReviewRequestRemovedEvent;
-  ReviewRequestedEvent: ReviewRequestedEvent;
-  SavedReply: SavedReply;
-  SecurityAdvisory: SecurityAdvisory;
-  SponsorsActivity: SponsorsActivity;
-  SponsorsListing: SponsorsListing;
-  SponsorsTier: SponsorsTier;
-  Sponsorship: Sponsorship;
-  SponsorshipNewsletter: SponsorshipNewsletter;
-  Status: Status;
-  StatusCheckRollup: StatusCheckRollup;
-  StatusContext: StatusContext;
-  SubscribedEvent: SubscribedEvent;
-  Tag: Tag;
-  Team: Team;
-  TeamAddMemberAuditEntry: TeamAddMemberAuditEntry;
-  TeamAddRepositoryAuditEntry: TeamAddRepositoryAuditEntry;
-  TeamChangeParentTeamAuditEntry: TeamChangeParentTeamAuditEntry;
-  TeamDiscussion: TeamDiscussion;
-  TeamDiscussionComment: TeamDiscussionComment;
-  TeamRemoveMemberAuditEntry: TeamRemoveMemberAuditEntry;
-  TeamRemoveRepositoryAuditEntry: TeamRemoveRepositoryAuditEntry;
-  Topic: Topic;
-  TransferredEvent: TransferredEvent;
-  Tree: Tree;
-  UnassignedEvent: UnassignedEvent;
-  UnlabeledEvent: UnlabeledEvent;
-  UnlockedEvent: UnlockedEvent;
-  UnmarkedAsDuplicateEvent: UnmarkedAsDuplicateEvent;
-  UnpinnedEvent: UnpinnedEvent;
-  UnsubscribedEvent: UnsubscribedEvent;
-  User: User;
-  UserBlockedEvent: UserBlockedEvent;
-  UserContentEdit: UserContentEdit;
-  UserStatus: UserStatus;
-  VerifiableDomain: VerifiableDomain;
-  Workflow: Workflow;
-  WorkflowRun: WorkflowRun;
+  AddedToProjectEvent?: AddedToProjectEvent;
+  App?: App;
+  AssignedEvent?: AssignedEvent;
+  AutoMergeDisabledEvent?: AutoMergeDisabledEvent;
+  AutoMergeEnabledEvent?: AutoMergeEnabledEvent;
+  AutoRebaseEnabledEvent?: AutoRebaseEnabledEvent;
+  AutoSquashEnabledEvent?: AutoSquashEnabledEvent;
+  AutomaticBaseChangeFailedEvent?: AutomaticBaseChangeFailedEvent;
+  AutomaticBaseChangeSucceededEvent?: AutomaticBaseChangeSucceededEvent;
+  BaseRefChangedEvent?: BaseRefChangedEvent;
+  BaseRefDeletedEvent?: BaseRefDeletedEvent;
+  BaseRefForcePushedEvent?: BaseRefForcePushedEvent;
+  Blob?: Blob;
+  Bot?: Bot;
+  BranchProtectionRule?: BranchProtectionRule;
+  CWE?: CWE;
+  CheckRun?: CheckRun;
+  CheckSuite?: CheckSuite;
+  ClosedEvent?: ClosedEvent;
+  CodeOfConduct?: CodeOfConduct;
+  CommentDeletedEvent?: CommentDeletedEvent;
+  Commit?: Commit;
+  CommitComment?: CommitComment;
+  CommitCommentThread?: CommitCommentThread;
+  ConnectedEvent?: ConnectedEvent;
+  ConvertToDraftEvent?: ConvertToDraftEvent;
+  ConvertedNoteToIssueEvent?: ConvertedNoteToIssueEvent;
+  CrossReferencedEvent?: CrossReferencedEvent;
+  DemilestonedEvent?: DemilestonedEvent;
+  DeployKey?: DeployKey;
+  DeployedEvent?: DeployedEvent;
+  Deployment?: Deployment;
+  DeploymentEnvironmentChangedEvent?: DeploymentEnvironmentChangedEvent;
+  DeploymentReview?: DeploymentReview;
+  DeploymentStatus?: DeploymentStatus;
+  DisconnectedEvent?: DisconnectedEvent;
+  Discussion?: Discussion;
+  DiscussionCategory?: DiscussionCategory;
+  DiscussionComment?: DiscussionComment;
+  Enterprise?: Enterprise;
+  EnterpriseAdministratorInvitation?: EnterpriseAdministratorInvitation;
+  EnterpriseIdentityProvider?: EnterpriseIdentityProvider;
+  EnterpriseRepositoryInfo?: EnterpriseRepositoryInfo;
+  EnterpriseServerInstallation?: EnterpriseServerInstallation;
+  EnterpriseServerUserAccount?: EnterpriseServerUserAccount;
+  EnterpriseServerUserAccountEmail?: EnterpriseServerUserAccountEmail;
+  EnterpriseServerUserAccountsUpload?: EnterpriseServerUserAccountsUpload;
+  EnterpriseUserAccount?: EnterpriseUserAccount;
+  Environment?: Environment;
+  ExternalIdentity?: ExternalIdentity;
+  Gist?: Gist;
+  GistComment?: GistComment;
+  HeadRefDeletedEvent?: HeadRefDeletedEvent;
+  HeadRefForcePushedEvent?: HeadRefForcePushedEvent;
+  HeadRefRestoredEvent?: HeadRefRestoredEvent;
+  IpAllowListEntry?: IpAllowListEntry;
+  Issue?: Issue;
+  IssueComment?: IssueComment;
+  Label?: Label;
+  LabeledEvent?: LabeledEvent;
+  Language?: Language;
+  License?: License;
+  LockedEvent?: LockedEvent;
+  Mannequin?: Mannequin;
+  MarkedAsDuplicateEvent?: MarkedAsDuplicateEvent;
+  MarketplaceCategory?: MarketplaceCategory;
+  MarketplaceListing?: MarketplaceListing;
+  MembersCanDeleteReposClearAuditEntry?: MembersCanDeleteReposClearAuditEntry;
+  MembersCanDeleteReposDisableAuditEntry?: MembersCanDeleteReposDisableAuditEntry;
+  MembersCanDeleteReposEnableAuditEntry?: MembersCanDeleteReposEnableAuditEntry;
+  MentionedEvent?: MentionedEvent;
+  MergedEvent?: MergedEvent;
+  Milestone?: Milestone;
+  MilestonedEvent?: MilestonedEvent;
+  MovedColumnsInProjectEvent?: MovedColumnsInProjectEvent;
+  OauthApplicationCreateAuditEntry?: OauthApplicationCreateAuditEntry;
+  OrgAddBillingManagerAuditEntry?: OrgAddBillingManagerAuditEntry;
+  OrgAddMemberAuditEntry?: OrgAddMemberAuditEntry;
+  OrgBlockUserAuditEntry?: OrgBlockUserAuditEntry;
+  OrgConfigDisableCollaboratorsOnlyAuditEntry?: OrgConfigDisableCollaboratorsOnlyAuditEntry;
+  OrgConfigEnableCollaboratorsOnlyAuditEntry?: OrgConfigEnableCollaboratorsOnlyAuditEntry;
+  OrgCreateAuditEntry?: OrgCreateAuditEntry;
+  OrgDisableOauthAppRestrictionsAuditEntry?: OrgDisableOauthAppRestrictionsAuditEntry;
+  OrgDisableSamlAuditEntry?: OrgDisableSamlAuditEntry;
+  OrgDisableTwoFactorRequirementAuditEntry?: OrgDisableTwoFactorRequirementAuditEntry;
+  OrgEnableOauthAppRestrictionsAuditEntry?: OrgEnableOauthAppRestrictionsAuditEntry;
+  OrgEnableSamlAuditEntry?: OrgEnableSamlAuditEntry;
+  OrgEnableTwoFactorRequirementAuditEntry?: OrgEnableTwoFactorRequirementAuditEntry;
+  OrgInviteMemberAuditEntry?: OrgInviteMemberAuditEntry;
+  OrgInviteToBusinessAuditEntry?: OrgInviteToBusinessAuditEntry;
+  OrgOauthAppAccessApprovedAuditEntry?: OrgOauthAppAccessApprovedAuditEntry;
+  OrgOauthAppAccessDeniedAuditEntry?: OrgOauthAppAccessDeniedAuditEntry;
+  OrgOauthAppAccessRequestedAuditEntry?: OrgOauthAppAccessRequestedAuditEntry;
+  OrgRemoveBillingManagerAuditEntry?: OrgRemoveBillingManagerAuditEntry;
+  OrgRemoveMemberAuditEntry?: OrgRemoveMemberAuditEntry;
+  OrgRemoveOutsideCollaboratorAuditEntry?: OrgRemoveOutsideCollaboratorAuditEntry;
+  OrgRestoreMemberAuditEntry?: OrgRestoreMemberAuditEntry;
+  OrgUnblockUserAuditEntry?: OrgUnblockUserAuditEntry;
+  OrgUpdateDefaultRepositoryPermissionAuditEntry?: OrgUpdateDefaultRepositoryPermissionAuditEntry;
+  OrgUpdateMemberAuditEntry?: OrgUpdateMemberAuditEntry;
+  OrgUpdateMemberRepositoryCreationPermissionAuditEntry?: OrgUpdateMemberRepositoryCreationPermissionAuditEntry;
+  OrgUpdateMemberRepositoryInvitationPermissionAuditEntry?: OrgUpdateMemberRepositoryInvitationPermissionAuditEntry;
+  Organization?: Organization;
+  OrganizationIdentityProvider?: OrganizationIdentityProvider;
+  OrganizationInvitation?: OrganizationInvitation;
+  Package?: Package;
+  PackageFile?: PackageFile;
+  PackageTag?: PackageTag;
+  PackageVersion?: PackageVersion;
+  PinnedDiscussion?: PinnedDiscussion;
+  PinnedEvent?: PinnedEvent;
+  PinnedIssue?: PinnedIssue;
+  PrivateRepositoryForkingDisableAuditEntry?: PrivateRepositoryForkingDisableAuditEntry;
+  PrivateRepositoryForkingEnableAuditEntry?: PrivateRepositoryForkingEnableAuditEntry;
+  Project?: Project;
+  ProjectCard?: ProjectCard;
+  ProjectColumn?: ProjectColumn;
+  PublicKey?: PublicKey;
+  PullRequest?: PullRequest;
+  PullRequestCommit?: PullRequestCommit;
+  PullRequestCommitCommentThread?: PullRequestCommitCommentThread;
+  PullRequestReview?: PullRequestReview;
+  PullRequestReviewComment?: PullRequestReviewComment;
+  PullRequestReviewThread?: PullRequestReviewThread;
+  Push?: Push;
+  PushAllowance?: PushAllowance;
+  Reaction?: Reaction;
+  ReadyForReviewEvent?: ReadyForReviewEvent;
+  Ref?: Ref;
+  ReferencedEvent?: ReferencedEvent;
+  Release?: Release;
+  ReleaseAsset?: ReleaseAsset;
+  RemovedFromProjectEvent?: RemovedFromProjectEvent;
+  RenamedTitleEvent?: RenamedTitleEvent;
+  ReopenedEvent?: ReopenedEvent;
+  RepoAccessAuditEntry?: RepoAccessAuditEntry;
+  RepoAddMemberAuditEntry?: RepoAddMemberAuditEntry;
+  RepoAddTopicAuditEntry?: RepoAddTopicAuditEntry;
+  RepoArchivedAuditEntry?: RepoArchivedAuditEntry;
+  RepoChangeMergeSettingAuditEntry?: RepoChangeMergeSettingAuditEntry;
+  RepoConfigDisableAnonymousGitAccessAuditEntry?: RepoConfigDisableAnonymousGitAccessAuditEntry;
+  RepoConfigDisableCollaboratorsOnlyAuditEntry?: RepoConfigDisableCollaboratorsOnlyAuditEntry;
+  RepoConfigDisableContributorsOnlyAuditEntry?: RepoConfigDisableContributorsOnlyAuditEntry;
+  RepoConfigDisableSockpuppetDisallowedAuditEntry?: RepoConfigDisableSockpuppetDisallowedAuditEntry;
+  RepoConfigEnableAnonymousGitAccessAuditEntry?: RepoConfigEnableAnonymousGitAccessAuditEntry;
+  RepoConfigEnableCollaboratorsOnlyAuditEntry?: RepoConfigEnableCollaboratorsOnlyAuditEntry;
+  RepoConfigEnableContributorsOnlyAuditEntry?: RepoConfigEnableContributorsOnlyAuditEntry;
+  RepoConfigEnableSockpuppetDisallowedAuditEntry?: RepoConfigEnableSockpuppetDisallowedAuditEntry;
+  RepoConfigLockAnonymousGitAccessAuditEntry?: RepoConfigLockAnonymousGitAccessAuditEntry;
+  RepoConfigUnlockAnonymousGitAccessAuditEntry?: RepoConfigUnlockAnonymousGitAccessAuditEntry;
+  RepoCreateAuditEntry?: RepoCreateAuditEntry;
+  RepoDestroyAuditEntry?: RepoDestroyAuditEntry;
+  RepoRemoveMemberAuditEntry?: RepoRemoveMemberAuditEntry;
+  RepoRemoveTopicAuditEntry?: RepoRemoveTopicAuditEntry;
+  Repository?: Repository;
+  RepositoryInvitation?: RepositoryInvitation;
+  RepositoryTopic?: RepositoryTopic;
+  RepositoryVisibilityChangeDisableAuditEntry?: RepositoryVisibilityChangeDisableAuditEntry;
+  RepositoryVisibilityChangeEnableAuditEntry?: RepositoryVisibilityChangeEnableAuditEntry;
+  RepositoryVulnerabilityAlert?: RepositoryVulnerabilityAlert;
+  ReviewDismissalAllowance?: ReviewDismissalAllowance;
+  ReviewDismissedEvent?: ReviewDismissedEvent;
+  ReviewRequest?: ReviewRequest;
+  ReviewRequestRemovedEvent?: ReviewRequestRemovedEvent;
+  ReviewRequestedEvent?: ReviewRequestedEvent;
+  SavedReply?: SavedReply;
+  SecurityAdvisory?: SecurityAdvisory;
+  SponsorsActivity?: SponsorsActivity;
+  SponsorsListing?: SponsorsListing;
+  SponsorsTier?: SponsorsTier;
+  Sponsorship?: Sponsorship;
+  SponsorshipNewsletter?: SponsorshipNewsletter;
+  Status?: Status;
+  StatusCheckRollup?: StatusCheckRollup;
+  StatusContext?: StatusContext;
+  SubscribedEvent?: SubscribedEvent;
+  Tag?: Tag;
+  Team?: Team;
+  TeamAddMemberAuditEntry?: TeamAddMemberAuditEntry;
+  TeamAddRepositoryAuditEntry?: TeamAddRepositoryAuditEntry;
+  TeamChangeParentTeamAuditEntry?: TeamChangeParentTeamAuditEntry;
+  TeamDiscussion?: TeamDiscussion;
+  TeamDiscussionComment?: TeamDiscussionComment;
+  TeamRemoveMemberAuditEntry?: TeamRemoveMemberAuditEntry;
+  TeamRemoveRepositoryAuditEntry?: TeamRemoveRepositoryAuditEntry;
+  Topic?: Topic;
+  TransferredEvent?: TransferredEvent;
+  Tree?: Tree;
+  UnassignedEvent?: UnassignedEvent;
+  UnlabeledEvent?: UnlabeledEvent;
+  UnlockedEvent?: UnlockedEvent;
+  UnmarkedAsDuplicateEvent?: UnmarkedAsDuplicateEvent;
+  UnpinnedEvent?: UnpinnedEvent;
+  UnsubscribedEvent?: UnsubscribedEvent;
+  User?: User;
+  UserBlockedEvent?: UserBlockedEvent;
+  UserContentEdit?: UserContentEdit;
+  UserStatus?: UserStatus;
+  VerifiableDomain?: VerifiableDomain;
+  Workflow?: Workflow;
+  WorkflowRun?: WorkflowRun;
 }
 
 export interface $Assignee {
-  Bot: Bot;
-  Mannequin: Mannequin;
-  Organization: Organization;
-  User: User;
+  Bot?: Bot;
+  Mannequin?: Mannequin;
+  Organization?: Organization;
+  User?: User;
 }
 
 export interface $AuditEntryActor {
-  Bot: Bot;
-  Organization: Organization;
-  User: User;
+  Bot?: Bot;
+  Organization?: Organization;
+  User?: User;
 }
 
 export interface $GitObject {
-  Blob: Blob;
-  Commit: Commit;
-  Tag: Tag;
-  Tree: Tree;
+  Blob?: Blob;
+  Commit?: Commit;
+  Tag?: Tag;
+  Tree?: Tree;
 }
 
 export interface $Actor {
-  Bot: Bot;
-  EnterpriseUserAccount: EnterpriseUserAccount;
-  Mannequin: Mannequin;
-  Organization: Organization;
-  User: User;
+  Bot?: Bot;
+  EnterpriseUserAccount?: EnterpriseUserAccount;
+  Mannequin?: Mannequin;
+  Organization?: Organization;
+  User?: User;
 }
 
 export interface $UniformResourceLocatable {
-  Bot: Bot;
-  CheckRun: CheckRun;
-  ClosedEvent: ClosedEvent;
-  Commit: Commit;
-  ConvertToDraftEvent: ConvertToDraftEvent;
-  CrossReferencedEvent: CrossReferencedEvent;
-  Gist: Gist;
-  Issue: Issue;
-  Mannequin: Mannequin;
-  MergedEvent: MergedEvent;
-  Milestone: Milestone;
-  Organization: Organization;
-  PullRequest: PullRequest;
-  PullRequestCommit: PullRequestCommit;
-  ReadyForReviewEvent: ReadyForReviewEvent;
-  Release: Release;
-  Repository: Repository;
-  RepositoryTopic: RepositoryTopic;
-  ReviewDismissedEvent: ReviewDismissedEvent;
-  TeamDiscussion: TeamDiscussion;
-  TeamDiscussionComment: TeamDiscussionComment;
-  User: User;
+  Bot?: Bot;
+  CheckRun?: CheckRun;
+  ClosedEvent?: ClosedEvent;
+  Commit?: Commit;
+  ConvertToDraftEvent?: ConvertToDraftEvent;
+  CrossReferencedEvent?: CrossReferencedEvent;
+  Gist?: Gist;
+  Issue?: Issue;
+  Mannequin?: Mannequin;
+  MergedEvent?: MergedEvent;
+  Milestone?: Milestone;
+  Organization?: Organization;
+  PullRequest?: PullRequest;
+  PullRequestCommit?: PullRequestCommit;
+  ReadyForReviewEvent?: ReadyForReviewEvent;
+  Release?: Release;
+  Repository?: Repository;
+  RepositoryTopic?: RepositoryTopic;
+  ReviewDismissedEvent?: ReviewDismissedEvent;
+  TeamDiscussion?: TeamDiscussion;
+  TeamDiscussionComment?: TeamDiscussionComment;
+  User?: User;
 }
 
 export interface $RequirableByPullRequest {
-  CheckRun: CheckRun;
-  StatusContext: StatusContext;
+  CheckRun?: CheckRun;
+  StatusContext?: StatusContext;
 }
 
 export interface $Closer {
-  Commit: Commit;
-  PullRequest: PullRequest;
+  Commit?: Commit;
+  PullRequest?: PullRequest;
 }
 
 export interface $Subscribable {
-  Commit: Commit;
-  Discussion: Discussion;
-  Issue: Issue;
-  PullRequest: PullRequest;
-  Repository: Repository;
-  Team: Team;
-  TeamDiscussion: TeamDiscussion;
+  Commit?: Commit;
+  Discussion?: Discussion;
+  Issue?: Issue;
+  PullRequest?: PullRequest;
+  Repository?: Repository;
+  Team?: Team;
+  TeamDiscussion?: TeamDiscussion;
 }
 
 export interface $Comment {
-  CommitComment: CommitComment;
-  Discussion: Discussion;
-  DiscussionComment: DiscussionComment;
-  GistComment: GistComment;
-  Issue: Issue;
-  IssueComment: IssueComment;
-  PullRequest: PullRequest;
-  PullRequestReview: PullRequestReview;
-  PullRequestReviewComment: PullRequestReviewComment;
-  TeamDiscussion: TeamDiscussion;
-  TeamDiscussionComment: TeamDiscussionComment;
+  CommitComment?: CommitComment;
+  Discussion?: Discussion;
+  DiscussionComment?: DiscussionComment;
+  GistComment?: GistComment;
+  Issue?: Issue;
+  IssueComment?: IssueComment;
+  PullRequest?: PullRequest;
+  PullRequestReview?: PullRequestReview;
+  PullRequestReviewComment?: PullRequestReviewComment;
+  TeamDiscussion?: TeamDiscussion;
+  TeamDiscussionComment?: TeamDiscussionComment;
 }
 
 export interface $Deletable {
-  CommitComment: CommitComment;
-  Discussion: Discussion;
-  DiscussionComment: DiscussionComment;
-  GistComment: GistComment;
-  IssueComment: IssueComment;
-  PullRequestReview: PullRequestReview;
-  PullRequestReviewComment: PullRequestReviewComment;
-  TeamDiscussion: TeamDiscussion;
-  TeamDiscussionComment: TeamDiscussionComment;
+  CommitComment?: CommitComment;
+  Discussion?: Discussion;
+  DiscussionComment?: DiscussionComment;
+  GistComment?: GistComment;
+  IssueComment?: IssueComment;
+  PullRequestReview?: PullRequestReview;
+  PullRequestReviewComment?: PullRequestReviewComment;
+  TeamDiscussion?: TeamDiscussion;
+  TeamDiscussionComment?: TeamDiscussionComment;
 }
 
 export interface $Minimizable {
-  CommitComment: CommitComment;
-  DiscussionComment: DiscussionComment;
-  GistComment: GistComment;
-  IssueComment: IssueComment;
-  PullRequestReviewComment: PullRequestReviewComment;
+  CommitComment?: CommitComment;
+  DiscussionComment?: DiscussionComment;
+  GistComment?: GistComment;
+  IssueComment?: IssueComment;
+  PullRequestReviewComment?: PullRequestReviewComment;
 }
 
 export interface $Updatable {
-  CommitComment: CommitComment;
-  Discussion: Discussion;
-  DiscussionComment: DiscussionComment;
-  GistComment: GistComment;
-  Issue: Issue;
-  IssueComment: IssueComment;
-  Project: Project;
-  PullRequest: PullRequest;
-  PullRequestReview: PullRequestReview;
-  PullRequestReviewComment: PullRequestReviewComment;
-  TeamDiscussion: TeamDiscussion;
-  TeamDiscussionComment: TeamDiscussionComment;
+  CommitComment?: CommitComment;
+  Discussion?: Discussion;
+  DiscussionComment?: DiscussionComment;
+  GistComment?: GistComment;
+  Issue?: Issue;
+  IssueComment?: IssueComment;
+  Project?: Project;
+  PullRequest?: PullRequest;
+  PullRequestReview?: PullRequestReview;
+  PullRequestReviewComment?: PullRequestReviewComment;
+  TeamDiscussion?: TeamDiscussion;
+  TeamDiscussionComment?: TeamDiscussionComment;
 }
 
 export interface $UpdatableComment {
-  CommitComment: CommitComment;
-  DiscussionComment: DiscussionComment;
-  GistComment: GistComment;
-  Issue: Issue;
-  IssueComment: IssueComment;
-  PullRequest: PullRequest;
-  PullRequestReview: PullRequestReview;
-  PullRequestReviewComment: PullRequestReviewComment;
-  TeamDiscussion: TeamDiscussion;
-  TeamDiscussionComment: TeamDiscussionComment;
+  CommitComment?: CommitComment;
+  DiscussionComment?: DiscussionComment;
+  GistComment?: GistComment;
+  Issue?: Issue;
+  IssueComment?: IssueComment;
+  PullRequest?: PullRequest;
+  PullRequestReview?: PullRequestReview;
+  PullRequestReviewComment?: PullRequestReviewComment;
+  TeamDiscussion?: TeamDiscussion;
+  TeamDiscussionComment?: TeamDiscussionComment;
 }
 
 export interface $Reactable {
-  CommitComment: CommitComment;
-  Discussion: Discussion;
-  DiscussionComment: DiscussionComment;
-  Issue: Issue;
-  IssueComment: IssueComment;
-  PullRequest: PullRequest;
-  PullRequestReview: PullRequestReview;
-  PullRequestReviewComment: PullRequestReviewComment;
-  Release: Release;
-  TeamDiscussion: TeamDiscussion;
-  TeamDiscussionComment: TeamDiscussionComment;
+  CommitComment?: CommitComment;
+  Discussion?: Discussion;
+  DiscussionComment?: DiscussionComment;
+  Issue?: Issue;
+  IssueComment?: IssueComment;
+  PullRequest?: PullRequest;
+  PullRequestReview?: PullRequestReview;
+  PullRequestReviewComment?: PullRequestReviewComment;
+  Release?: Release;
+  TeamDiscussion?: TeamDiscussion;
+  TeamDiscussionComment?: TeamDiscussionComment;
 }
 
 export interface $RepositoryNode {
-  CommitComment: CommitComment;
-  CommitCommentThread: CommitCommentThread;
-  Discussion: Discussion;
-  DiscussionCategory: DiscussionCategory;
-  Issue: Issue;
-  IssueComment: IssueComment;
-  PinnedDiscussion: PinnedDiscussion;
-  PullRequest: PullRequest;
-  PullRequestCommitCommentThread: PullRequestCommitCommentThread;
-  PullRequestReview: PullRequestReview;
-  PullRequestReviewComment: PullRequestReviewComment;
-  RepositoryVulnerabilityAlert: RepositoryVulnerabilityAlert;
+  CommitComment?: CommitComment;
+  CommitCommentThread?: CommitCommentThread;
+  Discussion?: Discussion;
+  DiscussionCategory?: DiscussionCategory;
+  Issue?: Issue;
+  IssueComment?: IssueComment;
+  PinnedDiscussion?: PinnedDiscussion;
+  PullRequest?: PullRequest;
+  PullRequestCommitCommentThread?: PullRequestCommitCommentThread;
+  PullRequestReview?: PullRequestReview;
+  PullRequestReviewComment?: PullRequestReviewComment;
+  RepositoryVulnerabilityAlert?: RepositoryVulnerabilityAlert;
 }
 
 export interface $Contribution {
-  CreatedCommitContribution: CreatedCommitContribution;
-  CreatedIssueContribution: CreatedIssueContribution;
-  CreatedPullRequestContribution: CreatedPullRequestContribution;
-  CreatedPullRequestReviewContribution: CreatedPullRequestReviewContribution;
-  CreatedRepositoryContribution: CreatedRepositoryContribution;
-  JoinedGitHubContribution: JoinedGitHubContribution;
-  RestrictedContribution: RestrictedContribution;
+  CreatedCommitContribution?: CreatedCommitContribution;
+  CreatedIssueContribution?: CreatedIssueContribution;
+  CreatedPullRequestContribution?: CreatedPullRequestContribution;
+  CreatedPullRequestReviewContribution?: CreatedPullRequestReviewContribution;
+  CreatedRepositoryContribution?: CreatedRepositoryContribution;
+  JoinedGitHubContribution?: JoinedGitHubContribution;
+  RestrictedContribution?: RestrictedContribution;
 }
 
 export interface $CreatedIssueOrRestrictedContribution {
-  CreatedIssueContribution: CreatedIssueContribution;
-  RestrictedContribution: RestrictedContribution;
+  CreatedIssueContribution?: CreatedIssueContribution;
+  RestrictedContribution?: RestrictedContribution;
 }
 
 export interface $CreatedPullRequestOrRestrictedContribution {
-  CreatedPullRequestContribution: CreatedPullRequestContribution;
-  RestrictedContribution: RestrictedContribution;
+  CreatedPullRequestContribution?: CreatedPullRequestContribution;
+  RestrictedContribution?: RestrictedContribution;
 }
 
 export interface $CreatedRepositoryOrRestrictedContribution {
-  CreatedRepositoryContribution: CreatedRepositoryContribution;
-  RestrictedContribution: RestrictedContribution;
+  CreatedRepositoryContribution?: CreatedRepositoryContribution;
+  RestrictedContribution?: RestrictedContribution;
 }
 
 export interface $DeploymentReviewer {
-  Team: Team;
-  User: User;
+  Team?: Team;
+  User?: User;
 }
 
 export interface $Labelable {
-  Discussion: Discussion;
-  Issue: Issue;
-  PullRequest: PullRequest;
+  Discussion?: Discussion;
+  Issue?: Issue;
+  PullRequest?: PullRequest;
 }
 
 export interface $Lockable {
-  Discussion: Discussion;
-  Issue: Issue;
-  PullRequest: PullRequest;
+  Discussion?: Discussion;
+  Issue?: Issue;
+  PullRequest?: PullRequest;
 }
 
 export interface $Votable {
-  Discussion: Discussion;
-  DiscussionComment: DiscussionComment;
+  Discussion?: Discussion;
+  DiscussionComment?: DiscussionComment;
 }
 
 export interface $EnterpriseMember {
-  EnterpriseUserAccount: EnterpriseUserAccount;
-  User: User;
+  EnterpriseUserAccount?: EnterpriseUserAccount;
+  User?: User;
 }
 
 export interface $HovercardContext {
-  GenericHovercardContext: GenericHovercardContext;
-  OrganizationTeamsHovercardContext: OrganizationTeamsHovercardContext;
-  OrganizationsHovercardContext: OrganizationsHovercardContext;
-  ReviewStatusHovercardContext: ReviewStatusHovercardContext;
-  ViewerHovercardContext: ViewerHovercardContext;
+  GenericHovercardContext?: GenericHovercardContext;
+  OrganizationTeamsHovercardContext?: OrganizationTeamsHovercardContext;
+  OrganizationsHovercardContext?: OrganizationsHovercardContext;
+  ReviewStatusHovercardContext?: ReviewStatusHovercardContext;
+  ViewerHovercardContext?: ViewerHovercardContext;
 }
 
 export interface $Starrable {
-  Gist: Gist;
-  Repository: Repository;
-  Topic: Topic;
+  Gist?: Gist;
+  Repository?: Repository;
+  Topic?: Topic;
 }
 
 export interface $GitSignature {
-  GpgSignature: GpgSignature;
-  SmimeSignature: SmimeSignature;
-  UnknownSignature: UnknownSignature;
+  GpgSignature?: GpgSignature;
+  SmimeSignature?: SmimeSignature;
+  UnknownSignature?: UnknownSignature;
 }
 
 export interface $IpAllowListOwner {
-  App: App;
-  Enterprise: Enterprise;
-  Organization: Organization;
+  App?: App;
+  Enterprise?: Enterprise;
+  Organization?: Organization;
 }
 
 export interface $Assignable {
-  Issue: Issue;
-  PullRequest: PullRequest;
+  Issue?: Issue;
+  PullRequest?: PullRequest;
 }
 
 export interface $Closable {
-  Issue: Issue;
-  Milestone: Milestone;
-  Project: Project;
-  PullRequest: PullRequest;
+  Issue?: Issue;
+  Milestone?: Milestone;
+  Project?: Project;
+  PullRequest?: PullRequest;
 }
 
 export interface $IssueOrPullRequest {
-  Issue: Issue;
-  PullRequest: PullRequest;
+  Issue?: Issue;
+  PullRequest?: PullRequest;
 }
 
 export interface $IssueTimelineItem {
-  AssignedEvent: AssignedEvent;
-  ClosedEvent: ClosedEvent;
-  Commit: Commit;
-  CrossReferencedEvent: CrossReferencedEvent;
-  DemilestonedEvent: DemilestonedEvent;
-  IssueComment: IssueComment;
-  LabeledEvent: LabeledEvent;
-  LockedEvent: LockedEvent;
-  MilestonedEvent: MilestonedEvent;
-  ReferencedEvent: ReferencedEvent;
-  RenamedTitleEvent: RenamedTitleEvent;
-  ReopenedEvent: ReopenedEvent;
-  SubscribedEvent: SubscribedEvent;
-  TransferredEvent: TransferredEvent;
-  UnassignedEvent: UnassignedEvent;
-  UnlabeledEvent: UnlabeledEvent;
-  UnlockedEvent: UnlockedEvent;
-  UnsubscribedEvent: UnsubscribedEvent;
-  UserBlockedEvent: UserBlockedEvent;
+  AssignedEvent?: AssignedEvent;
+  ClosedEvent?: ClosedEvent;
+  Commit?: Commit;
+  CrossReferencedEvent?: CrossReferencedEvent;
+  DemilestonedEvent?: DemilestonedEvent;
+  IssueComment?: IssueComment;
+  LabeledEvent?: LabeledEvent;
+  LockedEvent?: LockedEvent;
+  MilestonedEvent?: MilestonedEvent;
+  ReferencedEvent?: ReferencedEvent;
+  RenamedTitleEvent?: RenamedTitleEvent;
+  ReopenedEvent?: ReopenedEvent;
+  SubscribedEvent?: SubscribedEvent;
+  TransferredEvent?: TransferredEvent;
+  UnassignedEvent?: UnassignedEvent;
+  UnlabeledEvent?: UnlabeledEvent;
+  UnlockedEvent?: UnlockedEvent;
+  UnsubscribedEvent?: UnsubscribedEvent;
+  UserBlockedEvent?: UserBlockedEvent;
 }
 
 export interface $IssueTimelineItems {
-  AddedToProjectEvent: AddedToProjectEvent;
-  AssignedEvent: AssignedEvent;
-  ClosedEvent: ClosedEvent;
-  CommentDeletedEvent: CommentDeletedEvent;
-  ConnectedEvent: ConnectedEvent;
-  ConvertedNoteToIssueEvent: ConvertedNoteToIssueEvent;
-  CrossReferencedEvent: CrossReferencedEvent;
-  DemilestonedEvent: DemilestonedEvent;
-  DisconnectedEvent: DisconnectedEvent;
-  IssueComment: IssueComment;
-  LabeledEvent: LabeledEvent;
-  LockedEvent: LockedEvent;
-  MarkedAsDuplicateEvent: MarkedAsDuplicateEvent;
-  MentionedEvent: MentionedEvent;
-  MilestonedEvent: MilestonedEvent;
-  MovedColumnsInProjectEvent: MovedColumnsInProjectEvent;
-  PinnedEvent: PinnedEvent;
-  ReferencedEvent: ReferencedEvent;
-  RemovedFromProjectEvent: RemovedFromProjectEvent;
-  RenamedTitleEvent: RenamedTitleEvent;
-  ReopenedEvent: ReopenedEvent;
-  SubscribedEvent: SubscribedEvent;
-  TransferredEvent: TransferredEvent;
-  UnassignedEvent: UnassignedEvent;
-  UnlabeledEvent: UnlabeledEvent;
-  UnlockedEvent: UnlockedEvent;
-  UnmarkedAsDuplicateEvent: UnmarkedAsDuplicateEvent;
-  UnpinnedEvent: UnpinnedEvent;
-  UnsubscribedEvent: UnsubscribedEvent;
-  UserBlockedEvent: UserBlockedEvent;
+  AddedToProjectEvent?: AddedToProjectEvent;
+  AssignedEvent?: AssignedEvent;
+  ClosedEvent?: ClosedEvent;
+  CommentDeletedEvent?: CommentDeletedEvent;
+  ConnectedEvent?: ConnectedEvent;
+  ConvertedNoteToIssueEvent?: ConvertedNoteToIssueEvent;
+  CrossReferencedEvent?: CrossReferencedEvent;
+  DemilestonedEvent?: DemilestonedEvent;
+  DisconnectedEvent?: DisconnectedEvent;
+  IssueComment?: IssueComment;
+  LabeledEvent?: LabeledEvent;
+  LockedEvent?: LockedEvent;
+  MarkedAsDuplicateEvent?: MarkedAsDuplicateEvent;
+  MentionedEvent?: MentionedEvent;
+  MilestonedEvent?: MilestonedEvent;
+  MovedColumnsInProjectEvent?: MovedColumnsInProjectEvent;
+  PinnedEvent?: PinnedEvent;
+  ReferencedEvent?: ReferencedEvent;
+  RemovedFromProjectEvent?: RemovedFromProjectEvent;
+  RenamedTitleEvent?: RenamedTitleEvent;
+  ReopenedEvent?: ReopenedEvent;
+  SubscribedEvent?: SubscribedEvent;
+  TransferredEvent?: TransferredEvent;
+  UnassignedEvent?: UnassignedEvent;
+  UnlabeledEvent?: UnlabeledEvent;
+  UnlockedEvent?: UnlockedEvent;
+  UnmarkedAsDuplicateEvent?: UnmarkedAsDuplicateEvent;
+  UnpinnedEvent?: UnpinnedEvent;
+  UnsubscribedEvent?: UnsubscribedEvent;
+  UserBlockedEvent?: UserBlockedEvent;
 }
 
 export interface $AuditEntry {
-  MembersCanDeleteReposClearAuditEntry: MembersCanDeleteReposClearAuditEntry;
-  MembersCanDeleteReposDisableAuditEntry: MembersCanDeleteReposDisableAuditEntry;
-  MembersCanDeleteReposEnableAuditEntry: MembersCanDeleteReposEnableAuditEntry;
-  OauthApplicationCreateAuditEntry: OauthApplicationCreateAuditEntry;
-  OrgAddBillingManagerAuditEntry: OrgAddBillingManagerAuditEntry;
-  OrgAddMemberAuditEntry: OrgAddMemberAuditEntry;
-  OrgBlockUserAuditEntry: OrgBlockUserAuditEntry;
-  OrgConfigDisableCollaboratorsOnlyAuditEntry: OrgConfigDisableCollaboratorsOnlyAuditEntry;
-  OrgConfigEnableCollaboratorsOnlyAuditEntry: OrgConfigEnableCollaboratorsOnlyAuditEntry;
-  OrgCreateAuditEntry: OrgCreateAuditEntry;
-  OrgDisableOauthAppRestrictionsAuditEntry: OrgDisableOauthAppRestrictionsAuditEntry;
-  OrgDisableSamlAuditEntry: OrgDisableSamlAuditEntry;
-  OrgDisableTwoFactorRequirementAuditEntry: OrgDisableTwoFactorRequirementAuditEntry;
-  OrgEnableOauthAppRestrictionsAuditEntry: OrgEnableOauthAppRestrictionsAuditEntry;
-  OrgEnableSamlAuditEntry: OrgEnableSamlAuditEntry;
-  OrgEnableTwoFactorRequirementAuditEntry: OrgEnableTwoFactorRequirementAuditEntry;
-  OrgInviteMemberAuditEntry: OrgInviteMemberAuditEntry;
-  OrgInviteToBusinessAuditEntry: OrgInviteToBusinessAuditEntry;
-  OrgOauthAppAccessApprovedAuditEntry: OrgOauthAppAccessApprovedAuditEntry;
-  OrgOauthAppAccessDeniedAuditEntry: OrgOauthAppAccessDeniedAuditEntry;
-  OrgOauthAppAccessRequestedAuditEntry: OrgOauthAppAccessRequestedAuditEntry;
-  OrgRemoveBillingManagerAuditEntry: OrgRemoveBillingManagerAuditEntry;
-  OrgRemoveMemberAuditEntry: OrgRemoveMemberAuditEntry;
-  OrgRemoveOutsideCollaboratorAuditEntry: OrgRemoveOutsideCollaboratorAuditEntry;
-  OrgRestoreMemberAuditEntry: OrgRestoreMemberAuditEntry;
-  OrgUnblockUserAuditEntry: OrgUnblockUserAuditEntry;
-  OrgUpdateDefaultRepositoryPermissionAuditEntry: OrgUpdateDefaultRepositoryPermissionAuditEntry;
-  OrgUpdateMemberAuditEntry: OrgUpdateMemberAuditEntry;
-  OrgUpdateMemberRepositoryCreationPermissionAuditEntry: OrgUpdateMemberRepositoryCreationPermissionAuditEntry;
-  OrgUpdateMemberRepositoryInvitationPermissionAuditEntry: OrgUpdateMemberRepositoryInvitationPermissionAuditEntry;
-  PrivateRepositoryForkingDisableAuditEntry: PrivateRepositoryForkingDisableAuditEntry;
-  PrivateRepositoryForkingEnableAuditEntry: PrivateRepositoryForkingEnableAuditEntry;
-  RepoAccessAuditEntry: RepoAccessAuditEntry;
-  RepoAddMemberAuditEntry: RepoAddMemberAuditEntry;
-  RepoAddTopicAuditEntry: RepoAddTopicAuditEntry;
-  RepoArchivedAuditEntry: RepoArchivedAuditEntry;
-  RepoChangeMergeSettingAuditEntry: RepoChangeMergeSettingAuditEntry;
-  RepoConfigDisableAnonymousGitAccessAuditEntry: RepoConfigDisableAnonymousGitAccessAuditEntry;
-  RepoConfigDisableCollaboratorsOnlyAuditEntry: RepoConfigDisableCollaboratorsOnlyAuditEntry;
-  RepoConfigDisableContributorsOnlyAuditEntry: RepoConfigDisableContributorsOnlyAuditEntry;
-  RepoConfigDisableSockpuppetDisallowedAuditEntry: RepoConfigDisableSockpuppetDisallowedAuditEntry;
-  RepoConfigEnableAnonymousGitAccessAuditEntry: RepoConfigEnableAnonymousGitAccessAuditEntry;
-  RepoConfigEnableCollaboratorsOnlyAuditEntry: RepoConfigEnableCollaboratorsOnlyAuditEntry;
-  RepoConfigEnableContributorsOnlyAuditEntry: RepoConfigEnableContributorsOnlyAuditEntry;
-  RepoConfigEnableSockpuppetDisallowedAuditEntry: RepoConfigEnableSockpuppetDisallowedAuditEntry;
-  RepoConfigLockAnonymousGitAccessAuditEntry: RepoConfigLockAnonymousGitAccessAuditEntry;
-  RepoConfigUnlockAnonymousGitAccessAuditEntry: RepoConfigUnlockAnonymousGitAccessAuditEntry;
-  RepoCreateAuditEntry: RepoCreateAuditEntry;
-  RepoDestroyAuditEntry: RepoDestroyAuditEntry;
-  RepoRemoveMemberAuditEntry: RepoRemoveMemberAuditEntry;
-  RepoRemoveTopicAuditEntry: RepoRemoveTopicAuditEntry;
-  RepositoryVisibilityChangeDisableAuditEntry: RepositoryVisibilityChangeDisableAuditEntry;
-  RepositoryVisibilityChangeEnableAuditEntry: RepositoryVisibilityChangeEnableAuditEntry;
-  TeamAddMemberAuditEntry: TeamAddMemberAuditEntry;
-  TeamAddRepositoryAuditEntry: TeamAddRepositoryAuditEntry;
-  TeamChangeParentTeamAuditEntry: TeamChangeParentTeamAuditEntry;
-  TeamRemoveMemberAuditEntry: TeamRemoveMemberAuditEntry;
-  TeamRemoveRepositoryAuditEntry: TeamRemoveRepositoryAuditEntry;
+  MembersCanDeleteReposClearAuditEntry?: MembersCanDeleteReposClearAuditEntry;
+  MembersCanDeleteReposDisableAuditEntry?: MembersCanDeleteReposDisableAuditEntry;
+  MembersCanDeleteReposEnableAuditEntry?: MembersCanDeleteReposEnableAuditEntry;
+  OauthApplicationCreateAuditEntry?: OauthApplicationCreateAuditEntry;
+  OrgAddBillingManagerAuditEntry?: OrgAddBillingManagerAuditEntry;
+  OrgAddMemberAuditEntry?: OrgAddMemberAuditEntry;
+  OrgBlockUserAuditEntry?: OrgBlockUserAuditEntry;
+  OrgConfigDisableCollaboratorsOnlyAuditEntry?: OrgConfigDisableCollaboratorsOnlyAuditEntry;
+  OrgConfigEnableCollaboratorsOnlyAuditEntry?: OrgConfigEnableCollaboratorsOnlyAuditEntry;
+  OrgCreateAuditEntry?: OrgCreateAuditEntry;
+  OrgDisableOauthAppRestrictionsAuditEntry?: OrgDisableOauthAppRestrictionsAuditEntry;
+  OrgDisableSamlAuditEntry?: OrgDisableSamlAuditEntry;
+  OrgDisableTwoFactorRequirementAuditEntry?: OrgDisableTwoFactorRequirementAuditEntry;
+  OrgEnableOauthAppRestrictionsAuditEntry?: OrgEnableOauthAppRestrictionsAuditEntry;
+  OrgEnableSamlAuditEntry?: OrgEnableSamlAuditEntry;
+  OrgEnableTwoFactorRequirementAuditEntry?: OrgEnableTwoFactorRequirementAuditEntry;
+  OrgInviteMemberAuditEntry?: OrgInviteMemberAuditEntry;
+  OrgInviteToBusinessAuditEntry?: OrgInviteToBusinessAuditEntry;
+  OrgOauthAppAccessApprovedAuditEntry?: OrgOauthAppAccessApprovedAuditEntry;
+  OrgOauthAppAccessDeniedAuditEntry?: OrgOauthAppAccessDeniedAuditEntry;
+  OrgOauthAppAccessRequestedAuditEntry?: OrgOauthAppAccessRequestedAuditEntry;
+  OrgRemoveBillingManagerAuditEntry?: OrgRemoveBillingManagerAuditEntry;
+  OrgRemoveMemberAuditEntry?: OrgRemoveMemberAuditEntry;
+  OrgRemoveOutsideCollaboratorAuditEntry?: OrgRemoveOutsideCollaboratorAuditEntry;
+  OrgRestoreMemberAuditEntry?: OrgRestoreMemberAuditEntry;
+  OrgUnblockUserAuditEntry?: OrgUnblockUserAuditEntry;
+  OrgUpdateDefaultRepositoryPermissionAuditEntry?: OrgUpdateDefaultRepositoryPermissionAuditEntry;
+  OrgUpdateMemberAuditEntry?: OrgUpdateMemberAuditEntry;
+  OrgUpdateMemberRepositoryCreationPermissionAuditEntry?: OrgUpdateMemberRepositoryCreationPermissionAuditEntry;
+  OrgUpdateMemberRepositoryInvitationPermissionAuditEntry?: OrgUpdateMemberRepositoryInvitationPermissionAuditEntry;
+  PrivateRepositoryForkingDisableAuditEntry?: PrivateRepositoryForkingDisableAuditEntry;
+  PrivateRepositoryForkingEnableAuditEntry?: PrivateRepositoryForkingEnableAuditEntry;
+  RepoAccessAuditEntry?: RepoAccessAuditEntry;
+  RepoAddMemberAuditEntry?: RepoAddMemberAuditEntry;
+  RepoAddTopicAuditEntry?: RepoAddTopicAuditEntry;
+  RepoArchivedAuditEntry?: RepoArchivedAuditEntry;
+  RepoChangeMergeSettingAuditEntry?: RepoChangeMergeSettingAuditEntry;
+  RepoConfigDisableAnonymousGitAccessAuditEntry?: RepoConfigDisableAnonymousGitAccessAuditEntry;
+  RepoConfigDisableCollaboratorsOnlyAuditEntry?: RepoConfigDisableCollaboratorsOnlyAuditEntry;
+  RepoConfigDisableContributorsOnlyAuditEntry?: RepoConfigDisableContributorsOnlyAuditEntry;
+  RepoConfigDisableSockpuppetDisallowedAuditEntry?: RepoConfigDisableSockpuppetDisallowedAuditEntry;
+  RepoConfigEnableAnonymousGitAccessAuditEntry?: RepoConfigEnableAnonymousGitAccessAuditEntry;
+  RepoConfigEnableCollaboratorsOnlyAuditEntry?: RepoConfigEnableCollaboratorsOnlyAuditEntry;
+  RepoConfigEnableContributorsOnlyAuditEntry?: RepoConfigEnableContributorsOnlyAuditEntry;
+  RepoConfigEnableSockpuppetDisallowedAuditEntry?: RepoConfigEnableSockpuppetDisallowedAuditEntry;
+  RepoConfigLockAnonymousGitAccessAuditEntry?: RepoConfigLockAnonymousGitAccessAuditEntry;
+  RepoConfigUnlockAnonymousGitAccessAuditEntry?: RepoConfigUnlockAnonymousGitAccessAuditEntry;
+  RepoCreateAuditEntry?: RepoCreateAuditEntry;
+  RepoDestroyAuditEntry?: RepoDestroyAuditEntry;
+  RepoRemoveMemberAuditEntry?: RepoRemoveMemberAuditEntry;
+  RepoRemoveTopicAuditEntry?: RepoRemoveTopicAuditEntry;
+  RepositoryVisibilityChangeDisableAuditEntry?: RepositoryVisibilityChangeDisableAuditEntry;
+  RepositoryVisibilityChangeEnableAuditEntry?: RepositoryVisibilityChangeEnableAuditEntry;
+  TeamAddMemberAuditEntry?: TeamAddMemberAuditEntry;
+  TeamAddRepositoryAuditEntry?: TeamAddRepositoryAuditEntry;
+  TeamChangeParentTeamAuditEntry?: TeamChangeParentTeamAuditEntry;
+  TeamRemoveMemberAuditEntry?: TeamRemoveMemberAuditEntry;
+  TeamRemoveRepositoryAuditEntry?: TeamRemoveRepositoryAuditEntry;
 }
 
 export interface $EnterpriseAuditEntryData {
-  MembersCanDeleteReposClearAuditEntry: MembersCanDeleteReposClearAuditEntry;
-  MembersCanDeleteReposDisableAuditEntry: MembersCanDeleteReposDisableAuditEntry;
-  MembersCanDeleteReposEnableAuditEntry: MembersCanDeleteReposEnableAuditEntry;
-  OrgInviteToBusinessAuditEntry: OrgInviteToBusinessAuditEntry;
-  PrivateRepositoryForkingDisableAuditEntry: PrivateRepositoryForkingDisableAuditEntry;
-  PrivateRepositoryForkingEnableAuditEntry: PrivateRepositoryForkingEnableAuditEntry;
-  RepositoryVisibilityChangeDisableAuditEntry: RepositoryVisibilityChangeDisableAuditEntry;
-  RepositoryVisibilityChangeEnableAuditEntry: RepositoryVisibilityChangeEnableAuditEntry;
+  MembersCanDeleteReposClearAuditEntry?: MembersCanDeleteReposClearAuditEntry;
+  MembersCanDeleteReposDisableAuditEntry?: MembersCanDeleteReposDisableAuditEntry;
+  MembersCanDeleteReposEnableAuditEntry?: MembersCanDeleteReposEnableAuditEntry;
+  OrgInviteToBusinessAuditEntry?: OrgInviteToBusinessAuditEntry;
+  PrivateRepositoryForkingDisableAuditEntry?: PrivateRepositoryForkingDisableAuditEntry;
+  PrivateRepositoryForkingEnableAuditEntry?: PrivateRepositoryForkingEnableAuditEntry;
+  RepositoryVisibilityChangeDisableAuditEntry?: RepositoryVisibilityChangeDisableAuditEntry;
+  RepositoryVisibilityChangeEnableAuditEntry?: RepositoryVisibilityChangeEnableAuditEntry;
 }
 
 export interface $OrganizationAuditEntryData {
-  MembersCanDeleteReposClearAuditEntry: MembersCanDeleteReposClearAuditEntry;
-  MembersCanDeleteReposDisableAuditEntry: MembersCanDeleteReposDisableAuditEntry;
-  MembersCanDeleteReposEnableAuditEntry: MembersCanDeleteReposEnableAuditEntry;
-  OauthApplicationCreateAuditEntry: OauthApplicationCreateAuditEntry;
-  OrgAddBillingManagerAuditEntry: OrgAddBillingManagerAuditEntry;
-  OrgAddMemberAuditEntry: OrgAddMemberAuditEntry;
-  OrgBlockUserAuditEntry: OrgBlockUserAuditEntry;
-  OrgConfigDisableCollaboratorsOnlyAuditEntry: OrgConfigDisableCollaboratorsOnlyAuditEntry;
-  OrgConfigEnableCollaboratorsOnlyAuditEntry: OrgConfigEnableCollaboratorsOnlyAuditEntry;
-  OrgCreateAuditEntry: OrgCreateAuditEntry;
-  OrgDisableOauthAppRestrictionsAuditEntry: OrgDisableOauthAppRestrictionsAuditEntry;
-  OrgDisableSamlAuditEntry: OrgDisableSamlAuditEntry;
-  OrgDisableTwoFactorRequirementAuditEntry: OrgDisableTwoFactorRequirementAuditEntry;
-  OrgEnableOauthAppRestrictionsAuditEntry: OrgEnableOauthAppRestrictionsAuditEntry;
-  OrgEnableSamlAuditEntry: OrgEnableSamlAuditEntry;
-  OrgEnableTwoFactorRequirementAuditEntry: OrgEnableTwoFactorRequirementAuditEntry;
-  OrgInviteMemberAuditEntry: OrgInviteMemberAuditEntry;
-  OrgInviteToBusinessAuditEntry: OrgInviteToBusinessAuditEntry;
-  OrgOauthAppAccessApprovedAuditEntry: OrgOauthAppAccessApprovedAuditEntry;
-  OrgOauthAppAccessDeniedAuditEntry: OrgOauthAppAccessDeniedAuditEntry;
-  OrgOauthAppAccessRequestedAuditEntry: OrgOauthAppAccessRequestedAuditEntry;
-  OrgRemoveBillingManagerAuditEntry: OrgRemoveBillingManagerAuditEntry;
-  OrgRemoveMemberAuditEntry: OrgRemoveMemberAuditEntry;
-  OrgRemoveOutsideCollaboratorAuditEntry: OrgRemoveOutsideCollaboratorAuditEntry;
-  OrgRestoreMemberAuditEntry: OrgRestoreMemberAuditEntry;
-  OrgRestoreMemberMembershipOrganizationAuditEntryData: OrgRestoreMemberMembershipOrganizationAuditEntryData;
-  OrgUnblockUserAuditEntry: OrgUnblockUserAuditEntry;
-  OrgUpdateDefaultRepositoryPermissionAuditEntry: OrgUpdateDefaultRepositoryPermissionAuditEntry;
-  OrgUpdateMemberAuditEntry: OrgUpdateMemberAuditEntry;
-  OrgUpdateMemberRepositoryCreationPermissionAuditEntry: OrgUpdateMemberRepositoryCreationPermissionAuditEntry;
-  OrgUpdateMemberRepositoryInvitationPermissionAuditEntry: OrgUpdateMemberRepositoryInvitationPermissionAuditEntry;
-  PrivateRepositoryForkingDisableAuditEntry: PrivateRepositoryForkingDisableAuditEntry;
-  PrivateRepositoryForkingEnableAuditEntry: PrivateRepositoryForkingEnableAuditEntry;
-  RepoAccessAuditEntry: RepoAccessAuditEntry;
-  RepoAddMemberAuditEntry: RepoAddMemberAuditEntry;
-  RepoAddTopicAuditEntry: RepoAddTopicAuditEntry;
-  RepoArchivedAuditEntry: RepoArchivedAuditEntry;
-  RepoChangeMergeSettingAuditEntry: RepoChangeMergeSettingAuditEntry;
-  RepoConfigDisableAnonymousGitAccessAuditEntry: RepoConfigDisableAnonymousGitAccessAuditEntry;
-  RepoConfigDisableCollaboratorsOnlyAuditEntry: RepoConfigDisableCollaboratorsOnlyAuditEntry;
-  RepoConfigDisableContributorsOnlyAuditEntry: RepoConfigDisableContributorsOnlyAuditEntry;
-  RepoConfigDisableSockpuppetDisallowedAuditEntry: RepoConfigDisableSockpuppetDisallowedAuditEntry;
-  RepoConfigEnableAnonymousGitAccessAuditEntry: RepoConfigEnableAnonymousGitAccessAuditEntry;
-  RepoConfigEnableCollaboratorsOnlyAuditEntry: RepoConfigEnableCollaboratorsOnlyAuditEntry;
-  RepoConfigEnableContributorsOnlyAuditEntry: RepoConfigEnableContributorsOnlyAuditEntry;
-  RepoConfigEnableSockpuppetDisallowedAuditEntry: RepoConfigEnableSockpuppetDisallowedAuditEntry;
-  RepoConfigLockAnonymousGitAccessAuditEntry: RepoConfigLockAnonymousGitAccessAuditEntry;
-  RepoConfigUnlockAnonymousGitAccessAuditEntry: RepoConfigUnlockAnonymousGitAccessAuditEntry;
-  RepoCreateAuditEntry: RepoCreateAuditEntry;
-  RepoDestroyAuditEntry: RepoDestroyAuditEntry;
-  RepoRemoveMemberAuditEntry: RepoRemoveMemberAuditEntry;
-  RepoRemoveTopicAuditEntry: RepoRemoveTopicAuditEntry;
-  RepositoryVisibilityChangeDisableAuditEntry: RepositoryVisibilityChangeDisableAuditEntry;
-  RepositoryVisibilityChangeEnableAuditEntry: RepositoryVisibilityChangeEnableAuditEntry;
-  TeamAddMemberAuditEntry: TeamAddMemberAuditEntry;
-  TeamAddRepositoryAuditEntry: TeamAddRepositoryAuditEntry;
-  TeamChangeParentTeamAuditEntry: TeamChangeParentTeamAuditEntry;
-  TeamRemoveMemberAuditEntry: TeamRemoveMemberAuditEntry;
-  TeamRemoveRepositoryAuditEntry: TeamRemoveRepositoryAuditEntry;
+  MembersCanDeleteReposClearAuditEntry?: MembersCanDeleteReposClearAuditEntry;
+  MembersCanDeleteReposDisableAuditEntry?: MembersCanDeleteReposDisableAuditEntry;
+  MembersCanDeleteReposEnableAuditEntry?: MembersCanDeleteReposEnableAuditEntry;
+  OauthApplicationCreateAuditEntry?: OauthApplicationCreateAuditEntry;
+  OrgAddBillingManagerAuditEntry?: OrgAddBillingManagerAuditEntry;
+  OrgAddMemberAuditEntry?: OrgAddMemberAuditEntry;
+  OrgBlockUserAuditEntry?: OrgBlockUserAuditEntry;
+  OrgConfigDisableCollaboratorsOnlyAuditEntry?: OrgConfigDisableCollaboratorsOnlyAuditEntry;
+  OrgConfigEnableCollaboratorsOnlyAuditEntry?: OrgConfigEnableCollaboratorsOnlyAuditEntry;
+  OrgCreateAuditEntry?: OrgCreateAuditEntry;
+  OrgDisableOauthAppRestrictionsAuditEntry?: OrgDisableOauthAppRestrictionsAuditEntry;
+  OrgDisableSamlAuditEntry?: OrgDisableSamlAuditEntry;
+  OrgDisableTwoFactorRequirementAuditEntry?: OrgDisableTwoFactorRequirementAuditEntry;
+  OrgEnableOauthAppRestrictionsAuditEntry?: OrgEnableOauthAppRestrictionsAuditEntry;
+  OrgEnableSamlAuditEntry?: OrgEnableSamlAuditEntry;
+  OrgEnableTwoFactorRequirementAuditEntry?: OrgEnableTwoFactorRequirementAuditEntry;
+  OrgInviteMemberAuditEntry?: OrgInviteMemberAuditEntry;
+  OrgInviteToBusinessAuditEntry?: OrgInviteToBusinessAuditEntry;
+  OrgOauthAppAccessApprovedAuditEntry?: OrgOauthAppAccessApprovedAuditEntry;
+  OrgOauthAppAccessDeniedAuditEntry?: OrgOauthAppAccessDeniedAuditEntry;
+  OrgOauthAppAccessRequestedAuditEntry?: OrgOauthAppAccessRequestedAuditEntry;
+  OrgRemoveBillingManagerAuditEntry?: OrgRemoveBillingManagerAuditEntry;
+  OrgRemoveMemberAuditEntry?: OrgRemoveMemberAuditEntry;
+  OrgRemoveOutsideCollaboratorAuditEntry?: OrgRemoveOutsideCollaboratorAuditEntry;
+  OrgRestoreMemberAuditEntry?: OrgRestoreMemberAuditEntry;
+  OrgRestoreMemberMembershipOrganizationAuditEntryData?: OrgRestoreMemberMembershipOrganizationAuditEntryData;
+  OrgUnblockUserAuditEntry?: OrgUnblockUserAuditEntry;
+  OrgUpdateDefaultRepositoryPermissionAuditEntry?: OrgUpdateDefaultRepositoryPermissionAuditEntry;
+  OrgUpdateMemberAuditEntry?: OrgUpdateMemberAuditEntry;
+  OrgUpdateMemberRepositoryCreationPermissionAuditEntry?: OrgUpdateMemberRepositoryCreationPermissionAuditEntry;
+  OrgUpdateMemberRepositoryInvitationPermissionAuditEntry?: OrgUpdateMemberRepositoryInvitationPermissionAuditEntry;
+  PrivateRepositoryForkingDisableAuditEntry?: PrivateRepositoryForkingDisableAuditEntry;
+  PrivateRepositoryForkingEnableAuditEntry?: PrivateRepositoryForkingEnableAuditEntry;
+  RepoAccessAuditEntry?: RepoAccessAuditEntry;
+  RepoAddMemberAuditEntry?: RepoAddMemberAuditEntry;
+  RepoAddTopicAuditEntry?: RepoAddTopicAuditEntry;
+  RepoArchivedAuditEntry?: RepoArchivedAuditEntry;
+  RepoChangeMergeSettingAuditEntry?: RepoChangeMergeSettingAuditEntry;
+  RepoConfigDisableAnonymousGitAccessAuditEntry?: RepoConfigDisableAnonymousGitAccessAuditEntry;
+  RepoConfigDisableCollaboratorsOnlyAuditEntry?: RepoConfigDisableCollaboratorsOnlyAuditEntry;
+  RepoConfigDisableContributorsOnlyAuditEntry?: RepoConfigDisableContributorsOnlyAuditEntry;
+  RepoConfigDisableSockpuppetDisallowedAuditEntry?: RepoConfigDisableSockpuppetDisallowedAuditEntry;
+  RepoConfigEnableAnonymousGitAccessAuditEntry?: RepoConfigEnableAnonymousGitAccessAuditEntry;
+  RepoConfigEnableCollaboratorsOnlyAuditEntry?: RepoConfigEnableCollaboratorsOnlyAuditEntry;
+  RepoConfigEnableContributorsOnlyAuditEntry?: RepoConfigEnableContributorsOnlyAuditEntry;
+  RepoConfigEnableSockpuppetDisallowedAuditEntry?: RepoConfigEnableSockpuppetDisallowedAuditEntry;
+  RepoConfigLockAnonymousGitAccessAuditEntry?: RepoConfigLockAnonymousGitAccessAuditEntry;
+  RepoConfigUnlockAnonymousGitAccessAuditEntry?: RepoConfigUnlockAnonymousGitAccessAuditEntry;
+  RepoCreateAuditEntry?: RepoCreateAuditEntry;
+  RepoDestroyAuditEntry?: RepoDestroyAuditEntry;
+  RepoRemoveMemberAuditEntry?: RepoRemoveMemberAuditEntry;
+  RepoRemoveTopicAuditEntry?: RepoRemoveTopicAuditEntry;
+  RepositoryVisibilityChangeDisableAuditEntry?: RepositoryVisibilityChangeDisableAuditEntry;
+  RepositoryVisibilityChangeEnableAuditEntry?: RepositoryVisibilityChangeEnableAuditEntry;
+  TeamAddMemberAuditEntry?: TeamAddMemberAuditEntry;
+  TeamAddRepositoryAuditEntry?: TeamAddRepositoryAuditEntry;
+  TeamChangeParentTeamAuditEntry?: TeamChangeParentTeamAuditEntry;
+  TeamRemoveMemberAuditEntry?: TeamRemoveMemberAuditEntry;
+  TeamRemoveRepositoryAuditEntry?: TeamRemoveRepositoryAuditEntry;
 }
 
 export interface $MilestoneItem {
-  Issue: Issue;
-  PullRequest: PullRequest;
+  Issue?: Issue;
+  PullRequest?: PullRequest;
 }
 
 export interface $OauthApplicationAuditEntryData {
-  OauthApplicationCreateAuditEntry: OauthApplicationCreateAuditEntry;
-  OrgOauthAppAccessApprovedAuditEntry: OrgOauthAppAccessApprovedAuditEntry;
-  OrgOauthAppAccessDeniedAuditEntry: OrgOauthAppAccessDeniedAuditEntry;
-  OrgOauthAppAccessRequestedAuditEntry: OrgOauthAppAccessRequestedAuditEntry;
+  OauthApplicationCreateAuditEntry?: OauthApplicationCreateAuditEntry;
+  OrgOauthAppAccessApprovedAuditEntry?: OrgOauthAppAccessApprovedAuditEntry;
+  OrgOauthAppAccessDeniedAuditEntry?: OrgOauthAppAccessDeniedAuditEntry;
+  OrgOauthAppAccessRequestedAuditEntry?: OrgOauthAppAccessRequestedAuditEntry;
 }
 
 export interface $OrgRestoreMemberAuditEntryMembership {
-  OrgRestoreMemberMembershipOrganizationAuditEntryData: OrgRestoreMemberMembershipOrganizationAuditEntryData;
-  OrgRestoreMemberMembershipRepositoryAuditEntryData: OrgRestoreMemberMembershipRepositoryAuditEntryData;
-  OrgRestoreMemberMembershipTeamAuditEntryData: OrgRestoreMemberMembershipTeamAuditEntryData;
+  OrgRestoreMemberMembershipOrganizationAuditEntryData?: OrgRestoreMemberMembershipOrganizationAuditEntryData;
+  OrgRestoreMemberMembershipRepositoryAuditEntryData?: OrgRestoreMemberMembershipRepositoryAuditEntryData;
+  OrgRestoreMemberMembershipTeamAuditEntryData?: OrgRestoreMemberMembershipTeamAuditEntryData;
 }
 
 export interface $RepositoryAuditEntryData {
-  OrgRestoreMemberMembershipRepositoryAuditEntryData: OrgRestoreMemberMembershipRepositoryAuditEntryData;
-  PrivateRepositoryForkingDisableAuditEntry: PrivateRepositoryForkingDisableAuditEntry;
-  PrivateRepositoryForkingEnableAuditEntry: PrivateRepositoryForkingEnableAuditEntry;
-  RepoAccessAuditEntry: RepoAccessAuditEntry;
-  RepoAddMemberAuditEntry: RepoAddMemberAuditEntry;
-  RepoAddTopicAuditEntry: RepoAddTopicAuditEntry;
-  RepoArchivedAuditEntry: RepoArchivedAuditEntry;
-  RepoChangeMergeSettingAuditEntry: RepoChangeMergeSettingAuditEntry;
-  RepoConfigDisableAnonymousGitAccessAuditEntry: RepoConfigDisableAnonymousGitAccessAuditEntry;
-  RepoConfigDisableCollaboratorsOnlyAuditEntry: RepoConfigDisableCollaboratorsOnlyAuditEntry;
-  RepoConfigDisableContributorsOnlyAuditEntry: RepoConfigDisableContributorsOnlyAuditEntry;
-  RepoConfigDisableSockpuppetDisallowedAuditEntry: RepoConfigDisableSockpuppetDisallowedAuditEntry;
-  RepoConfigEnableAnonymousGitAccessAuditEntry: RepoConfigEnableAnonymousGitAccessAuditEntry;
-  RepoConfigEnableCollaboratorsOnlyAuditEntry: RepoConfigEnableCollaboratorsOnlyAuditEntry;
-  RepoConfigEnableContributorsOnlyAuditEntry: RepoConfigEnableContributorsOnlyAuditEntry;
-  RepoConfigEnableSockpuppetDisallowedAuditEntry: RepoConfigEnableSockpuppetDisallowedAuditEntry;
-  RepoConfigLockAnonymousGitAccessAuditEntry: RepoConfigLockAnonymousGitAccessAuditEntry;
-  RepoConfigUnlockAnonymousGitAccessAuditEntry: RepoConfigUnlockAnonymousGitAccessAuditEntry;
-  RepoCreateAuditEntry: RepoCreateAuditEntry;
-  RepoDestroyAuditEntry: RepoDestroyAuditEntry;
-  RepoRemoveMemberAuditEntry: RepoRemoveMemberAuditEntry;
-  RepoRemoveTopicAuditEntry: RepoRemoveTopicAuditEntry;
-  TeamAddRepositoryAuditEntry: TeamAddRepositoryAuditEntry;
-  TeamRemoveRepositoryAuditEntry: TeamRemoveRepositoryAuditEntry;
+  OrgRestoreMemberMembershipRepositoryAuditEntryData?: OrgRestoreMemberMembershipRepositoryAuditEntryData;
+  PrivateRepositoryForkingDisableAuditEntry?: PrivateRepositoryForkingDisableAuditEntry;
+  PrivateRepositoryForkingEnableAuditEntry?: PrivateRepositoryForkingEnableAuditEntry;
+  RepoAccessAuditEntry?: RepoAccessAuditEntry;
+  RepoAddMemberAuditEntry?: RepoAddMemberAuditEntry;
+  RepoAddTopicAuditEntry?: RepoAddTopicAuditEntry;
+  RepoArchivedAuditEntry?: RepoArchivedAuditEntry;
+  RepoChangeMergeSettingAuditEntry?: RepoChangeMergeSettingAuditEntry;
+  RepoConfigDisableAnonymousGitAccessAuditEntry?: RepoConfigDisableAnonymousGitAccessAuditEntry;
+  RepoConfigDisableCollaboratorsOnlyAuditEntry?: RepoConfigDisableCollaboratorsOnlyAuditEntry;
+  RepoConfigDisableContributorsOnlyAuditEntry?: RepoConfigDisableContributorsOnlyAuditEntry;
+  RepoConfigDisableSockpuppetDisallowedAuditEntry?: RepoConfigDisableSockpuppetDisallowedAuditEntry;
+  RepoConfigEnableAnonymousGitAccessAuditEntry?: RepoConfigEnableAnonymousGitAccessAuditEntry;
+  RepoConfigEnableCollaboratorsOnlyAuditEntry?: RepoConfigEnableCollaboratorsOnlyAuditEntry;
+  RepoConfigEnableContributorsOnlyAuditEntry?: RepoConfigEnableContributorsOnlyAuditEntry;
+  RepoConfigEnableSockpuppetDisallowedAuditEntry?: RepoConfigEnableSockpuppetDisallowedAuditEntry;
+  RepoConfigLockAnonymousGitAccessAuditEntry?: RepoConfigLockAnonymousGitAccessAuditEntry;
+  RepoConfigUnlockAnonymousGitAccessAuditEntry?: RepoConfigUnlockAnonymousGitAccessAuditEntry;
+  RepoCreateAuditEntry?: RepoCreateAuditEntry;
+  RepoDestroyAuditEntry?: RepoDestroyAuditEntry;
+  RepoRemoveMemberAuditEntry?: RepoRemoveMemberAuditEntry;
+  RepoRemoveTopicAuditEntry?: RepoRemoveTopicAuditEntry;
+  TeamAddRepositoryAuditEntry?: TeamAddRepositoryAuditEntry;
+  TeamRemoveRepositoryAuditEntry?: TeamRemoveRepositoryAuditEntry;
 }
 
 export interface $TeamAuditEntryData {
-  OrgRestoreMemberMembershipTeamAuditEntryData: OrgRestoreMemberMembershipTeamAuditEntryData;
-  TeamAddMemberAuditEntry: TeamAddMemberAuditEntry;
-  TeamAddRepositoryAuditEntry: TeamAddRepositoryAuditEntry;
-  TeamChangeParentTeamAuditEntry: TeamChangeParentTeamAuditEntry;
-  TeamRemoveMemberAuditEntry: TeamRemoveMemberAuditEntry;
-  TeamRemoveRepositoryAuditEntry: TeamRemoveRepositoryAuditEntry;
+  OrgRestoreMemberMembershipTeamAuditEntryData?: OrgRestoreMemberMembershipTeamAuditEntryData;
+  TeamAddMemberAuditEntry?: TeamAddMemberAuditEntry;
+  TeamAddRepositoryAuditEntry?: TeamAddRepositoryAuditEntry;
+  TeamChangeParentTeamAuditEntry?: TeamChangeParentTeamAuditEntry;
+  TeamRemoveMemberAuditEntry?: TeamRemoveMemberAuditEntry;
+  TeamRemoveRepositoryAuditEntry?: TeamRemoveRepositoryAuditEntry;
 }
 
 export interface $PackageOwner {
-  Organization: Organization;
-  Repository: Repository;
-  User: User;
+  Organization?: Organization;
+  Repository?: Repository;
+  User?: User;
 }
 
 export interface $ProjectOwner {
-  Organization: Organization;
-  Repository: Repository;
-  User: User;
+  Organization?: Organization;
+  Repository?: Repository;
+  User?: User;
 }
 
 export interface $RepositoryDiscussionAuthor {
-  Organization: Organization;
-  User: User;
+  Organization?: Organization;
+  User?: User;
 }
 
 export interface $RepositoryDiscussionCommentAuthor {
-  Organization: Organization;
-  User: User;
+  Organization?: Organization;
+  User?: User;
 }
 
 export interface $RepositoryOwner {
-  Organization: Organization;
-  User: User;
+  Organization?: Organization;
+  User?: User;
 }
 
 export interface $MemberStatusable {
-  Organization: Organization;
-  Team: Team;
+  Organization?: Organization;
+  Team?: Team;
 }
 
 export interface $ProfileOwner {
-  Organization: Organization;
-  User: User;
+  Organization?: Organization;
+  User?: User;
 }
 
 export interface $Sponsorable {
-  Organization: Organization;
-  User: User;
+  Organization?: Organization;
+  User?: User;
 }
 
 export interface $OrganizationAuditEntry {
-  MembersCanDeleteReposClearAuditEntry: MembersCanDeleteReposClearAuditEntry;
-  MembersCanDeleteReposDisableAuditEntry: MembersCanDeleteReposDisableAuditEntry;
-  MembersCanDeleteReposEnableAuditEntry: MembersCanDeleteReposEnableAuditEntry;
-  OauthApplicationCreateAuditEntry: OauthApplicationCreateAuditEntry;
-  OrgAddBillingManagerAuditEntry: OrgAddBillingManagerAuditEntry;
-  OrgAddMemberAuditEntry: OrgAddMemberAuditEntry;
-  OrgBlockUserAuditEntry: OrgBlockUserAuditEntry;
-  OrgConfigDisableCollaboratorsOnlyAuditEntry: OrgConfigDisableCollaboratorsOnlyAuditEntry;
-  OrgConfigEnableCollaboratorsOnlyAuditEntry: OrgConfigEnableCollaboratorsOnlyAuditEntry;
-  OrgCreateAuditEntry: OrgCreateAuditEntry;
-  OrgDisableOauthAppRestrictionsAuditEntry: OrgDisableOauthAppRestrictionsAuditEntry;
-  OrgDisableSamlAuditEntry: OrgDisableSamlAuditEntry;
-  OrgDisableTwoFactorRequirementAuditEntry: OrgDisableTwoFactorRequirementAuditEntry;
-  OrgEnableOauthAppRestrictionsAuditEntry: OrgEnableOauthAppRestrictionsAuditEntry;
-  OrgEnableSamlAuditEntry: OrgEnableSamlAuditEntry;
-  OrgEnableTwoFactorRequirementAuditEntry: OrgEnableTwoFactorRequirementAuditEntry;
-  OrgInviteMemberAuditEntry: OrgInviteMemberAuditEntry;
-  OrgInviteToBusinessAuditEntry: OrgInviteToBusinessAuditEntry;
-  OrgOauthAppAccessApprovedAuditEntry: OrgOauthAppAccessApprovedAuditEntry;
-  OrgOauthAppAccessDeniedAuditEntry: OrgOauthAppAccessDeniedAuditEntry;
-  OrgOauthAppAccessRequestedAuditEntry: OrgOauthAppAccessRequestedAuditEntry;
-  OrgRemoveBillingManagerAuditEntry: OrgRemoveBillingManagerAuditEntry;
-  OrgRemoveMemberAuditEntry: OrgRemoveMemberAuditEntry;
-  OrgRemoveOutsideCollaboratorAuditEntry: OrgRemoveOutsideCollaboratorAuditEntry;
-  OrgRestoreMemberAuditEntry: OrgRestoreMemberAuditEntry;
-  OrgUnblockUserAuditEntry: OrgUnblockUserAuditEntry;
-  OrgUpdateDefaultRepositoryPermissionAuditEntry: OrgUpdateDefaultRepositoryPermissionAuditEntry;
-  OrgUpdateMemberAuditEntry: OrgUpdateMemberAuditEntry;
-  OrgUpdateMemberRepositoryCreationPermissionAuditEntry: OrgUpdateMemberRepositoryCreationPermissionAuditEntry;
-  OrgUpdateMemberRepositoryInvitationPermissionAuditEntry: OrgUpdateMemberRepositoryInvitationPermissionAuditEntry;
-  PrivateRepositoryForkingDisableAuditEntry: PrivateRepositoryForkingDisableAuditEntry;
-  PrivateRepositoryForkingEnableAuditEntry: PrivateRepositoryForkingEnableAuditEntry;
-  RepoAccessAuditEntry: RepoAccessAuditEntry;
-  RepoAddMemberAuditEntry: RepoAddMemberAuditEntry;
-  RepoAddTopicAuditEntry: RepoAddTopicAuditEntry;
-  RepoArchivedAuditEntry: RepoArchivedAuditEntry;
-  RepoChangeMergeSettingAuditEntry: RepoChangeMergeSettingAuditEntry;
-  RepoConfigDisableAnonymousGitAccessAuditEntry: RepoConfigDisableAnonymousGitAccessAuditEntry;
-  RepoConfigDisableCollaboratorsOnlyAuditEntry: RepoConfigDisableCollaboratorsOnlyAuditEntry;
-  RepoConfigDisableContributorsOnlyAuditEntry: RepoConfigDisableContributorsOnlyAuditEntry;
-  RepoConfigDisableSockpuppetDisallowedAuditEntry: RepoConfigDisableSockpuppetDisallowedAuditEntry;
-  RepoConfigEnableAnonymousGitAccessAuditEntry: RepoConfigEnableAnonymousGitAccessAuditEntry;
-  RepoConfigEnableCollaboratorsOnlyAuditEntry: RepoConfigEnableCollaboratorsOnlyAuditEntry;
-  RepoConfigEnableContributorsOnlyAuditEntry: RepoConfigEnableContributorsOnlyAuditEntry;
-  RepoConfigEnableSockpuppetDisallowedAuditEntry: RepoConfigEnableSockpuppetDisallowedAuditEntry;
-  RepoConfigLockAnonymousGitAccessAuditEntry: RepoConfigLockAnonymousGitAccessAuditEntry;
-  RepoConfigUnlockAnonymousGitAccessAuditEntry: RepoConfigUnlockAnonymousGitAccessAuditEntry;
-  RepoCreateAuditEntry: RepoCreateAuditEntry;
-  RepoDestroyAuditEntry: RepoDestroyAuditEntry;
-  RepoRemoveMemberAuditEntry: RepoRemoveMemberAuditEntry;
-  RepoRemoveTopicAuditEntry: RepoRemoveTopicAuditEntry;
-  RepositoryVisibilityChangeDisableAuditEntry: RepositoryVisibilityChangeDisableAuditEntry;
-  RepositoryVisibilityChangeEnableAuditEntry: RepositoryVisibilityChangeEnableAuditEntry;
-  TeamAddMemberAuditEntry: TeamAddMemberAuditEntry;
-  TeamAddRepositoryAuditEntry: TeamAddRepositoryAuditEntry;
-  TeamChangeParentTeamAuditEntry: TeamChangeParentTeamAuditEntry;
-  TeamRemoveMemberAuditEntry: TeamRemoveMemberAuditEntry;
-  TeamRemoveRepositoryAuditEntry: TeamRemoveRepositoryAuditEntry;
+  MembersCanDeleteReposClearAuditEntry?: MembersCanDeleteReposClearAuditEntry;
+  MembersCanDeleteReposDisableAuditEntry?: MembersCanDeleteReposDisableAuditEntry;
+  MembersCanDeleteReposEnableAuditEntry?: MembersCanDeleteReposEnableAuditEntry;
+  OauthApplicationCreateAuditEntry?: OauthApplicationCreateAuditEntry;
+  OrgAddBillingManagerAuditEntry?: OrgAddBillingManagerAuditEntry;
+  OrgAddMemberAuditEntry?: OrgAddMemberAuditEntry;
+  OrgBlockUserAuditEntry?: OrgBlockUserAuditEntry;
+  OrgConfigDisableCollaboratorsOnlyAuditEntry?: OrgConfigDisableCollaboratorsOnlyAuditEntry;
+  OrgConfigEnableCollaboratorsOnlyAuditEntry?: OrgConfigEnableCollaboratorsOnlyAuditEntry;
+  OrgCreateAuditEntry?: OrgCreateAuditEntry;
+  OrgDisableOauthAppRestrictionsAuditEntry?: OrgDisableOauthAppRestrictionsAuditEntry;
+  OrgDisableSamlAuditEntry?: OrgDisableSamlAuditEntry;
+  OrgDisableTwoFactorRequirementAuditEntry?: OrgDisableTwoFactorRequirementAuditEntry;
+  OrgEnableOauthAppRestrictionsAuditEntry?: OrgEnableOauthAppRestrictionsAuditEntry;
+  OrgEnableSamlAuditEntry?: OrgEnableSamlAuditEntry;
+  OrgEnableTwoFactorRequirementAuditEntry?: OrgEnableTwoFactorRequirementAuditEntry;
+  OrgInviteMemberAuditEntry?: OrgInviteMemberAuditEntry;
+  OrgInviteToBusinessAuditEntry?: OrgInviteToBusinessAuditEntry;
+  OrgOauthAppAccessApprovedAuditEntry?: OrgOauthAppAccessApprovedAuditEntry;
+  OrgOauthAppAccessDeniedAuditEntry?: OrgOauthAppAccessDeniedAuditEntry;
+  OrgOauthAppAccessRequestedAuditEntry?: OrgOauthAppAccessRequestedAuditEntry;
+  OrgRemoveBillingManagerAuditEntry?: OrgRemoveBillingManagerAuditEntry;
+  OrgRemoveMemberAuditEntry?: OrgRemoveMemberAuditEntry;
+  OrgRemoveOutsideCollaboratorAuditEntry?: OrgRemoveOutsideCollaboratorAuditEntry;
+  OrgRestoreMemberAuditEntry?: OrgRestoreMemberAuditEntry;
+  OrgUnblockUserAuditEntry?: OrgUnblockUserAuditEntry;
+  OrgUpdateDefaultRepositoryPermissionAuditEntry?: OrgUpdateDefaultRepositoryPermissionAuditEntry;
+  OrgUpdateMemberAuditEntry?: OrgUpdateMemberAuditEntry;
+  OrgUpdateMemberRepositoryCreationPermissionAuditEntry?: OrgUpdateMemberRepositoryCreationPermissionAuditEntry;
+  OrgUpdateMemberRepositoryInvitationPermissionAuditEntry?: OrgUpdateMemberRepositoryInvitationPermissionAuditEntry;
+  PrivateRepositoryForkingDisableAuditEntry?: PrivateRepositoryForkingDisableAuditEntry;
+  PrivateRepositoryForkingEnableAuditEntry?: PrivateRepositoryForkingEnableAuditEntry;
+  RepoAccessAuditEntry?: RepoAccessAuditEntry;
+  RepoAddMemberAuditEntry?: RepoAddMemberAuditEntry;
+  RepoAddTopicAuditEntry?: RepoAddTopicAuditEntry;
+  RepoArchivedAuditEntry?: RepoArchivedAuditEntry;
+  RepoChangeMergeSettingAuditEntry?: RepoChangeMergeSettingAuditEntry;
+  RepoConfigDisableAnonymousGitAccessAuditEntry?: RepoConfigDisableAnonymousGitAccessAuditEntry;
+  RepoConfigDisableCollaboratorsOnlyAuditEntry?: RepoConfigDisableCollaboratorsOnlyAuditEntry;
+  RepoConfigDisableContributorsOnlyAuditEntry?: RepoConfigDisableContributorsOnlyAuditEntry;
+  RepoConfigDisableSockpuppetDisallowedAuditEntry?: RepoConfigDisableSockpuppetDisallowedAuditEntry;
+  RepoConfigEnableAnonymousGitAccessAuditEntry?: RepoConfigEnableAnonymousGitAccessAuditEntry;
+  RepoConfigEnableCollaboratorsOnlyAuditEntry?: RepoConfigEnableCollaboratorsOnlyAuditEntry;
+  RepoConfigEnableContributorsOnlyAuditEntry?: RepoConfigEnableContributorsOnlyAuditEntry;
+  RepoConfigEnableSockpuppetDisallowedAuditEntry?: RepoConfigEnableSockpuppetDisallowedAuditEntry;
+  RepoConfigLockAnonymousGitAccessAuditEntry?: RepoConfigLockAnonymousGitAccessAuditEntry;
+  RepoConfigUnlockAnonymousGitAccessAuditEntry?: RepoConfigUnlockAnonymousGitAccessAuditEntry;
+  RepoCreateAuditEntry?: RepoCreateAuditEntry;
+  RepoDestroyAuditEntry?: RepoDestroyAuditEntry;
+  RepoRemoveMemberAuditEntry?: RepoRemoveMemberAuditEntry;
+  RepoRemoveTopicAuditEntry?: RepoRemoveTopicAuditEntry;
+  RepositoryVisibilityChangeDisableAuditEntry?: RepositoryVisibilityChangeDisableAuditEntry;
+  RepositoryVisibilityChangeEnableAuditEntry?: RepositoryVisibilityChangeEnableAuditEntry;
+  TeamAddMemberAuditEntry?: TeamAddMemberAuditEntry;
+  TeamAddRepositoryAuditEntry?: TeamAddRepositoryAuditEntry;
+  TeamChangeParentTeamAuditEntry?: TeamChangeParentTeamAuditEntry;
+  TeamRemoveMemberAuditEntry?: TeamRemoveMemberAuditEntry;
+  TeamRemoveRepositoryAuditEntry?: TeamRemoveRepositoryAuditEntry;
 }
 
 export interface $PermissionGranter {
-  Organization: Organization;
-  Repository: Repository;
-  Team: Team;
+  Organization?: Organization;
+  Repository?: Repository;
+  Team?: Team;
 }
 
 export interface $PinnableItem {
-  Gist: Gist;
-  Repository: Repository;
+  Gist?: Gist;
+  Repository?: Repository;
 }
 
 export interface $ProjectCardItem {
-  Issue: Issue;
-  PullRequest: PullRequest;
+  Issue?: Issue;
+  PullRequest?: PullRequest;
 }
 
 export interface $PullRequestTimelineItem {
-  AssignedEvent: AssignedEvent;
-  BaseRefDeletedEvent: BaseRefDeletedEvent;
-  BaseRefForcePushedEvent: BaseRefForcePushedEvent;
-  ClosedEvent: ClosedEvent;
-  Commit: Commit;
-  CommitCommentThread: CommitCommentThread;
-  CrossReferencedEvent: CrossReferencedEvent;
-  DemilestonedEvent: DemilestonedEvent;
-  DeployedEvent: DeployedEvent;
-  DeploymentEnvironmentChangedEvent: DeploymentEnvironmentChangedEvent;
-  HeadRefDeletedEvent: HeadRefDeletedEvent;
-  HeadRefForcePushedEvent: HeadRefForcePushedEvent;
-  HeadRefRestoredEvent: HeadRefRestoredEvent;
-  IssueComment: IssueComment;
-  LabeledEvent: LabeledEvent;
-  LockedEvent: LockedEvent;
-  MergedEvent: MergedEvent;
-  MilestonedEvent: MilestonedEvent;
-  PullRequestReview: PullRequestReview;
-  PullRequestReviewComment: PullRequestReviewComment;
-  PullRequestReviewThread: PullRequestReviewThread;
-  ReferencedEvent: ReferencedEvent;
-  RenamedTitleEvent: RenamedTitleEvent;
-  ReopenedEvent: ReopenedEvent;
-  ReviewDismissedEvent: ReviewDismissedEvent;
-  ReviewRequestRemovedEvent: ReviewRequestRemovedEvent;
-  ReviewRequestedEvent: ReviewRequestedEvent;
-  SubscribedEvent: SubscribedEvent;
-  UnassignedEvent: UnassignedEvent;
-  UnlabeledEvent: UnlabeledEvent;
-  UnlockedEvent: UnlockedEvent;
-  UnsubscribedEvent: UnsubscribedEvent;
-  UserBlockedEvent: UserBlockedEvent;
+  AssignedEvent?: AssignedEvent;
+  BaseRefDeletedEvent?: BaseRefDeletedEvent;
+  BaseRefForcePushedEvent?: BaseRefForcePushedEvent;
+  ClosedEvent?: ClosedEvent;
+  Commit?: Commit;
+  CommitCommentThread?: CommitCommentThread;
+  CrossReferencedEvent?: CrossReferencedEvent;
+  DemilestonedEvent?: DemilestonedEvent;
+  DeployedEvent?: DeployedEvent;
+  DeploymentEnvironmentChangedEvent?: DeploymentEnvironmentChangedEvent;
+  HeadRefDeletedEvent?: HeadRefDeletedEvent;
+  HeadRefForcePushedEvent?: HeadRefForcePushedEvent;
+  HeadRefRestoredEvent?: HeadRefRestoredEvent;
+  IssueComment?: IssueComment;
+  LabeledEvent?: LabeledEvent;
+  LockedEvent?: LockedEvent;
+  MergedEvent?: MergedEvent;
+  MilestonedEvent?: MilestonedEvent;
+  PullRequestReview?: PullRequestReview;
+  PullRequestReviewComment?: PullRequestReviewComment;
+  PullRequestReviewThread?: PullRequestReviewThread;
+  ReferencedEvent?: ReferencedEvent;
+  RenamedTitleEvent?: RenamedTitleEvent;
+  ReopenedEvent?: ReopenedEvent;
+  ReviewDismissedEvent?: ReviewDismissedEvent;
+  ReviewRequestRemovedEvent?: ReviewRequestRemovedEvent;
+  ReviewRequestedEvent?: ReviewRequestedEvent;
+  SubscribedEvent?: SubscribedEvent;
+  UnassignedEvent?: UnassignedEvent;
+  UnlabeledEvent?: UnlabeledEvent;
+  UnlockedEvent?: UnlockedEvent;
+  UnsubscribedEvent?: UnsubscribedEvent;
+  UserBlockedEvent?: UserBlockedEvent;
 }
 
 export interface $PullRequestTimelineItems {
-  AddedToProjectEvent: AddedToProjectEvent;
-  AssignedEvent: AssignedEvent;
-  AutoMergeDisabledEvent: AutoMergeDisabledEvent;
-  AutoMergeEnabledEvent: AutoMergeEnabledEvent;
-  AutoRebaseEnabledEvent: AutoRebaseEnabledEvent;
-  AutoSquashEnabledEvent: AutoSquashEnabledEvent;
-  AutomaticBaseChangeFailedEvent: AutomaticBaseChangeFailedEvent;
-  AutomaticBaseChangeSucceededEvent: AutomaticBaseChangeSucceededEvent;
-  BaseRefChangedEvent: BaseRefChangedEvent;
-  BaseRefDeletedEvent: BaseRefDeletedEvent;
-  BaseRefForcePushedEvent: BaseRefForcePushedEvent;
-  ClosedEvent: ClosedEvent;
-  CommentDeletedEvent: CommentDeletedEvent;
-  ConnectedEvent: ConnectedEvent;
-  ConvertToDraftEvent: ConvertToDraftEvent;
-  ConvertedNoteToIssueEvent: ConvertedNoteToIssueEvent;
-  CrossReferencedEvent: CrossReferencedEvent;
-  DemilestonedEvent: DemilestonedEvent;
-  DeployedEvent: DeployedEvent;
-  DeploymentEnvironmentChangedEvent: DeploymentEnvironmentChangedEvent;
-  DisconnectedEvent: DisconnectedEvent;
-  HeadRefDeletedEvent: HeadRefDeletedEvent;
-  HeadRefForcePushedEvent: HeadRefForcePushedEvent;
-  HeadRefRestoredEvent: HeadRefRestoredEvent;
-  IssueComment: IssueComment;
-  LabeledEvent: LabeledEvent;
-  LockedEvent: LockedEvent;
-  MarkedAsDuplicateEvent: MarkedAsDuplicateEvent;
-  MentionedEvent: MentionedEvent;
-  MergedEvent: MergedEvent;
-  MilestonedEvent: MilestonedEvent;
-  MovedColumnsInProjectEvent: MovedColumnsInProjectEvent;
-  PinnedEvent: PinnedEvent;
-  PullRequestCommit: PullRequestCommit;
-  PullRequestCommitCommentThread: PullRequestCommitCommentThread;
-  PullRequestReview: PullRequestReview;
-  PullRequestReviewThread: PullRequestReviewThread;
-  PullRequestRevisionMarker: PullRequestRevisionMarker;
-  ReadyForReviewEvent: ReadyForReviewEvent;
-  ReferencedEvent: ReferencedEvent;
-  RemovedFromProjectEvent: RemovedFromProjectEvent;
-  RenamedTitleEvent: RenamedTitleEvent;
-  ReopenedEvent: ReopenedEvent;
-  ReviewDismissedEvent: ReviewDismissedEvent;
-  ReviewRequestRemovedEvent: ReviewRequestRemovedEvent;
-  ReviewRequestedEvent: ReviewRequestedEvent;
-  SubscribedEvent: SubscribedEvent;
-  TransferredEvent: TransferredEvent;
-  UnassignedEvent: UnassignedEvent;
-  UnlabeledEvent: UnlabeledEvent;
-  UnlockedEvent: UnlockedEvent;
-  UnmarkedAsDuplicateEvent: UnmarkedAsDuplicateEvent;
-  UnpinnedEvent: UnpinnedEvent;
-  UnsubscribedEvent: UnsubscribedEvent;
-  UserBlockedEvent: UserBlockedEvent;
+  AddedToProjectEvent?: AddedToProjectEvent;
+  AssignedEvent?: AssignedEvent;
+  AutoMergeDisabledEvent?: AutoMergeDisabledEvent;
+  AutoMergeEnabledEvent?: AutoMergeEnabledEvent;
+  AutoRebaseEnabledEvent?: AutoRebaseEnabledEvent;
+  AutoSquashEnabledEvent?: AutoSquashEnabledEvent;
+  AutomaticBaseChangeFailedEvent?: AutomaticBaseChangeFailedEvent;
+  AutomaticBaseChangeSucceededEvent?: AutomaticBaseChangeSucceededEvent;
+  BaseRefChangedEvent?: BaseRefChangedEvent;
+  BaseRefDeletedEvent?: BaseRefDeletedEvent;
+  BaseRefForcePushedEvent?: BaseRefForcePushedEvent;
+  ClosedEvent?: ClosedEvent;
+  CommentDeletedEvent?: CommentDeletedEvent;
+  ConnectedEvent?: ConnectedEvent;
+  ConvertToDraftEvent?: ConvertToDraftEvent;
+  ConvertedNoteToIssueEvent?: ConvertedNoteToIssueEvent;
+  CrossReferencedEvent?: CrossReferencedEvent;
+  DemilestonedEvent?: DemilestonedEvent;
+  DeployedEvent?: DeployedEvent;
+  DeploymentEnvironmentChangedEvent?: DeploymentEnvironmentChangedEvent;
+  DisconnectedEvent?: DisconnectedEvent;
+  HeadRefDeletedEvent?: HeadRefDeletedEvent;
+  HeadRefForcePushedEvent?: HeadRefForcePushedEvent;
+  HeadRefRestoredEvent?: HeadRefRestoredEvent;
+  IssueComment?: IssueComment;
+  LabeledEvent?: LabeledEvent;
+  LockedEvent?: LockedEvent;
+  MarkedAsDuplicateEvent?: MarkedAsDuplicateEvent;
+  MentionedEvent?: MentionedEvent;
+  MergedEvent?: MergedEvent;
+  MilestonedEvent?: MilestonedEvent;
+  MovedColumnsInProjectEvent?: MovedColumnsInProjectEvent;
+  PinnedEvent?: PinnedEvent;
+  PullRequestCommit?: PullRequestCommit;
+  PullRequestCommitCommentThread?: PullRequestCommitCommentThread;
+  PullRequestReview?: PullRequestReview;
+  PullRequestReviewThread?: PullRequestReviewThread;
+  PullRequestRevisionMarker?: PullRequestRevisionMarker;
+  ReadyForReviewEvent?: ReadyForReviewEvent;
+  ReferencedEvent?: ReferencedEvent;
+  RemovedFromProjectEvent?: RemovedFromProjectEvent;
+  RenamedTitleEvent?: RenamedTitleEvent;
+  ReopenedEvent?: ReopenedEvent;
+  ReviewDismissedEvent?: ReviewDismissedEvent;
+  ReviewRequestRemovedEvent?: ReviewRequestRemovedEvent;
+  ReviewRequestedEvent?: ReviewRequestedEvent;
+  SubscribedEvent?: SubscribedEvent;
+  TransferredEvent?: TransferredEvent;
+  UnassignedEvent?: UnassignedEvent;
+  UnlabeledEvent?: UnlabeledEvent;
+  UnlockedEvent?: UnlockedEvent;
+  UnmarkedAsDuplicateEvent?: UnmarkedAsDuplicateEvent;
+  UnpinnedEvent?: UnpinnedEvent;
+  UnsubscribedEvent?: UnsubscribedEvent;
+  UserBlockedEvent?: UserBlockedEvent;
 }
 
 export interface $PushAllowanceActor {
-  App: App;
-  Team: Team;
-  User: User;
+  App?: App;
+  Team?: Team;
+  User?: User;
 }
 
 export interface $Reactor {
-  Bot: Bot;
-  Mannequin: Mannequin;
-  Organization: Organization;
-  User: User;
+  Bot?: Bot;
+  Mannequin?: Mannequin;
+  Organization?: Organization;
+  User?: User;
 }
 
 export interface $ReferencedSubject {
-  Issue: Issue;
-  PullRequest: PullRequest;
+  Issue?: Issue;
+  PullRequest?: PullRequest;
 }
 
 export interface $RenamedTitleSubject {
-  Issue: Issue;
-  PullRequest: PullRequest;
+  Issue?: Issue;
+  PullRequest?: PullRequest;
 }
 
 export interface $TopicAuditEntryData {
-  RepoAddTopicAuditEntry: RepoAddTopicAuditEntry;
-  RepoRemoveTopicAuditEntry: RepoRemoveTopicAuditEntry;
+  RepoAddTopicAuditEntry?: RepoAddTopicAuditEntry;
+  RepoRemoveTopicAuditEntry?: RepoRemoveTopicAuditEntry;
 }
 
 export interface $RepositoryInfo {
-  Repository: Repository;
+  Repository?: Repository;
 }
 
 export interface $RequestedReviewer {
-  Mannequin: Mannequin;
-  Team: Team;
-  User: User;
+  Mannequin?: Mannequin;
+  Team?: Team;
+  User?: User;
 }
 
 export interface $ReviewDismissalAllowanceActor {
-  Team: Team;
-  User: User;
+  Team?: Team;
+  User?: User;
 }
 
 export interface $SearchResultItem {
-  App: App;
-  Discussion: Discussion;
-  Issue: Issue;
-  MarketplaceListing: MarketplaceListing;
-  Organization: Organization;
-  PullRequest: PullRequest;
-  Repository: Repository;
-  User: User;
+  App?: App;
+  Discussion?: Discussion;
+  Issue?: Issue;
+  MarketplaceListing?: MarketplaceListing;
+  Organization?: Organization;
+  PullRequest?: PullRequest;
+  Repository?: Repository;
+  User?: User;
 }
 
 export interface $Sponsor {
-  Organization: Organization;
-  User: User;
+  Organization?: Organization;
+  User?: User;
 }
 
 export interface $SponsorableItem {
-  Organization: Organization;
-  User: User;
+  Organization?: Organization;
+  User?: User;
 }
 
 export interface $StatusCheckRollupContext {
-  CheckRun: CheckRun;
-  StatusContext: StatusContext;
+  CheckRun?: CheckRun;
+  StatusContext?: StatusContext;
 }
 
 export interface $VerifiableDomainOwner {
-  Enterprise: Enterprise;
-  Organization: Organization;
+  Enterprise?: Enterprise;
+  Organization?: Organization;
 }
 
 export interface GeneratedSchema {

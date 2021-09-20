@@ -38,6 +38,16 @@ export type Human = {
   nullFather?: Maybe<Human>;
   sons: Human[];
   dogs: Dog[];
+
+  node: Array<Node>;
+  union: Array<{
+    __typename: 'A' | 'B' | 'C';
+    $on: {
+      A?: A;
+      B?: C;
+      C?: C;
+    };
+  }>;
 };
 export type Dog = {
   __typename: 'Dog';
@@ -48,8 +58,8 @@ export type Dog = {
 export type Species = {
   __typename?: 'Human' | 'Dog';
   $on: {
-    Human: Human;
-    Dog: Dog;
+    Human?: Human;
+    Dog?: Dog;
   };
 };
 
@@ -62,24 +72,34 @@ afterAll(async () => {
 export type Node = {
   __typename?: 'A' | 'B' | 'C';
   id?: string;
+  node: Node;
+
+  $on: {
+    A?: A;
+    B?: B;
+    C?: C;
+  };
 };
 
-export interface A extends Node {
+export interface A {
   __typename?: 'A';
   id?: string;
   a?: number;
+  node: Node;
 }
 
-export interface B extends Node {
+export interface B {
   __typename?: 'B';
   id?: string;
   b?: number;
+  node: Node;
 }
 
-export interface C extends Node {
+export interface C {
   __typename?: 'C';
   id?: string;
   c?: number;
+  node: Node;
 }
 
 export type GeneratedSchema = {
@@ -96,13 +116,7 @@ export type GeneratedSchema = {
     species: Array<Species>;
     throwUntilThirdTry: boolean;
     dogs: Array<Dog>;
-    node(args: { type: 'A' | 'B' | 'C' }): Node & {
-      $on: {
-        A: A;
-        B: B;
-        C: C;
-      };
-    };
+    node(args: { type: 'A' | 'B' | 'C' }): Node;
     union(args: { type: 'A' | 'B' | 'C' }): {
       __typename: 'A' | 'B' | 'C';
       $on: {
@@ -207,6 +221,8 @@ export const createTestClient = async (
             nullFather: Human
             sons: [Human!]!
             dogs: [Dog!]!
+            node: [Node!]!
+            union: [ABC!]!
           }
           type Dog {
             id: ID
@@ -227,24 +243,32 @@ export const createTestClient = async (
 
           interface Node {
             id: ID!
+
+            node: Node!
           }
 
           type A implements Node {
             id: ID!
 
             a: Int!
+
+            node: Node!
           }
 
           type B implements Node {
             id: ID!
 
             b: Int!
+
+            node: Node!
           }
 
           type C implements Node {
             id: ID!
 
             c: Int!
+
+            node: Node!
           }
 
           union ABC = A | B | C
@@ -253,6 +277,40 @@ export const createTestClient = async (
           Node: {
             __resolveType(obj: { __typename: 'A' | 'B' | 'C' }) {
               return obj.__typename;
+            },
+            node() {
+              return {
+                __typename: 'A',
+                a: 1,
+                id: 1,
+              };
+            },
+          },
+          A: {
+            node() {
+              return {
+                __typename: 'A',
+                a: 1,
+                id: 1,
+              };
+            },
+          },
+          B: {
+            node() {
+              return {
+                __typename: 'A',
+                a: 1,
+                id: 1,
+              };
+            },
+          },
+          C: {
+            node() {
+              return {
+                __typename: 'B',
+                b: 2,
+                id: 2,
+              };
             },
           },
           Query: {
@@ -410,6 +468,44 @@ export const createTestClient = async (
             },
             dogs() {
               return dogs;
+            },
+            node() {
+              return [
+                {
+                  __typename: 'A',
+                  a: 1,
+                  id: 1,
+                },
+                {
+                  __typename: 'B',
+                  b: 2,
+                  id: 2,
+                },
+                {
+                  __typename: 'C',
+                  c: 3,
+                  id: 3,
+                },
+              ];
+            },
+            union() {
+              return [
+                {
+                  __typename: 'A',
+                  a: 1,
+                  id: 1,
+                },
+                {
+                  __typename: 'B',
+                  b: 2,
+                  id: 2,
+                },
+                {
+                  __typename: 'C',
+                  c: 3,
+                  id: 3,
+                },
+              ];
             },
           },
           Species: {

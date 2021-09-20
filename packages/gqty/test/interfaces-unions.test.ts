@@ -94,16 +94,16 @@ describe('interfaces and unions', () => {
     `);
   });
 
-  test('experiment', async () => {
+  test('basic', async () => {
     const { resolved, query, queries } = testClient;
 
     const nodeResult = await resolved(() => {
       const nodeA = query.node({
         type: 'A',
       });
-      const a = nodeA.$on.A.a;
+      const a = nodeA.$on.A?.a;
       const __typename = nodeA.__typename;
-      const b = nodeA.$on.B.b;
+      const b = nodeA.$on.B?.b;
 
       return {
         __typename,
@@ -145,5 +145,64 @@ Array [
       a: 1,
       b: undefined,
     });
+  });
+
+  test('deep', async () => {
+    const { resolved, query, queries } = await createTestClient();
+
+    const nodeResult = await resolved(() => {
+      const nodeA = query.node({
+        type: 'A',
+      });
+      const a = nodeA.$on.A?.a;
+      const __typename = nodeA.__typename;
+      const b = nodeA.$on.B?.b;
+      const aNodeId = nodeA.$on.A?.node.$on.A?.id;
+      const deepNodeAId = nodeA.$on.A?.node.$on.A?.node.$on.C?.node.$on.A?.id;
+
+      return {
+        __typename,
+        a,
+        b,
+        aNodeId,
+        deepNodeAId,
+      };
+    });
+
+    expect(nodeResult).toMatchInlineSnapshot(`
+Object {
+  "__typename": "A",
+  "a": 1,
+  "aNodeId": "1",
+  "b": undefined,
+  "deepNodeAId": undefined,
+}
+`);
+    expect(queries).toMatchInlineSnapshot(`
+Array [
+  Object {
+    "query": "query($type1:NodeType!){node0:node(type:$type1){__typename ...on A{id a node{__typename ...on A{id node{__typename ...on C{node{__typename ...on A{id}}}}}}}id ...on B{id b}}}",
+    "result": Object {
+      "data": Object {
+        "node0": Object {
+          "__typename": "A",
+          "a": 1,
+          "id": "1",
+          "node": Object {
+            "__typename": "A",
+            "id": "1",
+            "node": Object {
+              "__typename": "A",
+            },
+          },
+        },
+      },
+    },
+    "variables": Object {
+      "type1": "A",
+    },
+  },
+]
+`);
   });
 });
