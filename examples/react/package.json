@@ -5,7 +5,7 @@
   "scripts": {
     "build-example": "next build",
     "dev": "concurrently --raw \"pnpm dev:server\" \"wait-on -s 1 tcp:4141 && node ./open-browser.mjs\"",
-    "dev:server": "bob-ts-watch -f cjs -i api/server.ts -c \"node dist/server.js\"",
+    "dev:server": "bob-ts-watch -f cjs -i api/server.ts -c \"node dist/server.js\" \"tsc --watch\"",
     "build": "next build",
     "start": "node dist/server.js"
   },
@@ -53,6 +53,7 @@
   },
   "devDependencies": {
     "@types/faker": "^5.5.8",
+    "@types/graphql-upload": "^8.0.7",
     "@types/lodash": "^4.14.173",
     "@types/node": "^16.9.4",
     "@types/react": "^17.0.22",
