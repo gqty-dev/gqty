@@ -38,9 +38,9 @@ export interface GreetingsInput {
 
 export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
   String: true,
-  Int: true,
   ExampleScalar: true,
   GreetingsEnum: true,
+  Int: true,
   Boolean: true,
 };
 export const generatedSchema = {
@@ -77,7 +77,7 @@ export const generatedSchema = {
   NamedEntity: {
     __typename: { __type: 'String!' },
     name: { __type: 'String!' },
-    args: { __type: 'Int', __args: { a: 'String' } },
+    $on: { __type: '$NamedEntity!' },
   },
   GreetingsInput: {
     language: { __type: 'String!' },
@@ -92,6 +92,11 @@ export const generatedSchema = {
     sons: { __type: '[Human!]' },
     union: { __type: '[TestUnion!]!' },
     args: { __type: 'Int', __args: { a: 'String' } },
+  },
+  Dog: {
+    __typename: { __type: 'String!' },
+    name: { __type: 'String!' },
+    owner: { __type: 'Human!' },
   },
   A: {
     __typename: { __type: 'String!' },
@@ -110,7 +115,14 @@ export const generatedSchema = {
     c: { __type: 'GreetingsEnum!' },
     z: { __type: 'String' },
   },
-  [SchemaUnionsKey]: { TestUnion: ['A', 'B', 'C'] },
+  TestUnion: {
+    __typename: { __type: 'String!' },
+    $on: { __type: '$TestUnion!' },
+  },
+  [SchemaUnionsKey]: {
+    NamedEntity: ['Human', 'Dog'],
+    TestUnion: ['A', 'B', 'C'],
+  },
 } as const;
 
 export interface Query {
@@ -149,12 +161,12 @@ export interface Subscription {
 }
 
 export interface NamedEntity {
-  __typename?: 'NamedEntity';
+  __typename?: 'Human' | 'Dog';
   name: ScalarsEnums['String'];
-  args: (args?: { a?: Maybe<Scalars['String']> }) => Maybe<ScalarsEnums['Int']>;
+  $on: $NamedEntity;
 }
 
-export interface Human extends Omit<NamedEntity, '__typename'> {
+export interface Human extends NamedEntity {
   __typename?: 'Human';
   name: ScalarsEnums['String'];
   father: Human;
@@ -162,6 +174,12 @@ export interface Human extends Omit<NamedEntity, '__typename'> {
   sons?: Maybe<Array<Human>>;
   union: Array<TestUnion>;
   args: (args?: { a?: Maybe<Scalars['String']> }) => Maybe<ScalarsEnums['Int']>;
+}
+
+export interface Dog extends NamedEntity {
+  __typename?: 'Dog';
+  name: ScalarsEnums['String'];
+  owner: Human;
 }
 
 export interface A {
@@ -188,12 +206,17 @@ export interface C {
   z?: Maybe<ScalarsEnums['String']>;
 }
 
+export interface TestUnion {
+  __typename?: 'A' | 'B' | 'C';
+  $on: $TestUnion;
+}
+
 export interface SchemaObjectTypes {
   Query: Query;
   Mutation: Mutation;
   Subscription: Subscription;
-  NamedEntity: NamedEntity;
   Human: Human;
+  Dog: Dog;
   A: A;
   B: B;
   C: C;
@@ -202,44 +225,21 @@ export type SchemaObjectTypesNames =
   | 'Query'
   | 'Mutation'
   | 'Subscription'
-  | 'NamedEntity'
   | 'Human'
+  | 'Dog'
   | 'A'
   | 'B'
   | 'C';
 
-export type TestUnion =
-  | {
-      __typename?: 'A';
-      a: ScalarsEnums['String'];
-      b?: undefined;
-      c?: undefined;
-      common: (args?: {
-        a?: Maybe<Scalars['String']>;
-      }) => Maybe<ScalarsEnums['Int']>;
-      z?: Maybe<ScalarsEnums['String']>;
-    }
-  | {
-      __typename?: 'B';
-      a?: undefined;
-      b: ScalarsEnums['Int'];
-      c?: undefined;
-      common: (args?: {
-        b?: Maybe<Scalars['Int']>;
-      }) => Maybe<ScalarsEnums['String']>;
-      z?: Maybe<ScalarsEnums['String']>;
-    }
-  | {
-      __typename?: 'C';
-      a?: undefined;
-      b?: undefined;
-      c: ScalarsEnums['GreetingsEnum'];
-      common?: undefined;
-      z?: Maybe<ScalarsEnums['String']>;
-    };
+export interface $NamedEntity {
+  Human: Human;
+  Dog: Dog;
+}
 
-export interface NamedEntity {
-  name: ScalarsEnums['String'];
+export interface $TestUnion {
+  A: A;
+  B: B;
+  C: C;
 }
 
 export interface GeneratedSchema {

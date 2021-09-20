@@ -30,4 +30,4 @@ if (typeof window !== 'undefined') {
   logger.start();
 }
 
-export const { refetch, buildSelection } = client;
+export const { refetch } = client;

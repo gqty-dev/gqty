@@ -1,7 +1,6 @@
 import { waitForExpect } from 'test-utils';
-
 import { getArrayFields, SelectionType } from '../src';
-import { CacheChangeEventData } from '../src/Events';
+import type { CacheChangeEventData } from '../src/Events';
 import { createTestClient, Dog, expectConsoleWarn } from './utils';
 
 describe('array accessors', () => {
@@ -95,8 +94,7 @@ describe('accessor undefined paths', () => {
 
 describe('setCache', () => {
   test('expected functionality', async () => {
-    const { scheduler, query, mutation, setCache, buildSelection } =
-      await createTestClient();
+    const { scheduler, query, mutation, setCache } = await createTestClient();
 
     const humanQuery = query.human({
       name: 'aaa',
@@ -178,7 +176,7 @@ describe('setCache', () => {
       }).name
     ).toBe('nnn');
 
-    setCache(buildSelection('query', 'human', 'name'), 'zzz');
+    query.human().name = 'zzz';
 
     expect(query.human().name).toBe('zzz');
   });
@@ -368,9 +366,13 @@ describe('unions support', () => {
 
     await resolved(() => {
       return query.species.map((v) => {
+        const onSpecies = v.$on;
+
+        const dogName = onSpecies.Dog.name;
+        const humanName = onSpecies.Human.name;
         return {
           __typename: v.__typename,
-          name: v.name,
+          name: dogName || humanName,
         };
       });
     }).then((data) => {

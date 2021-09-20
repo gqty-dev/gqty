@@ -39,11 +39,6 @@ export type Scalars = {
 
 export type NamedEntity = {
   name: Scalars['String'];
-  args?: Maybe<Scalars['Int']>;
-};
-
-export type NamedEntityArgsArgs = {
-  a?: Maybe<Scalars['String']>;
 };
 
 export enum GreetingsEnum {
@@ -125,6 +120,12 @@ export type HumanFieldWithArgsArgs = {
 
 export type HumanArgsArgs = {
   a?: Maybe<Scalars['String']>;
+};
+
+export type Dog = NamedEntity & {
+  __typename?: 'Dog';
+  name: Scalars['String'];
+  owner: Human;
 };
 
 export type A = {
@@ -257,17 +258,18 @@ export type DirectiveResolverFn<
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
-  NamedEntity: ResolversTypes['Human'];
+  NamedEntity: ResolversTypes['Human'] | ResolversTypes['Dog'];
   String: ResolverTypeWrapper<Scalars['String']>;
-  Int: ResolverTypeWrapper<Scalars['Int']>;
   ExampleScalar: ResolverTypeWrapper<Scalars['ExampleScalar']>;
   GreetingsEnum: GreetingsEnum;
   GreetingsInput: GreetingsInput;
   Query: ResolverTypeWrapper<{}>;
+  Int: ResolverTypeWrapper<Scalars['Int']>;
   Mutation: ResolverTypeWrapper<{}>;
   Human: ResolverTypeWrapper<
     Omit<Human, 'union'> & { union: Array<ResolversTypes['TestUnion']> }
   >;
+  Dog: ResolverTypeWrapper<Dog>;
   A: ResolverTypeWrapper<A>;
   B: ResolverTypeWrapper<B>;
   C: ResolverTypeWrapper<C>;
@@ -277,16 +279,17 @@ export type ResolversTypes = {
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
-  NamedEntity: ResolversParentTypes['Human'];
+  NamedEntity: ResolversParentTypes['Human'] | ResolversParentTypes['Dog'];
   String: Scalars['String'];
-  Int: Scalars['Int'];
   ExampleScalar: Scalars['ExampleScalar'];
   GreetingsInput: GreetingsInput;
   Query: {};
+  Int: Scalars['Int'];
   Mutation: {};
   Human: Omit<Human, 'union'> & {
     union: Array<ResolversParentTypes['TestUnion']>;
   };
+  Dog: Dog;
   A: A;
   B: B;
   C: C;
@@ -301,14 +304,8 @@ export type NamedEntityResolvers<
   ContextType = EZContext,
   ParentType extends ResolversParentTypes['NamedEntity'] = ResolversParentTypes['NamedEntity']
 > = {
-  __resolveType: TypeResolveFn<'Human', ParentType, ContextType>;
+  __resolveType: TypeResolveFn<'Human' | 'Dog', ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  args?: Resolver<
-    Maybe<ResolversTypes['Int']>,
-    ParentType,
-    ContextType,
-    RequireFields<NamedEntityArgsArgs, never>
-  >;
 };
 
 export interface ExampleScalarScalarConfig
@@ -416,6 +413,15 @@ export type HumanResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type DogResolvers<
+  ContextType = EZContext,
+  ParentType extends ResolversParentTypes['Dog'] = ResolversParentTypes['Dog']
+> = {
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  owner?: Resolver<ResolversTypes['Human'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type AResolvers<
   ContextType = EZContext,
   ParentType extends ResolversParentTypes['A'] = ResolversParentTypes['A']
@@ -468,6 +474,7 @@ export type Resolvers<ContextType = EZContext> = {
   Query?: QueryResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Human?: HumanResolvers<ContextType>;
+  Dog?: DogResolvers<ContextType>;
   A?: AResolvers<ContextType>;
   B?: BResolvers<ContextType>;
   C?: CResolvers<ContextType>;

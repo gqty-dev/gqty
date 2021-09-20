@@ -66,6 +66,8 @@ export function createQueryBuilder() {
       ) {
         return selections.reduce(
           (acum, { args, alias, key, argTypes, unions }, index) => {
+            if (key === '$on') return acum;
+
             const argsLength = args ? Object.keys(args).length : 0;
 
             const selectionKey = alias ? alias + ':' + key : key;

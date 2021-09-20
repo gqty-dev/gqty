@@ -13,37 +13,27 @@ import {
   decycle,
   isInteger,
   isObject,
-  isObjectWithType,
   retrocycle,
+  isObjectWithType,
 } from '../Utils';
 
 const ProxySymbol = Symbol('gqty-proxy');
 
 export class SchemaUnion {
-  /** union name */
-  name!: string;
-  types!: Record<
-    /** object type name */
-    string,
-    /** schema type of object type */
-    Record<string, Type>
-  >;
-  /**
-   * Proxy target, pre-made for performance
-   */
-  fieldsProxy!: Record<string, typeof ProxySymbol>;
-  fieldsMap!: Record<
-    /** field name */
-    string,
-    /** list of object types (with it's schema type)
-     * that has the field name */
-    {
-      list: { objectTypeName: string; type: Record<string, Type> }[];
-      typesNames: string[];
-      combinedTypes: Record<string, Type>;
-    }
-  >;
-  combinedTypes!: Record<string, Type>;
+  constructor(
+    /** union name */
+    public name: string,
+    public types: Record<
+      /** object type name */
+      string,
+      /** schema type of object type */
+      Record<string, Type>
+    >,
+    /**
+     * Proxy target, pre-made for performance
+     */
+    public fieldsProxy: Record<string, typeof ProxySymbol>
+  ) {}
 }
 
 export type SchemaUnions = {
@@ -56,59 +46,28 @@ export function createSchemaUnions(schema: Readonly<Schema>): SchemaUnions {
 
   const unions = Object.entries(
     schema[SchemaUnionsKey] /* istanbul ignore next */ || {}
-  ).reduce((acum, [name, unionTypes]) => {
-    const fieldsSet = new Set<string>();
-    const fieldsMap: SchemaUnion['fieldsMap'] = {};
-
-    const combinedTypes: Record<string, Type> = {};
-
+  ).reduce<SchemaUnions['unions']>((acum, [name, unionTypes]) => {
     const types = unionTypes.reduce((typeAcum, objectTypeName) => {
       unionObjectTypesForSelections[objectTypeName] ||= [objectTypeName];
       const objectType = schema[objectTypeName];
       /* istanbul ignore else */
       if (objectType) {
-        for (const objectTypeFieldName of Object.keys(objectType)) {
-          fieldsMap[objectTypeFieldName] ||= {
-            list: [],
-            typesNames: [],
-            combinedTypes: {},
-          };
-          fieldsMap[objectTypeFieldName].list.push({
-            type: objectType,
-            objectTypeName,
-          });
-          Object.assign(
-            fieldsMap[objectTypeFieldName].combinedTypes,
-            objectType
-          );
-          Object.assign(combinedTypes, objectType);
-          fieldsSet.add(objectTypeFieldName);
-        }
-
         typeAcum[objectTypeName] = objectType;
       }
       return typeAcum;
     }, {} as SchemaUnion['types']);
 
-    for (const fieldMapValue of Object.values(fieldsMap)) {
-      fieldMapValue.typesNames = fieldMapValue.list.map(
-        (v) => v.objectTypeName
-      );
-    }
-
-    acum[name] = Object.assign(new SchemaUnion(), {
+    acum[name] = new SchemaUnion(
       name,
       types,
-      fieldsProxy: Array.from(fieldsSet).reduce((fieldsAcum, fieldName) => {
+      unionTypes.reduce<SchemaUnion['fieldsProxy']>((fieldsAcum, fieldName) => {
         fieldsAcum[fieldName] = ProxySymbol;
         return fieldsAcum;
-      }, {} as SchemaUnion['fieldsProxy']),
-      fieldsMap,
-      combinedTypes,
-    });
+      }, {})
+    );
 
     return acum;
-  }, {} as Record<string, SchemaUnion>);
+  }, {});
 
   return {
     unions,
@@ -480,7 +439,7 @@ export function createAccessorCreators<
     return cacheReference;
   }
 
-  function getTypename(selection: Selection): string | void {
+  function getCacheTypename(selection: Selection): string | void {
     const cacheValue: unknown =
       innerState.clientCache.getCacheFromSelection(selection);
 
@@ -525,6 +484,8 @@ export function createAccessorCreators<
       prevSelection,
       getCacheValueReference(cacheValue, unions),
       () => {
+        const isUnionsInterfaceSelection = Boolean(unions && parentTypename);
+
         const autoFetchKeys =
           normalizationHandler && (parentTypename || unions)
             ? () => {
@@ -592,7 +553,7 @@ export function createAccessorCreators<
 
             return true;
           },
-          get(target, key: string, receiver) {
+          get(_target, key: string, _receiver) {
             if (key === 'toJSON')
               return () =>
                 decycle<{}>(
@@ -602,139 +563,147 @@ export function createAccessorCreators<
                   )
                 );
 
-            if (!proxyValue.hasOwnProperty(key))
-              return Reflect.get(target, key, receiver);
-
             if (schemaValue instanceof SchemaUnion) {
-              let unionTypeName = getTypename(prevSelection);
+              if (!(key in schemaValue.types)) return;
 
-              let objectType: Record<string, Type>;
-
-              let selectionUnions: string[];
-
-              if (unionTypeName) {
-                objectType = schemaValue.types[unionTypeName];
-                selectionUnions = unionObjectTypesForSelections[
-                  unionTypeName
-                ] /* istanbul ignore next */ || [unionTypeName];
-              } else {
-                // TODO: Long term fix, this doesn't work if there is fields types/naming conflicts
-                ({ combinedTypes: objectType, typesNames: selectionUnions } =
-                  schemaValue.fieldsMap[key]);
-              }
-
-              const proxy = createAccessor(
-                objectType,
+              return createAccessor(
+                schemaValue.types[key],
                 prevSelection,
-                selectionUnions,
-                parentTypename
+                [key],
+                key
               );
+            }
 
-              return proxy && Reflect.get(proxy, key);
-            } else {
-              const { __type, __args } = schemaValue[key];
-              const { pureType, isArray } = parseSchemaType(__type);
+            if (!proxyValue.hasOwnProperty(key)) return;
 
-              const resolve = (args?: {
-                argValues: Record<string, unknown>;
-                argTypes: Record<string, string>;
-              }): unknown => {
-                const selection = innerState.selectionManager.getSelection({
-                  key,
-                  prevSelection,
-                  args: args != null ? args.argValues : undefined,
-                  argTypes: args != null ? args.argTypes : undefined,
-                  unions,
-                });
+            const { __type, __args } = schemaValue[key];
+            let { pureType, isArray } = parseSchemaType(__type);
 
-                // For the subscribers of data changes
-                interceptorManager.addSelectionCache(selection);
+            const resolve = (args?: {
+              argValues: Record<string, unknown>;
+              argTypes: Record<string, string>;
+            }): unknown => {
+              const selection = innerState.selectionManager.getSelection({
+                key,
+                prevSelection,
+                args: args != null ? args.argValues : undefined,
+                argTypes: args != null ? args.argTypes : undefined,
+                unions,
+              });
 
-                if (scalarsEnumsHash[pureType]) {
-                  const cacheValue =
-                    innerState.clientCache.getCacheFromSelection(selection);
+              // For the subscribers of data changes
+              interceptorManager.addSelectionCache(selection);
 
-                  accessorCache.addSelectionToAccessorHistory(
-                    accessor,
-                    selection
+              if (scalarsEnumsHash[pureType]) {
+                const cacheValue =
+                  innerState.clientCache.getCacheFromSelection(selection);
+
+                accessorCache.addSelectionToAccessorHistory(
+                  accessor,
+                  selection
+                );
+
+                if (isUnionsInterfaceSelection) {
+                  interceptorManager.addSelection(
+                    innerState.selectionManager.getSelection({
+                      key: '__typename',
+                      prevSelection: prevSelection,
+                    })
                   );
+                }
 
-                  if (cacheValue === undefined) {
-                    innerState.foundValidCache = false;
+                if (cacheValue === undefined) {
+                  innerState.foundValidCache = false;
 
-                    /**
-                     * If cache was not found & the selection doesn't have errors,
-                     * add the selection to the queue
-                     */
-                    if (
-                      // SelectionType.Subscription === 2
-                      selection.type === 2 ||
-                      schedulerClientCache !== innerState.clientCache ||
-                      !schedulerErrorsMap.has(selection)
-                    ) {
-                      autoFetchKeys?.();
+                  let unionTypename: string | undefined | void;
+                  const isUnionWithDifferentTypeResult =
+                    isUnionsInterfaceSelection
+                      ? !!(unionTypename = getCacheTypename(prevSelection)) &&
+                        unionTypename !== parentTypename
+                      : false;
 
-                      interceptorManager.addSelection(selection);
-                    }
-
-                    return isArray ? emptyScalarArray : undefined;
-                  } else if (!innerState.allowCache || selection.type === 2) {
+                  /**
+                   * If cache was not found & the selection doesn't have errors,
+                   * add the selection to the queue, except when querying unions or interfaces
+                   * and the __typename doesn't correspond to the target object type
+                   */
+                  if (
+                    // SelectionType.Subscription === 2
+                    selection.type === 2 ||
+                    (!isUnionWithDifferentTypeResult &&
+                      (schedulerClientCache !== innerState.clientCache ||
+                        !schedulerErrorsMap.has(selection)))
+                  ) {
                     autoFetchKeys?.();
 
-                    // Or if you are making the network fetch always
                     interceptorManager.addSelection(selection);
-                  } else {
-                    // Support cache-and-network / stale-while-revalidate pattern
-                    interceptorManager.addSelectionCacheRefetch(selection);
                   }
 
-                  return cacheValue;
+                  return isArray ? emptyScalarArray : undefined;
+                } else if (
+                  !innerState.allowCache ||
+                  // SelectionType.Subscription === 2
+                  selection.type === 2
+                ) {
+                  autoFetchKeys?.();
+
+                  // Or if you are making the network fetch always
+                  interceptorManager.addSelection(selection);
+                } else {
+                  // Support cache-and-network / stale-while-revalidate pattern
+                  interceptorManager.addSelectionCacheRefetch(selection);
                 }
 
-                const typeValue: Record<string, Type> | SchemaUnion =
-                  schema[pureType] || schemaUnions[pureType];
-
-                if (typeValue) {
-                  const childAccessor = (
-                    isArray ? createArrayAccessor : createAccessor
-                  )(typeValue, selection, undefined, pureType);
-
-                  accessorCache.addAccessorChild(accessor, childAccessor);
-
-                  return childAccessor;
-                }
-
-                throw new GQtyError(
-                  `GraphQL Type not found: ${pureType}, available fields: "${Object.keys(
-                    schemaValue
-                  ).join(' | ')}"`
-                );
-              };
-
-              if (__args) {
-                const resolveInfo: ResolveInfo = {
-                  key,
-                  prevSelection,
-                  argTypes: __args,
-                };
-
-                return Object.assign(
-                  function ProxyFn(
-                    argValues: Record<string, unknown> = emptyVariablesObject
-                  ) {
-                    return resolve({
-                      argValues,
-                      argTypes: __args,
-                    });
-                  },
-                  {
-                    [ResolveInfoSymbol]: resolveInfo,
-                  }
-                );
+                return cacheValue;
               }
 
-              return resolve();
+              let typeValue: Record<string, Type> | SchemaUnion =
+                schema[pureType];
+
+              if (!typeValue && pureType.startsWith('$')) {
+                typeValue = schemaUnions[(pureType = pureType.slice(1))];
+              }
+
+              if (typeValue) {
+                const childAccessor = (
+                  isArray ? createArrayAccessor : createAccessor
+                )(typeValue, selection, undefined, pureType);
+
+                accessorCache.addAccessorChild(accessor, childAccessor);
+
+                return childAccessor;
+              }
+
+              throw new GQtyError(
+                `GraphQL Type not found: ${pureType}, available fields: "${Object.keys(
+                  schemaValue
+                ).join(' | ')}"`
+              );
+            };
+
+            if (__args) {
+              const resolveInfo: ResolveInfo = {
+                key,
+                prevSelection,
+                argTypes: __args,
+              };
+
+              return Object.assign(
+                function ProxyFn(
+                  argValues: Record<string, unknown> = emptyVariablesObject
+                ) {
+                  return resolve({
+                    argValues,
+                    argTypes: __args,
+                  });
+                },
+                {
+                  [ResolveInfoSymbol]: resolveInfo,
+                }
+              );
             }
+
+            return resolve();
           },
         });
       }

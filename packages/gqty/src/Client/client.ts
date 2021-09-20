@@ -31,10 +31,6 @@ import { createScheduler, Scheduler } from '../Scheduler';
 import type { QueryFetcher, ScalarsEnumsHash, Schema } from '../Schema/types';
 import type { Selection } from '../Selection/selection';
 import {
-  BuildSelection,
-  createSelectionBuilder,
-} from '../Selection/SelectionBuilder';
-import {
   createSelectionManager,
   SelectionManager,
 } from '../Selection/SelectionManager';
@@ -203,7 +199,6 @@ export interface GQtyClient<
   prepareRender: PrepareRender;
   assignSelections: AssignSelections;
   mutate: Mutate<GeneratedSchema>;
-  buildSelection: BuildSelection;
   subscriptionsClient: SubscriptionsClient | undefined;
   prefetch: Prefetch<GeneratedSchema>;
   track: Track;
@@ -222,7 +217,6 @@ export type {
   HydrateCache,
   PrepareRender,
   AssignSelections,
-  BuildSelection,
   Prefetch,
   BuildAndFetchSelections,
   InlineResolved,
@@ -376,8 +370,6 @@ export function createClient<
     }
   }
 
-  const buildSelection = createSelectionBuilder(innerState);
-
   const prefetch = createPrefetch<GeneratedSchema>(query, innerState);
 
   const persistenceHelpers = createPersistenceHelpers(
@@ -404,7 +396,6 @@ export function createClient<
     ...ssrHelpers,
     assignSelections,
     mutate,
-    buildSelection,
     subscriptionsClient,
     prefetch,
     ...persistenceHelpers,
