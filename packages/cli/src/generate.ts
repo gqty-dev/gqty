@@ -620,16 +620,12 @@ export async function generate(
         objectTypeTSTypes.set(typeName, objectTypeMap);
       }
 
-      const objectTypeInterfaces = interfacesOfObjectTypesMap.get(typeName);
-
       const interfaceOrUnionsObjectTypes =
         unionsAndInterfacesObjectTypesMap.get(typeName);
 
       acum += `
 
-      ${addDescription(typeName)}export interface ${typeName} ${
-        objectTypeInterfaces ? 'extends ' + objectTypeInterfaces.join(', ') : ''
-      }{ 
+      ${addDescription(typeName)}export interface ${typeName} { 
         __typename?: ${
           interfaceOrUnionsObjectTypes
             ? interfaceOrUnionsObjectTypes.map((v) => `"${v}"`).join(' | ')
