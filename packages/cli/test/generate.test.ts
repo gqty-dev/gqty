@@ -764,7 +764,7 @@ export interface NamedEntity {
   $on: $NamedEntity;
 }
 
-export interface Human extends NamedEntity {
+export interface Human {
   __typename?: 'Human';
   name: ScalarsEnums['String'];
   other?: Maybe<ScalarsEnums['String']>;
@@ -777,7 +777,7 @@ export interface Human extends NamedEntity {
   withArgs2: (args?: { a?: Maybe<Scalars['Int']> }) => ScalarsEnums['Int'];
 }
 
-export interface OtherHuman extends NamedEntity {
+export interface OtherHuman {
   __typename?: 'OtherHuman';
   name: ScalarsEnums['String'];
   other?: Maybe<ScalarsEnums['String']>;
