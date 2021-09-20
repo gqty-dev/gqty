@@ -118,6 +118,7 @@ export const generatedSchema = {
     last: { __type: 'Int' },
     before: { __type: 'String' },
   },
+  Species: { __typename: { __type: 'String!' }, $on: { __type: '$Species!' } },
   [SchemaUnionsKey]: { Species: ['Human', 'Dog'] },
 } as const;
 
@@ -229,6 +230,11 @@ export interface PageInfo {
   endCursor?: Maybe<ScalarsEnums['String']>;
 }
 
+export interface Species {
+  __typename?: 'Human' | 'Dog';
+  $on: $Species;
+}
+
 export interface SchemaObjectTypes {
   Query: Query;
   Mutation: Mutation;
@@ -247,34 +253,10 @@ export type SchemaObjectTypesNames =
   | 'HumansConnection'
   | 'PageInfo';
 
-export type Species =
-  | {
-      __typename?: 'Human';
-      dogs?: Maybe<Array<Dog>>;
-      /**
-       * @deprecated No longer supported
-       */
-      fieldWithArg: (args?: {
-        /**
-         * @defaultValue `"Hello World"`
-         */
-        a?: Maybe<Scalars['String']>;
-      }) => Maybe<ScalarsEnums['Int']>;
-      id: ScalarsEnums['ID'];
-      /**
-       * Human Name
-       */
-      name: ScalarsEnums['String'];
-      owner?: undefined;
-    }
-  | {
-      __typename?: 'Dog';
-      dogs?: undefined;
-      fieldWithArg?: undefined;
-      id: ScalarsEnums['ID'];
-      name: ScalarsEnums['String'];
-      owner?: Maybe<Human>;
-    };
+export interface $Species {
+  Human: Human;
+  Dog: Dog;
+}
 
 export interface GeneratedSchema {
   query: Query;
