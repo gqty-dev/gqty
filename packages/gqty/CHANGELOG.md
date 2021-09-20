@@ -1,5 +1,12 @@
 # gqty
 
+## 2.0.0
+
+### Major Changes
+
+- 3586c45: Remove undocumented "buildSelections"
+- 3586c45: Change previous unstable `Unions` support with new `"$on"` property with support for both `Unions` & `Interfaces`
+
 ## 1.1.3
 
 ### Patch Changes
