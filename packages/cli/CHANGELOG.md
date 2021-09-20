@@ -1,5 +1,17 @@
 # @gqty/cli
 
+## 2.0.0
+
+### Major Changes
+
+- 3586c45: Change previous unstable `Unions` support with new `"$on"` property with support for both `Unions` & `Interfaces`
+
+### Patch Changes
+
+- Updated dependencies [3586c45]
+- Updated dependencies [3586c45]
+  - gqty@2.0.0
+
 ## 1.1.4
 
 ### Patch Changes
