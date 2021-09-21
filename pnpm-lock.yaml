@@ -326,7 +326,7 @@ importers:
       '@jest/types': ^27.1.1
       '@rollup/plugin-babel': ^5.3.0
       '@size-limit/preset-small-lib': ^5.0.3
-      '@types/jest': ^27.0.1
+      '@types/jest': ^27.0.2
       '@types/randomstring': ^1.1.7
       bob-esbuild-cli: ^1.0.1
       bob-ts: ^1.1.0
@@ -353,7 +353,7 @@ importers:
       '@graphql-ez/plugin-codegen': 0.7.3_f83c9a3125250813f8462c8c3ff7cbd4
       '@graphql-ez/plugin-schema': 0.7.3_f83c9a3125250813f8462c8c3ff7cbd4
       '@rollup/plugin-babel': 5.3.0
-      '@types/jest': 27.0.1
+      '@types/jest': 27.0.2
       cross-env: 7.0.3
       esbuild: 0.12.28
       fastify: 3.21.3
@@ -364,7 +364,7 @@ importers:
       jest-watch-typeahead: 0.6.4_jest@27.2.1
       prettier: 2.4.1
       randomstring: 1.2.1
-      ts-jest: 27.0.5_a3830dc85c792fbb18bedbcc872cb0f9
+      ts-jest: 27.0.5_4983e9b3d1f913260771a36e4b65b206
       wait-for-expect: 3.0.2
     devDependencies:
       '@graphql-ez/plugin-websockets': 0.10.0_9bb2f68a47910548030743817cf612e3
@@ -611,7 +611,7 @@ importers:
       '@testing-library/jest-dom': ^5.14.1
       '@testing-library/react': ^12.1.0
       '@testing-library/react-hooks': ^7.0.2
-      '@types/jest': ^27.0.1
+      '@types/jest': ^27.0.2
       '@types/lodash': ^4.14.173
       '@types/react': ^17.0.22
       '@types/react-dom': ^17.0.9
@@ -637,7 +637,7 @@ importers:
       '@testing-library/jest-dom': 5.14.1
       '@testing-library/react': 12.1.0_react-dom@17.0.2+react@17.0.2
       '@testing-library/react-hooks': 7.0.2_fc2bb8a5b006d3f25c5f84ea777e678d
-      '@types/jest': 27.0.1
+      '@types/jest': 27.0.2
       '@types/lodash': 4.14.173
       '@types/react': 17.0.22
       '@types/react-dom': 17.0.9
@@ -4228,6 +4228,13 @@ packages:
 
   /@types/jest/27.0.1:
     resolution: {integrity: sha512-HTLpVXHrY69556ozYkcq47TtQJXpcWAWfkoqz+ZGz2JnmZhzlRjprCIyFnetSy8gpDWwTTGBcRVv1J1I1vBrHw==}
+    dependencies:
+      jest-diff: 27.2.0
+      pretty-format: 27.2.0
+    dev: true
+
+  /@types/jest/27.0.2:
+    resolution: {integrity: sha512-4dRxkS/AFX0c5XW6IPMNOydLn2tEhNhJV7DnYK+0bjoJZ+QTmfucBlihX7aoEsh/ocYtkLC73UbnBXBXIxsULA==}
     dependencies:
       jest-diff: 27.2.0
       pretty-format: 27.2.0
@@ -13713,7 +13720,7 @@ packages:
     resolution: {integrity: sha512-Y/arvbn+rrz3JCKl9C4kVNfTfSm2/mEp5FSz5EsZSANGPSlQrpRI5M4PKF+mJnE52jOO90PnPSc3Ur3bTQw0gA==}
     dev: true
 
-  /ts-jest/27.0.5_a3830dc85c792fbb18bedbcc872cb0f9:
+  /ts-jest/27.0.5_4983e9b3d1f913260771a36e4b65b206:
     resolution: {integrity: sha512-lIJApzfTaSSbtlksfFNHkWOzLJuuSm4faFAfo5kvzOiRAuoN4/eKxVJ2zEAho8aecE04qX6K1pAzfH5QHL1/8w==}
     engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
     hasBin: true
@@ -13731,7 +13738,7 @@ packages:
       babel-jest:
         optional: true
     dependencies:
-      '@types/jest': 27.0.1
+      '@types/jest': 27.0.2
       bs-logger: 0.2.6
       fast-json-stable-stringify: 2.1.0
       jest: 27.2.1_d1ccac96904892d8c5bb2a71cac787db
