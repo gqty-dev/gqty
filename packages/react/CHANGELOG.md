@@ -1,5 +1,12 @@
 # @gqty/react
 
+## 2.0.1-experimental.0
+
+### Patch Changes
+
+- Updated dependencies [undefined]
+  - gqty@2.0.2-experimental.0
+
 ## 2.0.0
 
 ### Major Changes
