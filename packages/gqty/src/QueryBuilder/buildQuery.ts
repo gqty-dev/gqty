@@ -178,7 +178,8 @@ export function createQueryBuilder() {
     builtQuery = {
       query,
       variables,
-      cacheKey: query + (variables ? serializeVariables(variables) : ''),
+      cacheKey:
+        idAcum || query + (variables ? serializeVariables(variables) : ''),
     };
 
     if (isGlobalCache) queryCache[idAcum] = builtQuery;
