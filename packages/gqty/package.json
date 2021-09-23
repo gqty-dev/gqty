@@ -42,14 +42,12 @@
     "test:watch-coverage": "rimraf coverage && mkdirp coverage/lcov-report && concurrently --raw \"jest --watchAll\" \"serve -l 8787 coverage/lcov-report\" \"wait-on tcp:8787 coverage/lcov-report/index.html && open-cli http://localhost:8787\""
   },
   "dependencies": {
-    "lodash": "^4.17.21",
-    "lodash-es": "^4.17.21"
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
     "@size-limit/preset-small-lib": "^5.0.4",
     "@types/concurrently": "^6.2.1",
     "@types/lodash": "^4.14.173",
-    "@types/lodash-es": "^4.17.5",
     "@types/mkdirp": "^1.0.2",
     "@types/node": "^16.9.6",
     "@types/react": "^17.0.24",

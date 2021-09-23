@@ -514,7 +514,6 @@ importers:
       '@size-limit/preset-small-lib': ^5.0.4
       '@types/concurrently': ^6.2.1
       '@types/lodash': ^4.14.173
-      '@types/lodash-es': ^4.17.5
       '@types/mkdirp': ^1.0.2
       '@types/node': '>=16.7.4'
       '@types/react': ^17.0.24
@@ -529,7 +528,6 @@ importers:
       graphql: ^15.5.3
       jest: '>=27.1.0'
       lodash: ^4.17.21
-      lodash-es: ^4.17.21
       mkdirp: ^1.0.4
       open-cli: ^7.0.1
       react: ^17.0.2
@@ -544,12 +542,10 @@ importers:
       ws: ^8.2.2
     dependencies:
       lodash: 4.17.21
-      lodash-es: 4.17.21
     devDependencies:
       '@size-limit/preset-small-lib': 5.0.4_bf7ae222bba146c308f18761fa0b2e5f
       '@types/concurrently': 6.2.1
       '@types/lodash': 4.14.173
-      '@types/lodash-es': 4.17.5
       '@types/mkdirp': 1.0.2
       '@types/node': 16.9.6
       '@types/react': 17.0.24
@@ -4270,12 +4266,6 @@ packages:
       '@types/keygrip': 1.0.2
       '@types/koa-compose': 3.2.5
       '@types/node': 16.9.6
-    dev: true
-
-  /@types/lodash-es/4.17.5:
-    resolution: {integrity: sha512-SHBoI8/0aoMQWAgUHMQ599VM6ZiSKg8sh/0cFqqlQQMyY9uEplc0ULU5yQNzcvdR4ZKa0ey8+vFmahuRbOCT1A==}
-    dependencies:
-      '@types/lodash': 4.14.173
     dev: true
 
   /@types/lodash.mergewith/4.6.6:
@@ -9831,10 +9821,6 @@ packages:
     engines: {node: '>=10'}
     dependencies:
       p-locate: 5.0.0
-
-  /lodash-es/4.17.21:
-    resolution: {integrity: sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==}
-    dev: false
 
   /lodash.flatmap/4.5.0:
     resolution: {integrity: sha1-74y/QI9uSCaGYzRTBcaswLd4cC4=}
