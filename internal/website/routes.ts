@@ -9,13 +9,7 @@ export function getRoutes(): IRoutes {
         _: {
           intro: {
             $name: 'Introduction',
-            $routes: [
-              'README',
-              'how-it-works',
-              'features',
-              'new-in-2',
-              'contributing',
-            ],
+            $routes: ['README', 'how-it-works', 'features', 'contributing'],
           },
           react: {
             $name: 'Usage with React',
