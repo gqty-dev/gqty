@@ -1,5 +1,12 @@
 # gqty
 
+## 2.0.2-experimental.1
+
+### Patch Changes
+
+- d014462: remove unused dependency
+- 8e15eea: improve normalization key auto-fetch logic
+
 ## 2.0.2-experimental.0
 
 ### Patch Changes
