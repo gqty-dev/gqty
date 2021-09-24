@@ -486,44 +486,41 @@ export function createAccessorCreators<
       () => {
         const isUnionsInterfaceSelection = Boolean(unions && parentTypename);
 
-        const autoFetchKeys =
-          normalizationHandler && (parentTypename || unions)
-            ? () => {
-                if (unions) {
-                  const schemaKeys = normalizationHandler.schemaKeys;
+        if (normalizationHandler && (parentTypename || unions)) {
+          if (unions) {
+            const schemaKeys = normalizationHandler.schemaKeys;
 
-                  for (const objectTypeName of unions) {
-                    const objectNormalizationKeys = schemaKeys[objectTypeName];
-                    if (objectNormalizationKeys) {
-                      for (const key of objectNormalizationKeys) {
-                        interceptorManager.addSelection(
-                          innerState.selectionManager.getSelection({
-                            key,
-                            prevSelection,
-                            unions: unionObjectTypesForSelections[
-                              objectTypeName
-                            ] || [objectTypeName],
-                          })
-                        );
-                      }
-                    }
-                  }
-                } else if (parentTypename) {
-                  const normalizationKeys =
-                    normalizationHandler.schemaKeys[parentTypename];
-                  if (normalizationKeys) {
-                    for (const key of normalizationKeys) {
-                      interceptorManager.addSelection(
-                        innerState.selectionManager.getSelection({
-                          key,
-                          prevSelection,
-                        })
-                      );
-                    }
-                  }
-                }
+            for (const objectTypeName of unions) {
+              const objectNormalizationKeys = schemaKeys[objectTypeName];
+              if (objectNormalizationKeys?.length) {
+                const coFetchSelections = objectNormalizationKeys.map((key) =>
+                  innerState.selectionManager.getSelection({
+                    key,
+                    prevSelection,
+                    unions: unionObjectTypesForSelections[objectTypeName] || [
+                      objectTypeName,
+                    ],
+                  })
+                );
+
+                prevSelection.addCofetchSelections(coFetchSelections);
               }
-            : undefined;
+            }
+          } else if (parentTypename) {
+            const normalizationKeys =
+              normalizationHandler.schemaKeys[parentTypename];
+            if (normalizationKeys?.length) {
+              const selections = normalizationKeys.map((key) =>
+                innerState.selectionManager.getSelection({
+                  key,
+                  prevSelection,
+                })
+              );
+
+              prevSelection.addCofetchSelections(selections);
+            }
+          }
+        }
 
         const proxyValue =
           schemaValue instanceof SchemaUnion
@@ -640,8 +637,6 @@ export function createAccessorCreators<
                       (schedulerClientCache !== innerState.clientCache ||
                         !schedulerErrorsMap.has(selection)))
                   ) {
-                    autoFetchKeys?.();
-
                     interceptorManager.addSelection(selection);
                   }
 
@@ -651,8 +646,6 @@ export function createAccessorCreators<
                   // SelectionType.Subscription === 2
                   selection.type === 2
                 ) {
-                  autoFetchKeys?.();
-
                   // Or if you are making the network fetch always
                   interceptorManager.addSelection(selection);
                 } else {

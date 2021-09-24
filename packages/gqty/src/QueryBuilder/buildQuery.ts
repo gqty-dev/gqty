@@ -48,16 +48,28 @@ export function createQueryBuilder() {
     const variableTypes: Record<string, string> = {};
     const variablesMapKeyValue: Record<string, unknown> = {};
 
+    const selectionsSet = new Set<Selection>();
+
+    for (const selection of selections) {
+      if (selection.cofetchSelections) {
+        for (const coFetchSelection of selection.cofetchSelections) {
+          selectionsSet.add(coFetchSelection);
+        }
+      }
+
+      selectionsSet.add(selection);
+    }
+
     let builtQuery: BuiltQuery | undefined;
     let idAcum = '';
 
     if (isGlobalCache) {
-      for (const { id } of selections) idAcum += id;
+      for (const { id } of selectionsSet) idAcum += id;
 
       if ((builtQuery = queryCache[idAcum])) return builtQuery;
     }
 
-    for (const { noIndexSelections } of selections) {
+    for (const { noIndexSelections } of selectionsSet) {
       const selectionBranches: string[][] = [];
 
       function createSelectionBranch(

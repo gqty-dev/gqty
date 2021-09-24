@@ -45,7 +45,7 @@ export interface InterceptorManager {
   globalInterceptor: Interceptor;
   createInterceptor: () => Interceptor;
   removeInterceptor: (interceptor: Interceptor) => void;
-  addSelection: (selection: Selection) => void;
+  addSelection: (selection: Selection) => Selection;
   addSelectionCache: (selection: Selection) => void;
   addSelectionCacheRefetch: (selection: Selection) => void;
   addSelections: (selection: Selection[] | Set<Selection>) => void;
@@ -72,6 +72,7 @@ export function createInterceptorManager(): InterceptorManager {
     for (const interceptor of interceptors) {
       interceptor.addSelection(selection);
     }
+    return selection;
   }
 
   function addSelectionCache(selection: Selection) {

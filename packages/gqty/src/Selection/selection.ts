@@ -35,6 +35,12 @@ export class Selection {
 
   noIndexSelections: readonly Selection[];
 
+  prevSelection?: Selection;
+
+  private _cofetchSelections: Set<Selection> | undefined;
+
+  private _cofetchSelectionsPopulated = false;
+
   constructor({
     key,
     prevSelection,
@@ -86,5 +92,38 @@ export class Selection {
     this.unions = unions;
 
     this.type = type || prevSelection?.type || SelectionType.Query;
+
+    this.prevSelection = prevSelection;
+
+    this._cofetchSelections = prevSelection?.cofetchSelections
+      ? new Set<Selection>()
+      : undefined;
+  }
+
+  addCofetchSelections(selections: Selection[]) {
+    const cofetchSet = (this._cofetchSelections ||= new Set());
+
+    for (const selection of selections) {
+      cofetchSet.add(selection);
+    }
+  }
+
+  get cofetchSelections() {
+    if (this._cofetchSelectionsPopulated || !this._cofetchSelections) {
+      return this._cofetchSelections;
+    }
+
+    this._cofetchSelectionsPopulated = true;
+    const cofetchSet = this._cofetchSelections;
+
+    const prevCofetchSelections = this.prevSelection?.cofetchSelections;
+
+    if (prevCofetchSelections) {
+      for (const selection of prevCofetchSelections) {
+        cofetchSet.add(selection);
+      }
+    }
+
+    return cofetchSet;
   }
 }
