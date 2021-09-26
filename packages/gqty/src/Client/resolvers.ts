@@ -2,17 +2,23 @@ import type { ExecutionResult, GraphQLError } from 'graphql';
 import { CacheInstance, createCache } from '../Cache';
 import { GQtyError } from '../Error';
 import { doRetry } from '../Error/retry';
-import type { FetchEventData } from '../Events';
-import type { NormalizationHandler } from '../Normalization';
 import { createQueryBuilder } from '../QueryBuilder';
-import type { SchedulerPromiseValue } from '../Scheduler';
-import type { Selection } from '../Selection/selection';
 import {
   createSelectionManager,
   SelectionManager,
   separateSelectionTypes,
 } from '../Selection/SelectionManager';
-import { createDeferredPromise, DeferredPromise, get } from '../Utils';
+import {
+  createDeferredPromise,
+  DeferredPromise,
+  get,
+  LazyPromise,
+} from '../Utils';
+
+import type { FetchEventData } from '../Events';
+import type { NormalizationHandler } from '../Normalization';
+import type { SchedulerPromiseValue } from '../Scheduler';
+import type { Selection } from '../Selection/selection';
 import type {
   InnerClientState,
   SubscribeEvents,
@@ -498,6 +504,8 @@ export function createResolvers(
     };
   }
 
+  const resolveQueryPromisesMap: Record<string, Promise<any>> = {};
+
   async function buildAndFetchSelections<TData = unknown>(
     selections: Selection[] | undefined,
     type: 'query' | 'mutation',
@@ -523,127 +531,149 @@ export function createResolvers(
         cache === globalCache
       );
 
-    let executionData: ExecutionResult['data'];
+    if (!options.scheduler) return resolve();
 
-    let loggingPromise: DeferredPromise<FetchEventData> | undefined;
+    let promise: Promise<TData | undefined> | undefined =
+      resolveQueryPromisesMap[cacheKey];
+
+    if (promise) return promise;
+
+    promise = LazyPromise(() => {
+      return resolve();
+    });
+    resolveQueryPromisesMap[cacheKey] = promise;
 
     try {
-      if (cachedData != null) return cachedData;
+      return await promise;
+    } finally {
+      delete resolveQueryPromisesMap[cacheKey];
+    }
 
-      if (eventHandler.hasFetchSubscribers) {
-        loggingPromise = createDeferredPromise<FetchEventData>();
+    async function resolve() {
+      if (!selections) return;
 
-        eventHandler.sendFetchPromise(loggingPromise.promise, selections);
-      }
+      let executionData: ExecutionResult['data'];
 
-      const executionResult = await queryFetcher(query, variables);
+      let loggingPromise: DeferredPromise<FetchEventData> | undefined;
 
-      const { data, errors } = executionResult;
+      try {
+        if (cachedData != null) return cachedData;
 
-      if (data) {
-        if (!errors && cacheKey) {
-          resolutionTempCache.set(cacheKey, data);
-          setTimeout(
-            () => resolutionTempCache.delete(cacheKey),
-            resolutionTempCacheTimeout
+        if (eventHandler.hasFetchSubscribers) {
+          loggingPromise = createDeferredPromise<FetchEventData>();
+
+          eventHandler.sendFetchPromise(loggingPromise.promise, selections);
+        }
+
+        const executionResult = await queryFetcher(query, variables);
+
+        const { data, errors } = executionResult;
+
+        if (data) {
+          if (!errors && cacheKey) {
+            resolutionTempCache.set(cacheKey, data);
+            setTimeout(
+              () => resolutionTempCache.delete(cacheKey),
+              resolutionTempCacheTimeout
+            );
+          }
+
+          cache.mergeCache(data, type);
+          executionData = data;
+        }
+
+        if (errors?.length) {
+          throw GQtyError.fromGraphQLErrors(errors);
+        } else if (options.scheduler) {
+          innerState.scheduler.errors.removeErrors(selections);
+        }
+
+        loggingPromise?.resolve({
+          executionResult,
+          query,
+          variables,
+          cacheSnapshot: cache.cache,
+          selections,
+          type,
+        });
+
+        return data as TData;
+      } catch (err) {
+        const error = GQtyError.create(err, () => {});
+        loggingPromise?.resolve({
+          error,
+          query,
+          variables,
+          cacheSnapshot: cache.cache,
+          selections,
+          type,
+        });
+
+        if (options.scheduler) {
+          const selectionsWithErrors = filterSelectionsWithErrors(
+            error.graphQLErrors,
+            executionData,
+            selections
+          );
+          innerState.scheduler.errors.triggerError(
+            error,
+            selectionsWithErrors,
+            isLastTry
           );
         }
 
-        cache.mergeCache(data, type);
-        executionData = data;
-      }
+        if (options.retry) {
+          async function retryFn(lastTry: boolean) {
+            const retryPromise: Promise<SchedulerPromiseValue> =
+              buildAndFetchSelections(
+                selections,
+                type,
+                cache,
+                Object.assign({}, options, {
+                  retry: false,
+                  ignoreResolveCache: true,
+                } as FetchResolveOptions),
+                lastTry
+              ).then(
+                (data) => ({ data, selections: new Set(selections) }),
+                (err) => {
+                  console.error(err);
+                  return {
+                    error: GQtyError.create(err),
+                    selections: new Set(selections),
+                  };
+                }
+              );
 
-      if (errors?.length) {
-        throw GQtyError.fromGraphQLErrors(errors);
-      } else if (options.scheduler) {
-        innerState.scheduler.errors.removeErrors(selections);
-      }
+            if (options.scheduler) {
+              const setSelections = new Set(selections);
+              scheduler.pendingSelectionsGroups.add(setSelections);
 
-      loggingPromise?.resolve({
-        executionResult,
-        query,
-        variables,
-        cacheSnapshot: cache.cache,
-        selections,
-        type,
-      });
+              scheduler.errors.retryPromise(retryPromise, setSelections);
 
-      return data as TData;
-    } catch (err) {
-      const error = GQtyError.create(err, () => {});
-      loggingPromise?.resolve({
-        error,
-        query,
-        variables,
-        cacheSnapshot: cache.cache,
-        selections,
-        type,
-      });
+              retryPromise.finally(() => {
+                scheduler.pendingSelectionsGroups.delete(setSelections);
+              });
+            }
 
-      if (options.scheduler) {
-        const selectionsWithErrors = filterSelectionsWithErrors(
-          error.graphQLErrors,
-          executionData,
-          selections
-        );
-        innerState.scheduler.errors.triggerError(
-          error,
-          selectionsWithErrors,
-          isLastTry
-        );
-      }
+            const { error } = await retryPromise;
 
-      if (options.retry) {
-        async function retryFn(lastTry: boolean) {
-          const retryPromise: Promise<SchedulerPromiseValue> =
-            buildAndFetchSelections(
-              selections,
-              type,
-              cache,
-              Object.assign({}, options, {
-                retry: false,
-                ignoreResolveCache: true,
-              } as FetchResolveOptions),
-              lastTry
-            ).then(
-              (data) => ({ data, selections: new Set(selections) }),
-              (err) => {
-                console.error(err);
-                return {
-                  error: GQtyError.create(err),
-                  selections: new Set(selections),
-                };
-              }
-            );
-
-          if (options.scheduler) {
-            const setSelections = new Set(selections);
-            scheduler.pendingSelectionsGroups.add(setSelections);
-
-            scheduler.errors.retryPromise(retryPromise, setSelections);
-
-            retryPromise.finally(() => {
-              scheduler.pendingSelectionsGroups.delete(setSelections);
-            });
+            if (error) throw error;
           }
-
-          const { error } = await retryPromise;
-
-          if (error) throw error;
+          doRetry(options.retry, {
+            onLastTry() {
+              return retryFn(true);
+            },
+            onRetry() {
+              return retryFn(false);
+            },
+          });
         }
-        doRetry(options.retry, {
-          onLastTry() {
-            return retryFn(true);
-          },
-          onRetry() {
-            return retryFn(false);
-          },
-        });
-      }
 
-      throw error;
-    } finally {
-      interceptorManager.removeSelections(selections);
+        throw error;
+      } finally {
+        interceptorManager.removeSelections(selections);
+      }
     }
   }
 
