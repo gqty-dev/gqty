@@ -520,7 +520,7 @@ importers:
       '@types/react-dom': ^17.0.9
       '@types/rimraf': ^3.0.2
       '@types/wait-on': ^5.3.1
-      '@types/ws': ^7.4.7
+      '@types/ws': ^8.2.0
       bob-esbuild-cli: ^2.0.0
       concurrently: ^6.2.1
       cross-env: ^7.0.3
@@ -552,7 +552,7 @@ importers:
       '@types/react-dom': 17.0.9
       '@types/rimraf': 3.0.2
       '@types/wait-on': 5.3.1
-      '@types/ws': 7.4.7
+      '@types/ws': 8.2.0
       bob-esbuild-cli: 2.0.0_bob-esbuild@2.0.0
       concurrently: 6.2.1
       cross-env: 7.0.3
@@ -654,7 +654,7 @@ importers:
 
   packages/subscriptions:
     specifiers:
-      '@types/ws': ^7.4.7
+      '@types/ws': ^8.2.0
       bob-esbuild-cli: ^2.0.0
       gqty: workspace:^2.0.1
       graphql: ^15.5.3
@@ -667,7 +667,7 @@ importers:
       isomorphic-ws: 4.0.1_ws@8.2.2
       ws: 8.2.2_87fda8794f1bc29f6015a2530b8e285e
     devDependencies:
-      '@types/ws': 7.4.7
+      '@types/ws': 8.2.0
       bob-esbuild-cli: 2.0.0_bob-esbuild@2.0.0
       gqty: link:../gqty
       graphql: 15.6.0
@@ -4414,6 +4414,12 @@ packages:
     resolution: {integrity: sha512-JQbbmxZTZehdc2iszGKs5oC3NFnjeay7mtAWrdt7qNtAVK0g19muApzAy4bm9byz79xa2ZnO/BOBC2R8RC5Lww==}
     dependencies:
       '@types/node': 16.9.6
+
+  /@types/ws/8.2.0:
+    resolution: {integrity: sha512-cyeefcUCgJlEk+hk2h3N+MqKKsPViQgF5boi9TTHSK+PoR9KWBb/C5ccPcDyAqgsbAYHTwulch725DV84+pSpg==}
+    dependencies:
+      '@types/node': 16.9.6
+    dev: true
 
   /@types/yargs-parser/20.2.1:
     resolution: {integrity: sha512-7tFImggNeNBVMsn0vLrpn1H1uPrUBdnARPTpZoitY37ZrdJREzf7I16tMrlK3hen349gr1NYh8CmZQa7CTG6Aw==}
