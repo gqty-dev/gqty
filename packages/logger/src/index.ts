@@ -62,7 +62,7 @@ export function createLogger(
   options.showSelections ??= true;
   options.stringifyJSON ??= false;
 
-  const stringifyJSONIfEnabled = <T>(v: T) => {
+  const stringifyJSONIfEnabled = <T extends object>(v: T) => {
     if (options.stringifyJSON) {
       return prettier.format(JSON.stringify(v), {
         parser: 'json',
@@ -146,8 +146,19 @@ export function createLogger(
     if (options.showSelections) {
       console.groupCollapsed(...format(['Selections', headerStyles]));
       selections.forEach(
-        ({ noIndexSelections, selectionsList, type, ...selection }) => {
-          console.log(stringifyJSONIfEnabled(selection));
+        ({ id, cachePath, key, pathString, alias, argTypes, args, unions }) => {
+          console.log(
+            stringifyJSONIfEnabled({
+              id,
+              cachePath,
+              key,
+              pathString,
+              alias,
+              argTypes,
+              args,
+              unions,
+            })
+          );
         }
       );
       console.groupEnd();
