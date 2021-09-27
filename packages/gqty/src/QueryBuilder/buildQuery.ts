@@ -48,6 +48,21 @@ export function createQueryBuilder() {
     const variableTypes: Record<string, string> = {};
     const variablesMapKeyValue: Record<string, unknown> = {};
 
+    if (normalization) {
+      const selectionsSet = new Set<Selection>();
+
+      for (const selection of selections) {
+        if (selection.cofetchSelections) {
+          for (const coFetchSelection of selection.cofetchSelections) {
+            selectionsSet.add(coFetchSelection);
+          }
+        }
+
+        selectionsSet.add(selection);
+      }
+      selections = selectionsSet;
+    }
+
     let builtQuery: BuiltQuery | undefined;
     let idAcum = '';
 

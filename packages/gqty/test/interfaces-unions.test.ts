@@ -123,7 +123,7 @@ Object {
     expect(queries).toMatchInlineSnapshot(`
 Array [
   Object {
-    "query": "query($type1:NodeType!){node0:node(type:$type1){__typename ...on A{id a}id ...on B{id b}}}",
+    "query": "query($type1:NodeType!){node0:node(type:$type1){__typename id ...on A{id a}...on B{id b}}}",
     "result": Object {
       "data": Object {
         "node0": Object {
@@ -181,7 +181,7 @@ Object {
     expect(queries).toMatchInlineSnapshot(`
 Array [
   Object {
-    "query": "query($type1:NodeType!){node0:node(type:$type1){__typename ...on A{id a node{__typename ...on A{id node{__typename ...on C{node{__typename ...on A{id}}}}}}}id ...on B{id b}}}",
+    "query": "query($type1:NodeType!){node0:node(type:$type1){__typename id ...on A{id a node{__typename id ...on A{id node{__typename id ...on C{id node{__typename id ...on A{id}}}}}}}...on B{id b}}}",
     "result": Object {
       "data": Object {
         "node0": Object {
@@ -193,6 +193,7 @@ Array [
             "id": "1",
             "node": Object {
               "__typename": "A",
+              "id": "1",
             },
           },
         },

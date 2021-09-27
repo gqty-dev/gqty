@@ -35,6 +35,10 @@ export class Selection {
 
   noIndexSelections: readonly Selection[];
 
+  prevSelection: Selection | null = null;
+
+  currentCofetchSelections: Set<Selection> | null = null;
+
   constructor({
     key,
     prevSelection,
@@ -86,5 +90,32 @@ export class Selection {
     this.unions = unions;
 
     this.type = type || prevSelection?.type || SelectionType.Query;
+
+    if (prevSelection) this.prevSelection = prevSelection;
+  }
+
+  addCofetchSelections(selections: Selection[] | Set<Selection>) {
+    const cofetchSet = (this.currentCofetchSelections ||= new Set());
+
+    for (const selection of selections) {
+      cofetchSet.add(selection);
+    }
+  }
+
+  get cofetchSelections() {
+    let currentPrevSelection = this.prevSelection;
+
+    while (currentPrevSelection) {
+      const currentPrevCofetchSelections =
+        currentPrevSelection.currentCofetchSelections;
+
+      if (currentPrevCofetchSelections) {
+        this.addCofetchSelections(currentPrevCofetchSelections);
+      }
+
+      currentPrevSelection = currentPrevSelection.prevSelection;
+    }
+
+    return this.currentCofetchSelections;
   }
 }
