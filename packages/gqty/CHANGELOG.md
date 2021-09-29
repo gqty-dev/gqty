@@ -1,5 +1,30 @@
 # gqty
 
+## 2.0.2
+
+### Patch Changes
+
+- d014462: remove unused dependency
+- 6b60991: improve normalization key auto-fetch logic
+- 5cc001f: Fix: Prevent duplicated concurrent scheduler fetch
+- d6da2ae: `Variables`/`Args` utility type to re-use variables types from any field with arguments.
+
+  You can use either `Variables` or `Args`.
+
+  ```ts
+  import { query, Query } from '../gqty';
+
+  import type { Variables, Args } from 'gqty';
+
+  function getUserName(args: Variables<Query['user']>) {
+    return query.user(args).name;
+  }
+
+  function getUserEmail(args: Args<typeof query['user']>) {
+    return query.user(args).email;
+  }
+  ```
+
 ## 2.0.1
 
 ### Patch Changes
