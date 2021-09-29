@@ -1,13 +1,17 @@
 import { Button, Stack, Text } from '@chakra-ui/react';
-
+import type { Variables } from 'gqty';
 import { usePaginatedQuery } from '../components/client';
-import { ConnectionArgs } from '../graphql/gqty';
+import { Query } from '../graphql/gqty';
 
 const amount = 3;
 
 export default function Page() {
   const { data, fetchMore, isLoading } = usePaginatedQuery(
-    (query, input: ConnectionArgs, { getFields, getArrayFields }) => {
+    (
+      query,
+      { input }: Variables<Query['paginatedHumans']>,
+      { getFields, getArrayFields }
+    ) => {
       const { pageInfo, nodes } = query.paginatedHumans({
         input,
       });
@@ -20,7 +24,9 @@ export default function Page() {
     },
     {
       initialArgs: {
-        first: amount,
+        input: {
+          first: amount,
+        },
       },
       merge({ data: { existing, incoming }, sortBy }) {
         function getNodes(nodes: typeof incoming.nodes) {
@@ -65,8 +71,10 @@ export default function Page() {
         onClick={() => {
           fetchMore(() => {
             return {
-              last: amount,
-              before: startCursor,
+              input: {
+                last: amount,
+                before: startCursor,
+              },
             };
           });
         }}
@@ -79,8 +87,10 @@ export default function Page() {
         onClick={() => {
           fetchMore(() => {
             return {
-              first: amount,
-              after: endCursor,
+              input: {
+                first: amount,
+                after: endCursor,
+              },
             };
           });
         }}
