@@ -337,7 +337,7 @@ importers:
       graphql: ^15.5.3
       graphql-ez: ^0.13.1
       jest: '>=27.1.0'
-      jest-watch-typeahead: ^0.6.5
+      jest-watch-typeahead: ^1.0.0
       prettier: '>=2.3.2'
       randomstring: ^1.2.1
       size-limit: ^5.0.5
@@ -359,7 +359,7 @@ importers:
       graphql: 15.6.0
       graphql-ez: 0.13.1_b0f02bb444e0a23c019449443ad7d8c6
       jest: 27.2.4_1ab8aa14464780c21d0b28dc59f139ba
-      jest-watch-typeahead: 0.6.5_jest@27.2.4
+      jest-watch-typeahead: 1.0.0_jest@27.2.4
       prettier: 2.4.1
       randomstring: 1.2.1
       ts-jest: 27.0.5_52a571d76319e63aeaa66dc9db9e90cc
@@ -4751,6 +4751,11 @@ packages:
     resolution: {integrity: sha512-quJQXlTSUGL2LH9SUXo8VwsY4soanhgo6LNSm84E1LBcE8s3O0wpdiRzyR9z/ZZJMlMWv37qOOb9pdJlMUEKFQ==}
     engines: {node: '>=8'}
 
+  /ansi-regex/6.0.1:
+    resolution: {integrity: sha512-n5M855fKb2SsfMIiFFoVrABHJC8QtHwVx+mHWP3QcEqBHYienj5dHSgjbxtC0WEZXYt4wcD6zrQElDPhFuZgfA==}
+    engines: {node: '>=12'}
+    dev: false
+
   /ansi-styles/3.2.1:
     resolution: {integrity: sha512-VT0ZI6kZRdTh8YyJw3SMbYm/u+NqfsAxEpWO0Pf9sq8/e94WxxOpPKx9FR1FlyCtOVDNOQ+8ntlqFxiRc+r5qA==}
     engines: {node: '>=4'}
@@ -5717,6 +5722,11 @@ packages:
   /char-regex/1.0.2:
     resolution: {integrity: sha512-kWWXztvZ5SBQV+eRgKFeh8q5sLuZY2+8WUIzlxWVTg+oGwY14qylx1KbKzHd8P6ZYkAg0xyIDU9JMHhyJMZ1jw==}
     engines: {node: '>=10'}
+
+  /char-regex/2.0.0:
+    resolution: {integrity: sha512-oGu2QekBMXgyQNWPDRQ001bjvDnZe4/zBTz37TMbiKz1NbNiyiH5hRkobe7npRN6GfbGbxMYFck/vQ1r9c1VMA==}
+    engines: {node: '>=12.20'}
+    dev: false
 
   /character-entities-legacy/1.1.4:
     resolution: {integrity: sha512-3Xnr+7ZFS1uxeiUDvV02wQ+QDbc55o97tIV5zHScSPJpcLm/r0DFPcoY3tYRp+VZukxuMeKgXYmsXQHO05zQeA==}
@@ -9496,20 +9506,20 @@ packages:
       leven: 3.1.0
       pretty-format: 27.2.4
 
-  /jest-watch-typeahead/0.6.5_jest@27.2.4:
-    resolution: {integrity: sha512-GIbV6h37/isatMDtqZlA8Q5vC6T3w+5qdvtF+3LIkPc58zEWzbKmTHvlUIp3wvBm400RzrQWcVPcsAJqKWu7XQ==}
-    engines: {node: '>=10'}
+  /jest-watch-typeahead/1.0.0_jest@27.2.4:
+    resolution: {integrity: sha512-jxoszalAb394WElmiJTFBMzie/RDCF+W7Q29n5LzOPtcoQoHWfdUtHFkbhgf5NwWe8uMOxvKb/g7ea7CshfkTw==}
+    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     peerDependencies:
-      jest: ^26.0.0 || ^27.0.0
+      jest: ^27.0.0
     dependencies:
       ansi-escapes: 4.3.2
       chalk: 4.1.2
       jest: 27.2.4_1ab8aa14464780c21d0b28dc59f139ba
       jest-regex-util: 27.0.6
       jest-watcher: 27.2.4
-      slash: 3.0.0
-      string-length: 4.0.2
-      strip-ansi: 6.0.1
+      slash: 4.0.0
+      string-length: 5.0.1
+      strip-ansi: 7.0.1
     dev: false
 
   /jest-watcher/27.2.4:
@@ -12893,7 +12903,6 @@ packages:
   /slash/4.0.0:
     resolution: {integrity: sha512-3dOsAHXXUkQTpOYcoAxLIorMTp4gIQr5IW3iVb7A7lFIp0VHhnynm9izx6TssdrIcVIESAlVjtnO2K8bg+Coew==}
     engines: {node: '>=12'}
-    dev: true
 
   /smartwrap/1.2.5:
     resolution: {integrity: sha512-bzWRwHwu0RnWjwU7dFy7tF68pDAx/zMSu3g7xr9Nx5J0iSImYInglwEVExyHLxXljy6PWMjkSAbwF7t2mPnRmg==}
@@ -13225,6 +13234,14 @@ packages:
       char-regex: 1.0.2
       strip-ansi: 6.0.1
 
+  /string-length/5.0.1:
+    resolution: {integrity: sha512-9Ep08KAMUn0OadnVaBuRdE2l615CQ508kr0XMadjClfYpdCyvrbFp6Taebo8yyxokQ4viUd/xPPUA4FGgUa0ow==}
+    engines: {node: '>=12.20'}
+    dependencies:
+      char-regex: 2.0.0
+      strip-ansi: 7.0.1
+    dev: false
+
   /string-similarity/4.0.4:
     resolution: {integrity: sha512-/q/8Q4Bl4ZKAPjj8WerIBJWALKkaPRfrvhfF8k/B23i4nzrlRj2/go1m90In7nG/3XDSbOo0+pu6RvCTM9RGMQ==}
     dev: false
@@ -13288,6 +13305,13 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       ansi-regex: 5.0.1
+
+  /strip-ansi/7.0.1:
+    resolution: {integrity: sha512-cXNxvT8dFNRVfhVME3JAe98mkXDYN2O1l7jmcwMnOslDeESg1rF/OZMtK0nRAhiari1unG5cD4jG3rapUAkLbw==}
+    engines: {node: '>=12'}
+    dependencies:
+      ansi-regex: 6.0.1
+    dev: false
 
   /strip-bom-string/1.0.0:
     resolution: {integrity: sha1-5SEekiQ2n7uB1jOi8ABE3IztrZI=}
