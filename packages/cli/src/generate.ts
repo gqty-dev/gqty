@@ -643,29 +643,24 @@ export async function generate(
           if (fieldValue.__args) {
             const argsEntries = Object.entries(fieldValue.__args);
             let onlyNullableArgs = true;
-            const argTypes = argsEntries.reduce(
-              (acum, [argKey, argValue], index) => {
-                const argValueProps = parseSchemaType(argValue);
-                const connector = argValueProps.isNullable ? '?:' : ':';
+            const argTypes = argsEntries.reduce((acum, [argKey, argValue]) => {
+              const argValueProps = parseSchemaType(argValue);
+              const connector = argValueProps.isNullable ? '?:' : ':';
 
-                if (!argValueProps.isNullable) {
-                  onlyNullableArgs = false;
-                }
+              if (!argValueProps.isNullable) {
+                onlyNullableArgs = false;
+              }
 
-                const argTypeValue = parseArgType(argValueProps);
+              const argTypeValue = parseArgType(argValueProps);
 
-                acum += `${addDescription([
-                  typeName,
-                  fieldKey,
-                  argKey,
-                ])}${argKey}${connector} ${argTypeValue}`;
-                if (index < argsEntries.length - 1) {
-                  acum += '; ';
-                }
-                return acum;
-              },
-              ''
-            );
+              acum += `${addDescription([
+                typeName,
+                fieldKey,
+                argKey,
+              ])}${argKey}${connector} ${argTypeValue};\n`;
+
+              return acum;
+            }, '');
             const argsConnector = onlyNullableArgs ? '?:' : ':';
             finalType = `: (args${argsConnector} {${argTypes}}) => ${typeToReturn}`;
           } else {
