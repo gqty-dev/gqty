@@ -706,10 +706,10 @@ export interface Query {
     hello: Scalars['String'];
   }) => ScalarsEnums['String'];
   stringNullableWithArgs: (args: {
-    hello: Scalars['String']
+    hello: Scalars['String'];
     /**
      * @defaultValue \`\\"Hi\\"\`
-     */;
+     */
     helloTwo?: Maybe<Scalars['String']>;
   }) => Maybe<ScalarsEnums['String']>;
   stringNullableWithArgsArray: (args: {
