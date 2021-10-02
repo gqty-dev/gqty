@@ -537,7 +537,7 @@ importers:
       tsc-watch: ^4.5.0
       typescript: '>=4.4.2'
       wait-on: ^6.0.0
-      ws: ^8.2.2
+      ws: ^8.2.3
     dependencies:
       lodash: 4.17.21
     devDependencies:
@@ -568,7 +568,7 @@ importers:
       tsc-watch: 4.5.0_typescript@4.4.3
       typescript: 4.4.3
       wait-on: 6.0.0
-      ws: 8.2.2_b2e6c579793e9551e64081320e3d8aea
+      ws: 8.2.3_b2e6c579793e9551e64081320e3d8aea
 
   packages/logger:
     specifiers:
@@ -660,10 +660,10 @@ importers:
       test-utils: workspace:^0.1.0
       tslib: ^2.3.1
       typescript: '>=4.4.2'
-      ws: ^8.2.2
+      ws: ^8.2.3
     dependencies:
-      isomorphic-ws: 4.0.1_ws@8.2.2
-      ws: 8.2.2_b2e6c579793e9551e64081320e3d8aea
+      isomorphic-ws: 4.0.1_ws@8.2.3
+      ws: 8.2.3_b2e6c579793e9551e64081320e3d8aea
     devDependencies:
       '@types/ws': 8.2.0
       bob-esbuild-cli: 2.0.0_bob-esbuild@2.0.0
@@ -9073,6 +9073,14 @@ packages:
     dependencies:
       ws: 8.2.2_b2e6c579793e9551e64081320e3d8aea
 
+  /isomorphic-ws/4.0.1_ws@8.2.3:
+    resolution: {integrity: sha512-BhBvN2MBpWTaSHdWRb/bwdZJ1WaehQ2L1KngkCkfLUGF0mAWAT1sQUQacEmQ0jXkFw/czDXPNQSL5u2/Krsz1w==}
+    peerDependencies:
+      ws: '*'
+    dependencies:
+      ws: 8.2.3_b2e6c579793e9551e64081320e3d8aea
+    dev: false
+
   /istanbul-lib-coverage/3.0.1:
     resolution: {integrity: sha512-GvCYYTxaCPqwMjobtVcVKvSHtAGe48MNhGjpK8LtVF8K0ISX7hCKl85LgtuaSneWVyQmaGcW3iXVV3GaZSLpmQ==}
     engines: {node: '>=8'}
@@ -14966,6 +14974,21 @@ packages:
 
   /ws/8.2.2_b2e6c579793e9551e64081320e3d8aea:
     resolution: {integrity: sha512-Q6B6H2oc8QY3llc3cB8kVmQ6pnJWVQbP7Q5algTcIxx7YEpc0oU4NBVHlztA7Ekzfhw2r0rPducMUiCGWKQRzw==}
+    engines: {node: '>=10.0.0'}
+    peerDependencies:
+      bufferutil: ^4.0.1
+      utf-8-validate: ^5.0.2
+    peerDependenciesMeta:
+      bufferutil:
+        optional: true
+      utf-8-validate:
+        optional: true
+    dependencies:
+      bufferutil: 4.0.4
+      utf-8-validate: 5.0.6
+
+  /ws/8.2.3_b2e6c579793e9551e64081320e3d8aea:
+    resolution: {integrity: sha512-wBuoj1BDpC6ZQ1B7DWQBYVLphPWkm8i9Y0/3YdHjHKHiohOJ1ws+3OccDWtH+PoC9DZD5WOTrJvNbWvjS6JWaA==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
       bufferutil: ^4.0.1
