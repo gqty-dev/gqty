@@ -1,8 +1,8 @@
 import Fastify from 'fastify';
-import ms from 'ms';
 import FastifyNext from 'fastify-nextjs';
-import { resolve } from 'path';
-
+import ms from 'ms';
+import { dirname, resolve } from 'path';
+import { fileURLToPath } from 'url';
 import { buildApp } from './graphql';
 
 const app = Fastify({
@@ -17,7 +17,7 @@ console.log('> React example API server started.');
 app
   .register(FastifyNext, {
     logLevel: 'error',
-    dir: resolve(__dirname, '../'),
+    dir: resolve(dirname(fileURLToPath(import.meta.url)), '../'),
   })
   .then(() => {
     if (!app.next) {

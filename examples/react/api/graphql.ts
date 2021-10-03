@@ -6,10 +6,9 @@ import { ezDataLoader, InferDataLoader } from '@graphql-ez/plugin-dataloader';
 import { ezSchema } from '@graphql-ez/plugin-schema';
 import { ezUpload } from '@graphql-ez/plugin-upload';
 import { ezWebSockets } from '@graphql-ez/plugin-websockets';
-import * as faker from 'faker';
-import { seed } from 'faker';
+import faker from 'faker';
 import { StrictInMemoryPubSub } from 'graphql-ez/pubsub';
-import { defaults, keyBy } from 'lodash';
+import _ from 'lodash';
 import { JsonDB } from 'node-json-db';
 import type { Dog, Human } from './ez.generated';
 
@@ -19,7 +18,7 @@ const pubsub = new StrictInMemoryPubSub<{
   };
 }>();
 
-seed(2021);
+faker.seed(2021);
 
 export const {
   registerTypeDefs,
@@ -60,7 +59,7 @@ export const {
 const OwnerLoader = registerDataLoader('DogOwner', (DataLoader) => {
   return new DataLoader(async (keys: readonly string[]) => {
     const dogOwners: Record<string, string> = db.getData('/dogOwners');
-    const humans = keyBy(db.getData('/humans') as Array<Human>, 'id');
+    const humans = _.keyBy(db.getData('/humans') as Array<Human>, 'id');
     return keys.map((key) => {
       return humans[dogOwners[key]];
     });
@@ -75,7 +74,7 @@ const HumanDogsLoader = registerDataLoader('HumanDogs', (DataLoader) => {
 
     const humanDogs = Object.entries(dogOwners).reduce(
       (acum, [dogId, humanId]) => {
-        defaults(acum, {
+        _.defaults(acum, {
           [humanId]: [],
         });
 

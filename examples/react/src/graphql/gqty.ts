@@ -13,18 +13,22 @@ import {
 } from './schema.generated';
 
 const queryFetcher: QueryFetcher = async function (query, variables) {
-  // Modify "/api/graphql" if needed
-  const response = await fetch('/api/graphql', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      query,
-      variables,
-    }),
-    mode: 'cors',
-  });
+  const response = await fetch(
+    typeof window === 'undefined'
+      ? 'http://localhost:4141/api/graphql'
+      : '/api/graphql',
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        query,
+        variables,
+      }),
+      mode: 'cors',
+    }
+  );
 
   const json = await response.json();
 
