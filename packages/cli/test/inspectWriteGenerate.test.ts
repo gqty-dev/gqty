@@ -163,22 +163,22 @@ test('basic inspectWriteGenerate functionality', async () => {
       }
 
       export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
-        String: true,
         Boolean: true,
+        String: true,
       };
       export const generatedSchema = {
-        query: { __typename: { __type: 'String!' }, hello: { __type: 'String!' } },
         mutation: {},
+        query: { __typename: { __type: 'String!' }, hello: { __type: 'String!' } },
         subscription: {},
       } as const;
+
+      export interface Mutation {
+        __typename?: 'Mutation';
+      }
 
       export interface Query {
         __typename?: 'Query';
         hello: ScalarsEnums['String'];
-      }
-
-      export interface Mutation {
-        __typename?: 'Mutation';
       }
 
       export interface Subscription {
@@ -186,11 +186,11 @@ test('basic inspectWriteGenerate functionality', async () => {
       }
 
       export interface SchemaObjectTypes {
-        Query: Query;
         Mutation: Mutation;
+        Query: Query;
         Subscription: Subscription;
       }
-      export type SchemaObjectTypesNames = 'Query' | 'Mutation' | 'Subscription';
+      export type SchemaObjectTypesNames = 'Mutation' | 'Query' | 'Subscription';
 
       export interface GeneratedSchema {
         query: Query;
@@ -349,23 +349,23 @@ describe('from file', () => {
         }
 
         export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
-          Int: true,
           Boolean: true,
+          Int: true,
           String: true,
         };
         export const generatedSchema = {
-          query: { __typename: { __type: 'String!' }, hello: { __type: 'Int!' } },
           mutation: {},
+          query: { __typename: { __type: 'String!' }, hello: { __type: 'Int!' } },
           subscription: {},
         } as const;
+
+        export interface Mutation {
+          __typename?: 'Mutation';
+        }
 
         export interface Query {
           __typename?: 'Query';
           hello: ScalarsEnums['Int'];
-        }
-
-        export interface Mutation {
-          __typename?: 'Mutation';
         }
 
         export interface Subscription {
@@ -373,11 +373,11 @@ describe('from file', () => {
         }
 
         export interface SchemaObjectTypes {
-          Query: Query;
           Mutation: Mutation;
+          Query: Query;
           Subscription: Subscription;
         }
-        export type SchemaObjectTypesNames = 'Query' | 'Mutation' | 'Subscription';
+        export type SchemaObjectTypesNames = 'Mutation' | 'Query' | 'Subscription';
 
         export interface GeneratedSchema {
           query: Query;
@@ -537,22 +537,22 @@ describe('from file', () => {
         }
 
         export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
-          String: true,
           Boolean: true,
+          String: true,
         };
         export const generatedSchema = {
-          query: { __typename: { __type: 'String!' }, hello: { __type: 'String!' } },
           mutation: {},
+          query: { __typename: { __type: 'String!' }, hello: { __type: 'String!' } },
           subscription: {},
         } as const;
+
+        export interface Mutation {
+          __typename?: 'Mutation';
+        }
 
         export interface Query {
           __typename?: 'Query';
           hello: ScalarsEnums['String'];
-        }
-
-        export interface Mutation {
-          __typename?: 'Mutation';
         }
 
         export interface Subscription {
@@ -560,11 +560,11 @@ describe('from file', () => {
         }
 
         export interface SchemaObjectTypes {
-          Query: Query;
           Mutation: Mutation;
+          Query: Query;
           Subscription: Subscription;
         }
-        export type SchemaObjectTypesNames = 'Query' | 'Mutation' | 'Subscription';
+        export type SchemaObjectTypesNames = 'Mutation' | 'Query' | 'Subscription';
 
         export interface GeneratedSchema {
           query: Query;
@@ -724,22 +724,22 @@ describe('from file', () => {
         }
 
         export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
-          String: true,
           Boolean: true,
+          String: true,
         };
         export const generatedSchema = {
-          query: { __typename: { __type: 'String!' }, hello: { __type: 'String!' } },
           mutation: {},
+          query: { __typename: { __type: 'String!' }, hello: { __type: 'String!' } },
           subscription: {},
         } as const;
+
+        export interface Mutation {
+          __typename?: 'Mutation';
+        }
 
         export interface Query {
           __typename?: 'Query';
           hello: ScalarsEnums['String'];
-        }
-
-        export interface Mutation {
-          __typename?: 'Mutation';
         }
 
         export interface Subscription {
@@ -747,11 +747,11 @@ describe('from file', () => {
         }
 
         export interface SchemaObjectTypes {
-          Query: Query;
           Mutation: Mutation;
+          Query: Query;
           Subscription: Subscription;
         }
-        export type SchemaObjectTypesNames = 'Query' | 'Mutation' | 'Subscription';
+        export type SchemaObjectTypesNames = 'Mutation' | 'Query' | 'Subscription';
 
         export interface GeneratedSchema {
           query: Query;
@@ -950,22 +950,22 @@ test('specify generateOptions to inspectWriteGenerate', async () => {
       }
 
       export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
-        String: true,
         Boolean: true,
+        String: true,
       };
       export const generatedSchema = {
-        query: { __typename: { __type: 'String!' }, hello: { __type: 'String!' } },
         mutation: {},
+        query: { __typename: { __type: 'String!' }, hello: { __type: 'String!' } },
         subscription: {},
       } as const;
+
+      export interface Mutation {
+        __typename?: 'Mutation';
+      }
 
       export interface Query {
         __typename?: 'Query';
         hello: ScalarsEnums['String'];
-      }
-
-      export interface Mutation {
-        __typename?: 'Mutation';
       }
 
       export interface Subscription {
@@ -973,11 +973,11 @@ test('specify generateOptions to inspectWriteGenerate', async () => {
       }
 
       export interface SchemaObjectTypes {
-        Query: Query;
         Mutation: Mutation;
+        Query: Query;
         Subscription: Subscription;
       }
-      export type SchemaObjectTypesNames = 'Query' | 'Mutation' | 'Subscription';
+      export type SchemaObjectTypesNames = 'Mutation' | 'Query' | 'Subscription';
 
       export interface GeneratedSchema {
         query: Query;
@@ -1087,22 +1087,22 @@ describe('inspect headers', () => {
         }
 
         export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
-          String: true,
           Boolean: true,
+          String: true,
         };
         export const generatedSchema = {
-          query: { __typename: { __type: 'String!' }, hello: { __type: 'String!' } },
           mutation: {},
+          query: { __typename: { __type: 'String!' }, hello: { __type: 'String!' } },
           subscription: {},
         } as const;
+
+        export interface Mutation {
+          __typename?: 'Mutation';
+        }
 
         export interface Query {
           __typename?: 'Query';
           hello: ScalarsEnums['String'];
-        }
-
-        export interface Mutation {
-          __typename?: 'Mutation';
         }
 
         export interface Subscription {
@@ -1110,11 +1110,11 @@ describe('inspect headers', () => {
         }
 
         export interface SchemaObjectTypes {
-          Query: Query;
           Mutation: Mutation;
+          Query: Query;
           Subscription: Subscription;
         }
-        export type SchemaObjectTypesNames = 'Query' | 'Mutation' | 'Subscription';
+        export type SchemaObjectTypesNames = 'Mutation' | 'Query' | 'Subscription';
 
         export interface GeneratedSchema {
           query: Query;
@@ -1303,22 +1303,22 @@ describe('CLI behavior', () => {
         }
 
         export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
-          String: true,
           Boolean: true,
+          String: true,
         };
         export const generatedSchema = {
-          query: { __typename: { __type: 'String!' }, hello: { __type: 'String!' } },
           mutation: {},
+          query: { __typename: { __type: 'String!' }, hello: { __type: 'String!' } },
           subscription: {},
         } as const;
+
+        export interface Mutation {
+          __typename?: 'Mutation';
+        }
 
         export interface Query {
           __typename?: 'Query';
           hello: ScalarsEnums['String'];
-        }
-
-        export interface Mutation {
-          __typename?: 'Mutation';
         }
 
         export interface Subscription {
@@ -1326,11 +1326,11 @@ describe('CLI behavior', () => {
         }
 
         export interface SchemaObjectTypes {
-          Query: Query;
           Mutation: Mutation;
+          Query: Query;
           Subscription: Subscription;
         }
-        export type SchemaObjectTypesNames = 'Query' | 'Mutation' | 'Subscription';
+        export type SchemaObjectTypesNames = 'Mutation' | 'Query' | 'Subscription';
 
         export interface GeneratedSchema {
           query: Query;

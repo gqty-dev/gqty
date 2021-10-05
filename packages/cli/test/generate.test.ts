@@ -62,19 +62,23 @@ test('basic functionality works', async () => {
     }
 
     export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
-      String: true,
-      Int: true,
       Boolean: true,
+      Int: true,
+      String: true,
     };
     export const generatedSchema = {
+      mutation: {},
       query: {
         __typename: { __type: 'String!' },
         hello: { __type: 'String!' },
         deprecatedArg: { __type: 'Int', __args: { arg: 'Int' } },
       },
-      mutation: {},
       subscription: {},
     } as const;
+
+    export interface Mutation {
+      __typename?: 'Mutation';
+    }
 
     /**
      * Query
@@ -96,20 +100,16 @@ test('basic functionality works', async () => {
       }) => Maybe<ScalarsEnums['Int']>;
     }
 
-    export interface Mutation {
-      __typename?: 'Mutation';
-    }
-
     export interface Subscription {
       __typename?: 'Subscription';
     }
 
     export interface SchemaObjectTypes {
-      Query: Query;
       Mutation: Mutation;
+      Query: Query;
       Subscription: Subscription;
     }
-    export type SchemaObjectTypesNames = 'Query' | 'Mutation' | 'Subscription';
+    export type SchemaObjectTypesNames = 'Mutation' | 'Query' | 'Subscription';
 
     export interface GeneratedSchema {
       query: Query;
@@ -396,23 +396,23 @@ test('custom scalars works', async () => {
     }
 
     export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
-      Custom: true,
       Boolean: true,
+      Custom: true,
       String: true,
     };
     export const generatedSchema = {
-      query: { __typename: { __type: 'String!' }, hello: { __type: 'Custom!' } },
       mutation: {},
+      query: { __typename: { __type: 'String!' }, hello: { __type: 'Custom!' } },
       subscription: {},
     } as const;
+
+    export interface Mutation {
+      __typename?: 'Mutation';
+    }
 
     export interface Query {
       __typename?: 'Query';
       hello: ScalarsEnums['Custom'];
-    }
-
-    export interface Mutation {
-      __typename?: 'Mutation';
     }
 
     export interface Subscription {
@@ -420,11 +420,11 @@ test('custom scalars works', async () => {
     }
 
     export interface SchemaObjectTypes {
-      Query: Query;
       Mutation: Mutation;
+      Query: Query;
       Subscription: Subscription;
     }
-    export type SchemaObjectTypesNames = 'Query' | 'Mutation' | 'Subscription';
+    export type SchemaObjectTypesNames = 'Mutation' | 'Query' | 'Subscription';
 
     export interface GeneratedSchema {
       query: Query;
@@ -566,473 +566,473 @@ describe('feature complete app', () => {
     );
 
     expect(schemaCode).toMatchInlineSnapshot(`
-"/**
- * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
- */
+      "/**
+       * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+       */
 
-import { SchemaUnionsKey } from 'gqty';
+      import { SchemaUnionsKey } from 'gqty';
 
-export type Maybe<T> = T | null;
-export type Exact<T extends { [key: string]: unknown }> = {
-  [K in keyof T]: T[K];
-};
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]?: Maybe<T[SubKey]>;
-};
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]: Maybe<T[SubKey]>;
-};
-/** All built-in and custom scalars, mapped to their actual values */
-export interface Scalars {
-  ID: string;
-  String: string;
-  Boolean: boolean;
-  Int: number;
-  Float: number;
-  ExampleScalar: any;
-}
+      export type Maybe<T> = T | null;
+      export type Exact<T extends { [key: string]: unknown }> = {
+        [K in keyof T]: T[K];
+      };
+      export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
+        [SubKey in K]?: Maybe<T[SubKey]>;
+      };
+      export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
+        [SubKey in K]: Maybe<T[SubKey]>;
+      };
+      /** All built-in and custom scalars, mapped to their actual values */
+      export interface Scalars {
+        ID: string;
+        String: string;
+        Boolean: boolean;
+        Int: number;
+        Float: number;
+        ExampleScalar: any;
+      }
 
-/** Greetings Enum */
-export enum GreetingsEnum {
-  /** Hello */
-  Hello = 'Hello',
-  /** Hi */
-  Hi = 'Hi',
-  /** Hey */
-  Hey = 'Hey',
-  Bye = 'Bye',
-}
+      /** Greetings Enum */
+      export enum GreetingsEnum {
+        /** Hello */
+        Hello = 'Hello',
+        /** Hi */
+        Hi = 'Hi',
+        /** Hey */
+        Hey = 'Hey',
+        Bye = 'Bye',
+      }
 
-export enum OtherEnum {
-  Other = 'Other',
-}
+      export enum OtherEnum {
+        Other = 'Other',
+      }
 
-/** Greetings Input */
-export interface GreetingsInput {
-  /** Language */
-  language: Scalars['String'];
-  value?: Maybe<Scalars['String']>;
-  scal?: Maybe<Scalars['ExampleScalar']>;
-}
+      /** Greetings Input */
+      export interface GreetingsInput {
+        /** Language */
+        language: Scalars['String'];
+        value?: Maybe<Scalars['String']>;
+        scal?: Maybe<Scalars['ExampleScalar']>;
+      }
 
-export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
-  ExampleScalar: true,
-  GreetingsEnum: true,
-  OtherEnum: true,
-  String: true,
-  Int: true,
-  Boolean: true,
-};
-export const generatedSchema = {
-  query: {
-    __typename: { __type: 'String!' },
-    simpleString: { __type: 'String!' },
-    stringWithArgs: { __type: 'String!', __args: { hello: 'String!' } },
-    stringNullableWithArgs: {
-      __type: 'String',
-      __args: { hello: 'String!', helloTwo: 'String' },
-    },
-    stringNullableWithArgsArray: {
-      __type: 'String',
-      __args: { hello: '[String]!' },
-    },
-    object: { __type: 'Human' },
-    objectArray: { __type: '[Human]' },
-    objectWithArgs: { __type: 'Human!', __args: { who: 'String!' } },
-    arrayString: { __type: '[String!]!' },
-    arrayObjectArgs: { __type: '[Human!]!', __args: { limit: 'Int' } },
-    greetings: { __type: 'GreetingsEnum!' },
-    giveGreetingsInput: {
-      __type: 'String!',
-      __args: { input: 'GreetingsInput!' },
-    },
-    enumsInput: {
-      __type: 'GreetingsEnum',
-      __args: {
-        nullableEnum: 'GreetingsEnum',
-        notNullableEnum: 'GreetingsEnum!',
-      },
-    },
-    number: { __type: 'Int!' },
-    namedEntities: { __type: '[NamedEntity!]!' },
-    humanLike: { __type: 'HumanType!' },
-  },
-  mutation: {
-    __typename: { __type: 'String!' },
-    increment: { __type: 'Int!', __args: { n: 'Int!' } },
-  },
-  subscription: {},
-  GreetingsInput: {
-    language: { __type: 'String!' },
-    value: { __type: 'String' },
-    scal: { __type: 'ExampleScalar' },
-  },
-  NamedEntity: {
-    __typename: { __type: 'String!' },
-    name: { __type: 'String!' },
-    $on: { __type: '$NamedEntity!' },
-  },
-  Human: {
-    __typename: { __type: 'String!' },
-    name: { __type: 'String!' },
-    other: { __type: 'String' },
-    father: { __type: 'Human!' },
-    fieldWithArgs: { __type: 'Int!', __args: { id: 'Int!' } },
-    withArgs: { __type: 'Int', __args: { a: 'Int!', b: 'Int' } },
-    withArgs2: { __type: 'Int!', __args: { a: 'Int' } },
-  },
-  OtherHuman: {
-    __typename: { __type: 'String!' },
-    name: { __type: 'String!' },
-    other: { __type: 'String' },
-    withArgs: { __type: 'Int', __args: { a: 'Int!', b: 'Int' } },
-    withArgs2: { __type: 'Int!', __args: { a: 'Int' } },
-    otherHumanStyle: { __type: 'String!' },
-  },
-  HumanType: {
-    __typename: { __type: 'String!' },
-    $on: { __type: '$HumanType!' },
-  },
-  [SchemaUnionsKey]: {
-    NamedEntity: ['Human', 'OtherHuman'],
-    HumanType: ['Human', 'OtherHuman'],
-  },
-} as const;
+      export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
+        Boolean: true,
+        ExampleScalar: true,
+        GreetingsEnum: true,
+        Int: true,
+        OtherEnum: true,
+        String: true,
+      };
+      export const generatedSchema = {
+        GreetingsInput: {
+          language: { __type: 'String!' },
+          value: { __type: 'String' },
+          scal: { __type: 'ExampleScalar' },
+        },
+        Human: {
+          __typename: { __type: 'String!' },
+          name: { __type: 'String!' },
+          other: { __type: 'String' },
+          father: { __type: 'Human!' },
+          fieldWithArgs: { __type: 'Int!', __args: { id: 'Int!' } },
+          withArgs: { __type: 'Int', __args: { a: 'Int!', b: 'Int' } },
+          withArgs2: { __type: 'Int!', __args: { a: 'Int' } },
+        },
+        HumanType: {
+          __typename: { __type: 'String!' },
+          $on: { __type: '$HumanType!' },
+        },
+        NamedEntity: {
+          __typename: { __type: 'String!' },
+          name: { __type: 'String!' },
+          $on: { __type: '$NamedEntity!' },
+        },
+        OtherHuman: {
+          __typename: { __type: 'String!' },
+          name: { __type: 'String!' },
+          other: { __type: 'String' },
+          withArgs: { __type: 'Int', __args: { a: 'Int!', b: 'Int' } },
+          withArgs2: { __type: 'Int!', __args: { a: 'Int' } },
+          otherHumanStyle: { __type: 'String!' },
+        },
+        mutation: {
+          __typename: { __type: 'String!' },
+          increment: { __type: 'Int!', __args: { n: 'Int!' } },
+        },
+        query: {
+          __typename: { __type: 'String!' },
+          simpleString: { __type: 'String!' },
+          stringWithArgs: { __type: 'String!', __args: { hello: 'String!' } },
+          stringNullableWithArgs: {
+            __type: 'String',
+            __args: { hello: 'String!', helloTwo: 'String' },
+          },
+          stringNullableWithArgsArray: {
+            __type: 'String',
+            __args: { hello: '[String]!' },
+          },
+          object: { __type: 'Human' },
+          objectArray: { __type: '[Human]' },
+          objectWithArgs: { __type: 'Human!', __args: { who: 'String!' } },
+          arrayString: { __type: '[String!]!' },
+          arrayObjectArgs: { __type: '[Human!]!', __args: { limit: 'Int' } },
+          greetings: { __type: 'GreetingsEnum!' },
+          giveGreetingsInput: {
+            __type: 'String!',
+            __args: { input: 'GreetingsInput!' },
+          },
+          enumsInput: {
+            __type: 'GreetingsEnum',
+            __args: {
+              nullableEnum: 'GreetingsEnum',
+              notNullableEnum: 'GreetingsEnum!',
+            },
+          },
+          number: { __type: 'Int!' },
+          namedEntities: { __type: '[NamedEntity!]!' },
+          humanLike: { __type: 'HumanType!' },
+        },
+        subscription: {},
+        [SchemaUnionsKey]: {
+          NamedEntity: ['Human', 'OtherHuman'],
+          HumanType: ['Human', 'OtherHuman'],
+        },
+      } as const;
 
-export interface Query {
-  __typename?: 'Query';
-  simpleString: ScalarsEnums['String'];
-  stringWithArgs: (args: {
-    hello: Scalars['String'];
-  }) => ScalarsEnums['String'];
-  stringNullableWithArgs: (args: {
-    hello: Scalars['String'];
-    /**
-     * @defaultValue \`\\"Hi\\"\`
-     */
-    helloTwo?: Maybe<Scalars['String']>;
-  }) => Maybe<ScalarsEnums['String']>;
-  stringNullableWithArgsArray: (args: {
-    hello: Array<Maybe<Scalars['String']>>;
-  }) => Maybe<ScalarsEnums['String']>;
-  object?: Maybe<Human>;
-  objectArray?: Maybe<Array<Maybe<Human>>>;
-  objectWithArgs: (args: {
-    /**
-     * Who?
-     */
-    who: Scalars['String'];
-  }) => Human;
-  arrayString: Array<ScalarsEnums['String']>;
-  arrayObjectArgs: (args?: {
-    /**
-     * @defaultValue \`10\`
-     */
-    limit?: Maybe<Scalars['Int']>;
-  }) => Array<Human>;
-  greetings: ScalarsEnums['GreetingsEnum'];
-  giveGreetingsInput: (args: {
-    input: GreetingsInput;
-  }) => ScalarsEnums['String'];
-  enumsInput: (args: {
-    nullableEnum?: Maybe<GreetingsEnum>;
-    notNullableEnum: GreetingsEnum;
-  }) => Maybe<ScalarsEnums['GreetingsEnum']>;
-  number: ScalarsEnums['Int'];
-  namedEntities: Array<NamedEntity>;
-  humanLike: HumanType;
-}
+      export interface Human {
+        __typename?: 'Human';
+        name: ScalarsEnums['String'];
+        other?: Maybe<ScalarsEnums['String']>;
+        father: Human;
+        fieldWithArgs: (args: { id: Scalars['Int'] }) => ScalarsEnums['Int'];
+        withArgs: (args: {
+          a: Scalars['Int'];
+          b?: Maybe<Scalars['Int']>;
+        }) => Maybe<ScalarsEnums['Int']>;
+        withArgs2: (args?: { a?: Maybe<Scalars['Int']> }) => ScalarsEnums['Int'];
+      }
 
-export interface Mutation {
-  __typename?: 'Mutation';
-  increment: (args: { n: Scalars['Int'] }) => ScalarsEnums['Int'];
-}
+      export interface HumanType {
+        __typename?: 'Human' | 'OtherHuman';
+        $on: $HumanType;
+      }
 
-export interface Subscription {
-  __typename?: 'Subscription';
-}
+      /**
+       * Named Entity
+       */
+      export interface NamedEntity {
+        __typename?: 'Human' | 'OtherHuman';
+        /**
+         * Named Entity Name
+         */
+        name: ScalarsEnums['String'];
+        $on: $NamedEntity;
+      }
 
-/**
- * Named Entity
- */
-export interface NamedEntity {
-  __typename?: 'Human' | 'OtherHuman';
-  /**
-   * Named Entity Name
-   */
-  name: ScalarsEnums['String'];
-  $on: $NamedEntity;
-}
+      export interface OtherHuman {
+        __typename?: 'OtherHuman';
+        name: ScalarsEnums['String'];
+        other?: Maybe<ScalarsEnums['String']>;
+        withArgs: (args: {
+          a: Scalars['Int'];
+          b?: Maybe<Scalars['Int']>;
+        }) => Maybe<ScalarsEnums['Int']>;
+        withArgs2: (args?: { a?: Maybe<Scalars['Int']> }) => ScalarsEnums['Int'];
+        otherHumanStyle: ScalarsEnums['String'];
+      }
 
-export interface Human {
-  __typename?: 'Human';
-  name: ScalarsEnums['String'];
-  other?: Maybe<ScalarsEnums['String']>;
-  father: Human;
-  fieldWithArgs: (args: { id: Scalars['Int'] }) => ScalarsEnums['Int'];
-  withArgs: (args: {
-    a: Scalars['Int'];
-    b?: Maybe<Scalars['Int']>;
-  }) => Maybe<ScalarsEnums['Int']>;
-  withArgs2: (args?: { a?: Maybe<Scalars['Int']> }) => ScalarsEnums['Int'];
-}
+      export interface Mutation {
+        __typename?: 'Mutation';
+        increment: (args: { n: Scalars['Int'] }) => ScalarsEnums['Int'];
+      }
 
-export interface OtherHuman {
-  __typename?: 'OtherHuman';
-  name: ScalarsEnums['String'];
-  other?: Maybe<ScalarsEnums['String']>;
-  withArgs: (args: {
-    a: Scalars['Int'];
-    b?: Maybe<Scalars['Int']>;
-  }) => Maybe<ScalarsEnums['Int']>;
-  withArgs2: (args?: { a?: Maybe<Scalars['Int']> }) => ScalarsEnums['Int'];
-  otherHumanStyle: ScalarsEnums['String'];
-}
+      export interface Query {
+        __typename?: 'Query';
+        simpleString: ScalarsEnums['String'];
+        stringWithArgs: (args: {
+          hello: Scalars['String'];
+        }) => ScalarsEnums['String'];
+        stringNullableWithArgs: (args: {
+          hello: Scalars['String'];
+          /**
+           * @defaultValue \`\\"Hi\\"\`
+           */
+          helloTwo?: Maybe<Scalars['String']>;
+        }) => Maybe<ScalarsEnums['String']>;
+        stringNullableWithArgsArray: (args: {
+          hello: Array<Maybe<Scalars['String']>>;
+        }) => Maybe<ScalarsEnums['String']>;
+        object?: Maybe<Human>;
+        objectArray?: Maybe<Array<Maybe<Human>>>;
+        objectWithArgs: (args: {
+          /**
+           * Who?
+           */
+          who: Scalars['String'];
+        }) => Human;
+        arrayString: Array<ScalarsEnums['String']>;
+        arrayObjectArgs: (args?: {
+          /**
+           * @defaultValue \`10\`
+           */
+          limit?: Maybe<Scalars['Int']>;
+        }) => Array<Human>;
+        greetings: ScalarsEnums['GreetingsEnum'];
+        giveGreetingsInput: (args: {
+          input: GreetingsInput;
+        }) => ScalarsEnums['String'];
+        enumsInput: (args: {
+          nullableEnum?: Maybe<GreetingsEnum>;
+          notNullableEnum: GreetingsEnum;
+        }) => Maybe<ScalarsEnums['GreetingsEnum']>;
+        number: ScalarsEnums['Int'];
+        namedEntities: Array<NamedEntity>;
+        humanLike: HumanType;
+      }
 
-export interface HumanType {
-  __typename?: 'Human' | 'OtherHuman';
-  $on: $HumanType;
-}
+      export interface Subscription {
+        __typename?: 'Subscription';
+      }
 
-export interface SchemaObjectTypes {
-  Query: Query;
-  Mutation: Mutation;
-  Subscription: Subscription;
-  Human: Human;
-  OtherHuman: OtherHuman;
-}
-export type SchemaObjectTypesNames =
-  | 'Query'
-  | 'Mutation'
-  | 'Subscription'
-  | 'Human'
-  | 'OtherHuman';
+      export interface SchemaObjectTypes {
+        Human: Human;
+        Mutation: Mutation;
+        OtherHuman: OtherHuman;
+        Query: Query;
+        Subscription: Subscription;
+      }
+      export type SchemaObjectTypesNames =
+        | 'Human'
+        | 'Mutation'
+        | 'OtherHuman'
+        | 'Query'
+        | 'Subscription';
 
-export interface $NamedEntity {
-  Human?: Human;
-  OtherHuman?: OtherHuman;
-}
+      export interface $HumanType {
+        Human?: Human;
+        OtherHuman?: OtherHuman;
+      }
 
-export interface $HumanType {
-  Human?: Human;
-  OtherHuman?: OtherHuman;
-}
+      export interface $NamedEntity {
+        Human?: Human;
+        OtherHuman?: OtherHuman;
+      }
 
-export interface GeneratedSchema {
-  query: Query;
-  mutation: Mutation;
-  subscription: Subscription;
-}
+      export interface GeneratedSchema {
+        query: Query;
+        mutation: Mutation;
+        subscription: Subscription;
+      }
 
-export type MakeNullable<T> = {
-  [K in keyof T]: T[K] | undefined;
-};
+      export type MakeNullable<T> = {
+        [K in keyof T]: T[K] | undefined;
+      };
 
-export interface ScalarsEnums extends MakeNullable<Scalars> {
-  GreetingsEnum: GreetingsEnum | undefined;
-  OtherEnum: OtherEnum | undefined;
-}
-"
-`);
+      export interface ScalarsEnums extends MakeNullable<Scalars> {
+        GreetingsEnum: GreetingsEnum | undefined;
+        OtherEnum: OtherEnum | undefined;
+      }
+      "
+    `);
     expect(generatedSchema).toMatchInlineSnapshot(`
-Object {
-  "GreetingsInput": Object {
-    "language": Object {
-      "__type": "String!",
-    },
-    "scal": Object {
-      "__type": "ExampleScalar",
-    },
-    "value": Object {
-      "__type": "String",
-    },
-  },
-  "Human": Object {
-    "__typename": Object {
-      "__type": "String!",
-    },
-    "father": Object {
-      "__type": "Human!",
-    },
-    "fieldWithArgs": Object {
-      "__args": Object {
-        "id": "Int!",
-      },
-      "__type": "Int!",
-    },
-    "name": Object {
-      "__type": "String!",
-    },
-    "other": Object {
-      "__type": "String",
-    },
-    "withArgs": Object {
-      "__args": Object {
-        "a": "Int!",
-        "b": "Int",
-      },
-      "__type": "Int",
-    },
-    "withArgs2": Object {
-      "__args": Object {
-        "a": "Int",
-      },
-      "__type": "Int!",
-    },
-  },
-  "HumanType": Object {
-    "$on": Object {
-      "__type": "$HumanType!",
-    },
-    "__typename": Object {
-      "__type": "String!",
-    },
-  },
-  "NamedEntity": Object {
-    "$on": Object {
-      "__type": "$NamedEntity!",
-    },
-    "__typename": Object {
-      "__type": "String!",
-    },
-    "name": Object {
-      "__type": "String!",
-    },
-  },
-  "OtherHuman": Object {
-    "__typename": Object {
-      "__type": "String!",
-    },
-    "name": Object {
-      "__type": "String!",
-    },
-    "other": Object {
-      "__type": "String",
-    },
-    "otherHumanStyle": Object {
-      "__type": "String!",
-    },
-    "withArgs": Object {
-      "__args": Object {
-        "a": "Int!",
-        "b": "Int",
-      },
-      "__type": "Int",
-    },
-    "withArgs2": Object {
-      "__args": Object {
-        "a": "Int",
-      },
-      "__type": "Int!",
-    },
-  },
-  "mutation": Object {
-    "__typename": Object {
-      "__type": "String!",
-    },
-    "increment": Object {
-      "__args": Object {
-        "n": "Int!",
-      },
-      "__type": "Int!",
-    },
-  },
-  "query": Object {
-    "__typename": Object {
-      "__type": "String!",
-    },
-    "arrayObjectArgs": Object {
-      "__args": Object {
-        "limit": "Int",
-      },
-      "__type": "[Human!]!",
-    },
-    "arrayString": Object {
-      "__type": "[String!]!",
-    },
-    "enumsInput": Object {
-      "__args": Object {
-        "notNullableEnum": "GreetingsEnum!",
-        "nullableEnum": "GreetingsEnum",
-      },
-      "__type": "GreetingsEnum",
-    },
-    "giveGreetingsInput": Object {
-      "__args": Object {
-        "input": "GreetingsInput!",
-      },
-      "__type": "String!",
-    },
-    "greetings": Object {
-      "__type": "GreetingsEnum!",
-    },
-    "humanLike": Object {
-      "__type": "HumanType!",
-    },
-    "namedEntities": Object {
-      "__type": "[NamedEntity!]!",
-    },
-    "number": Object {
-      "__type": "Int!",
-    },
-    "object": Object {
-      "__type": "Human",
-    },
-    "objectArray": Object {
-      "__type": "[Human]",
-    },
-    "objectWithArgs": Object {
-      "__args": Object {
-        "who": "String!",
-      },
-      "__type": "Human!",
-    },
-    "simpleString": Object {
-      "__type": "String!",
-    },
-    "stringNullableWithArgs": Object {
-      "__args": Object {
-        "hello": "String!",
-        "helloTwo": "String",
-      },
-      "__type": "String",
-    },
-    "stringNullableWithArgsArray": Object {
-      "__args": Object {
-        "hello": "[String]!",
-      },
-      "__type": "String",
-    },
-    "stringWithArgs": Object {
-      "__args": Object {
-        "hello": "String!",
-      },
-      "__type": "String!",
-    },
-  },
-  "subscription": Object {},
-  Symbol(unionsKey): Object {
-    "HumanType": Array [
-      "Human",
-      "OtherHuman",
-    ],
-    "NamedEntity": Array [
-      "Human",
-      "OtherHuman",
-    ],
-  },
-}
-`);
+      Object {
+        "GreetingsInput": Object {
+          "language": Object {
+            "__type": "String!",
+          },
+          "scal": Object {
+            "__type": "ExampleScalar",
+          },
+          "value": Object {
+            "__type": "String",
+          },
+        },
+        "Human": Object {
+          "__typename": Object {
+            "__type": "String!",
+          },
+          "father": Object {
+            "__type": "Human!",
+          },
+          "fieldWithArgs": Object {
+            "__args": Object {
+              "id": "Int!",
+            },
+            "__type": "Int!",
+          },
+          "name": Object {
+            "__type": "String!",
+          },
+          "other": Object {
+            "__type": "String",
+          },
+          "withArgs": Object {
+            "__args": Object {
+              "a": "Int!",
+              "b": "Int",
+            },
+            "__type": "Int",
+          },
+          "withArgs2": Object {
+            "__args": Object {
+              "a": "Int",
+            },
+            "__type": "Int!",
+          },
+        },
+        "HumanType": Object {
+          "$on": Object {
+            "__type": "$HumanType!",
+          },
+          "__typename": Object {
+            "__type": "String!",
+          },
+        },
+        "NamedEntity": Object {
+          "$on": Object {
+            "__type": "$NamedEntity!",
+          },
+          "__typename": Object {
+            "__type": "String!",
+          },
+          "name": Object {
+            "__type": "String!",
+          },
+        },
+        "OtherHuman": Object {
+          "__typename": Object {
+            "__type": "String!",
+          },
+          "name": Object {
+            "__type": "String!",
+          },
+          "other": Object {
+            "__type": "String",
+          },
+          "otherHumanStyle": Object {
+            "__type": "String!",
+          },
+          "withArgs": Object {
+            "__args": Object {
+              "a": "Int!",
+              "b": "Int",
+            },
+            "__type": "Int",
+          },
+          "withArgs2": Object {
+            "__args": Object {
+              "a": "Int",
+            },
+            "__type": "Int!",
+          },
+        },
+        "mutation": Object {
+          "__typename": Object {
+            "__type": "String!",
+          },
+          "increment": Object {
+            "__args": Object {
+              "n": "Int!",
+            },
+            "__type": "Int!",
+          },
+        },
+        "query": Object {
+          "__typename": Object {
+            "__type": "String!",
+          },
+          "arrayObjectArgs": Object {
+            "__args": Object {
+              "limit": "Int",
+            },
+            "__type": "[Human!]!",
+          },
+          "arrayString": Object {
+            "__type": "[String!]!",
+          },
+          "enumsInput": Object {
+            "__args": Object {
+              "notNullableEnum": "GreetingsEnum!",
+              "nullableEnum": "GreetingsEnum",
+            },
+            "__type": "GreetingsEnum",
+          },
+          "giveGreetingsInput": Object {
+            "__args": Object {
+              "input": "GreetingsInput!",
+            },
+            "__type": "String!",
+          },
+          "greetings": Object {
+            "__type": "GreetingsEnum!",
+          },
+          "humanLike": Object {
+            "__type": "HumanType!",
+          },
+          "namedEntities": Object {
+            "__type": "[NamedEntity!]!",
+          },
+          "number": Object {
+            "__type": "Int!",
+          },
+          "object": Object {
+            "__type": "Human",
+          },
+          "objectArray": Object {
+            "__type": "[Human]",
+          },
+          "objectWithArgs": Object {
+            "__args": Object {
+              "who": "String!",
+            },
+            "__type": "Human!",
+          },
+          "simpleString": Object {
+            "__type": "String!",
+          },
+          "stringNullableWithArgs": Object {
+            "__args": Object {
+              "hello": "String!",
+              "helloTwo": "String",
+            },
+            "__type": "String",
+          },
+          "stringNullableWithArgsArray": Object {
+            "__args": Object {
+              "hello": "[String]!",
+            },
+            "__type": "String",
+          },
+          "stringWithArgs": Object {
+            "__args": Object {
+              "hello": "String!",
+            },
+            "__type": "String!",
+          },
+        },
+        "subscription": Object {},
+        Symbol(unionsKey): Object {
+          "HumanType": Array [
+            "Human",
+            "OtherHuman",
+          ],
+          "NamedEntity": Array [
+            "Human",
+            "OtherHuman",
+          ],
+        },
+      }
+    `);
     expect(scalarsEnumsHash).toMatchInlineSnapshot(`
-Object {
-  "Boolean": true,
-  "ExampleScalar": true,
-  "GreetingsEnum": true,
-  "Int": true,
-  "OtherEnum": true,
-  "String": true,
-}
-`);
+      Object {
+        "Boolean": true,
+        "ExampleScalar": true,
+        "GreetingsEnum": true,
+        "Int": true,
+        "OtherEnum": true,
+        "String": true,
+      }
+    `);
   });
 });
 
@@ -1112,26 +1112,26 @@ describe('mutation', () => {
       }
 
       export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
-        String: true,
         Boolean: true,
+        String: true,
       };
       export const generatedSchema = {
-        query: { __typename: { __type: 'String!' }, hello: { __type: 'String!' } },
         mutation: {
           __typename: { __type: 'String!' },
           helloMutation: { __type: 'String!', __args: { hello: 'String!' } },
         },
+        query: { __typename: { __type: 'String!' }, hello: { __type: 'String!' } },
         subscription: {},
       } as const;
-
-      export interface Query {
-        __typename?: 'Query';
-        hello: ScalarsEnums['String'];
-      }
 
       export interface Mutation {
         __typename?: 'Mutation';
         helloMutation: (args: { hello: Scalars['String'] }) => ScalarsEnums['String'];
+      }
+
+      export interface Query {
+        __typename?: 'Query';
+        hello: ScalarsEnums['String'];
       }
 
       export interface Subscription {
@@ -1139,11 +1139,11 @@ describe('mutation', () => {
       }
 
       export interface SchemaObjectTypes {
-        Query: Query;
         Mutation: Mutation;
+        Query: Query;
         Subscription: Subscription;
       }
-      export type SchemaObjectTypesNames = 'Query' | 'Mutation' | 'Subscription';
+      export type SchemaObjectTypesNames = 'Mutation' | 'Query' | 'Subscription';
 
       export interface GeneratedSchema {
         query: Query;
@@ -1247,25 +1247,25 @@ describe('subscription', () => {
       }
 
       export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
-        String: true,
         Boolean: true,
+        String: true,
       };
       export const generatedSchema = {
-        query: { __typename: { __type: 'String!' }, hello: { __type: 'String!' } },
         mutation: {},
+        query: { __typename: { __type: 'String!' }, hello: { __type: 'String!' } },
         subscription: {
           __typename: { __type: 'String!' },
           newNotification: { __type: 'String!' },
         },
       } as const;
 
+      export interface Mutation {
+        __typename?: 'Mutation';
+      }
+
       export interface Query {
         __typename?: 'Query';
         hello: ScalarsEnums['String'];
-      }
-
-      export interface Mutation {
-        __typename?: 'Mutation';
       }
 
       export interface Subscription {
@@ -1274,11 +1274,11 @@ describe('subscription', () => {
       }
 
       export interface SchemaObjectTypes {
-        Query: Query;
         Mutation: Mutation;
+        Query: Query;
         Subscription: Subscription;
       }
-      export type SchemaObjectTypesNames = 'Query' | 'Mutation' | 'Subscription';
+      export type SchemaObjectTypesNames = 'Mutation' | 'Query' | 'Subscription';
 
       export interface GeneratedSchema {
         query: Query;
@@ -1461,182 +1461,182 @@ test('javascript output works', async () => {
     "
   `);
   expect(javascriptSchemaCode).toMatchInlineSnapshot(`
-"/**
- * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
- */
-import { SchemaUnionsKey } from 'gqty';
+    "/**
+     * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+     */
+    import { SchemaUnionsKey } from 'gqty';
 
-/**
- * @type {import(\\"gqty\\").ScalarsEnumsHash}
- */
-export const scalarsEnumsHash = { String: true, Int: true, Boolean: true };
+    /**
+     * @type {import(\\"gqty\\").ScalarsEnumsHash}
+     */
+    export const scalarsEnumsHash = { Boolean: true, Int: true, String: true };
 
-export const generatedSchema = {
-  query: { __typename: { __type: 'String!' }, hello: { __type: 'String!' } },
-  mutation: {},
-  subscription: {
-    __typename: { __type: 'String!' },
-    newNotification: { __type: 'String!' },
-  },
-  A: { __typename: { __type: 'String!' }, a: { __type: 'String' } },
-  B: { __typename: { __type: 'String!' }, b: { __type: 'Int' } },
-  C: { __typename: { __type: 'String!' }, $on: { __type: '$C!' } },
-  [SchemaUnionsKey]: { C: ['A', 'B'] },
-};
-"
-`);
+    export const generatedSchema = {
+      A: { __typename: { __type: 'String!' }, a: { __type: 'String' } },
+      B: { __typename: { __type: 'String!' }, b: { __type: 'Int' } },
+      C: { __typename: { __type: 'String!' }, $on: { __type: '$C!' } },
+      mutation: {},
+      query: { __typename: { __type: 'String!' }, hello: { __type: 'String!' } },
+      subscription: {
+        __typename: { __type: 'String!' },
+        newNotification: { __type: 'String!' },
+      },
+      [SchemaUnionsKey]: { C: ['A', 'B'] },
+    };
+    "
+  `);
   expect(generatedSchema).toMatchInlineSnapshot(`
-Object {
-  "A": Object {
-    "__typename": Object {
-      "__type": "String!",
-    },
-    "a": Object {
-      "__type": "String",
-    },
-  },
-  "B": Object {
-    "__typename": Object {
-      "__type": "String!",
-    },
-    "b": Object {
-      "__type": "Int",
-    },
-  },
-  "C": Object {
-    "$on": Object {
-      "__type": "$C!",
-    },
-    "__typename": Object {
-      "__type": "String!",
-    },
-  },
-  "mutation": Object {},
-  "query": Object {
-    "__typename": Object {
-      "__type": "String!",
-    },
-    "hello": Object {
-      "__type": "String!",
-    },
-  },
-  "subscription": Object {
-    "__typename": Object {
-      "__type": "String!",
-    },
-    "newNotification": Object {
-      "__type": "String!",
-    },
-  },
-  Symbol(unionsKey): Object {
-    "C": Array [
-      "A",
-      "B",
-    ],
-  },
-}
-`);
+    Object {
+      "A": Object {
+        "__typename": Object {
+          "__type": "String!",
+        },
+        "a": Object {
+          "__type": "String",
+        },
+      },
+      "B": Object {
+        "__typename": Object {
+          "__type": "String!",
+        },
+        "b": Object {
+          "__type": "Int",
+        },
+      },
+      "C": Object {
+        "$on": Object {
+          "__type": "$C!",
+        },
+        "__typename": Object {
+          "__type": "String!",
+        },
+      },
+      "mutation": Object {},
+      "query": Object {
+        "__typename": Object {
+          "__type": "String!",
+        },
+        "hello": Object {
+          "__type": "String!",
+        },
+      },
+      "subscription": Object {
+        "__typename": Object {
+          "__type": "String!",
+        },
+        "newNotification": Object {
+          "__type": "String!",
+        },
+      },
+      Symbol(unionsKey): Object {
+        "C": Array [
+          "A",
+          "B",
+        ],
+      },
+    }
+  `);
   expect(schemaCode).toMatchInlineSnapshot(`
-"/**
- * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
- */
+    "/**
+     * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+     */
 
-import { SchemaUnionsKey } from 'gqty';
+    import { SchemaUnionsKey } from 'gqty';
 
-export type Maybe<T> = T | null;
-export type Exact<T extends { [key: string]: unknown }> = {
-  [K in keyof T]: T[K];
-};
-export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]?: Maybe<T[SubKey]>;
-};
-export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
-  [SubKey in K]: Maybe<T[SubKey]>;
-};
-/** All built-in and custom scalars, mapped to their actual values */
-export interface Scalars {
-  ID: string;
-  String: string;
-  Boolean: boolean;
-  Int: number;
-  Float: number;
-}
+    export type Maybe<T> = T | null;
+    export type Exact<T extends { [key: string]: unknown }> = {
+      [K in keyof T]: T[K];
+    };
+    export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
+      [SubKey in K]?: Maybe<T[SubKey]>;
+    };
+    export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
+      [SubKey in K]: Maybe<T[SubKey]>;
+    };
+    /** All built-in and custom scalars, mapped to their actual values */
+    export interface Scalars {
+      ID: string;
+      String: string;
+      Boolean: boolean;
+      Int: number;
+      Float: number;
+    }
 
-export declare const scalarsEnumsHash: import('gqty').ScalarsEnumsHash;
-export declare const generatedSchema: {
-  query: { __typename: { __type: 'String!' }; hello: { __type: 'String!' } };
-  mutation: {};
-  subscription: {
-    __typename: { __type: 'String!' };
-    newNotification: { __type: 'String!' };
-  };
-  A: { __typename: { __type: 'String!' }; a: { __type: 'String' } };
-  B: { __typename: { __type: 'String!' }; b: { __type: 'Int' } };
-  C: { __typename: { __type: 'String!' }; $on: { __type: '$C!' } };
-  [SchemaUnionsKey]: { C: ['A', 'B'] };
-};
+    export declare const scalarsEnumsHash: import('gqty').ScalarsEnumsHash;
+    export declare const generatedSchema: {
+      A: { __typename: { __type: 'String!' }; a: { __type: 'String' } };
+      B: { __typename: { __type: 'String!' }; b: { __type: 'Int' } };
+      C: { __typename: { __type: 'String!' }; $on: { __type: '$C!' } };
+      mutation: {};
+      query: { __typename: { __type: 'String!' }; hello: { __type: 'String!' } };
+      subscription: {
+        __typename: { __type: 'String!' };
+        newNotification: { __type: 'String!' };
+      };
+      [SchemaUnionsKey]: { C: ['A', 'B'] };
+    };
 
-export interface Query {
-  __typename?: 'Query';
-  hello: ScalarsEnums['String'];
-}
+    export interface A {
+      __typename?: 'A';
+      a?: Maybe<ScalarsEnums['String']>;
+    }
 
-export interface Mutation {
-  __typename?: 'Mutation';
-}
+    export interface B {
+      __typename?: 'B';
+      b?: Maybe<ScalarsEnums['Int']>;
+    }
 
-export interface Subscription {
-  __typename?: 'Subscription';
-  newNotification: ScalarsEnums['String'];
-}
+    export interface C {
+      __typename?: 'A' | 'B';
+      $on: $C;
+    }
 
-export interface A {
-  __typename?: 'A';
-  a?: Maybe<ScalarsEnums['String']>;
-}
+    export interface Mutation {
+      __typename?: 'Mutation';
+    }
 
-export interface B {
-  __typename?: 'B';
-  b?: Maybe<ScalarsEnums['Int']>;
-}
+    export interface Query {
+      __typename?: 'Query';
+      hello: ScalarsEnums['String'];
+    }
 
-export interface C {
-  __typename?: 'A' | 'B';
-  $on: $C;
-}
+    export interface Subscription {
+      __typename?: 'Subscription';
+      newNotification: ScalarsEnums['String'];
+    }
 
-export interface SchemaObjectTypes {
-  Query: Query;
-  Mutation: Mutation;
-  Subscription: Subscription;
-  A: A;
-  B: B;
-}
-export type SchemaObjectTypesNames =
-  | 'Query'
-  | 'Mutation'
-  | 'Subscription'
-  | 'A'
-  | 'B';
+    export interface SchemaObjectTypes {
+      A: A;
+      B: B;
+      Mutation: Mutation;
+      Query: Query;
+      Subscription: Subscription;
+    }
+    export type SchemaObjectTypesNames =
+      | 'A'
+      | 'B'
+      | 'Mutation'
+      | 'Query'
+      | 'Subscription';
 
-export interface $C {
-  A?: A;
-  B?: B;
-}
+    export interface $C {
+      A?: A;
+      B?: B;
+    }
 
-export interface GeneratedSchema {
-  query: Query;
-  mutation: Mutation;
-  subscription: Subscription;
-}
+    export interface GeneratedSchema {
+      query: Query;
+      mutation: Mutation;
+      subscription: Subscription;
+    }
 
-export type MakeNullable<T> = {
-  [K in keyof T]: T[K] | undefined;
-};
+    export type MakeNullable<T> = {
+      [K in keyof T]: T[K] | undefined;
+    };
 
-export interface ScalarsEnums extends MakeNullable<Scalars> {}
-"
-`);
+    export interface ScalarsEnums extends MakeNullable<Scalars> {}
+    "
+  `);
 });
 
 test('ignoreArgs transform', async () => {
@@ -1784,15 +1784,15 @@ test('ignoreArgs transform', async () => {
     /**
      * @type {import(\\"gqty\\").ScalarsEnumsHash}
      */
-    export const scalarsEnumsHash = { String: true, Int: true, Boolean: true };
+    export const scalarsEnumsHash = { Boolean: true, Int: true, String: true };
 
     export const generatedSchema = {
+      mutation: {},
       query: {
         __typename: { __type: 'String!' },
         asd: { __type: 'String!' },
         zxc: { __type: 'Int', __args: { optional: 'String', required: 'Int!' } },
       },
-      mutation: {},
       subscription: {},
     };
     "
@@ -1822,19 +1822,23 @@ test('ignoreArgs transform', async () => {
     }
 
     export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
-      String: true,
-      Int: true,
       Boolean: true,
+      Int: true,
+      String: true,
     };
     export const generatedSchema = {
+      mutation: {},
       query: {
         __typename: { __type: 'String!' },
         asd: { __type: 'String!' },
         zxc: { __type: 'Int', __args: { optional: 'String', required: 'Int!' } },
       },
-      mutation: {},
       subscription: {},
     } as const;
+
+    export interface Mutation {
+      __typename?: 'Mutation';
+    }
 
     export interface Query {
       __typename?: 'Query';
@@ -1845,20 +1849,16 @@ test('ignoreArgs transform', async () => {
       }) => Maybe<ScalarsEnums['Int']>;
     }
 
-    export interface Mutation {
-      __typename?: 'Mutation';
-    }
-
     export interface Subscription {
       __typename?: 'Subscription';
     }
 
     export interface SchemaObjectTypes {
-      Query: Query;
       Mutation: Mutation;
+      Query: Query;
       Subscription: Subscription;
     }
-    export type SchemaObjectTypesNames = 'Query' | 'Mutation' | 'Subscription';
+    export type SchemaObjectTypesNames = 'Mutation' | 'Query' | 'Subscription';
 
     export interface GeneratedSchema {
       query: Query;
