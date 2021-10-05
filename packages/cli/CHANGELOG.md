@@ -1,5 +1,15 @@
 # @gqty/cli
 
+## 2.1.0
+
+### Minor Changes
+
+- c993f2e: Sort alphabetically generated code
+
+### Patch Changes
+
+- 0a30558: Fix misplaced semi-colons in input types
+
 ## 2.0.1
 
 ### Patch Changes
