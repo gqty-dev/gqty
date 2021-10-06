@@ -455,7 +455,7 @@ importers:
       '@graphql-codegen/core': ^2.1.0
       '@graphql-codegen/typescript': ^2.2.2
       '@graphql-tools/delegate': ^8.2.2
-      '@graphql-tools/utils': ^8.2.4
+      '@graphql-tools/utils': ^8.2.5
       '@graphql-tools/wrap': ^8.1.1
       '@size-limit/preset-small-lib': ^5.0.5
       '@types/lodash': ^4.14.175
@@ -484,7 +484,7 @@ importers:
       '@graphql-codegen/core': 2.1.0_graphql@15.6.1
       '@graphql-codegen/typescript': 2.2.2_graphql@15.6.1
       '@graphql-tools/delegate': 8.2.2_graphql@15.6.1
-      '@graphql-tools/utils': 8.2.4_graphql@15.6.1
+      '@graphql-tools/utils': 8.2.5_graphql@15.6.1
       '@graphql-tools/wrap': 8.1.1_graphql@15.6.1
       commander: 8.2.0
       cosmiconfig: 7.0.1
@@ -3092,6 +3092,15 @@ packages:
 
   /@graphql-tools/utils/8.2.4_graphql@15.6.1:
     resolution: {integrity: sha512-uB+JL7CqTKJ2Q5zXA+a2la1cA8YYPcc0RHO/3mK54hxlZa2Z5/9k9XrNfMof4LZQefTaBM7M6QWtaxGklJln4A==}
+    peerDependencies:
+      graphql: ^14.0.0 || ^15.0.0 || ^16.0.0
+    dependencies:
+      graphql: 15.6.1
+      tslib: 2.3.1
+    dev: false
+
+  /@graphql-tools/utils/8.2.5_graphql@15.6.1:
+    resolution: {integrity: sha512-k/Rktklhy22dQfbJLKiLGfQymQCTr6Rd2BilC7g2Yk6wFSzVLYr8jeXNoTD+/p61XBQzBjTVayskvaMvNS3BDg==}
     peerDependencies:
       graphql: ^14.0.0 || ^15.0.0 || ^16.0.0
     dependencies:
