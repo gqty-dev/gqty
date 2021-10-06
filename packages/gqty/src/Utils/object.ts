@@ -41,7 +41,17 @@ export function deepAssign<T extends object>(
           continue;
         }
       }
-      Reflect.set(target, sourceKey, sourceValue);
+      Reflect.set(
+        target,
+        sourceKey,
+        isObject(sourceValue)
+          ? deepAssign(
+              Array.isArray(sourceValue) ? [] : {},
+              [sourceValue],
+              onConflict
+            )
+          : sourceValue
+      );
     }
   }
 
