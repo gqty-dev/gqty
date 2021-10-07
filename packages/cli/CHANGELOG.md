@@ -1,5 +1,12 @@
 # @gqty/cli
 
+## 2.1.1-experimental.0
+
+### Patch Changes
+
+- Updated dependencies [undefined]
+  - gqty@2.0.3-experimental.0
+
 ## 2.1.0
 
 ### Minor Changes

@@ -1,5 +1,11 @@
 # gqty
 
+## 2.0.3-experimental.0
+
+### Patch Changes
+
+- deep assign copy source value
+
 ## 2.0.2
 
 ### Patch Changes
