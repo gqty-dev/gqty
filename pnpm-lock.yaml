@@ -31,7 +31,7 @@ importers:
       graphql: ^15.6.1
       husky: ^7.0.2
       jest: '>=27.1.0'
-      open: ^8.2.1
+      open: ^8.3.0
       prettier: '>=2.3.2'
       pretty-quick: ^3.1.1
       rimraf: ^3.0.2
@@ -58,7 +58,7 @@ importers:
       graphql: 15.6.1
       husky: 7.0.2
       jest: 27.2.4_1ab8aa14464780c21d0b28dc59f139ba
-      open: 8.2.1
+      open: 8.3.0
       prettier: 2.4.1
       pretty-quick: 3.1.1_prettier@2.4.1
       rimraf: 3.0.2
@@ -222,7 +222,7 @@ importers:
       ms: ^3.0.0-canary.1
       next: ^11.1.2
       node-json-db: ^1.4.1
-      open: ^8.2.1
+      open: ^8.3.0
       open-cli: ^7.0.1
       react: ^17.0.2
       react-dom: ^17.0.2
@@ -266,7 +266,7 @@ importers:
       ms: 3.0.0-canary.1
       next: 11.1.2_bd7797d63db473de6e2318609a63c933
       node-json-db: 1.4.1
-      open: 8.2.1
+      open: 8.3.0
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
       react-error-boundary: 3.1.3_react@17.0.2
@@ -10807,6 +10807,15 @@ packages:
 
   /open/8.2.1:
     resolution: {integrity: sha512-rXILpcQlkF/QuFez2BJDf3GsqpjGKbkUUToAIGo9A0Q6ZkoSGogZJulrUdwRkrAsoQvoZsrjCYt8+zblOk7JQQ==}
+    engines: {node: '>=12'}
+    dependencies:
+      define-lazy-prop: 2.0.0
+      is-docker: 2.2.1
+      is-wsl: 2.2.0
+    dev: true
+
+  /open/8.3.0:
+    resolution: {integrity: sha512-7INcPWb1UcOwSQxAXTnBJ+FxVV4MPs/X++FWWBtgY69/J5lc+tCteMt/oFK1MnkyHC4VILLa9ntmwKTwDR4Q9w==}
     engines: {node: '>=12'}
     dependencies:
       define-lazy-prop: 2.0.0
