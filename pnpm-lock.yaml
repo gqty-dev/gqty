@@ -321,7 +321,7 @@ importers:
       '@graphql-ez/plugin-codegen': ^0.7.3
       '@graphql-ez/plugin-schema': ^0.7.3
       '@graphql-ez/plugin-websockets': ^0.10.0
-      '@jest/types': ^27.2.4
+      '@jest/types': ^27.2.5
       '@rollup/plugin-babel': ^5.3.0
       '@size-limit/preset-small-lib': ^6.0.0
       '@types/jest': ^27.0.2
@@ -364,7 +364,7 @@ importers:
       wait-for-expect: 3.0.2
     devDependencies:
       '@graphql-ez/plugin-websockets': 0.10.0_6aca8f2a5b581d148755331b83c71315
-      '@jest/types': 27.2.4
+      '@jest/types': 27.2.5
       '@size-limit/preset-small-lib': 6.0.0_esbuild@0.13.4+size-limit@6.0.0
       '@types/randomstring': 1.1.7
       bob-esbuild-cli: 2.0.0_bob-esbuild@2.0.0
@@ -3444,6 +3444,17 @@ packages:
       '@types/node': 16.10.2
       '@types/yargs': 16.0.4
       chalk: 4.1.2
+
+  /@jest/types/27.2.5:
+    resolution: {integrity: sha512-nmuM4VuDtCZcY+eTpw+0nvstwReMsjPoj7ZR80/BbixulhLaiX+fbv8oeLW8WZlJMcsGQsTmMKT/iTZu1Uy/lQ==}
+    engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
+    dependencies:
+      '@types/istanbul-lib-coverage': 2.0.3
+      '@types/istanbul-reports': 3.0.1
+      '@types/node': 16.10.2
+      '@types/yargs': 16.0.4
+      chalk: 4.1.2
+    dev: true
 
   /@manypkg/find-root/1.1.0:
     resolution: {integrity: sha512-mki5uBvhHzO8kYYix/WRy2WX8S3B5wdVSc9D6KcU5lQNglP2yt58/VfLuAK49glRXChosY8ap2oJ1qgma3GUVA==}
