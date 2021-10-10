@@ -323,7 +323,7 @@ importers:
       '@graphql-ez/plugin-websockets': ^0.10.0
       '@jest/types': ^27.2.5
       '@rollup/plugin-babel': ^5.3.0
-      '@size-limit/preset-small-lib': ^6.0.0
+      '@size-limit/preset-small-lib': ^6.0.1
       '@types/jest': ^27.0.2
       '@types/randomstring': ^1.1.7
       bob-esbuild-cli: ^2.0.0
@@ -365,7 +365,7 @@ importers:
     devDependencies:
       '@graphql-ez/plugin-websockets': 0.10.0_6aca8f2a5b581d148755331b83c71315
       '@jest/types': 27.2.5
-      '@size-limit/preset-small-lib': 6.0.0_esbuild@0.13.4+size-limit@6.0.1
+      '@size-limit/preset-small-lib': 6.0.1_esbuild@0.13.4+size-limit@6.0.1
       '@types/randomstring': 1.1.7
       bob-esbuild-cli: 2.0.0_bob-esbuild@2.0.0
       bob-ts: 1.1.3_f178f90af2b6c6860618b14216876fdf
@@ -457,7 +457,7 @@ importers:
       '@graphql-tools/delegate': ^8.2.2
       '@graphql-tools/utils': ^8.2.5
       '@graphql-tools/wrap': ^8.1.1
-      '@size-limit/preset-small-lib': ^6.0.0
+      '@size-limit/preset-small-lib': ^6.0.1
       '@types/lodash': ^4.14.175
       '@types/lodash.sortby': ^4.7.6
       '@types/mkdirp': ^1.0.2
@@ -494,7 +494,7 @@ importers:
       mkdirp: 1.0.4
       prettier: 2.4.1
     devDependencies:
-      '@size-limit/preset-small-lib': 6.0.0_esbuild@0.13.4+size-limit@6.0.1
+      '@size-limit/preset-small-lib': 6.0.1_esbuild@0.13.4+size-limit@6.0.1
       '@types/lodash': 4.14.175
       '@types/lodash.sortby': 4.7.6
       '@types/mkdirp': 1.0.2
@@ -513,7 +513,7 @@ importers:
 
   packages/gqty:
     specifiers:
-      '@size-limit/preset-small-lib': ^6.0.0
+      '@size-limit/preset-small-lib': ^6.0.1
       '@types/concurrently': ^6.3.0
       '@types/lodash': ^4.14.175
       '@types/mkdirp': ^1.0.2
@@ -544,7 +544,7 @@ importers:
     dependencies:
       lodash: 4.17.21
     devDependencies:
-      '@size-limit/preset-small-lib': 6.0.0_esbuild@0.13.4+size-limit@6.0.1
+      '@size-limit/preset-small-lib': 6.0.1_esbuild@0.13.4+size-limit@6.0.1
       '@types/concurrently': 6.3.0
       '@types/lodash': 4.14.175
       '@types/mkdirp': 1.0.2
@@ -574,7 +574,7 @@ importers:
 
   packages/logger:
     specifiers:
-      '@size-limit/preset-small-lib': ^6.0.0
+      '@size-limit/preset-small-lib': ^6.0.1
       '@types/prettier': ^2.4.1
       bob-esbuild-cli: ^2.0.0
       gqty: workspace:^2.0.2
@@ -590,7 +590,7 @@ importers:
       prettier: 2.4.1
       serialize-error: 8.1.0
     devDependencies:
-      '@size-limit/preset-small-lib': 6.0.0_esbuild@0.13.4+size-limit@6.0.1
+      '@size-limit/preset-small-lib': 6.0.1_esbuild@0.13.4+size-limit@6.0.1
       '@types/prettier': 2.4.1
       bob-esbuild-cli: 2.0.0_bob-esbuild@2.0.0
       gqty: link:../gqty
@@ -603,7 +603,7 @@ importers:
 
   packages/react:
     specifiers:
-      '@size-limit/preset-small-lib': ^6.0.0
+      '@size-limit/preset-small-lib': ^6.0.1
       '@testing-library/jest-dom': ^5.14.1
       '@testing-library/react': ^12.1.2
       '@testing-library/react-hooks': ^7.0.2
@@ -628,7 +628,7 @@ importers:
     dependencies:
       react-ssr-prepass: 1.4.0_react@17.0.2
     devDependencies:
-      '@size-limit/preset-small-lib': 6.0.0_esbuild@0.13.4+size-limit@6.0.1
+      '@size-limit/preset-small-lib': 6.0.1_esbuild@0.13.4+size-limit@6.0.1
       '@testing-library/jest-dom': 5.14.1
       '@testing-library/react': 12.1.2_react-dom@17.0.2+react@17.0.2
       '@testing-library/react-hooks': 7.0.2_fc2bb8a5b006d3f25c5f84ea777e678d
@@ -2502,10 +2502,6 @@ packages:
     engines: {node: '>=10.0.0'}
     dev: true
 
-  /@discoveryjs/view-plugin-highcharts/1.0.1:
-    resolution: {integrity: sha512-Hmu7z6aYbtXOS5JkfXWf0AaBgCiCNouojJY+U0pLU+e8BsAD/jYP+yIOZqpkhM5+aqvvpKL3xNr3fpnwDNBrXg==}
-    dev: true
-
   /@emotion/babel-plugin/11.3.0:
     resolution: {integrity: sha512-UZKwBV2rADuhRp+ZOGgNWg2eYgbzKzQXfQPtJbu/PLy8onurxlNCLvxMQEvlr1/GudguPI5IU9qIY1+2z1M5bA==}
     peerDependencies:
@@ -3912,23 +3908,23 @@ packages:
     dependencies:
       '@sinonjs/commons': 1.8.3
 
-  /@size-limit/file/6.0.0_size-limit@6.0.1:
-    resolution: {integrity: sha512-l7SYjIMl1JFi1eQFfDULSutMr10v1FP2cfA/f81y4DTSYx8hCYAN7S95MoQu052pF6tWpDwd8debilZRstlejQ==}
+  /@size-limit/file/6.0.1_size-limit@6.0.1:
+    resolution: {integrity: sha512-NurTGHCE2LByAZh1Rlqzjr9M1+0Hj49kpN1bNqDtH2RoTOHe02GUQbZadZcNmXEcMwoZr3/dxCaxb6txbiA9eA==}
     engines: {node: ^12.0.0 || ^14.0.0 || >=16.0.0}
     peerDependencies:
-      size-limit: 6.0.0
+      size-limit: 6.0.1
     dependencies:
       semver: 7.3.5
       size-limit: 6.0.1
     dev: true
 
-  /@size-limit/preset-small-lib/6.0.0_esbuild@0.13.4+size-limit@6.0.1:
-    resolution: {integrity: sha512-hgu9NhmLb0O0LBbTgMNH44sNuQ4Gn+p+N0L514nrCPzEjzUPtrOIgpteTms/y/QaeHW2VA/+QyBJY9G5uxmo9g==}
+  /@size-limit/preset-small-lib/6.0.1_esbuild@0.13.4+size-limit@6.0.1:
+    resolution: {integrity: sha512-xopnY/JBBklZ/RVHH/z/w+/xgCo48pBo7SV2QbkJ0mT76cf+mS4puGttvB3gxu2nASoD98W0nBXVVhXlZ7Ndxg==}
     peerDependencies:
-      size-limit: 6.0.0
+      size-limit: 6.0.1
     dependencies:
-      '@size-limit/file': 6.0.0_size-limit@6.0.1
-      '@size-limit/webpack': 6.0.0_esbuild@0.13.4+size-limit@6.0.1
+      '@size-limit/file': 6.0.1_size-limit@6.0.1
+      '@size-limit/webpack': 6.0.1_esbuild@0.13.4+size-limit@6.0.1
       size-limit: 6.0.1
     transitivePeerDependencies:
       - '@swc/core'
@@ -3939,13 +3935,13 @@ packages:
       - webpack-cli
     dev: true
 
-  /@size-limit/webpack/6.0.0_esbuild@0.13.4+size-limit@6.0.1:
-    resolution: {integrity: sha512-czMxP1bwdUC1uxXbZdDFkozvvb8NthD4DA5OyidkZK7kdc3ftUrsUujya+EAp7mNZccFVFVyEqoUZwEeaYQr8g==}
+  /@size-limit/webpack/6.0.1_esbuild@0.13.4+size-limit@6.0.1:
+    resolution: {integrity: sha512-fQFTb3bkldQllDdV9jQAXUgrVvrlrZXm0BzR024amUqStPflKLri2jL4Q2/H263DEvDOOmSbdNca6HT7x30qzg==}
     engines: {node: ^12.0.0 || ^14.0.0 || >=16.0.0}
     peerDependencies:
-      size-limit: 6.0.0
+      size-limit: 6.0.1
     dependencies:
-      '@statoscope/webpack-plugin': 5.12.1_esbuild@0.13.4+webpack@5.58.1
+      '@statoscope/webpack-plugin': 5.13.0_esbuild@0.13.4+webpack@5.58.1
       css-loader: 6.4.0_webpack@5.58.1
       css-minimizer-webpack-plugin: 3.1.1_esbuild@0.13.4+webpack@5.58.1
       escape-string-regexp: 4.0.0
@@ -4024,8 +4020,8 @@ packages:
       '@statoscope/stats': 5.7.0
     dev: true
 
-  /@statoscope/webpack-model/5.12.1:
-    resolution: {integrity: sha512-hB0mvuVTCO8VVyeb7ZCVxUtAjkCRpidaLmCs/0OJSLh5zwCpM8jOlXjVf9mf4t5ffx55Ga5mrgv7JF7qDg9lPg==}
+  /@statoscope/webpack-model/5.13.0_esbuild@0.13.4:
+    resolution: {integrity: sha512-RHi6dq6hIc2Ntlp6SflN+v4D/tKPtZic2CmSvXsbmqzRluEWSiJirYUAoomT5cQROl//3gOo8bBuCGOruXJc4w==}
     dependencies:
       '@statoscope/extensions': 5.7.1
       '@statoscope/helpers': 5.9.0
@@ -4035,12 +4031,19 @@ packages:
       '@statoscope/stats-extension-package-info': 5.9.0
       '@statoscope/stats-extension-stats-validation-result': 5.12.1
       '@statoscope/types': 5.12.1
+      '@types/md5': 2.3.1
+      '@types/webpack': 5.28.0_esbuild@0.13.4
       ajv: 8.6.3
       md5: 2.3.0
+    transitivePeerDependencies:
+      - '@swc/core'
+      - esbuild
+      - uglify-js
+      - webpack-cli
     dev: true
 
-  /@statoscope/webpack-plugin/5.12.1_esbuild@0.13.4+webpack@5.58.1:
-    resolution: {integrity: sha512-AVhelkB1k+hQBAITfHn5wdcMX1px4+Dn4VNjLYMeF3gbKRL8KDx1aG6o5ca81JbBXo7tK0ZSJ+TT+WJTJnkSig==}
+  /@statoscope/webpack-plugin/5.13.0_esbuild@0.13.4+webpack@5.58.1:
+    resolution: {integrity: sha512-05duOPXIsC7AykQjVJIHTmEHy+X/SVBXZfxDgjc18QKzLCvvuL5qGds2tVfRn+yR3I3Zm313tMr6sDoXVejNBg==}
     peerDependencies:
       webpack: ^4.0.0 || ^5.0.0
     dependencies:
@@ -4050,10 +4053,10 @@ packages:
       '@statoscope/stats-extension-compressed': 5.9.0
       '@statoscope/stats-extension-custom-reports': 5.12.1
       '@statoscope/types': 5.12.1
-      '@statoscope/webpack-model': 5.12.1
-      '@statoscope/webpack-stats-extension-compressed': 5.9.0_webpack@5.58.1
-      '@statoscope/webpack-stats-extension-package-info': 5.10.2_webpack@5.58.1
-      '@statoscope/webpack-ui': 5.12.1
+      '@statoscope/webpack-model': 5.13.0_esbuild@0.13.4
+      '@statoscope/webpack-stats-extension-compressed': 5.13.0_esbuild@0.13.4+webpack@5.58.1
+      '@statoscope/webpack-stats-extension-package-info': 5.13.0_esbuild@0.13.4+webpack@5.58.1
+      '@statoscope/webpack-ui': 5.13.0
       '@types/node': 16.10.2
       '@types/webpack': 5.28.0_esbuild@0.13.4
       open: 8.3.0
@@ -4065,32 +4068,45 @@ packages:
       - webpack-cli
     dev: true
 
-  /@statoscope/webpack-stats-extension-compressed/5.9.0_webpack@5.58.1:
-    resolution: {integrity: sha512-PSxbxLSG497kN+DNZiGacKYfvrUuUEsrwFkA9ZIcmvwVGES8LfF1WQ8Q/rklA9NiNXtTblhCYktnW6U2yWOwPg==}
+  /@statoscope/webpack-stats-extension-compressed/5.13.0_esbuild@0.13.4+webpack@5.58.1:
+    resolution: {integrity: sha512-FKHLkNzvWGr0ZvwZnPd+Jw94TrrAD1FHzd3EbqqL5vwM/03HnwipmdexYXghYuzsq73WRC5yz/fTlT1hLiFESw==}
     peerDependencies:
       webpack: ^4.0.0 || ^5.0.0
     dependencies:
       '@statoscope/stats': 5.7.0
       '@statoscope/stats-extension-compressed': 5.9.0
+      '@statoscope/webpack-model': 5.13.0_esbuild@0.13.4
+      '@types/webpack': 5.28.0_esbuild@0.13.4
       webpack: 5.58.1_esbuild@0.13.4
+    transitivePeerDependencies:
+      - '@swc/core'
+      - esbuild
+      - uglify-js
+      - webpack-cli
     dev: true
 
-  /@statoscope/webpack-stats-extension-package-info/5.10.2_webpack@5.58.1:
-    resolution: {integrity: sha512-Je1l4MY0jStljf7qeYHLXNBtxqxouJ34/R2Gb3I638P8zeoFRVNs+E13xp1D6XI39FuigDqfVdrmbZkqW7M7+g==}
+  /@statoscope/webpack-stats-extension-package-info/5.13.0_esbuild@0.13.4+webpack@5.58.1:
+    resolution: {integrity: sha512-Rk7CgvoW2MZwpWBjStussQ8WmpMCldrYxEvZ4fLfNGo9RIlM3Qz1FSJwEli4Emhgygb34OBxOdcPB2yTq5xOLQ==}
     peerDependencies:
       webpack: ^4.0.0 || ^5.0.0
     dependencies:
       '@statoscope/stats': 5.7.0
       '@statoscope/stats-extension-package-info': 5.9.0
+      '@statoscope/webpack-model': 5.13.0_esbuild@0.13.4
+      '@types/webpack': 5.28.0_esbuild@0.13.4
       webpack: 5.58.1_esbuild@0.13.4
+    transitivePeerDependencies:
+      - '@swc/core'
+      - esbuild
+      - uglify-js
+      - webpack-cli
     dev: true
 
-  /@statoscope/webpack-ui/5.12.1:
-    resolution: {integrity: sha512-l8dBQg6coWLk/R6ccrZ5xjfinxeFASr/f9jFUAq/YjkdRbYMZ2jG0x8xbWuE5lxSC/vj0VKg4EF8eC7PxIMgpg==}
+  /@statoscope/webpack-ui/5.13.0:
+    resolution: {integrity: sha512-8qlZypE4b4qigNYnOmsQyWt0gr2jjsLsU7DtJy72ys+TJEPkgEAwe0rHrgj3Dk4ZB2BbQy46D7IOayedZ1y9nA==}
     dependencies:
-      '@discoveryjs/view-plugin-highcharts': 1.0.1
       '@statoscope/types': 5.12.1
-      highcharts: 8.2.2
+      highcharts: 9.2.2
     dev: true
 
   /@testing-library/dom/8.7.2:
@@ -4462,6 +4478,12 @@ packages:
 
   /@types/lodash/4.14.175:
     resolution: {integrity: sha512-XmdEOrKQ8a1Y/yxQFOMbC47G/V2VDO1GvMRnl4O75M4GW/abC5tnfzadQYkqEveqRM1dEJGFFegfPNA2vvx2iw==}
+
+  /@types/md5/2.3.1:
+    resolution: {integrity: sha512-OK3oe+ALIoPSo262lnhAYwpqFNXbiwH2a+0+Z5YBnkQEwWD8fk5+PIeRhYA48PzvX9I4SGNpWy+9bLj8qz92RQ==}
+    dependencies:
+      '@types/node': 16.10.2
+    dev: true
 
   /@types/mdast/3.0.10:
     resolution: {integrity: sha512-W864tg/Osz1+9f4lrGTZpCSO5/z4608eUp19tbozkq2HJK6i3z1kT0H9tlADXuYIb1YYOBByU4Jsqkk75q48qA==}
@@ -8153,8 +8175,8 @@ packages:
     resolution: {integrity: sha512-COpmrF2NOg4TBWUJ5UVyaCU2A88wEMkUPK4hNqyCkqHbxT92BbvfjoSozkAIIm6XhicGlJHhFdullInrdhwU8Q==}
     dev: false
 
-  /highcharts/8.2.2:
-    resolution: {integrity: sha512-F63TXO7RxsvTcpO/KOubQZWualYpCMyCTuKtoWbt7KCsfQ3Kl7Fr6HEyyJdjkYl+XlnmnKlSRi9d3HjLK9Q0wg==}
+  /highcharts/9.2.2:
+    resolution: {integrity: sha512-OMEdFCaG626ES1JEcKAvJTpxAOMuchy0XuAplmnOs0Yu7NMd2RMfTLFQ2fCJOxo3ubSdm/RVQwKAWC+5HYThnw==}
     dev: true
 
   /hmac-drbg/1.0.1:
