@@ -384,7 +384,7 @@ importers:
       '@emotion/react': ^11.4.1
       '@emotion/styled': ^11.3.0
       '@guild-docs/client': ^1.0.7
-      '@guild-docs/server': ^1.0.4
+      '@guild-docs/server': ^1.0.5
       '@mdx-js/react': ^1.6.22
       '@next/bundle-analyzer': ^11.1.2
       '@theguild/components': ^1.6.0
@@ -420,7 +420,7 @@ importers:
       '@emotion/react': 11.4.1_b094b78811fc8d2f00a90f13d0251fb6
       '@emotion/styled': 11.3.0_5c2d7d4b854c783938f3cfe7091c0f9b
       '@guild-docs/client': 1.0.7_9b26391dd8e94a547fb3f99accc06754
-      '@guild-docs/server': 1.0.4_062e9a4b59a9b37568a7082e323f271a
+      '@guild-docs/server': 1.0.5_062e9a4b59a9b37568a7082e323f271a
       '@mdx-js/react': 1.6.22_react@17.0.2
       '@theguild/components': 1.6.0_71483b668b4d148933f9476f9dfe0fca
       csstype: 3.0.9
@@ -1012,7 +1012,7 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.12.9
-      '@babel/helper-plugin-utils': 7.10.4
+      '@babel/helper-plugin-utils': 7.14.5
       '@babel/plugin-syntax-object-rest-spread': 7.8.3_@babel+core@7.12.9
       '@babel/plugin-transform-parameters': 7.15.4_@babel+core@7.12.9
     dev: false
@@ -3177,23 +3177,23 @@ packages:
       - supports-color
     dev: false
 
-  /@guild-docs/server/1.0.4_062e9a4b59a9b37568a7082e323f271a:
-    resolution: {integrity: sha512-oC9/f1N9J9zbHbYLajMqXSiDYKs4vhFUFTRHAvxyCKlPu+L0iYlEyw4Ad7yVRIpRvB6u32CkrXReipPBQgtSHw==}
+  /@guild-docs/server/1.0.5_062e9a4b59a9b37568a7082e323f271a:
+    resolution: {integrity: sha512-IdzFbvVukxMkbG1IFP3qcN5e1nHbUzlESK/z8YZZofF2L7cWbt/2lG4FBbCnOHn5CABj7R+ANF3GR1tSDu4ETg==}
     peerDependencies:
-      next: ^11.1.0
-      next-i18next: ^8.7.0
+      next: ^11.1.2
+      next-i18next: ^8.8.0
       react: ^17.0.2
       react-dom: ^17.0.2
       remark-admonitions: ^1.2.1
-      shiki: ^0.9.7
+      shiki: ^0.9.11
     dependencies:
-      '@guild-docs/types': 1.0.0_3af67f48028d94ff2eef0d4bfaca8839
+      '@guild-docs/types': 1.0.1_2bdaa6a27335a8ea71d8a673224d959e
       github-slugger: 1.4.0
       globby: 11.0.4
       gray-matter: 4.0.3
       next: 11.1.2_bd7797d63db473de6e2318609a63c933
       next-i18next: 8.8.0_next@11.1.2+react@17.0.2
-      next-mdx-remote: 3.0.5_react-dom@17.0.2+react@17.0.2
+      next-mdx-remote: 3.0.6_react-dom@17.0.2+react@17.0.2
       node-fetch: 2.6.5
       npms.io: 2.1.0
       react: 17.0.2
@@ -3224,6 +3224,20 @@ packages:
       '@types/react': 17.0.27
       next-i18next: 8.8.0_next@11.1.2+react@17.0.2
       next-mdx-remote: 3.0.5_react-dom@17.0.2+react@17.0.2
+    dev: false
+
+  /@guild-docs/types/1.0.1_2bdaa6a27335a8ea71d8a673224d959e:
+    resolution: {integrity: sha512-VAyZKVVeYiMsZDdvuk8sOVBr3OhKZQbOkGR1vmALGfmsaKUtbv5dcK4Y5eFcS4YzqIS5TE4q8zHdQPNonhj59Q==}
+    peerDependencies:
+      '@chakra-ui/react': '*'
+      '@types/react': '*'
+      next-i18next: '*'
+      next-mdx-remote: '*'
+    dependencies:
+      '@chakra-ui/react': 1.6.9_706761a4f2b16b77126fe00fb5de7138
+      '@types/react': 17.0.27
+      next-i18next: 8.8.0_next@11.1.2+react@17.0.2
+      next-mdx-remote: 3.0.6_react-dom@17.0.2+react@17.0.2
     dev: false
 
   /@hapi/accept/5.0.2:
@@ -10028,6 +10042,22 @@ packages:
 
   /next-mdx-remote/3.0.5_react-dom@17.0.2+react@17.0.2:
     resolution: {integrity: sha512-m9OD2GBuqvz/IeM/h4kufQ7GEdaCaZ4owqkCQ+yoxzCIM7jVQYK9JWXNVcyPP/Y6FBS00fLH03Hn5VFdvkFf0A==}
+    peerDependencies:
+      react: '>=16.x <=17.x'
+      react-dom: '>=16.x <=17.x'
+    dependencies:
+      '@mdx-js/mdx': 1.6.22
+      '@mdx-js/react': 1.6.22_react@17.0.2
+      esbuild: 0.13.4
+      pkg-dir: 5.0.0
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
+  /next-mdx-remote/3.0.6_react-dom@17.0.2+react@17.0.2:
+    resolution: {integrity: sha512-nLyDACEvebCwZonab29/AayXddgActZRcWvtsX8KKzxeRQH4Kjm9/5psD5ARU6ZTa3lALhVss+nCbejll3o5/g==}
     peerDependencies:
       react: '>=16.x <=17.x'
       react-dom: '>=16.x <=17.x'
