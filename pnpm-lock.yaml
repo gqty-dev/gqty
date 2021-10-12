@@ -18,7 +18,7 @@ importers:
       '@changesets/assemble-release-plan': ^5.0.1
       '@changesets/cli': ^2.17.0
       '@types/node': '>=16.10.3'
-      bob-esbuild: ^2.0.0
+      bob-esbuild: ^2.0.1
       bob-esbuild-cli: ^2.0.0
       bob-ts: ^1.1.3
       bufferutil: ^4.0.4
@@ -45,8 +45,8 @@ importers:
       '@changesets/assemble-release-plan': 5.0.1
       '@changesets/cli': 2.17.0
       '@types/node': 16.10.3
-      bob-esbuild: 2.0.0_9905779a54c66d2a56bb442712ca9ced
-      bob-esbuild-cli: 2.0.0_bob-esbuild@2.0.0
+      bob-esbuild: 2.0.1_9905779a54c66d2a56bb442712ca9ced
+      bob-esbuild-cli: 2.0.0_bob-esbuild@2.0.1
       bob-ts: 1.1.3_96ea800be824d2bbdd96260fc9c061a6
       bufferutil: 4.0.4
       chalk: 4.1.2
@@ -109,7 +109,7 @@ importers:
     devDependencies:
       '@types/lodash': 4.14.175
       '@types/randomstring': 1.1.7
-      bob-esbuild-cli: 2.0.0_bob-esbuild@2.0.0
+      bob-esbuild-cli: 2.0.0_bob-esbuild@2.0.1
       esbuild-register: 3.0.0_esbuild@0.13.4
       jest: 27.2.5_957d4fd21a9dd091ba7bb88bbf82c0e4
       typescript: 4.4.3
@@ -367,7 +367,7 @@ importers:
       '@jest/types': 27.2.5
       '@size-limit/preset-small-lib': 6.0.2_esbuild@0.13.4+size-limit@6.0.1
       '@types/randomstring': 1.1.7
-      bob-esbuild-cli: 2.0.0_bob-esbuild@2.0.0
+      bob-esbuild-cli: 2.0.0_bob-esbuild@2.0.1
       bob-ts: 1.1.3_96ea800be824d2bbdd96260fc9c061a6
       concurrently: 6.3.0
       es-jest: 1.3.0
@@ -498,7 +498,7 @@ importers:
       '@types/lodash': 4.14.175
       '@types/lodash.sortby': 4.7.6
       '@types/mkdirp': 1.0.2
-      bob-esbuild-cli: 2.0.0_bob-esbuild@2.0.0
+      bob-esbuild-cli: 2.0.0_bob-esbuild@2.0.1
       changesets-github-release: 0.0.4
       graphql: 15.6.1
       open-cli: 7.0.1
@@ -554,7 +554,7 @@ importers:
       '@types/rimraf': 3.0.2
       '@types/wait-on': 5.3.1
       '@types/ws': 8.2.0
-      bob-esbuild-cli: 2.0.0_bob-esbuild@2.0.0
+      bob-esbuild-cli: 2.0.0_bob-esbuild@2.0.1
       concurrently: 6.3.0
       cross-env: 7.0.3
       graphql: 15.6.1
@@ -592,7 +592,7 @@ importers:
     devDependencies:
       '@size-limit/preset-small-lib': 6.0.2_esbuild@0.13.4+size-limit@6.0.1
       '@types/prettier': 2.4.1
-      bob-esbuild-cli: 2.0.0_bob-esbuild@2.0.0
+      bob-esbuild-cli: 2.0.0_bob-esbuild@2.0.1
       gqty: link:../gqty
       jest: 27.2.5_957d4fd21a9dd091ba7bb88bbf82c0e4
       rimraf: 3.0.2
@@ -636,7 +636,7 @@ importers:
       '@types/lodash': 4.14.175
       '@types/react': 17.0.27
       '@types/react-dom': 17.0.9
-      bob-esbuild-cli: 2.0.0_bob-esbuild@2.0.0
+      bob-esbuild-cli: 2.0.0_bob-esbuild@2.0.1
       gqty: link:../gqty
       graphql: 15.6.1
       jest: 27.2.5_957d4fd21a9dd091ba7bb88bbf82c0e4
@@ -666,7 +666,7 @@ importers:
       ws: 8.2.3_b2e6c579793e9551e64081320e3d8aea
     devDependencies:
       '@types/ws': 8.2.0
-      bob-esbuild-cli: 2.0.0_bob-esbuild@2.0.0
+      bob-esbuild-cli: 2.0.0_bob-esbuild@2.0.1
       gqty: link:../gqty
       graphql: 15.6.1
       test-utils: link:../../internal/test-utils
@@ -5341,14 +5341,14 @@ packages:
     resolution: {integrity: sha512-D7iWRBvnZE8ecXiLj/9wbxH7Tk79fAh8IHaTNq1RWRixsS02W+5qS+iE9yq6RYl0asXx5tw0bLhmT5pIfbSquw==}
     dev: false
 
-  /bob-esbuild-cli/2.0.0_bob-esbuild@2.0.0:
+  /bob-esbuild-cli/2.0.0_bob-esbuild@2.0.1:
     resolution: {integrity: sha512-PHnKbBizn11/zFNZF7R69WWB6VlqTsrZGwtFwvNiXTzPUT47ygxCm/AF4ynBn9KSFnuS1ueLA5OPzm1IN4FRNg==}
     engines: {node: '>=12.0.0'}
     hasBin: true
     peerDependencies:
       bob-esbuild: ^2.0.0
     dependencies:
-      bob-esbuild: 2.0.0_9905779a54c66d2a56bb442712ca9ced
+      bob-esbuild: 2.0.1_9905779a54c66d2a56bb442712ca9ced
       commander: 8.2.0
     dev: true
 
@@ -5367,8 +5367,8 @@ packages:
       rollup: 2.58.0
     dev: true
 
-  /bob-esbuild/2.0.0_9905779a54c66d2a56bb442712ca9ced:
-    resolution: {integrity: sha512-K67PssziQ/OJdyBpby5q7dXcHD6WqM9WxCCroxFdnzuLgGiIVKm+QfQpp6QrgQ1xkcCKC/Ny/maqCwRQzvE0Ww==}
+  /bob-esbuild/2.0.1_9905779a54c66d2a56bb442712ca9ced:
+    resolution: {integrity: sha512-yYUk/eA/gUifaE8ca89PMd0dKQrEJb2DY5A1vEFTWOBqRoXvlCXGDSpR6cszsKemZmXRyYmFLS/q4iqfX1cyMA==}
     peerDependencies:
       esbuild: '*'
       typescript: '*'
