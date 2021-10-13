@@ -41,8 +41,8 @@
     "test:watch-coverage": "rimraf coverage && mkdirp coverage/lcov-report && concurrently --raw \"jest --watchAll\" \"serve -l 8787 coverage/lcov-report\" \"wait-on tcp:8787 coverage/lcov-report/index.html && open-cli http://localhost:8787\""
   },
   "dependencies": {
-    "@graphql-codegen/core": "^2.1.0",
-    "@graphql-codegen/typescript": "^2.2.2",
+    "@graphql-codegen/core": "^2.2.0",
+    "@graphql-codegen/typescript": "^2.2.3",
     "@graphql-tools/delegate": "^8.2.3",
     "@graphql-tools/utils": "^8.3.0",
     "@graphql-tools/wrap": "^8.1.1",
