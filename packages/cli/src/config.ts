@@ -6,6 +6,9 @@ import type { GenerateOptions } from './generate';
 import { __innerState } from './innerState';
 import type { IntrospectionOptions } from './introspection';
 
+const cjsRequire =
+  typeof require !== 'undefined' ? require : createRequire(import.meta.url);
+
 export type GQtyConfig = Omit<GenerateOptions, 'endpoint'> & {
   /**
    * Introspection options
@@ -30,7 +33,14 @@ function isStringRecord(v: unknown): v is Record<string, string> {
 export const DUMMY_ENDPOINT = 'SPECIFY_ENDPOINT_OR_SCHEMA_FILE_PATH_HERE';
 
 export const defaultConfig: Required<GQtyConfig> = {
-  react: true,
+  react: (() => {
+    try {
+      cjsRequire.resolve('react');
+      return true;
+    } catch (err) {}
+
+    return false;
+  })(),
   scalarTypes: {
     DateTime: 'string',
   },
@@ -202,9 +212,7 @@ export const gqtyConfigPromise: Promise<{
       }, 10);
     } else {
       const cjsLoader: Loader = (filePath) => {
-        const requireConfig = createRequire(import.meta.url);
-
-        return requireConfig(filePath);
+        return cjsRequire(filePath);
       };
       const config = await cosmiconfig('gqty', {
         searchPlaces: ['gqty.config.cjs', 'gqty.config.js', 'package.json'],
