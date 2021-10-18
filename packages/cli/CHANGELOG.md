@@ -1,5 +1,12 @@
 # @gqty/cli
 
+## 2.1.1
+
+### Patch Changes
+
+- f4ddac9: Enforce `"importsNotUsedAsValues"` & `"preserveValueImports"` using `import type`
+- ff821ef: default config react enabled only if "react" dependency is found
+
 ## 2.1.0
 
 ### Minor Changes
