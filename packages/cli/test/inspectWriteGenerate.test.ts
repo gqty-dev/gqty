@@ -59,14 +59,14 @@ test('basic inspectWriteGenerate functionality', async () => {
 
       import { createReactClient } from '@gqty/react';
 
-      import { createClient, QueryFetcher } from 'gqty';
-      import {
-        generatedSchema,
-        scalarsEnumsHash,
+      import type { QueryFetcher } from 'gqty';
+      import { createClient } from 'gqty';
+      import type {
         GeneratedSchema,
         SchemaObjectTypes,
         SchemaObjectTypesNames,
       } from './schema.generated';
+      import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
       const queryFetcher: QueryFetcher = async function (query, variables) {
         // Modify \\"/graphql\\" if needed
@@ -250,14 +250,14 @@ describe('from file', () => {
 
         import { createReactClient } from '@gqty/react';
 
-        import { createClient, QueryFetcher } from 'gqty';
-        import {
-          generatedSchema,
-          scalarsEnumsHash,
+        import type { QueryFetcher } from 'gqty';
+        import { createClient } from 'gqty';
+        import type {
           GeneratedSchema,
           SchemaObjectTypes,
           SchemaObjectTypesNames,
         } from './schema.generated';
+        import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
         const queryFetcher: QueryFetcher = async function (query, variables) {
           // Modify \\"/api/graphql\\" if needed
@@ -438,14 +438,14 @@ describe('from file', () => {
 
         import { createReactClient } from '@gqty/react';
 
-        import { createClient, QueryFetcher } from 'gqty';
-        import {
-          generatedSchema,
-          scalarsEnumsHash,
+        import type { QueryFetcher } from 'gqty';
+        import { createClient } from 'gqty';
+        import type {
           GeneratedSchema,
           SchemaObjectTypes,
           SchemaObjectTypesNames,
         } from './schema.generated';
+        import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
         const queryFetcher: QueryFetcher = async function (query, variables) {
           // Modify \\"/api/graphql\\" if needed
@@ -625,14 +625,14 @@ describe('from file', () => {
 
         import { createReactClient } from '@gqty/react';
 
-        import { createClient, QueryFetcher } from 'gqty';
-        import {
-          generatedSchema,
-          scalarsEnumsHash,
+        import type { QueryFetcher } from 'gqty';
+        import { createClient } from 'gqty';
+        import type {
           GeneratedSchema,
           SchemaObjectTypes,
           SchemaObjectTypesNames,
         } from './schema.generated';
+        import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
         const queryFetcher: QueryFetcher = async function (query, variables) {
           // Modify \\"/api/graphql\\" if needed
@@ -849,14 +849,14 @@ test('specify generateOptions to inspectWriteGenerate', async () => {
 
       import { createReactClient } from '@gqty/react';
 
-      import { createClient, QueryFetcher } from 'gqty';
-      import {
-        generatedSchema,
-        scalarsEnumsHash,
+      import type { QueryFetcher } from 'gqty';
+      import { createClient } from 'gqty';
+      import type {
         GeneratedSchema,
         SchemaObjectTypes,
         SchemaObjectTypesNames,
       } from './schema.generated';
+      import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
       const queryFetcher: QueryFetcher = async function (query, variables) {
         // Modify \\"/graphql\\" if needed
@@ -1199,14 +1199,14 @@ describe('CLI behavior', () => {
 
         import { createReactClient } from '@gqty/react';
 
-        import { createClient, QueryFetcher } from 'gqty';
-        import {
-          generatedSchema,
-          scalarsEnumsHash,
+        import type { QueryFetcher } from 'gqty';
+        import { createClient } from 'gqty';
+        import type {
           GeneratedSchema,
           SchemaObjectTypes,
           SchemaObjectTypesNames,
         } from './schema.generated';
+        import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
         const queryFetcher: QueryFetcher = async function (query, variables) {
           // Modify \\"/graphql\\" if needed

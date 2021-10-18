@@ -896,14 +896,15 @@ export const generatedSchema = {${generatedSchemaCodeString}};
       ? `import { createSubscriptionsClient } from "@gqty/subscriptions"`
       : ''
   }
-  import { createClient${
-    isJavascriptOutput ? '' : ', QueryFetcher'
-  } } from "gqty";
-  import { generatedSchema, scalarsEnumsHash${
+  ${isJavascriptOutput ? '' : 'import type { QueryFetcher } from "gqty";'}
+  import { createClient } from "gqty";
+  ${
     isJavascriptOutput
       ? ''
-      : ', GeneratedSchema, SchemaObjectTypes, SchemaObjectTypesNames'
-  } } from "./schema.generated";
+      : 'import type { GeneratedSchema, SchemaObjectTypes, SchemaObjectTypesNames } from "./schema.generated";'
+  }
+  import { generatedSchema, scalarsEnumsHash } from "./schema.generated";
+
 
   ${queryFetcher}
 
