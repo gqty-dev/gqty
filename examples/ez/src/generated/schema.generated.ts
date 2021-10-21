@@ -37,13 +37,62 @@ export interface GreetingsInput {
 }
 
 export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
-  String: true,
+  Boolean: true,
   ExampleScalar: true,
   GreetingsEnum: true,
   Int: true,
-  Boolean: true,
+  String: true,
 };
 export const generatedSchema = {
+  A: {
+    __typename: { __type: 'String!' },
+    a: { __type: 'String!' },
+    common: { __type: 'Int', __args: { a: 'String' } },
+    z: { __type: 'String' },
+  },
+  B: {
+    __typename: { __type: 'String!' },
+    b: { __type: 'Int!' },
+    common: { __type: 'String', __args: { b: 'Int' } },
+    z: { __type: 'String' },
+  },
+  C: {
+    __typename: { __type: 'String!' },
+    c: { __type: 'GreetingsEnum!' },
+    z: { __type: 'String' },
+  },
+  Dog: {
+    __typename: { __type: 'String!' },
+    name: { __type: 'String!' },
+    owner: { __type: 'Human!' },
+  },
+  GreetingsInput: {
+    language: { __type: 'String!' },
+    value: { __type: 'String' },
+    scal: { __type: 'ExampleScalar' },
+  },
+  Human: {
+    __typename: { __type: 'String!' },
+    name: { __type: 'String!' },
+    father: { __type: 'Human!' },
+    fieldWithArgs: { __type: 'Int!', __args: { id: 'Int!' } },
+    sons: { __type: '[Human!]' },
+    union: { __type: '[TestUnion!]!' },
+    args: { __type: 'Int', __args: { a: 'String' } },
+  },
+  NamedEntity: {
+    __typename: { __type: 'String!' },
+    name: { __type: 'String!' },
+    $on: { __type: '$NamedEntity!' },
+  },
+  TestUnion: {
+    __typename: { __type: 'String!' },
+    $on: { __type: '$TestUnion!' },
+  },
+  mutation: {
+    __typename: { __type: 'String!' },
+    increment: { __type: 'Int!', __args: { n: 'Int!' } },
+  },
   query: {
     __typename: { __type: 'String!' },
     simpleString: { __type: 'String!' },
@@ -69,61 +118,68 @@ export const generatedSchema = {
     number: { __type: 'Int!' },
     union: { __type: '[TestUnion!]!' },
   },
-  mutation: {
-    __typename: { __type: 'String!' },
-    increment: { __type: 'Int!', __args: { n: 'Int!' } },
-  },
   subscription: {},
-  NamedEntity: {
-    __typename: { __type: 'String!' },
-    name: { __type: 'String!' },
-    $on: { __type: '$NamedEntity!' },
-  },
-  GreetingsInput: {
-    language: { __type: 'String!' },
-    value: { __type: 'String' },
-    scal: { __type: 'ExampleScalar' },
-  },
-  Human: {
-    __typename: { __type: 'String!' },
-    name: { __type: 'String!' },
-    father: { __type: 'Human!' },
-    fieldWithArgs: { __type: 'Int!', __args: { id: 'Int!' } },
-    sons: { __type: '[Human!]' },
-    union: { __type: '[TestUnion!]!' },
-    args: { __type: 'Int', __args: { a: 'String' } },
-  },
-  Dog: {
-    __typename: { __type: 'String!' },
-    name: { __type: 'String!' },
-    owner: { __type: 'Human!' },
-  },
-  A: {
-    __typename: { __type: 'String!' },
-    a: { __type: 'String!' },
-    common: { __type: 'Int', __args: { a: 'String' } },
-    z: { __type: 'String' },
-  },
-  B: {
-    __typename: { __type: 'String!' },
-    b: { __type: 'Int!' },
-    common: { __type: 'String', __args: { b: 'Int' } },
-    z: { __type: 'String' },
-  },
-  C: {
-    __typename: { __type: 'String!' },
-    c: { __type: 'GreetingsEnum!' },
-    z: { __type: 'String' },
-  },
-  TestUnion: {
-    __typename: { __type: 'String!' },
-    $on: { __type: '$TestUnion!' },
-  },
   [SchemaUnionsKey]: {
     NamedEntity: ['Human', 'Dog'],
     TestUnion: ['A', 'B', 'C'],
   },
 } as const;
+
+export interface A {
+  __typename?: 'A';
+  a: ScalarsEnums['String'];
+  common: (args?: {
+    a?: Maybe<Scalars['String']>;
+  }) => Maybe<ScalarsEnums['Int']>;
+  z?: Maybe<ScalarsEnums['String']>;
+}
+
+export interface B {
+  __typename?: 'B';
+  b: ScalarsEnums['Int'];
+  common: (args?: {
+    b?: Maybe<Scalars['Int']>;
+  }) => Maybe<ScalarsEnums['String']>;
+  z?: Maybe<ScalarsEnums['String']>;
+}
+
+export interface C {
+  __typename?: 'C';
+  c: ScalarsEnums['GreetingsEnum'];
+  z?: Maybe<ScalarsEnums['String']>;
+}
+
+export interface Dog {
+  __typename?: 'Dog';
+  name: ScalarsEnums['String'];
+  owner: Human;
+}
+
+export interface Human {
+  __typename?: 'Human';
+  name: ScalarsEnums['String'];
+  father: Human;
+  fieldWithArgs: (args: { id: Scalars['Int'] }) => ScalarsEnums['Int'];
+  sons?: Maybe<Array<Human>>;
+  union: Array<TestUnion>;
+  args: (args?: { a?: Maybe<Scalars['String']> }) => Maybe<ScalarsEnums['Int']>;
+}
+
+export interface NamedEntity {
+  __typename?: 'Human' | 'Dog';
+  name: ScalarsEnums['String'];
+  $on: $NamedEntity;
+}
+
+export interface TestUnion {
+  __typename?: 'A' | 'B' | 'C';
+  $on: $TestUnion;
+}
+
+export interface Mutation {
+  __typename?: 'Mutation';
+  increment: (args: { n: Scalars['Int'] }) => ScalarsEnums['Int'];
+}
 
 export interface Query {
   __typename?: 'Query';
@@ -151,85 +207,29 @@ export interface Query {
   union: Array<TestUnion>;
 }
 
-export interface Mutation {
-  __typename?: 'Mutation';
-  increment: (args: { n: Scalars['Int'] }) => ScalarsEnums['Int'];
-}
-
 export interface Subscription {
   __typename?: 'Subscription';
 }
 
-export interface NamedEntity {
-  __typename?: 'Human' | 'Dog';
-  name: ScalarsEnums['String'];
-  $on: $NamedEntity;
-}
-
-export interface Human {
-  __typename?: 'Human';
-  name: ScalarsEnums['String'];
-  father: Human;
-  fieldWithArgs: (args: { id: Scalars['Int'] }) => ScalarsEnums['Int'];
-  sons?: Maybe<Array<Human>>;
-  union: Array<TestUnion>;
-  args: (args?: { a?: Maybe<Scalars['String']> }) => Maybe<ScalarsEnums['Int']>;
-}
-
-export interface Dog {
-  __typename?: 'Dog';
-  name: ScalarsEnums['String'];
-  owner: Human;
-}
-
-export interface A {
-  __typename?: 'A';
-  a: ScalarsEnums['String'];
-  common: (args?: {
-    a?: Maybe<Scalars['String']>;
-  }) => Maybe<ScalarsEnums['Int']>;
-  z?: Maybe<ScalarsEnums['String']>;
-}
-
-export interface B {
-  __typename?: 'B';
-  b: ScalarsEnums['Int'];
-  common: (args?: {
-    b?: Maybe<Scalars['Int']>;
-  }) => Maybe<ScalarsEnums['String']>;
-  z?: Maybe<ScalarsEnums['String']>;
-}
-
-export interface C {
-  __typename?: 'C';
-  c: ScalarsEnums['GreetingsEnum'];
-  z?: Maybe<ScalarsEnums['String']>;
-}
-
-export interface TestUnion {
-  __typename?: 'A' | 'B' | 'C';
-  $on: $TestUnion;
-}
-
 export interface SchemaObjectTypes {
-  Query: Query;
-  Mutation: Mutation;
-  Subscription: Subscription;
-  Human: Human;
-  Dog: Dog;
   A: A;
   B: B;
   C: C;
+  Dog: Dog;
+  Human: Human;
+  Mutation: Mutation;
+  Query: Query;
+  Subscription: Subscription;
 }
 export type SchemaObjectTypesNames =
-  | 'Query'
-  | 'Mutation'
-  | 'Subscription'
-  | 'Human'
-  | 'Dog'
   | 'A'
   | 'B'
-  | 'C';
+  | 'C'
+  | 'Dog'
+  | 'Human'
+  | 'Mutation'
+  | 'Query'
+  | 'Subscription';
 
 export interface $NamedEntity {
   Human?: Human;

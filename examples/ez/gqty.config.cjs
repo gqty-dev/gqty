@@ -4,10 +4,10 @@
 const config = {
   enumsAsStrings: false,
   react: false,
-  scalarTypes: { DateTime: 'string' },
+  scalarTypes: { DateTime: 'string', ExampleScalar: 'string' },
   preImport: '',
-  introspection: { endpoint: 'SPECIFY_ENDPOINT_OR_SCHEMA_FILE_PATH_HERE' },
-  destination: './src/generated/graphql.ts',
+  introspection: { endpoint: './schema.gql' },
+  destination: './src/generated/gqty.ts',
   subscriptions: false,
 };
 
