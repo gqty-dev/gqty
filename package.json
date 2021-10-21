@@ -14,7 +14,7 @@
     "changeset": "changeset --",
     "ci:release": "pnpm -r publish --access public --no-git-checks",
     "ci:version": "changeset version && pnpm i --no-frozen-lockfile --lockfile-only --ignore-scripts && pnpm update -r \"@gqty/*\" gqty",
-    "clean": "rimraf packages/*/dist packages/*/coverage packages/*/.nyc_output packages/*/*.tsbuildinfo",
+    "clean": "pnpm dlx rimraf \"**/{node_modules,dist,.nyc_output,coverage,.next}\" pnpm-lock.yaml && pnpm i",
     "dev": "bob-esbuild tsc && pnpm -r dev --no-sort --no-bail --filter=!example-*",
     "docs:build": "pnpm build:website && pretty-quick",
     "prepare": "husky install",
