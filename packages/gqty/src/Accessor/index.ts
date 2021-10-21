@@ -522,6 +522,19 @@ export function createAccessorCreators<
           }
         }
 
+        const autoFetchUnionTypename = isUnionsInterfaceSelection
+          ? () => {
+              if (isUnionsInterfaceSelection) {
+                interceptorManager.addSelection(
+                  innerState.selectionManager.getSelection({
+                    key: '__typename',
+                    prevSelection,
+                  })
+                );
+              }
+            }
+          : undefined;
+
         const proxyValue =
           schemaValue instanceof SchemaUnion
             ? schemaValue.fieldsProxy
@@ -529,6 +542,7 @@ export function createAccessorCreators<
                 acum[key] = ProxySymbol;
                 return acum;
               }, {} as Record<string, unknown>);
+
         return new Proxy(proxyValue, {
           set(_target, key: string, value: unknown) {
             if (!proxyValue.hasOwnProperty(key))
@@ -606,15 +620,6 @@ export function createAccessorCreators<
                   selection
                 );
 
-                if (isUnionsInterfaceSelection) {
-                  interceptorManager.addSelection(
-                    innerState.selectionManager.getSelection({
-                      key: '__typename',
-                      prevSelection: prevSelection,
-                    })
-                  );
-                }
-
                 if (cacheValue === undefined) {
                   innerState.foundValidCache = false;
 
@@ -638,6 +643,7 @@ export function createAccessorCreators<
                         !schedulerErrorsMap.has(selection)))
                   ) {
                     interceptorManager.addSelection(selection);
+                    autoFetchUnionTypename?.();
                   }
 
                   return isArray ? emptyScalarArray : undefined;
@@ -648,6 +654,7 @@ export function createAccessorCreators<
                 ) {
                   // Or if you are making the network fetch always
                   interceptorManager.addSelection(selection);
+                  autoFetchUnionTypename?.();
                 } else {
                   // Support cache-and-network / stale-while-revalidate pattern
                   interceptorManager.addSelectionCacheRefetch(selection);
