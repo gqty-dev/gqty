@@ -1,5 +1,13 @@
 # gqty
 
+## 2.0.3
+
+### Patch Changes
+
+- 9e22119: Fix unions/interface fetch loop
+
+  closes #236
+
 ## 2.0.2
 
 ### Patch Changes
