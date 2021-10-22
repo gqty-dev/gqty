@@ -1,5 +1,11 @@
 # @gqty/cli
 
+## 2.1.2
+
+### Patch Changes
+
+- 2b33e6a: Add missing useSubscription in generated react code
+
 ## 2.1.1
 
 ### Patch Changes
