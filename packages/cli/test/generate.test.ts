@@ -1457,6 +1457,7 @@ test('javascript output works', async () => {
       prepareReactRender,
       useHydrateCache,
       prepareQuery,
+      useSubscription,
     } = reactClient;
 
     export * from './schema.generated';
