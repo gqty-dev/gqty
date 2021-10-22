@@ -855,6 +855,7 @@ export const generatedSchema = {${generatedSchemaCodeString}};
         prepareReactRender,
         useHydrateCache,
         prepareQuery,
+        ${subscriptions ? 'useSubscription,' : ''}    
       } = reactClient;
       `.trim();
     } else {
