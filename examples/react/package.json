@@ -7,7 +7,7 @@
     "dev": "concurrently --raw \"pnpm dev:server\" \"wait-on -s 1 tcp:4141 && node ./open-browser.mjs\"",
     "dev:server": "bob-tsm --watch=api api/server.ts",
     "build": "next build",
-    "start": "cross-env NODE_ENV=production bob-tsm api/server.ts"
+    "start": "bob-tsm --node-env=prod api/server.ts"
   },
   "dependencies": {
     "@chakra-ui/react": "^1.6.10",
@@ -55,10 +55,10 @@
     "@types/faker": "^5.5.9",
     "@types/graphql-upload": "^8.0.7",
     "@types/lodash": "^4.14.176",
-    "@types/node": "^16.11.1",
+    "@types/node": "^16.11.4",
     "@types/react": "^17.0.31",
     "@types/react-dom": "^17.0.10",
-    "bob-tsm": "^0.2.4",
+    "bob-tsm": "^0.3.1",
     "concurrently": "^6.3.0",
     "cross-env": "^7.0.3",
     "esbuild": "^0.13.8",
