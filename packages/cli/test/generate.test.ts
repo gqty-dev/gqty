@@ -1,6 +1,6 @@
 import { createTestApp, gql } from 'test-utils';
 import { generate } from '../src';
-
+import './utils';
 export const clientPreComment = '';
 
 test('basic functionality works', async () => {

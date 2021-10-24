@@ -1,3 +1,5 @@
+import './utils';
+
 import { getValidConfig, GQtyConfig } from '../src/config';
 
 test('completely valid config', () => {

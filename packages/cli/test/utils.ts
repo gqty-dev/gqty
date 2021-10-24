@@ -1,3 +1,4 @@
+import { gqtyConfigPromise } from '../src/config';
 import fs from 'fs';
 import { resolve } from 'path';
 import tmp from 'tmp-promise';
@@ -30,3 +31,7 @@ export async function getTempDir({
     schemaPath,
   });
 }
+
+afterAll(async () => {
+  await gqtyConfigPromise;
+});

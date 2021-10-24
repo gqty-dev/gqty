@@ -14,6 +14,12 @@ import {
 } from '../src';
 import { deepAssign } from '../src/Utils';
 
+import { gqtyConfigPromise } from '../../cli/src/config';
+
+afterAll(async () => {
+  await gqtyConfigPromise;
+});
+
 type ObjectTypesNames = 'Human' | 'Query' | 'Mutation' | 'Subscription';
 
 type ObjectTypes = {

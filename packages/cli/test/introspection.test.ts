@@ -1,6 +1,7 @@
 import { GraphQLObjectType, GraphQLSchema } from 'graphql';
 import { assertIsDefined, createTestApp, gql } from 'test-utils';
 import { getRemoteSchema } from '../src';
+import './utils';
 
 const testAppPromise = createTestApp({
   schema: {

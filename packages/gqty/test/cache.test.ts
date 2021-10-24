@@ -216,7 +216,7 @@ describe('dataCache', () => {
     function expectCacheToBe(v: typeof cache) {
       try {
         expect(JSON.stringify(cache)).toBe(JSON.stringify(v));
-      } catch (err) {
+      } catch (err: any) {
         Error.captureStackTrace(err, expectCacheToBe);
         throw err;
       }
@@ -394,7 +394,7 @@ describe('data normalization', () => {
     function expectCacheToBe(v: typeof normalizedCache) {
       try {
         expect(JSON.stringify(cache)).toBe(JSON.stringify(v));
-      } catch (err) {
+      } catch (err: any) {
         Error.captureStackTrace(err, expectCacheToBe);
         throw err;
       }
@@ -402,7 +402,7 @@ describe('data normalization', () => {
     function expectNormalizedCacheToBe(v: typeof normalizedCache) {
       try {
         expect(JSON.stringify(normalizedCache)).toBe(JSON.stringify(v));
-      } catch (err) {
+      } catch (err: any) {
         Error.captureStackTrace(err, expectNormalizedCacheToBe);
         throw err;
       }

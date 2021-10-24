@@ -1,6 +1,10 @@
 import { selectFields } from '../src';
 import { createTestClient } from './utils';
 
+test('ok', () => {
+  expect(1).toBe(1);
+});
+
 describe.skip('playground', () => {
   test('cache manipulation', async () => {
     const { query, scheduler, resolved, setCache, cache } =

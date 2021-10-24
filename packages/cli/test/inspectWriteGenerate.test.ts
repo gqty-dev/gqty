@@ -69,8 +69,8 @@ test('basic inspectWriteGenerate functionality', async () => {
       import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
       const queryFetcher: QueryFetcher = async function (query, variables) {
-        // Modify \\"/graphql\\" if needed
-        const response = await fetch('/graphql', {
+        // Modify \\"/api/graphql\\" if needed
+        const response = await fetch('/api/graphql', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -859,8 +859,8 @@ test('specify generateOptions to inspectWriteGenerate', async () => {
       import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
       const queryFetcher: QueryFetcher = async function (query, variables) {
-        // Modify \\"/graphql\\" if needed
-        const response = await fetch('/graphql', {
+        // Modify \\"/api/graphql\\" if needed
+        const response = await fetch('/api/graphql', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -1209,8 +1209,8 @@ describe('CLI behavior', () => {
         import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
         const queryFetcher: QueryFetcher = async function (query, variables) {
-          // Modify \\"/graphql\\" if needed
-          const response = await fetch('/graphql', {
+          // Modify \\"/api/graphql\\" if needed
+          const response = await fetch('/api/graphql', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',

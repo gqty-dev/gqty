@@ -1,7 +1,7 @@
 import { GraphQLError, stripIgnoredCharacters } from 'graphql';
 
 import { GQtyError, Selection, SelectionType } from '../src';
-import { CacheChangeEventData, FetchEventData } from '../src/Events';
+import type { CacheChangeEventData, FetchEventData } from '../src/Events';
 import { createTestClient } from './utils';
 
 describe('fetch events', () => {
