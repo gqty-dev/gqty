@@ -205,63 +205,56 @@ export const gqtyConfigPromise: Promise<{
   config: DeepReadonly<GQtyConfig>;
 }> = new Promise(async (resolve) => {
   try {
-    /* istanbul ignore else */
-    if (process.env.NODE_ENV === 'test') {
-      setTimeout(() => {
-        resolve(defaultGQtyConfig);
-      }, 10);
-    } else {
-      const cjsLoader: Loader = (filePath) => {
-        return cjsRequire(filePath);
-      };
-      const config = await cosmiconfig('gqty', {
-        searchPlaces: ['gqty.config.cjs', 'gqty.config.js', 'package.json'],
-        loaders: {
-          '.cjs': cjsLoader,
-          '.js': cjsLoader,
-        },
-      }).search();
+    const cjsLoader: Loader = (filePath) => {
+      return cjsRequire(filePath);
+    };
+    const config = await cosmiconfig('gqty', {
+      searchPlaces: ['gqty.config.cjs', 'gqty.config.js', 'package.json'],
+      loaders: {
+        '.cjs': cjsLoader,
+        '.js': cjsLoader,
+      },
+    }).search();
 
-      if (!config || config.isEmpty) {
-        const filepath = config?.filepath || defaultFilePath;
+    if (!config || config.isEmpty) {
+      const filepath = config?.filepath || defaultFilePath;
 
-        const NODE_ENV = process.env['NODE_ENV'];
+      const NODE_ENV = process.env['NODE_ENV'];
 
-        if (
-          NODE_ENV !== 'test' &&
-          NODE_ENV !== 'production' &&
-          __innerState.isCLI
-        ) {
-          const { format } = (await import('./prettier')).formatPrettier({
-            parser: 'typescript',
-          });
+      if (
+        NODE_ENV !== 'test' &&
+        NODE_ENV !== 'production' &&
+        __innerState.isCLI
+      ) {
+        const { format } = (await import('./prettier')).formatPrettier({
+          parser: 'typescript',
+        });
 
-          const config: GQtyConfig = { ...defaultConfig };
-          delete config.preImport;
-          delete config.enumsAsStrings;
+        const config: GQtyConfig = { ...defaultConfig };
+        delete config.preImport;
+        delete config.enumsAsStrings;
 
-          await promises.writeFile(
-            defaultFilePath,
-            await format(`
+        await promises.writeFile(
+          defaultFilePath,
+          await format(`
                       /**
                        * @type {import("@gqty/cli").GQtyConfig}
                        */
                       const config = ${JSON.stringify(config)};
                       
                       module.exports = config;`)
-          );
-        }
-        return resolve({
-          filepath,
-          config: defaultConfig,
-        });
+        );
       }
-
-      resolve({
-        config: getValidConfig(config.config),
-        filepath: config.filepath,
+      return resolve({
+        filepath,
+        config: defaultConfig,
       });
     }
+
+    resolve({
+      config: getValidConfig(config.config),
+      filepath: config.filepath,
+    });
   } catch (err) {
     console.error(err);
     resolve(defaultGQtyConfig);
