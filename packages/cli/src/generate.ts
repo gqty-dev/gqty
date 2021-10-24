@@ -27,7 +27,7 @@ import {
   parse,
 } from 'graphql';
 import sortBy from 'lodash/sortBy.js';
-import { defaultConfig, DUMMY_ENDPOINT, gqtyConfigPromise } from './config';
+import { defaultConfig, gqtyConfigPromise } from './config';
 import { formatPrettier } from './prettier';
 
 export interface GenerateOptions {
@@ -123,9 +123,14 @@ export async function generate(
   scalarTypes ||= gqtyConfig.scalarTypes || defaultConfig.scalarTypes;
   endpoint ||=
     gqtyConfig.introspection?.endpoint ?? defaultConfig.introspection.endpoint;
-  if (endpoint === DUMMY_ENDPOINT) {
+
+  if (
+    endpoint == null ||
+    !(endpoint.startsWith('http://') && endpoint.startsWith('https://'))
+  ) {
     endpoint = '/api/graphql';
   }
+
   react ??= gqtyConfig.react ?? defaultConfig.react;
   preImport ??= gqtyConfig.preImport ?? defaultConfig.preImport;
   subscriptions ??= gqtyConfig.subscriptions ?? defaultConfig.subscriptions;
