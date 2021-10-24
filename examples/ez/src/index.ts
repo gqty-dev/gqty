@@ -1,6 +1,7 @@
+import { useGenerateGQty } from '@gqty/cli/envelop';
 import { CreateApp } from '@graphql-ez/fastify';
-import { ezCodegen } from '@graphql-ez/plugin-codegen';
 import { ezAltairIDE } from '@graphql-ez/plugin-altair/static';
+import { ezCodegen } from '@graphql-ez/plugin-codegen';
 import { ezSchema } from '@graphql-ez/plugin-schema';
 import Fastify, { LogLevel } from 'fastify';
 import { random, range } from 'lodash';
@@ -46,6 +47,9 @@ export const ezApp = CreateApp({
       ezSchema(),
       ezAltairIDE(),
     ],
+  },
+  envelop: {
+    plugins: [useGenerateGQty()],
   },
   prepare({ registerTypeDefs, registerResolvers }) {
     let inc = 0;
