@@ -228,7 +228,7 @@ importers:
       react: ^17.0.2
       react-dom: ^17.0.2
       react-error-boundary: ^3.1.3
-      react-intersection-observer: ^8.32.1
+      react-intersection-observer: ^8.32.2
       react-ssr-prepass: ^1.4.0
       react-use: ^17.3.1
       serialize-error: ^8.1.0
@@ -271,7 +271,7 @@ importers:
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
       react-error-boundary: 3.1.3_react@17.0.2
-      react-intersection-observer: 8.32.1_react@17.0.2
+      react-intersection-observer: 8.32.2_react@17.0.2
       react-ssr-prepass: 1.4.0_react@17.0.2
       react-use: 17.3.1_react-dom@17.0.2+react@17.0.2
       serialize-error: 8.1.0
@@ -11448,6 +11448,14 @@ packages:
 
   /react-intersection-observer/8.32.1_react@17.0.2:
     resolution: {integrity: sha512-FOmMkMw7MeJ8FkuADpU8TRcvGuTvPB+DRkaikS1QXcWArYLCWC3mjRorq2XeRGBuqmaueOBd27PUazTu9AgInw==}
+    peerDependencies:
+      react: ^15.0.0 || ^16.0.0 || ^17.0.0|| ^18.0.0
+    dependencies:
+      react: 17.0.2
+    dev: false
+
+  /react-intersection-observer/8.32.2_react@17.0.2:
+    resolution: {integrity: sha512-QTcea+n28AvOHbTku+jErfQqknbc4Nuh7EUNik8p/JMN56W2Jhjs+qcYZzQhAoyLX8pZD0QXpYX0lW87faackQ==}
     peerDependencies:
       react: ^15.0.0 || ^16.0.0 || ^17.0.0|| ^18.0.0
     dependencies:
