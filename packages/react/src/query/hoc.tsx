@@ -1,9 +1,12 @@
-import React, { ReactElement, Suspense, SuspenseProps } from 'react';
-
+import type { GQtyClient } from 'gqty';
+import React, {
+  createElement,
+  ReactElement,
+  Suspense,
+  SuspenseProps,
+} from 'react';
 import { OnErrorHandler, useInterceptSelections } from '../common';
 import type { ReactClientOptionsWithDefaults } from '../utils';
-
-import type { GQtyClient } from 'gqty';
 
 export interface GraphQLHOCOptions {
   suspense?:
@@ -73,7 +76,10 @@ export function createGraphqlHOC(
           </>
         );
         if (typeof suspense === 'object') {
-          return <Suspense fallback={suspense.fallback} children={value} />;
+          return createElement(Suspense, {
+            fallback: suspense.fallback,
+            children: value,
+          });
         }
         return value;
       }
