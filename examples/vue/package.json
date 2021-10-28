@@ -1,0 +1,42 @@
+{
+  "name": "vue",
+  "version": "0.0.0",
+  "scripts": {
+    "dev": "vite",
+    "dev:server": "bob-tsm --watch=api api/server.ts",
+    "build": "vue-tsc --noEmit && vite build",
+    "serve": "vite preview"
+  },
+  "dependencies": {
+    "@gqty/cli": "workspace:^2.1.2",
+    "@gqty/logger": "workspace:^2.0.1",
+    "@gqty/subscriptions": "workspace:^2.0.0",
+    "@gqty/vue": "workspace:^0.0.1",
+    "@graphql-ez/fastify": "^0.9.4",
+    "@graphql-ez/plugin-altair": "^0.9.3",
+    "@graphql-ez/plugin-codegen": "^0.7.4",
+    "@graphql-ez/plugin-dataloader": "^0.5.4",
+    "@graphql-ez/plugin-schema": "^0.8.0",
+    "@graphql-ez/plugin-upload": "^0.6.2",
+    "@graphql-ez/plugin-websockets": "^0.10.2",
+    "faker": "^5.5.3",
+    "fastify": "^3.22.1",
+    "gqty": "workspace:^2.0.3",
+    "graphql": "^15.6.1",
+    "graphql-ez": "^0.13.2",
+    "graphql-upload": "^12.0.0",
+    "ms": "^3.0.0-canary.1",
+    "node-json-db": "^1.4.1",
+    "vue": "^3.2.16"
+  },
+  "devDependencies": {
+    "@types/faker": "^5.5.9",
+    "@types/graphql-upload": "^8.0.7",
+    "@types/node": "^16.11.4",
+    "@vitejs/plugin-vue": "^1.9.3",
+    "bob-tsm": "^0.3.1",
+    "typescript": "^4.4.3",
+    "vite": "^2.6.4",
+    "vue-tsc": "^0.3.0"
+  }
+}
