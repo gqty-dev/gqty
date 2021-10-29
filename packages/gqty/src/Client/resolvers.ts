@@ -597,7 +597,7 @@ export function createResolvers(
           type,
         });
 
-        return data as TData;
+        return data as unknown as TData;
       } catch (err) {
         const error = GQtyError.create(err, () => {});
         loggingPromise?.resolve({
