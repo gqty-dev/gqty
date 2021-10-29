@@ -409,7 +409,10 @@ describe('from file', () => {
       await fs.promises.writeFile(
         tempFile.path,
         JSON.stringify(
-          graphqlSync(getEnveloped().schema, getIntrospectionQuery())
+          graphqlSync({
+            schema: getEnveloped().schema,
+            source: getIntrospectionQuery(),
+          })
         )
       );
 
@@ -596,7 +599,10 @@ describe('from file', () => {
       await fs.promises.writeFile(
         tempFile.path,
         JSON.stringify(
-          graphqlSync(getEnveloped().schema, getIntrospectionQuery()).data
+          graphqlSync({
+            schema: getEnveloped().schema,
+            source: getIntrospectionQuery(),
+          }).data
         )
       );
 

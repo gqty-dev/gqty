@@ -258,10 +258,10 @@ export async function generate(
     const enumValuesDescriptions: Record<string, FieldDescription> = {};
 
     for (const value of values) {
-      if (value.isDeprecated || value.description) {
+      if (value.deprecationReason || value.description) {
         enumValuesDescriptions[value.name] = {
           description: value.description,
-          deprecated: value.isDeprecated ? value.deprecationReason : undefined,
+          deprecated: value.deprecationReason,
         };
       }
     }
@@ -309,10 +309,10 @@ export async function generate(
     const objectFieldsArgsDescriptions: ArgsDescriptions = {};
 
     Object.entries(fields).forEach(([fieldName, gqlType]) => {
-      if (gqlType.description || gqlType.isDeprecated) {
+      if (gqlType.description || gqlType.deprecationReason) {
         objectFieldsDescriptions[fieldName] = {
           description: gqlType.description,
-          deprecated: gqlType.isDeprecated ? gqlType.deprecationReason : null,
+          deprecated: gqlType.deprecationReason,
         };
       }
 
@@ -472,10 +472,10 @@ export async function generate(
           }, {} as Record<string, string>);
       }
 
-      if (gqlType.description || gqlType.isDeprecated) {
+      if (gqlType.description || gqlType.deprecationReason) {
         interfaceFieldDescriptions[fieldName] = {
           description: gqlType.description,
-          deprecated: gqlType.isDeprecated ? gqlType.deprecationReason : null,
+          deprecated: gqlType.deprecationReason,
         };
       }
     });
