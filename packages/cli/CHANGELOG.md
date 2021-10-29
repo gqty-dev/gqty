@@ -1,5 +1,56 @@
 # @gqty/cli
 
+## 2.2.0
+
+### Minor Changes
+
+- cba5c43: Don't skip config read on NODE_ENV === "test"
+- a4fc294: New [Envelop](https://www.envelop.dev/) / [graphql-ez](https://www.graphql-ez.com/) plugin that automatically generates gqty code based on schema and gqty.config.cjs
+
+  ```ts
+  // graphql-ez
+
+  // ...
+  import { useGenerateGQty } from '@gqty/cli/envelop';
+
+  const ezApp = CreateApp({
+    // ...
+    envelop: {
+      plugins: [
+        // ...
+        useGenerateGQty({
+          // ...
+        }),
+      ],
+    },
+  });
+  ```
+
+  ```ts
+  // Envelop
+
+  import { envelop } from '@envelop/core';
+  import { useGenerateGQty } from '@gqty/cli/envelop';
+
+  //...
+
+  const getEnveloped = envelop({
+    plugins: [
+      // ...
+      useGenerateGQty({
+        // ...
+      }),
+    ],
+  });
+  ```
+
+### Patch Changes
+
+- aab8e48: Fix: don't put invalid default generate endpoint
+- f72aa23: GraphQL v16 compatibility
+
+  closes #268
+
 ## 2.1.2
 
 ### Patch Changes
