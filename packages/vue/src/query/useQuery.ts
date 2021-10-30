@@ -13,7 +13,6 @@ import {
   getCurrentInstance,
   onUnmounted,
   shallowRef,
-  watch,
 } from 'vue-demi';
 
 export interface UseQueryPrepareHelpers<
@@ -96,10 +95,6 @@ export function createUseQuery<
         throw err;
       }
     }
-
-    watch(query, (val) => {
-      console.log('trigger update: ', JSON.stringify(val));
-    });
 
     onUnmounted(() => {
       const instance = getCurrentInstance();

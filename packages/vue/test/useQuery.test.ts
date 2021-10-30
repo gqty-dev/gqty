@@ -1,33 +1,40 @@
 // import { renderHook } from '@testing-library/vue';
-import { mountComposition, nextTick } from 'vue-composition-test-utils';
+// import { mountComposition, nextTick } from 'vue-composition-test-utils';
+import { defineComponent, ref } from 'vue';
+import { render, screen, waitFor } from '@testing-library/vue';
 // import flushPromises from 'flush-promises';
-import { flushPromises } from '@vue/test-utils';
+// import { flushPromises } from '@vue/test-utils';
 
-import { sleep, createVueTestClient } from './utils';
+import { createVueTestClient } from './utils';
 
 test('Basic Non-Suspense', async () => {
   const { useQuery } = await createVueTestClient();
 
-  const { result } = mountComposition(useQuery, {
-    component: {
-      template: '<span>hello world {{result.current.hello}}</span>',
+  const app = defineComponent({
+    template: `
+      <span>loading: {{ isLoading }}</span>
+      <span>hello world {{ query.hello }}!</span>
+  `,
+    setup() {
+      const { query, isLoading } = useQuery();
+
+      return { query, isLoading };
     },
   });
 
-  console.log(result.current?.query.value.hello);
+  const renderApp = render(app);
 
-  expect(result.current?.query.value.hello).toBe(undefined);
+  await waitFor(() => {
+    expect(screen.getByText('loading: true')).toBeInTheDocument();
+  });
 
-  // await waitFor(() => result.current.$state.isLoading === true);
-  await flushPromises();
+  expect(screen.getByText('hello world !')).toBeInTheDocument();
 
-  expect(result.current?.query.value.hello).toBe(undefined);
+  await waitFor(() => {
+    expect(screen.getByText('loading: false')).toBeInTheDocument();
+  });
 
-  // await waitFor(() => result.current.$state.isLoading === false);
-  await flushPromises();
-  // await sleep(4);
-
-  expect(result.current?.query.value.hello).toBe('hello world');
+  expect(screen.getByText('hello world hello world!')).toBeInTheDocument();
 });
 
 // test('Basic Suspense', async () => {
