@@ -22,38 +22,24 @@ export interface Scalars {
 }
 
 export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
-  String: true,
-  ID: true,
   Boolean: true,
+  ID: true,
+  String: true,
 };
 export const generatedSchema = {
-  query: {
-    __typename: { __type: 'String!' },
-    hello: { __type: 'String!' },
-    user: { __type: 'User!' },
-  },
-  mutation: {},
-  subscription: {},
   User: {
     __typename: { __type: 'String!' },
     id: { __type: 'ID!' },
     users: { __type: '[User!]!' },
   },
+  mutation: {},
+  query: {
+    __typename: { __type: 'String!' },
+    hello: { __type: 'String!' },
+    user: { __type: 'User!' },
+  },
+  subscription: {},
 } as const;
-
-export interface Query {
-  __typename?: 'Query';
-  hello: ScalarsEnums['String'];
-  user: User;
-}
-
-export interface Mutation {
-  __typename?: 'Mutation';
-}
-
-export interface Subscription {
-  __typename?: 'Subscription';
-}
 
 export interface User {
   __typename?: 'User';
@@ -61,15 +47,29 @@ export interface User {
   users: Array<User>;
 }
 
+export interface Mutation {
+  __typename?: 'Mutation';
+}
+
+export interface Query {
+  __typename?: 'Query';
+  hello: ScalarsEnums['String'];
+  user: User;
+}
+
+export interface Subscription {
+  __typename?: 'Subscription';
+}
+
 export interface SchemaObjectTypes {
-  Query: Query;
   Mutation: Mutation;
+  Query: Query;
   Subscription: Subscription;
   User: User;
 }
 export type SchemaObjectTypesNames =
-  | 'Query'
   | 'Mutation'
+  | 'Query'
   | 'Subscription'
   | 'User';
 
