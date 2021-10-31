@@ -146,8 +146,8 @@ function AppContent(appProps: AppProps) {
                 themeSwitch
                 containerProps={{
                   className: css({
-                    menu: {
-                      display: 'none',
+                    'menu > button:first-of-type': {
+                      display: 'none !important',
                     },
                   }),
                 }}
