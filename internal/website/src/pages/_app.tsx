@@ -59,7 +59,7 @@ const a: typeof BaseAnchor = (props) => {
 };
 
 const blockquote = (props: BoxProps) => {
-  const bgColor = useColorModeValue('pink.100', 'pink.700');
+  const bgColor = useColorModeValue('pink.500', 'pink.700');
 
   return (
     <Box
