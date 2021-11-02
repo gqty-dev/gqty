@@ -29,12 +29,14 @@ export function LazyPromise<Value>(
   return new PLazy((resolve, reject) => {
     try {
       Promise.resolve(fn()).then(resolve, (err) => {
-        if (err instanceof Error) Error.captureStackTrace(err, LazyPromise);
+        if (err instanceof Error && Error.captureStackTrace)
+          Error.captureStackTrace(err, LazyPromise);
 
         reject(err);
       });
     } catch (err) {
-      if (err instanceof Error) Error.captureStackTrace(err, LazyPromise);
+      if (err instanceof Error && Error.captureStackTrace)
+        Error.captureStackTrace(err, LazyPromise);
 
       reject(err);
     }
