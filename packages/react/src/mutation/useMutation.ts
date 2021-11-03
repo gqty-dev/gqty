@@ -1,5 +1,5 @@
 import { doRetry, GQtyClient, GQtyError, RetryOptions } from 'gqty';
-import { Dispatch, useCallback, useMemo, useReducer, useRef } from 'react';
+import * as React from 'react';
 
 import {
   OnErrorHandler,
@@ -152,40 +152,44 @@ export function createUseMutation<
     }) => Promise<TData>,
     UseMutationState<TData>
   ] {
-    const optsRef = useRef(opts);
+    const optsRef = React.useRef(opts);
     optsRef.current = Object.assign({}, opts);
     optsRef.current.suspense ??= defaultSuspense;
 
     const setSuspensePromise = useSuspensePromise(optsRef);
 
-    const [state, dispatchReducer] = useReducer(
+    const [state, dispatchReducer] = React.useReducer(
       UseMutationReducer,
       undefined,
       InitUseMutationReducer
-    ) as [UseMutationState<TData>, Dispatch<UseMutationReducerAction<TData>>];
+    ) as [
+      UseMutationState<TData>,
+      React.Dispatch<UseMutationReducerAction<TData>>
+    ];
     const dispatch = useDeferDispatch(dispatchReducer);
 
-    const fnRef = useRef(mutationFn);
+    const fnRef = React.useRef(mutationFn);
     fnRef.current = mutationFn;
 
-    const callRefetchQueries = useCallback((): Promise<unknown> | void => {
-      const { refetchQueries, awaitRefetchQueries } = optsRef.current;
+    const callRefetchQueries =
+      React.useCallback((): Promise<unknown> | void => {
+        const { refetchQueries, awaitRefetchQueries } = optsRef.current;
 
-      if (refetchQueries?.length) {
-        const refetchPromise = Promise.all(
-          refetchQueries.map((v) => refetch(v))
-        ).catch((err) => {
-          dispatch({
-            type: 'failure',
-            error: GQtyError.create(err, useMutation),
+        if (refetchQueries?.length) {
+          const refetchPromise = Promise.all(
+            refetchQueries.map((v) => refetch(v))
+          ).catch((err) => {
+            dispatch({
+              type: 'failure',
+              error: GQtyError.create(err, useMutation),
+            });
           });
-        });
 
-        if (awaitRefetchQueries) return refetchPromise;
-      }
-    }, [optsRef, dispatch]);
+          if (awaitRefetchQueries) return refetchPromise;
+        }
+      }, [optsRef, dispatch]);
 
-    const mutate = useCallback(
+    const mutate = React.useCallback(
       function mutateFn({
         fn: fnArg,
         args,
@@ -241,7 +245,7 @@ export function createUseMutation<
 
     const { retry = false } = opts;
 
-    return useMemo(() => {
+    return React.useMemo(() => {
       const fn: typeof mutate = retry
         ? (...args: any[]) => {
             const promise = mutate(...args).catch((err) => {

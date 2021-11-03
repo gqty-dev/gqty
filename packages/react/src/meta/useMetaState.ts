@@ -1,6 +1,6 @@
 import type { GQtyClient, GQtyError, Selection } from 'gqty';
 import type { SchedulerPromiseValue } from 'gqty/Scheduler';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import * as React from 'react';
 import {
   BuildSelections,
   isAnySelectionIncluded,
@@ -58,18 +58,18 @@ export function createUseMetaState(client: GQtyClient<any>) {
       useMetaState
     );
 
-    const [promisesInFly] = useState(() => {
+    const [promisesInFly] = React.useState(() => {
       return new Set<Promise<unknown>>();
     });
 
-    const isMountedRef = useRef(true);
-    useEffect(() => {
+    const isMountedRef = React.useRef(true);
+    React.useEffect(() => {
       return () => {
         isMountedRef.current = false;
       };
     }, []);
 
-    const getState = useCallback(
+    const getState = React.useCallback(
       (isMounted: { current: boolean } = isMountedRef): MetaState => {
         let isFetching: boolean;
         if (scheduler.pendingSelectionsGroups.size) {
@@ -112,7 +112,7 @@ export function createUseMetaState(client: GQtyClient<any>) {
       [hasFilterSelections, selectionsToFilter]
     );
 
-    const setStateIfChanged = useCallback(
+    const setStateIfChanged = React.useCallback(
       function setStateIfChanged(isMounted: { current: boolean }) {
         if (!isMounted.current) return;
 
@@ -133,12 +133,12 @@ export function createUseMetaState(client: GQtyClient<any>) {
       []
     );
 
-    const [state, setState] = useState(getState);
+    const [state, setState] = React.useState(getState);
 
-    const stateRef = useRef(state);
+    const stateRef = React.useRef(state);
     stateRef.current = state;
 
-    const optsRef = useRef(opts);
+    const optsRef = React.useRef(opts);
     optsRef.current = opts;
 
     useIsomorphicLayoutEffect(() => {

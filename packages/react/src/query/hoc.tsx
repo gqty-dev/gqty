@@ -1,10 +1,5 @@
 import type { GQtyClient } from 'gqty';
-import React, {
-  createElement,
-  ReactElement,
-  Suspense,
-  SuspenseProps,
-} from 'react';
+import * as React from 'react';
 import { OnErrorHandler, useInterceptSelections } from '../common';
 import type { ReactClientOptionsWithDefaults } from '../utils';
 
@@ -12,7 +7,7 @@ export interface GraphQLHOCOptions {
   suspense?:
     | boolean
     | {
-        fallback: SuspenseProps['fallback'];
+        fallback: React.SuspenseProps['fallback'];
       };
   staleWhileRevalidate?: boolean;
   onError?: OnErrorHandler;
@@ -20,9 +15,9 @@ export interface GraphQLHOCOptions {
 
 export interface GraphQLHOC {
   <P>(
-    component: (props: P) => ReactElement | null,
+    component: (props: P) => React.ReactElement | null,
     options?: GraphQLHOCOptions
-  ): (props: P) => ReactElement | null;
+  ): (props: P) => React.ReactElement | null;
 }
 
 export function createGraphqlHOC(
@@ -35,7 +30,7 @@ export function createGraphqlHOC(
   }: ReactClientOptionsWithDefaults
 ) {
   const graphql: GraphQLHOC = function graphql<P>(
-    component: ((props: P) => ReactElement | null) & {
+    component: ((props: P) => React.ReactElement | null) & {
       displayName?: string;
     },
     {
@@ -45,9 +40,9 @@ export function createGraphqlHOC(
     }: GraphQLHOCOptions = {}
   ) {
     const withGraphQL: {
-      (props: P): ReactElement | null;
+      (props: P): React.ReactElement | null;
       displayName: string;
-    } = function WithGraphQL(props): ReactElement | null {
+    } = function WithGraphQL(props): React.ReactElement | null {
       const { fetchingPromise, unsubscribe } = useInterceptSelections({
         interceptorManager,
         eventHandler,
@@ -56,7 +51,7 @@ export function createGraphqlHOC(
         onError,
       });
 
-      let returnValue: ReactElement | null = null;
+      let returnValue: React.ReactElement | null = null;
       try {
         returnValue = component(props) ?? null;
       } finally {
@@ -76,7 +71,7 @@ export function createGraphqlHOC(
           </>
         );
         if (typeof suspense === 'object') {
-          return createElement(Suspense, {
+          return React.createElement(React.Suspense, {
             fallback: suspense.fallback,
             children: value,
           });

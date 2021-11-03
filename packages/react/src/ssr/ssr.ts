@@ -1,4 +1,4 @@
-import { ReactNode, useEffect } from 'react';
+import * as React from 'react';
 
 import { useOnFirstMount } from '../common';
 
@@ -36,7 +36,7 @@ export interface UseHydrateCache {
 }
 
 export interface PrepareReactRender {
-  (element: ReactNode): Promise<{
+  (element: React.ReactNode): Promise<{
     cacheSnapshot: string;
   }>;
 }
@@ -46,7 +46,7 @@ export function createSSRHelpers(
   { defaults: { refetchAfterHydrate } }: ReactClientOptionsWithDefaults
 ) {
   const prepareReactRender: PrepareReactRender =
-    async function prepareReactRender(element: ReactNode) {
+    async function prepareReactRender(element: React.ReactNode) {
       const ssrPrepass = (await import('react-ssr-prepass')).default;
       return client.prepareRender(() => ssrPrepass(element));
     };
@@ -59,7 +59,7 @@ export function createSSRHelpers(
         client.hydrateCache({ cacheSnapshot, shouldRefetch: false });
       }
     });
-    useEffect(() => {
+    React.useEffect(() => {
       if (shouldRefetch) {
         client.refetch(client.query).catch(console.error);
       }

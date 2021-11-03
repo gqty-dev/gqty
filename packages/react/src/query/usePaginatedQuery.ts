@@ -1,5 +1,5 @@
 import type { GQtyClient } from 'gqty';
-import { Dispatch, useCallback, useMemo, useReducer, useRef } from 'react';
+import * as React from 'react';
 
 import {
   coreHelpers,
@@ -210,34 +210,34 @@ export function createUsePaginatedQuery<
     fn: (query: typeof clientQuery, args: TArgs, helpers: CoreHelpers) => TData,
     opts: UsePaginatedQueryOptions<TData, TArgs>
   ): UsePaginatedQueryData<TData, TArgs> {
-    const fnRef = useRef(fn);
+    const fnRef = React.useRef(fn);
     fnRef.current = fn;
 
-    const optsRef = useRef(opts);
+    const optsRef = React.useRef(opts);
     optsRef.current = Object.assign({}, opts);
 
     optsRef.current.fetchPolicy ??= defaultFetchPolicy;
     optsRef.current.suspense ??= defaultSuspense;
 
-    const [state, dispatch] = useReducer(
+    const [state, dispatch] = React.useReducer(
       UsePaginatedQueryReducer,
       opts,
       InitUsePaginatedQueryReducer
     ) as [
       UsePaginatedQueryState<TData, TArgs>,
-      Dispatch<UsePaginatedQueryReducerAction<TData>>
+      React.Dispatch<UsePaginatedQueryReducerAction<TData>>
     ];
 
     const hookSelections = useSelectionsState();
 
-    const stateRef = useRef(state);
+    const stateRef = React.useRef(state);
     stateRef.current = state;
 
     const setSuspensePromise = useSuspensePromise(optsRef);
 
-    const isMerging = useRef(0);
+    const isMerging = React.useRef(0);
 
-    const fetchMore = useCallback(
+    const fetchMore = React.useCallback(
       (
         newArgs?:
           | ((data: FetchMoreCallbackArgs<TData, TArgs>) => TArgs)
@@ -357,7 +357,7 @@ export function createUsePaginatedQuery<
       }
     }
 
-    return useMemo(() => {
+    return React.useMemo(() => {
       return Object.assign(state, {
         fetchMore,
       });
