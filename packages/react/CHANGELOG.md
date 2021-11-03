@@ -1,5 +1,13 @@
 # @gqty/react
 
+## 2.0.1
+
+### Patch Changes
+
+- 826bc98: Change React import to "\* as React"
+- Updated dependencies [d6d0a22]
+  - gqty@2.0.4
+
 ## 2.0.0
 
 ### Major Changes

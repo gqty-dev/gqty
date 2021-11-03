@@ -1,5 +1,11 @@
 # gqty
 
+## 2.0.4
+
+### Patch Changes
+
+- d6d0a22: Fix check Error.captureStackTrace before calling it
+
 ## 2.0.3
 
 ### Patch Changes
