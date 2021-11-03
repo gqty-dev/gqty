@@ -1,5 +1,5 @@
 import { doRetry, GQtyClient, GQtyError, RetryOptions } from 'gqty';
-import { Dispatch, useCallback, useMemo, useReducer, useRef } from 'react';
+import * as React from 'react';
 
 import {
   FetchPolicy,
@@ -141,26 +141,29 @@ export function createUseLazyQuery<
     }) => Promise<TData>,
     UseLazyQueryState<TData>
   ] {
-    const [state, dispatchReducer] = useReducer(
+    const [state, dispatchReducer] = React.useReducer(
       UseLazyQueryReducer,
       undefined,
       InitUseLazyQueryReducer
-    ) as [UseLazyQueryState<TData>, Dispatch<UseLazyQueryReducerAction<TData>>];
+    ) as [
+      UseLazyQueryState<TData>,
+      React.Dispatch<UseLazyQueryReducerAction<TData>>
+    ];
     const dispatch = useDeferDispatch(dispatchReducer);
 
-    const stateRef = useRef(state);
+    const stateRef = React.useRef(state);
     stateRef.current = state;
 
-    const fnRef = useRef(fn);
+    const fnRef = React.useRef(fn);
     fnRef.current = fn;
 
-    const optsRef = useRef(opts);
+    const optsRef = React.useRef(opts);
     optsRef.current = Object.assign({}, opts);
     optsRef.current.suspense ??= defaultSuspense;
 
     const setSuspensePromise = useSuspensePromise(optsRef);
 
-    const queryFn = useCallback(
+    const queryFn = React.useCallback(
       function callback(
         callbackArgs: {
           fn?: typeof fn;
@@ -237,7 +240,7 @@ export function createUseLazyQuery<
 
     const { retry = defaultRetry } = opts;
 
-    return useMemo(() => {
+    return React.useMemo(() => {
       const fn: typeof queryFn = retry
         ? (...args) => {
             const promise = queryFn(...args).catch((err) => {

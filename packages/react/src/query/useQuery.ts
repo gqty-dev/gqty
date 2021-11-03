@@ -1,5 +1,5 @@
 import { GQtyClient, prepass } from 'gqty';
-import { useMemo, useState } from 'react';
+import * as React from 'react';
 
 import {
   OnErrorHandler,
@@ -72,7 +72,7 @@ export function createUseQuery<
     onError,
     prepare,
   }: UseQueryOptions<GeneratedSchema> = {}): UseQueryReturnValue<GeneratedSchema> {
-    const [$state] = useState<Writeable<UseQueryState>>(() => {
+    const [$state] = React.useState<Writeable<UseQueryState>>(() => {
       return {
         isLoading: true,
       };
@@ -107,7 +107,7 @@ export function createUseQuery<
       $state.isLoading = false;
     }
 
-    return useMemo<UseQueryReturnValue<GeneratedSchema>>(() => {
+    return React.useMemo<UseQueryReturnValue<GeneratedSchema>>(() => {
       const gqtyProxy = Symbol('gqty-proxy');
       return new Proxy(
         Object.keys(clientQuery).reduce(

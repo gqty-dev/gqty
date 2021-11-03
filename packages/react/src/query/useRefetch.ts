@@ -6,7 +6,7 @@ import {
   Selection,
   SelectionType,
 } from 'gqty';
-import { useCallback, useMemo, useReducer, useRef, useState } from 'react';
+import * as React from 'react';
 
 import { useIsomorphicLayoutEffect, useLazyRef } from '../common';
 import type { ReactClientOptionsWithDefaults } from '../utils';
@@ -102,7 +102,7 @@ export function createUseRefetch(
     opts.startWatching ??= true;
     opts.retry ??= defaultRetry;
 
-    const optsRef = useRef(opts);
+    const optsRef = React.useRef(opts);
     optsRef.current = opts;
 
     const { retry } = opts;
@@ -110,16 +110,16 @@ export function createUseRefetch(
     const innerState = useLazyRef(initInnerState);
     innerState.current.watching = opts.startWatching;
 
-    const startWatching = useCallback(() => {
+    const startWatching = React.useCallback(() => {
       innerState.current.watching = true;
     }, [innerState]);
 
-    const stopWatching = useCallback(() => {
+    const stopWatching = React.useCallback(() => {
       innerState.current.watching = false;
     }, [innerState]);
 
-    const [selections] = useState(initSelectionsState);
-    const [reducerState, dispatch] = useReducer(
+    const [selections] = React.useState(initSelectionsState);
+    const [reducerState, dispatch] = React.useReducer(
       UseRefetchReducer,
       undefined,
       InitUseRefetchReducer
@@ -147,7 +147,7 @@ export function createUseRefetch(
       selections.add(selection);
     });
 
-    const refetchCallback = useCallback(
+    const refetchCallback = React.useCallback(
       async <T = undefined>(
         refetchArg?: T | (() => T)
       ): Promise<T | undefined> => {
@@ -209,7 +209,7 @@ export function createUseRefetch(
       [selections, dispatch, optsRef]
     );
 
-    const state: UseRefetchState = useMemo(
+    const state: UseRefetchState = React.useMemo(
       () =>
         Object.assign(reducerState, {
           startWatching,
@@ -218,7 +218,7 @@ export function createUseRefetch(
       [reducerState, startWatching, stopWatching]
     );
 
-    return useMemo(() => {
+    return React.useMemo(() => {
       const fn = refetchCallback.bind(undefined);
 
       const returnValue: ReturnType<UseRefetch> = Object.assign(

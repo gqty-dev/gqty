@@ -5,14 +5,7 @@ import {
   ResolveOptions,
   RetryOptions,
 } from 'gqty';
-import {
-  Dispatch,
-  useCallback,
-  useEffect,
-  useMemo,
-  useReducer,
-  useRef,
-} from 'react';
+import * as React from 'react';
 
 import {
   FetchPolicy,
@@ -166,7 +159,7 @@ export function createUseTransactionQuery<
         ? [UseTransactionQueryOptions<TData, TVariables>?]
         : [UseTransactionQueryOptions<TData, TVariables>]
     ) {
-      const rejectedPromise = useRef<unknown>();
+      const rejectedPromise = React.useRef<unknown>();
 
       if (rejectedPromise.current) throw rejectedPromise.current;
 
@@ -178,7 +171,7 @@ export function createUseTransactionQuery<
 
       opts.notifyOnNetworkStatusChange ??= true;
 
-      const optsRef = useRef(opts);
+      const optsRef = React.useRef(opts);
       optsRef.current = opts;
 
       const setSuspensePromise = useSuspensePromise(optsRef);
@@ -191,31 +184,31 @@ export function createUseTransactionQuery<
 
       const hookSelections = useSelectionsState();
 
-      const resolveOptions = useMemo<ResolveOptions<TData>>(() => {
+      const resolveOptions = React.useMemo<ResolveOptions<TData>>(() => {
         return fetchPolicyDefaultResolveOptions(fetchPolicy);
       }, [fetchPolicy]);
 
-      const [state, dispatchReducer] = useReducer(
+      const [state, dispatchReducer] = React.useReducer(
         UseTransactionQueryReducer,
         opts,
         InitUseTransactionQueryReducer
       ) as [
         UseTransactionQueryState<TData>,
-        Dispatch<UseTransactionQueryReducerAction<TData>>
+        React.Dispatch<UseTransactionQueryReducerAction<TData>>
       ];
       const dispatch = useDeferDispatch(dispatchReducer);
 
-      const stateRef = useRef(state);
+      const stateRef = React.useRef(state);
       stateRef.current = state;
 
-      const fnRef = useRef(fn);
+      const fnRef = React.useRef(fn);
       fnRef.current = fn;
 
-      const isFetching = useRef(false);
+      const isFetching = React.useRef(false);
 
-      const pendingPromise = useRef<ReturnType<typeof queryCallback>>();
+      const pendingPromise = React.useRef<ReturnType<typeof queryCallback>>();
 
-      const queryCallback = useCallback(
+      const queryCallback = React.useCallback(
         (
           resolveOptsArg: Omit<
             ResolveOptions<TData>,
@@ -326,11 +319,11 @@ export function createUseTransactionQuery<
         [fetchPolicy, skip, stateRef, resolveOptions, fnRef, dispatch, optsRef]
       );
 
-      const serializedVariables = useMemo(() => {
+      const serializedVariables = React.useMemo(() => {
         return variables ? JSON.stringify(variables) : '';
       }, [variables]);
 
-      const queryCallbackWithPromise = useCallback(
+      const queryCallbackWithPromise = React.useCallback(
         (inlineCall?: boolean) => {
           if (skip) return;
 
@@ -379,7 +372,7 @@ export function createUseTransactionQuery<
         queryCallbackWithPromise();
       }, [queryCallbackWithPromise, serializedVariables]);
 
-      useEffect(() => {
+      React.useEffect(() => {
         if (skip || pollInterval <= 0) return;
 
         let isMounted = true;

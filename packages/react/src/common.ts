@@ -13,19 +13,10 @@ import type { ProxyAccessor } from 'gqty/Cache';
 import type { EventHandler } from 'gqty/Events';
 import type { InterceptorManager } from 'gqty/Interceptor';
 import type { Scheduler } from 'gqty/Scheduler';
-import {
-  MutableRefObject,
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useReducer,
-  useRef,
-  useState,
-} from 'react';
+import * as React from 'react';
 
 export function useOnFirstMount(fn: () => void) {
-  const isFirstMount = useRef(true);
+  const isFirstMount = React.useRef(true);
   if (isFirstMount.current) {
     isFirstMount.current = false;
     fn();
@@ -35,21 +26,21 @@ export function useOnFirstMount(fn: () => void) {
 export const IS_BROWSER = typeof window !== 'undefined';
 
 export const useIsomorphicLayoutEffect = IS_BROWSER
-  ? useLayoutEffect
-  : useEffect;
+  ? React.useLayoutEffect
+  : React.useEffect;
 
 const updateReducer = (num: number): number => (num + 1) % 1_000_000;
 
 export function useForceUpdate({ doTimeout }: { doTimeout?: boolean } = {}) {
-  const [, update] = useReducer(updateReducer, 0);
+  const [, update] = React.useReducer(updateReducer, 0);
 
-  const wasCalled = useRef(false);
+  const wasCalled = React.useRef(false);
 
-  useEffect(() => {
+  React.useEffect(() => {
     wasCalled.current = false;
   });
 
-  return useMemo(() => {
+  return React.useMemo(() => {
     return Object.assign(
       () => {
         if (wasCalled.current) return;
@@ -70,17 +61,17 @@ export function useForceUpdate({ doTimeout }: { doTimeout?: boolean } = {}) {
 const InitSymbol: any = Symbol();
 
 export function useLazyRef<T>(initialValFunc: () => T) {
-  const ref: MutableRefObject<T> = useRef(InitSymbol);
+  const ref: React.MutableRefObject<T> = React.useRef(InitSymbol);
   if (ref.current === InitSymbol) {
     ref.current = initialValFunc();
   }
   return ref;
 }
 
-export const useUpdateEffect: typeof useEffect = (effect, deps) => {
-  const firstEffectCall = useRef(true);
+export const useUpdateEffect: typeof React.useEffect = (effect, deps) => {
+  const firstEffectCall = React.useRef(true);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (firstEffectCall.current) {
       firstEffectCall.current = false;
     } else return effect();
@@ -88,7 +79,7 @@ export const useUpdateEffect: typeof useEffect = (effect, deps) => {
 };
 
 export function useIsRendering() {
-  const isRendering = useRef(true);
+  const isRendering = React.useRef(true);
   isRendering.current = true;
 
   useIsomorphicLayoutEffect(() => {
@@ -99,7 +90,7 @@ export function useIsRendering() {
 }
 
 export function useIsMounted() {
-  const isMounted = useRef(true);
+  const isMounted = React.useRef(true);
 
   useIsomorphicLayoutEffect(() => {
     isMounted.current = true;
@@ -118,9 +109,9 @@ export function useDeferDispatch<F extends (...args: any[]) => void>(
   const isMounted = useIsMounted();
   const isRendering = useIsRendering();
 
-  const pendingDispatch = useRef<Array<() => void> | false>(false);
+  const pendingDispatch = React.useRef<Array<() => void> | false>(false);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (pendingDispatch.current) {
       for (const fn of pendingDispatch.current) {
         fn();
@@ -129,7 +120,7 @@ export function useDeferDispatch<F extends (...args: any[]) => void>(
     }
   });
 
-  return useCallback(
+  return React.useCallback(
     (...args: any[]) => {
       if (isRendering.current) {
         if (pendingDispatch.current) {
@@ -191,7 +182,7 @@ export function useBuildSelections(
   getProxySelection: (proxy: ProxyAccessor) => Selection | undefined,
   caller: Function
 ) {
-  const buildSelections = useCallback(
+  const buildSelections = React.useCallback(
     (selectionsSet: Set<Selection>) => {
       selectionsSet.clear();
 
@@ -217,7 +208,7 @@ export function useBuildSelections(
     [argSelections]
   );
 
-  const [selections] = useState(() => {
+  const [selections] = React.useState(() => {
     const selectionsSet = new Set<Selection>();
 
     buildSelections(selectionsSet);
@@ -286,7 +277,7 @@ function initSelectionsState() {
 }
 
 export function useSelectionsState() {
-  const [selections] = useState(initSelectionsState);
+  const [selections] = React.useState(initSelectionsState);
 
   return selections;
 }
@@ -302,7 +293,7 @@ export function useSubscribeCacheChanges({
   onChange: () => void;
   shouldSubscribe?: boolean;
 }) {
-  const onChangeCalled = useRef(false);
+  const onChangeCalled = React.useRef(false);
   useIsomorphicLayoutEffect(() => {
     onChangeCalled.current = false;
   });
@@ -380,7 +371,7 @@ export function useInterceptSelections({
 }) {
   const hookSelections = useSelectionsState();
   const forceUpdate = useDeferDispatch(useForceUpdate());
-  const fetchingPromise = useRef<Promise<void> | null>(null);
+  const fetchingPromise = React.useRef<Promise<void> | null>(null);
 
   const interceptor = createInterceptor();
 
@@ -412,9 +403,9 @@ export function useInterceptSelections({
     hookSelections.add(selection);
   });
 
-  const deferredCall = useRef<(() => void) | null>(null);
+  const deferredCall = React.useRef<(() => void) | null>(null);
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (deferredCall.current) {
       deferredCall.current();
       deferredCall.current = null;
@@ -476,11 +467,11 @@ export function useInterceptSelections({
 export function useSuspensePromise(optsRef: {
   current: { suspense?: boolean };
 }) {
-  let [promise, setPromiseState] = useState<Promise<unknown> | void>();
+  let [promise, setPromiseState] = React.useState<Promise<unknown> | void>();
 
   const isMounted = useIsMounted();
 
-  const setPromise = useCallback<
+  const setPromise = React.useCallback<
     (promise: Promise<unknown>, inlineThrow?: boolean) => void
   >(
     (newPromise, inlineThrow) => {
@@ -559,10 +550,10 @@ export function sortBy<TNode>(
 }
 
 export const useIsWindowVisible = ({ lazy }: { lazy?: boolean } = {}) => {
-  const [isVisible, setIsVisible] = useState(true);
-  const ref = useRef(true);
+  const [isVisible, setIsVisible] = React.useState(true);
+  const ref = React.useRef(true);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const onVisibilityChange = () => {
       const isVisible = document.visibilityState === 'visible';
       ref.current = isVisible;
@@ -578,7 +569,7 @@ export const useIsWindowVisible = ({ lazy }: { lazy?: boolean } = {}) => {
     };
   }, [setIsVisible, lazy]);
 
-  return useMemo(() => {
+  return React.useMemo(() => {
     return {
       isVisible,
       ref,
