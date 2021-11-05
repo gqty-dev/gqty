@@ -1,9 +1,10 @@
 const { pathsToModuleNameMapper } = require('ts-jest/utils');
 const { compilerOptions } = require('../../tsconfig.json');
-
 const moduleNameMapper = pathsToModuleNameMapper(compilerOptions.paths, {
   prefix: '<rootDir>/../../',
 });
+
+process.env.TS_JEST_HOOKS = require.resolve('./tsJestHooks.js');
 
 /**
  * @type {import("@jest/types").Config.InitialOptions}
@@ -12,10 +13,11 @@ const defaultConfig = {
   globals: {
     'ts-jest': {
       tsconfig: './test/tsconfig.json',
+      isolatedModules: true,
     },
   },
   preset: 'ts-jest',
-  transform: { '\\.[jt]sx?$': 'es-jest' },
+  transform: { '\\.[jt]sx?$': 'ts-jest' },
   transformIgnorePatterns: ['[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$'],
   modulePathIgnorePatterns: ['/dist/'],
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],

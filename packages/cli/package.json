@@ -8,6 +8,7 @@
   },
   "license": "MIT",
   "author": "PabloSzx <pablosaez1995@gmail.com>",
+  "sideEffects": false,
   "exports": {
     ".": {
       "require": "./dist/index.js",
@@ -22,7 +23,7 @@
   "module": "dist/index.mjs",
   "typings": "dist/index.d.ts",
   "bin": {
-    "gqty": "bin/gqty.cjs"
+    "gqty": "bin/gqty.mjs"
   },
   "files": [
     "dist",

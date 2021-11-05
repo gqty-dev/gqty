@@ -6,8 +6,7 @@ import type { GenerateOptions } from './generate';
 import { __innerState } from './innerState';
 import type { IntrospectionOptions } from './introspection';
 
-const cjsRequire =
-  typeof require !== 'undefined' ? require : createRequire(import.meta.url);
+const cjsRequire = globalThis.require || createRequire(import.meta.url);
 
 export type GQtyConfig = Omit<GenerateOptions, 'endpoint'> & {
   /**
