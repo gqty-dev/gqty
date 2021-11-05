@@ -70,8 +70,8 @@ test('basic functionality works', async () => {
       mutation: {},
       query: {
         __typename: { __type: 'String!' },
-        hello: { __type: 'String!' },
         deprecatedArg: { __type: 'Int', __args: { arg: 'Int' } },
+        hello: { __type: 'String!' },
       },
       subscription: {},
     } as const;
@@ -86,10 +86,6 @@ test('basic functionality works', async () => {
     export interface Query {
       __typename?: 'Query';
       /**
-       * Hello field
-       */
-      hello: ScalarsEnums['String'];
-      /**
        * @deprecated No longer supported
        */
       deprecatedArg: (args?: {
@@ -98,6 +94,10 @@ test('basic functionality works', async () => {
          */
         arg?: Maybe<Scalars['Int']>;
       }) => Maybe<ScalarsEnums['Int']>;
+      /**
+       * Hello field
+       */
+      hello: ScalarsEnums['String'];
     }
 
     export interface Subscription {
@@ -227,14 +227,14 @@ test('basic functionality works', async () => {
         \\"__typename\\": {
           \\"__type\\": \\"String!\\"
         },
-        \\"hello\\": {
-          \\"__type\\": \\"String!\\"
-        },
         \\"deprecatedArg\\": {
           \\"__type\\": \\"Int\\",
           \\"__args\\": {
             \\"arg\\": \\"Int\\"
           }
+        },
+        \\"hello\\": {
+          \\"__type\\": \\"String!\\"
         }
       },
       \\"mutation\\": {},
@@ -244,9 +244,9 @@ test('basic functionality works', async () => {
 
   expect(JSON.stringify(scalarsEnumsHash, null, 2)).toMatchInlineSnapshot(`
     "{
-      \\"String\\": true,
+      \\"Boolean\\": true,
       \\"Int\\": true,
-      \\"Boolean\\": true
+      \\"String\\": true
     }"
   `);
 
@@ -457,8 +457,8 @@ test('custom scalars works', async () => {
 
   expect(JSON.stringify(scalarsEnumsHash, null, 2)).toMatchInlineSnapshot(`
     "{
-      \\"Custom\\": true,
       \\"Boolean\\": true,
+      \\"Custom\\": true,
       \\"String\\": true
     }"
   `);
@@ -594,25 +594,25 @@ describe('feature complete app', () => {
 
       /** Greetings Enum */
       export enum GreetingsEnum {
+        Bye = 'Bye',
         /** Hello */
         Hello = 'Hello',
-        /** Hi */
-        Hi = 'Hi',
         /** Hey */
         Hey = 'Hey',
-        Bye = 'Bye',
-      }
-
-      export enum OtherEnum {
-        Other = 'Other',
+        /** Hi */
+        Hi = 'Hi',
       }
 
       /** Greetings Input */
       export interface GreetingsInput {
         /** Language */
         language: Scalars['String'];
-        value?: Maybe<Scalars['String']>;
         scal?: Maybe<Scalars['ExampleScalar']>;
+        value?: Maybe<Scalars['String']>;
+      }
+
+      export enum OtherEnum {
+        Other = 'Other',
       }
 
       export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
@@ -626,15 +626,15 @@ describe('feature complete app', () => {
       export const generatedSchema = {
         GreetingsInput: {
           language: { __type: 'String!' },
-          value: { __type: 'String' },
           scal: { __type: 'ExampleScalar' },
+          value: { __type: 'String' },
         },
         Human: {
           __typename: { __type: 'String!' },
-          name: { __type: 'String!' },
-          other: { __type: 'String' },
           father: { __type: 'Human!' },
           fieldWithArgs: { __type: 'Int!', __args: { id: 'Int!' } },
+          name: { __type: 'String!' },
+          other: { __type: 'String' },
           withArgs: { __type: 'Int', __args: { a: 'Int!', b: 'Int' } },
           withArgs2: { __type: 'Int!', __args: { a: 'Int' } },
         },
@@ -651,9 +651,9 @@ describe('feature complete app', () => {
           __typename: { __type: 'String!' },
           name: { __type: 'String!' },
           other: { __type: 'String' },
+          otherHumanStyle: { __type: 'String!' },
           withArgs: { __type: 'Int', __args: { a: 'Int!', b: 'Int' } },
           withArgs2: { __type: 'Int!', __args: { a: 'Int' } },
-          otherHumanStyle: { __type: 'String!' },
         },
         mutation: {
           __typename: { __type: 'String!' },
@@ -661,8 +661,27 @@ describe('feature complete app', () => {
         },
         query: {
           __typename: { __type: 'String!' },
+          arrayObjectArgs: { __type: '[Human!]!', __args: { limit: 'Int' } },
+          arrayString: { __type: '[String!]!' },
+          enumsInput: {
+            __type: 'GreetingsEnum',
+            __args: {
+              notNullableEnum: 'GreetingsEnum!',
+              nullableEnum: 'GreetingsEnum',
+            },
+          },
+          giveGreetingsInput: {
+            __type: 'String!',
+            __args: { input: 'GreetingsInput!' },
+          },
+          greetings: { __type: 'GreetingsEnum!' },
+          humanLike: { __type: 'HumanType!' },
+          namedEntities: { __type: '[NamedEntity!]!' },
+          number: { __type: 'Int!' },
+          object: { __type: 'Human' },
+          objectArray: { __type: '[Human]' },
+          objectWithArgs: { __type: 'Human!', __args: { who: 'String!' } },
           simpleString: { __type: 'String!' },
-          stringWithArgs: { __type: 'String!', __args: { hello: 'String!' } },
           stringNullableWithArgs: {
             __type: 'String',
             __args: { hello: 'String!', helloTwo: 'String' },
@@ -671,26 +690,7 @@ describe('feature complete app', () => {
             __type: 'String',
             __args: { hello: '[String]!' },
           },
-          object: { __type: 'Human' },
-          objectArray: { __type: '[Human]' },
-          objectWithArgs: { __type: 'Human!', __args: { who: 'String!' } },
-          arrayString: { __type: '[String!]!' },
-          arrayObjectArgs: { __type: '[Human!]!', __args: { limit: 'Int' } },
-          greetings: { __type: 'GreetingsEnum!' },
-          giveGreetingsInput: {
-            __type: 'String!',
-            __args: { input: 'GreetingsInput!' },
-          },
-          enumsInput: {
-            __type: 'GreetingsEnum',
-            __args: {
-              nullableEnum: 'GreetingsEnum',
-              notNullableEnum: 'GreetingsEnum!',
-            },
-          },
-          number: { __type: 'Int!' },
-          namedEntities: { __type: '[NamedEntity!]!' },
-          humanLike: { __type: 'HumanType!' },
+          stringWithArgs: { __type: 'String!', __args: { hello: 'String!' } },
         },
         subscription: {},
         [SchemaUnionsKey]: {
@@ -701,10 +701,10 @@ describe('feature complete app', () => {
 
       export interface Human {
         __typename?: 'Human';
-        name: ScalarsEnums['String'];
-        other?: Maybe<ScalarsEnums['String']>;
         father: Human;
         fieldWithArgs: (args: { id: Scalars['Int'] }) => ScalarsEnums['Int'];
+        name: ScalarsEnums['String'];
+        other?: Maybe<ScalarsEnums['String']>;
         withArgs: (args: {
           a: Scalars['Int'];
           b?: Maybe<Scalars['Int']>;
@@ -733,12 +733,12 @@ describe('feature complete app', () => {
         __typename?: 'OtherHuman';
         name: ScalarsEnums['String'];
         other?: Maybe<ScalarsEnums['String']>;
+        otherHumanStyle: ScalarsEnums['String'];
         withArgs: (args: {
           a: Scalars['Int'];
           b?: Maybe<Scalars['Int']>;
         }) => Maybe<ScalarsEnums['Int']>;
         withArgs2: (args?: { a?: Maybe<Scalars['Int']> }) => ScalarsEnums['Int'];
-        otherHumanStyle: ScalarsEnums['String'];
       }
 
       export interface Mutation {
@@ -748,10 +748,33 @@ describe('feature complete app', () => {
 
       export interface Query {
         __typename?: 'Query';
-        simpleString: ScalarsEnums['String'];
-        stringWithArgs: (args: {
-          hello: Scalars['String'];
+        arrayObjectArgs: (args?: {
+          /**
+           * @defaultValue \`10\`
+           */
+          limit?: Maybe<Scalars['Int']>;
+        }) => Array<Human>;
+        arrayString: Array<ScalarsEnums['String']>;
+        enumsInput: (args: {
+          notNullableEnum: GreetingsEnum;
+          nullableEnum?: Maybe<GreetingsEnum>;
+        }) => Maybe<ScalarsEnums['GreetingsEnum']>;
+        giveGreetingsInput: (args: {
+          input: GreetingsInput;
         }) => ScalarsEnums['String'];
+        greetings: ScalarsEnums['GreetingsEnum'];
+        humanLike: HumanType;
+        namedEntities: Array<NamedEntity>;
+        number: ScalarsEnums['Int'];
+        object?: Maybe<Human>;
+        objectArray?: Maybe<Array<Maybe<Human>>>;
+        objectWithArgs: (args: {
+          /**
+           * Who?
+           */
+          who: Scalars['String'];
+        }) => Human;
+        simpleString: ScalarsEnums['String'];
         stringNullableWithArgs: (args: {
           hello: Scalars['String'];
           /**
@@ -762,32 +785,9 @@ describe('feature complete app', () => {
         stringNullableWithArgsArray: (args: {
           hello: Array<Maybe<Scalars['String']>>;
         }) => Maybe<ScalarsEnums['String']>;
-        object?: Maybe<Human>;
-        objectArray?: Maybe<Array<Maybe<Human>>>;
-        objectWithArgs: (args: {
-          /**
-           * Who?
-           */
-          who: Scalars['String'];
-        }) => Human;
-        arrayString: Array<ScalarsEnums['String']>;
-        arrayObjectArgs: (args?: {
-          /**
-           * @defaultValue \`10\`
-           */
-          limit?: Maybe<Scalars['Int']>;
-        }) => Array<Human>;
-        greetings: ScalarsEnums['GreetingsEnum'];
-        giveGreetingsInput: (args: {
-          input: GreetingsInput;
+        stringWithArgs: (args: {
+          hello: Scalars['String'];
         }) => ScalarsEnums['String'];
-        enumsInput: (args: {
-          nullableEnum?: Maybe<GreetingsEnum>;
-          notNullableEnum: GreetingsEnum;
-        }) => Maybe<ScalarsEnums['GreetingsEnum']>;
-        number: ScalarsEnums['Int'];
-        namedEntities: Array<NamedEntity>;
-        humanLike: HumanType;
       }
 
       export interface Subscription {

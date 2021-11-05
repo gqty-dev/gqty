@@ -24,6 +24,7 @@ import {
   isObjectType,
   isScalarType,
   isUnionType,
+  lexicographicSortSchema,
   parse,
 } from 'graphql';
 import sortBy from 'lodash/sortBy.js';
@@ -138,6 +139,8 @@ export async function generate(
   const { format } = formatPrettier({
     parser: 'typescript',
   });
+
+  schema = lexicographicSortSchema(schema);
 
   const codegenResultPromise = codegen({
     schema: parse(printSchemaWithDirectives(schema)),
