@@ -1,4 +1,4 @@
-import { writeGenerate } from '@gqty/cli';
+import { useGenerateGQty } from '@gqty/cli/envelop';
 import { CreateApp } from '@graphql-ez/fastify';
 import { ezAltairIDE } from '@graphql-ez/plugin-altair/static';
 import { ezCodegen } from '@graphql-ez/plugin-codegen';
@@ -44,15 +44,7 @@ export const {
     ],
   },
   envelop: {
-    plugins: [
-      {
-        onSchemaChange({ schema }) {
-          writeGenerate(schema, './src/graphql/gqty.ts', {}).catch(
-            console.error
-          );
-        },
-      },
-    ],
+    plugins: [useGenerateGQty()],
   },
 });
 

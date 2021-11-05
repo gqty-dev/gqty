@@ -103,5 +103,16 @@
       "path": "dist/gqty-cli.esm.js",
       "limit": "10 KB"
     }
-  ]
+  ],
+  "typesVersions": {
+    "*": {
+      "dist/index.d.ts": [
+        "dist/index.d.ts"
+      ],
+      "*": [
+        "dist/*",
+        "dist/*/index.d.ts"
+      ]
+    }
+  }
 }
