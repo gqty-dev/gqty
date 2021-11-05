@@ -12,7 +12,7 @@ process.env.TS_JEST_HOOKS = require.resolve('./tsJestHooks.js');
 const defaultConfig = {
   globals: {
     'ts-jest': {
-      tsconfig: './test/tsconfig.json',
+      tsconfig: require.resolve('./test/tsconfig.json'),
       isolatedModules: true,
     },
   },
