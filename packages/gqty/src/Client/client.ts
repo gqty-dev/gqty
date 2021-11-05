@@ -58,6 +58,7 @@ export interface InnerClientState {
   readonly queryFetcher: QueryFetcher;
   readonly schemaUnions: SchemaUnions;
   readonly normalizationHandler: NormalizationHandler | undefined;
+  readonly depthLimit: number;
   defaults: CoreClientDefaults;
 }
 
@@ -145,6 +146,14 @@ export interface ClientOptions<
     | boolean;
   subscriptionsClient?: SubscriptionsClient;
   defaults?: CoreClientDefaults;
+  /**
+   * Set the maximum depth limit, needed to prevent possible infinite recursion.
+   *
+   * After the specified depth is reached, the proxy creation is stopped returning `null`
+   *
+   * @default 15
+   */
+  depthLimit?: number;
 }
 
 export interface MutateHelpers<
@@ -243,6 +252,7 @@ export function createClient<
   normalization = true,
   subscriptionsClient,
   defaults = {},
+  depthLimit = 15,
 }: ClientOptions<ObjectTypesNames, ObjectTypes>): GQtyClient<GeneratedSchema> {
   const interceptorManager = createInterceptorManager();
 
@@ -284,6 +294,7 @@ export function createClient<
     schemaUnions: createSchemaUnions(schema),
     normalizationHandler,
     defaults,
+    depthLimit,
   };
 
   const {

@@ -141,6 +141,7 @@ export function createAccessorCreators<
       errors: { map: schedulerErrorsMap },
     },
     normalizationHandler,
+    depthLimit,
   } = innerState;
 
   const ResolveInfoSymbol = Symbol();
@@ -607,6 +608,8 @@ export function createAccessorCreators<
                 argTypes: args != null ? args.argTypes : undefined,
                 unions,
               });
+
+              if (selection.selectionsList.length > depthLimit) return null;
 
               // For the subscribers of data changes
               interceptorManager.addSelectionCache(selection);
