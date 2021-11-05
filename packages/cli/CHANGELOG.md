@@ -1,5 +1,17 @@
 # @gqty/cli
 
+## 2.3.0
+
+### Minor Changes
+
+- 0b1860a: lexicographic sort GraphQL Schema before generating
+- 82fd259: Use ESM for CLI
+
+### Patch Changes
+
+- Updated dependencies [6df0318]
+  - gqty@2.1.0
+
 ## 2.2.0
 
 ### Minor Changes
