@@ -1,23 +1,13 @@
 import { program } from 'commander';
-import { readFileSync } from 'fs';
-import { dirname, resolve } from 'path';
-import { fileURLToPath } from 'url';
-import { defaultConfig, inspectWriteGenerate, __innerState } from './index';
+import { defaultConfig } from './config';
+import { __innerState } from './innerState';
+import { inspectWriteGenerate } from './inspectWriteGenerate';
 
 __innerState.isCLI = true;
 
-program
-  .version(
-    JSON.parse(
-      readFileSync(
-        resolve(dirname(fileURLToPath(import.meta.url)), '../package.json'),
-        {
-          encoding: 'utf-8',
-        }
-      )
-    ).version
-  )
-  .description('CLI for gqty');
+declare const __VERSION__: string;
+
+program.version(__VERSION__).description('CLI for gqty');
 
 program
   .command('generate [endpoint] [destination]')
