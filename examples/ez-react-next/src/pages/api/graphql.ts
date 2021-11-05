@@ -1,8 +1,8 @@
+import { useGenerateGQty } from '@gqty/cli/envelop';
 import { CreateApp } from '@graphql-ez/nextjs';
-import { ezSchema, gql } from '@graphql-ez/plugin-schema';
 import { ezCodegen } from '@graphql-ez/plugin-codegen';
 import { ezGraphiQLIDE } from '@graphql-ez/plugin-graphiql';
-import { inspectWriteGenerate } from '@gqty/cli';
+import { ezSchema, gql } from '@graphql-ez/plugin-schema';
 
 const { buildApp } = CreateApp({
   ez: {
@@ -10,11 +10,6 @@ const { buildApp } = CreateApp({
       ezGraphiQLIDE(),
       ezCodegen({
         outputSchema: true,
-        config: {
-          onFinish() {
-            inspectWriteGenerate().catch(console.error);
-          },
-        },
       }),
       ezSchema({
         schema: {
@@ -44,6 +39,9 @@ const { buildApp } = CreateApp({
         },
       }),
     ],
+  },
+  envelop: {
+    plugins: [useGenerateGQty()],
   },
 });
 

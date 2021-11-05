@@ -26,14 +26,14 @@ export interface Scalars {
 
 export enum GreetingsEnum {
   Hello = 'Hello',
-  Hi = 'Hi',
   Hey = 'Hey',
+  Hi = 'Hi',
 }
 
 export interface GreetingsInput {
   language: Scalars['String'];
-  value?: Maybe<Scalars['String']>;
   scal?: Maybe<Scalars['ExampleScalar']>;
+  value?: Maybe<Scalars['String']>;
 }
 
 export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
@@ -68,17 +68,17 @@ export const generatedSchema = {
   },
   GreetingsInput: {
     language: { __type: 'String!' },
-    value: { __type: 'String' },
     scal: { __type: 'ExampleScalar' },
+    value: { __type: 'String' },
   },
   Human: {
     __typename: { __type: 'String!' },
-    name: { __type: 'String!' },
+    args: { __type: 'Int', __args: { a: 'String' } },
     father: { __type: 'Human!' },
     fieldWithArgs: { __type: 'Int!', __args: { id: 'Int!' } },
+    name: { __type: 'String!' },
     sons: { __type: '[Human!]' },
     union: { __type: '[TestUnion!]!' },
-    args: { __type: 'Int', __args: { a: 'String' } },
   },
   NamedEntity: {
     __typename: { __type: 'String!' },
@@ -95,8 +95,18 @@ export const generatedSchema = {
   },
   query: {
     __typename: { __type: 'String!' },
+    arrayObjectArgs: { __type: '[Human!]!', __args: { limit: 'Int!' } },
+    arrayString: { __type: '[String!]!' },
+    giveGreetingsInput: {
+      __type: 'String!',
+      __args: { input: 'GreetingsInput!' },
+    },
+    greetings: { __type: 'GreetingsEnum!' },
+    number: { __type: 'Int!' },
+    object: { __type: 'Human' },
+    objectArray: { __type: '[Human]' },
+    objectWithArgs: { __type: 'Human!', __args: { who: 'String!' } },
     simpleString: { __type: 'String!' },
-    stringWithArgs: { __type: 'String!', __args: { hello: 'String!' } },
     stringNullableWithArgs: {
       __type: 'String',
       __args: { hello: 'String!', helloTwo: 'String' },
@@ -105,22 +115,12 @@ export const generatedSchema = {
       __type: 'String',
       __args: { hello: '[String]!' },
     },
-    object: { __type: 'Human' },
-    objectArray: { __type: '[Human]' },
-    objectWithArgs: { __type: 'Human!', __args: { who: 'String!' } },
-    arrayString: { __type: '[String!]!' },
-    arrayObjectArgs: { __type: '[Human!]!', __args: { limit: 'Int!' } },
-    greetings: { __type: 'GreetingsEnum!' },
-    giveGreetingsInput: {
-      __type: 'String!',
-      __args: { input: 'GreetingsInput!' },
-    },
-    number: { __type: 'Int!' },
+    stringWithArgs: { __type: 'String!', __args: { hello: 'String!' } },
     union: { __type: '[TestUnion!]!' },
   },
   subscription: {},
   [SchemaUnionsKey]: {
-    NamedEntity: ['Human', 'Dog'],
+    NamedEntity: ['Dog', 'Human'],
     TestUnion: ['A', 'B', 'C'],
   },
 } as const;
@@ -157,16 +157,16 @@ export interface Dog {
 
 export interface Human {
   __typename?: 'Human';
-  name: ScalarsEnums['String'];
+  args: (args?: { a?: Maybe<Scalars['String']> }) => Maybe<ScalarsEnums['Int']>;
   father: Human;
   fieldWithArgs: (args: { id: Scalars['Int'] }) => ScalarsEnums['Int'];
+  name: ScalarsEnums['String'];
   sons?: Maybe<Array<Human>>;
   union: Array<TestUnion>;
-  args: (args?: { a?: Maybe<Scalars['String']> }) => Maybe<ScalarsEnums['Int']>;
 }
 
 export interface NamedEntity {
-  __typename?: 'Human' | 'Dog';
+  __typename?: 'Dog' | 'Human';
   name: ScalarsEnums['String'];
   $on: $NamedEntity;
 }
@@ -183,10 +183,17 @@ export interface Mutation {
 
 export interface Query {
   __typename?: 'Query';
-  simpleString: ScalarsEnums['String'];
-  stringWithArgs: (args: {
-    hello: Scalars['String'];
+  arrayObjectArgs: (args: { limit: Scalars['Int'] }) => Array<Human>;
+  arrayString: Array<ScalarsEnums['String']>;
+  giveGreetingsInput: (args: {
+    input: GreetingsInput;
   }) => ScalarsEnums['String'];
+  greetings: ScalarsEnums['GreetingsEnum'];
+  number: ScalarsEnums['Int'];
+  object?: Maybe<Human>;
+  objectArray?: Maybe<Array<Maybe<Human>>>;
+  objectWithArgs: (args: { who: Scalars['String'] }) => Human;
+  simpleString: ScalarsEnums['String'];
   stringNullableWithArgs: (args: {
     hello: Scalars['String'];
     helloTwo?: Maybe<Scalars['String']>;
@@ -194,16 +201,9 @@ export interface Query {
   stringNullableWithArgsArray: (args: {
     hello: Array<Maybe<Scalars['String']>>;
   }) => Maybe<ScalarsEnums['String']>;
-  object?: Maybe<Human>;
-  objectArray?: Maybe<Array<Maybe<Human>>>;
-  objectWithArgs: (args: { who: Scalars['String'] }) => Human;
-  arrayString: Array<ScalarsEnums['String']>;
-  arrayObjectArgs: (args: { limit: Scalars['Int'] }) => Array<Human>;
-  greetings: ScalarsEnums['GreetingsEnum'];
-  giveGreetingsInput: (args: {
-    input: GreetingsInput;
+  stringWithArgs: (args: {
+    hello: Scalars['String'];
   }) => ScalarsEnums['String'];
-  number: ScalarsEnums['Int'];
   union: Array<TestUnion>;
 }
 
@@ -232,8 +232,8 @@ export type SchemaObjectTypesNames =
   | 'Subscription';
 
 export interface $NamedEntity {
-  Human?: Human;
   Dog?: Dog;
+  Human?: Human;
 }
 
 export interface $TestUnion {
