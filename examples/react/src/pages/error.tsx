@@ -17,14 +17,12 @@ const ExpectedErrorComponent = () => {
       suspense: true,
       retry: true,
       fetchPolicy: 'no-cache',
+      skip: true,
     }
   );
 
-  const [inlineError, setError] = useState<GQtyError>();
-
   const query = useQuery({
     suspense: true,
-    onError: setError,
   });
 
   return (
@@ -36,14 +34,18 @@ const ExpectedErrorComponent = () => {
         )}
       </Stack>
       <Stack>
-        INLINE DATA:{' '}
-        {JSON.stringify({
-          a: query.expectedError,
-          b: query.__typename,
-        })}
-        {inlineError && (
+        <Text>
+          INLINE DATA:{' '}
+          {JSON.stringify({
+            a: query.thirdTry,
+            b: query.__typename,
+            c: query.expectedNullableError,
+          })}
+        </Text>
+
+        {query.$state.error && (
           <Text>
-            INLINE ERROR: {JSON.stringify(serializeError(inlineError))}
+            INLINE ERROR: {JSON.stringify(serializeError(query.$state.error))}
           </Text>
         )}
       </Stack>
