@@ -1,4 +1,4 @@
-import { GQtyClient, prepass } from 'gqty';
+import { GQtyClient, GQtyError, prepass } from 'gqty';
 import * as React from 'react';
 
 import {
@@ -32,6 +32,11 @@ export interface UseQueryState {
    * Useful for `Non-Suspense` usage.
    */
   readonly isLoading: boolean;
+
+  /**
+   * Latest scheduler Error, for more in-depth error management use `useMetaState` hook
+   */
+  error?: GQtyError;
 }
 
 export type UseQueryReturnValue<GeneratedSchema extends { query: object }> =
@@ -66,6 +71,10 @@ export function createUseQuery<
 
   type Writeable<T> = { -readonly [P in keyof T]: T[P] };
 
+  const errorsMap = scheduler.errors.map;
+
+  const getLastError = () => Array.from(errorsMap.values()).pop();
+
   const useQuery: UseQuery<GeneratedSchema> = function useQuery({
     suspense = defaultSuspense,
     staleWhileRevalidate = defaultStaleWhileRevalidate,
@@ -73,9 +82,15 @@ export function createUseQuery<
     prepare,
   }: UseQueryOptions<GeneratedSchema> = {}): UseQueryReturnValue<GeneratedSchema> {
     const [$state] = React.useState<Writeable<UseQueryState>>(() => {
-      return {
+      const state: Writeable<UseQueryState> = {
         isLoading: true,
       };
+
+      const error = getLastError();
+
+      if (error) state.error = error;
+
+      return state;
     });
     const { unsubscribe, fetchingPromise } = useInterceptSelections({
       staleWhileRevalidate,
@@ -96,6 +111,21 @@ export function createUseQuery<
         throw err;
       }
     }
+
+    useIsomorphicLayoutEffect(() => {
+      return scheduler.errors.subscribeErrors((ev) => {
+        switch (ev.type) {
+          case 'errors_clean':
+          case 'new_error':
+            const error = getLastError();
+            if (error) {
+              $state.error = error;
+            } else {
+              delete $state.error;
+            }
+        }
+      });
+    }, []);
 
     useIsomorphicLayoutEffect(unsubscribe);
 
