@@ -14,7 +14,7 @@ importers:
 
   .:
     specifiers:
-      '@changesets/assemble-release-plan': ^5.0.1
+      '@changesets/assemble-release-plan': ^5.0.2
       '@changesets/cli': ^2.17.0
       '@types/node': '>=16.11.6'
       bob-esbuild: ^3.0.1
@@ -41,7 +41,7 @@ importers:
       utf-8-validate: ^5.0.7
       wait-on: ^6.0.0
     devDependencies:
-      '@changesets/assemble-release-plan': 5.0.1
+      '@changesets/assemble-release-plan': 5.0.2
       '@changesets/cli': 2.17.0
       '@types/node': 16.11.6
       bob-esbuild: 3.0.1_2db0ad0fd7168665bbfcb7e81ab3cd27
@@ -2339,12 +2339,12 @@ packages:
       semver: 5.7.1
     dev: true
 
-  /@changesets/assemble-release-plan/5.0.1:
-    resolution: {integrity: sha512-KQqafvScTFQ/4Q2LpLmDYhU47LWvIGcgVS8tzKU8fBvRdKuLGQXe42VYbwVM0cHIkFd/b6YFn+H2QMdKC2MjIQ==}
+  /@changesets/assemble-release-plan/5.0.2:
+    resolution: {integrity: sha512-4Q7w0ZeeNCv6sxUywL2bc8D2id9nyq2SB0LK+WY6ocg9/m4b3giKcbcGYxczgFbJvdcgxowqXPPAyETI9RpqBg==}
     dependencies:
       '@babel/runtime': 7.16.0
       '@changesets/errors': 0.1.4
-      '@changesets/get-dependents-graph': 1.2.2
+      '@changesets/get-dependents-graph': 1.2.3
       '@changesets/types': 4.0.1
       '@manypkg/get-packages': 1.1.2
       semver: 5.7.1
@@ -2356,7 +2356,7 @@ packages:
     dependencies:
       '@babel/runtime': 7.16.0
       '@changesets/apply-release-plan': 5.0.1
-      '@changesets/assemble-release-plan': 5.0.1
+      '@changesets/assemble-release-plan': 5.0.2
       '@changesets/config': 1.6.1
       '@changesets/errors': 0.1.4
       '@changesets/get-dependents-graph': 1.2.2
@@ -2390,7 +2390,7 @@ packages:
     resolution: {integrity: sha512-aQTo6ODvhsvnSFszMP1YbJyAi1DtE1Pes9rL+G+KYJiAOA6k5RzbiKOarjo+ZkKXpX0G3CBAbOO8jXOX4xG7cQ==}
     dependencies:
       '@changesets/errors': 0.1.4
-      '@changesets/get-dependents-graph': 1.2.2
+      '@changesets/get-dependents-graph': 1.2.3
       '@changesets/logger': 0.0.5
       '@changesets/types': 4.0.1
       '@manypkg/get-packages': 1.1.2
@@ -2414,11 +2414,21 @@ packages:
       semver: 5.7.1
     dev: true
 
+  /@changesets/get-dependents-graph/1.2.3:
+    resolution: {integrity: sha512-+Fyf+L+4rck9au5zIZcIJX+8zBMGRdgZwD5DGGt37hP011R/46fahnpJ6imNB9cV+HTMNX/QMAFrkWqt1hy73A==}
+    dependencies:
+      '@changesets/types': 4.0.1
+      '@manypkg/get-packages': 1.1.2
+      chalk: 2.4.2
+      fs-extra: 7.0.1
+      semver: 5.7.1
+    dev: true
+
   /@changesets/get-release-plan/3.0.1:
     resolution: {integrity: sha512-HTZeEPvLlcWMWKxLrzQNLQWKDDN1lUKvaOV+hl/yBhgtyJECljJJzd3IRaKqCSWMrYKNaaEcmunTtZ4oaeoK9w==}
     dependencies:
       '@babel/runtime': 7.16.0
-      '@changesets/assemble-release-plan': 5.0.1
+      '@changesets/assemble-release-plan': 5.0.2
       '@changesets/config': 1.6.1
       '@changesets/pre': 1.0.7
       '@changesets/read': 0.5.0
