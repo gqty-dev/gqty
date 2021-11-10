@@ -103,7 +103,10 @@ export function createUseQuery<
       }
     });
 
-    const isLoading = computed(() => fetchingPromise.value !== null);
+    const isLoading = computed(() => {
+      console.log('isLoading: ', fetchingPromise.value);
+      return fetchingPromise.value !== null;
+    });
 
     return {
       query,

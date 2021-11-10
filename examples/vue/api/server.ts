@@ -9,8 +9,8 @@ const app = Fastify({
 
 app.register(buildApp().fastifyPlugin);
 
-console.log('> Vue example API server started. http://localhost:4141/altair');
+console.log('> Vue example API server started. http://localhost:4142/altair');
 
-app.listen(4141, 'localhost', (err) => {
+app.listen(4142, 'localhost', (err) => {
   if (err) throw err;
 });

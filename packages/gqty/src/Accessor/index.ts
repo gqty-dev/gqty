@@ -370,6 +370,8 @@ export function createAccessorCreators<
                 prevSelection,
               });
 
+              if (selection.selectionsList.length > 20) return null;
+
               // For the subscribers of data changes
               interceptorManager.addSelectionCache(selection);
 

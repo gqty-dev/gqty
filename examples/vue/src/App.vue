@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import HelloWorld from './components/HelloWorld.vue';
+import Error from './components/Error.vue';
 </script>
 
 <template>
   <HelloWorld />
+  <Error />
 </template>
 
 <style>

@@ -24,7 +24,7 @@ import type { Scheduler } from 'gqty/Scheduler';
 //   useState,
 // } from 'react';
 import type { Ref } from 'vue-demi';
-import { ref, getCurrentInstance, onUnmounted, triggerRef } from 'vue-demi';
+import { getCurrentInstance, onUnmounted, ref, triggerRef } from 'vue-demi';
 
 // export function useOnFirstMount(fn: () => void) {
 //     const isFirstMount = ref(true);
@@ -412,18 +412,20 @@ export function useInterceptSelections({
         deferredCall.value === null &&
         hookSelections.value.has(selection)
       ) {
-        const newPromise = new Promise<void>((resolve) => {
-          promise.then(({ error }) => {
-            fetchingPromise.value = null;
-            if (error && onError) onError(error);
-            Promise.resolve().then(() => () => {
-              triggerRef(query);
-            });
-            resolve();
-          });
+        fetchingPromise.value = new Promise<void>((resolve) => {
+          console.log('test1', promise);
+          promise
+            .then(({ error }) => {
+              console.log('test2');
+              fetchingPromise.value = null;
+              if (error && onError) onError(error);
+              Promise.resolve().then(() => {
+                triggerRef(query);
+              });
+              resolve();
+            })
+            .catch((err) => console.log('err1', err));
         });
-
-        fetchingPromise.value = newPromise;
 
         if (updateOnFetchPromise) {
           if (enabledStaleWhileRevalidate) {

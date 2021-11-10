@@ -3,6 +3,7 @@
  */
 
 import { createVueClient } from '@gqty/vue';
+import { createLogger } from '@gqty/logger';
 
 import type { QueryFetcher } from 'gqty';
 import { createClient } from 'gqty';
@@ -15,7 +16,7 @@ import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
 const queryFetcher: QueryFetcher = async function (query, variables) {
   // Modify "http://127.0.0.1:4141/api/graphql" if needed
-  const response = await fetch('http://127.0.0.1:4141/api/graphql', {
+  const response = await fetch('http://127.0.0.1:4142/api/graphql', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -40,6 +41,7 @@ export const client = createClient<
   schema: generatedSchema,
   scalarsEnumsHash,
   queryFetcher,
+  retry: false,
 });
 
 export const {
@@ -74,5 +76,11 @@ export const {
     staleWhileRevalidate: false,
   },
 });
+
+createLogger(client, {
+  stringifyJSON: false,
+  showSelections: true,
+  showCache: true,
+}).start();
 
 export * from './schema.generated';

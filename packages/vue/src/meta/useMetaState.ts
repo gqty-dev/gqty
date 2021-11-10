@@ -30,7 +30,7 @@ export interface UseMetaStateOptions<T> {
 }
 
 export interface MetaState {
-  isFetching: Ref<boolean>;
+  isLoading: Ref<boolean>;
   errors: Ref<GQtyError[] | undefined>;
 }
 
@@ -61,70 +61,45 @@ export function createUseMetaState(client: GQtyClient<any>) {
       useMetaState
     );
 
-    const instance = getCurrentInstance();
-
-    if (!instance) {
-      throw new Error(
-        'getCurrentTracking must be used during a component setup'
-      );
-    }
-
     const promisesInFly = ref(new Set<Promise<unknown>>());
-    const isFetching = ref(false) as Ref<boolean>;
-
-    if (scheduler.pendingSelectionsGroups.size) {
-      if (hasFilterSelections) {
-        isFetching.value = isAnySelectionIncludedInMatrix(
-          selectionsToFilter.value,
-          scheduler.pendingSelectionsGroups
-        );
-      } else {
-        isFetching.value = true;
-      }
-
-      if (isFetching && scheduler.pendingSelectionsGroupsPromises.size) {
-        Promise.all(scheduler.pendingSelectionsGroupsPromises.values());
-        // ).finally(() => setStateIfChanged(isMounted));
-      }
-    } else {
-      isFetching.value = false;
-    }
-
+    const isLoading = ref(false) as Ref<boolean>;
     const errors = ref(undefined) as Ref<GQtyError[] | undefined>;
 
-    if (hasFilterSelections) {
-      const errorsSet = new Set<GQtyError>();
+    const getFetchingState = () => {
+      if (scheduler.pendingSelectionsGroups.size) {
+        if (hasFilterSelections) {
+          isLoading.value = isAnySelectionIncludedInMatrix(
+            selectionsToFilter.value,
+            scheduler.pendingSelectionsGroups
+          );
+        } else {
+          isLoading.value = true;
+        }
 
-      selectionsToFilter.value.forEach((selection: Selection) => {
-        const error = errorsMap.get(selection);
+        if (isLoading.value && scheduler.pendingSelectionsGroupsPromises.size) {
+          Promise.all(
+            scheduler.pendingSelectionsGroupsPromises.values()
+          ).finally(() => getFetchingState());
+        }
+      } else {
+        isLoading.value = false;
+      }
+    };
+    const getErrorState = () => {
+      if (hasFilterSelections) {
+        const errorsSet = new Set<GQtyError>();
 
-        if (error) errorsSet.add(error);
-      });
+        selectionsToFilter.value.forEach((selection: Selection) => {
+          const error = errorsMap.get(selection);
 
-      if (errorsSet.size) errors.value = Array.from(errorsSet);
-    } else if (errorsMap.size) {
-      errors.value = Array.from(new Set(errorsMap.values()));
-    }
+          if (error) errorsSet.add(error);
+        });
 
-    // const setStateIfChanged = function setStateIfChanged(isMounted: {
-    //     current: boolean;
-    // }) {
-    //     if (!isMounted.value) return;
-    //
-    //     const prevState = stateRef.value;
-    //
-    //     const newState = getState(isMounted);
-    //
-    //     if (
-    //         prevState.isFetching !== newState.isFetching ||
-    //         !areArraysEqual(prevState.errors, newState.errors)
-    //     ) {
-    //         stateRef.value = newState;
-    //         setTimeout(() => {
-    //             if (isMounted.value) setState(newState);
-    //         }, 0);
-    //     }
-    // };
+        if (errorsSet.size) errors.value = Array.from(errorsSet);
+      } else if (errorsMap.size) {
+        errors.value = Array.from(new Set(errorsMap.values()));
+      }
+    };
 
     // const [state, setState] = useState(getState);
 
@@ -137,7 +112,7 @@ export function createUseMetaState(client: GQtyClient<any>) {
     // useIsomorphicLayoutEffect(() => {
     //     const isMounted = { current: true };
 
-    const unsubscribeIsFetching = scheduler.subscribeResolve(
+    const unsubscribeisLoading = scheduler.subscribeResolve(
       (promise, selection) => {
         if (promisesInFly.value.has(promise)) return;
 
@@ -152,14 +127,14 @@ export function createUseMetaState(client: GQtyClient<any>) {
 
         promisesInFly.value.add(promise);
 
-        // setStateIfChanged(isMounted);
+        getFetchingState();
 
         promise.then(() => {
           promisesInFly.value.delete(promise);
 
           if (promisesInFly.value.size === 0) optsRef.value.onDoneFetching?.();
 
-          // setStateIfChanged(isMounted);
+          getFetchingState();
         });
       }
     );
@@ -198,8 +173,7 @@ export function createUseMetaState(client: GQtyClient<any>) {
               });
               data.retryPromise.finally(() => {
                 setTimeout(() => {
-                  console.log('ODE: finally!!');
-                  // setStateIfChanged(isMounted);
+                  getErrorState();
                 }, 0);
               });
             }
@@ -210,8 +184,7 @@ export function createUseMetaState(client: GQtyClient<any>) {
             });
             data.retryPromise.finally(() => {
               setTimeout(() => {
-                console.log('ODE: finally!!');
-                // setStateIfChanged(isMounted);
+                getErrorState();
               }, 0);
             });
           }
@@ -220,28 +193,28 @@ export function createUseMetaState(client: GQtyClient<any>) {
         case 'errors_clean': {
         }
       }
-
-      // setStateIfChanged(isMounted);
+      getFetchingState();
+      getErrorState();
     });
 
     onUnmounted(() => {
       const instance = getCurrentInstance();
       if (instance) {
-        unsubscribeIsFetching();
+        unsubscribeisLoading();
         unsubscribeErrors();
       }
     });
 
     //     return () => {
     //         isMounted.value = false;
-    //         unsubscribeIsFetching();
+    //         unsubscribeisLoading();
     //         unsubscribeErrors();
     //     };
     // }, [getState, hasFilterSelections, setState, optsRef, selectionsToFilter]);
     //
     // return state;
     // };
-    return { errors, isFetching };
+    return { errors, isLoading };
   };
 
   return useMetaState;
