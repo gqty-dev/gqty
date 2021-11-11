@@ -1,9 +1,7 @@
-import * as React from 'react';
-
-import { useOnFirstMount } from '../common';
-
 import type { GQtyClient, HydrateCacheOptions } from 'gqty';
-import type { ReactClientOptionsWithDefaults } from '../utils';
+import * as React from 'react';
+import { useOnFirstMount } from '../common';
+import { getDefault, ReactClientOptionsWithDefaults } from '../utils';
 
 export interface UseHydrateCacheOptions extends Partial<HydrateCacheOptions> {
   /**
@@ -47,7 +45,8 @@ export function createSSRHelpers(
 ) {
   const prepareReactRender: PrepareReactRender =
     async function prepareReactRender(element: React.ReactNode) {
-      const ssrPrepass = (await import('react-ssr-prepass')).default;
+      const ssrPrepass = getDefault(await import('react-ssr-prepass'));
+
       return client.prepareRender(() => ssrPrepass(element));
     };
   const useHydrateCache: UseHydrateCache = function useHydrateCache({
