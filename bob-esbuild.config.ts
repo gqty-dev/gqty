@@ -19,4 +19,15 @@ export const config: import('bob-esbuild').BobConfig = {
         },
       }
     : undefined,
+  outputOptions: {
+    interop(module) {
+      switch (module) {
+        case 'react-ssr-prepass':
+        case 'react':
+          return 'esModule';
+        default:
+          return 'auto';
+      }
+    },
+  },
 };
