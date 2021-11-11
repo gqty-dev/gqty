@@ -1,5 +1,17 @@
 # @gqty/react
 
+## 2.1.0
+
+### Minor Changes
+
+- 6ced359: New "$state.error" property in "useQuery" which gives the last scheduler Error, for more in-depth error management it's still recommended to use `useMetaState` hook
+
+  Closes [#111](https://github.com/gqty-dev/gqty/issues/111)
+
+### Patch Changes
+
+- 353b9cb: Fix require interop
+
 ## 2.0.1
 
 ### Patch Changes
