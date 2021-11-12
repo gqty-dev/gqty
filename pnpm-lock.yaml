@@ -385,7 +385,7 @@ importers:
       '@emotion/react': ^11.5.0
       '@emotion/styled': ^11.3.0
       '@guild-docs/client': ^1.2.1
-      '@guild-docs/server': ^2.1.1
+      '@guild-docs/server': ^2.1.2
       '@mdx-js/react': ^1.6.22
       '@next/bundle-analyzer': ^12.0.3
       '@theguild/components': ^1.7.1
@@ -421,7 +421,7 @@ importers:
       '@emotion/react': 11.5.0_27d7f75f5fffc1228c129be468caca5c
       '@emotion/styled': 11.3.0_4e86505ff6f3e0b8d0f6b2c7f9d7b098
       '@guild-docs/client': 1.2.1_2b05231deecda1fd68e2c2052a3fafa1
-      '@guild-docs/server': 2.1.1_4dbe02bca6758728c27c8fd15cabef17
+      '@guild-docs/server': 2.1.2_4dbe02bca6758728c27c8fd15cabef17
       '@mdx-js/react': 1.6.22_react@17.0.2
       '@theguild/components': 1.7.1_8b0c8aa0441f97e3f67ab8342708e3c2
       csstype: 3.0.9
@@ -1013,7 +1013,7 @@ packages:
       '@babel/core': ^7.0.0-0
     dependencies:
       '@babel/core': 7.12.9
-      '@babel/helper-plugin-utils': 7.10.4
+      '@babel/helper-plugin-utils': 7.14.5
       '@babel/plugin-syntax-object-rest-spread': 7.8.3_@babel+core@7.12.9
       '@babel/plugin-transform-parameters': 7.16.3_@babel+core@7.12.9
     dev: false
@@ -3211,17 +3211,37 @@ packages:
       - supports-color
     dev: false
 
-  /@guild-docs/server/2.1.1_4dbe02bca6758728c27c8fd15cabef17:
-    resolution: {integrity: sha512-Ph/Uv/a5rkO1NLvgOarc6FPUvNx2aQNi4IfcG0sNC5iUJz5xufFUr5OH3s+YnfoQzu5LpR/wf/oyC2952LbijQ==}
+  /@guild-docs/mdx-remote/1.0.1_7b02dea280b727aecad50e27d96ac75d:
+    resolution: {integrity: sha512-x5AMrnbGRRbTsju3FEyi6jzLDHwFhoAzef3fTNVFU442XDkB5JMwi7yA5Q52yaFur+l6LFYjkeT2hHfjSZn5EA==}
     peerDependencies:
-      next: ^12.0.2
-      next-i18next: ^8.9.0
+      esbuild: '*'
+      react: '*'
+    dependencies:
+      '@guild-docs/types': 1.0.3_e436259150734dac28b441a7326b55c6
+      '@mdx-js/mdx': 1.6.22
+      '@mdx-js/react': 1.6.22_react@17.0.2
+      esbuild: 0.13.13
+      react: 17.0.2
+      unified: 10.1.0
+      unist-util-remove: 3.1.0
+    transitivePeerDependencies:
+      - '@chakra-ui/react'
+      - '@types/react'
+      - next-i18next
+      - supports-color
+    dev: false
+
+  /@guild-docs/server/2.1.2_4dbe02bca6758728c27c8fd15cabef17:
+    resolution: {integrity: sha512-tlD9MYZVyU+elFnxgKRkBSAUKgO2RouE6TPtHzV3HBFkP2CZgk6KETVCklGc9W+ETYnzR2J9oHFBDB4T3jesng==}
+    peerDependencies:
+      next: ^12.0.3
+      next-i18next: ^8.10.0
       react: ^17.0.2
       react-dom: ^17.0.2
       remark-admonitions: ^1.2.1
       shiki: ^0.9.12
     dependencies:
-      '@guild-docs/mdx-remote': 1.0.0_7b02dea280b727aecad50e27d96ac75d
+      '@guild-docs/mdx-remote': 1.0.1_7b02dea280b727aecad50e27d96ac75d
       '@guild-docs/types': 1.0.3_e436259150734dac28b441a7326b55c6
       github-slugger: 1.4.0
       globby: 11.0.4
