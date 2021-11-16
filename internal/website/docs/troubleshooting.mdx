@@ -1,0 +1,95 @@
+---
+id: troubleshooting
+title: Troubleshooting
+---
+
+## Skeleton render & values
+
+GQty performs an invisible render (called the skeleton render) of all components, to identify the data they need. During this render, all scalars & enums are returned as `undefined` (aka. skeleton values).
+Once the response from the server arrives, these skeleton values are replaced with actual ones.
+
+### Interplay with Lists & Keys
+
+It's important to be aware of skeleton values, as using them as keys will result in a warning:
+
+```tsx
+query.users.map((user) => (
+  // During the skeleton render, the key is `undefined`
+  <div key={user.id}>{user.name}</div>
+));
+```
+
+![React lists key warning](/img/react-key-warning.png)
+
+You can overcome this using either destructuring,
+
+```tsx
+query.users.map(({ id = 0, name }) => (
+                   ^^^^^^
+  <div key={id}>{name}</div>
+```
+
+or the [nullish coalescing operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Nullish_coalescing_operator):
+
+```tsx
+query.users.map((user) => (
+  <div key={user.id ?? 0}>{user.name}</div>
+                    ^^^^^
+```
+
+## Data Selections & Conditionals
+
+Placing a data selection behind a condition is not supported. For server-side rendering to work properly, and to prevent cascade requests, you must ensure that you have no data selections behind a condition. Take the following example:
+
+❌ **Wrong**: Data selection behind a condition
+
+```tsx
+import { useQuery } from '../gqty';
+
+export default function ExamplePage() {
+  const posts = useQuery().posts()?.nodes;
+
+  return (
+    <>
+      <h1>Posts</h1>
+
+      <ul>
+        {posts.map((post) => {
+          if (post.id === 250) {
+            return <li key={post.id ?? 0}>{post?.title}</li>;
+                                           ^^^^^^^^^^^
+          }
+        })}
+      </ul>
+    </>
+  );
+}
+```
+
+✅ **Right**: Requiring the data no matter what
+
+```tsx
+import { useQuery } from '../gqty';
+
+export default function ExamplePage() {
+  const posts = useQuery().posts()?.nodes;
+
+  return (
+    <>
+      <h1>Posts</h1>
+
+      <ul>
+        {posts.map((post) => {
+          // Define the data selection outside the condition
+          const postId = post?.id;
+          const postTitle = post?.title;
+
+          if (post.id === 250) {
+            return <li key={post.id ?? 0}>{postTitle}</li>;
+          }
+        })}
+      </ul>
+    </>
+  );
+}
+```
