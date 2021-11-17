@@ -1,0 +1,72 @@
+---
+id: troubleshooting
+title: Troubleshooting
+---
+
+## Skeleton Render Values Are `Undefined`
+
+GQty performs a invisible render of all components, to identify the data they need. Once the data is fetched — scalars, nulls, and array sizes are filled in.
+
+During this render, these skeleton values are `undefined`, so using them as keys will result in a warning:
+
+![React lists key warning](/img/react-key-warning.png)
+
+Take a look at the [How It Works](/docs/intro/how-it-works#interplay-with-lists--keys) guide for options to overcome this.
+
+## Data Selections & Conditionals
+
+Placing a data selection behind a condition is not supported. For server-side rendering to work properly, and to prevent cascade requests, you must ensure that you have no data selections behind a condition. Take the following example:
+
+❌ **Wrong**: Data selection behind a condition
+
+```tsx
+import { useQuery } from '../gqty';
+
+export default function ExamplePage() {
+  const posts = useQuery().posts()?.nodes;
+
+  return (
+    <>
+      <h1>Posts</h1>
+
+      <ul>
+        {posts.map((post) => {
+          if (post.id === 250) {
+            return <li key={post.id ?? 0}>{post?.title}</li>;
+                                           ^^^^^^^^^^^
+          }
+        })}
+      </ul>
+    </>
+  );
+}
+```
+
+✅ **Right**: Requiring the data no matter what
+
+```tsx
+import { useQuery } from '../gqty';
+
+export default function ExamplePage() {
+  const posts = useQuery().posts()?.nodes;
+
+  return (
+    <>
+      <h1>Posts</h1>
+
+      <ul>
+        {posts.map((post) => {
+          // Define the data selection outside the condition
+          const postTitle = post?.title;
+
+          if (post.id === 250) {
+            return <li key={post.id ?? 0}>{postTitle}</li>;
+          }
+        })}
+      </ul>
+    </>
+  );
+}
+```
+
+Alternatively, you could use the [`prepass` helper](/docs/react/fetching-data#prepare) to do a **prepass** of your data before rendering.

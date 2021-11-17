@@ -5,7 +5,14 @@ export function getRoutes(): IRoutes {
     _: {
       docs: {
         $name: 'Docs',
-        $routes: ['$intro', 'getting-started', '$react'],
+        $routes: [
+          '$intro',
+          'getting-started',
+          '$react',
+          '$client',
+          '$cli',
+          '$development',
+        ],
         _: {
           intro: {
             $name: 'Introduction',
@@ -21,6 +28,7 @@ export function getRoutes(): IRoutes {
               'suspense',
               'ssr',
               'meta',
+              'troubleshooting',
             ],
           },
           client: {
