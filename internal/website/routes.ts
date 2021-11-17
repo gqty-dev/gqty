@@ -10,7 +10,6 @@ export function getRoutes(): IRoutes {
           'getting-started',
           '$react',
           '$client',
-          'troubleshooting',
           '$cli',
           '$development',
         ],
@@ -29,6 +28,7 @@ export function getRoutes(): IRoutes {
               'suspense',
               'ssr',
               'meta',
+              'troubleshooting',
             ],
           },
           client: {
