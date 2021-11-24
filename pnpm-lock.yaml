@@ -385,7 +385,7 @@ importers:
       '@emotion/react': ^11.6.0
       '@emotion/styled': ^11.6.0
       '@guild-docs/client': ^1.3.0
-      '@guild-docs/server': ^2.1.3
+      '@guild-docs/server': ^2.1.4
       '@mdx-js/react': ^1.6.22
       '@next/bundle-analyzer': ^12.0.4
       '@theguild/components': ^1.8.1
@@ -421,7 +421,7 @@ importers:
       '@emotion/react': 11.6.0_bb8e79a4a12a744c3dc48cdef194d579
       '@emotion/styled': 11.6.0_46e9d276190d534487bb934311d09b96
       '@guild-docs/client': 1.3.0_447b7213fa29b96884f888f61b1a29e7
-      '@guild-docs/server': 2.1.3_9298ef26eeb206fcdfa0ee4070ff7bd2
+      '@guild-docs/server': 2.1.4_9298ef26eeb206fcdfa0ee4070ff7bd2
       '@mdx-js/react': 1.6.22_react@17.0.2
       '@theguild/components': 1.8.1_7b9575c821c02b9d2cc3879457797907
       csstype: 3.0.10
@@ -3201,8 +3201,8 @@ packages:
       - supports-color
     dev: false
 
-  /@guild-docs/server/2.1.3_9298ef26eeb206fcdfa0ee4070ff7bd2:
-    resolution: {integrity: sha512-8zj1hxwexZjQZjRSsl8F+o85+bHO3aj+RzPbt0OlxjAIbYALB2QRDxuz0LxQ7qtzaBfwzyH6EZ5Hepy4nRgvEg==}
+  /@guild-docs/server/2.1.4_9298ef26eeb206fcdfa0ee4070ff7bd2:
+    resolution: {integrity: sha512-OKYoiISL1MI4VwbicUylFmFLg1GkxakqPg+UjKChux25LZdECIu+3iEt5aY4ri8cMXC519f7TxbuWT1xfYKcoA==}
     peerDependencies:
       next: '>=11.1.2'
       next-i18next: '*'
@@ -3212,7 +3212,7 @@ packages:
       shiki: '*'
     dependencies:
       '@guild-docs/mdx-remote': 1.0.1_d9cf68e88ad607adb0b77ff0e9bef298
-      '@guild-docs/types': 1.0.3_052e77b75ec8a3136d2b1b6a2548a1b2
+      '@guild-docs/types': 1.1.0_052e77b75ec8a3136d2b1b6a2548a1b2
       github-slugger: 1.4.0
       globby: 11.0.4
       gray-matter: 4.0.3
@@ -3233,19 +3233,6 @@ packages:
       - '@types/react'
       - esbuild
       - supports-color
-    dev: false
-
-  /@guild-docs/types/1.0.3_052e77b75ec8a3136d2b1b6a2548a1b2:
-    resolution: {integrity: sha512-2YCRpfmLKfRYSxBD7dKQUNGKkCKC6zRzeq+X/aRtCmZKE3cUD3x9mz+SqEC/o0VaC5VVD2AZbur/mTB+xOeCdQ==}
-    peerDependencies:
-      '@chakra-ui/react': '*'
-      '@types/react': '*'
-      next-i18next: '*'
-    dependencies:
-      '@chakra-ui/react': 1.7.2_74f6d730d15dd8bbe3ea2c976d28451b
-      '@types/react': 17.0.36
-      next-i18next: 9.2.0_next@12.0.4+react@17.0.2
-      unified: 10.1.1
     dev: false
 
   /@guild-docs/types/1.1.0_052e77b75ec8a3136d2b1b6a2548a1b2:
