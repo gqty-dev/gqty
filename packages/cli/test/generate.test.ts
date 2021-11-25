@@ -43,6 +43,7 @@ test('basic functionality works', async () => {
     // This should be included
 
     export type Maybe<T> = T | null;
+    export type InputMaybe<T> = Maybe<T>;
     export type Exact<T extends { [key: string]: unknown }> = {
       [K in keyof T]: T[K];
     };
@@ -376,6 +377,7 @@ test('custom scalars works', async () => {
      */
 
     export type Maybe<T> = T | null;
+    export type InputMaybe<T> = Maybe<T>;
     export type Exact<T extends { [key: string]: unknown }> = {
       [K in keyof T]: T[K];
     };
@@ -573,6 +575,7 @@ describe('feature complete app', () => {
       import { SchemaUnionsKey } from 'gqty';
 
       export type Maybe<T> = T | null;
+      export type InputMaybe<T> = Maybe<T>;
       export type Exact<T extends { [key: string]: unknown }> = {
         [K in keyof T]: T[K];
       };
@@ -607,8 +610,8 @@ describe('feature complete app', () => {
       export interface GreetingsInput {
         /** Language */
         language: Scalars['String'];
-        scal?: Maybe<Scalars['ExampleScalar']>;
-        value?: Maybe<Scalars['String']>;
+        scal?: InputMaybe<Scalars['ExampleScalar']>;
+        value?: InputMaybe<Scalars['String']>;
       }
 
       export enum OtherEnum {
@@ -1093,6 +1096,7 @@ describe('mutation', () => {
        */
 
       export type Maybe<T> = T | null;
+      export type InputMaybe<T> = Maybe<T>;
       export type Exact<T extends { [key: string]: unknown }> = {
         [K in keyof T]: T[K];
       };
@@ -1228,6 +1232,7 @@ describe('subscription', () => {
        */
 
       export type Maybe<T> = T | null;
+      export type InputMaybe<T> = Maybe<T>;
       export type Exact<T extends { [key: string]: unknown }> = {
         [K in keyof T]: T[K];
       };
@@ -1547,6 +1552,7 @@ test('javascript output works', async () => {
     import { SchemaUnionsKey } from 'gqty';
 
     export type Maybe<T> = T | null;
+    export type InputMaybe<T> = Maybe<T>;
     export type Exact<T extends { [key: string]: unknown }> = {
       [K in keyof T]: T[K];
     };
@@ -1806,6 +1812,7 @@ test('ignoreArgs transform', async () => {
      */
 
     export type Maybe<T> = T | null;
+    export type InputMaybe<T> = Maybe<T>;
     export type Exact<T extends { [key: string]: unknown }> = {
       [K in keyof T]: T[K];
     };

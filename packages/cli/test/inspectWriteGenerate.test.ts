@@ -144,6 +144,7 @@ test('basic inspectWriteGenerate functionality', async () => {
        */
 
       export type Maybe<T> = T | null;
+      export type InputMaybe<T> = Maybe<T>;
       export type Exact<T extends { [key: string]: unknown }> = {
         [K in keyof T]: T[K];
       };
@@ -330,6 +331,7 @@ describe('from file', () => {
          */
 
         export type Maybe<T> = T | null;
+        export type InputMaybe<T> = Maybe<T>;
         export type Exact<T extends { [key: string]: unknown }> = {
           [K in keyof T]: T[K];
         };
@@ -521,6 +523,7 @@ describe('from file', () => {
          */
 
         export type Maybe<T> = T | null;
+        export type InputMaybe<T> = Maybe<T>;
         export type Exact<T extends { [key: string]: unknown }> = {
           [K in keyof T]: T[K];
         };
@@ -711,6 +714,7 @@ describe('from file', () => {
          */
 
         export type Maybe<T> = T | null;
+        export type InputMaybe<T> = Maybe<T>;
         export type Exact<T extends { [key: string]: unknown }> = {
           [K in keyof T]: T[K];
         };
@@ -937,6 +941,7 @@ test('specify generateOptions to inspectWriteGenerate', async () => {
       // This should be included
 
       export type Maybe<T> = T | null;
+      export type InputMaybe<T> = Maybe<T>;
       export type Exact<T extends { [key: string]: unknown }> = {
         [K in keyof T]: T[K];
       };
@@ -1074,6 +1079,7 @@ describe('inspect headers', () => {
         // This should be included
 
         export type Maybe<T> = T | null;
+        export type InputMaybe<T> = Maybe<T>;
         export type Exact<T extends { [key: string]: unknown }> = {
           [K in keyof T]: T[K];
         };
@@ -1290,6 +1296,7 @@ describe('CLI behavior', () => {
          */
 
         export type Maybe<T> = T | null;
+        export type InputMaybe<T> = Maybe<T>;
         export type Exact<T extends { [key: string]: unknown }> = {
           [K in keyof T]: T[K];
         };

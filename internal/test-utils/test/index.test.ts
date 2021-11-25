@@ -37,6 +37,7 @@ test('create test app with codegen', async () => {
     "import type { GraphQLResolveInfo } from 'graphql';
     import type { EZContext } from 'graphql-ez';
     export type Maybe<T> = T | null;
+    export type InputMaybe<T> = Maybe<T>;
     export type Exact<T extends { [key: string]: unknown }> = {
       [K in keyof T]: T[K];
     };
@@ -82,7 +83,7 @@ test('create test app with codegen', async () => {
       args: TArgs,
       context: TContext,
       info: GraphQLResolveInfo
-    ) => AsyncIterator<TResult> | Promise<AsyncIterator<TResult>>;
+    ) => AsyncIterable<TResult> | Promise<AsyncIterable<TResult>>;
 
     export type SubscriptionResolveFn<TResult, TParent, TContext, TArgs> = (
       parent: TParent,
@@ -291,39 +292,39 @@ test('gql', () => {
   `;
 
   expect(doc).toMatchInlineSnapshot(`
-Object {
-  "definitions": Array [
     Object {
-      "directives": Array [],
-      "kind": "OperationDefinition",
-      "name": undefined,
-      "operation": "query",
-      "selectionSet": Object {
-        "kind": "SelectionSet",
-        "selections": Array [
-          Object {
-            "alias": undefined,
-            "arguments": Array [],
-            "directives": Array [],
-            "kind": "Field",
-            "name": Object {
-              "kind": "Name",
-              "value": "hello",
-            },
-            "selectionSet": undefined,
+      "definitions": Array [
+        Object {
+          "directives": Array [],
+          "kind": "OperationDefinition",
+          "name": undefined,
+          "operation": "query",
+          "selectionSet": Object {
+            "kind": "SelectionSet",
+            "selections": Array [
+              Object {
+                "alias": undefined,
+                "arguments": Array [],
+                "directives": Array [],
+                "kind": "Field",
+                "name": Object {
+                  "kind": "Name",
+                  "value": "hello",
+                },
+                "selectionSet": undefined,
+              },
+            ],
           },
-        ],
+          "variableDefinitions": Array [],
+        },
+      ],
+      "kind": "Document",
+      "loc": Object {
+        "end": 33,
+        "start": 0,
       },
-      "variableDefinitions": Array [],
-    },
-  ],
-  "kind": "Document",
-  "loc": Object {
-    "end": 33,
-    "start": 0,
-  },
-}
-`);
+    }
+  `);
 
   const doc2 = gql`
     query {
@@ -332,37 +333,37 @@ Object {
   `;
 
   expect(doc2).toMatchInlineSnapshot(`
-Object {
-  "definitions": Array [
     Object {
-      "directives": Array [],
-      "kind": "OperationDefinition",
-      "name": undefined,
-      "operation": "query",
-      "selectionSet": Object {
-        "kind": "SelectionSet",
-        "selections": Array [
-          Object {
-            "alias": undefined,
-            "arguments": Array [],
-            "directives": Array [],
-            "kind": "Field",
-            "name": Object {
-              "kind": "Name",
-              "value": "helloworld",
-            },
-            "selectionSet": undefined,
+      "definitions": Array [
+        Object {
+          "directives": Array [],
+          "kind": "OperationDefinition",
+          "name": undefined,
+          "operation": "query",
+          "selectionSet": Object {
+            "kind": "SelectionSet",
+            "selections": Array [
+              Object {
+                "alias": undefined,
+                "arguments": Array [],
+                "directives": Array [],
+                "kind": "Field",
+                "name": Object {
+                  "kind": "Name",
+                  "value": "helloworld",
+                },
+                "selectionSet": undefined,
+              },
+            ],
           },
-        ],
+          "variableDefinitions": Array [],
+        },
+      ],
+      "kind": "Document",
+      "loc": Object {
+        "end": 38,
+        "start": 0,
       },
-      "variableDefinitions": Array [],
-    },
-  ],
-  "kind": "Document",
-  "loc": Object {
-    "end": 38,
-    "start": 0,
-  },
-}
-`);
+    }
+  `);
 });
