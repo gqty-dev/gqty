@@ -5,6 +5,7 @@
 import { SchemaUnionsKey } from 'gqty';
 
 export type Maybe<T> = T | null;
+export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = {
   [K in keyof T]: T[K];
 };
@@ -27,10 +28,10 @@ export interface Scalars {
 
 /** ConnectionArgs description! */
 export interface ConnectionArgs {
-  after?: Maybe<Scalars['String']>;
-  before?: Maybe<Scalars['String']>;
-  first?: Maybe<Scalars['Int']>;
-  last?: Maybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
+  before?: InputMaybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']>;
 }
 
 /** Dog Type */
@@ -43,7 +44,7 @@ export enum DogType {
 /** Input Type Example XD */
 export interface inputTypeExample {
   a: Scalars['String'];
-  other?: Maybe<Scalars['Int']>;
+  other?: InputMaybe<Scalars['Int']>;
 }
 
 export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {

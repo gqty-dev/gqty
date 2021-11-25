@@ -6,6 +6,7 @@ import type {
 import type { EZContext } from 'graphql-ez';
 import type { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/core';
 export type Maybe<T> = T | null;
+export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = {
   [K in keyof T]: T[K];
 };
@@ -49,8 +50,8 @@ export enum GreetingsEnum {
 
 export type GreetingsInput = {
   language: Scalars['String'];
-  value?: Maybe<Scalars['String']>;
-  scal?: Maybe<Scalars['ExampleScalar']>;
+  value?: InputMaybe<Scalars['String']>;
+  scal?: InputMaybe<Scalars['ExampleScalar']>;
 };
 
 export type Query = {
@@ -76,11 +77,11 @@ export type QueryStringWithArgsArgs = {
 
 export type QueryStringNullableWithArgsArgs = {
   hello: Scalars['String'];
-  helloTwo?: Maybe<Scalars['String']>;
+  helloTwo?: InputMaybe<Scalars['String']>;
 };
 
 export type QueryStringNullableWithArgsArrayArgs = {
-  hello: Array<Maybe<Scalars['String']>>;
+  hello: Array<InputMaybe<Scalars['String']>>;
 };
 
 export type QueryObjectWithArgsArgs = {
@@ -119,7 +120,7 @@ export type HumanFieldWithArgsArgs = {
 };
 
 export type HumanArgsArgs = {
-  a?: Maybe<Scalars['String']>;
+  a?: InputMaybe<Scalars['String']>;
 };
 
 export type Dog = NamedEntity & {
@@ -136,7 +137,7 @@ export type A = {
 };
 
 export type ACommonArgs = {
-  a?: Maybe<Scalars['String']>;
+  a?: InputMaybe<Scalars['String']>;
 };
 
 export type B = {
@@ -147,7 +148,7 @@ export type B = {
 };
 
 export type BCommonArgs = {
-  b?: Maybe<Scalars['Int']>;
+  b?: InputMaybe<Scalars['Int']>;
 };
 
 export type C = {
@@ -172,7 +173,7 @@ export type SubscriptionSubscribeFn<TResult, TParent, TContext, TArgs> = (
   args: TArgs,
   context: TContext,
   info: GraphQLResolveInfo
-) => AsyncIterator<TResult> | Promise<AsyncIterator<TResult>>;
+) => AsyncIterable<TResult> | Promise<AsyncIterable<TResult>>;
 
 export type SubscriptionResolveFn<TResult, TParent, TContext, TArgs> = (
   parent: TParent,

@@ -3,6 +3,7 @@
  */
 
 export type Maybe<T> = T | null;
+export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = {
   [K in keyof T]: T[K];
 };
@@ -30,10 +31,10 @@ export interface Scalars {
 }
 
 export interface CursorConnectionArgs {
-  after?: Maybe<Scalars['NonEmptyString']>;
-  before?: Maybe<Scalars['NonEmptyString']>;
-  first?: Maybe<Scalars['NonNegativeInt']>;
-  last?: Maybe<Scalars['NonNegativeInt']>;
+  after?: InputMaybe<Scalars['NonEmptyString']>;
+  before?: InputMaybe<Scalars['NonEmptyString']>;
+  first?: InputMaybe<Scalars['NonNegativeInt']>;
+  last?: InputMaybe<Scalars['NonNegativeInt']>;
 }
 
 export interface LoginInput {
@@ -41,15 +42,15 @@ export interface LoginInput {
 }
 
 export interface PostCreate {
-  category?: Maybe<Array<Scalars['String']>>;
+  category?: InputMaybe<Array<Scalars['String']>>;
   title: Scalars['NonEmptyString'];
 }
 
 export interface PostUpdate {
-  category?: Maybe<Array<Scalars['String']>>;
+  category?: InputMaybe<Array<Scalars['String']>>;
   id: Scalars['String'];
-  published?: Maybe<Scalars['Boolean']>;
-  title?: Maybe<Scalars['NonEmptyString']>;
+  published?: InputMaybe<Scalars['Boolean']>;
+  title?: InputMaybe<Scalars['NonEmptyString']>;
 }
 
 export interface RegisterInput {

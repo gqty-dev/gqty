@@ -5,6 +5,7 @@
 import { SchemaUnionsKey } from 'gqty';
 
 export type Maybe<T> = T | null;
+export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = {
   [K in keyof T]: T[K];
 };
@@ -32,8 +33,8 @@ export enum GreetingsEnum {
 
 export interface GreetingsInput {
   language: Scalars['String'];
-  scal?: Maybe<Scalars['ExampleScalar']>;
-  value?: Maybe<Scalars['String']>;
+  scal?: InputMaybe<Scalars['ExampleScalar']>;
+  value?: InputMaybe<Scalars['String']>;
 }
 
 export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
