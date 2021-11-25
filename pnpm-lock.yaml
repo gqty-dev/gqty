@@ -454,7 +454,7 @@ importers:
   packages/cli:
     specifiers:
       '@graphql-codegen/core': ^2.3.0
-      '@graphql-codegen/typescript': ^2.3.1
+      '@graphql-codegen/typescript': ^2.4.1
       '@graphql-tools/delegate': ^8.4.2
       '@graphql-tools/utils': ^8.5.3
       '@graphql-tools/wrap': ^8.3.2
@@ -483,7 +483,7 @@ importers:
       wait-on: ^6.0.0
     dependencies:
       '@graphql-codegen/core': 2.3.0_graphql@16.0.1
-      '@graphql-codegen/typescript': 2.3.1_graphql@16.0.1
+      '@graphql-codegen/typescript': 2.4.1_graphql@16.0.1
       '@graphql-tools/delegate': 8.4.2_graphql@16.0.1
       '@graphql-tools/utils': 8.5.3_graphql@16.0.1
       '@graphql-tools/wrap': 8.3.2_graphql@16.0.1
@@ -2768,10 +2768,45 @@ packages:
       - supports-color
     dev: false
 
+  /@graphql-codegen/typescript/2.4.1_graphql@16.0.1:
+    resolution: {integrity: sha512-1+dZ0Qar+jGISXTdm7nWpv7Agt5uRj3q2GtpTJ92aA/AEHh+MTharanYcExEbdqNQm7b859MusI+Jo1Hlqsfmw==}
+    peerDependencies:
+      graphql: ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
+    dependencies:
+      '@graphql-codegen/plugin-helpers': 2.3.1_graphql@16.0.1
+      '@graphql-codegen/schema-ast': 2.4.0_graphql@16.0.1
+      '@graphql-codegen/visitor-plugin-common': 2.5.1_graphql@16.0.1
+      auto-bind: 4.0.0
+      graphql: 16.0.1
+      tslib: 2.3.1
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
   /@graphql-codegen/visitor-plugin-common/2.5.0_graphql@16.0.1:
     resolution: {integrity: sha512-a1kJ/5YBivCj9X20YuhNU2mPY9xjUVmJO0VjHBu06PyvC27GsR1PmvgRALIXrb6QwV+9DDUda3ewKzgne2Qc+A==}
     peerDependencies:
       graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0
+    dependencies:
+      '@graphql-codegen/plugin-helpers': 2.3.1_graphql@16.0.1
+      '@graphql-tools/optimize': 1.1.1_graphql@16.0.1
+      '@graphql-tools/relay-operation-optimizer': 6.4.1_graphql@16.0.1
+      '@graphql-tools/utils': 8.5.3_graphql@16.0.1
+      auto-bind: 4.0.0
+      change-case-all: 1.0.14
+      dependency-graph: 0.11.0
+      graphql: 16.0.1
+      graphql-tag: 2.12.6_graphql@16.0.1
+      parse-filepath: 1.0.2
+      tslib: 2.3.1
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
+  /@graphql-codegen/visitor-plugin-common/2.5.1_graphql@16.0.1:
+    resolution: {integrity: sha512-hLnVB6u7qB1rIh9oJnGVWQmrUsXw3nEUMF+LGdf4b5qEWh5f9HSzciWMS6M47h4fSqpLyW4qgk2glH/DKwFgRA==}
+    peerDependencies:
+      graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
     dependencies:
       '@graphql-codegen/plugin-helpers': 2.3.1_graphql@16.0.1
       '@graphql-tools/optimize': 1.1.1_graphql@16.0.1
