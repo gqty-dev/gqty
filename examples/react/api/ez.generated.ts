@@ -5,6 +5,7 @@ import type {
 } from 'graphql';
 import type { EZContext } from 'graphql-ez';
 export type Maybe<T> = T | null;
+export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = {
   [K in keyof T]: T[K];
 };
@@ -57,7 +58,7 @@ export type Human = {
 
 /** Human Type */
 export type HumanFieldWithArgArgs = {
-  a?: Maybe<Scalars['String']>;
+  a?: InputMaybe<Scalars['String']>;
 };
 
 /** Query Type */
@@ -135,7 +136,7 @@ export type Subscription = {
 /** Input Type Example XD */
 export type InputTypeExample = {
   a: Scalars['String'];
-  other?: Maybe<Scalars['Int']>;
+  other?: InputMaybe<Scalars['Int']>;
 };
 
 /** Humans Connection */
@@ -156,10 +157,10 @@ export type PageInfo = {
 
 /** ConnectionArgs description! */
 export type ConnectionArgs = {
-  first?: Maybe<Scalars['Int']>;
-  after?: Maybe<Scalars['String']>;
-  last?: Maybe<Scalars['Int']>;
-  before?: Maybe<Scalars['String']>;
+  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']>;
+  last?: InputMaybe<Scalars['Int']>;
+  before?: InputMaybe<Scalars['String']>;
 };
 
 export type Species = Human | Dog;
@@ -185,7 +186,7 @@ export type SubscriptionSubscribeFn<TResult, TParent, TContext, TArgs> = (
   args: TArgs,
   context: TContext,
   info: GraphQLResolveInfo
-) => AsyncIterator<TResult> | Promise<AsyncIterator<TResult>>;
+) => AsyncIterable<TResult> | Promise<AsyncIterable<TResult>>;
 
 export type SubscriptionResolveFn<TResult, TParent, TContext, TArgs> = (
   parent: TParent,

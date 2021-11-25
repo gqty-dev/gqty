@@ -79,6 +79,7 @@ test('generates code and writes existing file', async () => {
       // This should be included
 
       export type Maybe<T> = T | null;
+      export type InputMaybe<T> = Maybe<T>;
       export type Exact<T extends { [key: string]: unknown }> = {
         [K in keyof T]: T[K];
       };
@@ -186,6 +187,7 @@ test('creates dir, generates code and writes new file', async () => {
       // This should be included
 
       export type Maybe<T> = T | null;
+      export type InputMaybe<T> = Maybe<T>;
       export type Exact<T extends { [key: string]: unknown }> = {
         [K in keyof T]: T[K];
       };
