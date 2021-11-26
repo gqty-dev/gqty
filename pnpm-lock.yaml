@@ -14,7 +14,7 @@ importers:
 
   .:
     specifiers:
-      '@changesets/assemble-release-plan': ^5.0.2
+      '@changesets/assemble-release-plan': ^5.0.3
       '@changesets/cli': ^2.18.1
       '@types/node': '>=16.11.6'
       bob-esbuild: ^3.1.1
@@ -41,7 +41,7 @@ importers:
       utf-8-validate: ^5.0.7
       wait-on: ^6.0.0
     devDependencies:
-      '@changesets/assemble-release-plan': 5.0.2
+      '@changesets/assemble-release-plan': 5.0.3
       '@changesets/cli': 2.18.1
       '@types/node': 16.11.10
       bob-esbuild: 3.1.1_esbuild@0.13.15+typescript@4.5.2
@@ -2339,17 +2339,6 @@ packages:
       semver: 5.7.1
     dev: true
 
-  /@changesets/assemble-release-plan/5.0.2:
-    resolution: {integrity: sha512-4Q7w0ZeeNCv6sxUywL2bc8D2id9nyq2SB0LK+WY6ocg9/m4b3giKcbcGYxczgFbJvdcgxowqXPPAyETI9RpqBg==}
-    dependencies:
-      '@babel/runtime': 7.16.3
-      '@changesets/errors': 0.1.4
-      '@changesets/get-dependents-graph': 1.2.3
-      '@changesets/types': 4.0.1
-      '@manypkg/get-packages': 1.1.3
-      semver: 5.7.1
-    dev: true
-
   /@changesets/assemble-release-plan/5.0.3:
     resolution: {integrity: sha512-GmGRn+8gSJgMAIJLtujtRjKlkQhtLnRaa5ygq5xAEUVxgB+Xrd2/TTl7Sw9KU1sF9FprhbvoxFsBICOu+gjX3w==}
     dependencies:
@@ -2413,16 +2402,6 @@ packages:
     resolution: {integrity: sha512-HAcqPF7snsUJ/QzkWoKfRfXushHTu+K5KZLJWPb34s4eCZShIf8BFO3fwq6KU8+G7L5KdtN2BzQAXOSXEyiY9Q==}
     dependencies:
       extendable-error: 0.1.7
-    dev: true
-
-  /@changesets/get-dependents-graph/1.2.3:
-    resolution: {integrity: sha512-+Fyf+L+4rck9au5zIZcIJX+8zBMGRdgZwD5DGGt37hP011R/46fahnpJ6imNB9cV+HTMNX/QMAFrkWqt1hy73A==}
-    dependencies:
-      '@changesets/types': 4.0.2
-      '@manypkg/get-packages': 1.1.3
-      chalk: 2.4.2
-      fs-extra: 7.0.1
-      semver: 5.7.1
     dev: true
 
   /@changesets/get-dependents-graph/1.2.4:
@@ -2496,10 +2475,6 @@ packages:
       chalk: 2.4.2
       fs-extra: 7.0.1
       p-filter: 2.1.0
-    dev: true
-
-  /@changesets/types/4.0.1:
-    resolution: {integrity: sha512-zVfv752D8K2tjyFmxU/vnntQ+dPu+9NupOSguA/2Zuym4tVxRh0ylArgKZ1bOAi2eXfGlZMxJU/kj7uCSI15RQ==}
     dev: true
 
   /@changesets/types/4.0.2:
