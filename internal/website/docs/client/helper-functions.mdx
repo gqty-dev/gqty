@@ -85,7 +85,8 @@ Given an object, pre-access the specified fields, and returns the object back.
 - It skips fields with arguments
 
 ```ts
-import { getFields, query, resolved } from 'gqty';
+import { getFields } from 'gqty';
+import { query, resolved } from '../gqty';
 
 const data = await resolved(() => {
   return getFields(query.user, 'name', 'email');
