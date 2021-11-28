@@ -101,7 +101,8 @@ const data = await resolved(() => {
 We also have a helper to work with arrays, and works the same way as `getFields`.
 
 ```ts
-import { getArrayFields, query, resolved } from 'gqty';
+import { getArrayFields } from 'gqty';
+import { query, resolved } from '../gqty';
 
 const data = await resolved(() => {
   return getArrayFields(query.allUsers, 'name', 'email');
