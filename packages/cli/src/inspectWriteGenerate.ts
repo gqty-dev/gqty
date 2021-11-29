@@ -1,5 +1,5 @@
 import fg from 'fast-glob';
-import { merge } from 'lodash';
+import merge from 'lodash.merge';
 import { existsSync } from 'fs';
 import { promises } from 'fs';
 import {
