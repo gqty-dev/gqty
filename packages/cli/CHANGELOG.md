@@ -1,5 +1,13 @@
 # @gqty/cli
 
+## 2.3.1
+
+### Patch Changes
+
+- 96ab370: Change export syntax to fix bundling issues, show a warning on existent generated clients with `export const {` syntax.
+
+  Closes #292
+
 ## 2.3.0
 
 ### Minor Changes
