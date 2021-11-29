@@ -5,9 +5,9 @@
   "license": "MIT",
   "author": "PabloSzx <pablosaez1995@gmail.com>",
   "scripts": {
-    "generate": "bob-tsm --cjs generate.ts",
-    "listen": "bob-tsm --cjs listen.ts",
     "dev": "bob-tsm --watch src listen.ts --cjs listen.ts",
+    "generate": "gqty generate",
+    "listen": "bob-tsm --cjs listen.ts",
     "test": "jest"
   },
   "dependencies": {

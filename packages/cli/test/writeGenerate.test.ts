@@ -302,17 +302,12 @@ test('creates dir, generates code and writes new file', async () => {
         queryFetcher,
       });
 
-      export const {
-        query,
-        mutation,
-        mutate,
-        subscription,
-        resolved,
-        refetch,
-        track,
-      } = client;
+      const { query, mutation, mutate, subscription, resolved, refetch, track } =
+        client;
 
-      export const {
+      export { query, mutation, mutate, subscription, resolved, refetch, track };
+
+      const {
         graphql,
         useQuery,
         usePaginatedQuery,
@@ -334,6 +329,20 @@ test('creates dir, generates code and writes new file', async () => {
           staleWhileRevalidate: false,
         },
       });
+
+      export {
+        graphql,
+        useQuery,
+        usePaginatedQuery,
+        useTransactionQuery,
+        useLazyQuery,
+        useRefetch,
+        useMutation,
+        useMetaState,
+        prepareReactRender,
+        useHydrateCache,
+        prepareQuery,
+      };
 
       export * from './schema.generated';
       "

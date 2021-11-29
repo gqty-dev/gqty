@@ -184,17 +184,12 @@ test('basic functionality works', async () => {
       subscriptionsClient,
     });
 
-    export const {
-      query,
-      mutation,
-      mutate,
-      subscription,
-      resolved,
-      refetch,
-      track,
-    } = client;
+    const { query, mutation, mutate, subscription, resolved, refetch, track } =
+      client;
 
-    export const {
+    export { query, mutation, mutate, subscription, resolved, refetch, track };
+
+    const {
       graphql,
       useQuery,
       usePaginatedQuery,
@@ -217,6 +212,21 @@ test('basic functionality works', async () => {
         staleWhileRevalidate: false,
       },
     });
+
+    export {
+      graphql,
+      useQuery,
+      usePaginatedQuery,
+      useTransactionQuery,
+      useLazyQuery,
+      useRefetch,
+      useMutation,
+      useMetaState,
+      prepareReactRender,
+      useHydrateCache,
+      prepareQuery,
+      useSubscription,
+    };
 
     export * from './schema.generated';
     "
@@ -334,17 +344,12 @@ test('custom scalars works', async () => {
       queryFetcher,
     });
 
-    export const {
-      query,
-      mutation,
-      mutate,
-      subscription,
-      resolved,
-      refetch,
-      track,
-    } = client;
+    const { query, mutation, mutate, subscription, resolved, refetch, track } =
+      client;
 
-    export const {
+    export { query, mutation, mutate, subscription, resolved, refetch, track };
+
+    const {
       graphql,
       useQuery,
       usePaginatedQuery,
@@ -366,6 +371,20 @@ test('custom scalars works', async () => {
         staleWhileRevalidate: false,
       },
     });
+
+    export {
+      graphql,
+      useQuery,
+      usePaginatedQuery,
+      useTransactionQuery,
+      useLazyQuery,
+      useRefetch,
+      useMutation,
+      useMetaState,
+      prepareReactRender,
+      useHydrateCache,
+      prepareQuery,
+    };
 
     export * from './schema.generated';
     "
@@ -1426,15 +1445,10 @@ test('javascript output works', async () => {
       subscriptionsClient,
     });
 
-    export const {
-      query,
-      mutation,
-      mutate,
-      subscription,
-      resolved,
-      refetch,
-      track,
-    } = client;
+    const { query, mutation, mutate, subscription, resolved, refetch, track } =
+      client;
+
+    export { query, mutation, mutate, subscription, resolved, refetch, track };
 
     /**
      * @type {import(\\"@gqty/react\\").ReactClient<import(\\"./schema.generated\\").GeneratedSchema>}
@@ -1450,7 +1464,7 @@ test('javascript output works', async () => {
       },
     });
 
-    export const {
+    const {
       graphql,
       useQuery,
       usePaginatedQuery,
@@ -1464,6 +1478,21 @@ test('javascript output works', async () => {
       prepareQuery,
       useSubscription,
     } = reactClient;
+
+    export {
+      graphql,
+      useQuery,
+      usePaginatedQuery,
+      useTransactionQuery,
+      useLazyQuery,
+      useRefetch,
+      useMutation,
+      useMetaState,
+      prepareReactRender,
+      useHydrateCache,
+      prepareQuery,
+      useSubscription,
+    };
 
     export * from './schema.generated';
     "
@@ -1728,17 +1757,12 @@ test('ignoreArgs transform', async () => {
       queryFetcher,
     });
 
-    export const {
-      query,
-      mutation,
-      mutate,
-      subscription,
-      resolved,
-      refetch,
-      track,
-    } = client;
+    const { query, mutation, mutate, subscription, resolved, refetch, track } =
+      client;
 
-    export const {
+    export { query, mutation, mutate, subscription, resolved, refetch, track };
+
+    const {
       graphql,
       useQuery,
       usePaginatedQuery,
@@ -1760,6 +1784,20 @@ test('ignoreArgs transform', async () => {
         staleWhileRevalidate: false,
       },
     });
+
+    export {
+      graphql,
+      useQuery,
+      usePaginatedQuery,
+      useTransactionQuery,
+      useLazyQuery,
+      useRefetch,
+      useMutation,
+      useMetaState,
+      prepareReactRender,
+      useHydrateCache,
+      prepareQuery,
+    };
 
     export * from './schema.generated';
     "
