@@ -1,4 +1,5 @@
 import fs from 'fs';
+import path from 'path/posix';
 import {
   BuildContextArgs,
   createTestApp,
@@ -858,6 +859,204 @@ describe('from file', () => {
       );
     } finally {
       tempDir.cleanup();
+    }
+  });
+});
+
+describe('from multiple files', () => {
+  test('generate from graphql schema file', async () => {
+    const tempFiles = await Promise.all([
+      tmp.file({ postfix: '.gql' }),
+      tmp.file({ postfix: '.gql' }),
+    ]);
+    const tempDir = await getTempDir();
+
+    try {
+      await fs.promises.writeFile(
+        tempFiles[0].path,
+        `type Query { foo: Int! }`
+      );
+      await fs.promises.writeFile(
+        tempFiles[1].path,
+        `extend type Query { bar: Int! }`
+      );
+
+      await inspectWriteGenerate({
+        endpoint: `${path.dirname(tempFiles[0].path)}/*.gql`,
+        destination: tempDir.clientPath,
+      });
+
+      const generatedFileContentClient = await readFile(tempDir.clientPath, {
+        encoding: 'utf-8',
+      });
+
+      const generatedFileContentSchema = await readFile(tempDir.schemaPath, {
+        encoding: 'utf-8',
+      });
+
+      expect(
+        generatedFileContentClient.replace(
+          new RegExp(endpoint, 'g'),
+          '/graphql'
+        )
+      ).toMatchInlineSnapshot(`
+        "/**
+         * GQTY: You can safely modify this file and Query Fetcher based on your needs
+         */
+
+        import { createReactClient } from '@gqty/react';
+
+        import type { QueryFetcher } from 'gqty';
+        import { createClient } from 'gqty';
+        import type {
+          GeneratedSchema,
+          SchemaObjectTypes,
+          SchemaObjectTypesNames,
+        } from './schema.generated';
+        import { generatedSchema, scalarsEnumsHash } from './schema.generated';
+
+        const queryFetcher: QueryFetcher = async function (query, variables) {
+          // Modify \\"/api/graphql\\" if needed
+          const response = await fetch('/api/graphql', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              query,
+              variables,
+            }),
+            mode: 'cors',
+          });
+
+          const json = await response.json();
+
+          return json;
+        };
+
+        export const client = createClient<
+          GeneratedSchema,
+          SchemaObjectTypesNames,
+          SchemaObjectTypes
+        >({
+          schema: generatedSchema,
+          scalarsEnumsHash,
+          queryFetcher,
+        });
+
+        export const {
+          query,
+          mutation,
+          mutate,
+          subscription,
+          resolved,
+          refetch,
+          track,
+        } = client;
+
+        export const {
+          graphql,
+          useQuery,
+          usePaginatedQuery,
+          useTransactionQuery,
+          useLazyQuery,
+          useRefetch,
+          useMutation,
+          useMetaState,
+          prepareReactRender,
+          useHydrateCache,
+          prepareQuery,
+        } = createReactClient<GeneratedSchema>(client, {
+          defaults: {
+            // Set this flag as \\"true\\" if your usage involves React Suspense
+            // Keep in mind that you can overwrite it in a per-hook basis
+            suspense: false,
+
+            // Set this flag based on your needs
+            staleWhileRevalidate: false,
+          },
+        });
+
+        export * from './schema.generated';
+        "
+      `);
+      expect(generatedFileContentSchema).toMatchInlineSnapshot(`
+        "/**
+         * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+         */
+
+        export type Maybe<T> = T | null;
+        export type InputMaybe<T> = Maybe<T>;
+        export type Exact<T extends { [key: string]: unknown }> = {
+          [K in keyof T]: T[K];
+        };
+        export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
+          [SubKey in K]?: Maybe<T[SubKey]>;
+        };
+        export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
+          [SubKey in K]: Maybe<T[SubKey]>;
+        };
+        /** All built-in and custom scalars, mapped to their actual values */
+        export interface Scalars {
+          ID: string;
+          String: string;
+          Boolean: boolean;
+          Int: number;
+          Float: number;
+        }
+
+        export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
+          Boolean: true,
+          Int: true,
+          String: true,
+        };
+        export const generatedSchema = {
+          mutation: {},
+          query: {
+            __typename: { __type: 'String!' },
+            bar: { __type: 'Int!' },
+            foo: { __type: 'Int!' },
+          },
+          subscription: {},
+        } as const;
+
+        export interface Mutation {
+          __typename?: 'Mutation';
+        }
+
+        export interface Query {
+          __typename?: 'Query';
+          bar: ScalarsEnums['Int'];
+          foo: ScalarsEnums['Int'];
+        }
+
+        export interface Subscription {
+          __typename?: 'Subscription';
+        }
+
+        export interface SchemaObjectTypes {
+          Mutation: Mutation;
+          Query: Query;
+          Subscription: Subscription;
+        }
+        export type SchemaObjectTypesNames = 'Mutation' | 'Query' | 'Subscription';
+
+        export interface GeneratedSchema {
+          query: Query;
+          mutation: Mutation;
+          subscription: Subscription;
+        }
+
+        export type MakeNullable<T> = {
+          [K in keyof T]: T[K] | undefined;
+        };
+
+        export interface ScalarsEnums extends MakeNullable<Scalars> {}
+        "
+      `);
+    } finally {
+      await Promise.all(tempFiles.map((f) => f.cleanup()));
+      await tempDir.cleanup();
     }
   });
 });

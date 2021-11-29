@@ -107,8 +107,8 @@ export async function inspectWriteGenerate({
   } else {
     defaultConfig.introspection.endpoint = DUMMY_ENDPOINT;
 
-    if (existsSync(endpoint)) {
-      const files = await fg(endpoint);
+    const files = await fg(endpoint);
+    if (files.length) {
       const fileContents = await Promise.all(
         files.map((file) =>
           promises.readFile(file, {
