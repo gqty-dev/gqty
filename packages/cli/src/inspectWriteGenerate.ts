@@ -1,3 +1,5 @@
+import fg from 'fast-glob';
+import { merge } from 'lodash';
 import { existsSync } from 'fs';
 import { promises } from 'fs';
 import {
@@ -106,15 +108,23 @@ export async function inspectWriteGenerate({
     defaultConfig.introspection.endpoint = DUMMY_ENDPOINT;
 
     if (existsSync(endpoint)) {
-      const file = await promises.readFile(endpoint, {
-        encoding: 'utf-8',
-      });
+      const files = await fg(endpoint);
+      const fileContents = await Promise.all(
+        files.map((file) =>
+          promises.readFile(file, {
+            encoding: 'utf-8',
+          })
+        )
+      );
 
       if (endpoint.endsWith('.json')) {
         const parsedFile:
           | IntrospectionQuery
           | { data?: IntrospectionQuery }
-          | undefined = JSON.parse(file);
+          | undefined = fileContents.reduce(
+          (acc, file) => merge(acc, JSON.parse(file)),
+          {}
+        );
 
         let dataField: IntrospectionQuery | undefined;
 
@@ -133,7 +143,7 @@ export async function inspectWriteGenerate({
 
         schema = buildClientSchema(dataField);
       } else {
-        schema = buildSchema(file);
+        schema = buildSchema(fileContents.join('\n'));
       }
     } else {
       throw Error(
