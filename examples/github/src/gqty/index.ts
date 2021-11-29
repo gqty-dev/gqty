@@ -51,7 +51,8 @@ export const client = createClient<
   queryFetcher,
 });
 
-export const { query, mutation, mutate, subscription, resolved, refetch } =
-  client;
+const { query, mutation, mutate, subscription, resolved, refetch } = client;
+
+export { query, mutation, mutate, subscription, resolved, refetch };
 
 export * from './schema.generated';

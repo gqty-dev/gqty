@@ -97,17 +97,12 @@ test('basic inspectWriteGenerate functionality', async () => {
         queryFetcher,
       });
 
-      export const {
-        query,
-        mutation,
-        mutate,
-        subscription,
-        resolved,
-        refetch,
-        track,
-      } = client;
+      const { query, mutation, mutate, subscription, resolved, refetch, track } =
+        client;
 
-      export const {
+      export { query, mutation, mutate, subscription, resolved, refetch, track };
+
+      const {
         graphql,
         useQuery,
         usePaginatedQuery,
@@ -129,6 +124,20 @@ test('basic inspectWriteGenerate functionality', async () => {
           staleWhileRevalidate: false,
         },
       });
+
+      export {
+        graphql,
+        useQuery,
+        usePaginatedQuery,
+        useTransactionQuery,
+        useLazyQuery,
+        useRefetch,
+        useMutation,
+        useMetaState,
+        prepareReactRender,
+        useHydrateCache,
+        prepareQuery,
+      };
 
       export * from './schema.generated';
       "
@@ -289,17 +298,12 @@ describe('from file', () => {
           queryFetcher,
         });
 
-        export const {
-          query,
-          mutation,
-          mutate,
-          subscription,
-          resolved,
-          refetch,
-          track,
-        } = client;
+        const { query, mutation, mutate, subscription, resolved, refetch, track } =
+          client;
 
-        export const {
+        export { query, mutation, mutate, subscription, resolved, refetch, track };
+
+        const {
           graphql,
           useQuery,
           usePaginatedQuery,
@@ -321,6 +325,20 @@ describe('from file', () => {
             staleWhileRevalidate: false,
           },
         });
+
+        export {
+          graphql,
+          useQuery,
+          usePaginatedQuery,
+          useTransactionQuery,
+          useLazyQuery,
+          useRefetch,
+          useMutation,
+          useMetaState,
+          prepareReactRender,
+          useHydrateCache,
+          prepareQuery,
+        };
 
         export * from './schema.generated';
         "
@@ -481,17 +499,12 @@ describe('from file', () => {
           queryFetcher,
         });
 
-        export const {
-          query,
-          mutation,
-          mutate,
-          subscription,
-          resolved,
-          refetch,
-          track,
-        } = client;
+        const { query, mutation, mutate, subscription, resolved, refetch, track } =
+          client;
 
-        export const {
+        export { query, mutation, mutate, subscription, resolved, refetch, track };
+
+        const {
           graphql,
           useQuery,
           usePaginatedQuery,
@@ -513,6 +526,20 @@ describe('from file', () => {
             staleWhileRevalidate: false,
           },
         });
+
+        export {
+          graphql,
+          useQuery,
+          usePaginatedQuery,
+          useTransactionQuery,
+          useLazyQuery,
+          useRefetch,
+          useMutation,
+          useMetaState,
+          prepareReactRender,
+          useHydrateCache,
+          prepareQuery,
+        };
 
         export * from './schema.generated';
         "
@@ -672,17 +699,12 @@ describe('from file', () => {
           queryFetcher,
         });
 
-        export const {
-          query,
-          mutation,
-          mutate,
-          subscription,
-          resolved,
-          refetch,
-          track,
-        } = client;
+        const { query, mutation, mutate, subscription, resolved, refetch, track } =
+          client;
 
-        export const {
+        export { query, mutation, mutate, subscription, resolved, refetch, track };
+
+        const {
           graphql,
           useQuery,
           usePaginatedQuery,
@@ -704,6 +726,20 @@ describe('from file', () => {
             staleWhileRevalidate: false,
           },
         });
+
+        export {
+          graphql,
+          useQuery,
+          usePaginatedQuery,
+          useTransactionQuery,
+          useLazyQuery,
+          useRefetch,
+          useMutation,
+          useMetaState,
+          prepareReactRender,
+          useHydrateCache,
+          prepareQuery,
+        };
 
         export * from './schema.generated';
         "
@@ -897,17 +933,12 @@ test('specify generateOptions to inspectWriteGenerate', async () => {
         queryFetcher,
       });
 
-      export const {
-        query,
-        mutation,
-        mutate,
-        subscription,
-        resolved,
-        refetch,
-        track,
-      } = client;
+      const { query, mutation, mutate, subscription, resolved, refetch, track } =
+        client;
 
-      export const {
+      export { query, mutation, mutate, subscription, resolved, refetch, track };
+
+      const {
         graphql,
         useQuery,
         usePaginatedQuery,
@@ -929,6 +960,20 @@ test('specify generateOptions to inspectWriteGenerate', async () => {
           staleWhileRevalidate: false,
         },
       });
+
+      export {
+        graphql,
+        useQuery,
+        usePaginatedQuery,
+        useTransactionQuery,
+        useLazyQuery,
+        useRefetch,
+        useMutation,
+        useMetaState,
+        prepareReactRender,
+        useHydrateCache,
+        prepareQuery,
+      };
 
       export * from './schema.generated';
       "
@@ -1249,17 +1294,12 @@ describe('CLI behavior', () => {
           queryFetcher,
         });
 
-        export const {
-          query,
-          mutation,
-          mutate,
-          subscription,
-          resolved,
-          refetch,
-          track,
-        } = client;
+        const { query, mutation, mutate, subscription, resolved, refetch, track } =
+          client;
 
-        export const {
+        export { query, mutation, mutate, subscription, resolved, refetch, track };
+
+        const {
           graphql,
           useQuery,
           usePaginatedQuery,
@@ -1281,6 +1321,20 @@ describe('CLI behavior', () => {
             staleWhileRevalidate: false,
           },
         });
+
+        export {
+          graphql,
+          useQuery,
+          usePaginatedQuery,
+          useTransactionQuery,
+          useLazyQuery,
+          useRefetch,
+          useMutation,
+          useMetaState,
+          prepareReactRender,
+          useHydrateCache,
+          prepareQuery,
+        };
 
         export * from './schema.generated';
         "

@@ -5,6 +5,7 @@
   "scripts": {
     "build": "next build",
     "dev": "concurrently -r \"next dev\" \"wait-on -s 1 http://localhost:3000 && open-cli http://localhost:3000\"",
+    "generate": "gqty generate",
     "start": "next start"
   },
   "dependencies": {

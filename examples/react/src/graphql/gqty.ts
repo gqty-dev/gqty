@@ -60,14 +60,9 @@ export const client = createClient<
   subscriptionsClient,
 });
 
-export const {
-  query,
-  mutation,
-  mutate,
-  subscription,
-  resolved,
-  refetch,
-  track,
-} = client;
+const { query, mutation, mutate, subscription, resolved, refetch, track } =
+  client;
+
+export { query, mutation, mutate, subscription, resolved, refetch, track };
 
 export * from './schema.generated';

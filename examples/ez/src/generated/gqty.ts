@@ -43,7 +43,8 @@ export const client = createClient<
   },
 });
 
-export const { query, mutation, mutate, subscription, resolved, refetch } =
-  client;
+const { query, mutation, mutate, subscription, resolved, refetch } = client;
+
+export { query, mutation, mutate, subscription, resolved, refetch };
 
 export * from './schema.generated';
