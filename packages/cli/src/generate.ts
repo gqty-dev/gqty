@@ -851,7 +851,7 @@ export const generatedSchema = {${generatedSchemaCodeString}};
         }
       });
 
-      export const {
+      const {
         graphql,
         useQuery,
         usePaginatedQuery,
@@ -863,11 +863,27 @@ export const generatedSchema = {${generatedSchemaCodeString}};
         prepareReactRender,
         useHydrateCache,
         prepareQuery,
-        ${subscriptions ? 'useSubscription,' : ''}    
+        ${subscriptions ? 'useSubscription,' : ''}
       } = reactClient;
+
+      export { 
+        graphql,
+        useQuery,
+        usePaginatedQuery,
+        useTransactionQuery,
+        useLazyQuery,
+        useRefetch,
+        useMutation,
+        useMetaState,
+        prepareReactRender,
+        useHydrateCache,
+        prepareQuery,
+        ${subscriptions ? 'useSubscription,' : ''}
+       }
       `.trim();
     } else {
-      reactClientCode = `export const {
+      reactClientCode = `
+      const {
         graphql,
         useQuery,
         usePaginatedQuery,
@@ -879,7 +895,7 @@ export const generatedSchema = {${generatedSchemaCodeString}};
         prepareReactRender,
         useHydrateCache,
         prepareQuery,
-        ${subscriptions ? 'useSubscription,' : ''}    
+        ${subscriptions ? 'useSubscription,' : ''}
       } = createReactClient<GeneratedSchema>(client, {
         defaults: {
           // Set this flag as "true" if your usage involves React Suspense
@@ -889,7 +905,23 @@ export const generatedSchema = {${generatedSchemaCodeString}};
           // Set this flag based on your needs
           staleWhileRevalidate: false
         }
-      });`;
+      });
+      
+      export { 
+        graphql,
+        useQuery,
+        usePaginatedQuery,
+        useTransactionQuery,
+        useLazyQuery,
+        useRefetch,
+        useMutation,
+        useMetaState,
+        prepareReactRender,
+        useHydrateCache,
+        prepareQuery,
+        ${subscriptions ? 'useSubscription,' : ''}
+       }
+      `;
     }
   }
 
@@ -953,7 +985,9 @@ export const generatedSchema = {${generatedSchemaCodeString}};
   }
   
 
-  export const { query, mutation, mutate, subscription, resolved, refetch, track } = client;
+  const { query, mutation, mutate, subscription, resolved, refetch, track } = client;
+
+  export { query, mutation, mutate, subscription, resolved, refetch, track };
 
   ${reactClientCode}
 
