@@ -1,11 +1,16 @@
-<script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue';
-import Error from './components/Error.vue';
-</script>
-
 <template>
-  <HelloWorld />
-  <Error />
+  <p>
+    <router-link to="/">Home</router-link>
+    <router-link to="/error">Error</router-link>
+  </p>
+  <Suspense>
+    <template #default>
+      <router-view />
+    </template>
+    <template #fallback>
+      <h1 style="background-color: red">Loading....</h1>
+    </template>
+  </Suspense>
 </template>
 
 <style>

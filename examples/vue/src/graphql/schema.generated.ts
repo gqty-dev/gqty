@@ -25,25 +25,25 @@ export interface Scalars {
   Upload: File;
 }
 
-/** Input Type Example XD */
-export interface inputTypeExample {
-  a: Scalars['String'];
-  other?: Maybe<Scalars['Int']>;
-}
-
 /** ConnectionArgs description! */
 export interface ConnectionArgs {
-  first?: Maybe<Scalars['Int']>;
   after?: Maybe<Scalars['String']>;
-  last?: Maybe<Scalars['Int']>;
   before?: Maybe<Scalars['String']>;
+  first?: Maybe<Scalars['Int']>;
+  last?: Maybe<Scalars['Int']>;
 }
 
 /** Dog Type */
 export enum DogType {
   Big = 'Big',
-  Small = 'Small',
   Other = 'Other',
+  Small = 'Small',
+}
+
+/** Input Type Example XD */
+export interface inputTypeExample {
+  a: Scalars['String'];
+  other?: Maybe<Scalars['Int']>;
 }
 
 export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
@@ -56,10 +56,10 @@ export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
 };
 export const generatedSchema = {
   ConnectionArgs: {
-    first: { __type: 'Int' },
     after: { __type: 'String' },
-    last: { __type: 'Int' },
     before: { __type: 'String' },
+    first: { __type: 'Int' },
+    last: { __type: 'Int' },
   },
   Dog: {
     __typename: { __type: 'String!' },
@@ -69,57 +69,57 @@ export const generatedSchema = {
   },
   Human: {
     __typename: { __type: 'String!' },
-    id: { __type: 'ID!' },
-    name: { __type: 'String!' },
     dogs: { __type: '[Dog!]' },
     fieldWithArg: { __type: 'Int', __args: { a: 'String' } },
+    id: { __type: 'ID!' },
+    name: { __type: 'String!' },
   },
   HumansConnection: {
     __typename: { __type: 'String!' },
-    pageInfo: { __type: 'PageInfo!' },
     nodes: { __type: '[Human!]!' },
+    pageInfo: { __type: 'PageInfo!' },
   },
   PageInfo: {
     __typename: { __type: 'String!' },
-    hasPreviousPage: { __type: 'Boolean!' },
-    hasNextPage: { __type: 'Boolean!' },
-    startCursor: { __type: 'String' },
     endCursor: { __type: 'String' },
+    hasNextPage: { __type: 'Boolean!' },
+    hasPreviousPage: { __type: 'Boolean!' },
+    startCursor: { __type: 'String' },
   },
   Species: { __typename: { __type: 'String!' }, $on: { __type: '$Species!' } },
   inputTypeExample: { a: { __type: 'String!' }, other: { __type: 'Int' } },
   mutation: {
     __typename: { __type: 'String!' },
+    createHuman: { __type: 'Human!', __args: { id: 'ID!', name: 'String!' } },
+    other: { __type: 'Int', __args: { arg: 'inputTypeExample!' } },
     renameDog: { __type: 'Dog', __args: { id: 'ID!', name: 'String!' } },
     renameHuman: { __type: 'Human', __args: { id: 'ID!', name: 'String!' } },
-    other: { __type: 'Int', __args: { arg: 'inputTypeExample!' } },
-    createHuman: { __type: 'Human!', __args: { id: 'ID!', name: 'String!' } },
     sendNotification: { __type: 'Boolean!', __args: { message: 'String!' } },
     uploadFile: { __type: 'String!', __args: { file: 'Upload!' } },
   },
   query: {
     __typename: { __type: 'String!' },
+    dogs: { __type: '[Dog!]!' },
+    emptyHumanArray: { __type: '[Human!]!' },
+    emptyScalarArray: { __type: '[Int!]!' },
     expectedError: { __type: 'Boolean!' },
     expectedNullableError: { __type: 'Boolean' },
-    thirdTry: { __type: 'Boolean!' },
-    dogs: { __type: '[Dog!]!' },
-    time: { __type: 'String!' },
-    stringList: { __type: '[String!]!' },
-    humans: { __type: '[Human!]!' },
     human1: { __type: 'Human!' },
     human1Other: { __type: 'Human!' },
+    humans: { __type: '[Human!]!' },
     paginatedHumans: {
       __type: 'HumansConnection!',
       __args: { input: 'ConnectionArgs!' },
     },
-    emptyScalarArray: { __type: '[Int!]!' },
-    emptyHumanArray: { __type: '[Human!]!' },
+    stringList: { __type: '[String!]!' },
+    thirdTry: { __type: 'Boolean!' },
+    time: { __type: 'String!' },
   },
   subscription: {
     __typename: { __type: 'String!' },
     newNotification: { __type: 'String!' },
   },
-  [SchemaUnionsKey]: { Species: ['Human', 'Dog'] },
+  [SchemaUnionsKey]: { Species: ['Dog', 'Human'] },
 } as const;
 
 /**
@@ -137,11 +137,6 @@ export interface Dog {
  */
 export interface Human {
   __typename?: 'Human';
-  id: ScalarsEnums['ID'];
-  /**
-   * Human Name
-   */
-  name: ScalarsEnums['String'];
   dogs?: Maybe<Array<Dog>>;
   /**
    * @deprecated No longer supported
@@ -152,6 +147,11 @@ export interface Human {
      */
     a?: Maybe<Scalars['String']>;
   }) => Maybe<ScalarsEnums['Int']>;
+  id: ScalarsEnums['ID'];
+  /**
+   * Human Name
+   */
+  name: ScalarsEnums['String'];
 }
 
 /**
@@ -159,8 +159,8 @@ export interface Human {
  */
 export interface HumansConnection {
   __typename?: 'HumansConnection';
-  pageInfo: PageInfo;
   nodes: Array<Human>;
+  pageInfo: PageInfo;
 }
 
 /**
@@ -168,14 +168,14 @@ export interface HumansConnection {
  */
 export interface PageInfo {
   __typename?: 'PageInfo';
-  hasPreviousPage: ScalarsEnums['Boolean'];
-  hasNextPage: ScalarsEnums['Boolean'];
-  startCursor?: Maybe<ScalarsEnums['String']>;
   endCursor?: Maybe<ScalarsEnums['String']>;
+  hasNextPage: ScalarsEnums['Boolean'];
+  hasPreviousPage: ScalarsEnums['Boolean'];
+  startCursor?: Maybe<ScalarsEnums['String']>;
 }
 
 export interface Species {
-  __typename?: 'Human' | 'Dog';
+  __typename?: 'Dog' | 'Human';
   $on: $Species;
 }
 
@@ -184,6 +184,8 @@ export interface Species {
  */
 export interface Mutation {
   __typename?: 'Mutation';
+  createHuman: (args: { id: Scalars['ID']; name: Scalars['String'] }) => Human;
+  other: (args: { arg: inputTypeExample }) => Maybe<ScalarsEnums['Int']>;
   renameDog: (args: {
     /**
      * Dog Id
@@ -195,8 +197,6 @@ export interface Mutation {
     id: Scalars['ID'];
     name: Scalars['String'];
   }) => Maybe<Human>;
-  other: (args: { arg: inputTypeExample }) => Maybe<ScalarsEnums['Int']>;
-  createHuman: (args: { id: Scalars['ID']; name: Scalars['String'] }) => Human;
   sendNotification: (args: {
     message: Scalars['String'];
   }) => ScalarsEnums['Boolean'];
@@ -208,26 +208,26 @@ export interface Mutation {
  */
 export interface Query {
   __typename?: 'Query';
+  dogs: Array<Dog>;
+  emptyHumanArray: Array<Human>;
+  emptyScalarArray: Array<ScalarsEnums['Int']>;
   /**
    * Expected Error!
    */
   expectedError: ScalarsEnums['Boolean'];
   expectedNullableError?: Maybe<ScalarsEnums['Boolean']>;
-  thirdTry: ScalarsEnums['Boolean'];
-  dogs: Array<Dog>;
-  time: ScalarsEnums['String'];
-  stringList: Array<ScalarsEnums['String']>;
-  humans: Array<Human>;
   human1: Human;
   human1Other: Human;
+  humans: Array<Human>;
   paginatedHumans: (args: {
     /**
      * Paginated Humans Input
      */
     input: ConnectionArgs;
   }) => HumansConnection;
-  emptyScalarArray: Array<ScalarsEnums['Int']>;
-  emptyHumanArray: Array<Human>;
+  stringList: Array<ScalarsEnums['String']>;
+  thirdTry: ScalarsEnums['Boolean'];
+  time: ScalarsEnums['String'];
 }
 
 export interface Subscription {
@@ -254,8 +254,8 @@ export type SchemaObjectTypesNames =
   | 'Subscription';
 
 export interface $Species {
-  Human?: Human;
   Dog?: Dog;
+  Human?: Human;
 }
 
 export interface GeneratedSchema {

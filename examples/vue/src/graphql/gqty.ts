@@ -41,7 +41,6 @@ export const client = createClient<
   schema: generatedSchema,
   scalarsEnumsHash,
   queryFetcher,
-  retry: false,
 });
 
 export const {

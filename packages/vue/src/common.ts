@@ -413,18 +413,14 @@ export function useInterceptSelections({
         hookSelections.value.has(selection)
       ) {
         fetchingPromise.value = new Promise<void>((resolve) => {
-          console.log('test1', promise);
-          promise
-            .then(({ error }) => {
-              console.log('test2');
-              fetchingPromise.value = null;
-              if (error && onError) onError(error);
-              Promise.resolve().then(() => {
-                triggerRef(query);
-              });
-              resolve();
-            })
-            .catch((err) => console.log('err1', err));
+          promise.then(({ error }) => {
+            fetchingPromise.value = null;
+            if (error && onError) onError(error);
+            Promise.resolve().then(() => {
+              triggerRef(query);
+            });
+            resolve();
+          });
         });
 
         if (updateOnFetchPromise) {
