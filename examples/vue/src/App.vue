@@ -1,16 +1,9 @@
 <template>
   <p>
-    <router-link to="/">Home</router-link>
+    <router-link to="/home">Home</router-link>
     <router-link to="/error">Error</router-link>
   </p>
-  <Suspense>
-    <template #default>
-      <router-view />
-    </template>
-    <template #fallback>
-      <h1 style="background-color: red">Loading....</h1>
-    </template>
-  </Suspense>
+  <router-view />
 </template>
 
 <style>

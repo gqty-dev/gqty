@@ -1,10 +1,15 @@
-import { createRouter, createWebHistory, Router } from 'vue-router';
+import {
+  createRouter,
+  createWebHistory,
+  Router,
+  RouteRecordRaw,
+} from 'vue-router';
 
 import Home from './components/Home.vue';
 import Error from './components/Error.vue';
 
-const routes = [
-  { path: '/', component: Home },
+const routes: Array<RouteRecordRaw> = [
+  { path: '/home', component: Home },
   { path: '/error', component: Error },
 ];
 

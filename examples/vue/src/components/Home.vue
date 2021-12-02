@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useQuery } from '../graphql/gqty';
-const { query } = await useQuery();
+const { query } = useQuery();
 </script>
 
 <template>
