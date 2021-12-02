@@ -1,12 +1,14 @@
 <script setup lang="ts">
+import Dog from './Dog.vue';
 import { useQuery } from '../graphql/gqty';
 const { query } = useQuery();
 </script>
 
 <template>
-  <div v-for="dog in query.dogs" :key="dog.id">
-    {{ dog.id }}
-    {{ dog.name }}
-    {{ 'Owner: ' + (dog.owner?.name ?? 'No owner 😔') }}
-  </div>
+  <Dog
+    v-for="dog in query.dogs"
+    :key="dog.id"
+    v-model:name="dog.name"
+    v-model:owner="dog.owner"
+  />
 </template>

@@ -335,6 +335,7 @@ importers:
       '@types/graphql-upload': ^8.0.7
       '@types/node': '>=16.11.6'
       '@vitejs/plugin-vue': ^1.9.3
+      '@vueuse/core': ^7.1.2
       bob-tsm: ^0.3.6
       faker: ^5.5.3
       fastify: ^3.24.1
@@ -361,6 +362,7 @@ importers:
       '@graphql-ez/plugin-schema': 0.8.1_e880e4101643724969f20d3a5fc9a776
       '@graphql-ez/plugin-upload': 0.6.2_e4eceb8266581efb4f19d500c3c29184
       '@graphql-ez/plugin-websockets': 0.10.2_83310b1d7d4028a9d310e57ea51004e9
+      '@vueuse/core': 7.1.2_vue@3.2.20
       faker: 5.5.3
       fastify: 3.24.1
       gqty: link:../../packages/gqty
@@ -5054,6 +5056,37 @@ packages:
     dependencies:
       vue: 3.2.20
     dev: true
+
+  /@vueuse/core/7.1.2_vue@3.2.20:
+    resolution: {integrity: sha512-SLoOPfhZdNRNUkZfx+wrHj6WycWdSw2RmNS8E4ngQ2kmBoJjRarGy51/GkGdjqHQqmhuwuFoNO2WaU0yBn3ffg==}
+    peerDependencies:
+      '@vue/composition-api': ^1.1.0
+      vue: ^2.6.0 || ^3.2.0
+    peerDependenciesMeta:
+      '@vue/composition-api':
+        optional: true
+      vue:
+        optional: true
+    dependencies:
+      '@vueuse/shared': 7.1.2_vue@3.2.20
+      vue: 3.2.20
+      vue-demi: 0.11.4_vue@3.2.20
+    dev: false
+
+  /@vueuse/shared/7.1.2_vue@3.2.20:
+    resolution: {integrity: sha512-AjYh4y9S5FMOoHDsysqcXY/1mpqNTrnWUD50yaaiyf+5kGWQVIpAkkjKZlYSC/NHKxxCRn0cLR4nWMzceUWewQ==}
+    peerDependencies:
+      '@vue/composition-api': ^1.1.0
+      vue: ^2.6.0 || ^3.2.0
+    peerDependenciesMeta:
+      '@vue/composition-api':
+        optional: true
+      vue:
+        optional: true
+    dependencies:
+      vue: 3.2.20
+      vue-demi: 0.11.4_vue@3.2.20
+    dev: false
 
   /@webassemblyjs/ast/1.11.1:
     resolution: {integrity: sha512-ukBh14qFLjxTQNTXocdyksN5QdM28S1CxHt2rdskFyL+xFV7VremuBLVbmCePj+URalXBENx/9Lm7lnhihtCSw==}
