@@ -8,6 +8,7 @@ import {
   IntrospectionQuery,
 } from 'graphql';
 import { resolve } from 'path';
+import path from 'path/posix';
 
 import { defaultConfig, DUMMY_ENDPOINT, gqtyConfigPromise } from './config';
 
@@ -108,6 +109,19 @@ export async function inspectWriteGenerate({
 
     const files = await fg(endpoint);
     if (files.length) {
+      const allowedExtensions = ['.gql', '.graphql'];
+      const hasInvalidFiles = files.find((file) =>
+        allowedExtensions.includes(path.extname(file))
+      );
+
+      if (hasInvalidFiles) {
+        throw Error(
+          `Invalid glob, expected only ".gql" or ".graphql" but got ${path.extname(
+            hasInvalidFiles
+          )}`
+        );
+      }
+
       const fileContents = await Promise.all(
         files.map((file) =>
           promises.readFile(file, {
@@ -116,37 +130,7 @@ export async function inspectWriteGenerate({
         )
       );
 
-      if (endpoint.endsWith('.json')) {
-        const parsedFile:
-          | IntrospectionQuery
-          | { data?: IntrospectionQuery }
-          | undefined = fileContents.reduce(
-          (acc, file) => ({
-            ...acc,
-            ...JSON.parse(file),
-          }),
-          {}
-        );
-
-        let dataField: IntrospectionQuery | undefined;
-
-        if (typeof parsedFile === 'object') {
-          if ('data' in parsedFile && parsedFile.data) {
-            dataField = parsedFile.data;
-          } else if ('__schema' in parsedFile) {
-            dataField = parsedFile;
-          }
-        }
-
-        if (!(typeof dataField === 'object'))
-          throw Error(
-            'Invalid JSON introspection result, expected "__schema" or "data.__schema" field.'
-          );
-
-        schema = buildClientSchema(dataField);
-      } else {
-        schema = buildSchema(fileContents.join('\n'));
-      }
+      schema = buildSchema(fileContents.join('\n'));
     } else {
       throw Error(
         `File "${endpoint}" doesn't exists. If you meant to inspect a GraphQL API, make sure to put http:// or https:// in front of it.`
