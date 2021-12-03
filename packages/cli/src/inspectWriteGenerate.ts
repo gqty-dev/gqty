@@ -1,5 +1,4 @@
 import fg from 'fast-glob';
-import merge from 'lodash.merge';
 import { existsSync } from 'fs';
 import { promises } from 'fs';
 import {
@@ -122,7 +121,10 @@ export async function inspectWriteGenerate({
           | IntrospectionQuery
           | { data?: IntrospectionQuery }
           | undefined = fileContents.reduce(
-          (acc, file) => merge(acc, JSON.parse(file)),
+          (acc, file) => ({
+            ...acc,
+            ...JSON.parse(file),
+          }),
           {}
         );
 
