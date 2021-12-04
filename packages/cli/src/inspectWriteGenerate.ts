@@ -1,4 +1,5 @@
 import fg from 'fast-glob';
+import { extname } from 'path';
 import { existsSync } from 'fs';
 import { promises } from 'fs';
 import {
@@ -8,7 +9,6 @@ import {
   IntrospectionQuery,
 } from 'graphql';
 import { resolve } from 'path';
-import path from 'path/posix';
 
 import { defaultConfig, DUMMY_ENDPOINT, gqtyConfigPromise } from './config';
 
@@ -109,16 +109,30 @@ export async function inspectWriteGenerate({
 
     const files = await fg(endpoint);
     if (files.length) {
-      const allowedExtensions = ['.gql', '.graphql'];
-      const hasInvalidFiles = files.find((file) =>
-        allowedExtensions.includes(path.extname(file))
+      const gqlextensions = ['.graphql', '.gql'];
+      const jsonFiles = files.filter((file) => extname(file) === '.json');
+      const gqlFiles = files.filter((file) =>
+        gqlextensions.includes(extname(file))
       );
 
-      if (hasInvalidFiles) {
+      // has invalid files (no graphql or json)
+      if (files.length > jsonFiles.length + gqlFiles.length) {
         throw Error(
-          `Invalid glob, expected only ".gql" or ".graphql" but got ${path.extname(
-            hasInvalidFiles
-          )}`
+          `Received invalid files. Type generation can only use .gql, .graphql or .json files`
+        );
+      }
+
+      // check for mixed input
+      if (jsonFiles.length && gqlFiles.length) {
+        throw Error(
+          `Received mixed file inputs. Can not combine JSON and GQL files`
+        );
+      }
+
+      // check for multiple JSON files
+      if (jsonFiles.length && jsonFiles.length > 1) {
+        throw Error(
+          `Received multiple JSON introspection files, shoud only be one`
         );
       }
 
@@ -130,7 +144,37 @@ export async function inspectWriteGenerate({
         )
       );
 
-      schema = buildSchema(fileContents.join('\n'));
+      if (extname(files[0]) === '.json') {
+        const parsedFile:
+          | IntrospectionQuery
+          | { data?: IntrospectionQuery }
+          | undefined = fileContents.reduce(
+          (acc, file) => ({
+            ...acc,
+            ...JSON.parse(file),
+          }),
+          {}
+        );
+
+        let dataField: IntrospectionQuery | undefined;
+
+        if (typeof parsedFile === 'object') {
+          if ('data' in parsedFile && parsedFile.data) {
+            dataField = parsedFile.data;
+          } else if ('__schema' in parsedFile) {
+            dataField = parsedFile;
+          }
+        }
+
+        if (!(typeof dataField === 'object'))
+          throw Error(
+            'Invalid JSON introspection result, expected "__schema" or "data.__schema" field.'
+          );
+
+        schema = buildClientSchema(dataField);
+      } else {
+        schema = buildSchema(fileContents.join('\n'));
+      }
     } else {
       throw Error(
         `File "${endpoint}" doesn't exists. If you meant to inspect a GraphQL API, make sure to put http:// or https:// in front of it.`
