@@ -148,13 +148,7 @@ export async function inspectWriteGenerate({
         const parsedFile:
           | IntrospectionQuery
           | { data?: IntrospectionQuery }
-          | undefined = fileContents.reduce(
-          (acc, file) => ({
-            ...acc,
-            ...JSON.parse(file),
-          }),
-          {}
-        );
+          | undefined = JSON.parse(fileContents[0]);
 
         let dataField: IntrospectionQuery | undefined;
 
