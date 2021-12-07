@@ -386,7 +386,7 @@ importers:
       '@emotion/react': ^11.7.0
       '@emotion/styled': ^11.6.0
       '@guild-docs/client': ^1.3.3
-      '@guild-docs/server': ^2.1.4
+      '@guild-docs/server': ^2.1.5
       '@mdx-js/react': ^1.6.22
       '@next/bundle-analyzer': ^12.0.7
       '@theguild/components': ^1.8.2
@@ -422,7 +422,7 @@ importers:
       '@emotion/react': 11.7.0_cfedea9b3ed0faf0dded75c187406c5e
       '@emotion/styled': 11.6.0_49e498e16442da1a9ae75db6f4430d97
       '@guild-docs/client': 1.3.3_bc1dc053398c957e814cbef124341d0f
-      '@guild-docs/server': 2.1.4_f337e23fee13c698c9edd4c5851cd9c2
+      '@guild-docs/server': 2.1.5_f337e23fee13c698c9edd4c5851cd9c2
       '@mdx-js/react': 1.6.22_react@17.0.2
       '@theguild/components': 1.8.2_1d190dffb61b82436c130c893adcc11b
       csstype: 3.0.10
@@ -3176,26 +3176,6 @@ packages:
       - supports-color
     dev: false
 
-  /@guild-docs/mdx-remote/1.0.1_44c3c931e4c9f363a0474e2b727478f8:
-    resolution: {integrity: sha512-x5AMrnbGRRbTsju3FEyi6jzLDHwFhoAzef3fTNVFU442XDkB5JMwi7yA5Q52yaFur+l6LFYjkeT2hHfjSZn5EA==}
-    peerDependencies:
-      esbuild: '*'
-      react: '*'
-    dependencies:
-      '@guild-docs/types': 1.1.0_8e85e12856ce888fa29f9d1419c66f78
-      '@mdx-js/mdx': 1.6.22
-      '@mdx-js/react': 1.6.22_react@17.0.2
-      esbuild: 0.14.0
-      react: 17.0.2
-      unified: 10.1.1
-      unist-util-remove: 3.1.0
-    transitivePeerDependencies:
-      - '@chakra-ui/react'
-      - '@types/react'
-      - next-i18next
-      - supports-color
-    dev: false
-
   /@guild-docs/mdx-remote/1.0.2_44c3c931e4c9f363a0474e2b727478f8:
     resolution: {integrity: sha512-1wQBiZwm8o2AS2fW8cGh5Kwvl371PFt+tnvzB5umO3zV5eVdKtbdYe0ukMLcPxy9He5YOnAyceQ/hGaSjbIyww==}
     peerDependencies:
@@ -3216,17 +3196,17 @@ packages:
       - supports-color
     dev: false
 
-  /@guild-docs/server/2.1.4_f337e23fee13c698c9edd4c5851cd9c2:
-    resolution: {integrity: sha512-OKYoiISL1MI4VwbicUylFmFLg1GkxakqPg+UjKChux25LZdECIu+3iEt5aY4ri8cMXC519f7TxbuWT1xfYKcoA==}
+  /@guild-docs/server/2.1.5_f337e23fee13c698c9edd4c5851cd9c2:
+    resolution: {integrity: sha512-weiowwsXOzd2GGr+7hIiNGOHPW1KSjJzidQeA46BEK/KpQT2NUCXSBDzHHIUiFYzcupGHZsCa3iAvd6sCGzkJQ==}
     peerDependencies:
-      next: '>=11.1.2'
+      next: '>=11.1.3'
       next-i18next: '*'
       react: '*'
       react-dom: '*'
       remark-admonitions: '*'
       shiki: '*'
     dependencies:
-      '@guild-docs/mdx-remote': 1.0.1_44c3c931e4c9f363a0474e2b727478f8
+      '@guild-docs/mdx-remote': 1.0.2_44c3c931e4c9f363a0474e2b727478f8
       '@guild-docs/types': 1.1.0_8e85e12856ce888fa29f9d1419c66f78
       github-slugger: 1.4.0
       globby: 11.0.4
