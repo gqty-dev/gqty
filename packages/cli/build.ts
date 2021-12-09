@@ -3,13 +3,11 @@ import { writePackageJson } from 'bob-esbuild/config/packageJson';
 import { buildCode } from 'bob-ts';
 import { build } from 'esbuild';
 import { promises } from 'fs';
+import rimraf from 'rimraf';
 import pkg from './package.json';
 
 async function main() {
-  await promises.rm('dist', {
-    recursive: true,
-    force: true,
-  });
+  await new Promise((resolve) => rimraf('dist', resolve));
 
   const tscPromise = Promise.allSettled([buildTsc()]).then((v) => v[0]);
 
