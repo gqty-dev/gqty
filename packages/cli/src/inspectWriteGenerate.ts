@@ -7,6 +7,8 @@ import {
   IntrospectionQuery,
 } from 'graphql';
 import { resolve } from 'path';
+import { getRemoteSchema } from './introspection';
+import { writeGenerate } from './writeGenerate';
 
 import { defaultConfig, DUMMY_ENDPOINT, gqtyConfigPromise } from './config';
 
@@ -97,9 +99,7 @@ export async function inspectWriteGenerate({
   defaultConfig.introspection.headers = headers || {};
 
   if (endpoint.startsWith('http://') || endpoint.startsWith('https://')) {
-    schema = await (
-      await import('./introspection')
-    ).getRemoteSchema(endpoint, {
+    schema = await getRemoteSchema(endpoint, {
       headers,
     });
   } else {
@@ -142,9 +142,7 @@ export async function inspectWriteGenerate({
     }
   }
 
-  const generatedPath = await (
-    await import('./writeGenerate')
-  ).writeGenerate(
+  const generatedPath = await writeGenerate(
     schema,
     destination,
     genOptions,

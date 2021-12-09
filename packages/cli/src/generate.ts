@@ -1,6 +1,3 @@
-import { codegen } from '@graphql-codegen/core';
-import * as typescriptPlugin from '@graphql-codegen/typescript';
-import { printSchemaWithDirectives } from '@graphql-tools/utils';
 import {
   parseSchemaType,
   ScalarsEnumsHash,
@@ -27,8 +24,13 @@ import {
   lexicographicSortSchema,
   parse,
 } from 'graphql';
-import sortBy from 'lodash/sortBy.js';
 import { defaultConfig, gqtyConfigPromise } from './config';
+import {
+  codegen,
+  printSchemaWithDirectives,
+  sortBy,
+  typescriptPlugin,
+} from './deps.js';
 import { formatPrettier } from './prettier';
 
 export interface GenerateOptions {

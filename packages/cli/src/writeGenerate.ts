@@ -1,9 +1,8 @@
 import { existsSync, promises } from 'fs';
 import type { GraphQLSchema } from 'graphql';
-import mkdirp from 'mkdirp';
 import { dirname, resolve } from 'path';
 import { defaultConfig, gqtyConfigPromise } from './config';
-
+import { mkdirp } from './deps.js';
 import { generate, GenerateOptions, TransformSchemaOptions } from './generate';
 
 export type OnExistingFileConflict =

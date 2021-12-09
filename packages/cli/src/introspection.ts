@@ -1,11 +1,10 @@
-import { fetch } from 'cross-fetch';
+import { nodeFetch, introspectSchema, wrapSchema } from './deps.js';
 import { print } from 'graphql';
-
-import { introspectSchema, wrapSchema } from '@graphql-tools/wrap';
 
 import { gqtyConfigPromise, defaultConfig } from './config';
 
 import type { AsyncExecutor } from '@graphql-tools/utils';
+
 export interface IntrospectionOptions {
   /**
    * Endpoint of the remote GraphQL API or schema file
@@ -34,7 +33,7 @@ export const getRemoteSchema = async (
       (await gqtyConfigPromise).config.introspection?.headers ||
       defaultConfig.introspection.headers;
     const query = print(document);
-    const fetchResult = await fetch(endpoint, {
+    const fetchResult = await nodeFetch(endpoint, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -42,7 +41,7 @@ export const getRemoteSchema = async (
       },
       body: JSON.stringify({ query, variables }),
     });
-    return fetchResult.json();
+    return fetchResult.json() as any;
   };
 
   const schema = wrapSchema({
