@@ -1,5 +1,5 @@
-import { program } from 'commander';
 import { defaultConfig } from './config';
+import { program } from './deps.js';
 import { __innerState } from './innerState';
 import { inspectWriteGenerate } from './inspectWriteGenerate';
 

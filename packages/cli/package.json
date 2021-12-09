@@ -14,6 +14,7 @@
       "require": "./dist/index.js",
       "import": "./dist/index.mjs"
     },
+    "./deps": "./dist/deps.js",
     "./*": {
       "require": "./dist/*.js",
       "import": "./dist/*.mjs"
@@ -31,40 +32,38 @@
   ],
   "scripts": {
     "analyze": "size-limit --why",
-    "build": "bob-esbuild build",
-    "dev": "bob-esbuild watch",
-    "prepare": "bob-esbuild build",
+    "build": "bob-tsm build.ts",
+    "prepare": "bob-tsm build.ts",
     "postpublish": "gh-release",
-    "size": "size-limit",
-    "start": "bob-esbuild watch",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:watch-coverage": "rimraf coverage && mkdirp coverage/lcov-report && concurrently --raw \"jest --watchAll\" \"serve -l 8787 coverage/lcov-report\" \"wait-on tcp:8787 coverage/lcov-report/index.html && open-cli http://localhost:8787\""
   },
   "dependencies": {
+    "gqty": "workspace:^2.1.0"
+  },
+  "devDependencies": {
     "@graphql-codegen/core": "^2.3.0",
     "@graphql-codegen/typescript": "^2.4.1",
     "@graphql-tools/delegate": "^8.4.3",
     "@graphql-tools/utils": "^8.5.4",
     "@graphql-tools/wrap": "^8.3.2",
-    "commander": "^8.3.0",
-    "cosmiconfig": "^7.0.1",
-    "cross-fetch": "^3.1.4",
-    "fast-glob": "^3.2.7",
-    "gqty": "workspace:^2.1.0",
-    "lodash": "^4.17.21",
-    "mkdirp": "^1.0.4",
-    "prettier": "^2.5.1"
-  },
-  "devDependencies": {
     "@size-limit/preset-small-lib": "^7.0.3",
     "@types/lodash": "^4.14.178",
     "@types/lodash.sortby": "^4.7.6",
     "@types/mkdirp": "^1.0.2",
-    "bob-esbuild-cli": "^3.0.1",
+    "bob-ts": "^1.2.2",
+    "bob-tsm": "^0.3.6",
     "changesets-github-release": "^0.0.4",
+    "commander": "^8.3.0",
+    "cosmiconfig": "^7.0.1",
+    "fast-glob": "^3.2.7",
     "graphql": "^16.1.0",
+    "lodash": "^4.17.21",
+    "mkdirp": "^1.0.4",
+    "node-fetch": "^3.1.0",
     "open-cli": "^7.0.1",
+    "prettier": "^2.5.1",
     "rimraf": "^3.0.2",
     "serve": "^13.0.2",
     "size-limit": "^7.0.4",
@@ -88,23 +87,6 @@
   "publishConfig": {
     "directory": "dist"
   },
-  "buildConfig": {
-    "bin": {
-      "gqty": {
-        "input": "src/bin.ts"
-      }
-    }
-  },
-  "size-limit": [
-    {
-      "path": "dist/gqty-cli.cjs.production.min.js",
-      "limit": "10 KB"
-    },
-    {
-      "path": "dist/gqty-cli.esm.js",
-      "limit": "10 KB"
-    }
-  ],
   "typesVersions": {
     "*": {
       "dist/index.d.ts": [

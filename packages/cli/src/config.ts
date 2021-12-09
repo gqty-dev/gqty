@@ -1,10 +1,12 @@
-import { cosmiconfig, Loader } from 'cosmiconfig';
 import { promises } from 'fs';
 import { createRequire } from 'module';
 import { resolve } from 'path';
+import { cosmiconfig } from './deps.js';
+import type { Loader } from './deps';
 import type { GenerateOptions } from './generate';
 import { __innerState } from './innerState';
 import type { IntrospectionOptions } from './introspection';
+import { formatPrettier } from './prettier';
 
 const cjsRequire = globalThis.require || createRequire(import.meta.url);
 
@@ -225,7 +227,7 @@ export const gqtyConfigPromise: Promise<{
         NODE_ENV !== 'production' &&
         __innerState.isCLI
       ) {
-        const { format } = (await import('./prettier')).formatPrettier({
+        const { format } = formatPrettier({
           parser: 'typescript',
         });
 
