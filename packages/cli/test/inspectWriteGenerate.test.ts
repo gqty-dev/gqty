@@ -1,5 +1,5 @@
 import fs from 'fs';
-import path from 'path/posix';
+import path from 'path';
 import {
   BuildContextArgs,
   createTestApp,
