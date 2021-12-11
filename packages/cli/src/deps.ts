@@ -17,3 +17,5 @@ export { introspectSchema, wrapSchema } from '@graphql-tools/wrap';
 export { default as prettier, Options as PrettierOptions } from 'prettier';
 
 export { default as mkdirp } from 'mkdirp';
+
+export { default as fg } from 'fast-glob';

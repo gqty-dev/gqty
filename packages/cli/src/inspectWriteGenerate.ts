@@ -1,20 +1,16 @@
-import fg from 'fast-glob';
-import { extname } from 'path';
-import { existsSync } from 'fs';
-import { promises } from 'fs';
+import { existsSync, promises } from 'fs';
 import {
   buildClientSchema,
   buildSchema,
   GraphQLSchema,
   IntrospectionQuery,
 } from 'graphql';
-import { resolve } from 'path';
+import { extname, resolve } from 'path';
+import { defaultConfig, DUMMY_ENDPOINT, gqtyConfigPromise } from './config';
+import { fg } from './deps.js';
+import type { GenerateOptions, TransformSchemaOptions } from './generate';
 import { getRemoteSchema } from './introspection';
 import { writeGenerate } from './writeGenerate';
-
-import { defaultConfig, DUMMY_ENDPOINT, gqtyConfigPromise } from './config';
-
-import type { GenerateOptions, TransformSchemaOptions } from './generate';
 
 export async function inspectWriteGenerate({
   endpoint,
