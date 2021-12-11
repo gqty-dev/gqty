@@ -1,3 +1,5 @@
+import fg from 'fast-glob';
+import { extname } from 'path';
 import { existsSync } from 'fs';
 import { promises } from 'fs';
 import {
@@ -105,16 +107,48 @@ export async function inspectWriteGenerate({
   } else {
     defaultConfig.introspection.endpoint = DUMMY_ENDPOINT;
 
-    if (existsSync(endpoint)) {
-      const file = await promises.readFile(endpoint, {
-        encoding: 'utf-8',
-      });
+    const files = await fg(endpoint);
+    if (files.length) {
+      const gqlextensions = ['.graphql', '.gql'];
+      const jsonFiles = files.filter((file) => extname(file) === '.json');
+      const gqlFiles = files.filter((file) =>
+        gqlextensions.includes(extname(file))
+      );
 
-      if (endpoint.endsWith('.json')) {
+      // has invalid files (no graphql or json)
+      if (files.length > jsonFiles.length + gqlFiles.length) {
+        throw Error(
+          `Received invalid files. Type generation can only use .gql, .graphql or .json files`
+        );
+      }
+
+      // check for mixed input
+      if (jsonFiles.length && gqlFiles.length) {
+        throw Error(
+          `Received mixed file inputs. Can not combine JSON and GQL files`
+        );
+      }
+
+      // check for multiple JSON files
+      if (jsonFiles.length && jsonFiles.length > 1) {
+        throw Error(
+          `Received multiple JSON introspection files, shoud only be one`
+        );
+      }
+
+      const fileContents = await Promise.all(
+        files.map((file) =>
+          promises.readFile(file, {
+            encoding: 'utf-8',
+          })
+        )
+      );
+
+      if (extname(files[0]) === '.json') {
         const parsedFile:
           | IntrospectionQuery
           | { data?: IntrospectionQuery }
-          | undefined = JSON.parse(file);
+          | undefined = JSON.parse(fileContents[0]);
 
         let dataField: IntrospectionQuery | undefined;
 
@@ -133,7 +167,7 @@ export async function inspectWriteGenerate({
 
         schema = buildClientSchema(dataField);
       } else {
-        schema = buildSchema(file);
+        schema = buildSchema(fileContents.join('\n'));
       }
     } else {
       throw Error(
