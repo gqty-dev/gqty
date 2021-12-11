@@ -223,7 +223,9 @@ test('basic inspectWriteGenerate functionality', async () => {
 
 describe('from file', () => {
   test('generate from graphql schema file', async () => {
-    const tempFile = await tmp.file();
+    const tempFile = await tmp.file({
+      postfix: '.gql',
+    });
     const tempDir = await getTempDir();
 
     try {
@@ -1054,6 +1056,69 @@ describe('from multiple files', () => {
         export interface ScalarsEnums extends MakeNullable<Scalars> {}
         "
       `);
+    } finally {
+      await Promise.all(tempFiles.map((f) => f.cleanup()));
+      await tempDir.cleanup();
+    }
+  });
+
+  test('generate from multiple JSON files (should fail)', async () => {
+    const tempFiles = await Promise.all([
+      tmp.file({ postfix: '.json' }),
+      tmp.file({ postfix: '.json' }),
+    ]);
+    const tempDir = await getTempDir();
+
+    try {
+      await expect(
+        inspectWriteGenerate({
+          endpoint: `${path.dirname(tempFiles[0].path)}/*.json`,
+          destination: tempDir.clientPath,
+        })
+      ).rejects.toThrowErrorMatchingInlineSnapshot(
+        `"Received multiple JSON introspection files, shoud only be one"`
+      );
+    } finally {
+      await Promise.all(tempFiles.map((f) => f.cleanup()));
+      await tempDir.cleanup();
+    }
+  });
+
+  test('generate from mixed input files (should fail)', async () => {
+    const tempFiles = await Promise.all([
+      tmp.file({ postfix: '.gql' }),
+      tmp.file({ postfix: '.json' }),
+    ]);
+    const tempDir = await getTempDir();
+
+    try {
+      await expect(
+        inspectWriteGenerate({
+          endpoint: `${path.dirname(tempFiles[0].path)}/*.(gql|json)`,
+          destination: tempDir.clientPath,
+        })
+      ).rejects.toThrowErrorMatchingInlineSnapshot(
+        `"Received mixed file inputs. Can not combine JSON and GQL files"`
+      );
+    } finally {
+      await Promise.all(tempFiles.map((f) => f.cleanup()));
+      await tempDir.cleanup();
+    }
+  });
+
+  test('generate from unsupported file types (should fail)', async () => {
+    const tempFiles = await Promise.all([tmp.file({ postfix: '.txt' })]);
+    const tempDir = await getTempDir();
+
+    try {
+      await expect(
+        inspectWriteGenerate({
+          endpoint: `${path.dirname(tempFiles[0].path)}/*.txt`,
+          destination: tempDir.clientPath,
+        })
+      ).rejects.toThrowErrorMatchingInlineSnapshot(
+        `"Received invalid files. Type generation can only use .gql, .graphql or .json files"`
+      );
     } finally {
       await Promise.all(tempFiles.map((f) => f.cleanup()));
       await tempDir.cleanup();
