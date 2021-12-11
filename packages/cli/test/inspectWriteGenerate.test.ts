@@ -946,17 +946,12 @@ describe('from multiple files', () => {
           queryFetcher,
         });
 
-        export const {
-          query,
-          mutation,
-          mutate,
-          subscription,
-          resolved,
-          refetch,
-          track,
-        } = client;
+        const { query, mutation, mutate, subscription, resolved, refetch, track } =
+          client;
 
-        export const {
+        export { query, mutation, mutate, subscription, resolved, refetch, track };
+
+        const {
           graphql,
           useQuery,
           usePaginatedQuery,
@@ -978,6 +973,20 @@ describe('from multiple files', () => {
             staleWhileRevalidate: false,
           },
         });
+
+        export {
+          graphql,
+          useQuery,
+          usePaginatedQuery,
+          useTransactionQuery,
+          useLazyQuery,
+          useRefetch,
+          useMutation,
+          useMetaState,
+          prepareReactRender,
+          useHydrateCache,
+          prepareQuery,
+        };
 
         export * from './schema.generated';
         "
