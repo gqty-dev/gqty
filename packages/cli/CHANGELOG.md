@@ -1,5 +1,15 @@
 # @gqty/cli
 
+## 3.0.0
+
+### Major Changes
+
+- c7b80c8: Minimize npm dependencies
+
+### Minor Changes
+
+- f9fd0b9: Added the ability to use fast-glob patterns in the schema generate endpoint to be able to use and combine multiple gql/graphql schema files
+
 ## 2.3.1
 
 ### Patch Changes
