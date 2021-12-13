@@ -1,5 +1,11 @@
 # @gqty/logger
 
+## 2.0.2
+
+### Patch Changes
+
+- 5ed4951: Remove "serialize-error" dependency
+
 ## 2.0.1
 
 ### Patch Changes
