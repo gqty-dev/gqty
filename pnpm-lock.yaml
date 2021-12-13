@@ -378,7 +378,7 @@ importers:
       '@guild-docs/server': ^2.1.5
       '@mdx-js/react': ^1.6.22
       '@next/bundle-analyzer': ^12.0.7
-      '@theguild/components': ^1.8.2
+      '@theguild/components': ^1.8.3
       '@types/concurrently': ^6.4.0
       '@types/mdx-js__react': ^1.5.5
       '@types/node': ^16.11.12
@@ -410,10 +410,10 @@ importers:
       '@chakra-ui/utils': 1.9.1
       '@emotion/react': 11.7.1_cfedea9b3ed0faf0dded75c187406c5e
       '@emotion/styled': 11.6.0_f08cba2053577b4854d3e19df4a0b904
-      '@guild-docs/client': 1.3.3_c4a30b334fbb41b850bd1e78bb4dad31
+      '@guild-docs/client': 1.3.3_ddc2a22ae6c62b31ea1f34772d58d2e8
       '@guild-docs/server': 2.1.5_33288c41ddcee96cad14b40a4fd44091
       '@mdx-js/react': 1.6.22_react@17.0.2
-      '@theguild/components': 1.8.2_1d190dffb61b82436c130c893adcc11b
+      '@theguild/components': 1.8.3_1d190dffb61b82436c130c893adcc11b
       csstype: 3.0.10
       framer-motion: 5.4.5_react-dom@17.0.2+react@17.0.2
       next: 12.0.7_react-dom@17.0.2+react@17.0.2
@@ -1418,7 +1418,7 @@ packages:
     resolution: {integrity: sha512-99catp6bHCaxr4sJ/DbTGgHS4+Rs2RVd2g7iOap6SLGPDknRK9ztKNsE/Fg6QhSeh1FGE5f6gHGQmvvn3I3xhw==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      regenerator-runtime: 0.13.4
+      regenerator-runtime: 0.13.9
     dev: false
 
   /@babel/runtime/7.16.3:
@@ -2523,6 +2523,29 @@ packages:
     resolution: {integrity: sha512-igX9a37DR2ZPGYtV6suZ6whr8pTFtyHL3K/oLUotxpSVO2ASaprmAe2Dkq7tBo7CRY7MMDrAa9nuQP9/YG8FxQ==}
     dev: false
 
+  /@emotion/react/11.7.0_cfedea9b3ed0faf0dded75c187406c5e:
+    resolution: {integrity: sha512-WL93hf9+/2s3cA1JVJlz8+Uy6p6QWukqQFOm2OZO5ki51hfucHMOmbSjiyC3t2Y4RI8XUmBoepoc/24ny/VBbA==}
+    peerDependencies:
+      '@babel/core': ^7.0.0
+      '@types/react': '*'
+      react: '>=16.8.0'
+    peerDependenciesMeta:
+      '@babel/core':
+        optional: true
+      '@types/react':
+        optional: true
+    dependencies:
+      '@babel/runtime': 7.16.3
+      '@emotion/cache': 11.7.1
+      '@emotion/serialize': 1.0.2
+      '@emotion/sheet': 1.1.0
+      '@emotion/utils': 1.0.0
+      '@emotion/weak-memoize': 0.2.5
+      '@types/react': 17.0.37
+      hoist-non-react-statics: 3.3.2
+      react: 17.0.2
+    dev: false
+
   /@emotion/react/11.7.1_cfedea9b3ed0faf0dded75c187406c5e:
     resolution: {integrity: sha512-DV2Xe3yhkF1yT4uAUoJcYL1AmrnO5SVsdfvu+fBuS7IbByDeTVx9+wFmvx9Idzv7/78+9Mgx2Hcmr7Fex3tIyw==}
     peerDependencies:
@@ -2558,6 +2581,29 @@ packages:
 
   /@emotion/sheet/1.1.0:
     resolution: {integrity: sha512-u0AX4aSo25sMAygCuQTzS+HsImZFuS8llY8O7b9MDRzbJM0kVJlAz6KNDqcG7pOuQZJmj/8X/rAW+66kMnMW+g==}
+    dev: false
+
+  /@emotion/styled/11.6.0_49e498e16442da1a9ae75db6f4430d97:
+    resolution: {integrity: sha512-mxVtVyIOTmCAkFbwIp+nCjTXJNgcz4VWkOYQro87jE2QBTydnkiYusMrRGFtzuruiGK4dDaNORk4gH049iiQuw==}
+    peerDependencies:
+      '@babel/core': ^7.0.0
+      '@emotion/react': ^11.0.0-rc.0
+      '@types/react': '*'
+      react: '>=16.8.0'
+    peerDependenciesMeta:
+      '@babel/core':
+        optional: true
+      '@types/react':
+        optional: true
+    dependencies:
+      '@babel/runtime': 7.16.3
+      '@emotion/babel-plugin': 11.3.0
+      '@emotion/is-prop-valid': 1.1.1
+      '@emotion/react': 11.7.0_cfedea9b3ed0faf0dded75c187406c5e
+      '@emotion/serialize': 1.0.2
+      '@emotion/utils': 1.0.0
+      '@types/react': 17.0.37
+      react: 17.0.2
     dev: false
 
   /@emotion/styled/11.6.0_f08cba2053577b4854d3e19df4a0b904:
@@ -3085,7 +3131,7 @@ packages:
       graphql: 16.1.0
     dev: false
 
-  /@guild-docs/client/1.3.3_c4a30b334fbb41b850bd1e78bb4dad31:
+  /@guild-docs/client/1.3.3_ddc2a22ae6c62b31ea1f34772d58d2e8:
     resolution: {integrity: sha512-BGCYc4eRj+DCdiFM6we11QUohYmSf1Mm9jqufJH0nijj6hLTgYcUnDPuwlm7YuAY1UOpEyknFQLWn2hrED4gRQ==}
     peerDependencies:
       '@chakra-ui/icons': '*'
@@ -3108,7 +3154,7 @@ packages:
       '@guild-docs/mdx-remote': 1.0.2_31df126a9d30e66b921c946084fc1634
       '@guild-docs/types': 1.1.0_3baf268780b89f3e1896abd73ff2a5f9
       '@mdx-js/react': 1.6.22_react@17.0.2
-      '@theguild/components': 1.8.2_1d190dffb61b82436c130c893adcc11b
+      '@theguild/components': 1.8.3_1d190dffb61b82436c130c893adcc11b
       '@types/mdx-js__react': 1.5.5
       framer-motion: 5.4.5_react-dom@17.0.2+react@17.0.2
       immer: 9.0.7
@@ -3973,16 +4019,15 @@ packages:
       react-dom: 17.0.2_react@17.0.2
     dev: true
 
-  /@theguild/components/1.8.2_1d190dffb61b82436c130c893adcc11b:
-    resolution: {integrity: sha512-XUVrR+/fQ80mV8HM+2ApYsU6dDcJBzu1Uz4FbXOBDqJRvRIR2dbLhsndKk+FRS70YaW5SWbVGnwHBYDTSteuGw==}
+  /@theguild/components/1.8.3_1d190dffb61b82436c130c893adcc11b:
+    resolution: {integrity: sha512-8m8EY4MrWebxMt7Uu7Z+3H9uScKNt2gC/eAtD666T+BUJt01GVmJxM/BdoslMDc7XAmlSwSe6diBGgAOluVHDA==}
     peerDependencies:
       react: ^17.0.2
       react-dom: ^17.0.2
     dependencies:
-      '@emotion/react': 11.7.1_cfedea9b3ed0faf0dded75c187406c5e
-      '@emotion/styled': 11.6.0_f08cba2053577b4854d3e19df4a0b904
+      '@emotion/react': 11.7.0_cfedea9b3ed0faf0dded75c187406c5e
+      '@emotion/styled': 11.6.0_49e498e16442da1a9ae75db6f4430d97
       algoliasearch: 4.11.0
-      core-js: 3.19.3
       focus-trap-react: 8.7.1_react-dom@17.0.2+react@17.0.2
       polished: 4.1.3
       react: 17.0.2
