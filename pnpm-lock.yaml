@@ -448,7 +448,7 @@ importers:
       '@graphql-tools/delegate': ^8.4.3
       '@graphql-tools/utils': ^8.5.4
       '@graphql-tools/wrap': ^8.3.2
-      '@size-limit/preset-small-lib': ^7.0.3
+      '@size-limit/preset-small-lib': ^7.0.4
       '@types/lodash': ^4.14.178
       '@types/lodash.sortby': ^4.7.6
       '@types/mkdirp': ^1.0.2
@@ -482,7 +482,7 @@ importers:
       '@graphql-tools/delegate': 8.4.3_graphql@16.1.0
       '@graphql-tools/utils': 8.5.4_graphql@16.1.0
       '@graphql-tools/wrap': 8.3.2_graphql@16.1.0
-      '@size-limit/preset-small-lib': 7.0.3_size-limit@7.0.4
+      '@size-limit/preset-small-lib': 7.0.4_size-limit@7.0.4
       '@types/lodash': 4.14.178
       '@types/lodash.sortby': 4.7.6
       '@types/mkdirp': 1.0.2
@@ -510,7 +510,7 @@ importers:
 
   packages/gqty:
     specifiers:
-      '@size-limit/preset-small-lib': ^7.0.3
+      '@size-limit/preset-small-lib': ^7.0.4
       '@types/concurrently': ^6.4.0
       '@types/lodash': ^4.14.178
       '@types/mkdirp': ^1.0.2
@@ -541,7 +541,7 @@ importers:
     dependencies:
       lodash: 4.17.21
     devDependencies:
-      '@size-limit/preset-small-lib': 7.0.3_size-limit@7.0.4
+      '@size-limit/preset-small-lib': 7.0.4_size-limit@7.0.4
       '@types/concurrently': 6.4.0
       '@types/lodash': 4.14.178
       '@types/mkdirp': 1.0.2
@@ -571,7 +571,7 @@ importers:
 
   packages/logger:
     specifiers:
-      '@size-limit/preset-small-lib': ^7.0.3
+      '@size-limit/preset-small-lib': ^7.0.4
       '@types/prettier': ^2.4.2
       bob-esbuild-cli: ^3.0.1
       gqty: workspace:^2.1.0
@@ -585,7 +585,7 @@ importers:
     dependencies:
       prettier: 2.5.1
     devDependencies:
-      '@size-limit/preset-small-lib': 7.0.3_size-limit@7.0.4
+      '@size-limit/preset-small-lib': 7.0.4_size-limit@7.0.4
       '@types/prettier': 2.4.2
       bob-esbuild-cli: 3.0.1_bob-esbuild@3.2.0
       gqty: link:../gqty
@@ -598,7 +598,7 @@ importers:
 
   packages/react:
     specifiers:
-      '@size-limit/preset-small-lib': ^7.0.3
+      '@size-limit/preset-small-lib': ^7.0.4
       '@testing-library/jest-dom': ^5.16.1
       '@testing-library/react': ^12.1.2
       '@testing-library/react-hooks': ^7.0.2
@@ -623,7 +623,7 @@ importers:
     dependencies:
       react-ssr-prepass: 1.4.0_react@17.0.2
     devDependencies:
-      '@size-limit/preset-small-lib': 7.0.3_size-limit@7.0.4
+      '@size-limit/preset-small-lib': 7.0.4_size-limit@7.0.4
       '@testing-library/jest-dom': 5.16.1
       '@testing-library/react': 12.1.2_react-dom@17.0.2+react@17.0.2
       '@testing-library/react-hooks': 7.0.2_fc2bb8a5b006d3f25c5f84ea777e678d
@@ -3923,34 +3923,34 @@ packages:
     dependencies:
       '@sinonjs/commons': 1.8.3
 
-  /@size-limit/esbuild/7.0.3_size-limit@7.0.4:
-    resolution: {integrity: sha512-pqtB5wQkbFHxHo43Xjyj3XVqnl56LHKpycWKmNWhDShkF94ucCdfZJwHDMIzL6f0OUjRxd9QkA8Jv11pFzUD/Q==}
+  /@size-limit/esbuild/7.0.4_size-limit@7.0.4:
+    resolution: {integrity: sha512-gfkr96LQ8zCWKDGTfnBed8K4kmQccB/cQxnqK7bMis/X0qSpeMFwDG9WO9JrjDgNRVjbncB26Qtnain58KC2Xw==}
     engines: {node: ^12.0.0 || ^14.0.0 || >=16.0.0}
     peerDependencies:
-      size-limit: 7.0.3
+      size-limit: 7.0.4
     dependencies:
-      esbuild: 0.13.15
+      esbuild: 0.14.3
       nanoid: 3.1.30
       size-limit: 7.0.4
     dev: true
 
-  /@size-limit/file/7.0.3_size-limit@7.0.4:
-    resolution: {integrity: sha512-jizDZduAQ71KoraRWkj6ZSHPPo8SQ/KO4z1hZBl1ZujxwF7R6NLWKghNUtIQHsXpqyZWbK3VV39lOLx7qHuLjg==}
+  /@size-limit/file/7.0.4_size-limit@7.0.4:
+    resolution: {integrity: sha512-/UfiOp8bDIdmNs0c8IQgGKlByo1esoayZ6+Pr/LQCJPZWPyQWVeGTo+J/+aYa9+5+r6ezvmAF5aR7VVt+rvW2Q==}
     engines: {node: ^12.0.0 || ^14.0.0 || >=16.0.0}
     peerDependencies:
-      size-limit: 7.0.3
+      size-limit: 7.0.4
     dependencies:
       semver: 7.3.5
       size-limit: 7.0.4
     dev: true
 
-  /@size-limit/preset-small-lib/7.0.3_size-limit@7.0.4:
-    resolution: {integrity: sha512-UuA8ICz3BYWxbhJah8U5KxOUhA97AJbsNITp+Scy9aUXzbu2SqrsDTRmPU9ULCo3j4VgF53TBHXY4sdKC2adpw==}
+  /@size-limit/preset-small-lib/7.0.4_size-limit@7.0.4:
+    resolution: {integrity: sha512-FS3qDDfcks3ZNKciGYxhSfiyVIQ64N6oZZABsWneHvZjOpR6KUjwPVboX2rBZGKT2an1KHs5CkHoM+oscxGWEw==}
     peerDependencies:
-      size-limit: 7.0.3
+      size-limit: 7.0.4
     dependencies:
-      '@size-limit/esbuild': 7.0.3_size-limit@7.0.4
-      '@size-limit/file': 7.0.3_size-limit@7.0.4
+      '@size-limit/esbuild': 7.0.4_size-limit@7.0.4
+      '@size-limit/file': 7.0.4_size-limit@7.0.4
       size-limit: 7.0.4
     dev: true
 
