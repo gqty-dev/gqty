@@ -187,7 +187,7 @@ importers:
       '@graphql-ez/plugin-codegen': ^0.7.6
       '@graphql-ez/plugin-dataloader': ^0.5.6
       '@graphql-ez/plugin-schema': ^0.8.1
-      '@graphql-ez/plugin-upload': ^0.6.2
+      '@graphql-ez/plugin-upload': ^0.7.0
       '@graphql-ez/plugin-websockets': ^0.10.2
       '@react-native-async-storage/async-storage': ^1.15.14
       '@types/extract-files': ^8.1.1
@@ -242,7 +242,7 @@ importers:
       '@graphql-ez/plugin-codegen': 0.7.6_5ebecc0f0394c2d82019ac176cc802ca
       '@graphql-ez/plugin-dataloader': 0.5.6_graphql-ez@0.13.6+graphql@16.1.0
       '@graphql-ez/plugin-schema': 0.8.1_5ebecc0f0394c2d82019ac176cc802ca
-      '@graphql-ez/plugin-upload': 0.6.2_56d0777aacd80e0468ed616f565d7f27
+      '@graphql-ez/plugin-upload': 0.7.0_56d0777aacd80e0468ed616f565d7f27
       '@graphql-ez/plugin-websockets': 0.10.2_270f7cc9daf41a72c6adec21955de1d5
       '@react-native-async-storage/async-storage': 1.15.14
       '@types/extract-files': 8.1.1
@@ -2954,14 +2954,14 @@ packages:
       - '@types/node'
     dev: false
 
-  /@graphql-ez/plugin-upload/0.6.2_56d0777aacd80e0468ed616f565d7f27:
-    resolution: {integrity: sha512-IxYrY9zGhf85TutK38TZcrwbgJBZtTIApDb0eIzxFUFLil3UefLUU3bbwpUbbe722uUAlr+DpIznaNO6j9XTJQ==}
+  /@graphql-ez/plugin-upload/0.7.0_56d0777aacd80e0468ed616f565d7f27:
+    resolution: {integrity: sha512-eG0uzCcyFOQ6QnpyMgCbh3qT8q57xXjZzUyHpVFUF0N5hP7GNCuFNizX3YUjKjHuPbqTIasmZbpNoN19esmV3A==}
     engines: {node: ^12.20.0 || >=14.13.0}
     peerDependencies:
       '@types/graphql-upload': '*'
       graphql: '*'
-      graphql-ez: ^0.13.0
-      graphql-upload: ^12.0.0
+      graphql-ez: ^0.13.6
+      graphql-upload: ^13.0.0
     dependencies:
       '@graphql-ez/utils': 0.1.2_d116d8df3ef5a6ffb6b90466cd2ddc23
       '@types/graphql-upload': 8.0.7
