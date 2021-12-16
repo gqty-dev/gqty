@@ -378,7 +378,7 @@ importers:
       '@guild-docs/server': ^2.1.5
       '@mdx-js/react': ^1.6.22
       '@next/bundle-analyzer': ^12.0.7
-      '@theguild/components': ^1.8.3
+      '@theguild/components': ^1.8.6
       '@types/concurrently': ^6.4.0
       '@types/mdx-js__react': ^1.5.5
       '@types/node': ^16.11.12
@@ -410,10 +410,10 @@ importers:
       '@chakra-ui/utils': 1.9.1
       '@emotion/react': 11.7.1_cfedea9b3ed0faf0dded75c187406c5e
       '@emotion/styled': 11.6.0_f08cba2053577b4854d3e19df4a0b904
-      '@guild-docs/client': 1.3.3_ffdb4b0651752b70a986ffbf1ee1e4ec
+      '@guild-docs/client': 1.3.3_dcd60a43d6e21c01c906bd2d2db8948c
       '@guild-docs/server': 2.1.5_9e846a4053a5e51dd941ebd23e96a934
       '@mdx-js/react': 1.6.22_react@17.0.2
-      '@theguild/components': 1.8.3_1d190dffb61b82436c130c893adcc11b
+      '@theguild/components': 1.8.6_1d190dffb61b82436c130c893adcc11b
       csstype: 3.0.10
       framer-motion: 5.4.5_react-dom@17.0.2+react@17.0.2
       next: 12.0.7_react-dom@17.0.2+react@17.0.2
@@ -3131,7 +3131,7 @@ packages:
       graphql: 16.1.0
     dev: false
 
-  /@guild-docs/client/1.3.3_ffdb4b0651752b70a986ffbf1ee1e4ec:
+  /@guild-docs/client/1.3.3_dcd60a43d6e21c01c906bd2d2db8948c:
     resolution: {integrity: sha512-BGCYc4eRj+DCdiFM6we11QUohYmSf1Mm9jqufJH0nijj6hLTgYcUnDPuwlm7YuAY1UOpEyknFQLWn2hrED4gRQ==}
     peerDependencies:
       '@chakra-ui/icons': '*'
@@ -3154,7 +3154,7 @@ packages:
       '@guild-docs/mdx-remote': 1.0.2_4f9605fa066b8fce75b760fba089f51d
       '@guild-docs/types': 1.1.0_3baf268780b89f3e1896abd73ff2a5f9
       '@mdx-js/react': 1.6.22_react@17.0.2
-      '@theguild/components': 1.8.3_1d190dffb61b82436c130c893adcc11b
+      '@theguild/components': 1.8.6_1d190dffb61b82436c130c893adcc11b
       '@types/mdx-js__react': 1.5.5
       framer-motion: 5.4.5_react-dom@17.0.2+react@17.0.2
       immer: 9.0.7
@@ -4019,8 +4019,8 @@ packages:
       react-dom: 17.0.2_react@17.0.2
     dev: true
 
-  /@theguild/components/1.8.3_1d190dffb61b82436c130c893adcc11b:
-    resolution: {integrity: sha512-8m8EY4MrWebxMt7Uu7Z+3H9uScKNt2gC/eAtD666T+BUJt01GVmJxM/BdoslMDc7XAmlSwSe6diBGgAOluVHDA==}
+  /@theguild/components/1.8.6_1d190dffb61b82436c130c893adcc11b:
+    resolution: {integrity: sha512-MCB7eWEu6yGIuJfg3cA7dI/aza5XOwRYP59PsSogwZZmOFHRtuoaHZFu6V1NaQlhQQZvzN3hTtd5W5I6tX+tbQ==}
     peerDependencies:
       react: ^17.0.2
       react-dom: ^17.0.2
@@ -4038,7 +4038,6 @@ packages:
       tailwindcss: 2.2.19_ts-node@10.4.0
       twin.macro: 2.8.2_ts-node@10.4.0
       use-debounce: 7.0.1_react@17.0.2
-      validator: 13.7.0
     transitivePeerDependencies:
       - '@babel/core'
       - '@types/react'
@@ -12680,11 +12679,6 @@ packages:
       spdx-correct: 3.1.1
       spdx-expression-parse: 3.0.1
     dev: true
-
-  /validator/13.7.0:
-    resolution: {integrity: sha512-nYXQLCBkpJ8X6ltALua9dRrZDHVYxjJ1wgskNt1lH9fzGjs3tgojGSCBjmEPwkWS1y29+DrizMTW19Pr9uB2nw==}
-    engines: {node: '>= 0.10'}
-    dev: false
 
   /value-or-promise/1.0.11:
     resolution: {integrity: sha512-41BrgH+dIbCFXClcSapVs5M6GkENd3gQOJpEfPDNa71LsUGMXDL0jMWpI/Rh7WhX+Aalfz2TTS3Zt5pUsbnhLg==}
