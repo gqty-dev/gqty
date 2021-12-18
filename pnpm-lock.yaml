@@ -9,7 +9,7 @@ importers:
   .:
     specifiers:
       '@changesets/assemble-release-plan': ^5.0.3
-      '@changesets/cli': ^2.18.1
+      '@changesets/cli': ^2.19.0
       '@types/node': ^16.11.14
       bob-esbuild: ^3.2.1
       bob-esbuild-cli: ^3.0.1
@@ -36,7 +36,7 @@ importers:
       wait-on: ^6.0.0
     devDependencies:
       '@changesets/assemble-release-plan': 5.0.3
-      '@changesets/cli': 2.18.1
+      '@changesets/cli': 2.19.0
       '@types/node': 16.11.14
       bob-esbuild: 3.2.1_esbuild@0.14.5+typescript@4.5.4
       bob-esbuild-cli: 3.0.1_bob-esbuild@3.2.1
@@ -2323,24 +2323,36 @@ packages:
       semver: 5.7.1
     dev: true
 
-  /@changesets/cli/2.18.1:
-    resolution: {integrity: sha512-QtL9neDH7yrfHeYk3miDUR+K4BwY+S7mRLwhjB4V+G2aPmzdHSLf+Db1nwEH52ZsAABSlWjCZnLCFl84kUrOLA==}
+  /@changesets/assemble-release-plan/5.0.4:
+    resolution: {integrity: sha512-kn0UecLXiif6DzB2EBEOrS54BWSo2nPC4111I4a42ut0Tpeu5z4dEOGmREMd2lMQjx9EE/q9VudkfFa12SFdwA==}
+    dependencies:
+      '@babel/runtime': 7.16.5
+      '@changesets/errors': 0.1.4
+      '@changesets/get-dependents-graph': 1.2.4
+      '@changesets/types': 4.0.2
+      '@manypkg/get-packages': 1.1.3
+      semver: 5.7.1
+    dev: true
+
+  /@changesets/cli/2.19.0:
+    resolution: {integrity: sha512-AqtWiarNSUD42pv7ldTAFMU7pa/39t78VDAWFy78RgUJQyFmXktOG8fzjMhksJ+G5+pWLVSXaLSj6cCbpeWivg==}
     hasBin: true
     dependencies:
       '@babel/runtime': 7.16.5
       '@changesets/apply-release-plan': 5.0.3
-      '@changesets/assemble-release-plan': 5.0.3
+      '@changesets/assemble-release-plan': 5.0.4
       '@changesets/config': 1.6.3
       '@changesets/errors': 0.1.4
       '@changesets/get-dependents-graph': 1.2.4
-      '@changesets/get-release-plan': 3.0.3
+      '@changesets/get-release-plan': 3.0.4
       '@changesets/git': 1.2.1
       '@changesets/logger': 0.0.5
-      '@changesets/pre': 1.0.8
+      '@changesets/pre': 1.0.9
       '@changesets/read': 0.5.2
       '@changesets/types': 4.0.2
       '@changesets/write': 0.1.6
       '@manypkg/get-packages': 1.1.3
+      '@types/is-ci': 3.0.0
       '@types/semver': 6.2.3
       boxen: 1.3.0
       chalk: 2.4.2
@@ -2348,7 +2360,7 @@ packages:
       external-editor: 3.1.0
       fs-extra: 7.0.1
       human-id: 1.0.2
-      is-ci: 2.0.0
+      is-ci: 3.0.1
       meow: 6.1.1
       outdent: 0.5.0
       p-limit: 2.3.0
@@ -2387,13 +2399,13 @@ packages:
       semver: 5.7.1
     dev: true
 
-  /@changesets/get-release-plan/3.0.3:
-    resolution: {integrity: sha512-94UQ3x9i+sXPiwC0Z6fFooal67oWuf0MvA+mYMBqOWLbjYLnxAV8CPZAnXw4yiZbb6Oycf0NvFrC1aZGl1uNSQ==}
+  /@changesets/get-release-plan/3.0.4:
+    resolution: {integrity: sha512-XEMI1WlB2crtXHLrpF8qLteZDe6ZIvuj9J3Pc9EkCo1QbVonx74zOC65KFPqNJOTpcYrex6MzOueUn2Vp32gwA==}
     dependencies:
       '@babel/runtime': 7.16.5
-      '@changesets/assemble-release-plan': 5.0.3
+      '@changesets/assemble-release-plan': 5.0.4
       '@changesets/config': 1.6.3
-      '@changesets/pre': 1.0.8
+      '@changesets/pre': 1.0.9
       '@changesets/read': 0.5.2
       '@changesets/types': 4.0.2
       '@manypkg/get-packages': 1.1.3
@@ -2427,8 +2439,8 @@ packages:
       js-yaml: 3.14.1
     dev: true
 
-  /@changesets/pre/1.0.8:
-    resolution: {integrity: sha512-QLMSo0awYU6k2FqepGaizcraDit+lJpHoCdRXQdP9Bdn4ejf6PLzq4pi+uhb0aXM5XzDOVSROle+k4gO8v7slw==}
+  /@changesets/pre/1.0.9:
+    resolution: {integrity: sha512-F3+qMun89KlynecBD15fEpwGT/KxbYb3WGeut6w1xhZb0u7V/jdcPy9b+kJ2xmBqFZLn1WteWIP96IjxS57H7A==}
     dependencies:
       '@babel/runtime': 7.16.5
       '@changesets/errors': 0.1.4
@@ -4238,6 +4250,12 @@ packages:
     resolution: {integrity: sha512-e+2rjEwK6KDaNOm5Aa9wNGgyS9oSZU/4pfSMMPYNOfjvFI0WVXm29+ITRFr6aKDvvKo7uU1jV68MW4ScsfDi7Q==}
     dev: true
 
+  /@types/is-ci/3.0.0:
+    resolution: {integrity: sha512-Q0Op0hdWbYd1iahB+IFNQcWXFq4O0Q5MwQP7uN0souuQ4rPg1vEYcnIOfr1gY+M+6rc8FGoRaBO1mOOvL29sEQ==}
+    dependencies:
+      ci-info: 3.3.0
+    dev: true
+
   /@types/istanbul-lib-coverage/2.0.3:
     resolution: {integrity: sha512-sz7iLqvVUg1gIedBOvlkxPlc8/uVzyS5OwGz1cKjXzkl3FpL3al0crU8YGU1WoHkxn0Wxbw5tyi6hvzJKNzFsw==}
 
@@ -5473,10 +5491,6 @@ packages:
       readdirp: 3.6.0
     optionalDependencies:
       fsevents: 2.3.2
-
-  /ci-info/2.0.0:
-    resolution: {integrity: sha512-5tK7EtrZ0N+OLFMthtqOj4fI2Jeb88C4CAZPu25LDVUgXJ0A3Js4PMGqrn0JU1W0Mh1/Z8wZzYPxqUrXeBboCQ==}
-    dev: true
 
   /ci-info/3.3.0:
     resolution: {integrity: sha512-riT/3vI5YpVH6/qomlDnJow6TBee2PBKSEpx3O32EGPYbWGIRsIlGRms3Sm74wYE1JMo8RnO04Hb12+v1J5ICw==}
@@ -7946,11 +7960,11 @@ packages:
     engines: {node: '>= 0.4'}
     dev: false
 
-  /is-ci/2.0.0:
-    resolution: {integrity: sha512-YfJT7rkpQB0updsdHLGWrvhBJfcfzNNawYDNIyQXJz0IViGf75O8EBPKSdvw2rF+LGCsX4FZ8tcr3b19LcZq4w==}
+  /is-ci/3.0.1:
+    resolution: {integrity: sha512-ZYvCgrefwqoQ6yTyYUbQu64HsITZ3NfKX1lzaEYdkTDcfKzzCI/wthRRYKkdjHKFVgNiXKAKm65Zo1pk2as/QQ==}
     hasBin: true
     dependencies:
-      ci-info: 2.0.0
+      ci-info: 3.3.0
     dev: true
 
   /is-color-stop/1.1.0:
