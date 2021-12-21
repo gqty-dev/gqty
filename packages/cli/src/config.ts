@@ -1,8 +1,8 @@
 import { promises } from 'fs';
 import { createRequire } from 'module';
 import { resolve } from 'path';
-import { cosmiconfig } from './deps.js';
 import type { Loader } from './deps';
+import * as deps from './deps.js';
 import type { GenerateOptions } from './generate';
 import { __innerState } from './innerState';
 import type { IntrospectionOptions } from './introspection';
@@ -209,13 +209,15 @@ export const gqtyConfigPromise: Promise<{
     const cjsLoader: Loader = (filePath) => {
       return cjsRequire(filePath);
     };
-    const config = await cosmiconfig('gqty', {
-      searchPlaces: ['gqty.config.cjs', 'gqty.config.js', 'package.json'],
-      loaders: {
-        '.cjs': cjsLoader,
-        '.js': cjsLoader,
-      },
-    }).search();
+    const config = await deps
+      .cosmiconfig('gqty', {
+        searchPlaces: ['gqty.config.cjs', 'gqty.config.js', 'package.json'],
+        loaders: {
+          '.cjs': cjsLoader,
+          '.js': cjsLoader,
+        },
+      })
+      .search();
 
     if (!config || config.isEmpty) {
       const filepath = config?.filepath || defaultFilePath;

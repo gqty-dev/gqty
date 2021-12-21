@@ -5,7 +5,7 @@ import {
   SchemaUnionsKey,
   Type,
 } from 'gqty';
-import {
+import type {
   GraphQLEnumType,
   GraphQLField,
   GraphQLInputObjectType,
@@ -14,6 +14,13 @@ import {
   GraphQLScalarType,
   GraphQLSchema,
   GraphQLUnionType,
+} from 'graphql';
+import * as graphql from 'graphql';
+import { defaultConfig, gqtyConfigPromise } from './config';
+import * as deps from './deps.js';
+import { formatPrettier } from './prettier';
+
+const {
   isEnumType,
   isInputObjectType,
   isInterfaceType,
@@ -23,15 +30,7 @@ import {
   isUnionType,
   lexicographicSortSchema,
   parse,
-} from 'graphql';
-import { defaultConfig, gqtyConfigPromise } from './config';
-import {
-  codegen,
-  printSchemaWithDirectives,
-  sortBy,
-  typescriptPlugin,
-} from './deps.js';
-import { formatPrettier } from './prettier';
+} = graphql;
 
 export interface GenerateOptions {
   /**
@@ -144,13 +143,13 @@ export async function generate(
 
   schema = lexicographicSortSchema(schema);
 
-  const codegenResultPromise = codegen({
-    schema: parse(printSchemaWithDirectives(schema)),
-    config: {} as typescriptPlugin.TypeScriptPluginConfig,
+  const codegenResultPromise = deps.codegen({
+    schema: parse(deps.printSchemaWithDirectives(schema)),
+    config: {} as deps.typescriptPlugin.TypeScriptPluginConfig,
     documents: [],
     filename: 'gqty.generated.ts',
     pluginMap: {
-      typescript: typescriptPlugin,
+      typescript: deps.typescriptPlugin,
     },
     plugins: [
       {
@@ -161,7 +160,7 @@ export async function generate(
           scalars: scalarTypes,
           namingConvention: 'keep',
           enumsAsTypes: enumsAsStrings,
-        } as typescriptPlugin.TypeScriptPluginConfig,
+        } as deps.typescriptPlugin.TypeScriptPluginConfig,
       },
     ],
   });
@@ -602,39 +601,38 @@ export async function generate(
 
   const objectTypeTSTypes = new Map<string, Map<string, string>>();
 
-  let typescriptTypes = sortBy(
-    Object.entries(generatedSchema),
-    (v) => v[0]
-  ).reduce((acum, [typeKey, typeValue]) => {
-    const typeName = (() => {
-      switch (typeKey) {
-        case 'query': {
-          return 'Query';
+  let typescriptTypes = deps
+    .sortBy(Object.entries(generatedSchema), (v) => v[0])
+    .reduce((acum, [typeKey, typeValue]) => {
+      const typeName = (() => {
+        switch (typeKey) {
+          case 'query': {
+            return 'Query';
+          }
+          case 'mutation': {
+            return 'Mutation';
+          }
+          case 'subscription': {
+            return 'Subscription';
+          }
+          default: {
+            return typeKey;
+          }
         }
-        case 'mutation': {
-          return 'Mutation';
-        }
-        case 'subscription': {
-          return 'Subscription';
-        }
-        default: {
-          return typeKey;
-        }
+      })();
+
+      if (inputTypeNames.has(typeName)) return acum;
+
+      const objectTypeMap = new Map<string, string>();
+
+      if (!unionsAndInterfacesObjectTypesMap.has(typeName)) {
+        objectTypeTSTypes.set(typeName, objectTypeMap);
       }
-    })();
 
-    if (inputTypeNames.has(typeName)) return acum;
+      const interfaceOrUnionsObjectTypes =
+        unionsAndInterfacesObjectTypesMap.get(typeName);
 
-    const objectTypeMap = new Map<string, string>();
-
-    if (!unionsAndInterfacesObjectTypesMap.has(typeName)) {
-      objectTypeTSTypes.set(typeName, objectTypeMap);
-    }
-
-    const interfaceOrUnionsObjectTypes =
-      unionsAndInterfacesObjectTypesMap.get(typeName);
-
-    acum += `
+      acum += `
 
       ${addDescription(typeName)}export interface ${typeName} { 
         __typename?: ${
@@ -642,59 +640,59 @@ export async function generate(
             ? interfaceOrUnionsObjectTypes.map((v) => `"${v}"`).join(' | ')
             : `"${typeName}"`
         }; ${Object.entries(typeValue).reduce(
-      (acum, [fieldKey, fieldValue]) => {
-        if (fieldKey === '__typename') {
-          objectTypeMap.set(fieldKey, `?: "${typeName}"`);
-          return acum;
-        }
-
-        const fieldValueProps = parseSchemaType(fieldValue.__type);
-        const typeToReturn = parseFinalType(fieldValueProps);
-        let finalType: string;
-        if (fieldValue.__args) {
-          const argsEntries = Object.entries(fieldValue.__args);
-          let onlyNullableArgs = true;
-          const argTypes = argsEntries.reduce((acum, [argKey, argValue]) => {
-            const argValueProps = parseSchemaType(argValue);
-            const connector = argValueProps.isNullable ? '?:' : ':';
-
-            if (!argValueProps.isNullable) {
-              onlyNullableArgs = false;
-            }
-
-            const argTypeValue = parseArgType(argValueProps);
-
-            acum += `${addDescription([
-              typeName,
-              fieldKey,
-              argKey,
-            ])}${argKey}${connector} ${argTypeValue};\n`;
-
+        (acum, [fieldKey, fieldValue]) => {
+          if (fieldKey === '__typename') {
+            objectTypeMap.set(fieldKey, `?: "${typeName}"`);
             return acum;
-          }, '');
-          const argsConnector = onlyNullableArgs ? '?:' : ':';
-          finalType = `: (args${argsConnector} {${argTypes}}) => ${typeToReturn}`;
-        } else {
-          const connector = fieldValueProps.isNullable ? '?:' : ':';
-          finalType = `${connector} ${typeToReturn}`;
-        }
+          }
 
-        objectTypeMap.set(fieldKey, finalType);
+          const fieldValueProps = parseSchemaType(fieldValue.__type);
+          const typeToReturn = parseFinalType(fieldValueProps);
+          let finalType: string;
+          if (fieldValue.__args) {
+            const argsEntries = Object.entries(fieldValue.__args);
+            let onlyNullableArgs = true;
+            const argTypes = argsEntries.reduce((acum, [argKey, argValue]) => {
+              const argValueProps = parseSchemaType(argValue);
+              const connector = argValueProps.isNullable ? '?:' : ':';
 
-        acum +=
-          '\n' + addDescription([typeName, fieldKey]) + fieldKey + finalType;
+              if (!argValueProps.isNullable) {
+                onlyNullableArgs = false;
+              }
 
-        return acum;
-      },
-      ''
-    )}
+              const argTypeValue = parseArgType(argValueProps);
+
+              acum += `${addDescription([
+                typeName,
+                fieldKey,
+                argKey,
+              ])}${argKey}${connector} ${argTypeValue};\n`;
+
+              return acum;
+            }, '');
+            const argsConnector = onlyNullableArgs ? '?:' : ':';
+            finalType = `: (args${argsConnector} {${argTypes}}) => ${typeToReturn}`;
+          } else {
+            const connector = fieldValueProps.isNullable ? '?:' : ':';
+            finalType = `${connector} ${typeToReturn}`;
+          }
+
+          objectTypeMap.set(fieldKey, finalType);
+
+          acum +=
+            '\n' + addDescription([typeName, fieldKey]) + fieldKey + finalType;
+
+          return acum;
+        },
+        ''
+      )}
       }
       `;
 
-    return acum;
-  }, '');
+      return acum;
+    }, '');
 
-  const objectTypesEntries = sortBy(
+  const objectTypesEntries = deps.sortBy(
     Array.from(objectTypeTSTypes.entries()),
     (v) => v[0]
   );
@@ -713,18 +711,20 @@ export async function generate(
 
   if (unionsAndInterfacesObjectTypesMap.size) {
     typescriptTypes += `
-    ${sortBy(
-      Array.from(unionsAndInterfacesObjectTypesMap.entries()),
-      (v) => v[0]
-    ).reduce((acum, [unionInterfaceName, objectTypes]) => {
-      acum += `
+    ${deps
+      .sortBy(
+        Array.from(unionsAndInterfacesObjectTypesMap.entries()),
+        (v) => v[0]
+      )
+      .reduce((acum, [unionInterfaceName, objectTypes]) => {
+        acum += `
       export interface $${unionInterfaceName} {
         ${objectTypes.map((typeName) => `${typeName}?:${typeName}`).join('\n')}
       }
       `;
 
-      return acum;
-    }, '')}
+        return acum;
+      }, '')}
     `;
   }
 
@@ -742,7 +742,7 @@ export async function generate(
     };
   
     export interface ScalarsEnums extends MakeNullable<Scalars> {
-      ${sortBy(enumsNames).reduce((acum, enumName) => {
+      ${deps.sortBy(enumsNames).reduce((acum, enumName) => {
         acum += `${enumName}: ${enumName} | undefined;`;
         return acum;
       }, '')}
@@ -789,15 +789,14 @@ export async function generate(
       }, {})
   );
 
-  const generatedSchemaCodeString = sortBy(
-    Object.entries(generatedSchema),
-    (v) => v[0]
-  ).reduceRight(
-    (acum, [key, value]) => {
-      return `${JSON.stringify(key)}:${JSON.stringify(value)}, ${acum}`;
-    },
-    hasUnions ? `[SchemaUnionsKey]: ${JSON.stringify(unionsMapObj)}` : ''
-  );
+  const generatedSchemaCodeString = deps
+    .sortBy(Object.entries(generatedSchema), (v) => v[0])
+    .reduceRight(
+      (acum, [key, value]) => {
+        return `${JSON.stringify(key)}:${JSON.stringify(value)}, ${acum}`;
+      },
+      hasUnions ? `[SchemaUnionsKey]: ${JSON.stringify(unionsMapObj)}` : ''
+    );
 
   const javascriptSchemaCode = await format(`
 /**

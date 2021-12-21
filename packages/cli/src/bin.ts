@@ -1,5 +1,5 @@
 import { defaultConfig } from './config';
-import { program } from './deps.js';
+import * as deps from './deps.js';
 import { __innerState } from './innerState';
 import { inspectWriteGenerate } from './inspectWriteGenerate';
 
@@ -7,9 +7,9 @@ __innerState.isCLI = true;
 
 declare const __VERSION__: string;
 
-program.version(__VERSION__).description('CLI for gqty');
+deps.program.version(__VERSION__).description('CLI for gqty');
 
-program
+deps.program
   .command('generate [endpoint] [destination]')
   .option('--react', 'Create React client')
   .description(
@@ -40,4 +40,4 @@ EXAMPLE 3 (Configuration file): "gqty generate"`
     process.exit(0);
   });
 
-program.parse(process.argv);
+deps.program.parse(process.argv);

@@ -1,9 +1,8 @@
-import { nodeFetch, introspectSchema, wrapSchema } from './deps.js';
-import { print } from 'graphql';
-
-import { gqtyConfigPromise, defaultConfig } from './config';
-
 import type { AsyncExecutor } from '@graphql-tools/utils';
+import type { GraphQLSchema } from 'graphql';
+import { print } from 'graphql';
+import { defaultConfig, gqtyConfigPromise } from './config';
+import * as deps from './deps.js';
 
 export interface IntrospectionOptions {
   /**
@@ -15,8 +14,6 @@ export interface IntrospectionOptions {
    */
   headers?: Record<string, string>;
 }
-
-import type { GraphQLSchema } from 'graphql';
 
 export const getRemoteSchema = async (
   /**
@@ -33,7 +30,7 @@ export const getRemoteSchema = async (
       (await gqtyConfigPromise).config.introspection?.headers ||
       defaultConfig.introspection.headers;
     const query = print(document);
-    const fetchResult = await nodeFetch(endpoint, {
+    const fetchResult = await deps.nodeFetch(endpoint, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -44,8 +41,8 @@ export const getRemoteSchema = async (
     return fetchResult.json() as any;
   };
 
-  const schema = wrapSchema({
-    schema: await introspectSchema(executor, {
+  const schema = deps.wrapSchema({
+    schema: await deps.introspectSchema(executor, {
       endpoint,
     }),
     executor,

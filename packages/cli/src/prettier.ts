@@ -1,11 +1,11 @@
-import { prettier, PrettierOptions } from './deps.js';
+import * as deps from './deps.js';
 
-const { format: prettierFormat, resolveConfig } = prettier;
+const { format: prettierFormat, resolveConfig } = deps.prettier;
 const commonConfig = resolveConfig(process.cwd());
 
 export function formatPrettier(
-  defaultOptions: Omit<PrettierOptions, 'parser'> &
-    Required<Pick<PrettierOptions, 'parser'>>
+  defaultOptions: Omit<deps.PrettierOptions, 'parser'> &
+    Required<Pick<deps.PrettierOptions, 'parser'>>
 ) {
   const configPromise = commonConfig.then((config) =>
     Object.assign({}, config, defaultOptions)
