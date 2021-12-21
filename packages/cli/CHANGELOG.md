@@ -1,5 +1,11 @@
 # @gqty/cli
 
+## 3.0.1
+
+### Patch Changes
+
+- 3ac7bee: Use "import \* as" to prevent esm-cjs interop issues
+
 ## 3.0.0
 
 ### Major Changes
