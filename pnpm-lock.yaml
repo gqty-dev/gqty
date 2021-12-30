@@ -13,7 +13,7 @@ importers:
       '@types/node': ^16.11.17
       bob-esbuild: ^3.2.1
       bob-esbuild-cli: ^3.0.1
-      bob-ts: ^2.0.1
+      bob-ts: ^3.0.0
       bob-tsm: ^0.4.1
       bufferutil: ^4.0.5
       chalk: ^5.0.0
@@ -40,7 +40,7 @@ importers:
       '@types/node': 16.11.17
       bob-esbuild: 3.2.1_esbuild@0.14.8+typescript@4.5.4
       bob-esbuild-cli: 3.0.1_bob-esbuild@3.2.1
-      bob-ts: 2.0.1_6021454db1c03784cda7ae1b47110977
+      bob-ts: 3.0.0_7cd5423df59bf49e341ac0dc29d362fb
       bob-tsm: 0.4.1_esbuild@0.14.8+typescript@4.5.4
       bufferutil: 4.0.5
       chalk: 5.0.0
@@ -323,7 +323,7 @@ importers:
       '@types/jest': ^27.0.3
       '@types/randomstring': ^1.1.8
       bob-esbuild-cli: ^3.0.1
-      bob-ts: ^2.0.1
+      bob-ts: ^3.0.0
       concurrently: ^6.5.1
       cross-env: ^7.0.3
       esbuild: ^0.14.8
@@ -361,7 +361,7 @@ importers:
       '@jest/types': 27.4.2
       '@types/randomstring': 1.1.8
       bob-esbuild-cli: 3.0.1_bob-esbuild@3.2.1
-      bob-ts: 2.0.1_6021454db1c03784cda7ae1b47110977
+      bob-ts: 3.0.0_7cd5423df59bf49e341ac0dc29d362fb
       concurrently: 6.5.1
       tslib: 2.3.1
       typescript: 4.5.4
@@ -453,7 +453,7 @@ importers:
       '@types/lodash.sortby': ^4.7.6
       '@types/mkdirp': ^1.0.2
       '@types/node-fetch': ^2.5.12
-      bob-ts: ^2.0.1
+      bob-ts: ^3.0.0
       bob-tsm: ^0.4.1
       changesets-github-release: ^0.0.4
       commander: ^8.3.0
@@ -487,7 +487,7 @@ importers:
       '@types/lodash.sortby': 4.7.6
       '@types/mkdirp': 1.0.2
       '@types/node-fetch': 2.5.12
-      bob-ts: 2.0.1_6021454db1c03784cda7ae1b47110977
+      bob-ts: 3.0.0_7cd5423df59bf49e341ac0dc29d362fb
       bob-tsm: 0.4.1_esbuild@0.14.8+typescript@4.5.4
       changesets-github-release: 0.0.4
       commander: 8.3.0
@@ -5034,6 +5034,17 @@ packages:
       rollup: 2.62.0
     dev: true
 
+  /bob-esbuild-plugin/3.1.3_esbuild@0.14.8+rollup@2.62.0:
+    resolution: {integrity: sha512-UC9rXnhQ9S4PwOqaw+ttMcQVhpu+HkEJpocEXEZ1EA1JOoqbi7gPVmsSwnj4jo/PhKS9lWi7FEhxJn0evQvWUQ==}
+    peerDependencies:
+      esbuild: '>=0.14.9'
+      rollup: '*'
+    dependencies:
+      '@rollup/pluginutils': 4.1.2
+      esbuild: 0.14.8
+      rollup: 2.62.0
+    dev: true
+
   /bob-esbuild/3.2.1_esbuild@0.14.8+typescript@4.5.4:
     resolution: {integrity: sha512-/b0YYwncLQSA7Bfpi34m9cm5jVUseJRqbtBACkAWUQ/pTBrfy5pEAd2Hm21YaLNSJG57Cgd0sAEjDHoqmGZbFA==}
     peerDependencies:
@@ -5046,18 +5057,20 @@ packages:
       typescript: 4.5.4
     dev: true
 
-  /bob-ts/2.0.1_6021454db1c03784cda7ae1b47110977:
-    resolution: {integrity: sha512-WswMciZf5Z8A1rmeFB0a3mcJRORmlMjXXFlNGtXsu2v4UAdGWz5eyjPUhLjTYbo87ibT7WH/jz2v/XkU5KyL5g==}
+  /bob-ts/3.0.0_7cd5423df59bf49e341ac0dc29d362fb:
+    resolution: {integrity: sha512-jKsvheNWojuL50YX7PBTgby/lrQ2hItTw3Oqc9ElTY5s5nrUbIRfLuEsfvtvVU6Cax3AtDMULrNji86bwOVHaw==}
     engines: {node: ^12.20.0 || >=14.13.0}
     hasBin: true
     peerDependencies:
       '@types/node': '*'
-      esbuild: '>=0.13.14'
+      esbuild: '>=0.14.9'
+      typescript: '*'
     dependencies:
       '@types/node': 16.11.17
-      bob-esbuild-plugin: 3.1.2_esbuild@0.14.8+rollup@2.62.0
+      bob-esbuild-plugin: 3.1.3_esbuild@0.14.8+rollup@2.62.0
       esbuild: 0.14.8
       rollup: 2.62.0
+      typescript: 4.5.4
     dev: true
 
   /bob-tsm/0.4.1_esbuild@0.14.8+typescript@4.5.4:
