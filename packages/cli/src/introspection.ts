@@ -1,6 +1,6 @@
 import type { AsyncExecutor } from '@graphql-tools/utils';
 import type { GraphQLSchema } from 'graphql';
-import { print } from 'graphql';
+import * as graphql from 'graphql';
 import { defaultConfig, gqtyConfigPromise } from './config';
 import * as deps from './deps.js';
 
@@ -29,7 +29,7 @@ export const getRemoteSchema = async (
     headers ||=
       (await gqtyConfigPromise).config.introspection?.headers ||
       defaultConfig.introspection.headers;
-    const query = print(document);
+    const query = graphql.print(document);
     const fetchResult = await deps.nodeFetch(endpoint, {
       method: 'POST',
       headers: {
