@@ -11,7 +11,7 @@ importers:
       '@changesets/assemble-release-plan': ^5.0.4
       '@changesets/cli': ^2.19.0
       '@types/node': ^16.11.17
-      bob-esbuild: ^3.2.1
+      bob-esbuild: ^3.2.2
       bob-esbuild-cli: ^3.0.1
       bob-ts: ^3.0.0
       bob-tsm: ^0.4.1
@@ -38,8 +38,8 @@ importers:
       '@changesets/assemble-release-plan': 5.0.4
       '@changesets/cli': 2.19.0
       '@types/node': 16.11.17
-      bob-esbuild: 3.2.1_esbuild@0.14.9+typescript@4.5.4
-      bob-esbuild-cli: 3.0.1_bob-esbuild@3.2.1
+      bob-esbuild: 3.2.2_esbuild@0.14.9+typescript@4.5.4
+      bob-esbuild-cli: 3.0.1_bob-esbuild@3.2.2
       bob-ts: 3.0.0_f7dcfa992c4d8c3970e05b5440fb54c4
       bob-tsm: 0.4.1_esbuild@0.14.9+typescript@4.5.4
       bufferutil: 4.0.5
@@ -360,7 +360,7 @@ importers:
       '@graphql-ez/plugin-websockets': 0.10.2_069bc9d8d08255af3765c27fc9c8a300
       '@jest/types': 27.4.2
       '@types/randomstring': 1.1.8
-      bob-esbuild-cli: 3.0.1_bob-esbuild@3.2.1
+      bob-esbuild-cli: 3.0.1_bob-esbuild@3.2.2
       bob-ts: 3.0.0_f7dcfa992c4d8c3970e05b5440fb54c4
       concurrently: 6.5.1
       tslib: 2.3.1
@@ -551,7 +551,7 @@ importers:
       '@types/rimraf': 3.0.2
       '@types/wait-on': 5.3.1
       '@types/ws': 8.2.2
-      bob-esbuild-cli: 3.0.1_bob-esbuild@3.2.1
+      bob-esbuild-cli: 3.0.1_bob-esbuild@3.2.2
       concurrently: 6.5.1
       cross-env: 7.0.3
       graphql: 16.2.0
@@ -587,7 +587,7 @@ importers:
     devDependencies:
       '@size-limit/preset-small-lib': 7.0.5_size-limit@7.0.5
       '@types/prettier': 2.4.2
-      bob-esbuild-cli: 3.0.1_bob-esbuild@3.2.1
+      bob-esbuild-cli: 3.0.1_bob-esbuild@3.2.2
       gqty: link:../gqty
       jest: 27.4.5_9993fc95fde4947dc617f0a02e92676c
       rimraf: 3.0.2
@@ -631,7 +631,7 @@ importers:
       '@types/lodash': 4.14.178
       '@types/react': 17.0.38
       '@types/react-dom': 17.0.11
-      bob-esbuild-cli: 3.0.1_bob-esbuild@3.2.1
+      bob-esbuild-cli: 3.0.1_bob-esbuild@3.2.2
       gqty: link:../gqty
       graphql: 16.2.0
       jest: 27.4.5_9993fc95fde4947dc617f0a02e92676c
@@ -661,7 +661,7 @@ importers:
       ws: 8.4.0_5971b5a749a91823f5467a6d31a2f8b3
     devDependencies:
       '@types/ws': 8.2.2
-      bob-esbuild-cli: 3.0.1_bob-esbuild@3.2.1
+      bob-esbuild-cli: 3.0.1_bob-esbuild@3.2.2
       gqty: link:../gqty
       graphql: 16.2.0
       test-utils: link:../../internal/test-utils
@@ -4999,26 +4999,15 @@ packages:
     resolution: {integrity: sha512-D7iWRBvnZE8ecXiLj/9wbxH7Tk79fAh8IHaTNq1RWRixsS02W+5qS+iE9yq6RYl0asXx5tw0bLhmT5pIfbSquw==}
     dev: false
 
-  /bob-esbuild-cli/3.0.1_bob-esbuild@3.2.1:
+  /bob-esbuild-cli/3.0.1_bob-esbuild@3.2.2:
     resolution: {integrity: sha512-YpR8vEBqdiG+IVrgJA3hdIJnh1P6KKxDFO6RTXbbnhjGSmv9k7h4K86PKfCG6cKWJ9zkaE8iDF+i6T0pUfnI9A==}
     engines: {node: '>=12.0.0'}
     hasBin: true
     peerDependencies:
       bob-esbuild: ^3.1.1
     dependencies:
-      bob-esbuild: 3.2.1_esbuild@0.14.9+typescript@4.5.4
+      bob-esbuild: 3.2.2_esbuild@0.14.9+typescript@4.5.4
       commander: 8.3.0
-    dev: true
-
-  /bob-esbuild-plugin/3.1.2_esbuild@0.14.9+rollup@2.62.0:
-    resolution: {integrity: sha512-VGEu9yDLioxu/+YyN4pMCcDFpdq14etAZkgAC5dmmCpEw3xVTqObr2F3BQs+piJWi/2drzgz15oBw7+U+2IcaA==}
-    peerDependencies:
-      esbuild: '>=0.13.14'
-      rollup: '*'
-    dependencies:
-      '@rollup/pluginutils': 4.1.2
-      esbuild: 0.14.9
-      rollup: 2.62.0
     dev: true
 
   /bob-esbuild-plugin/3.1.3_esbuild@0.14.9+rollup@2.62.0:
@@ -5032,13 +5021,13 @@ packages:
       rollup: 2.62.0
     dev: true
 
-  /bob-esbuild/3.2.1_esbuild@0.14.9+typescript@4.5.4:
-    resolution: {integrity: sha512-/b0YYwncLQSA7Bfpi34m9cm5jVUseJRqbtBACkAWUQ/pTBrfy5pEAd2Hm21YaLNSJG57Cgd0sAEjDHoqmGZbFA==}
+  /bob-esbuild/3.2.2_esbuild@0.14.9+typescript@4.5.4:
+    resolution: {integrity: sha512-NSAz4qw9UF0THG8+f1150M9UVxDX+PEdJxouWuWVxm1Wmq9G7f8Ubip5efdVfJ0wSyHqmcsdyk7elAicJpfk3Q==}
     peerDependencies:
-      esbuild: '>=0.13.14'
+      esbuild: '>=0.14.9'
       typescript: '*'
     dependencies:
-      bob-esbuild-plugin: 3.1.2_esbuild@0.14.9+rollup@2.62.0
+      bob-esbuild-plugin: 3.1.3_esbuild@0.14.9+rollup@2.62.0
       esbuild: 0.14.9
       rollup: 2.62.0
       typescript: 4.5.4
