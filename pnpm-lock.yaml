@@ -391,7 +391,7 @@ importers:
       esbuild: ^0.14.8
       framer-motion: ^5.5.5
       next: ^12.0.7
-      next-i18next: ^10.0.1
+      next-i18next: ^10.1.0
       next-remote-watch: ^1.0.0
       next-seo: ^4.28.1
       open-cli: ^7.0.1
@@ -410,14 +410,14 @@ importers:
       '@chakra-ui/utils': 1.9.1
       '@emotion/react': 11.7.1_b08e3c15324cbe90a6ff8fcd416c932c
       '@emotion/styled': 11.6.0_0044a6ec6dcf5de7705bffaaff7afd26
-      '@guild-docs/client': 1.3.4_5a8be53c55982ee09ffc6cffaaf55ebd
-      '@guild-docs/server': 2.1.6_0e23666c4db0b18e3d87f339b5eb12de
+      '@guild-docs/client': 1.3.4_d600d40a817995348eded8f5b7253ffc
+      '@guild-docs/server': 2.1.6_97e6392b89ca0a5197e23b85abda209c
       '@mdx-js/react': 1.6.22_react@17.0.2
       '@theguild/components': 1.8.6_c330b7277fcbc5464b740b1b619d3beb
       csstype: 3.0.10
       framer-motion: 5.5.5_react-dom@17.0.2+react@17.0.2
       next: 12.0.7_react-dom@17.0.2+react@17.0.2
-      next-i18next: 10.0.1_next@12.0.7+react@17.0.2
+      next-i18next: 10.1.0_next@12.0.7+react@17.0.2
       next-seo: 4.28.1_d837ce8f3acb2f60f8b7454672a9bcea
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
@@ -3146,7 +3146,7 @@ packages:
       graphql: 16.2.0
     dev: false
 
-  /@guild-docs/client/1.3.4_5a8be53c55982ee09ffc6cffaaf55ebd:
+  /@guild-docs/client/1.3.4_d600d40a817995348eded8f5b7253ffc:
     resolution: {integrity: sha512-0r8FqlubBGftCM2vu5NuTB002E3DRiDhfHdwWASulZfm24tRdeVRXklvc20QupbV3NJRWCvL2/jWZzoWYFIUAA==}
     peerDependencies:
       '@chakra-ui/icons': '*'
@@ -3166,15 +3166,15 @@ packages:
       '@chakra-ui/react': 1.7.3_65063925b3864e81538700b4dae72656
       '@chakra-ui/utils': 1.9.1
       '@emotion/react': 11.7.1_b08e3c15324cbe90a6ff8fcd416c932c
-      '@guild-docs/mdx-remote': 1.0.2_f8775bdb43bea1a034ca7d3b940af725
-      '@guild-docs/types': 1.1.0_ffc836467901e49cc1efad7661b99688
+      '@guild-docs/mdx-remote': 1.0.2_4b6b752d9c4ad91ffb256e84183a7065
+      '@guild-docs/types': 1.1.0_472fd32fed217ebec922dd21a37d48e1
       '@mdx-js/react': 1.6.22_react@17.0.2
       '@theguild/components': 1.8.6_c330b7277fcbc5464b740b1b619d3beb
       '@types/mdx-js__react': 1.5.5
       framer-motion: 5.5.5_react-dom@17.0.2+react@17.0.2
       immer: 9.0.7
       next: 12.0.7_react-dom@17.0.2+react@17.0.2
-      next-i18next: 10.0.1_next@12.0.7+react@17.0.2
+      next-i18next: 10.1.0_next@12.0.7+react@17.0.2
       next-seo: 4.28.1_d837ce8f3acb2f60f8b7454672a9bcea
       nprogress: 0.2.0
       react: 17.0.2
@@ -3193,13 +3193,13 @@ packages:
       - supports-color
     dev: false
 
-  /@guild-docs/mdx-remote/1.0.2_f8775bdb43bea1a034ca7d3b940af725:
+  /@guild-docs/mdx-remote/1.0.2_4b6b752d9c4ad91ffb256e84183a7065:
     resolution: {integrity: sha512-1wQBiZwm8o2AS2fW8cGh5Kwvl371PFt+tnvzB5umO3zV5eVdKtbdYe0ukMLcPxy9He5YOnAyceQ/hGaSjbIyww==}
     peerDependencies:
       esbuild: '*'
       react: '*'
     dependencies:
-      '@guild-docs/types': 1.1.0_ffc836467901e49cc1efad7661b99688
+      '@guild-docs/types': 1.1.0_472fd32fed217ebec922dd21a37d48e1
       '@mdx-js/mdx': 1.6.22
       '@mdx-js/react': 1.6.22_react@17.0.2
       esbuild: 0.14.8
@@ -3213,7 +3213,7 @@ packages:
       - supports-color
     dev: false
 
-  /@guild-docs/server/2.1.6_0e23666c4db0b18e3d87f339b5eb12de:
+  /@guild-docs/server/2.1.6_97e6392b89ca0a5197e23b85abda209c:
     resolution: {integrity: sha512-yuHuP5mhjpz1wfjG49KuX81mLcKyABE650YKCWNHYYE5Qe2BW3COOKWAPR7IzXImVdWiSuxtEs8ZxRD8ZhMHgA==}
     peerDependencies:
       next: '>=11.1.3'
@@ -3223,13 +3223,13 @@ packages:
       remark-admonitions: '*'
       shiki: '*'
     dependencies:
-      '@guild-docs/mdx-remote': 1.0.2_f8775bdb43bea1a034ca7d3b940af725
-      '@guild-docs/types': 1.1.0_ffc836467901e49cc1efad7661b99688
+      '@guild-docs/mdx-remote': 1.0.2_4b6b752d9c4ad91ffb256e84183a7065
+      '@guild-docs/types': 1.1.0_472fd32fed217ebec922dd21a37d48e1
       github-slugger: 1.4.0
       globby: 11.0.4
       gray-matter: 4.0.3
       next: 12.0.7_react-dom@17.0.2+react@17.0.2
-      next-i18next: 10.0.1_next@12.0.7+react@17.0.2
+      next-i18next: 10.1.0_next@12.0.7+react@17.0.2
       node-fetch: 2.6.6
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
@@ -3247,7 +3247,7 @@ packages:
       - supports-color
     dev: false
 
-  /@guild-docs/types/1.1.0_ffc836467901e49cc1efad7661b99688:
+  /@guild-docs/types/1.1.0_472fd32fed217ebec922dd21a37d48e1:
     resolution: {integrity: sha512-ivBhwKj5+u/YsKvDA45+zwrWPt7ByAVWqGFmKn67PdyCfeG8QMDSZt5mS2ET7RNaVe1PTTiXd3sWEaj3U2Ndag==}
     peerDependencies:
       '@chakra-ui/react': '*'
@@ -3256,7 +3256,7 @@ packages:
     dependencies:
       '@chakra-ui/react': 1.7.3_65063925b3864e81538700b4dae72656
       '@types/react': 17.0.38
-      next-i18next: 10.0.1_next@12.0.7+react@17.0.2
+      next-i18next: 10.1.0_next@12.0.7+react@17.0.2
       unified: 10.1.1
     dev: false
 
@@ -9384,8 +9384,8 @@ packages:
     engines: {node: '>= 0.6'}
     dev: true
 
-  /next-i18next/10.0.1_next@12.0.7+react@17.0.2:
-    resolution: {integrity: sha512-wcpZDip4Vt89dCHgN2EKeNyA5Ckz6NenPUVpzQMphmuXyTPMqmFkWyWbpMDdg4QuMiYiX98eTeY4RLGhUXzHmQ==}
+  /next-i18next/10.1.0_next@12.0.7+react@17.0.2:
+    resolution: {integrity: sha512-KvrXiSLRjsJrP8Uv+MFNuTXk1tlwaktce+3yTDtYqh/75BExLmV4Dr9om+zhAz8P+yMke5yhmR2Lnl0FV6mhsQ==}
     engines: {node: '>=12'}
     peerDependencies:
       next: '>= 10.0.0'
