@@ -73,6 +73,10 @@ async function main() {
       },
       sourcemap: false,
       external: ['./deps.js'],
+      keepDynamicImport: false,
+      rollup: {
+        interop: 'esModule',
+      },
     }),
   ]);
 

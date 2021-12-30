@@ -40,7 +40,8 @@
     "test:watch-coverage": "rimraf coverage && mkdirp coverage/lcov-report && concurrently --raw \"jest --watchAll\" \"serve -l 8787 coverage/lcov-report\" \"wait-on tcp:8787 coverage/lcov-report/index.html && open-cli http://localhost:8787\""
   },
   "dependencies": {
-    "gqty": "workspace:^2.1.0"
+    "gqty": "workspace:^2.1.0",
+    "undici": "^4.12.1"
   },
   "devDependencies": {
     "@graphql-codegen/core": "^2.4.0",
@@ -52,9 +53,8 @@
     "@types/lodash": "^4.14.178",
     "@types/lodash.sortby": "^4.7.6",
     "@types/mkdirp": "^1.0.2",
-    "@types/node-fetch": "^2.5.12",
-    "bob-ts": "^3.0.0",
-    "bob-tsm": "^0.4.2",
+    "bob-ts": "^3.0.1",
+    "bob-tsm": "^0.4.3",
     "changesets-github-release": "^0.0.4",
     "commander": "^8.3.0",
     "cosmiconfig": "^7.0.1",
@@ -62,7 +62,6 @@
     "graphql": "^16.2.0",
     "lodash": "^4.17.21",
     "mkdirp": "^1.0.4",
-    "node-fetch": "^2.6.6",
     "open-cli": "^7.0.1",
     "prettier": "^2.5.1",
     "rimraf": "^3.0.2",

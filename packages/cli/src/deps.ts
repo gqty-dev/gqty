@@ -10,8 +10,6 @@ export { printSchemaWithDirectives } from '@graphql-tools/utils';
 
 export { default as sortBy } from 'lodash/sortBy.js';
 
-export { default as nodeFetch } from 'node-fetch';
-
 export { introspectSchema, wrapSchema } from '@graphql-tools/wrap';
 
 export { default as prettier, Options as PrettierOptions } from 'prettier';
