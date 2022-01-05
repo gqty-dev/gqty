@@ -19,7 +19,7 @@ Hook designed to inspect the React Client state, like error handling and fetchin
 ### Example
 
 ```tsx
-import { useMetaState } from '../gqty';
+import { useMetaState, query } from '../gqty';
 
 function Inspector() {
   const { isFetching, errors } = useMetaState({
@@ -29,7 +29,7 @@ function Inspector() {
     onRetry({ retryPromise, selections }) {},
 
     // Optional, if it's not specified, inspects everything
-    filterSelections: [['query', 'helloWorld']],
+    filterSelections: [query.user],
   });
 
   return (
