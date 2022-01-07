@@ -66,7 +66,7 @@ importers:
     specifiers:
       '@gqty/cli': workspace:^3.0.1
       '@graphql-ez/fastify': ^0.9.5
-      '@graphql-ez/fastify-testing': ^0.1.3
+      '@graphql-ez/fastify-testing': ^0.1.4
       '@graphql-ez/plugin-altair': ^0.9.7
       '@graphql-ez/plugin-codegen': ^0.7.7
       '@graphql-ez/plugin-schema': ^0.8.2
@@ -87,7 +87,7 @@ importers:
     dependencies:
       '@gqty/cli': link:../../packages/cli
       '@graphql-ez/fastify': 0.9.5_a8723a0949edd054ea841898f9dce111
-      '@graphql-ez/fastify-testing': 0.1.3_cad7938732ca710352c8348267b59ace
+      '@graphql-ez/fastify-testing': 0.1.4_cad7938732ca710352c8348267b59ace
       '@graphql-ez/plugin-altair': 0.9.7_d443eb3f5bd57ef36608d397539896af
       '@graphql-ez/plugin-codegen': 0.7.7_d443eb3f5bd57ef36608d397539896af
       '@graphql-ez/plugin-schema': 0.8.2_d443eb3f5bd57ef36608d397539896af
@@ -314,7 +314,7 @@ importers:
   internal/test-utils:
     specifiers:
       '@graphql-ez/fastify': ^0.9.5
-      '@graphql-ez/fastify-testing': ^0.1.3
+      '@graphql-ez/fastify-testing': ^0.1.4
       '@graphql-ez/plugin-codegen': ^0.7.7
       '@graphql-ez/plugin-schema': ^0.8.2
       '@graphql-ez/plugin-websockets': ^0.10.2
@@ -340,7 +340,7 @@ importers:
       wait-for-expect: ^3.0.2
     dependencies:
       '@graphql-ez/fastify': 0.9.5_a8723a0949edd054ea841898f9dce111
-      '@graphql-ez/fastify-testing': 0.1.3_cad7938732ca710352c8348267b59ace
+      '@graphql-ez/fastify-testing': 0.1.4_cad7938732ca710352c8348267b59ace
       '@graphql-ez/plugin-codegen': 0.7.7_d443eb3f5bd57ef36608d397539896af
       '@graphql-ez/plugin-schema': 0.8.2_d443eb3f5bd57ef36608d397539896af
       '@rollup/plugin-babel': 5.3.0
@@ -2802,13 +2802,13 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
-  /@graphql-ez/client/0.2.3_783298626bb6235a401cd81e8755662f:
-    resolution: {integrity: sha512-OeHOrLqmJu0J2NKWPmsF+Gl+0WXMFss3+zLDfHHnHceGXdoL+O95R9MWUqbb/BBo4YOSAUuy5V+QzLZ88T2DyQ==}
+  /@graphql-ez/client/0.3.1_783298626bb6235a401cd81e8755662f:
+    resolution: {integrity: sha512-h10peKkFn2OX9kpeCZQO29boja/d+mBXkKpOkQ8HlTR3kumrx87f+Nkc9cnwvzbRscToNi3mQTaggrsHG3Uyng==}
     peerDependencies:
       '@types/node': '*'
       graphql: '*'
     dependencies:
-      '@graphql-ez/utils': 0.1.2_d6d5a494764a44f8600ae0962e04398d
+      '@graphql-ez/utils': 0.1.3_d6d5a494764a44f8600ae0962e04398d
       '@graphql-tools/utils': 8.6.0_graphql@16.2.0
       '@types/eventsource': 1.1.8
       '@types/node': 16.11.19
@@ -2827,17 +2827,17 @@ packages:
       - utf-8-validate
     dev: false
 
-  /@graphql-ez/fastify-testing/0.1.3_cad7938732ca710352c8348267b59ace:
-    resolution: {integrity: sha512-zol5Csbv+wU+fT5XTCWT3B4vchYSyIk5yk2ZiFm9TTsjpuuYVYp8O4SCQT/SOOmmlMUMJP1DoFHz1QcX1/LXBg==}
+  /@graphql-ez/fastify-testing/0.1.4_cad7938732ca710352c8348267b59ace:
+    resolution: {integrity: sha512-e3LwJVDq2G4xku2+aTzc+/8QrENMuOr335nxZnXkvD52wBNvIEVTiSVvwP1z6zKWnrQpxNOiud95sqhMKwZdwg==}
     peerDependencies:
       '@graphql-ez/fastify': ^0.9.4
-      fastify: ^3.23.1
+      fastify: ^3.25.3
       graphql: '*'
-      graphql-ez: ^0.13.5
+      graphql-ez: ^0.13.8
     dependencies:
-      '@graphql-ez/client': 0.2.3_783298626bb6235a401cd81e8755662f
+      '@graphql-ez/client': 0.3.1_783298626bb6235a401cd81e8755662f
       '@graphql-ez/fastify': 0.9.5_a8723a0949edd054ea841898f9dce111
-      '@graphql-ez/utils': 0.1.2_d6d5a494764a44f8600ae0962e04398d
+      '@graphql-ez/utils': 0.1.3_d6d5a494764a44f8600ae0962e04398d
       fastify: 3.25.3
       graphql: 16.2.0
       graphql-ez: 0.13.7_d6d5a494764a44f8600ae0962e04398d
@@ -3013,6 +3013,16 @@ packages:
     dependencies:
       '@types/node': 16.11.19
       graphql: 16.2.0
+
+  /@graphql-ez/utils/0.1.3_d6d5a494764a44f8600ae0962e04398d:
+    resolution: {integrity: sha512-SzlrkTW6aykOGZWsPI+DJFzIy2NKOz1lngm2PikrHXy1ktpVZdLxpjpV/+WbYk53xInWePTpB/OKgeMPlPcBhQ==}
+    peerDependencies:
+      '@types/node': '*'
+      graphql: '*'
+    dependencies:
+      '@types/node': 16.11.19
+      graphql: 16.2.0
+    dev: false
 
   /@graphql-tools/batch-execute/8.3.1_graphql@16.2.0:
     resolution: {integrity: sha512-63kHY8ZdoO5FoeDXYHnAak1R3ysMViMPwWC2XUblFckuVLMUPmB2ONje8rjr2CvzWBHAW8c1Zsex+U3xhKtGIA==}
