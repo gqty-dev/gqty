@@ -1,6 +1,3 @@
-import { FC, ReactNode, useEffect } from 'react';
-import { HiOutlineMenu } from 'react-icons/hi';
-
 import {
   Box,
   Drawer,
@@ -9,10 +6,12 @@ import {
   DrawerOverlay,
   Flex,
   IconButton,
+  Spinner,
   useBreakpointValue,
   useDisclosure,
 } from '@chakra-ui/react';
-
+import { FC, useEffect, useState } from 'react';
+import { HiOutlineMenu } from 'react-icons/hi';
 import { Sidebar } from './Sidebar';
 
 const Topbar = () => {
@@ -60,8 +59,19 @@ const Topbar = () => {
   );
 };
 
+let globalIsClientSide = false;
+
 export function WithExamplePage<T>(Cmp: FC<T>) {
   return function WithExamplePage(props: T) {
+    const [isClientSide, setIsClientSide] = useState(globalIsClientSide);
+
+    useEffect(() => {
+      if (isClientSide) return;
+
+      setIsClientSide((globalIsClientSide = true));
+    }, [isClientSide, setIsClientSide]);
+
+    if (!isClientSide) return <Spinner margin="1em" boxSize="xl" />;
     return (
       <Flex flexDirection="column" width="100%">
         <Topbar />
