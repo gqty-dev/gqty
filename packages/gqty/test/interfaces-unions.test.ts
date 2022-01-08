@@ -17,9 +17,9 @@ describe('interfaces and unions', () => {
 
     expect(await query('{node(type:A){__typename id ...on A{a}}}'))
       .toMatchInlineSnapshot(`
-      Object {
-        "data": Object {
-          "node": Object {
+      {
+        "data": {
+          "node": {
             "__typename": "A",
             "a": 1,
             "id": "1",
@@ -30,9 +30,9 @@ describe('interfaces and unions', () => {
 
     expect(await query('{node(type:B){__typename id ...on B{b}}}'))
       .toMatchInlineSnapshot(`
-      Object {
-        "data": Object {
-          "node": Object {
+      {
+        "data": {
+          "node": {
             "__typename": "B",
             "b": 2,
             "id": "2",
@@ -43,9 +43,9 @@ describe('interfaces and unions', () => {
 
     expect(await query('{node(type:C){__typename id ...on C{c}}}'))
       .toMatchInlineSnapshot(`
-      Object {
-        "data": Object {
-          "node": Object {
+      {
+        "data": {
+          "node": {
             "__typename": "C",
             "c": 3,
             "id": "3",
@@ -56,9 +56,9 @@ describe('interfaces and unions', () => {
 
     expect(await query('{union(type:A){__typename ...on A{id a}}}'))
       .toMatchInlineSnapshot(`
-      Object {
-        "data": Object {
-          "union": Object {
+      {
+        "data": {
+          "union": {
             "__typename": "A",
             "a": 1,
             "id": "1",
@@ -69,9 +69,9 @@ describe('interfaces and unions', () => {
 
     expect(await query('{union(type:B){__typename ...on B{id b}}}'))
       .toMatchInlineSnapshot(`
-      Object {
-        "data": Object {
-          "union": Object {
+      {
+        "data": {
+          "union": {
             "__typename": "B",
             "b": 2,
             "id": "2",
@@ -82,9 +82,9 @@ describe('interfaces and unions', () => {
 
     expect(await query('{union(type:C){__typename ...on C{id c}}}'))
       .toMatchInlineSnapshot(`
-      Object {
-        "data": Object {
-          "union": Object {
+      {
+        "data": {
+          "union": {
             "__typename": "C",
             "c": 3,
             "id": "3",
@@ -113,32 +113,32 @@ describe('interfaces and unions', () => {
     });
 
     expect(nodeResult).toMatchInlineSnapshot(`
-Object {
-  "__typename": "A",
-  "a": 1,
-  "b": undefined,
-}
-`);
+      {
+        "__typename": "A",
+        "a": 1,
+        "b": undefined,
+      }
+    `);
 
     expect(queries).toMatchInlineSnapshot(`
-Array [
-  Object {
-    "query": "query($type1:NodeType!){node0:node(type:$type1){__typename id ...on A{id a}...on B{id b}}}",
-    "result": Object {
-      "data": Object {
-        "node0": Object {
-          "__typename": "A",
-          "a": 1,
-          "id": "1",
+      [
+        {
+          "query": "query($type1:NodeType!){node0:node(type:$type1){__typename id ...on A{id a}...on B{id b}}}",
+          "result": {
+            "data": {
+              "node0": {
+                "__typename": "A",
+                "a": 1,
+                "id": "1",
+              },
+            },
+          },
+          "variables": {
+            "type1": "A",
+          },
         },
-      },
-    },
-    "variables": Object {
-      "type1": "A",
-    },
-  },
-]
-`);
+      ]
+    `);
 
     expect(nodeResult).toStrictEqual({
       __typename: 'A',
@@ -170,40 +170,40 @@ Array [
     });
 
     expect(nodeResult).toMatchInlineSnapshot(`
-Object {
-  "__typename": "A",
-  "a": 1,
-  "aNodeId": "1",
-  "b": undefined,
-  "deepNodeAId": undefined,
-}
-`);
+      {
+        "__typename": "A",
+        "a": 1,
+        "aNodeId": "1",
+        "b": undefined,
+        "deepNodeAId": undefined,
+      }
+    `);
     expect(queries).toMatchInlineSnapshot(`
-Array [
-  Object {
-    "query": "query($type1:NodeType!){node0:node(type:$type1){__typename id ...on A{id a node{__typename id ...on A{id node{__typename id ...on C{id node{__typename id ...on A{id}}}}}}}...on B{id b}}}",
-    "result": Object {
-      "data": Object {
-        "node0": Object {
-          "__typename": "A",
-          "a": 1,
-          "id": "1",
-          "node": Object {
-            "__typename": "A",
-            "id": "1",
-            "node": Object {
-              "__typename": "A",
-              "id": "1",
+      [
+        {
+          "query": "query($type1:NodeType!){node0:node(type:$type1){__typename id ...on A{id a node{__typename id ...on A{id node{__typename id ...on C{id node{__typename id ...on A{id}}}}}}}...on B{id b}}}",
+          "result": {
+            "data": {
+              "node0": {
+                "__typename": "A",
+                "a": 1,
+                "id": "1",
+                "node": {
+                  "__typename": "A",
+                  "id": "1",
+                  "node": {
+                    "__typename": "A",
+                    "id": "1",
+                  },
+                },
+              },
             },
           },
+          "variables": {
+            "type1": "A",
+          },
         },
-      },
-    },
-    "variables": Object {
-      "type1": "A",
-    },
-  },
-]
-`);
+      ]
+    `);
   });
 });

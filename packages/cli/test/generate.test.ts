@@ -857,188 +857,188 @@ describe('feature complete app', () => {
       "
     `);
     expect(generatedSchema).toMatchInlineSnapshot(`
-      Object {
-        "GreetingsInput": Object {
-          "language": Object {
+      {
+        "GreetingsInput": {
+          "language": {
             "__type": "String!",
           },
-          "scal": Object {
+          "scal": {
             "__type": "ExampleScalar",
           },
-          "value": Object {
+          "value": {
             "__type": "String",
           },
         },
-        "Human": Object {
-          "__typename": Object {
+        "Human": {
+          "__typename": {
             "__type": "String!",
           },
-          "father": Object {
+          "father": {
             "__type": "Human!",
           },
-          "fieldWithArgs": Object {
-            "__args": Object {
+          "fieldWithArgs": {
+            "__args": {
               "id": "Int!",
             },
             "__type": "Int!",
           },
-          "name": Object {
+          "name": {
             "__type": "String!",
           },
-          "other": Object {
+          "other": {
             "__type": "String",
           },
-          "withArgs": Object {
-            "__args": Object {
+          "withArgs": {
+            "__args": {
               "a": "Int!",
               "b": "Int",
             },
             "__type": "Int",
           },
-          "withArgs2": Object {
-            "__args": Object {
+          "withArgs2": {
+            "__args": {
               "a": "Int",
             },
             "__type": "Int!",
           },
         },
-        "HumanType": Object {
-          "$on": Object {
+        "HumanType": {
+          "$on": {
             "__type": "$HumanType!",
           },
-          "__typename": Object {
+          "__typename": {
             "__type": "String!",
           },
         },
-        "NamedEntity": Object {
-          "$on": Object {
+        "NamedEntity": {
+          "$on": {
             "__type": "$NamedEntity!",
           },
-          "__typename": Object {
+          "__typename": {
             "__type": "String!",
           },
-          "name": Object {
+          "name": {
             "__type": "String!",
           },
         },
-        "OtherHuman": Object {
-          "__typename": Object {
+        "OtherHuman": {
+          "__typename": {
             "__type": "String!",
           },
-          "name": Object {
+          "name": {
             "__type": "String!",
           },
-          "other": Object {
+          "other": {
             "__type": "String",
           },
-          "otherHumanStyle": Object {
+          "otherHumanStyle": {
             "__type": "String!",
           },
-          "withArgs": Object {
-            "__args": Object {
+          "withArgs": {
+            "__args": {
               "a": "Int!",
               "b": "Int",
             },
             "__type": "Int",
           },
-          "withArgs2": Object {
-            "__args": Object {
+          "withArgs2": {
+            "__args": {
               "a": "Int",
             },
             "__type": "Int!",
           },
         },
-        "mutation": Object {
-          "__typename": Object {
+        "mutation": {
+          "__typename": {
             "__type": "String!",
           },
-          "increment": Object {
-            "__args": Object {
+          "increment": {
+            "__args": {
               "n": "Int!",
             },
             "__type": "Int!",
           },
         },
-        "query": Object {
-          "__typename": Object {
+        "query": {
+          "__typename": {
             "__type": "String!",
           },
-          "arrayObjectArgs": Object {
-            "__args": Object {
+          "arrayObjectArgs": {
+            "__args": {
               "limit": "Int",
             },
             "__type": "[Human!]!",
           },
-          "arrayString": Object {
+          "arrayString": {
             "__type": "[String!]!",
           },
-          "enumsInput": Object {
-            "__args": Object {
+          "enumsInput": {
+            "__args": {
               "notNullableEnum": "GreetingsEnum!",
               "nullableEnum": "GreetingsEnum",
             },
             "__type": "GreetingsEnum",
           },
-          "giveGreetingsInput": Object {
-            "__args": Object {
+          "giveGreetingsInput": {
+            "__args": {
               "input": "GreetingsInput!",
             },
             "__type": "String!",
           },
-          "greetings": Object {
+          "greetings": {
             "__type": "GreetingsEnum!",
           },
-          "humanLike": Object {
+          "humanLike": {
             "__type": "HumanType!",
           },
-          "namedEntities": Object {
+          "namedEntities": {
             "__type": "[NamedEntity!]!",
           },
-          "number": Object {
+          "number": {
             "__type": "Int!",
           },
-          "object": Object {
+          "object": {
             "__type": "Human",
           },
-          "objectArray": Object {
+          "objectArray": {
             "__type": "[Human]",
           },
-          "objectWithArgs": Object {
-            "__args": Object {
+          "objectWithArgs": {
+            "__args": {
               "who": "String!",
             },
             "__type": "Human!",
           },
-          "simpleString": Object {
+          "simpleString": {
             "__type": "String!",
           },
-          "stringNullableWithArgs": Object {
-            "__args": Object {
+          "stringNullableWithArgs": {
+            "__args": {
               "hello": "String!",
               "helloTwo": "String",
             },
             "__type": "String",
           },
-          "stringNullableWithArgsArray": Object {
-            "__args": Object {
+          "stringNullableWithArgsArray": {
+            "__args": {
               "hello": "[String]!",
             },
             "__type": "String",
           },
-          "stringWithArgs": Object {
-            "__args": Object {
+          "stringWithArgs": {
+            "__args": {
               "hello": "String!",
             },
             "__type": "String!",
           },
         },
-        "subscription": Object {},
-        Symbol(unionsKey): Object {
-          "HumanType": Array [
+        "subscription": {},
+        Symbol(unionsKey): {
+          "HumanType": [
             "Human",
             "OtherHuman",
           ],
-          "NamedEntity": Array [
+          "NamedEntity": [
             "Human",
             "OtherHuman",
           ],
@@ -1046,7 +1046,7 @@ describe('feature complete app', () => {
       }
     `);
     expect(scalarsEnumsHash).toMatchInlineSnapshot(`
-      Object {
+      {
         "Boolean": true,
         "ExampleScalar": true,
         "GreetingsEnum": true,
@@ -1182,31 +1182,31 @@ describe('mutation', () => {
       "
     `);
     expect(generatedSchema).toMatchInlineSnapshot(`
-      Object {
-        "mutation": Object {
-          "__typename": Object {
+      {
+        "mutation": {
+          "__typename": {
             "__type": "String!",
           },
-          "helloMutation": Object {
-            "__args": Object {
+          "helloMutation": {
+            "__args": {
               "hello": "String!",
             },
             "__type": "String!",
           },
         },
-        "query": Object {
-          "__typename": Object {
+        "query": {
+          "__typename": {
             "__type": "String!",
           },
-          "hello": Object {
+          "hello": {
             "__type": "String!",
           },
         },
-        "subscription": Object {},
+        "subscription": {},
       }
     `);
     expect(scalarsEnumsHash).toMatchInlineSnapshot(`
-      Object {
+      {
         "Boolean": true,
         "String": true,
       }
@@ -1318,28 +1318,28 @@ describe('subscription', () => {
       "
     `);
     expect(generatedSchema).toMatchInlineSnapshot(`
-      Object {
-        "mutation": Object {},
-        "query": Object {
-          "__typename": Object {
+      {
+        "mutation": {},
+        "query": {
+          "__typename": {
             "__type": "String!",
           },
-          "hello": Object {
+          "hello": {
             "__type": "String!",
           },
         },
-        "subscription": Object {
-          "__typename": Object {
+        "subscription": {
+          "__typename": {
             "__type": "String!",
           },
-          "newNotification": Object {
+          "newNotification": {
             "__type": "String!",
           },
         },
       }
     `);
     expect(scalarsEnumsHash).toMatchInlineSnapshot(`
-      Object {
+      {
         "Boolean": true,
         "String": true,
       }
@@ -1523,50 +1523,50 @@ test('javascript output works', async () => {
     "
   `);
   expect(generatedSchema).toMatchInlineSnapshot(`
-    Object {
-      "A": Object {
-        "__typename": Object {
+    {
+      "A": {
+        "__typename": {
           "__type": "String!",
         },
-        "a": Object {
+        "a": {
           "__type": "String",
         },
       },
-      "B": Object {
-        "__typename": Object {
+      "B": {
+        "__typename": {
           "__type": "String!",
         },
-        "b": Object {
+        "b": {
           "__type": "Int",
         },
       },
-      "C": Object {
-        "$on": Object {
+      "C": {
+        "$on": {
           "__type": "$C!",
         },
-        "__typename": Object {
+        "__typename": {
           "__type": "String!",
         },
       },
-      "mutation": Object {},
-      "query": Object {
-        "__typename": Object {
+      "mutation": {},
+      "query": {
+        "__typename": {
           "__type": "String!",
         },
-        "hello": Object {
-          "__type": "String!",
-        },
-      },
-      "subscription": Object {
-        "__typename": Object {
-          "__type": "String!",
-        },
-        "newNotification": Object {
+        "hello": {
           "__type": "String!",
         },
       },
-      Symbol(unionsKey): Object {
-        "C": Array [
+      "subscription": {
+        "__typename": {
+          "__type": "String!",
+        },
+        "newNotification": {
+          "__type": "String!",
+        },
+      },
+      Symbol(unionsKey): {
+        "C": [
           "A",
           "B",
         ],
@@ -1803,24 +1803,24 @@ test('ignoreArgs transform', async () => {
     "
   `);
   expect(generatedSchema).toMatchInlineSnapshot(`
-    Object {
-      "mutation": Object {},
-      "query": Object {
-        "__typename": Object {
+    {
+      "mutation": {},
+      "query": {
+        "__typename": {
           "__type": "String!",
         },
-        "asd": Object {
+        "asd": {
           "__type": "String!",
         },
-        "zxc": Object {
-          "__args": Object {
+        "zxc": {
+          "__args": {
             "optional": "String",
             "required": "Int!",
           },
           "__type": "Int",
         },
       },
-      "subscription": Object {},
+      "subscription": {},
     }
   `);
   expect(javascriptSchemaCode).toMatchInlineSnapshot(`
@@ -1922,7 +1922,7 @@ test('ignoreArgs transform', async () => {
     "
   `);
   expect(scalarsEnumsHash).toMatchInlineSnapshot(`
-    Object {
+    {
       "Boolean": true,
       "Int": true,
       "String": true,

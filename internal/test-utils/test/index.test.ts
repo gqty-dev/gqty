@@ -292,22 +292,22 @@ test('gql', () => {
   `;
 
   expect(doc).toMatchInlineSnapshot(`
-    Object {
-      "definitions": Array [
-        Object {
-          "directives": Array [],
+    {
+      "definitions": [
+        {
+          "directives": [],
           "kind": "OperationDefinition",
           "name": undefined,
           "operation": "query",
-          "selectionSet": Object {
+          "selectionSet": {
             "kind": "SelectionSet",
-            "selections": Array [
-              Object {
+            "selections": [
+              {
                 "alias": undefined,
-                "arguments": Array [],
-                "directives": Array [],
+                "arguments": [],
+                "directives": [],
                 "kind": "Field",
-                "name": Object {
+                "name": {
                   "kind": "Name",
                   "value": "hello",
                 },
@@ -315,11 +315,11 @@ test('gql', () => {
               },
             ],
           },
-          "variableDefinitions": Array [],
+          "variableDefinitions": [],
         },
       ],
       "kind": "Document",
-      "loc": Object {
+      "loc": {
         "end": 33,
         "start": 0,
       },
@@ -333,22 +333,22 @@ test('gql', () => {
   `;
 
   expect(doc2).toMatchInlineSnapshot(`
-    Object {
-      "definitions": Array [
-        Object {
-          "directives": Array [],
+    {
+      "definitions": [
+        {
+          "directives": [],
           "kind": "OperationDefinition",
           "name": undefined,
           "operation": "query",
-          "selectionSet": Object {
+          "selectionSet": {
             "kind": "SelectionSet",
-            "selections": Array [
-              Object {
+            "selections": [
+              {
                 "alias": undefined,
-                "arguments": Array [],
-                "directives": Array [],
+                "arguments": [],
+                "directives": [],
                 "kind": "Field",
-                "name": Object {
+                "name": {
                   "kind": "Name",
                   "value": "helloworld",
                 },
@@ -356,11 +356,11 @@ test('gql', () => {
               },
             ],
           },
-          "variableDefinitions": Array [],
+          "variableDefinitions": [],
         },
       ],
       "kind": "Document",
-      "loc": Object {
+      "loc": {
         "end": 38,
         "start": 0,
       },

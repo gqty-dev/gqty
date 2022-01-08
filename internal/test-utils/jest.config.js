@@ -34,6 +34,9 @@ const defaultConfig = {
   ],
   restoreMocks: true,
   moduleNameMapper,
+  snapshotFormat: {
+    printBasicPrototype: false,
+  },
 };
 
 exports.default = defaultConfig;

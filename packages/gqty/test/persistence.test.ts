@@ -25,16 +25,16 @@ test('basic functionality', async () => {
   expect(client2.restorePersistence(dataBackup1)).toBe(true);
 
   expect(client2.cache).toMatchInlineSnapshot(`
-      Object {
-        "query": Object {
-          "human0": Object {
-            "__typename": "Human",
-            "id": "1",
-            "name": "asd",
-          },
+    {
+      "query": {
+        "human0": {
+          "__typename": "Human",
+          "id": "1",
+          "name": "asd",
         },
-      }
-    `);
+      },
+    }
+  `);
 
   expect(client2.backupPersistence()).toBe(dataBackup1);
 
