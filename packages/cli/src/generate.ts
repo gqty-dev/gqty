@@ -80,7 +80,8 @@ export interface GenerateOptions {
    * Transform the GraphQL Schema before being used to generate the client
    */
   transformSchema?: (
-    schema: GraphQLSchema
+    schema: GraphQLSchema,
+    graphql_js: typeof graphql
   ) => Promise<GraphQLSchema> | GraphQLSchema;
 }
 
@@ -154,7 +155,7 @@ export async function generate(
   schema = lexicographicSortSchema(assertSchema(schema));
 
   if (transformSchema) {
-    schema = await transformSchema(schema);
+    schema = await transformSchema(schema, graphql);
 
     if (!isSchema(schema)) {
       throw Error(`"transformSchema" returned an invalid GraphQL Schema!`);
