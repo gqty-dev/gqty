@@ -1,3 +1,4 @@
+import assert from 'assert';
 import { createTestApp, gql } from 'test-utils';
 import { generate } from '../src';
 import './utils';
@@ -1928,4 +1929,30 @@ test('ignoreArgs transform', async () => {
       "String": true,
     }
   `);
+});
+
+test('invalid transformSchema', async () => {
+  const { getEnveloped } = await createTestApp({
+    schema: {
+      typeDefs: gql`
+        type Query {
+          hello: String!
+        }
+      `,
+    },
+  });
+
+  try {
+    await generate(getEnveloped().schema, {
+      transformSchema() {
+        return null as any;
+      },
+    });
+    throw Error("Shouldn't reach this");
+  } catch (err) {
+    assert(err instanceof Error);
+    expect(err.message).toBe(
+      `"transformSchema" returned an invalid GraphQL Schema!`
+    );
+  }
 });

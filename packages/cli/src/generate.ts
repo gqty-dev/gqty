@@ -30,6 +30,8 @@ const {
   isUnionType,
   lexicographicSortSchema,
   parse,
+  isSchema,
+  assertSchema,
 } = graphql;
 
 export interface GenerateOptions {
@@ -74,6 +76,12 @@ export interface GenerateOptions {
    * @default false
    */
   javascriptOutput?: boolean;
+  /**
+   * Transform the GraphQL Schema before being used to generate the client
+   */
+  transformSchema?: (
+    schema: GraphQLSchema
+  ) => Promise<GraphQLSchema> | GraphQLSchema;
 }
 
 export interface TransformSchemaOptions {
@@ -94,6 +102,7 @@ export async function generate(
     enumsAsStrings,
     subscriptions,
     javascriptOutput,
+    transformSchema,
   }: GenerateOptions = {},
   { ignoreArgs }: TransformSchemaOptions = {}
 ): Promise<{
@@ -136,12 +145,21 @@ export async function generate(
   react ??= gqtyConfig.react ?? defaultConfig.react;
   preImport ??= gqtyConfig.preImport ?? defaultConfig.preImport;
   subscriptions ??= gqtyConfig.subscriptions ?? defaultConfig.subscriptions;
+  transformSchema ??= gqtyConfig.transformSchema;
 
   const { format } = formatPrettier({
     parser: 'typescript',
   });
 
-  schema = lexicographicSortSchema(schema);
+  schema = lexicographicSortSchema(assertSchema(schema));
+
+  if (transformSchema) {
+    schema = await transformSchema(schema);
+
+    if (!isSchema(schema)) {
+      throw Error(`"transformSchema" returned an invalid GraphQL Schema!`);
+    }
+  }
 
   const codegenResultPromise = deps.codegen({
     schema: parse(deps.printSchemaWithDirectives(schema)),

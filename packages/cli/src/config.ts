@@ -33,7 +33,8 @@ function isStringRecord(v: unknown): v is Record<string, string> {
 
 export const DUMMY_ENDPOINT = 'SPECIFY_ENDPOINT_OR_SCHEMA_FILE_PATH_HERE';
 
-export const defaultConfig: Required<GQtyConfig> = {
+export const defaultConfig: Omit<Required<GQtyConfig>, 'transformSchema'> &
+  Pick<GQtyConfig, 'transformSchema'> = {
   react: (() => {
     try {
       cjsRequire.resolve('react');
@@ -159,6 +160,14 @@ export function getValidConfig(v: unknown): GQtyConfig {
             newConfig[key] = introspectionOptions;
           } else {
             warnConfig(key, value, 'object', defaultConfig[key]);
+          }
+          break;
+        }
+        case 'transformSchema': {
+          if (typeof value === 'function') {
+            newConfig[key] = value as GQtyConfig['transformSchema'];
+          } else {
+            warnConfig(key, value, 'function', 'undefined');
           }
           break;
         }
