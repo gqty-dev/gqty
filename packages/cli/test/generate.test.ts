@@ -1,3 +1,4 @@
+import assert from 'assert';
 import { createTestApp, gql } from 'test-utils';
 import { generate } from '../src';
 import './utils';
@@ -1928,4 +1929,119 @@ test('ignoreArgs transform', async () => {
       "String": true,
     }
   `);
+});
+
+test('transformSchema removes fields', async () => {
+  const { getEnveloped } = await createTestApp({
+    schema: {
+      typeDefs: gql`
+        type Query {
+          hello: String!
+          a: A
+        }
+        type A {
+          name: String!
+        }
+      `,
+    },
+  });
+
+  const originalSchema = (await generate(getEnveloped().schema))
+    .generatedSchema;
+
+  const transformedSchema = (
+    await generate(getEnveloped().schema, {
+      transformSchema(schema, { GraphQLSchema }) {
+        const config = schema.toConfig();
+
+        config.types = config.types.filter((type) => {
+          switch (type.name) {
+            case 'A':
+              return false;
+            default:
+              return true;
+          }
+        });
+
+        delete config.query!.getFields()['a'];
+
+        return new GraphQLSchema(config);
+      },
+    })
+  ).generatedSchema;
+
+  expect(originalSchema).toMatchInlineSnapshot(`
+    {
+      "A": {
+        "__typename": {
+          "__type": "String!",
+        },
+        "name": {
+          "__type": "String!",
+        },
+      },
+      "mutation": {},
+      "query": {
+        "__typename": {
+          "__type": "String!",
+        },
+        "a": {
+          "__type": "A",
+        },
+        "hello": {
+          "__type": "String!",
+        },
+      },
+      "subscription": {},
+    }
+  `);
+
+  expect(transformedSchema).toMatchInlineSnapshot(`
+    {
+      "mutation": {},
+      "query": {
+        "__typename": {
+          "__type": "String!",
+        },
+        "hello": {
+          "__type": "String!",
+        },
+      },
+      "subscription": {},
+    }
+  `);
+
+  expect(originalSchema).not.toEqual(transformedSchema);
+
+  expect(originalSchema.query.a).toBeDefined();
+  expect(originalSchema.A).toBeDefined();
+
+  expect(transformedSchema.query.a).toBeUndefined();
+  expect(transformedSchema.a).toBeUndefined();
+});
+
+test('invalid transformSchema', async () => {
+  const { getEnveloped } = await createTestApp({
+    schema: {
+      typeDefs: gql`
+        type Query {
+          hello: String!
+        }
+      `,
+    },
+  });
+
+  try {
+    await generate(getEnveloped().schema, {
+      transformSchema() {
+        return null as any;
+      },
+    });
+    throw Error("Shouldn't reach this");
+  } catch (err) {
+    assert(err instanceof Error);
+    expect(err.message).toBe(
+      `"transformSchema" returned an invalid GraphQL Schema!`
+    );
+  }
 });

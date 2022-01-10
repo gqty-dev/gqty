@@ -126,6 +126,11 @@ test('completely invalid config', () => {
             }"
           `);
           break;
+        case 15:
+          expect(message).toMatchInlineSnapshot(
+            `"Warning, invalid config transformSchema, got: 123, expected function. \\"undefined\\" used instead."`
+          );
+          break;
         default:
           throw Error('More warnings than expected');
       }
@@ -164,7 +169,11 @@ test('completely invalid config', () => {
 
     getValidConfig(null);
 
-    expect(spy).toBeCalledTimes(14);
+    getValidConfig({
+      transformSchema: 123,
+    });
+
+    expect(spy).toBeCalledTimes(15);
   } finally {
     spy!.mockRestore();
   }

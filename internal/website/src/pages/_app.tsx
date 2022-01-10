@@ -80,6 +80,36 @@ const blockquote = (props: BoxProps) => {
     />
   );
 };
+export const table = (props: BoxProps) => (
+  <Box as="table" textAlign="left" mt="32px" width="full" {...props} />
+);
+
+export const th = (props: BoxProps) => {
+  const bg = useColorModeValue('gray.50', 'whiteAlpha.100');
+
+  return (
+    <Box
+      as="th"
+      bg={bg}
+      minW="148px"
+      fontWeight="semibold"
+      p={2}
+      fontSize="sm"
+      {...props}
+    />
+  );
+};
+
+export const td = (props: BoxProps) => (
+  <Box
+    as="td"
+    p={2}
+    borderTopWidth="1px"
+    borderColor="inherit"
+    fontSize="sm"
+    {...props}
+  />
+);
 
 ExtendComponents({
   HelloWorld() {
@@ -88,6 +118,9 @@ ExtendComponents({
   Box,
   a,
   blockquote,
+  table,
+  th,
+  td,
 });
 
 const styles: typeof chakraTheme['styles'] = {
