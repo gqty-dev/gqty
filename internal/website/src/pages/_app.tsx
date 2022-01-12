@@ -1,11 +1,9 @@
-import '../../public/style.css';
-
 import {
   Box,
+  BoxProps,
   chakra,
   extendTheme,
   theme as chakraTheme,
-  BoxProps,
   useColorModeValue,
 } from '@chakra-ui/react';
 import { mode } from '@chakra-ui/theme-tools';
@@ -17,10 +15,12 @@ import {
   ExtendComponents,
   handlePushRoute,
 } from '@guild-docs/client';
-import { Footer, Header, Subheader } from '@theguild/components';
+import { Footer, Subheader } from '@theguild/components';
 import { appWithTranslation } from 'next-i18next';
 import type { AppProps } from 'next/app';
 import Router from 'next/router';
+import '../../public/style.css';
+import { ThemeSwitch } from '../components/ThemeSwitch';
 
 const BaseAnchor = chakra('a', {
   baseStyle: {
@@ -173,24 +173,12 @@ function AppContent(appProps: AppProps) {
         {({ css }) => {
           return (
             <>
-              <Header
-                accentColor={accentColor}
-                activeLink="/open-source"
-                themeSwitch
-                containerProps={{
-                  className: css({
-                    'menu > button:first-of-type': {
-                      display: 'none !important',
-                    },
-                  }),
-                }}
-              />
               <Subheader
                 activeLink={router.asPath}
                 logoProps={{
                   className: css({
                     img: {
-                      width: '6rem',
+                      width: '6rem !important',
                     },
                   }),
                 }}
@@ -228,6 +216,11 @@ function AppContent(appProps: AppProps) {
                     title: 'Check Documentation',
                     href: '/docs',
                     onClick: (e) => handlePushRoute('/docs/getting-started', e),
+                  },
+                  {
+                    children: <ThemeSwitch />,
+                    href: undefined as any,
+                    title: '',
                   },
                 ]}
                 cta={{
