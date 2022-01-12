@@ -1,5 +1,16 @@
 # @gqty/cli
 
+## 3.1.0
+
+### Minor Changes
+
+- 4c43e7a: New "transformSchema" configuration
+
+### Patch Changes
+
+- 46efcd2: Use `undici` for network schema introspection
+- 18e719b: Fix interop graphql import
+
 ## 3.0.1
 
 ### Patch Changes
