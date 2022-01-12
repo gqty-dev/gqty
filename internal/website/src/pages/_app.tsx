@@ -15,7 +15,7 @@ import {
   ExtendComponents,
   handlePushRoute,
 } from '@guild-docs/client';
-import { Footer, Subheader } from '@theguild/components';
+import { Subheader } from '@theguild/components';
 import { appWithTranslation } from 'next-i18next';
 import type { AppProps } from 'next/app';
 import Router from 'next/router';
@@ -261,7 +261,6 @@ function AppContent(appProps: AppProps) {
       ) : (
         <Component {...pageProps} />
       )}
-      <Footer />
     </>
   );
 }
