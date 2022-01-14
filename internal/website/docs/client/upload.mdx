@@ -12,7 +12,9 @@ Normally, in the API servers, they implement [graphql-upload](https://github.com
 
 Meanwhile in the client, to follow the GraphQL multipart spec, you can easily use [extract-files](https://www.npmjs.com/package/extract-files).
 
-<PackageInstall packages={['extract-files', '-D @types/extract-files']} />
+<PackageInstall
+  packages={['extract-files@11.0.0', '-D @types/extract-files@8.1.1']}
+/>
 
 And then, use it in your `QueryFetcher`, like the following example:
 
