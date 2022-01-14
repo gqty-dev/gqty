@@ -457,7 +457,7 @@ importers:
       changesets-github-release: ^0.0.4
       commander: ^8.3.0
       cosmiconfig: ^7.0.1
-      fast-glob: ^3.2.10
+      fast-glob: ^3.2.11
       gqty: workspace:^2.1.0
       graphql: ^16.2.0
       lodash: ^4.17.21
@@ -491,7 +491,7 @@ importers:
       changesets-github-release: 0.0.4
       commander: 8.3.0
       cosmiconfig: 7.0.1
-      fast-glob: 3.2.10
+      fast-glob: 3.2.11
       graphql: 16.2.0
       lodash: 4.17.21
       mkdirp: 1.0.4
@@ -6529,6 +6529,17 @@ packages:
       glob-parent: 5.1.2
       merge2: 1.4.1
       micromatch: 4.0.4
+
+  /fast-glob/3.2.11:
+    resolution: {integrity: sha512-xrO3+1bxSo3ZVHAnqzyuewYT6aMFHRAd4Kcs92MAonjwQZLsK9d0SF1IyQ3k5PoirxTW0Oe/RqFgMQ6TcNE5Ew==}
+    engines: {node: '>=8.6.0'}
+    dependencies:
+      '@nodelib/fs.stat': 2.0.5
+      '@nodelib/fs.walk': 1.2.8
+      glob-parent: 5.1.2
+      merge2: 1.4.1
+      micromatch: 4.0.4
+    dev: true
 
   /fast-json-stable-stringify/2.1.0:
     resolution: {integrity: sha512-lhd/wF+Lk98HZoTCtlVraHtfh5XYijIjalXck7saUtuanSDyLMxnHhSXEDJqHxD7msR8D0uCmqlkwjCV8xvwHw==}
