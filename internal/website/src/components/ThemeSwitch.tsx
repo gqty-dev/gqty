@@ -1,6 +1,6 @@
 import { IconButton } from '@chakra-ui/react';
 import { useThemeContext } from '@theguild/components';
-import { BsMoon, BsMoonFill } from 'react-icons/bs';
+import { BsMoonFill, BsSun } from 'react-icons/bs';
 
 export function ThemeSwitch() {
   const { setDarkTheme, isDarkTheme } = useThemeContext();
@@ -11,7 +11,7 @@ export function ThemeSwitch() {
     <IconButton
       variant="outline"
       aria-label="Theme Switch"
-      icon={isDarkTheme ? <BsMoonFill /> : <BsMoon />}
+      icon={isDarkTheme ? <BsMoonFill /> : <BsSun />}
       onClick={() => setDarkTheme((state) => !state)}
     />
   );
