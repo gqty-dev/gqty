@@ -1,0 +1,33 @@
+schema {
+  query: Query
+}
+
+type Query {
+  page(a: String): Page!
+}
+
+type Page {
+  pageBuilder: PageBuilder!
+}
+
+type PageBuilder {
+  modules: [Module!]!
+}
+
+type Foo {
+  bar: String
+}
+
+type A {
+  foo: Foo
+}
+
+type B {
+  foo: Foo
+}
+
+type C {
+  foo: Foo
+}
+
+union Module = A | B | C
