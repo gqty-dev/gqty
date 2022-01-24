@@ -20,7 +20,7 @@ importers:
       changesets-github-release: ^0.0.4
       concurrently: ^7.0.0
       esbuild: ^0.14.13
-      globby: ^12.2.0
+      globby: ^13.0.0
       graphql: ^16.2.0
       husky: ^7.0.4
       jest: ^27.4.7
@@ -47,7 +47,7 @@ importers:
       changesets-github-release: 0.0.4
       concurrently: 7.0.0
       esbuild: 0.14.13
-      globby: 12.2.0
+      globby: 13.0.0
       graphql: 16.2.0
       husky: 7.0.4
       jest: 27.4.7_7c63c070399ca89519d21262d016e854
@@ -4637,11 +4637,6 @@ packages:
     resolution: {integrity: sha512-HGyxoOTYUyCM6stUe6EJgnd4EoewAI7zMdfqO+kGjnlZmBDz/cR5pf8r/cR4Wq60sL/p0IkcjUEEPwS3GFrIyw==}
     engines: {node: '>=8'}
 
-  /array-union/3.0.1:
-    resolution: {integrity: sha512-1OvF9IbWwaeiM9VhzYXVQacMibxpXOMYVNIvMtKRyX9SImBXpKcFr8XvFDeEslCyuH/t6KRt7HEO94AlP8Iatw==}
-    engines: {node: '>=12'}
-    dev: true
-
   /array-uniq/1.0.2:
     resolution: {integrity: sha1-X8w3OSB3VyPP1k1lxkvvU7+eum0=}
     engines: {node: '>=0.10.0'}
@@ -7050,11 +7045,10 @@ packages:
       merge2: 1.4.1
       slash: 3.0.0
 
-  /globby/12.2.0:
-    resolution: {integrity: sha512-wiSuFQLZ+urS9x2gGPl1H5drc5twabmm4m2gTR27XDFyjUHJUNsS8o/2aKyIF6IoBaR630atdher0XJ5g6OMmA==}
+  /globby/13.0.0:
+    resolution: {integrity: sha512-peWsS6/uJ4lRXg7qK11lnkMTIdoDp35bpJzpR3vpRNFkP1qMNsM7OQvUqwe6r+9RCT6VpEAhL9DDrK/jD0PGvw==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
     dependencies:
-      array-union: 3.0.1
       dir-glob: 3.0.1
       fast-glob: 3.2.11
       ignore: 5.2.0
