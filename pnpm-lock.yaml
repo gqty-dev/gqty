@@ -8,7 +8,7 @@ importers:
 
   .:
     specifiers:
-      '@changesets/assemble-release-plan': ^5.0.4
+      '@changesets/assemble-release-plan': ^5.0.5
       '@changesets/cli': ^2.20.0
       '@types/node': ^17.0.8
       bob-esbuild: ^3.2.3
@@ -35,7 +35,7 @@ importers:
       utf-8-validate: ^5.0.8
       wait-on: ^6.0.0
     devDependencies:
-      '@changesets/assemble-release-plan': 5.0.4
+      '@changesets/assemble-release-plan': 5.0.5
       '@changesets/cli': 2.20.0
       '@types/node': 17.0.8
       bob-esbuild: 3.2.3_esbuild@0.14.13+typescript@4.5.5
@@ -2294,17 +2294,6 @@ packages:
       semver: 5.7.1
     dev: true
 
-  /@changesets/assemble-release-plan/5.0.4:
-    resolution: {integrity: sha512-kn0UecLXiif6DzB2EBEOrS54BWSo2nPC4111I4a42ut0Tpeu5z4dEOGmREMd2lMQjx9EE/q9VudkfFa12SFdwA==}
-    dependencies:
-      '@babel/runtime': 7.16.7
-      '@changesets/errors': 0.1.4
-      '@changesets/get-dependents-graph': 1.2.4
-      '@changesets/types': 4.0.2
-      '@manypkg/get-packages': 1.1.3
-      semver: 5.7.1
-    dev: true
-
   /@changesets/assemble-release-plan/5.0.5:
     resolution: {integrity: sha512-ejCVSM4I1jgaNi30we3/qltj2NQtS68w7C3H8Gvb6ZOvbIpAW/Tr0uMmPgRj4Vzkez5+fx0If02AvOdssz1btA==}
     dependencies:
@@ -2368,16 +2357,6 @@ packages:
     resolution: {integrity: sha512-HAcqPF7snsUJ/QzkWoKfRfXushHTu+K5KZLJWPb34s4eCZShIf8BFO3fwq6KU8+G7L5KdtN2BzQAXOSXEyiY9Q==}
     dependencies:
       extendable-error: 0.1.7
-    dev: true
-
-  /@changesets/get-dependents-graph/1.2.4:
-    resolution: {integrity: sha512-53lYhG9RFW5YIilMSo2TpZ3ocAkK3KENkiWhXYrbyXSt6SPOsIWW1wtialTJOqiuC7Lrdlazd5AHvGH7nlV4fg==}
-    dependencies:
-      '@changesets/types': 4.0.2
-      '@manypkg/get-packages': 1.1.3
-      chalk: 2.4.2
-      fs-extra: 7.0.1
-      semver: 5.7.1
     dev: true
 
   /@changesets/get-dependents-graph/1.3.0:
