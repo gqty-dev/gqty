@@ -370,8 +370,8 @@ importers:
     specifiers:
       '@chakra-ui/icons': ^1.1.1
       '@chakra-ui/react': ^1.7.4
-      '@chakra-ui/theme-tools': ^1.3.1
-      '@chakra-ui/utils': ^1.9.1
+      '@chakra-ui/theme-tools': ^1.3.2
+      '@chakra-ui/utils': ^1.10.0
       '@emotion/react': ^11.7.1
       '@emotion/styled': ^11.6.0
       '@guild-docs/client': ^1.3.4
@@ -405,11 +405,11 @@ importers:
     dependencies:
       '@chakra-ui/icons': 1.1.1_react@17.0.2
       '@chakra-ui/react': 1.7.4_3b4699607efeda68208ce528945ff0b7
-      '@chakra-ui/theme-tools': 1.3.1
-      '@chakra-ui/utils': 1.9.1
+      '@chakra-ui/theme-tools': 1.3.2
+      '@chakra-ui/utils': 1.10.0
       '@emotion/react': 11.7.1_b08e3c15324cbe90a6ff8fcd416c932c
       '@emotion/styled': 11.6.0_0044a6ec6dcf5de7705bffaaff7afd26
-      '@guild-docs/client': 1.3.4_f1446132b537632e32e32a27e0062ba4
+      '@guild-docs/client': 1.3.4_db0743f1257ae6c65e23fdf7de22db92
       '@guild-docs/server': 2.1.6_2d89171f169a73efb47c05896ebf276f
       '@mdx-js/react': 1.6.22_react@17.0.2
       '@theguild/components': 1.8.7_c330b7277fcbc5464b740b1b619d3beb
@@ -1499,7 +1499,7 @@ packages:
   /@chakra-ui/anatomy/1.2.1_@chakra-ui+system@1.9.0:
     resolution: {integrity: sha512-kNS+FiEDTSnwpQUW4dEjZ5745xhkvB0XtmqjY1wpclUSpFfptLZM9QIHPTnBt2bzM9R+idmRRP+WkTt6kyTrLw==}
     dependencies:
-      '@chakra-ui/theme-tools': 1.3.1_@chakra-ui+system@1.9.0
+      '@chakra-ui/theme-tools': 1.3.2_@chakra-ui+system@1.9.0
     transitivePeerDependencies:
       - '@chakra-ui/system'
     dev: false
@@ -1951,7 +1951,7 @@ packages:
     peerDependencies:
       react: '>=16.8.6'
     dependencies:
-      '@chakra-ui/utils': 1.9.1
+      '@chakra-ui/utils': 1.10.0
       react: 17.0.2
     dev: false
 
@@ -2174,15 +2174,6 @@ packages:
       react: 17.0.2
     dev: false
 
-  /@chakra-ui/theme-tools/1.3.1:
-    resolution: {integrity: sha512-D8arJ5uFGuYZrrFGpXqgov8FhsJYWRyar5oBZY5TJR9gsVYBlJ8Ai91pwM/NflCFqzerTOgyt7bNSGQMdZ8ghA==}
-    peerDependencies:
-      '@chakra-ui/system': '>=1.0.0'
-    dependencies:
-      '@chakra-ui/utils': 1.9.1
-      '@ctrl/tinycolor': 3.4.0
-    dev: false
-
   /@chakra-ui/theme-tools/1.3.1_@chakra-ui+system@1.9.0:
     resolution: {integrity: sha512-D8arJ5uFGuYZrrFGpXqgov8FhsJYWRyar5oBZY5TJR9gsVYBlJ8Ai91pwM/NflCFqzerTOgyt7bNSGQMdZ8ghA==}
     peerDependencies:
@@ -2190,6 +2181,25 @@ packages:
     dependencies:
       '@chakra-ui/system': 1.9.0_922a85da57e3646a57465b7970b0de85
       '@chakra-ui/utils': 1.9.1
+      '@ctrl/tinycolor': 3.4.0
+    dev: false
+
+  /@chakra-ui/theme-tools/1.3.2:
+    resolution: {integrity: sha512-7UyUv6k6CXr3WX7BrR7vAZ2Iobxyyy2INZtlUqS2JK+6/YV1FCmBKsNaTSFHvcSYb/eAPYJwgeQdhkzA1HTKpQ==}
+    peerDependencies:
+      '@chakra-ui/system': '>=1.0.0'
+    dependencies:
+      '@chakra-ui/utils': 1.10.0
+      '@ctrl/tinycolor': 3.4.0
+    dev: false
+
+  /@chakra-ui/theme-tools/1.3.2_@chakra-ui+system@1.9.0:
+    resolution: {integrity: sha512-7UyUv6k6CXr3WX7BrR7vAZ2Iobxyyy2INZtlUqS2JK+6/YV1FCmBKsNaTSFHvcSYb/eAPYJwgeQdhkzA1HTKpQ==}
+    peerDependencies:
+      '@chakra-ui/system': '>=1.0.0'
+    dependencies:
+      '@chakra-ui/system': 1.9.0_922a85da57e3646a57465b7970b0de85
+      '@chakra-ui/utils': 1.10.0
       '@ctrl/tinycolor': 3.4.0
     dev: false
 
@@ -2254,6 +2264,15 @@ packages:
       '@chakra-ui/utils': 1.9.1
       framer-motion: 6.2.1_react-dom@17.0.2+react@17.0.2
       react: 17.0.2
+    dev: false
+
+  /@chakra-ui/utils/1.10.0:
+    resolution: {integrity: sha512-Zm0RoZRBDXEhDCuj2oPeLyGTEH+SwCgbFPTSuwpKSVXOXCtjvA2zWC7cY6Fk1RDcMCVbL2cPlQTTgKnKPh79Lg==}
+    dependencies:
+      '@types/lodash.mergewith': 4.6.6
+      css-box-model: 1.2.1
+      framesync: 5.3.0
+      lodash.mergewith: 4.6.2
     dev: false
 
   /@chakra-ui/utils/1.9.1:
@@ -3153,7 +3172,7 @@ packages:
       graphql: 16.2.0
     dev: false
 
-  /@guild-docs/client/1.3.4_f1446132b537632e32e32a27e0062ba4:
+  /@guild-docs/client/1.3.4_db0743f1257ae6c65e23fdf7de22db92:
     resolution: {integrity: sha512-0r8FqlubBGftCM2vu5NuTB002E3DRiDhfHdwWASulZfm24tRdeVRXklvc20QupbV3NJRWCvL2/jWZzoWYFIUAA==}
     peerDependencies:
       '@chakra-ui/icons': '*'
@@ -3171,7 +3190,7 @@ packages:
     dependencies:
       '@chakra-ui/icons': 1.1.1_react@17.0.2
       '@chakra-ui/react': 1.7.4_3b4699607efeda68208ce528945ff0b7
-      '@chakra-ui/utils': 1.9.1
+      '@chakra-ui/utils': 1.10.0
       '@emotion/react': 11.7.1_b08e3c15324cbe90a6ff8fcd416c932c
       '@guild-docs/mdx-remote': 1.0.2_8f151e7ab772f7ddcf51d6ef83f4779c
       '@guild-docs/types': 1.1.0_f0aea5f464c663821907ea7e3951f852
