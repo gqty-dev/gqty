@@ -392,7 +392,7 @@ importers:
       next: ^12.0.9
       next-i18next: ^10.2.0
       next-remote-watch: ^1.0.0
-      next-seo: ^4.29.0
+      next-seo: ^5.0.0
       open-cli: ^7.0.1
       react: ^17.0.2
       react-dom: ^17.0.2
@@ -417,7 +417,7 @@ importers:
       framer-motion: 6.2.3_react-dom@17.0.2+react@17.0.2
       next: 12.0.9_react-dom@17.0.2+react@17.0.2
       next-i18next: 10.2.0_b543ccecfd29856b35e58d884b6ddddd
-      next-seo: 4.29.0_b543ccecfd29856b35e58d884b6ddddd
+      next-seo: 5.0.0_b543ccecfd29856b35e58d884b6ddddd
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
       react-icons: 4.3.1_react@17.0.2
@@ -8732,6 +8732,18 @@ packages:
 
   /next-seo/4.29.0_b543ccecfd29856b35e58d884b6ddddd:
     resolution: {integrity: sha512-xmwzcz4uHaYJ8glbuhs6FSBQ7z3irmdPYdJJ5saWm72Uy3o+mPKGaPCXQetTCE6/xxVnpoDV4yFtFlEjUcljSg==}
+    peerDependencies:
+      next: ^8.1.1-canary.54 || >=9.0.0
+      react: '>=16.0.0'
+      react-dom: '>=16.0.0'
+    dependencies:
+      next: 12.0.9_react-dom@17.0.2+react@17.0.2
+      react: 17.0.2
+      react-dom: 17.0.2_react@17.0.2
+    dev: false
+
+  /next-seo/5.0.0_b543ccecfd29856b35e58d884b6ddddd:
+    resolution: {integrity: sha512-uCa8hoE5VQz4D2NqZAPhqR64hY5LSmaq70wmfGK09U57TMY7XzsDI+MjfZo0MgHJM87bj3Fd/oMQbDcZ/YWhJQ==}
     peerDependencies:
       next: ^8.1.1-canary.54 || >=9.0.0
       react: '>=16.0.0'
