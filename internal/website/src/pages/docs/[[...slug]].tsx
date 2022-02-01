@@ -25,6 +25,12 @@ export default MDXPage(
       if (!title) return 'GQty';
       return `${title} - GQty`;
     },
+    giscus: {
+      repo: 'gqty-dev/gqty',
+      repoId: 'MDEwOlJlcG9zaXRvcnkzNzU4MjIxOTM=',
+      category: 'Q&A',
+      categoryId: 'DIC_kwDOFmaXcc4B-nRb',
+    },
   }
 );
 
