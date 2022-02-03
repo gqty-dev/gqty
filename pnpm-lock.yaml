@@ -185,7 +185,7 @@ importers:
       '@graphql-ez/fastify': ^0.9.6
       '@graphql-ez/plugin-altair': ^0.9.8
       '@graphql-ez/plugin-codegen': ^0.7.8
-      '@graphql-ez/plugin-dataloader': ^0.5.6
+      '@graphql-ez/plugin-dataloader': ^0.6.0
       '@graphql-ez/plugin-schema': ^0.8.3
       '@graphql-ez/plugin-upload': ^0.7.1
       '@graphql-ez/plugin-websockets': ^0.10.3
@@ -240,7 +240,7 @@ importers:
       '@graphql-ez/fastify': 0.9.6_c962e13f30af6ebca421e961a3b31a14
       '@graphql-ez/plugin-altair': 0.9.8_41a7c6f02e414096ee64322d6e6b4351
       '@graphql-ez/plugin-codegen': 0.7.8_41a7c6f02e414096ee64322d6e6b4351
-      '@graphql-ez/plugin-dataloader': 0.5.6_graphql-ez@0.14.0+graphql@16.3.0
+      '@graphql-ez/plugin-dataloader': 0.6.0_graphql-ez@0.14.0+graphql@16.3.0
       '@graphql-ez/plugin-schema': 0.8.3_41a7c6f02e414096ee64322d6e6b4351
       '@graphql-ez/plugin-upload': 0.7.1_2d7ca2b4776f36466454da9a189b18b9
       '@graphql-ez/plugin-websockets': 0.10.3_97c111d588717a4d7c7a036e43b333b5
@@ -2660,10 +2660,10 @@ packages:
       graphql: 16.3.0
     dev: false
 
-  /@envelop/dataloader/1.2.1_dataloader@2.0.0+graphql@16.3.0:
-    resolution: {integrity: sha512-FR4dRW2PjRL+iiLv2busgldaGVaNzODqZJa4LnRcwxu1mwR9kIsLqT6qKFr48D/VgiMikyLPyKOi8tMimZpmPA==}
+  /@envelop/dataloader/3.0.0_dataloader@2.0.0+graphql@16.3.0:
+    resolution: {integrity: sha512-WgYCpFeux5me09cAHKN986YdfIHZhjvzkuuY1j0kzi/p2lqTNEQ4dZg1uXKl0IjFN/fUzD60zruB3lgWiYyD1g==}
     peerDependencies:
-      '@envelop/core': ^1.6.1
+      '@envelop/core': ^2.0.0
       dataloader: ^2.0.0
       graphql: ^14.0.0 || ^15.0.0 || ^16.0.0
     dependencies:
@@ -3009,13 +3009,13 @@ packages:
       - supports-color
     dev: false
 
-  /@graphql-ez/plugin-dataloader/0.5.6_graphql-ez@0.14.0+graphql@16.3.0:
-    resolution: {integrity: sha512-j7QlDb/OK2GR3/KNaaEaA5tVsLz0F5wDpOioLUOdF6TZnV6UGQzlfd2hR9P8DVZ73WsL7E7nV3rpSw7SyxUaGA==}
+  /@graphql-ez/plugin-dataloader/0.6.0_graphql-ez@0.14.0+graphql@16.3.0:
+    resolution: {integrity: sha512-XAwp2B5uGpJiCsAXOrUknnFAbSixbji8TJyVK1dLR00xYHjXPHsaIoFQbqufImKgS+2OXGrjr7AwYroVaJ53Sg==}
     engines: {node: ^12.20.0 || >=14.13.0}
     peerDependencies:
-      graphql-ez: ^0.13.4
+      graphql-ez: ^0.14.0
     dependencies:
-      '@envelop/dataloader': 1.2.1_dataloader@2.0.0+graphql@16.3.0
+      '@envelop/dataloader': 3.0.0_dataloader@2.0.0+graphql@16.3.0
       dataloader: 2.0.0
       graphql-ez: 0.14.0_596f7c9135f3f3a3a5b8e40fb8676c71
     transitivePeerDependencies:
