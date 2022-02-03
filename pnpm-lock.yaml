@@ -188,7 +188,7 @@ importers:
       '@graphql-ez/plugin-dataloader': ^0.5.6
       '@graphql-ez/plugin-schema': ^0.8.2
       '@graphql-ez/plugin-upload': ^0.7.0
-      '@graphql-ez/plugin-websockets': ^0.10.2
+      '@graphql-ez/plugin-websockets': ^0.10.3
       '@react-native-async-storage/async-storage': ^1.15.17
       '@types/extract-files': ^8.1.1
       '@types/faker': ^5.5.9
@@ -243,7 +243,7 @@ importers:
       '@graphql-ez/plugin-dataloader': 0.5.6_graphql-ez@0.13.8+graphql@16.3.0
       '@graphql-ez/plugin-schema': 0.8.2_262612d700b174275b38835d6b619693
       '@graphql-ez/plugin-upload': 0.7.0_ab9b5c72508a829ef0278fdd22f5be05
-      '@graphql-ez/plugin-websockets': 0.10.2_f15405c42b0c4a48c5ff3041febb3040
+      '@graphql-ez/plugin-websockets': 0.10.3_f15405c42b0c4a48c5ff3041febb3040
       '@react-native-async-storage/async-storage': 1.15.17
       '@types/extract-files': 8.1.1
       date-fns: 2.28.0
@@ -317,7 +317,7 @@ importers:
       '@graphql-ez/fastify-testing': ^0.1.5
       '@graphql-ez/plugin-codegen': ^0.7.7
       '@graphql-ez/plugin-schema': ^0.8.2
-      '@graphql-ez/plugin-websockets': ^0.10.2
+      '@graphql-ez/plugin-websockets': ^0.10.3
       '@jest/types': ^27.4.2
       '@rollup/plugin-babel': ^5.3.0
       '@types/jest': ^27.4.0
@@ -357,7 +357,7 @@ importers:
       ts-jest: 27.1.3_af92d7a5966995731ee9d340bd8b0c6f
       wait-for-expect: 3.0.2
     devDependencies:
-      '@graphql-ez/plugin-websockets': 0.10.2_f15405c42b0c4a48c5ff3041febb3040
+      '@graphql-ez/plugin-websockets': 0.10.3_f15405c42b0c4a48c5ff3041febb3040
       '@jest/types': 27.4.2
       '@types/randomstring': 1.1.8
       bob-esbuild-cli: 3.0.1_bob-esbuild@3.2.3
@@ -3008,12 +3008,15 @@ packages:
       - '@types/node'
     dev: false
 
-  /@graphql-ez/plugin-websockets/0.10.2_f15405c42b0c4a48c5ff3041febb3040:
-    resolution: {integrity: sha512-auAsiDdGFHwlYhMUrPxTFSba2NOnGLTgofetpCr3bB2f9EazXCOkAHJCHxFLxWYlKxOT+PqT4YZOtbCdNFpkLA==}
+  /@graphql-ez/plugin-websockets/0.10.3_f15405c42b0c4a48c5ff3041febb3040:
+    resolution: {integrity: sha512-AGDc0jRbytGkChE63QZzNknPGBUmKQJND/s5xdyNcoGMIx6aojp6dbe8XGEjoYP9qVCzGUIsVYtUcJK5HSA41Q==}
     engines: {node: ^12.20.0 || >=14.13.0}
     peerDependencies:
       graphql: '*'
-      graphql-ez: ^0.13.0
+      graphql-ez: ^0.14.0
+    peerDependenciesMeta:
+      graphql:
+        optional: true
     dependencies:
       '@graphql-ez/utils': 0.1.4_596f7c9135f3f3a3a5b8e40fb8676c71
       '@types/ws': 8.2.2
