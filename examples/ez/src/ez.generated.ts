@@ -25,9 +25,9 @@ export type ResolverFn<TResult, TParent, TContext, TArgs> = (
   | Promise<import('graphql-ez').DeepPartial<TResult>>
   | import('graphql-ez').DeepPartial<TResult>;
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
-export type RequireFields<T, K extends keyof T> = {
-  [X in Exclude<keyof T, K>]?: T[X];
-} & { [P in K]-?: NonNullable<T[P]> };
+export type RequireFields<T, K extends keyof T> = Omit<T, K> & {
+  [P in K]-?: NonNullable<T[P]>;
+};
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -409,7 +409,7 @@ export type HumanResolvers<
     Maybe<ResolversTypes['Int']>,
     ParentType,
     ContextType,
-    RequireFields<HumanArgsArgs, never>
+    Partial<HumanArgsArgs>
   >;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
@@ -432,7 +432,7 @@ export type AResolvers<
     Maybe<ResolversTypes['Int']>,
     ParentType,
     ContextType,
-    RequireFields<ACommonArgs, never>
+    Partial<ACommonArgs>
   >;
   z?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -447,7 +447,7 @@ export type BResolvers<
     Maybe<ResolversTypes['String']>,
     ParentType,
     ContextType,
-    RequireFields<BCommonArgs, never>
+    Partial<BCommonArgs>
   >;
   z?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;

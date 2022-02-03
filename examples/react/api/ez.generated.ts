@@ -23,9 +23,9 @@ export type ResolverFn<TResult, TParent, TContext, TArgs> = (
 ) =>
   | Promise<import('graphql-ez').DeepPartial<TResult>>
   | import('graphql-ez').DeepPartial<TResult>;
-export type RequireFields<T, K extends keyof T> = {
-  [X in Exclude<keyof T, K>]?: T[X];
-} & { [P in K]-?: NonNullable<T[P]> };
+export type RequireFields<T, K extends keyof T> = Omit<T, K> & {
+  [P in K]-?: NonNullable<T[P]>;
+};
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;

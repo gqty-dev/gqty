@@ -6,7 +6,7 @@ import { ezDataLoader, InferDataLoader } from '@graphql-ez/plugin-dataloader';
 import { ezSchema } from '@graphql-ez/plugin-schema';
 import { ezUpload } from '@graphql-ez/plugin-upload';
 import { ezWebSockets } from '@graphql-ez/plugin-websockets';
-import faker from 'faker';
+import { faker } from '@faker-js/faker';
 import { StrictInMemoryPubSub } from 'graphql-ez/pubsub';
 import _ from 'lodash';
 import { JsonDB } from 'node-json-db';

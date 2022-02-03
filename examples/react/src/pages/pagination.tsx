@@ -28,9 +28,12 @@ export default function Page() {
           first: amount,
         },
       },
-      merge({ data: { existing, incoming }, sortBy }) {
+      merge({ data: { existing, incoming }, sortBy, uniqBy }) {
         function getNodes(nodes: typeof incoming.nodes) {
-          return sortBy(nodes, (node) => ~~node.id!, 'desc');
+          return uniqBy(
+            sortBy(nodes, (node) => ~~node.id!, 'desc'),
+            (v) => v.id
+          );
         }
         if (existing) {
           return {
