@@ -67,7 +67,7 @@ importers:
       '@gqty/cli': workspace:^3.1.0
       '@graphql-ez/fastify': ^0.9.6
       '@graphql-ez/fastify-testing': ^0.1.6
-      '@graphql-ez/plugin-altair': ^0.9.7
+      '@graphql-ez/plugin-altair': ^0.9.8
       '@graphql-ez/plugin-codegen': ^0.7.7
       '@graphql-ez/plugin-schema': ^0.8.2
       '@graphql-typed-document-node/core': ^3.1.1
@@ -88,7 +88,7 @@ importers:
       '@gqty/cli': link:../../packages/cli
       '@graphql-ez/fastify': 0.9.6_37402212879866b4f574b5b79753600f
       '@graphql-ez/fastify-testing': 0.1.6_0084ff3329977f2d6d80a1a3aab00d98
-      '@graphql-ez/plugin-altair': 0.9.7_262612d700b174275b38835d6b619693
+      '@graphql-ez/plugin-altair': 0.9.8_262612d700b174275b38835d6b619693
       '@graphql-ez/plugin-codegen': 0.7.7_262612d700b174275b38835d6b619693
       '@graphql-ez/plugin-schema': 0.8.2_262612d700b174275b38835d6b619693
       '@graphql-typed-document-node/core': 3.1.1_graphql@16.3.0
@@ -183,7 +183,7 @@ importers:
       '@gqty/react': workspace:^2.1.0
       '@gqty/subscriptions': workspace:^2.0.0
       '@graphql-ez/fastify': ^0.9.6
-      '@graphql-ez/plugin-altair': ^0.9.7
+      '@graphql-ez/plugin-altair': ^0.9.8
       '@graphql-ez/plugin-codegen': ^0.7.7
       '@graphql-ez/plugin-dataloader': ^0.5.6
       '@graphql-ez/plugin-schema': ^0.8.2
@@ -238,7 +238,7 @@ importers:
       '@gqty/react': link:../../packages/react
       '@gqty/subscriptions': link:../../packages/subscriptions
       '@graphql-ez/fastify': 0.9.6_37402212879866b4f574b5b79753600f
-      '@graphql-ez/plugin-altair': 0.9.7_262612d700b174275b38835d6b619693
+      '@graphql-ez/plugin-altair': 0.9.8_262612d700b174275b38835d6b619693
       '@graphql-ez/plugin-codegen': 0.7.7_262612d700b174275b38835d6b619693
       '@graphql-ez/plugin-dataloader': 0.5.6_graphql-ez@0.13.8+graphql@16.3.0
       '@graphql-ez/plugin-schema': 0.8.2_262612d700b174275b38835d6b619693
@@ -2913,20 +2913,21 @@ packages:
       next: 12.0.10_react-dom@17.0.2+react@17.0.2
     dev: false
 
-  /@graphql-ez/plugin-altair/0.9.7_262612d700b174275b38835d6b619693:
-    resolution: {integrity: sha512-R8SjIrpVJ6vuJdt0UiRY9FAtM/Rs34fih/fxJ3I3pPNN5NS49RsYKLRFcGKD73BNFkHX08/0SxMpJJkTDDQriA==}
+  /@graphql-ez/plugin-altair/0.9.8_262612d700b174275b38835d6b619693:
+    resolution: {integrity: sha512-AUmuSQD5s+qpCS3BcneW9adU1jvKao8e7nXF9P9jYdy1772k7juUXxlrWeXbm4/t4+tcp5tpq8tWrq8MWNkQIQ==}
     engines: {node: ^12.20.0 || >=14.13.0}
     peerDependencies:
       '@types/node': '*'
-      graphql-ez: ^0.13.6
+      graphql-ez: ^0.14.0
     dependencies:
       '@graphql-ez/utils': 0.1.4_596f7c9135f3f3a3a5b8e40fb8676c71
       '@types/node': 17.0.8
       altair-static-slim: 4.3.1
-      cross-fetch: 3.1.4
+      cross-fetch: 3.1.5
       graphql-ez: 0.13.8_596f7c9135f3f3a3a5b8e40fb8676c71
       mime-types: 2.1.34
     transitivePeerDependencies:
+      - encoding
       - graphql
     dev: false
 
@@ -5430,6 +5431,14 @@ packages:
     resolution: {integrity: sha512-1eAtFWdIubi6T4XPy6ei9iUFoKpUkIF971QLN8lIvvvwueI65+Nw5haMNKUwfJxabqlIIDODJKGrQ66gxC0PbQ==}
     dependencies:
       node-fetch: 2.6.1
+
+  /cross-fetch/3.1.5:
+    resolution: {integrity: sha512-lvb1SBsI0Z7GDwmuid+mU3kWVBwTVUbe7S0H52yaaAdQOXq2YktTCZdlAcNKFzE6QtRz0snpw9bNiPeOIkkQvw==}
+    dependencies:
+      node-fetch: 2.6.7
+    transitivePeerDependencies:
+      - encoding
+    dev: false
 
   /cross-spawn/5.1.0:
     resolution: {integrity: sha1-6L0O/uWPz/b4+UUQoKVUu/ojVEk=}
@@ -8725,6 +8734,18 @@ packages:
       whatwg-url: 5.0.0
     dev: true
 
+  /node-fetch/2.6.7:
+    resolution: {integrity: sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ==}
+    engines: {node: 4.x || >=6.0.0}
+    peerDependencies:
+      encoding: ^0.1.0
+    peerDependenciesMeta:
+      encoding:
+        optional: true
+    dependencies:
+      whatwg-url: 5.0.0
+    dev: false
+
   /node-gyp-build/4.3.0:
     resolution: {integrity: sha512-iWjXZvmboq0ja1pUGULQBexmxq8CV4xBhX7VDOTbL7ZR4FOowwY/VOtRxBN/yKxmdGoIp4j5ysNT4u3S2pDQ3Q==}
     hasBin: true
@@ -10831,7 +10852,6 @@ packages:
 
   /tr46/0.0.3:
     resolution: {integrity: sha1-gYT9NH2snNwYWZLzpmIuFLnZq2o=}
-    dev: true
 
   /tr46/2.1.0:
     resolution: {integrity: sha512-15Ih7phfcdP5YxqiB+iDtLoaTz4Nd35+IiAv0kQ5FNKHzXgdWqPoTIqEDDJmXceQt4JZk6lVPT8lnDlPpGDppw==}
@@ -11524,7 +11544,6 @@ packages:
 
   /webidl-conversions/3.0.1:
     resolution: {integrity: sha1-JFNCdeKnvGvnvIZhHMFq4KVlSHE=}
-    dev: true
 
   /webidl-conversions/5.0.0:
     resolution: {integrity: sha512-VlZwKPCkYKxQgeSbH5EyngOmRp7Ww7I9rQLERETtf5ofd9pGeswWiOtogpEO850jziPRarreGxn5QIiTqpb2wA==}
@@ -11566,7 +11585,6 @@ packages:
     dependencies:
       tr46: 0.0.3
       webidl-conversions: 3.0.1
-    dev: true
 
   /whatwg-url/8.7.0:
     resolution: {integrity: sha512-gAojqb/m9Q8a5IV96E3fHJM70AzCkgt4uXYX2O7EmuyOnLrViCQlsEBmF9UQIu3/aeAIp2U17rtbpZWNntQqdg==}
