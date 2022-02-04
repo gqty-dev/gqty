@@ -13,7 +13,7 @@ importers:
       '@types/node': ^17.0.14
       bob-esbuild: ^3.2.3
       bob-esbuild-cli: ^3.0.1
-      bob-ts: ^3.0.1
+      bob-ts: ^3.0.2
       bob-tsm: ^0.4.6
       bufferutil: ^4.0.6
       chalk: ^5.0.0
@@ -40,7 +40,7 @@ importers:
       '@types/node': 17.0.14
       bob-esbuild: 3.2.3_esbuild@0.14.18+typescript@4.5.5
       bob-esbuild-cli: 3.0.1_bob-esbuild@3.2.3
-      bob-ts: 3.0.1_2c101aa8e5d67bbead57379c36aad586
+      bob-ts: 3.0.2_2c101aa8e5d67bbead57379c36aad586
       bob-tsm: 0.4.6_esbuild@0.14.18+typescript@4.5.5
       bufferutil: 4.0.6
       chalk: 5.0.0
@@ -321,7 +321,7 @@ importers:
       '@types/jest': ^27.4.0
       '@types/randomstring': ^1.1.8
       bob-esbuild-cli: ^3.0.1
-      bob-ts: ^3.0.1
+      bob-ts: ^3.0.2
       concurrently: ^7.0.0
       cross-env: ^7.0.3
       esbuild: ^0.14.18
@@ -359,7 +359,7 @@ importers:
       '@jest/types': 27.4.2
       '@types/randomstring': 1.1.8
       bob-esbuild-cli: 3.0.1_bob-esbuild@3.2.3
-      bob-ts: 3.0.1_2c101aa8e5d67bbead57379c36aad586
+      bob-ts: 3.0.2_2c101aa8e5d67bbead57379c36aad586
       concurrently: 7.0.0
       tslib: 2.3.1
       typescript: 4.5.5
@@ -448,7 +448,7 @@ importers:
       '@types/lodash': ^4.14.178
       '@types/lodash.sortby': ^4.7.6
       '@types/mkdirp': ^1.0.2
-      bob-ts: ^3.0.1
+      bob-ts: ^3.0.2
       bob-tsm: ^0.4.6
       changesets-github-release: ^0.1.0
       commander: ^9.0.0
@@ -482,7 +482,7 @@ importers:
       '@types/lodash': 4.14.178
       '@types/lodash.sortby': 4.7.6
       '@types/mkdirp': 1.0.2
-      bob-ts: 3.0.1_2c101aa8e5d67bbead57379c36aad586
+      bob-ts: 3.0.2_2c101aa8e5d67bbead57379c36aad586
       bob-tsm: 0.4.6_esbuild@0.14.18+typescript@4.5.5
       changesets-github-release: 0.1.0
       commander: 9.0.0
@@ -1550,10 +1550,7 @@ packages:
   /@chakra-ui/clickable/1.2.2_react@17.0.2:
     resolution: {integrity: sha512-SlWrCgILKlxaJKzzOqIdCQdbff0HVlce3oHqOGHO/kxm/P1buG04fUzKie0Zegdp0gQXdk+/+1Emzl2tZTg/Bg==}
     peerDependencies:
-      react: '>=16.8.6 || * || *'
-    peerDependenciesMeta:
-      react:
-        optional: true
+      react: '>=16.8.6'
     dependencies:
       '@chakra-ui/react-utils': 1.2.1_react@17.0.2
       '@chakra-ui/utils': 1.10.0
@@ -4858,13 +4855,13 @@ packages:
       typescript: 4.5.5
     dev: true
 
-  /bob-ts/3.0.1_2c101aa8e5d67bbead57379c36aad586:
-    resolution: {integrity: sha512-G1viymS87p1FvGCUTFF7YYvZ6qAZFbx3n0UldSnTmwtj2iOEVffgufJLAMguDITW1zbpJVNSmrPCDKlmF0wRdA==}
+  /bob-ts/3.0.2_2c101aa8e5d67bbead57379c36aad586:
+    resolution: {integrity: sha512-bX3rc3BpeTiw5+xoH6a3O2RX1v3hckGAzztTUPaoV/YRchbArSHl60fSSJfO4o0zaeStdvAGeD6hy9OnSbsS8w==}
     engines: {node: ^12.20.0 || >=14.13.0}
     hasBin: true
     peerDependencies:
       '@types/node': '*'
-      esbuild: '>=0.14.9'
+      esbuild: '>=0.14.13'
       typescript: '*'
     dependencies:
       '@types/node': 17.0.14
