@@ -219,7 +219,7 @@ function AppContent(appProps: AppProps) {
                   },
                   {
                     children: <ThemeSwitch />,
-                    href: undefined as any,
+                    href: null as any,
                     title: '',
                   },
                 ]}
