@@ -560,7 +560,7 @@ importers:
   packages/logger:
     specifiers:
       '@size-limit/preset-small-lib': ^7.0.8
-      '@types/prettier': ^2.4.3
+      '@types/prettier': ^2.4.4
       bob-esbuild-cli: ^3.0.1
       gqty: workspace:^2.1.0
       jest: ^27.5.1
@@ -574,7 +574,7 @@ importers:
       prettier: 2.5.1
     devDependencies:
       '@size-limit/preset-small-lib': 7.0.8_size-limit@7.0.8
-      '@types/prettier': 2.4.3
+      '@types/prettier': 2.4.4
       bob-esbuild-cli: 3.0.1_bob-esbuild@3.2.4
       gqty: link:../gqty
       jest: 27.5.1_24d7ebca380cec53a2ea24376aecb292
@@ -1479,10 +1479,7 @@ packages:
   /@chakra-ui/clickable/1.2.4_react@17.0.2:
     resolution: {integrity: sha512-TYXKrJxeN1AXTRxgNViEw3uEJ4NlO7CptjoXqakrHCLNU2cf4ETTCd4C4OGDZiVwE1UTu155ffHGM+tiXgcGSA==}
     peerDependencies:
-      react: '>=16.8.6 || * || *'
-    peerDependenciesMeta:
-      react:
-        optional: true
+      react: '>=16.8.6'
     dependencies:
       '@chakra-ui/react-utils': 1.2.2_react@17.0.2
       '@chakra-ui/utils': 1.10.2
@@ -1546,10 +1543,7 @@ packages:
   /@chakra-ui/descendant/2.1.2_react@17.0.2:
     resolution: {integrity: sha512-o3WrYD0zGBdRB7aM9bENci7BWrFYBCMTcix/0iQQfsvIPeFKZOKOx/zUHXVby6nvmC7rIPep5yCn9UNNB+REkg==}
     peerDependencies:
-      react: '>=16.8.6 || * || * || * || *'
-    peerDependenciesMeta:
-      react:
-        optional: true
+      react: '>=16.8.6'
     dependencies:
       '@chakra-ui/react-utils': 1.2.2_react@17.0.2
       react: 17.0.2
@@ -1872,10 +1866,7 @@ packages:
   /@chakra-ui/react-utils/1.2.2_react@17.0.2:
     resolution: {integrity: sha512-vdVtwEooRPVmB60+B9FEJNc+L4+DO6llA9qTk8ZFq7ocXLGagl+V5mFKJPLMzmTCafq6j5pNjoAF4A7bbh4U4Q==}
     peerDependencies:
-      react: '>=16.8.6 || * || * || * || * || * || * || * || * || * || * || * || * || * || * || * || * || * || * || * || * || *'
-    peerDependenciesMeta:
-      react:
-        optional: true
+      react: '>=16.8.6'
     dependencies:
       '@chakra-ui/utils': 1.10.2
       react: 17.0.2
@@ -4203,6 +4194,10 @@ packages:
 
   /@types/prettier/2.4.3:
     resolution: {integrity: sha512-QzSuZMBuG5u8HqYz01qtMdg/Jfctlnvj1z/lYnIDXs/golxw0fxtRAHd9KrzjR7Yxz1qVeI00o0kiO3PmVdJ9w==}
+
+  /@types/prettier/2.4.4:
+    resolution: {integrity: sha512-ReVR2rLTV1kvtlWFyuot+d1pkpG2Fw/XKE3PDAdj57rbM97ttSp9JZ2UsP+2EHTylra9cUf6JA7tGwW1INzUrA==}
+    dev: true
 
   /@types/prop-types/15.7.4:
     resolution: {integrity: sha512-rZ5drC/jWjrArrS8BR6SIr4cWpW09RNTYt9AMZo3Jwwif+iacXAqgVjm0B0Bv/S1jhDXKHqRVNCbACkJ89RAnQ==}
