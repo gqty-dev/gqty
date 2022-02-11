@@ -33,7 +33,7 @@ importers:
       tslib: ^2.3.1
       typescript: ^4.5.5
       utf-8-validate: ^5.0.8
-      wait-on: ^6.0.0
+      wait-on: ^6.0.1
     devDependencies:
       '@changesets/assemble-release-plan': 5.0.5
       '@changesets/cli': 2.20.0
@@ -60,7 +60,7 @@ importers:
       tslib: 2.3.1
       typescript: 4.5.5
       utf-8-validate: 5.0.8
-      wait-on: 6.0.0
+      wait-on: 6.0.1
 
   examples/ez:
     specifiers:
@@ -128,7 +128,7 @@ importers:
       react: ^17.0.2
       react-dom: ^17.0.2
       typescript: ^4.5.5
-      wait-on: ^6.0.0
+      wait-on: ^6.0.1
     dependencies:
       '@gqty/logger': link:../../packages/logger
       '@gqty/react': link:../../packages/react
@@ -150,7 +150,7 @@ importers:
       concurrently: 7.0.0
       open-cli: 7.0.1
       typescript: 4.5.5
-      wait-on: 6.0.0
+      wait-on: 6.0.1
 
   examples/github:
     specifiers:
@@ -227,7 +227,7 @@ importers:
       serialize-error: ^9.0.0
       typescript: ^4.5.5
       use-error-boundary: ^2.0.6
-      wait-on: ^6.0.0
+      wait-on: ^6.0.1
     dependencies:
       '@chakra-ui/react': 1.8.3_62a1f0adae34171ee3d250394ea52770
       '@emotion/react': 11.7.1_a0c521d4794c7ad97f5f4c1c4a7d5818
@@ -282,7 +282,7 @@ importers:
       jest: 27.5.1_24d7ebca380cec53a2ea24376aecb292
       open-cli: 7.0.1
       typescript: 4.5.5
-      wait-on: 6.0.0
+      wait-on: 6.0.1
 
   examples/vite-example:
     specifiers:
@@ -397,7 +397,7 @@ importers:
       react-use: ^17.3.2
       shiki: ^0.10.0
       typescript: ^4.5.5
-      wait-on: ^6.0.0
+      wait-on: ^6.0.1
     dependencies:
       '@chakra-ui/icons': 1.1.5_react@17.0.2
       '@chakra-ui/react': 1.8.3_62a1f0adae34171ee3d250394ea52770
@@ -431,7 +431,7 @@ importers:
       next-remote-watch: 1.0.0
       open-cli: 7.0.1
       typescript: 4.5.5
-      wait-on: 6.0.0
+      wait-on: 6.0.1
 
   packages/cli:
     specifiers:
@@ -464,7 +464,7 @@ importers:
       tslib: ^2.3.1
       typescript: ^4.5.5
       undici: ^4.13.0
-      wait-on: ^6.0.0
+      wait-on: ^6.0.1
     dependencies:
       gqty: link:../gqty
       undici: 4.13.0
@@ -496,7 +496,7 @@ importers:
       tmp-promise: 3.0.3
       tslib: 2.3.1
       typescript: 4.5.5
-      wait-on: 6.0.0
+      wait-on: 6.0.1
 
   packages/gqty:
     specifiers:
@@ -525,7 +525,7 @@ importers:
       test-utils: workspace:^0.1.0
       tsc-watch: ^4.6.0
       typescript: ^4.5.5
-      wait-on: ^6.0.0
+      wait-on: ^6.0.1
       ws: ^8.5.0
     dependencies:
       lodash: 4.17.21
@@ -554,7 +554,7 @@ importers:
       test-utils: link:../../internal/test-utils
       tsc-watch: 4.6.0_typescript@4.5.5
       typescript: 4.5.5
-      wait-on: 6.0.0
+      wait-on: 6.0.1
       ws: 8.5.0_bffff4271b89d628e8333ead80d3d8e8
 
   packages/logger:
@@ -4629,8 +4629,8 @@ packages:
       - supports-color
     dev: false
 
-  /axios/0.21.4:
-    resolution: {integrity: sha512-ut5vewkiu8jjGBdqpM44XxjuCjq9LAKeHVmoVfHVzy8eHgxxq8SbAVQNovDA8mVi05kP0Ea/n/UzcSHcTJQfNg==}
+  /axios/0.25.0:
+    resolution: {integrity: sha512-cD8FOb0tRH3uuEe6+evtAbgJtfxr7ly3fQjYcMcuPlgkwVS9xboaVIpcDV+cYQe+yGykgwZCs1pzjntcGa6l5g==}
     dependencies:
       follow-redirects: 1.14.8
     transitivePeerDependencies:
@@ -10160,8 +10160,8 @@ packages:
       tslib: 1.14.1
     dev: true
 
-  /rxjs/7.5.2:
-    resolution: {integrity: sha512-PwDt186XaL3QN5qXj/H9DGyHhP3/RYYgZZwqBv9Tv8rsAaiwFH1IsJJlcgD37J7UW5a6O67qX0KWKS3/pu0m4w==}
+  /rxjs/7.5.4:
+    resolution: {integrity: sha512-h5M3Hk78r6wAheJF0a5YahB1yRQKCsZ4MsGdZ5O9ETbVtjPcScGfrMmoOq7EBsCRzd4BDkvDJ7ogP8Sz5tTFiQ==}
     dependencies:
       tslib: 2.3.1
     dev: true
@@ -11615,16 +11615,16 @@ packages:
     resolution: {integrity: sha512-cfS1+DZxuav1aBYbaO/kE06EOS8yRw7qOFoD3XtjTkYvCvh3zUvNST8DXK/nPaeqIzIv3P3kL3lRJn8iwOiSag==}
     dev: false
 
-  /wait-on/6.0.0:
-    resolution: {integrity: sha512-tnUJr9p5r+bEYXPUdRseolmz5XqJTTj98JgOsfBn7Oz2dxfE2g3zw1jE+Mo8lopM3j3et/Mq1yW7kKX6qw7RVw==}
+  /wait-on/6.0.1:
+    resolution: {integrity: sha512-zht+KASY3usTY5u2LgaNqn/Cd8MukxLGjdcZxT2ns5QzDmTFc4XoWBgC+C/na+sMRZTuVygQoMYwdcVjHnYIVw==}
     engines: {node: '>=10.0.0'}
     hasBin: true
     dependencies:
-      axios: 0.21.4
+      axios: 0.25.0
       joi: 17.6.0
       lodash: 4.17.21
       minimist: 1.2.5
-      rxjs: 7.5.2
+      rxjs: 7.5.4
     transitivePeerDependencies:
       - debug
     dev: true
