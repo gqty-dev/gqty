@@ -18,7 +18,11 @@ const endpoint =
     ? '/api/graphql'
     : 'http://localhost:3000/api/graphql';
 
-const queryFetcher: QueryFetcher = async function (query, variables) {
+const queryFetcher: QueryFetcher = async function (
+  query,
+  variables,
+  fetchOptions
+) {
   const response = await fetch(endpoint, {
     method: 'POST',
     headers: {
@@ -28,6 +32,7 @@ const queryFetcher: QueryFetcher = async function (query, variables) {
       query,
       variables,
     }),
+    ...fetchOptions,
   });
 
   const json = await response.json();

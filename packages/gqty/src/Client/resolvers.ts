@@ -24,6 +24,7 @@ import type {
   SubscribeEvents,
   SubscriptionsClient,
 } from './client';
+import type { FetchOptions } from '../Schema/types';
 
 export interface ResolveOptions<TData> {
   /**
@@ -90,6 +91,11 @@ export interface ResolveOptions<TData> {
    * Retry strategy
    */
   retry?: RetryOptions;
+
+  /**
+   * Pass any extra fetch options
+   */
+  fetchOptions?: FetchOptions;
 }
 
 export type RetryOptions =
@@ -124,6 +130,8 @@ export interface FetchResolveOptions {
   ignoreResolveCache?: boolean;
 
   onSubscription?: ResolveOptions<any>['onSubscription'];
+
+  fetchOptions?: FetchOptions;
 }
 
 function filterSelectionsWithErrors(
@@ -337,6 +345,7 @@ export function createResolvers(
       nonSerializableVariables,
       onNoCacheFound,
       onEmptyResolve,
+      fetchOptions,
     }: ResolveOptions<T> = {}
   ): Promise<T> {
     const prevFoundValidCache = innerState.foundValidCache;
@@ -444,6 +453,7 @@ export function createResolvers(
               }
             : undefined,
           retry,
+          fetchOptions,
         }
       );
 
@@ -565,7 +575,11 @@ export function createResolvers(
           eventHandler.sendFetchPromise(loggingPromise.promise, selections);
         }
 
-        const executionResult = await queryFetcher(query, variables);
+        const executionResult = await queryFetcher(
+          query,
+          variables,
+          options.fetchOptions
+        );
 
         const { data, errors } = executionResult;
 

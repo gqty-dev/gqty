@@ -151,6 +151,45 @@ describe('resolved cache options', () => {
   });
 });
 
+describe('resolved fetch options', () => {
+  test('fetch options are passed to query fetcher', async () => {
+    expect.assertions(2);
+
+    const { resolved, query } = await createTestClient(
+      undefined,
+      (query, variables, fetchOptions) => {
+        expect({ query, variables, fetchOptions }).toStrictEqual({
+          fetchOptions: {
+            mode: 'cors',
+            credentials: 'include',
+          },
+          query: 'query{hello}',
+          variables: undefined,
+        });
+        return {
+          data: {
+            hello: 'Hello World',
+          },
+        };
+      }
+    );
+
+    expect(
+      await resolved(
+        () => {
+          return query.hello;
+        },
+        {
+          fetchOptions: {
+            mode: 'cors',
+            credentials: 'include',
+          },
+        }
+      )
+    ).toBe('Hello World');
+  });
+});
+
 describe('error handling', () => {
   test('resolved single throws', async () => {
     const { query, resolved } = await createTestClient();
