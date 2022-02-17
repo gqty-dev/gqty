@@ -436,7 +436,7 @@ importers:
   packages/cli:
     specifiers:
       '@graphql-codegen/core': ^2.5.1
-      '@graphql-codegen/typescript': ^2.4.4
+      '@graphql-codegen/typescript': ^2.4.5
       '@graphql-tools/delegate': ^8.5.0
       '@graphql-tools/utils': ^8.6.1
       '@graphql-tools/wrap': ^8.4.0
@@ -470,7 +470,7 @@ importers:
       undici: 4.14.1
     devDependencies:
       '@graphql-codegen/core': 2.5.1_graphql@16.3.0
-      '@graphql-codegen/typescript': 2.4.4_graphql@16.3.0
+      '@graphql-codegen/typescript': 2.4.5_graphql@16.3.0
       '@graphql-tools/delegate': 8.5.0_graphql@16.3.0
       '@graphql-tools/utils': 8.6.1_graphql@16.3.0
       '@graphql-tools/wrap': 8.4.0_graphql@16.3.0
@@ -2675,14 +2675,14 @@ packages:
       - supports-color
     dev: false
 
-  /@graphql-codegen/typescript/2.4.4_graphql@16.3.0:
-    resolution: {integrity: sha512-xL6/WSJZVjDNY9QOkaDHQBKQzCawqU2w8R683uu1HpO4Z+cf5wHSwgHY/HQqurVhMkB0qPKOfSIQheJuWYF4Tw==}
+  /@graphql-codegen/typescript/2.4.5_graphql@16.3.0:
+    resolution: {integrity: sha512-Ytb8phNHKl/v/wxudsMOAV1dmzIbckWHm2J83PLNOvnu9CGEhgsd67vfe3ZoF95VU2BKSG8BXGa6uL9z2xDmuA==}
     peerDependencies:
       graphql: ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
     dependencies:
       '@graphql-codegen/plugin-helpers': 2.4.1_graphql@16.3.0
       '@graphql-codegen/schema-ast': 2.4.1_graphql@16.3.0
-      '@graphql-codegen/visitor-plugin-common': 2.7.0_graphql@16.3.0
+      '@graphql-codegen/visitor-plugin-common': 2.7.1_graphql@16.3.0
       auto-bind: 4.0.0
       graphql: 16.3.0
       tslib: 2.3.1
@@ -2712,8 +2712,8 @@ packages:
       - supports-color
     dev: false
 
-  /@graphql-codegen/visitor-plugin-common/2.7.0_graphql@16.3.0:
-    resolution: {integrity: sha512-/3TZeM/y9UUy7ziUded+GCCGpRychOIbfNfg7HyHR1SxGpG7PrGunsLvYpv4O+ReUba250le4K4IeziVKl0O5g==}
+  /@graphql-codegen/visitor-plugin-common/2.7.1_graphql@16.3.0:
+    resolution: {integrity: sha512-Ew/+0GwGwL3ZSXS0cYz6lVvE7S5SkbTr7caRpLa4FpAdLGNskCgdA1n6W5tX5c7qsaYstqlxp30hJTfgTsYS6A==}
     peerDependencies:
       graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
     dependencies:
