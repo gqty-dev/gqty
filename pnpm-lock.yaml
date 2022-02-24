@@ -376,7 +376,7 @@ importers:
       '@guild-docs/server': 3.0.0-alpha-411c735.0
       '@mdx-js/react': ^2.0.0
       '@next/bundle-analyzer': ^12.1.0
-      '@theguild/components': ^1.9.0
+      '@theguild/components': ^1.10.0
       '@types/node': ^17.0.14
       '@types/react': ^17.0.39
       '@types/react-dom': ^17.0.11
@@ -405,10 +405,10 @@ importers:
       '@chakra-ui/utils': 1.10.4
       '@emotion/react': 11.8.1_a0c521d4794c7ad97f5f4c1c4a7d5818
       '@emotion/styled': 11.8.1_d24c5a2cd50724e2cbcff1306f0cc72d
-      '@guild-docs/client': 2.0.0-alpha-411c735.0_05a665f28162cb74e72f852c18c44546
+      '@guild-docs/client': 2.0.0-alpha-411c735.0_413accb0730421a0b208089084da0eaf
       '@guild-docs/server': 3.0.0-alpha-411c735.0_9bde4e8a41a5691dfb56e623e84e72f2
       '@mdx-js/react': 2.0.0_react@17.0.2
-      '@theguild/components': 1.9.0_6bd4bbaae34125f97b10fd2265c5fcdf
+      '@theguild/components': 1.10.0_6bd4bbaae34125f97b10fd2265c5fcdf
       csstype: 3.0.10
       framer-motion: 6.2.6_react-dom@17.0.2+react@17.0.2
       next: 12.1.0_react-dom@17.0.2+react@17.0.2
@@ -3185,7 +3185,7 @@ packages:
       graphql: 16.3.0
     dev: false
 
-  /@guild-docs/client/2.0.0-alpha-411c735.0_05a665f28162cb74e72f852c18c44546:
+  /@guild-docs/client/2.0.0-alpha-411c735.0_413accb0730421a0b208089084da0eaf:
     resolution: {integrity: sha512-WAdqgVea4VZqsgwNxrA56RZQ8t5Pl1xg6pl8dVgNWf8gta5aHeLpfsGzNdaca633i3DNsP02jSNaC4wmRdCQmw==}
     peerDependencies:
       '@chakra-ui/icons': '*'
@@ -3215,7 +3215,7 @@ packages:
       '@guild-docs/mdx-remote': 2.0.0-alpha-bbffbbf.0_70f73f9683e3ca89f109430e24d10f11
       '@guild-docs/types': 2.0.0-alpha-bbffbbf.0_a529f6288060d1204052f168b414484f
       '@mdx-js/react': 2.0.0_react@17.0.2
-      '@theguild/components': 1.9.0_6bd4bbaae34125f97b10fd2265c5fcdf
+      '@theguild/components': 1.10.0_6bd4bbaae34125f97b10fd2265c5fcdf
       framer-motion: 6.2.6_react-dom@17.0.2+react@17.0.2
       immer: 9.0.12
       next: 12.1.0_react-dom@17.0.2+react@17.0.2
@@ -3974,8 +3974,8 @@ packages:
       react-dom: 17.0.2_react@17.0.2
     dev: true
 
-  /@theguild/components/1.9.0_6bd4bbaae34125f97b10fd2265c5fcdf:
-    resolution: {integrity: sha512-9xsFBr8T6dVFDaSiiMKJiRA2nC0L/xa5YNvytWH6KxkdVNDQ5X149cmK+WFK2pAKHyAp2Terv/jiq2YNwCGyRg==}
+  /@theguild/components/1.10.0_6bd4bbaae34125f97b10fd2265c5fcdf:
+    resolution: {integrity: sha512-OS8G4mjH9/MbSM0CQYWg8mb70pHKBU2BASjMNIHnPYuNzTYxRmlKpvEB6achkyp9kCsakRBZ3gI/tGoEX/fN7Q==}
     peerDependencies:
       react: ^17.0.2
       react-dom: ^17.0.2
@@ -3983,21 +3983,20 @@ packages:
       '@emotion/react': 11.7.1_a0c521d4794c7ad97f5f4c1c4a7d5818
       '@emotion/styled': 11.6.0_6051c8b70bfa52211d6f419a3c4413f0
       algoliasearch: 4.11.0
-      focus-trap-react: 8.9.1_react-dom@17.0.2+react@17.0.2
-      polished: 4.1.3
+      focus-trap-react: 8.9.2_react-dom@17.0.2+react@17.0.2
+      polished: 4.1.4
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
       react-instantsearch-dom: 6.17.0_9c61a37bce6c0496634c2178214848ce
       react-paginate: 7.1.3_react@17.0.2
       react-player: 2.9.0_react@17.0.2
-      tailwindcss: 2.2.19_ts-node@10.5.0
+      tailwindcss: 3.0.22_ts-node@10.5.0
       twin.macro: 2.8.2_ts-node@10.5.0
       use-debounce: 7.0.1_react@17.0.2
     transitivePeerDependencies:
       - '@babel/core'
       - '@types/react'
       - autoprefixer
-      - postcss
       - prop-types
       - ts-node
     dev: false
@@ -6906,20 +6905,20 @@ packages:
       tslib: 2.3.1
     dev: false
 
-  /focus-trap-react/8.9.1_react-dom@17.0.2+react@17.0.2:
-    resolution: {integrity: sha512-QGVw4ch1ZfT2IcCL1ehBgrwnFuPA0nP7hXcrZzC8SThbktt/jiXCWQSKhA2WL0nVbxTiZ7YpIu/foTekp+dcqA==}
+  /focus-trap-react/8.9.2_react-dom@17.0.2+react@17.0.2:
+    resolution: {integrity: sha512-m6TQQHLcqkisc6Qq92q1yYzzOaxo34Szh5FQOXzky7028PXFEhuUxScTbT7EG9qL0QG7B+oR2ZbxyU0lK4kIwQ==}
     peerDependencies:
       prop-types: ^15.8.1
       react: '>=16.0.0'
       react-dom: '>=16.0.0'
     dependencies:
-      focus-trap: 6.7.2
+      focus-trap: 6.7.3
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
     dev: false
 
-  /focus-trap/6.7.2:
-    resolution: {integrity: sha512-mRVv9QPCXITaDreu+pNXiPk1Rpn0WQtGvGrDo3Z/s2kdwtzFw/WOPfbLkdxWWvcahoInm9eRztuQOr1RNyQGrw==}
+  /focus-trap/6.7.3:
+    resolution: {integrity: sha512-8xCEKndV4KrseGhFKKKmczVA14yx1/hnmFICPOjcFjToxCJYj/NHH43tPc3YE/PLnLRNZoFug0EcWkGQde/miQ==}
     dependencies:
       tabbable: 5.2.1
     dev: false
@@ -9616,8 +9615,8 @@ packages:
     dependencies:
       find-up: 4.1.0
 
-  /polished/4.1.3:
-    resolution: {integrity: sha512-ocPAcVBUOryJEKe0z2KLd1l9EBa1r5mSwlKpExmrLzsnIzJo4axsoU9O2BjOTkDGDT4mZ0WFE5XKTlR3nLnZOA==}
+  /polished/4.1.4:
+    resolution: {integrity: sha512-Nq5Mbza+Auo7N3sQb1QMFaQiDO+4UexWuSGR7Cjb4Sw11SZIJcrrFtiZ+L0jT9MBsUsxDboHVASbCLbE1rnECg==}
     engines: {node: '>=10'}
     dependencies:
       '@babel/runtime': 7.17.2
@@ -9640,6 +9639,16 @@ packages:
       postcss: 8.4.6
     dev: false
 
+  /postcss-js/4.0.0_postcss@8.4.6:
+    resolution: {integrity: sha512-77QESFBwgX4irogGVPgQ5s07vLvFqWr228qZY+w6lW599cRlK/HmnlivnnVUxkjHnCu4J16PDMHcH+e+2HbvTQ==}
+    engines: {node: ^12 || ^14 || >= 16}
+    peerDependencies:
+      postcss: ^8.3.3
+    dependencies:
+      camelcase-css: 2.0.1
+      postcss: 8.4.6
+    dev: false
+
   /postcss-load-config/3.1.1_ts-node@10.5.0:
     resolution: {integrity: sha512-c/9XYboIbSEUZpiD1UQD0IKiUe8n9WHYV7YFe7X7J+ZwCsEKkUJSFWjS9hBU1RR9THR7jMXst8sxiqP0jjo2mg==}
     engines: {node: '>= 10'}
@@ -9652,15 +9661,6 @@ packages:
       lilconfig: 2.0.4
       ts-node: 10.5.0_99ae9436e134a034c8d45fdd98ebbf22
       yaml: 1.10.2
-    dev: false
-
-  /postcss-nested/5.0.6:
-    resolution: {integrity: sha512-rKqm2Fk0KbA8Vt3AdGN0FB9OBOMDVajMG6ZCf/GoHgdxUJ4sBFp0A/uMIRm+MJUdo33YXEtjqIz8u7DAp8B7DA==}
-    engines: {node: '>=12.0'}
-    peerDependencies:
-      postcss: ^8.2.14
-    dependencies:
-      postcss-selector-parser: 6.0.9
     dev: false
 
   /postcss-nested/5.0.6_postcss@8.4.6:
@@ -11160,46 +11160,34 @@ packages:
       - ts-node
     dev: false
 
-  /tailwindcss/2.2.19_ts-node@10.5.0:
-    resolution: {integrity: sha512-6Ui7JSVtXadtTUo2NtkBBacobzWiQYVjYW0ZnKaP9S1ZCKQ0w7KVNz+YSDI/j7O7KCMHbOkz94ZMQhbT9pOqjw==}
+  /tailwindcss/3.0.22_ts-node@10.5.0:
+    resolution: {integrity: sha512-F8lt74RlNZirnkaSk310+vGQta7c0/hgx7/bqxruM4wS9lp8oqV93lzavajC3VT0Lp4UUtUVIt8ifKcmGzkr0A==}
     engines: {node: '>=12.13.0'}
     hasBin: true
     peerDependencies:
       autoprefixer: ^10.0.2
-      postcss: ^8.0.9
     dependencies:
       arg: 5.0.1
-      bytes: 3.1.2
       chalk: 4.1.2
       chokidar: 3.5.3
-      color: 4.2.0
+      color-name: 1.1.4
       cosmiconfig: 7.0.1
       detective: 5.2.0
       didyoumean: 1.2.2
       dlv: 1.1.3
       fast-glob: 3.2.11
-      fs-extra: 10.0.0
       glob-parent: 6.0.2
-      html-tags: 3.1.0
-      is-color-stop: 1.1.0
       is-glob: 4.0.3
-      lodash: 4.17.21
-      lodash.topath: 4.5.2
-      modern-normalize: 1.1.0
-      node-emoji: 1.11.0
       normalize-path: 3.0.0
       object-hash: 2.2.0
-      postcss-js: 3.0.3
+      postcss: 8.4.6
+      postcss-js: 4.0.0_postcss@8.4.6
       postcss-load-config: 3.1.1_ts-node@10.5.0
-      postcss-nested: 5.0.6
+      postcss-nested: 5.0.6_postcss@8.4.6
       postcss-selector-parser: 6.0.9
       postcss-value-parser: 4.2.0
-      pretty-hrtime: 1.0.3
-      purgecss: 4.1.3
       quick-lru: 5.1.1
-      reduce-css-calc: 2.1.8
       resolve: 1.22.0
-      tmp: 0.2.1
     transitivePeerDependencies:
       - ts-node
     dev: false
