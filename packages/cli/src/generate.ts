@@ -4,6 +4,8 @@ import {
   Schema,
   SchemaUnionsKey,
   Type,
+  FieldDescription,
+  ArgsDescriptions,
 } from 'gqty';
 import type {
   GraphQLEnumType,
@@ -204,21 +206,11 @@ export async function generate(
 
   const descriptions = new Map<string, string>();
 
-  interface FieldDescription {
-    description?: string | null;
-    deprecated?: string | null;
-    defaultValue?: string | null;
-  }
 
   const fieldsDescriptions = new Map<
     string,
     Record<string, FieldDescription | undefined>
   >();
-
-  type ArgsDescriptions = Record<
-    string,
-    Record<string, FieldDescription | undefined>
-  >;
 
   const fieldsArgsDescriptions = new Map<string, ArgsDescriptions>();
 
@@ -569,6 +561,7 @@ export async function generate(
     isArray,
     nullableItems,
     isNullable,
+    hasDefaultValue,
   }: ReturnType<typeof parseSchemaType>) {
     let typeToReturn: string[] = [
       scalarsEnumsHash[pureType]
@@ -586,7 +579,7 @@ export async function generate(
       ];
     }
 
-    if (isNullable) {
+    if (isNullable || hasDefaultValue) {
       typeToReturn = ['Maybe<', ...typeToReturn, '>'];
     }
 
@@ -665,6 +658,8 @@ export async function generate(
             return acum;
           }
 
+          const typeFieldArgDescriptions = fieldsArgsDescriptions.has(typeName) ? fieldsArgsDescriptions.get(typeName) : undefined;
+          const argDescriptions = typeFieldArgDescriptions && typeFieldArgDescriptions[fieldKey] ? typeFieldArgDescriptions[fieldKey] : {};
           const fieldValueProps = parseSchemaType(fieldValue.__type);
           const typeToReturn = parseFinalType(fieldValueProps);
           let finalType: string;
@@ -672,8 +667,8 @@ export async function generate(
             const argsEntries = Object.entries(fieldValue.__args);
             let onlyNullableArgs = true;
             const argTypes = argsEntries.reduce((acum, [argKey, argValue]) => {
-              const argValueProps = parseSchemaType(argValue);
-              const connector = argValueProps.isNullable ? '?:' : ':';
+              const argValueProps = parseSchemaType(argValue, argDescriptions[argKey]);
+              const connector = argValueProps.isNullable || argValueProps.hasDefaultValue ? '?:' : ':';
 
               if (!argValueProps.isNullable) {
                 onlyNullableArgs = false;

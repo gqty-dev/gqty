@@ -30,13 +30,26 @@ export type QueryFetcher = (
 export interface ParseSchemaTypeInfo {
   pureType: string;
   isNullable: boolean;
+  hasDefaultValue: boolean;
   isArray: boolean;
   nullableItems: boolean;
 }
 
-export function parseSchemaType(type: string): ParseSchemaTypeInfo {
+export interface FieldDescription {
+  description?: string | null;
+  deprecated?: string | null;
+  defaultValue?: string | null;
+}
+
+export type ArgsDescriptions = Record<
+    string,
+    Record<string, FieldDescription | undefined>
+    >;
+
+export function parseSchemaType(type: string, fieldDesc: FieldDescription | undefined = undefined): ParseSchemaTypeInfo {
   let isArray = false;
   let isNullable = true;
+  let hasDefaultValue = !!(fieldDesc && fieldDesc.defaultValue !== null);
   let pureType = type;
   let nullableItems = true;
   if (pureType.endsWith('!')) {
@@ -56,6 +69,7 @@ export function parseSchemaType(type: string): ParseSchemaTypeInfo {
   return {
     pureType,
     isNullable,
+    hasDefaultValue,
     isArray,
     nullableItems,
   };
