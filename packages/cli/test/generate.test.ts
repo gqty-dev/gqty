@@ -533,6 +533,7 @@ describe('feature complete app', () => {
           stringNullableWithArgs(
             hello: String!
             helloTwo: String = "Hi"
+            helloThree: String! = "Hi"
           ): String
           stringNullableWithArgsArray(hello: [String]!): String
           object: Human
@@ -707,7 +708,7 @@ describe('feature complete app', () => {
           simpleString: { __type: 'String!' },
           stringNullableWithArgs: {
             __type: 'String',
-            __args: { hello: 'String!', helloTwo: 'String' },
+            __args: { hello: 'String!', helloThree: 'String!', helloTwo: 'String' },
           },
           stringNullableWithArgsArray: {
             __type: 'String',
@@ -800,6 +801,10 @@ describe('feature complete app', () => {
         simpleString: ScalarsEnums['String'];
         stringNullableWithArgs: (args: {
           hello: Scalars['String'];
+          /**
+           * @defaultValue \`\\"Hi\\"\`
+           */
+          helloThree?: Maybe<Scalars['String']>;
           /**
            * @defaultValue \`\\"Hi\\"\`
            */
@@ -1016,6 +1021,7 @@ describe('feature complete app', () => {
           "stringNullableWithArgs": {
             "__args": {
               "hello": "String!",
+              "helloThree": "String!",
               "helloTwo": "String",
             },
             "__type": "String",
@@ -2044,4 +2050,118 @@ test('invalid transformSchema', async () => {
       `"transformSchema" returned an invalid GraphQL Schema!`
     );
   }
+});
+
+test('fields with default value works', async () => {
+  const { getEnveloped } = await createTestApp({
+    schema: {
+      typeDefs: gql`
+        "Query"
+        type Query {
+          hello(world: String! = "world"): String!
+        }
+      `,
+    },
+  });
+
+  const shouldBeIncluded = '// This should be included';
+
+  const { schemaCode } = await generate(getEnveloped().schema, {
+    preImport: `
+        ${shouldBeIncluded}
+        `,
+    react: true,
+    subscriptions: true,
+  });
+
+  expect(schemaCode).toMatchInlineSnapshot(`
+    "/**
+     * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+     */
+
+    // This should be included
+
+    export type Maybe<T> = T | null;
+    export type InputMaybe<T> = Maybe<T>;
+    export type Exact<T extends { [key: string]: unknown }> = {
+      [K in keyof T]: T[K];
+    };
+    export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
+      [SubKey in K]?: Maybe<T[SubKey]>;
+    };
+    export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
+      [SubKey in K]: Maybe<T[SubKey]>;
+    };
+    /** All built-in and custom scalars, mapped to their actual values */
+    export interface Scalars {
+      ID: string;
+      String: string;
+      Boolean: boolean;
+      Int: number;
+      Float: number;
+    }
+
+    export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
+      Boolean: true,
+      String: true,
+    };
+    export const generatedSchema = {
+      mutation: {},
+      query: {
+        __typename: { __type: 'String!' },
+        hello: { __type: 'String!', __args: { world: 'String!' } },
+      },
+      subscription: {},
+    } as const;
+
+    export interface Mutation {
+      __typename?: 'Mutation';
+    }
+
+    /**
+     * Query
+     */
+    export interface Query {
+      __typename?: 'Query';
+      hello: (args: {
+        /**
+         * @defaultValue \`\\"world\\"\`
+         */
+        world?: Maybe<Scalars['String']>;
+      }) => ScalarsEnums['String'];
+    }
+
+    export interface Subscription {
+      __typename?: 'Subscription';
+    }
+
+    export interface SchemaObjectTypes {
+      Mutation: Mutation;
+      Query: Query;
+      Subscription: Subscription;
+    }
+    export type SchemaObjectTypesNames = 'Mutation' | 'Query' | 'Subscription';
+
+    export interface GeneratedSchema {
+      query: Query;
+      mutation: Mutation;
+      subscription: Subscription;
+    }
+
+    export type MakeNullable<T> = {
+      [K in keyof T]: T[K] | undefined;
+    };
+
+    export interface ScalarsEnums extends MakeNullable<Scalars> {}
+    "
+  `);
+
+  expect(
+    schemaCode
+      .split('\n')
+      .slice(3)
+      .join('\n')
+      .trim()
+      .startsWith(shouldBeIncluded)
+  ).toBeTruthy();
 });
