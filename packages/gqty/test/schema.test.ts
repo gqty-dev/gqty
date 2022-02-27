@@ -7,6 +7,7 @@ describe('parseSchemaType', () => {
     expect(info).toEqual<ParseSchemaTypeInfo>({
       pureType: 'String',
       isNullable: true,
+      hasDefaultValue: false,
       nullableItems: true,
       isArray: false,
     });
@@ -18,6 +19,7 @@ describe('parseSchemaType', () => {
     expect(info).toEqual<ParseSchemaTypeInfo>({
       pureType: 'String',
       isNullable: false,
+      hasDefaultValue: false,
       nullableItems: true,
       isArray: false,
     });
@@ -28,6 +30,7 @@ describe('parseSchemaType', () => {
     expect(info).toEqual<ParseSchemaTypeInfo>({
       pureType: 'String',
       isNullable: true,
+      hasDefaultValue: false,
       nullableItems: true,
       isArray: true,
     });
@@ -39,6 +42,7 @@ describe('parseSchemaType', () => {
     expect(info).toEqual<ParseSchemaTypeInfo>({
       pureType: 'String',
       isNullable: true,
+      hasDefaultValue: false,
       nullableItems: false,
       isArray: true,
     });
