@@ -772,7 +772,7 @@ export async function generate(
       isJavascriptOutput
         ? typeDoc('import("gqty").QueryFetcher') + 'const queryFetcher'
         : 'const queryFetcher : QueryFetcher'
-    } = async function (query, variables) {
+    } = async function (query, variables, fetchOptions) {
         // Modify "${endpoint}" if needed
         const response = await fetch("${endpoint}", {
           method: "POST",
@@ -784,8 +784,9 @@ export async function generate(
             variables,
           }),
           mode: "cors",
+          ...fetchOptions
         });
-            
+
         const json = await response.json();
       
         return json;

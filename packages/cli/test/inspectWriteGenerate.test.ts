@@ -69,7 +69,11 @@ test('basic inspectWriteGenerate functionality', async () => {
       } from './schema.generated';
       import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
-      const queryFetcher: QueryFetcher = async function (query, variables) {
+      const queryFetcher: QueryFetcher = async function (
+        query,
+        variables,
+        fetchOptions
+      ) {
         // Modify \\"/api/graphql\\" if needed
         const response = await fetch('/api/graphql', {
           method: 'POST',
@@ -81,6 +85,7 @@ test('basic inspectWriteGenerate functionality', async () => {
             variables,
           }),
           mode: 'cors',
+          ...fetchOptions,
         });
 
         const json = await response.json();
@@ -272,7 +277,11 @@ describe('from file', () => {
         } from './schema.generated';
         import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
-        const queryFetcher: QueryFetcher = async function (query, variables) {
+        const queryFetcher: QueryFetcher = async function (
+          query,
+          variables,
+          fetchOptions
+        ) {
           // Modify \\"/api/graphql\\" if needed
           const response = await fetch('/api/graphql', {
             method: 'POST',
@@ -284,6 +293,7 @@ describe('from file', () => {
               variables,
             }),
             mode: 'cors',
+            ...fetchOptions,
           });
 
           const json = await response.json();
@@ -473,7 +483,11 @@ describe('from file', () => {
         } from './schema.generated';
         import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
-        const queryFetcher: QueryFetcher = async function (query, variables) {
+        const queryFetcher: QueryFetcher = async function (
+          query,
+          variables,
+          fetchOptions
+        ) {
           // Modify \\"/api/graphql\\" if needed
           const response = await fetch('/api/graphql', {
             method: 'POST',
@@ -485,6 +499,7 @@ describe('from file', () => {
               variables,
             }),
             mode: 'cors',
+            ...fetchOptions,
           });
 
           const json = await response.json();
@@ -673,7 +688,11 @@ describe('from file', () => {
         } from './schema.generated';
         import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
-        const queryFetcher: QueryFetcher = async function (query, variables) {
+        const queryFetcher: QueryFetcher = async function (
+          query,
+          variables,
+          fetchOptions
+        ) {
           // Modify \\"/api/graphql\\" if needed
           const response = await fetch('/api/graphql', {
             method: 'POST',
@@ -685,6 +704,7 @@ describe('from file', () => {
               variables,
             }),
             mode: 'cors',
+            ...fetchOptions,
           });
 
           const json = await response.json();
@@ -917,7 +937,11 @@ describe('from multiple files', () => {
         } from './schema.generated';
         import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
-        const queryFetcher: QueryFetcher = async function (query, variables) {
+        const queryFetcher: QueryFetcher = async function (
+          query,
+          variables,
+          fetchOptions
+        ) {
           // Modify \\"/api/graphql\\" if needed
           const response = await fetch('/api/graphql', {
             method: 'POST',
@@ -929,6 +953,7 @@ describe('from multiple files', () => {
               variables,
             }),
             mode: 'cors',
+            ...fetchOptions,
           });
 
           const json = await response.json();
@@ -1177,7 +1202,11 @@ test('specify generateOptions to inspectWriteGenerate', async () => {
       } from './schema.generated';
       import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
-      const queryFetcher: QueryFetcher = async function (query, variables) {
+      const queryFetcher: QueryFetcher = async function (
+        query,
+        variables,
+        fetchOptions
+      ) {
         // Modify \\"/api/graphql\\" if needed
         const response = await fetch('/api/graphql', {
           method: 'POST',
@@ -1189,6 +1218,7 @@ test('specify generateOptions to inspectWriteGenerate', async () => {
             variables,
           }),
           mode: 'cors',
+          ...fetchOptions,
         });
 
         const json = await response.json();
@@ -1538,7 +1568,11 @@ describe('CLI behavior', () => {
         } from './schema.generated';
         import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
-        const queryFetcher: QueryFetcher = async function (query, variables) {
+        const queryFetcher: QueryFetcher = async function (
+          query,
+          variables,
+          fetchOptions
+        ) {
           // Modify \\"/api/graphql\\" if needed
           const response = await fetch('/api/graphql', {
             method: 'POST',
@@ -1550,6 +1584,7 @@ describe('CLI behavior', () => {
               variables,
             }),
             mode: 'cors',
+            ...fetchOptions,
           });
 
           const json = await response.json();

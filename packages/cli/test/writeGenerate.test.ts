@@ -273,7 +273,11 @@ test('creates dir, generates code and writes new file', async () => {
       } from './schema.generated';
       import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
-      const queryFetcher: QueryFetcher = async function (query, variables) {
+      const queryFetcher: QueryFetcher = async function (
+        query,
+        variables,
+        fetchOptions
+      ) {
         // Modify \\"/api/graphql\\" if needed
         const response = await fetch('/api/graphql', {
           method: 'POST',
@@ -285,6 +289,7 @@ test('creates dir, generates code and writes new file', async () => {
             variables,
           }),
           mode: 'cors',
+          ...fetchOptions,
         });
 
         const json = await response.json();

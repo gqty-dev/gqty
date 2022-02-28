@@ -143,7 +143,11 @@ test('basic functionality works', async () => {
     } from './schema.generated';
     import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
-    const queryFetcher: QueryFetcher = async function (query, variables) {
+    const queryFetcher: QueryFetcher = async function (
+      query,
+      variables,
+      fetchOptions
+    ) {
       // Modify \\"/api/graphql\\" if needed
       const response = await fetch('/api/graphql', {
         method: 'POST',
@@ -155,6 +159,7 @@ test('basic functionality works', async () => {
           variables,
         }),
         mode: 'cors',
+        ...fetchOptions,
       });
 
       const json = await response.json();
@@ -316,7 +321,11 @@ test('custom scalars works', async () => {
     } from './schema.generated';
     import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
-    const queryFetcher: QueryFetcher = async function (query, variables) {
+    const queryFetcher: QueryFetcher = async function (
+      query,
+      variables,
+      fetchOptions
+    ) {
       // Modify \\"/api/graphql\\" if needed
       const response = await fetch('/api/graphql', {
         method: 'POST',
@@ -328,6 +337,7 @@ test('custom scalars works', async () => {
           variables,
         }),
         mode: 'cors',
+        ...fetchOptions,
       });
 
       const json = await response.json();
@@ -1411,7 +1421,7 @@ test('javascript output works', async () => {
     /**
      * @type {import(\\"gqty\\").QueryFetcher}
      */
-    const queryFetcher = async function (query, variables) {
+    const queryFetcher = async function (query, variables, fetchOptions) {
       // Modify \\"/api/graphql\\" if needed
       const response = await fetch('/api/graphql', {
         method: 'POST',
@@ -1423,6 +1433,7 @@ test('javascript output works', async () => {
           variables,
         }),
         mode: 'cors',
+        ...fetchOptions,
       });
 
       const json = await response.json();
@@ -1735,7 +1746,11 @@ test('ignoreArgs transform', async () => {
     } from './schema.generated';
     import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
-    const queryFetcher: QueryFetcher = async function (query, variables) {
+    const queryFetcher: QueryFetcher = async function (
+      query,
+      variables,
+      fetchOptions
+    ) {
       // Modify \\"/api/graphql\\" if needed
       const response = await fetch('/api/graphql', {
         method: 'POST',
@@ -1747,6 +1762,7 @@ test('ignoreArgs transform', async () => {
           variables,
         }),
         mode: 'cors',
+        ...fetchOptions,
       });
 
       const json = await response.json();

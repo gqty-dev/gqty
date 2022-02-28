@@ -22,9 +22,12 @@ export interface Scalars {
 
 export type ScalarsEnumsHash = Record<string, true>;
 
+export interface FetchOptions extends Omit<RequestInit, 'body'> {}
+
 export type QueryFetcher = (
   query: string,
-  variables?: Record<string, any>
+  variables: Record<string, any> | undefined,
+  fetchOptions?: FetchOptions
 ) => Promise<ExecutionResult> | ExecutionResult;
 
 export interface ParseSchemaTypeInfo {
