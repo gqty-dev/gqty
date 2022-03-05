@@ -1,6 +1,6 @@
 {
   "name": "@gqty/cli",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "homepage": "https://gqty.dev",
   "repository": {
     "type": "git",
@@ -40,7 +40,7 @@
     "test:watch-coverage": "rimraf coverage && mkdirp coverage/lcov-report && concurrently --raw \"jest --watchAll\" \"serve -l 8787 coverage/lcov-report\" \"wait-on tcp:8787 coverage/lcov-report/index.html && open-cli http://localhost:8787\""
   },
   "dependencies": {
-    "gqty": "workspace:^2.1.0",
+    "gqty": "workspace:^2.2.0",
     "undici": "^4.15.0"
   },
   "devDependencies": {
