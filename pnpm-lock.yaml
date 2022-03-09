@@ -32,7 +32,7 @@ importers:
       ts-node: ^10.7.0
       tslib: ^2.3.1
       typescript: ^4.6.2
-      utf-8-validate: ^5.0.8
+      utf-8-validate: ^5.0.9
       wait-on: ^6.0.1
     devDependencies:
       '@changesets/assemble-release-plan': 5.1.1
@@ -50,7 +50,7 @@ importers:
       globby: 13.1.1
       graphql: 16.3.0
       husky: 7.0.4
-      jest: 27.5.1_cf49ae53c94f7b72a47039a042d7e92e
+      jest: 27.5.1_c6baf799c9a07dac1dfd2ca90d4f021e
       open: 8.4.0
       prettier: 2.5.1
       pretty-quick: 3.1.3_prettier@2.5.1
@@ -59,7 +59,7 @@ importers:
       ts-node: 10.7.0_e79e62fe450383fd2d418267dc75e645
       tslib: 2.3.1
       typescript: 4.6.2
-      utf-8-validate: 5.0.8
+      utf-8-validate: 5.0.9
       wait-on: 6.0.1
 
   examples/ez:
@@ -104,7 +104,7 @@ importers:
       '@types/randomstring': 1.1.8
       bob-tsm: 0.4.6_esbuild@0.14.25+typescript@4.6.2
       esbuild: 0.14.25
-      jest: 27.5.1_cf49ae53c94f7b72a47039a042d7e92e
+      jest: 27.5.1_c6baf799c9a07dac1dfd2ca90d4f021e
       typescript: 4.6.2
 
   examples/ez-react-next:
@@ -170,7 +170,7 @@ importers:
     devDependencies:
       '@types/node': 17.0.21
       isomorphic-unfetch: 3.1.0
-      jest: 27.5.1_cf49ae53c94f7b72a47039a042d7e92e
+      jest: 27.5.1_c6baf799c9a07dac1dfd2ca90d4f021e
       typescript: 4.6.2
 
   examples/react:
@@ -243,7 +243,7 @@ importers:
       '@graphql-ez/plugin-dataloader': 0.6.0_graphql-ez@0.14.0+graphql@16.3.0
       '@graphql-ez/plugin-schema': 0.8.3_f47ffb788f335eecb038dd39172b89f0
       '@graphql-ez/plugin-upload': 0.7.1_ea1359366c9d6e07129143879207dca8
-      '@graphql-ez/plugin-websockets': 0.10.3_23e8e28bd754962f9aa7a3d49368e6b7
+      '@graphql-ez/plugin-websockets': 0.10.3_147e8a222581b2fa649387d717cd7eb4
       '@react-native-async-storage/async-storage': 1.16.1
       '@types/extract-files': 8.1.1
       date-fns: 2.28.0
@@ -279,7 +279,7 @@ importers:
       concurrently: 7.0.0
       cross-env: 7.0.3
       esbuild: 0.14.25
-      jest: 27.5.1_cf49ae53c94f7b72a47039a042d7e92e
+      jest: 27.5.1_c6baf799c9a07dac1dfd2ca90d4f021e
       open-cli: 7.0.1
       typescript: 4.6.2
       wait-on: 6.0.1
@@ -348,14 +348,14 @@ importers:
       fastify: 3.27.3
       graphql: 16.3.0
       graphql-ez: 0.14.0_a827a5d0da07b11b42534ab7eb813b16
-      jest: 27.5.1_cf49ae53c94f7b72a47039a042d7e92e
+      jest: 27.5.1_c6baf799c9a07dac1dfd2ca90d4f021e
       jest-watch-typeahead: 1.0.0_jest@27.5.1
       prettier: 2.5.1
       randomstring: 1.2.2
       ts-jest: 27.1.3_73fdabec045fb992a7005650e270836f
       wait-for-expect: 3.0.2
     devDependencies:
-      '@graphql-ez/plugin-websockets': 0.10.3_23e8e28bd754962f9aa7a3d49368e6b7
+      '@graphql-ez/plugin-websockets': 0.10.3_147e8a222581b2fa649387d717cd7eb4
       '@jest/types': 27.5.1
       '@types/randomstring': 1.1.8
       bob-esbuild-cli: 3.0.1_bob-esbuild@3.2.4
@@ -420,7 +420,7 @@ importers:
       react-use: 17.3.2_react-dom@17.0.2+react@17.0.2
       shiki: 0.10.1
     devDependencies:
-      '@next/bundle-analyzer': 12.1.0_bffff4271b89d628e8333ead80d3d8e8
+      '@next/bundle-analyzer': 12.1.0_d6955b83f926115bf12ffeabab6deaae
       '@types/node': 17.0.21
       '@types/react': 17.0.39
       '@types/react-dom': 17.0.13
@@ -543,7 +543,7 @@ importers:
       concurrently: 7.0.0
       cross-env: 7.0.3
       graphql: 16.3.0
-      jest: 27.5.1_cf49ae53c94f7b72a47039a042d7e92e
+      jest: 27.5.1_c6baf799c9a07dac1dfd2ca90d4f021e
       mkdirp: 1.0.4
       open-cli: 7.0.1
       react: 17.0.2
@@ -555,7 +555,7 @@ importers:
       tsc-watch: 4.6.0_typescript@4.6.2
       typescript: 4.6.2
       wait-on: 6.0.1
-      ws: 8.5.0_bffff4271b89d628e8333ead80d3d8e8
+      ws: 8.5.0_d6955b83f926115bf12ffeabab6deaae
 
   packages/logger:
     specifiers:
@@ -577,7 +577,7 @@ importers:
       '@types/prettier': 2.4.4
       bob-esbuild-cli: 3.0.1_bob-esbuild@3.2.4
       gqty: link:../gqty
-      jest: 27.5.1_cf49ae53c94f7b72a47039a042d7e92e
+      jest: 27.5.1_c6baf799c9a07dac1dfd2ca90d4f021e
       rimraf: 3.0.2
       size-limit: 7.0.8
       test-utils: link:../../internal/test-utils
@@ -622,7 +622,7 @@ importers:
       bob-esbuild-cli: 3.0.1_bob-esbuild@3.2.4
       gqty: link:../gqty
       graphql: 16.3.0
-      jest: 27.5.1_cf49ae53c94f7b72a47039a042d7e92e
+      jest: 27.5.1_c6baf799c9a07dac1dfd2ca90d4f021e
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
       react-test-renderer: 17.0.2_react@17.0.2
@@ -646,7 +646,7 @@ importers:
       ws: ^8.5.0
     dependencies:
       isomorphic-ws: 4.0.1_ws@8.5.0
-      ws: 8.5.0_bffff4271b89d628e8333ead80d3d8e8
+      ws: 8.5.0_d6955b83f926115bf12ffeabab6deaae
     devDependencies:
       '@types/ws': 8.5.2
       bob-esbuild-cli: 3.0.1_bob-esbuild@3.2.4
@@ -2955,7 +2955,7 @@ packages:
       - '@types/node'
     dev: false
 
-  /@graphql-ez/plugin-websockets/0.10.3_23e8e28bd754962f9aa7a3d49368e6b7:
+  /@graphql-ez/plugin-websockets/0.10.3_147e8a222581b2fa649387d717cd7eb4:
     resolution: {integrity: sha512-AGDc0jRbytGkChE63QZzNknPGBUmKQJND/s5xdyNcoGMIx6aojp6dbe8XGEjoYP9qVCzGUIsVYtUcJK5HSA41Q==}
     engines: {node: ^12.20.0 || >=14.13.0}
     peerDependencies:
@@ -2971,7 +2971,7 @@ packages:
       graphql-ez: 0.14.0_a827a5d0da07b11b42534ab7eb813b16
       graphql-ws: 5.6.2_graphql@16.3.0
       subscriptions-transport-ws-envelop: 2.0.2_graphql@16.3.0+ws@8.5.0
-      ws: 8.5.0_bffff4271b89d628e8333ead80d3d8e8
+      ws: 8.5.0_d6955b83f926115bf12ffeabab6deaae
     transitivePeerDependencies:
       - '@types/node'
       - bufferutil
@@ -3278,7 +3278,7 @@ packages:
       jest-util: 27.5.1
       slash: 3.0.0
 
-  /@jest/core/27.5.1_cf49ae53c94f7b72a47039a042d7e92e:
+  /@jest/core/27.5.1_c6baf799c9a07dac1dfd2ca90d4f021e:
     resolution: {integrity: sha512-AK6/UTrvQD0Cd24NSqmIA6rKsu0tKIxfiCducZvqxYdmMisOYAsdItspT+fQDQYARPf8XgjAFZi0ogW2agH5nQ==}
     engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
     peerDependencies:
@@ -3299,13 +3299,13 @@ packages:
       exit: 0.1.2
       graceful-fs: 4.2.9
       jest-changed-files: 27.5.1
-      jest-config: 27.5.1_cf49ae53c94f7b72a47039a042d7e92e
+      jest-config: 27.5.1_c6baf799c9a07dac1dfd2ca90d4f021e
       jest-haste-map: 27.5.1
       jest-message-util: 27.5.1
       jest-regex-util: 27.5.1
       jest-resolve: 27.5.1
       jest-resolve-dependencies: 27.5.1
-      jest-runner: 27.5.1_bffff4271b89d628e8333ead80d3d8e8
+      jest-runner: 27.5.1_d6955b83f926115bf12ffeabab6deaae
       jest-runtime: 27.5.1
       jest-snapshot: 27.5.1
       jest-util: 27.5.1
@@ -3514,10 +3514,10 @@ packages:
       react: 17.0.2
     dev: false
 
-  /@next/bundle-analyzer/12.1.0_bffff4271b89d628e8333ead80d3d8e8:
+  /@next/bundle-analyzer/12.1.0_d6955b83f926115bf12ffeabab6deaae:
     resolution: {integrity: sha512-pOtWRWaKQXff8A80Ex3E67EH8XuERHxBPn8cQgKzfhRKQwoTEareHe2nWJO1uXTQm6m7ZRhmhb4+uwp+UvmITQ==}
     dependencies:
-      webpack-bundle-analyzer: 4.3.0_bffff4271b89d628e8333ead80d3d8e8
+      webpack-bundle-analyzer: 4.3.0_d6955b83f926115bf12ffeabab6deaae
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -7439,7 +7439,7 @@ packages:
     peerDependencies:
       ws: '*'
     dependencies:
-      ws: 8.5.0_bffff4271b89d628e8333ead80d3d8e8
+      ws: 8.5.0_d6955b83f926115bf12ffeabab6deaae
 
   /istanbul-lib-coverage/3.2.0:
     resolution: {integrity: sha512-eOeJ5BHCmHYvQK7xt9GkdHuzuCGS1Y6g9Gvnx3Ym33fz/HpLRYxiS0wHNr+m/MBC8B647Xt608vCDEvhl9c6Mw==}
@@ -7519,7 +7519,7 @@ packages:
     transitivePeerDependencies:
       - supports-color
 
-  /jest-cli/27.5.1_cf49ae53c94f7b72a47039a042d7e92e:
+  /jest-cli/27.5.1_c6baf799c9a07dac1dfd2ca90d4f021e:
     resolution: {integrity: sha512-Hc6HOOwYq4/74/c62dEE3r5elx8wjYqxY0r0G/nFrLDPMFRu6RA/u8qINOIkvhxG7mMQ5EJsOGfRpI8L6eFUVw==}
     engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
     hasBin: true
@@ -7529,14 +7529,14 @@ packages:
       node-notifier:
         optional: true
     dependencies:
-      '@jest/core': 27.5.1_cf49ae53c94f7b72a47039a042d7e92e
+      '@jest/core': 27.5.1_c6baf799c9a07dac1dfd2ca90d4f021e
       '@jest/test-result': 27.5.1
       '@jest/types': 27.5.1
       chalk: 4.1.2
       exit: 0.1.2
       graceful-fs: 4.2.9
       import-local: 3.1.0
-      jest-config: 27.5.1_cf49ae53c94f7b72a47039a042d7e92e
+      jest-config: 27.5.1_c6baf799c9a07dac1dfd2ca90d4f021e
       jest-util: 27.5.1
       jest-validate: 27.5.1
       prompts: 2.4.2
@@ -7548,7 +7548,7 @@ packages:
       - ts-node
       - utf-8-validate
 
-  /jest-config/27.5.1_cf49ae53c94f7b72a47039a042d7e92e:
+  /jest-config/27.5.1_c6baf799c9a07dac1dfd2ca90d4f021e:
     resolution: {integrity: sha512-5sAsjm6tGdsVbW9ahcChPAFCk4IlkQUknH5AvKjuLTSlcO/wCZKyFdn7Rg0EkC+OGgWODEy2hDpWB1PgzH0JNA==}
     engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
     peerDependencies:
@@ -7567,13 +7567,13 @@ packages:
       glob: 7.2.0
       graceful-fs: 4.2.9
       jest-circus: 27.5.1
-      jest-environment-jsdom: 27.5.1_bffff4271b89d628e8333ead80d3d8e8
+      jest-environment-jsdom: 27.5.1_d6955b83f926115bf12ffeabab6deaae
       jest-environment-node: 27.5.1
       jest-get-type: 27.5.1
       jest-jasmine2: 27.5.1
       jest-regex-util: 27.5.1
       jest-resolve: 27.5.1
-      jest-runner: 27.5.1_bffff4271b89d628e8333ead80d3d8e8
+      jest-runner: 27.5.1_d6955b83f926115bf12ffeabab6deaae
       jest-util: 27.5.1
       jest-validate: 27.5.1
       micromatch: 4.0.4
@@ -7613,7 +7613,7 @@ packages:
       jest-util: 27.5.1
       pretty-format: 27.5.1
 
-  /jest-environment-jsdom/27.5.1_bffff4271b89d628e8333ead80d3d8e8:
+  /jest-environment-jsdom/27.5.1_d6955b83f926115bf12ffeabab6deaae:
     resolution: {integrity: sha512-TFBvkTC1Hnnnrka/fUb56atfDtJ9VMZ94JkjTbggl1PEpwrYtUBKMezB3inLmWqQsXYLcMwNoDQwoBTAvFfsfw==}
     engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
     dependencies:
@@ -7623,7 +7623,7 @@ packages:
       '@types/node': 17.0.21
       jest-mock: 27.5.1
       jest-util: 27.5.1
-      jsdom: 16.7.0_bffff4271b89d628e8333ead80d3d8e8
+      jsdom: 16.7.0_d6955b83f926115bf12ffeabab6deaae
     transitivePeerDependencies:
       - bufferutil
       - canvas
@@ -7765,7 +7765,7 @@ packages:
       resolve.exports: 1.1.0
       slash: 3.0.0
 
-  /jest-runner/27.5.1_bffff4271b89d628e8333ead80d3d8e8:
+  /jest-runner/27.5.1_d6955b83f926115bf12ffeabab6deaae:
     resolution: {integrity: sha512-g4NPsM4mFCOwFKXO4p/H/kWGdJp9V8kURY2lX8Me2drgXqG7rrZAx5kv+5H7wtt/cdFIjhqYx1HrlqWHaOvDaQ==}
     engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
     dependencies:
@@ -7779,7 +7779,7 @@ packages:
       emittery: 0.8.1
       graceful-fs: 4.2.9
       jest-docblock: 27.5.1
-      jest-environment-jsdom: 27.5.1_bffff4271b89d628e8333ead80d3d8e8
+      jest-environment-jsdom: 27.5.1_d6955b83f926115bf12ffeabab6deaae
       jest-environment-node: 27.5.1
       jest-haste-map: 27.5.1
       jest-leak-detector: 27.5.1
@@ -7891,7 +7891,7 @@ packages:
     dependencies:
       ansi-escapes: 4.3.2
       chalk: 4.1.2
-      jest: 27.5.1_cf49ae53c94f7b72a47039a042d7e92e
+      jest: 27.5.1_c6baf799c9a07dac1dfd2ca90d4f021e
       jest-regex-util: 27.5.1
       jest-watcher: 27.5.1
       slash: 4.0.0
@@ -7919,7 +7919,7 @@ packages:
       merge-stream: 2.0.0
       supports-color: 8.1.1
 
-  /jest/27.5.1_cf49ae53c94f7b72a47039a042d7e92e:
+  /jest/27.5.1_c6baf799c9a07dac1dfd2ca90d4f021e:
     resolution: {integrity: sha512-Yn0mADZB89zTtjkPJEXwrac3LHudkQMR+Paqa8uxJHCBr9agxztUifWCyiYrjhMPBoUVBjyny0I7XH6ozDr7QQ==}
     engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
     hasBin: true
@@ -7929,9 +7929,9 @@ packages:
       node-notifier:
         optional: true
     dependencies:
-      '@jest/core': 27.5.1_cf49ae53c94f7b72a47039a042d7e92e
+      '@jest/core': 27.5.1_c6baf799c9a07dac1dfd2ca90d4f021e
       import-local: 3.1.0
-      jest-cli: 27.5.1_cf49ae53c94f7b72a47039a042d7e92e
+      jest-cli: 27.5.1_c6baf799c9a07dac1dfd2ca90d4f021e
     transitivePeerDependencies:
       - bufferutil
       - canvas
@@ -7970,7 +7970,7 @@ packages:
       argparse: 2.0.1
     dev: false
 
-  /jsdom/16.7.0_bffff4271b89d628e8333ead80d3d8e8:
+  /jsdom/16.7.0_d6955b83f926115bf12ffeabab6deaae:
     resolution: {integrity: sha512-u9Smc2G1USStM+s/x1ru5Sxrl6mPYCbByG1U/hUmqaVsm4tbNyS7CicOSRyuGQYZhTu0h84qkZZQ/I+dzizSVw==}
     engines: {node: '>=10'}
     peerDependencies:
@@ -8004,7 +8004,7 @@ packages:
       whatwg-encoding: 1.0.5
       whatwg-mimetype: 2.3.0
       whatwg-url: 8.7.0
-      ws: 7.5.7_bffff4271b89d628e8333ead80d3d8e8
+      ws: 7.5.7_d6955b83f926115bf12ffeabab6deaae
       xml-name-validator: 3.0.0
     transitivePeerDependencies:
       - bufferutil
@@ -10788,7 +10788,7 @@ packages:
       isomorphic-ws: 4.0.1_ws@8.5.0
       iterall: 1.3.0
       symbol-observable: 4.0.0
-      ws: 8.5.0_bffff4271b89d628e8333ead80d3d8e8
+      ws: 8.5.0_d6955b83f926115bf12ffeabab6deaae
 
   /supports-color/5.5.0:
     resolution: {integrity: sha512-QjVjwdXIt408MIiAqCX4oUKsgU2EqAGzs2Ppkm4aQYbjm+ZEWEcW4SfFNTr4uMNZma0ey4f5lgLrkB0aX0QMow==}
@@ -11102,7 +11102,7 @@ packages:
       bs-logger: 0.2.6
       esbuild: 0.14.25
       fast-json-stable-stringify: 2.1.0
-      jest: 27.5.1_cf49ae53c94f7b72a47039a042d7e92e
+      jest: 27.5.1_c6baf799c9a07dac1dfd2ca90d4f021e
       jest-util: 27.5.1
       json5: 2.2.0
       lodash.memoize: 4.1.2
@@ -11136,7 +11136,7 @@ packages:
       bs-logger: 0.2.6
       esbuild: 0.14.25
       fast-json-stable-stringify: 2.1.0
-      jest: 27.5.1_cf49ae53c94f7b72a47039a042d7e92e
+      jest: 27.5.1_c6baf799c9a07dac1dfd2ca90d4f021e
       jest-util: 27.5.1
       json5: 2.2.0
       lodash.memoize: 4.1.2
@@ -11534,8 +11534,8 @@ packages:
       react: 17.0.2
     dev: false
 
-  /utf-8-validate/5.0.8:
-    resolution: {integrity: sha512-k4dW/Qja1BYDl2qD4tOMB9PFVha/UJtxTc1cXYOe3WwA/2m0Yn4qB7wLMpJyLJ/7DR0XnTut3HsCSzDT4ZvKgA==}
+  /utf-8-validate/5.0.9:
+    resolution: {integrity: sha512-Yek7dAy0v3Kl0orwMlvi7TPtiCNrdfHNd7Gcc/pLq4BLXqfAmd0J7OWMizUQnTTJsyjKn02mU7anqwfmUP4J8Q==}
     engines: {node: '>=6.14.2'}
     requiresBuild: true
     dependencies:
@@ -11706,7 +11706,7 @@ packages:
     resolution: {integrity: sha512-qBIvFLGiBpLjfwmYAaHPXsn+ho5xZnGvyGvsarywGNc8VyQJUMHJ8OBKGGrPER0okBeMDaan4mNBlgBROxuI8w==}
     engines: {node: '>=10.4'}
 
-  /webpack-bundle-analyzer/4.3.0_bffff4271b89d628e8333ead80d3d8e8:
+  /webpack-bundle-analyzer/4.3.0_d6955b83f926115bf12ffeabab6deaae:
     resolution: {integrity: sha512-J3TPm54bPARx6QG8z4cKBszahnUglcv70+N+8gUqv2I5KOFHJbzBiLx+pAp606so0X004fxM7hqRu10MLjJifA==}
     engines: {node: '>= 10.13.0'}
     hasBin: true
@@ -11719,7 +11719,7 @@ packages:
       lodash: 4.17.21
       opener: 1.5.2
       sirv: 1.0.19
-      ws: 7.5.7_bffff4271b89d628e8333ead80d3d8e8
+      ws: 7.5.7_d6955b83f926115bf12ffeabab6deaae
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -11810,7 +11810,7 @@ packages:
       signal-exit: 3.0.7
       typedarray-to-buffer: 3.1.5
 
-  /ws/7.5.7_bffff4271b89d628e8333ead80d3d8e8:
+  /ws/7.5.7_d6955b83f926115bf12ffeabab6deaae:
     resolution: {integrity: sha512-KMvVuFzpKBuiIXW3E4u3mySRO2/mCHSyZDJQM5NQ9Q9KHWHWh0NHgfbRMLLrceUK5qAL4ytALJbpRMjixFZh8A==}
     engines: {node: '>=8.3.0'}
     peerDependencies:
@@ -11823,9 +11823,9 @@ packages:
         optional: true
     dependencies:
       bufferutil: 4.0.6
-      utf-8-validate: 5.0.8
+      utf-8-validate: 5.0.9
 
-  /ws/8.5.0_bffff4271b89d628e8333ead80d3d8e8:
+  /ws/8.5.0_d6955b83f926115bf12ffeabab6deaae:
     resolution: {integrity: sha512-BWX0SWVgLPzYwF8lTzEy1egjhS4S4OEAHfsO8o65WOVsrnSRGaSiUaa9e0ggGlkMTtBlmOpEXiie9RUcBO86qg==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
@@ -11838,7 +11838,7 @@ packages:
         optional: true
     dependencies:
       bufferutil: 4.0.6
-      utf-8-validate: 5.0.8
+      utf-8-validate: 5.0.9
 
   /xml-name-validator/3.0.0:
     resolution: {integrity: sha512-A5CUptxDsvxKJEU3yO6DuWBSJz/qizqzJKOMIfUJHETbBw/sFaDxgd6fxm1ewUaM0jZ444Fc5vC5ROYurg/4Pw==}
