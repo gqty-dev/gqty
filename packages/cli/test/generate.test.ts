@@ -628,6 +628,7 @@ describe('feature complete app', () => {
 
       /** Greetings Enum */
       export enum GreetingsEnum {
+        /** @deprecated Field no longer supported */
         Bye = 'Bye',
         /** Hello */
         Hello = 'Hello',
