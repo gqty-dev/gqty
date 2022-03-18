@@ -463,11 +463,11 @@ importers:
       tmp-promise: ^3.0.3
       tslib: ^2.3.1
       typescript: ^4.6.2
-      undici: ^4.15.1
+      undici: ^4.16.0
       wait-on: ^6.0.1
     dependencies:
       gqty: link:../gqty
-      undici: 4.15.1
+      undici: 4.16.0
     devDependencies:
       '@graphql-codegen/core': 2.5.1_graphql@16.3.0
       '@graphql-codegen/typescript': 2.4.5_graphql@16.3.0
@@ -11370,6 +11370,11 @@ packages:
 
   /undici/4.15.1:
     resolution: {integrity: sha512-h8LJybhMKD09IyQZoQadNtIR/GmugVhTOVREunJrpV6RStriKBFdSVoFzEzTihwXi/27DIBO+Z0OGF+Mzfi0lA==}
+    engines: {node: '>=12.18'}
+    dev: false
+
+  /undici/4.16.0:
+    resolution: {integrity: sha512-tkZSECUYi+/T1i4u+4+lwZmQgLXd4BLGlrc7KZPcLIW7Jpq99+Xpc30ONv7nS6F5UNOxp/HBZSSL9MafUrvJbw==}
     engines: {node: '>=12.18'}
     dev: false
 
