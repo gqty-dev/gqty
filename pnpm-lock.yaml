@@ -373,7 +373,7 @@ importers:
       '@emotion/react': ^11.8.2
       '@emotion/styled': ^11.8.1
       '@guild-docs/client': 2.0.0-alpha-411c735.0
-      '@guild-docs/server': 3.0.0-alpha-411c735.0
+      '@guild-docs/server': 3.0.0-alpha-d6243f9.0
       '@mdx-js/react': ^2.1.0
       '@next/bundle-analyzer': ^12.1.0
       '@theguild/components': ^1.10.1
@@ -406,7 +406,7 @@ importers:
       '@emotion/react': 11.8.2_00d6772dea80510e818fd171caaa025a
       '@emotion/styled': 11.8.1_19c9b884401318110e0b35fad34f7b03
       '@guild-docs/client': 2.0.0-alpha-411c735.0_482f60a5efc9eb8aaac05507d3a45f2a
-      '@guild-docs/server': 3.0.0-alpha-411c735.0_f0241191964365d7aeb4168a02797a34
+      '@guild-docs/server': 3.0.0-alpha-d6243f9.0_f0241191964365d7aeb4168a02797a34
       '@mdx-js/react': 2.1.0_react@17.0.2
       '@theguild/components': 1.10.1_8af966ed5d09dec081691890ccedf797
       csstype: 3.0.11
@@ -3199,7 +3199,7 @@ packages:
       react: '*'
     dependencies:
       '@babel/code-frame': 7.16.7
-      '@guild-docs/types': 2.0.0-alpha-bbffbbf.0_153d499a91001133409e3104f75c4620
+      '@guild-docs/types': 2.0.0-alpha-d6243f9.0_153d499a91001133409e3104f75c4620
       '@mdx-js/mdx': 2.0.0
       '@mdx-js/react': 2.1.0_react@17.0.2
       '@stefanprobst/rehype-shiki': 2.2.0_shiki@0.10.1
@@ -3216,8 +3216,32 @@ packages:
       - supports-color
     dev: false
 
-  /@guild-docs/server/3.0.0-alpha-411c735.0_f0241191964365d7aeb4168a02797a34:
-    resolution: {integrity: sha512-Ql29XEKV9rGlaLryTgHoZ+BF1yLPHTGWZkQv4x4BBNiPAxCsO2RKLaZhJyuE1b7Wjwt6mIMXeevmvF7mARSGkw==}
+  /@guild-docs/mdx-remote/2.0.0-alpha-d6243f9.0_b529eeff254cd5f8a52cc056b7579fb0:
+    resolution: {integrity: sha512-HYqG5BzwwPUu0RemmoPd6e8pQKIY30wPyUdV+dGx4COuNzlnKe8DFMtKeuJXtFy7p0Kh9yRoUXSYOsk9204ppw==}
+    peerDependencies:
+      '@mdx-js/react': ^2.0.0
+      react: '*'
+    dependencies:
+      '@babel/code-frame': 7.16.7
+      '@guild-docs/types': 2.0.0-alpha-d6243f9.0_153d499a91001133409e3104f75c4620
+      '@mdx-js/mdx': 2.0.0
+      '@mdx-js/react': 2.1.0_react@17.0.2
+      '@stefanprobst/rehype-shiki': 2.2.0_shiki@0.10.1
+      react: 17.0.2
+      unified: 10.1.1
+      unist-util-remove: 3.1.0
+      vfile: 5.3.0
+      vfile-matter: 3.0.1
+    transitivePeerDependencies:
+      - '@chakra-ui/react'
+      - '@types/react'
+      - next-i18next
+      - shiki
+      - supports-color
+    dev: false
+
+  /@guild-docs/server/3.0.0-alpha-d6243f9.0_f0241191964365d7aeb4168a02797a34:
+    resolution: {integrity: sha512-vGDbP4lmHgChbUnsUGiMngQ6fXmRKsgQqLDbsApebq2wJ+R0Ws2YqW23hu8e+7UIGhDdqj4Jc9mabZvtjDIeDg==}
     peerDependencies:
       next: '>=12.0.10'
       next-i18next: '*'
@@ -3225,8 +3249,8 @@ packages:
       react-dom: '*'
       shiki: '*'
     dependencies:
-      '@guild-docs/mdx-remote': 2.0.0-alpha-bbffbbf.0_b529eeff254cd5f8a52cc056b7579fb0
-      '@guild-docs/types': 2.0.0-alpha-bbffbbf.0_153d499a91001133409e3104f75c4620
+      '@guild-docs/mdx-remote': 2.0.0-alpha-d6243f9.0_b529eeff254cd5f8a52cc056b7579fb0
+      '@guild-docs/types': 2.0.0-alpha-d6243f9.0_153d499a91001133409e3104f75c4620
       '@stefanprobst/remark-shiki': 2.1.0_shiki@0.10.1
       github-slugger: 1.4.0
       globby: 13.1.1
@@ -3238,8 +3262,8 @@ packages:
       rehype-slug: 5.0.1
       remark-emoji: 3.0.2
       shiki: 0.10.1
-      tiny-lru: 7.0.6
-      undici: 4.14.1
+      tiny-lru: 8.0.1
+      undici: 4.15.1
     transitivePeerDependencies:
       - '@chakra-ui/react'
       - '@mdx-js/react'
@@ -3249,6 +3273,22 @@ packages:
 
   /@guild-docs/types/2.0.0-alpha-bbffbbf.0_153d499a91001133409e3104f75c4620:
     resolution: {integrity: sha512-EF5U1uNg9c09GVKsIBvjI2JBtpAzRUq8aXvwZRYbPtILqTkb3e0tO86JLF63XlX+NOrt3SyTGMXeU44TPncnEg==}
+    peerDependencies:
+      '@chakra-ui/react': '*'
+      '@types/react': '*'
+      next-i18next: '*'
+    dependencies:
+      '@chakra-ui/react': 1.8.6_b5697210a848410573c38bcd7b4427f0
+      '@mdx-js/mdx': 2.0.0
+      '@types/react': 17.0.40
+      next-i18next: 10.5.0_caa633a00319350dbda42996613fe26c
+      unified: 10.1.1
+    transitivePeerDependencies:
+      - supports-color
+    dev: false
+
+  /@guild-docs/types/2.0.0-alpha-d6243f9.0_153d499a91001133409e3104f75c4620:
+    resolution: {integrity: sha512-rRVS5DT1rtzBR3j74WBJV7iB00jQJjFWL1aA7fGl3Px1yCXhGsGo+NTYNu6SXc6mIFzT+gL8yxZ5umHlpQBknQ==}
     peerDependencies:
       '@chakra-ui/react': '*'
       '@types/react': '*'
