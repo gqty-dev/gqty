@@ -67,7 +67,7 @@ importers:
       '@gqty/cli': workspace:^3.2.0
       '@graphql-ez/fastify': ^0.9.6
       '@graphql-ez/fastify-testing': ^0.1.6
-      '@graphql-ez/plugin-altair': ^0.9.8
+      '@graphql-ez/plugin-altair': ^0.9.9
       '@graphql-ez/plugin-codegen': ^0.7.8
       '@graphql-ez/plugin-schema': ^0.8.3
       '@graphql-typed-document-node/core': ^3.1.1
@@ -88,7 +88,7 @@ importers:
       '@gqty/cli': link:../../packages/cli
       '@graphql-ez/fastify': 0.9.6_930a89d858673015c70559d63e663b6e
       '@graphql-ez/fastify-testing': 0.1.6_b6daed32937ad77d8fe77d31cc888f9f
-      '@graphql-ez/plugin-altair': 0.9.8_d212f3093f716cf5746a6be4d6871f02
+      '@graphql-ez/plugin-altair': 0.9.9_d212f3093f716cf5746a6be4d6871f02
       '@graphql-ez/plugin-codegen': 0.7.8_d212f3093f716cf5746a6be4d6871f02
       '@graphql-ez/plugin-schema': 0.8.3_d212f3093f716cf5746a6be4d6871f02
       '@graphql-typed-document-node/core': 3.1.1_graphql@16.3.0
@@ -184,7 +184,7 @@ importers:
       '@gqty/react': workspace:^2.1.0
       '@gqty/subscriptions': workspace:^2.0.0
       '@graphql-ez/fastify': ^0.9.6
-      '@graphql-ez/plugin-altair': ^0.9.8
+      '@graphql-ez/plugin-altair': ^0.9.9
       '@graphql-ez/plugin-codegen': ^0.7.8
       '@graphql-ez/plugin-dataloader': ^0.6.0
       '@graphql-ez/plugin-schema': ^0.8.3
@@ -238,7 +238,7 @@ importers:
       '@gqty/react': link:../../packages/react
       '@gqty/subscriptions': link:../../packages/subscriptions
       '@graphql-ez/fastify': 0.9.6_930a89d858673015c70559d63e663b6e
-      '@graphql-ez/plugin-altair': 0.9.8_d212f3093f716cf5746a6be4d6871f02
+      '@graphql-ez/plugin-altair': 0.9.9_d212f3093f716cf5746a6be4d6871f02
       '@graphql-ez/plugin-codegen': 0.7.8_d212f3093f716cf5746a6be4d6871f02
       '@graphql-ez/plugin-dataloader': 0.6.0_graphql-ez@0.14.1+graphql@16.3.0
       '@graphql-ez/plugin-schema': 0.8.3_d212f3093f716cf5746a6be4d6871f02
@@ -2836,19 +2836,19 @@ packages:
       next: 12.1.0_react-dom@17.0.2+react@17.0.2
     dev: false
 
-  /@graphql-ez/plugin-altair/0.9.8_d212f3093f716cf5746a6be4d6871f02:
-    resolution: {integrity: sha512-AUmuSQD5s+qpCS3BcneW9adU1jvKao8e7nXF9P9jYdy1772k7juUXxlrWeXbm4/t4+tcp5tpq8tWrq8MWNkQIQ==}
+  /@graphql-ez/plugin-altair/0.9.9_d212f3093f716cf5746a6be4d6871f02:
+    resolution: {integrity: sha512-Rm0hXHEIKwW6jBDYxAOjNtdkY9Ih6+VfFKL3M0Kj+YjSe1b++8hpAepfNNAKKGFVajLRDqYEHDzM+WSHSQ4d7w==}
     engines: {node: ^12.20.0 || >=14.13.0}
     peerDependencies:
       '@types/node': '*'
-      graphql-ez: ^0.14.0
+      graphql-ez: ^0.14.1
     dependencies:
       '@graphql-ez/utils': 0.1.4_a827a5d0da07b11b42534ab7eb813b16
       '@types/node': 17.0.21
-      altair-static-slim: 4.3.1
+      altair-static-slim: 4.4.1
       cross-fetch: 3.1.5
       graphql-ez: 0.14.1_a827a5d0da07b11b42534ab7eb813b16
-      mime-types: 2.1.34
+      mime-types: 2.1.35
     transitivePeerDependencies:
       - encoding
       - graphql
@@ -4513,8 +4513,8 @@ packages:
       '@algolia/transporter': 4.11.0
     dev: false
 
-  /altair-static-slim/4.3.1:
-    resolution: {integrity: sha512-Qi1wSND0Hbx9SLUiWKIcgslblYnkRty5sA6+3zm+crISM0FbaSbq2jjVCU3xTGQC1NwYlI1QmdDz4LJFl6vErQ==}
+  /altair-static-slim/4.4.1:
+    resolution: {integrity: sha512-EzzBe6WG/mxK6J1DICW94huTSEHFoQSrJBEYxHpMZ+WuQXDX6tk2nEcCQIOoIJtMITh81Cnx9j1L0rmrXZI3gQ==}
     dev: false
 
   /ansi-align/3.0.1:
@@ -8727,7 +8727,6 @@ packages:
   /mime-db/1.52.0:
     resolution: {integrity: sha512-sPU4uV7dYlvtWJxwwxHD0PuihVNiE7TyAbQ5SWxDCB9mUYvOgroQOwYQQOKPJ8CIbE+1ETVlOoK1UC2nU3gYvg==}
     engines: {node: '>= 0.6'}
-    dev: true
 
   /mime-types/2.1.18:
     resolution: {integrity: sha512-lc/aahn+t4/SWV/qcmumYjymLsWfN3ELhpmVuUFjgsORruuZPVSwAQryq+HHGvO/SI2KVX26bx+En+zhM8g8hQ==}
@@ -8741,6 +8740,13 @@ packages:
     engines: {node: '>= 0.6'}
     dependencies:
       mime-db: 1.51.0
+
+  /mime-types/2.1.35:
+    resolution: {integrity: sha512-ZDY+bPm5zTTF+YpCrAU9nK0UgICYPT0QtT1NZWFv4s++TNkcgVaT0g6+4R2uI4MjQjzysHB1zxuWL50hzaeXiw==}
+    engines: {node: '>= 0.6'}
+    dependencies:
+      mime-db: 1.52.0
+    dev: false
 
   /mime/1.6.0:
     resolution: {integrity: sha512-x0Vn8spI+wuJ1O6S7gnbaQg8Pxh4NNHb7KSINmEWKiPE4RKOplvijn+NkmYmmRgP68mc70j2EbeTFRsrswaQeg==}
@@ -11008,11 +11014,6 @@ packages:
 
   /tiny-invariant/1.2.0:
     resolution: {integrity: sha512-1Uhn/aqw5C6RI4KejVeTg6mIS7IqxnLJ8Mv2tV5rTc0qWobay7pDUz6Wi392Cnc8ak1H0F2cjoRzb2/AW4+Fvg==}
-    dev: false
-
-  /tiny-lru/7.0.6:
-    resolution: {integrity: sha512-zNYO0Kvgn5rXzWpL0y3RS09sMK67eGaQj9805jlK9G6pSadfriTczzLHFXa/xcW4mIRfmlB9HyQ/+SgL0V1uow==}
-    engines: {node: '>=6'}
     dev: false
 
   /tiny-lru/8.0.1:
