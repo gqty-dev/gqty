@@ -189,7 +189,7 @@ importers:
       '@graphql-ez/plugin-dataloader': ^0.6.0
       '@graphql-ez/plugin-schema': ^0.8.3
       '@graphql-ez/plugin-upload': ^0.7.1
-      '@graphql-ez/plugin-websockets': ^0.10.3
+      '@graphql-ez/plugin-websockets': ^0.10.4
       '@react-native-async-storage/async-storage': ^1.16.3
       '@types/extract-files': ^8.1.1
       '@types/graphql-upload': ^8.0.11
@@ -243,7 +243,7 @@ importers:
       '@graphql-ez/plugin-dataloader': 0.6.0_graphql-ez@0.14.0+graphql@16.3.0
       '@graphql-ez/plugin-schema': 0.8.3_f47ffb788f335eecb038dd39172b89f0
       '@graphql-ez/plugin-upload': 0.7.1_ea1359366c9d6e07129143879207dca8
-      '@graphql-ez/plugin-websockets': 0.10.3_147e8a222581b2fa649387d717cd7eb4
+      '@graphql-ez/plugin-websockets': 0.10.4_147e8a222581b2fa649387d717cd7eb4
       '@react-native-async-storage/async-storage': 1.16.3
       '@types/extract-files': 8.1.1
       date-fns: 2.28.0
@@ -315,7 +315,7 @@ importers:
       '@graphql-ez/fastify-testing': ^0.1.6
       '@graphql-ez/plugin-codegen': ^0.7.8
       '@graphql-ez/plugin-schema': ^0.8.3
-      '@graphql-ez/plugin-websockets': ^0.10.3
+      '@graphql-ez/plugin-websockets': ^0.10.4
       '@jest/types': ^27.5.1
       '@rollup/plugin-babel': ^5.3.1
       '@types/jest': ^27.4.1
@@ -355,7 +355,7 @@ importers:
       ts-jest: 27.1.3_e3f3aae470b938602dcd13c1910abd3b
       wait-for-expect: 3.0.2
     devDependencies:
-      '@graphql-ez/plugin-websockets': 0.10.3_147e8a222581b2fa649387d717cd7eb4
+      '@graphql-ez/plugin-websockets': 0.10.4_147e8a222581b2fa649387d717cd7eb4
       '@jest/types': 27.5.1
       '@types/randomstring': 1.1.8
       bob-esbuild-cli: 3.0.2_bob-esbuild@3.2.5
@@ -2954,21 +2954,21 @@ packages:
       - '@types/node'
     dev: false
 
-  /@graphql-ez/plugin-websockets/0.10.3_147e8a222581b2fa649387d717cd7eb4:
-    resolution: {integrity: sha512-AGDc0jRbytGkChE63QZzNknPGBUmKQJND/s5xdyNcoGMIx6aojp6dbe8XGEjoYP9qVCzGUIsVYtUcJK5HSA41Q==}
+  /@graphql-ez/plugin-websockets/0.10.4_147e8a222581b2fa649387d717cd7eb4:
+    resolution: {integrity: sha512-XwsbHhYmogGESTOtfd9HgEvis06nxf6lL+2R2uJNWJF2kW30ggD1dqR2e84A+LK8cnTh7PmHbLEibx+61MuBBg==}
     engines: {node: ^12.20.0 || >=14.13.0}
     peerDependencies:
       graphql: '*'
-      graphql-ez: ^0.14.0
+      graphql-ez: ^0.14.1
     peerDependenciesMeta:
       graphql:
         optional: true
     dependencies:
       '@graphql-ez/utils': 0.1.4_a827a5d0da07b11b42534ab7eb813b16
-      '@types/ws': 8.5.1
+      '@types/ws': 8.5.3
       graphql: 16.3.0
       graphql-ez: 0.14.0_a827a5d0da07b11b42534ab7eb813b16
-      graphql-ws: 5.6.2_graphql@16.3.0
+      graphql-ws: 5.6.3_graphql@16.3.0
       subscriptions-transport-ws-envelop: 2.0.2_graphql@16.3.0+ws@8.5.0
       ws: 8.5.0_d6955b83f926115bf12ffeabab6deaae
     transitivePeerDependencies:
@@ -4362,16 +4362,10 @@ packages:
     resolution: {integrity: sha1-DSUBJorY+ZYrdA04fEZU9fjiPlI=}
     dev: false
 
-  /@types/ws/8.5.1:
-    resolution: {integrity: sha512-UxlLOfkuQnT2YSBCNq0x86SGOUxas6gAySFeDe2DcnEnA8655UIPoCDorWZCugcvKIL8IUI4oueUfJ1hhZSE2A==}
-    dependencies:
-      '@types/node': 17.0.21
-
   /@types/ws/8.5.3:
     resolution: {integrity: sha512-6YOoWjruKj1uLf3INHH7D3qTXwFfEsg1kf3c0uDdSBJwfa/llkwIjrAGV7j7mVgGNbzTQ3HiHKKDXl6bJPD97w==}
     dependencies:
       '@types/node': 17.0.21
-    dev: true
 
   /@types/yargs-parser/20.2.1:
     resolution: {integrity: sha512-7tFImggNeNBVMsn0vLrpn1H1uPrUBdnARPTpZoitY37ZrdJREzf7I16tMrlK3hen349gr1NYh8CmZQa7CTG6Aw==}
@@ -6946,8 +6940,8 @@ packages:
       object-path: 0.11.8
     dev: false
 
-  /graphql-ws/5.6.2_graphql@16.3.0:
-    resolution: {integrity: sha512-TsjovINNEGfv52uKWYSVCOLX9LFe6wAhf9n7hIsV3zjflky1dv/mAP+kjXAXsnzV1jH5Sx0S73CtBFNvxus+SQ==}
+  /graphql-ws/5.6.3_graphql@16.3.0:
+    resolution: {integrity: sha512-ZolWOi6bzI35ovGROCZROB9nDbwZiJdIsaPdzW/jkICCGNb3qL/33IONY/yQiBa+Je2uA11HfY4Uxse4+/ePYA==}
     engines: {node: '>=10'}
     peerDependencies:
       graphql: '>=0.11 <=16'
