@@ -254,7 +254,7 @@ function Example() {
         nodes,
         pageInfo: { hasNextPage, endCursor },
       } = query.users({
-        input,
+        ...input,
       });
       return {
         nodes: getArrayFields(nodes, 'name'),
