@@ -31,17 +31,17 @@ importers:
       ts-jest: ^27.1.3
       ts-node: ^10.7.0
       tslib: ^2.3.1
-      typescript: ^4.6.2
+      typescript: ^4.6.3
       utf-8-validate: ^5.0.9
       wait-on: ^6.0.1
     devDependencies:
       '@changesets/assemble-release-plan': 5.1.1
       '@changesets/cli': 2.21.1
       '@types/node': 17.0.21
-      bob-esbuild: 3.2.5_esbuild@0.14.27+typescript@4.6.2
+      bob-esbuild: 3.2.5_esbuild@0.14.27+typescript@4.6.3
       bob-esbuild-cli: 3.0.2_bob-esbuild@3.2.5
-      bob-ts: 3.1.1_738abcd01278e5c06957008fdfa59a6c
-      bob-tsm: 0.4.7_esbuild@0.14.27+typescript@4.6.2
+      bob-ts: 3.1.1_14d261f58a7f316e13ff62b99bc1a5b9
+      bob-tsm: 0.4.7_esbuild@0.14.27+typescript@4.6.3
       bufferutil: 4.0.6
       chalk: 5.0.1
       changesets-github-release: 0.1.0
@@ -55,10 +55,10 @@ importers:
       prettier: 2.6.0
       pretty-quick: 3.1.3_prettier@2.6.0
       rimraf: 3.0.2
-      ts-jest: 27.1.3_4308e292532a0046bf7e0d7c046b94b8
-      ts-node: 10.7.0_e79e62fe450383fd2d418267dc75e645
+      ts-jest: 27.1.3_3fea7f1a6ec5b5a86958e9932d38d5a8
+      ts-node: 10.7.0_f01b7c141b75a45db67b7d9ae4c261df
       tslib: 2.3.1
-      typescript: 4.6.2
+      typescript: 4.6.3
       utf-8-validate: 5.0.9
       wait-on: 6.0.1
 
@@ -83,7 +83,7 @@ importers:
       lodash: ^4.17.21
       randomstring: ^1.2.2
       test-utils: workspace:^0.1.0
-      typescript: ^4.6.2
+      typescript: ^4.6.3
     dependencies:
       '@gqty/cli': link:../../packages/cli
       '@graphql-ez/fastify': 0.9.7_930a89d858673015c70559d63e663b6e
@@ -102,10 +102,10 @@ importers:
     devDependencies:
       '@types/lodash': 4.14.180
       '@types/randomstring': 1.1.8
-      bob-tsm: 0.4.7_esbuild@0.14.27+typescript@4.6.2
+      bob-tsm: 0.4.7_esbuild@0.14.27+typescript@4.6.3
       esbuild: 0.14.27
       jest: 27.5.1_c6baf799c9a07dac1dfd2ca90d4f021e
-      typescript: 4.6.2
+      typescript: 4.6.3
 
   examples/ez-react-next:
     specifiers:
@@ -127,7 +127,7 @@ importers:
       open-cli: ^7.0.1
       react: ^17.0.2
       react-dom: ^17.0.2
-      typescript: ^4.6.2
+      typescript: ^4.6.3
       wait-on: ^6.0.1
     dependencies:
       '@gqty/logger': link:../../packages/logger
@@ -149,7 +149,7 @@ importers:
       '@types/react-dom': 17.0.14
       concurrently: 7.0.0
       open-cli: 7.0.1
-      typescript: 4.6.2
+      typescript: 4.6.3
       wait-on: 6.0.1
 
   examples/github:
@@ -161,7 +161,7 @@ importers:
       isomorphic-unfetch: ^3.1.0
       jest: ^27.5.1
       test-utils: workspace:^0.1.0
-      typescript: ^4.6.2
+      typescript: ^4.6.3
     dependencies:
       '@gqty/cli': link:../../packages/cli
       dotenv: 16.0.0
@@ -171,7 +171,7 @@ importers:
       '@types/node': 17.0.21
       isomorphic-unfetch: 3.1.0
       jest: 27.5.1_c6baf799c9a07dac1dfd2ca90d4f021e
-      typescript: 4.6.2
+      typescript: 4.6.3
 
   examples/react:
     specifiers:
@@ -225,7 +225,7 @@ importers:
       react-ssr-prepass: ^1.5.0
       react-use: ^17.3.2
       serialize-error: ^9.1.1
-      typescript: ^4.6.2
+      typescript: ^4.6.3
       use-error-boundary: ^2.0.6
       wait-on: ^6.0.1
     dependencies:
@@ -275,13 +275,13 @@ importers:
       '@types/node': 17.0.21
       '@types/react': 17.0.41
       '@types/react-dom': 17.0.14
-      bob-tsm: 0.4.7_esbuild@0.14.27+typescript@4.6.2
+      bob-tsm: 0.4.7_esbuild@0.14.27+typescript@4.6.3
       concurrently: 7.0.0
       cross-env: 7.0.3
       esbuild: 0.14.27
       jest: 27.5.1_c6baf799c9a07dac1dfd2ca90d4f021e
       open-cli: 7.0.1
-      typescript: 4.6.2
+      typescript: 4.6.3
       wait-on: 6.0.1
 
   examples/vite-example:
@@ -294,7 +294,7 @@ importers:
       gqty: workspace:^2.2.0
       react: ^17.0.2
       react-dom: ^17.0.2
-      typescript: ^4.6.2
+      typescript: ^4.6.3
       vite: ^2.8.6
     dependencies:
       '@gqty/cli': link:../../packages/cli
@@ -306,7 +306,7 @@ importers:
       '@types/react': 17.0.41
       '@types/react-dom': 17.0.14
       '@vitejs/plugin-react-refresh': 1.3.6
-      typescript: 4.6.2
+      typescript: 4.6.3
       vite: 2.8.6
 
   internal/test-utils:
@@ -334,7 +334,7 @@ importers:
       randomstring: ^1.2.2
       ts-jest: ^27.1.3
       tslib: ^2.3.1
-      typescript: ^4.6.2
+      typescript: ^4.6.3
       wait-for-expect: ^3.0.2
     dependencies:
       '@graphql-ez/fastify': 0.9.7_930a89d858673015c70559d63e663b6e
@@ -352,17 +352,17 @@ importers:
       jest-watch-typeahead: 1.0.0_jest@27.5.1
       prettier: 2.6.0
       randomstring: 1.2.2
-      ts-jest: 27.1.3_e3f3aae470b938602dcd13c1910abd3b
+      ts-jest: 27.1.3_709b9e81dc47fbd8a3300a3a22efef3c
       wait-for-expect: 3.0.2
     devDependencies:
       '@graphql-ez/plugin-websockets': 0.10.4_b569c948de67483e53b2dfcd21253415
       '@jest/types': 27.5.1
       '@types/randomstring': 1.1.8
       bob-esbuild-cli: 3.0.2_bob-esbuild@3.2.5
-      bob-ts: 3.1.1_738abcd01278e5c06957008fdfa59a6c
+      bob-ts: 3.1.1_14d261f58a7f316e13ff62b99bc1a5b9
       concurrently: 7.0.0
       tslib: 2.3.1
-      typescript: 4.6.2
+      typescript: 4.6.3
 
   internal/website:
     specifiers:
@@ -396,7 +396,7 @@ importers:
       react-icons: ^4.3.1
       react-use: ^17.3.2
       shiki: ^0.10.1
-      typescript: ^4.6.2
+      typescript: ^4.6.3
       wait-on: ^6.0.1
     dependencies:
       '@chakra-ui/icons': 1.1.7_react@17.0.2
@@ -424,13 +424,13 @@ importers:
       '@types/node': 17.0.21
       '@types/react': 17.0.41
       '@types/react-dom': 17.0.14
-      bob-tsm: 0.4.7_esbuild@0.14.27+typescript@4.6.2
+      bob-tsm: 0.4.7_esbuild@0.14.27+typescript@4.6.3
       concurrently: 7.0.0
       cross-env: 7.0.3
       esbuild: 0.14.27
       next-remote-watch: 1.0.0
       open-cli: 7.0.1
-      typescript: 4.6.2
+      typescript: 4.6.3
       wait-on: 6.0.1
 
   packages/cli:
@@ -462,7 +462,7 @@ importers:
       test-utils: workspace:^0.1.0
       tmp-promise: ^3.0.3
       tslib: ^2.3.1
-      typescript: ^4.6.2
+      typescript: ^4.6.3
       undici: ^4.16.0
       wait-on: ^6.0.1
     dependencies:
@@ -478,8 +478,8 @@ importers:
       '@types/lodash': 4.14.180
       '@types/lodash.sortby': 4.7.6
       '@types/mkdirp': 1.0.2
-      bob-ts: 3.1.1_738abcd01278e5c06957008fdfa59a6c
-      bob-tsm: 0.4.7_esbuild@0.14.27+typescript@4.6.2
+      bob-ts: 3.1.1_14d261f58a7f316e13ff62b99bc1a5b9
+      bob-tsm: 0.4.7_esbuild@0.14.27+typescript@4.6.3
       changesets-github-release: 0.1.0
       commander: 9.1.0
       cosmiconfig: 7.0.1
@@ -495,7 +495,7 @@ importers:
       test-utils: link:../../internal/test-utils
       tmp-promise: 3.0.3
       tslib: 2.3.1
-      typescript: 4.6.2
+      typescript: 4.6.3
       wait-on: 6.0.1
 
   packages/gqty:
@@ -524,7 +524,7 @@ importers:
       size-limit: ^7.0.8
       test-utils: workspace:^0.1.0
       tsc-watch: ^4.6.2
-      typescript: ^4.6.2
+      typescript: ^4.6.3
       wait-on: ^6.0.1
       ws: ^8.5.0
     dependencies:
@@ -552,8 +552,8 @@ importers:
       serve: 13.0.2
       size-limit: 7.0.8
       test-utils: link:../../internal/test-utils
-      tsc-watch: 4.6.2_typescript@4.6.2
-      typescript: 4.6.2
+      tsc-watch: 4.6.2_typescript@4.6.3
+      typescript: 4.6.3
       wait-on: 6.0.1
       ws: 8.5.0_d6955b83f926115bf12ffeabab6deaae
 
@@ -569,7 +569,7 @@ importers:
       size-limit: ^7.0.8
       test-utils: workspace:^0.1.0
       tslib: ^2.3.1
-      typescript: ^4.6.2
+      typescript: ^4.6.3
     dependencies:
       prettier: 2.6.0
     devDependencies:
@@ -582,7 +582,7 @@ importers:
       size-limit: 7.0.8
       test-utils: link:../../internal/test-utils
       tslib: 2.3.1
-      typescript: 4.6.2
+      typescript: 4.6.3
 
   packages/react:
     specifiers:
@@ -607,7 +607,7 @@ importers:
       size-limit: ^7.0.8
       test-utils: workspace:^0.1.0
       tslib: ^2.3.1
-      typescript: ^4.6.2
+      typescript: ^4.6.3
     dependencies:
       react-ssr-prepass: 1.5.0_react@17.0.2
     devDependencies:
@@ -631,7 +631,7 @@ importers:
       size-limit: 7.0.8
       test-utils: link:../../internal/test-utils
       tslib: 2.3.1
-      typescript: 4.6.2
+      typescript: 4.6.3
 
   packages/subscriptions:
     specifiers:
@@ -642,7 +642,7 @@ importers:
       isomorphic-ws: ^4.0.1
       test-utils: workspace:^0.1.0
       tslib: ^2.3.1
-      typescript: ^4.6.2
+      typescript: ^4.6.3
       ws: ^8.5.0
     dependencies:
       isomorphic-ws: 4.0.1_ws@8.5.0
@@ -654,7 +654,7 @@ importers:
       graphql: 16.3.0
       test-utils: link:../../internal/test-utils
       tslib: 2.3.1
-      typescript: 4.6.2
+      typescript: 4.6.3
 
 packages:
 
@@ -4906,7 +4906,7 @@ packages:
     peerDependencies:
       bob-esbuild: ^3.2.5
     dependencies:
-      bob-esbuild: 3.2.5_esbuild@0.14.27+typescript@4.6.2
+      bob-esbuild: 3.2.5_esbuild@0.14.27+typescript@4.6.3
       commander: 9.0.0
     dev: true
 
@@ -4921,7 +4921,7 @@ packages:
       rollup: 2.70.1
     dev: true
 
-  /bob-esbuild/3.2.5_esbuild@0.14.27+typescript@4.6.2:
+  /bob-esbuild/3.2.5_esbuild@0.14.27+typescript@4.6.3:
     resolution: {integrity: sha512-gsbeqawI4KH9kjdygmB8vxVjXx38k/h9a+s9n66vcCeVeP/Oh/Jz1B/nm5rBAFt+s3hwbLrvZWRA44vciJa4Hw==}
     peerDependencies:
       esbuild: '>=0.14.13'
@@ -4931,10 +4931,10 @@ packages:
       bob-esbuild-plugin: 3.1.4_esbuild@0.14.27+rollup@2.70.1
       esbuild: 0.14.27
       rollup: 2.70.1
-      typescript: 4.6.2
+      typescript: 4.6.3
     dev: true
 
-  /bob-ts/3.1.1_738abcd01278e5c06957008fdfa59a6c:
+  /bob-ts/3.1.1_14d261f58a7f316e13ff62b99bc1a5b9:
     resolution: {integrity: sha512-D6X1d/g/mTQ7oBPdvF1i2/PcXpHUDZcbHsVBj6tfuAJBmwnJ7MsxL63yvuuyLm/3A/mKvdS/h1fUJ3Q6OTGY3A==}
     engines: {node: ^12.20.0 || >=14.13.0}
     hasBin: true
@@ -4947,10 +4947,10 @@ packages:
       bob-esbuild-plugin: 3.1.4_esbuild@0.14.27+rollup@2.70.1
       esbuild: 0.14.27
       rollup: 2.70.1
-      typescript: 4.6.2
+      typescript: 4.6.3
     dev: true
 
-  /bob-tsm/0.4.7_esbuild@0.14.27+typescript@4.6.2:
+  /bob-tsm/0.4.7_esbuild@0.14.27+typescript@4.6.3:
     resolution: {integrity: sha512-xZ6Fn1vq1j1n2Wdn5/mw9agivH3BduCIvu+Zq2IqS4iEzJIbPUjMGbVxp8gZ3cnXwo/M/n8rr1WK9sSO3uIInA==}
     engines: {node: ^12.20.0 || >=14.13.0}
     hasBin: true
@@ -4962,7 +4962,7 @@ packages:
         optional: true
     dependencies:
       esbuild: 0.14.27
-      typescript: 4.6.2
+      typescript: 4.6.3
     optionalDependencies:
       fsevents: 2.3.2
     dev: true
@@ -7676,7 +7676,7 @@ packages:
       pretty-format: 27.5.1
       slash: 3.0.0
       strip-json-comments: 3.1.1
-      ts-node: 10.7.0_e79e62fe450383fd2d418267dc75e645
+      ts-node: 10.7.0_f01b7c141b75a45db67b7d9ae4c261df
     transitivePeerDependencies:
       - bufferutil
       - canvas
@@ -9489,7 +9489,7 @@ packages:
         optional: true
     dependencies:
       lilconfig: 2.0.4
-      ts-node: 10.7.0_e79e62fe450383fd2d418267dc75e645
+      ts-node: 10.7.0_f01b7c141b75a45db67b7d9ae4c261df
       yaml: 1.10.2
     dev: false
 
@@ -11186,7 +11186,7 @@ packages:
     resolution: {integrity: sha512-Z86EW+fFFh/IFB1fqQ3/+7Zpf9t2ebOAxNI/V6Wo7r5gqiqtxmgTlQ1qbqQcjLKYeSHPTsEmvlJUDg/EuL0uHQ==}
     dev: false
 
-  /ts-jest/27.1.3_4308e292532a0046bf7e0d7c046b94b8:
+  /ts-jest/27.1.3_3fea7f1a6ec5b5a86958e9932d38d5a8:
     resolution: {integrity: sha512-6Nlura7s6uM9BVUAoqLH7JHyMXjz8gluryjpPXxr3IxZdAXnU6FhjvVLHFtfd1vsE1p8zD1OJfskkc0jhTSnkA==}
     engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
     hasBin: true
@@ -11216,11 +11216,11 @@ packages:
       lodash.memoize: 4.1.2
       make-error: 1.3.6
       semver: 7.3.5
-      typescript: 4.6.2
+      typescript: 4.6.3
       yargs-parser: 20.2.9
     dev: true
 
-  /ts-jest/27.1.3_e3f3aae470b938602dcd13c1910abd3b:
+  /ts-jest/27.1.3_709b9e81dc47fbd8a3300a3a22efef3c:
     resolution: {integrity: sha512-6Nlura7s6uM9BVUAoqLH7JHyMXjz8gluryjpPXxr3IxZdAXnU6FhjvVLHFtfd1vsE1p8zD1OJfskkc0jhTSnkA==}
     engines: {node: ^10.13.0 || ^12.13.0 || ^14.15.0 || >=15.0.0}
     hasBin: true
@@ -11251,11 +11251,11 @@ packages:
       lodash.memoize: 4.1.2
       make-error: 1.3.6
       semver: 7.3.5
-      typescript: 4.6.2
+      typescript: 4.6.3
       yargs-parser: 20.2.9
     dev: false
 
-  /ts-node/10.7.0_e79e62fe450383fd2d418267dc75e645:
+  /ts-node/10.7.0_f01b7c141b75a45db67b7d9ae4c261df:
     resolution: {integrity: sha512-TbIGS4xgJoX2i3do417KSaep1uRAW/Lu+WAL2doDHC0D6ummjirVOXU5/7aiZotbQ5p1Zp9tP7U6cYhA0O7M8A==}
     hasBin: true
     peerDependencies:
@@ -11281,12 +11281,12 @@ packages:
       create-require: 1.1.1
       diff: 4.0.2
       make-error: 1.3.6
-      typescript: 4.6.2
+      typescript: 4.6.3
       v8-compile-cache-lib: 3.0.0
       yn: 3.1.1
     dev: true
 
-  /tsc-watch/4.6.2_typescript@4.6.2:
+  /tsc-watch/4.6.2_typescript@4.6.3:
     resolution: {integrity: sha512-eHWzZGkPmzXVGQKbqQgf3BFpGiZZw1jQ29ZOJeaSe8JfyUvphbd221NfXmmsJUGGPGA/nnaSS01tXipUcyxAxg==}
     engines: {node: '>=8.17.0'}
     hasBin: true
@@ -11298,7 +11298,7 @@ packages:
       ps-tree: 1.2.0
       string-argv: 0.1.2
       strip-ansi: 6.0.1
-      typescript: 4.6.2
+      typescript: 4.6.3
     dev: true
 
   /tslib/1.14.1:
@@ -11405,8 +11405,8 @@ packages:
     dependencies:
       is-typedarray: 1.0.0
 
-  /typescript/4.6.2:
-    resolution: {integrity: sha512-HM/hFigTBHZhLXshn9sN37H085+hQGeJHJ/X7LpBWLID/fbc2acUMfU+lGD98X81sKP+pFa9f0DZmCwB9GnbAg==}
+  /typescript/4.6.3:
+    resolution: {integrity: sha512-yNIatDa5iaofVozS/uQJEl3JRWLKKGJKh6Yaiv0GLGSuhpFJe7P3SbHZ8/yjAHRQwKRoA6YZqlfjXWmVzoVSMw==}
     engines: {node: '>=4.2.0'}
     hasBin: true
     dev: true
