@@ -373,7 +373,7 @@ importers:
       '@emotion/react': ^11.8.2
       '@emotion/styled': ^11.8.1
       '@guild-docs/client': 2.0.0
-      '@guild-docs/server': 3.0.0-alpha-d6243f9.0
+      '@guild-docs/server': 3.0.1
       '@mdx-js/react': ^2.1.0
       '@next/bundle-analyzer': ^12.1.0
       '@theguild/components': ^1.10.2
@@ -406,7 +406,7 @@ importers:
       '@emotion/react': 11.8.2_03a98942b76c57740a9573edba2d1cc1
       '@emotion/styled': 11.8.1_ab60dc3cf3b46d6599c9cb98d57741dd
       '@guild-docs/client': 2.0.0_4efcec99e0c608e55be1564b6c7e4b3f
-      '@guild-docs/server': 3.0.0-alpha-d6243f9.0_decceaf14add9692e8bfe1d05da77be9
+      '@guild-docs/server': 3.0.1_decceaf14add9692e8bfe1d05da77be9
       '@mdx-js/react': 2.1.0_react@17.0.2
       '@theguild/components': 1.10.2_67620b2a5c0c94cca925f96245d69c3c
       csstype: 3.0.11
@@ -3340,30 +3340,6 @@ packages:
       - unist-util-visit
     dev: false
 
-  /@guild-docs/mdx-remote/2.0.0-alpha-d6243f9.0_4efa1b387455e60c3cddfded7cc5c712:
-    resolution: {integrity: sha512-HYqG5BzwwPUu0RemmoPd6e8pQKIY30wPyUdV+dGx4COuNzlnKe8DFMtKeuJXtFy7p0Kh9yRoUXSYOsk9204ppw==}
-    peerDependencies:
-      '@mdx-js/react': ^2.0.0
-      react: '*'
-    dependencies:
-      '@babel/code-frame': 7.16.7
-      '@guild-docs/types': 2.0.0-alpha-d6243f9.0_e64ee0969aed23750f68cf1eee597bba
-      '@mdx-js/mdx': 2.0.0
-      '@mdx-js/react': 2.1.0_react@17.0.2
-      '@stefanprobst/rehype-shiki': 2.2.0_shiki@0.10.1
-      react: 17.0.2
-      unified: 10.1.1
-      unist-util-remove: 3.1.0
-      vfile: 5.3.0
-      vfile-matter: 3.0.1
-    transitivePeerDependencies:
-      - '@chakra-ui/react'
-      - '@types/react'
-      - next-i18next
-      - shiki
-      - supports-color
-    dev: false
-
   /@guild-docs/mdx-remote/2.0.1_4efa1b387455e60c3cddfded7cc5c712:
     resolution: {integrity: sha512-R5RLXtfEhYV6PGKtFp1qHuAiCKY56TODScTiQ0B8wCWyFOfigMw99DCuabpx21BRTAJaP4ZUvxo2yb+swYfVyA==}
     peerDependencies:
@@ -3389,17 +3365,17 @@ packages:
       - supports-color
     dev: false
 
-  /@guild-docs/server/3.0.0-alpha-d6243f9.0_decceaf14add9692e8bfe1d05da77be9:
-    resolution: {integrity: sha512-vGDbP4lmHgChbUnsUGiMngQ6fXmRKsgQqLDbsApebq2wJ+R0Ws2YqW23hu8e+7UIGhDdqj4Jc9mabZvtjDIeDg==}
+  /@guild-docs/server/3.0.1_decceaf14add9692e8bfe1d05da77be9:
+    resolution: {integrity: sha512-KRXoSqbpBmSAtm1u3iQVpm1oz+vrng+F95NkSf8+uWr6vmxgAscE1hq9/2wrTaNfwwQFUd+GIm6FRlhy4eG2pA==}
     peerDependencies:
-      next: '>=12.0.10'
+      next: '>=12.1.0'
       next-i18next: '*'
       react: '*'
       react-dom: '*'
       shiki: '*'
     dependencies:
-      '@guild-docs/mdx-remote': 2.0.0-alpha-d6243f9.0_4efa1b387455e60c3cddfded7cc5c712
-      '@guild-docs/types': 2.0.0-alpha-d6243f9.0_e64ee0969aed23750f68cf1eee597bba
+      '@guild-docs/mdx-remote': 2.0.1_4efa1b387455e60c3cddfded7cc5c712
+      '@guild-docs/types': 2.0.0_e64ee0969aed23750f68cf1eee597bba
       '@stefanprobst/remark-shiki': 2.1.0_shiki@0.10.1
       github-slugger: 1.4.0
       globby: 13.1.1
@@ -3411,28 +3387,12 @@ packages:
       rehype-slug: 5.0.1
       remark-emoji: 3.0.2
       shiki: 0.10.1
-      tiny-lru: 8.0.1
-      undici: 4.15.1
+      tiny-lru: 8.0.2
+      undici: 4.16.0
     transitivePeerDependencies:
       - '@chakra-ui/react'
       - '@mdx-js/react'
       - '@types/react'
-      - supports-color
-    dev: false
-
-  /@guild-docs/types/2.0.0-alpha-d6243f9.0_e64ee0969aed23750f68cf1eee597bba:
-    resolution: {integrity: sha512-rRVS5DT1rtzBR3j74WBJV7iB00jQJjFWL1aA7fGl3Px1yCXhGsGo+NTYNu6SXc6mIFzT+gL8yxZ5umHlpQBknQ==}
-    peerDependencies:
-      '@chakra-ui/react': '*'
-      '@types/react': '*'
-      next-i18next: '*'
-    dependencies:
-      '@chakra-ui/react': 1.8.6_50278d5156da8d43d5fff90829dc3133
-      '@mdx-js/mdx': 2.0.0
-      '@types/react': 17.0.43
-      next-i18next: 10.5.0_caa633a00319350dbda42996613fe26c
-      unified: 10.1.1
-    transitivePeerDependencies:
       - supports-color
     dev: false
 
@@ -3688,30 +3648,6 @@ packages:
       globby: 11.1.0
       read-yaml-file: 1.1.0
     dev: true
-
-  /@mdx-js/mdx/2.0.0:
-    resolution: {integrity: sha512-Q/Zv+gdm80qcxpmL/Dtd/b9+UyZjjJUCQeZyywLAQqre648hRYgeGNPu7Bl2hB7M8/WBLXpabQEKW3dmGdDTDQ==}
-    dependencies:
-      '@types/estree-jsx': 0.0.1
-      '@types/mdx': 2.0.1
-      astring: 1.8.1
-      estree-util-build-jsx: 2.0.0
-      estree-util-is-identifier-name: 2.0.0
-      estree-walker: 3.0.1
-      hast-util-to-estree: 2.0.2
-      markdown-extensions: 1.1.1
-      periscopic: 3.0.4
-      remark-mdx: 2.0.0
-      remark-parse: 10.0.1
-      remark-rehype: 10.1.0
-      unified: 10.1.1
-      unist-util-position-from-estree: 1.1.1
-      unist-util-stringify-position: 3.0.0
-      unist-util-visit: 4.1.0
-      vfile: 5.3.0
-    transitivePeerDependencies:
-      - supports-color
-    dev: false
 
   /@mdx-js/mdx/2.1.0:
     resolution: {integrity: sha512-AuZGNLSGrytOd7a81E2SsWAOYg/eV5I51BlUPc11PPmPwhpovu7mwfyQ8PH1jxhdH0Is6aRtXHERuDxon0TluQ==}
@@ -4202,7 +4138,7 @@ packages:
       remark-rehype: 10.1.0
       shiki: 0.10.1
       shiki-renderer-hast: 1.1.5_shiki@0.10.1
-      unified: 10.1.1
+      unified: 10.1.2
       unist-util-visit: 4.1.0
     transitivePeerDependencies:
       - supports-color
@@ -4217,7 +4153,7 @@ packages:
       json5: 2.2.0
       parse-numeric-range: 1.3.0
       shiki: 0.10.1
-      unified: 10.1.1
+      unified: 10.1.2
       unist-util-visit: 4.1.0
     dev: false
 
@@ -11499,7 +11435,7 @@ packages:
       hast-util-has-property: 2.0.0
       hast-util-heading-rank: 2.1.0
       hast-util-to-string: 2.0.0
-      unified: 10.1.1
+      unified: 10.1.2
       unist-util-visit: 4.1.0
     dev: false
 
@@ -12970,11 +12906,6 @@ packages:
     engines: {node: '>=12.18'}
     dev: false
 
-  /undici/4.15.1:
-    resolution: {integrity: sha512-h8LJybhMKD09IyQZoQadNtIR/GmugVhTOVREunJrpV6RStriKBFdSVoFzEzTihwXi/27DIBO+Z0OGF+Mzfi0lA==}
-    engines: {node: '>=12.18'}
-    dev: false
-
   /undici/4.16.0:
     resolution: {integrity: sha512-tkZSECUYi+/T1i4u+4+lwZmQgLXd4BLGlrc7KZPcLIW7Jpq99+Xpc30ONv7nS6F5UNOxp/HBZSSL9MafUrvJbw==}
     engines: {node: '>=12.18'}
@@ -12983,18 +12914,6 @@ packages:
   /unfetch/4.2.0:
     resolution: {integrity: sha512-F9p7yYCn6cIW9El1zi0HI6vqpeIvBsr3dSuRO6Xuppb1u5rXpCPmMvLSyECLhybr9isec8Ohl0hPekMVrEinDA==}
     dev: true
-
-  /unified/10.1.1:
-    resolution: {integrity: sha512-v4ky1+6BN9X3pQrOdkFIPWAaeDsHPE1svRDxq7YpTc2plkIqFMwukfqM+l0ewpP9EfwARlt9pPFAeWYhHm8X9w==}
-    dependencies:
-      '@types/unist': 2.0.6
-      bail: 2.0.2
-      extend: 3.0.2
-      is-buffer: 2.0.5
-      is-plain-obj: 4.0.0
-      trough: 2.1.0
-      vfile: 5.3.0
-    dev: false
 
   /unified/10.1.2:
     resolution: {integrity: sha512-pUSWAi/RAnVy1Pif2kAoeWNBa3JVrx0MId2LASj8G+7AiHWoKZNTomq6LG326T68U7/e263X6fTdcXIy7XnF7Q==}
@@ -13294,15 +13213,6 @@ packages:
     dependencies:
       '@types/unist': 2.0.6
       unist-util-stringify-position: 3.0.0
-    dev: false
-
-  /vfile/5.3.0:
-    resolution: {integrity: sha512-Tj44nY/48OQvarrE4FAjUfrv7GZOYzPbl5OD65HxVKwLJKMPU7zmfV8cCgCnzKWnSfYG2f3pxu+ALqs7j22xQQ==}
-    dependencies:
-      '@types/unist': 2.0.6
-      is-buffer: 2.0.5
-      unist-util-stringify-position: 3.0.0
-      vfile-message: 3.1.0
     dev: false
 
   /vfile/5.3.2:
