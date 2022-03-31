@@ -588,7 +588,7 @@ importers:
     specifiers:
       '@size-limit/preset-small-lib': ^7.0.8
       '@testing-library/jest-dom': ^5.16.3
-      '@testing-library/react': ^12.1.4
+      '@testing-library/react': ^13.0.0
       '@testing-library/react-hooks': ^7.0.2
       '@types/jest': ^27.4.1
       '@types/lodash': ^4.14.180
@@ -613,7 +613,7 @@ importers:
     devDependencies:
       '@size-limit/preset-small-lib': 7.0.8_size-limit@7.0.8
       '@testing-library/jest-dom': 5.16.3
-      '@testing-library/react': 12.1.4_react-dom@17.0.2+react@17.0.2
+      '@testing-library/react': 13.0.0_react-dom@17.0.2+react@17.0.2
       '@testing-library/react-hooks': 7.0.2_fc2bb8a5b006d3f25c5f84ea777e678d
       '@types/jest': 27.4.1
       '@types/lodash': 4.14.180
@@ -4223,12 +4223,12 @@ packages:
       react-test-renderer: 17.0.2_react@17.0.2
     dev: true
 
-  /@testing-library/react/12.1.4_react-dom@17.0.2+react@17.0.2:
-    resolution: {integrity: sha512-jiPKOm7vyUw311Hn/HlNQ9P8/lHNtArAx0PisXyFixDDvfl8DbD6EUdbshK5eqauvBSvzZd19itqQ9j3nferJA==}
+  /@testing-library/react/13.0.0_react-dom@17.0.2+react@17.0.2:
+    resolution: {integrity: sha512-p0lYA1M7uoEmk2LnCbZLGmHJHyH59sAaZVXChTXlyhV/PRW9LoIh4mdf7tiXsO8BoNG+vN8UnFJff1hbZeXv+w==}
     engines: {node: '>=12'}
     peerDependencies:
-      react: '*'
-      react-dom: '*'
+      react: ^18.0.0
+      react-dom: ^18.0.0
     dependencies:
       '@babel/runtime': 7.17.2
       '@testing-library/dom': 8.11.3
@@ -13251,7 +13251,7 @@ packages:
       stylus:
         optional: true
     dependencies:
-      esbuild: 0.14.28
+      esbuild: 0.14.29
       postcss: 8.4.12
       resolve: 1.22.0
       rollup: 2.70.1
