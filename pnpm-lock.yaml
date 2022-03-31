@@ -376,7 +376,7 @@ importers:
       '@guild-docs/server': 3.0.1
       '@mdx-js/react': ^2.1.1
       '@next/bundle-analyzer': ^12.1.4
-      '@theguild/components': ^1.10.2
+      '@theguild/components': ^1.10.3
       '@types/node': ^17.0.14
       '@types/react': ^17.0.43
       '@types/react-dom': ^17.0.14
@@ -405,10 +405,10 @@ importers:
       '@chakra-ui/utils': 1.10.4
       '@emotion/react': 11.8.2_03a98942b76c57740a9573edba2d1cc1
       '@emotion/styled': 11.8.1_ab60dc3cf3b46d6599c9cb98d57741dd
-      '@guild-docs/client': 2.0.0_0d95e619f336f99f1dd597e25be57205
+      '@guild-docs/client': 2.0.0_3943c25412776603b1675f8838ceb739
       '@guild-docs/server': 3.0.1_60c9429b1712d07292e4d1a2603f8a02
       '@mdx-js/react': 2.1.1_react@17.0.2
-      '@theguild/components': 1.10.2_67620b2a5c0c94cca925f96245d69c3c
+      '@theguild/components': 1.10.3_67620b2a5c0c94cca925f96245d69c3c
       csstype: 3.0.11
       framer-motion: 6.2.8_react-dom@17.0.2+react@17.0.2
       next: 12.1.4_react-dom@17.0.2+react@17.0.2
@@ -3288,7 +3288,7 @@ packages:
       graphql: 16.3.0
     dev: false
 
-  /@guild-docs/client/2.0.0_0d95e619f336f99f1dd597e25be57205:
+  /@guild-docs/client/2.0.0_3943c25412776603b1675f8838ceb739:
     resolution: {integrity: sha512-z+spylhlosVun4j8143mg6tNeB+RDkqD8KHkg+BnBy2pft5ASfqZhugsOJ/zlw7RuQNKT9ccL7YKhGXtGgTLGA==}
     peerDependencies:
       '@chakra-ui/icons': '*'
@@ -3318,7 +3318,7 @@ packages:
       '@guild-docs/mdx-remote': 2.0.1_df3fa8c8dff2e2ded13d2329b38bf2f8
       '@guild-docs/types': 2.0.0_251b462a8764ce2d474ccd37fad0fab5
       '@mdx-js/react': 2.1.1_react@17.0.2
-      '@theguild/components': 1.10.2_67620b2a5c0c94cca925f96245d69c3c
+      '@theguild/components': 1.10.3_67620b2a5c0c94cca925f96245d69c3c
       framer-motion: 6.2.8_react-dom@17.0.2+react@17.0.2
       immer: 9.0.12
       mdx-mermaid: 1.2.2_mermaid@8.11.5+react@17.0.2
@@ -4237,8 +4237,8 @@ packages:
       react-dom: 17.0.2_react@17.0.2
     dev: true
 
-  /@theguild/components/1.10.2_67620b2a5c0c94cca925f96245d69c3c:
-    resolution: {integrity: sha512-0LC2A2GKXknEo/Rson6yTB3wxyZz2YeUapPC77gWKrN4bA0HO7CXszeiRY4ncVn/nN9KezAOmvm25lr8t2n/FQ==}
+  /@theguild/components/1.10.3_67620b2a5c0c94cca925f96245d69c3c:
+    resolution: {integrity: sha512-mEut8RfHSAavXhfHP6vhw3jYcgTw+V3IlTHDcaXp/EMPSIQzQh9KM9XckMPxGwJH0YZ80eoDjvc4gK3p08OcQw==}
     peerDependencies:
       react: ^17.0.2
       react-dom: ^17.0.2
@@ -4788,6 +4788,7 @@ packages:
 
   /algoliasearch-helper/3.7.0_algoliasearch@4.11.0:
     resolution: {integrity: sha512-XJ3QfERBLfeVCyTVx80gon7r3/rgm/CE8Ha1H7cbablRe/X7SfYQ14g/eO+MhjVKIQp+gy9oC6G5ilmLwS1k6w==}
+    deprecated: 3.7.3
     peerDependencies:
       algoliasearch: '>= 3.1 < 5'
     dependencies:
@@ -4993,7 +4994,7 @@ packages:
     resolution: {integrity: sha512-Hdw8qdNiqdJ8LqT0iK0sVzkFbzg6fhnQqqfWhBDxcHZvU75+B+ayzTy8x+k5Ix0Y92XOhOUlx74ps+bA6BeYMQ==}
     engines: {node: '>=8'}
 
-  /autoprefixer/10.4.2_postcss@8.4.7:
+  /autoprefixer/10.4.2_postcss@8.4.12:
     resolution: {integrity: sha512-9fOPpHKuDW1w/0EKfRmVnxTDt8166MAnLI3mgZ1JCnhNtYWxcJ6Ud5CO/AVOZi/AvFa8DY9RTy3h3+tFBlrrdQ==}
     engines: {node: ^10 || ^12 || >=14}
     hasBin: true
@@ -5005,7 +5006,7 @@ packages:
       fraction.js: 4.1.3
       normalize-range: 0.1.2
       picocolors: 1.0.0
-      postcss: 8.4.7
+      postcss: 8.4.12
       postcss-value-parser: 4.2.0
     dev: false
 
@@ -10765,17 +10766,17 @@ packages:
     engines: {node: '>=10.0'}
     dependencies:
       camelcase-css: 2.0.1
-      postcss: 8.4.7
+      postcss: 8.4.12
     dev: false
 
-  /postcss-js/4.0.0_postcss@8.4.7:
+  /postcss-js/4.0.0_postcss@8.4.12:
     resolution: {integrity: sha512-77QESFBwgX4irogGVPgQ5s07vLvFqWr228qZY+w6lW599cRlK/HmnlivnnVUxkjHnCu4J16PDMHcH+e+2HbvTQ==}
     engines: {node: ^12 || ^14 || >= 16}
     peerDependencies:
       postcss: ^8.3.3
     dependencies:
       camelcase-css: 2.0.1
-      postcss: 8.4.7
+      postcss: 8.4.12
     dev: false
 
   /postcss-load-config/3.1.3_ts-node@10.7.0:
@@ -10792,13 +10793,13 @@ packages:
       yaml: 1.10.2
     dev: false
 
-  /postcss-nested/5.0.6_postcss@8.4.7:
+  /postcss-nested/5.0.6_postcss@8.4.12:
     resolution: {integrity: sha512-rKqm2Fk0KbA8Vt3AdGN0FB9OBOMDVajMG6ZCf/GoHgdxUJ4sBFp0A/uMIRm+MJUdo33YXEtjqIz8u7DAp8B7DA==}
     engines: {node: '>=12.0'}
     peerDependencies:
       postcss: ^8.2.14
     dependencies:
-      postcss: 8.4.7
+      postcss: 8.4.12
       postcss-selector-parser: 6.0.9
     dev: false
 
@@ -10825,19 +10826,9 @@ packages:
       nanoid: 3.3.1
       picocolors: 1.0.0
       source-map-js: 1.0.2
-    dev: true
 
   /postcss/8.4.5:
     resolution: {integrity: sha512-jBDboWM8qpaqwkMwItqTQTiFikhs/67OYVvblFFTM7MrZjt6yMKd6r2kgXizEbTTljacm4NldIlZnhbjr84QYg==}
-    engines: {node: ^10 || ^12 || >=14}
-    dependencies:
-      nanoid: 3.3.1
-      picocolors: 1.0.0
-      source-map-js: 1.0.2
-    dev: false
-
-  /postcss/8.4.7:
-    resolution: {integrity: sha512-L9Ye3r6hkkCeOETQX6iOaWZgjp3LL6Lpqm6EtgbKrgqGGteRMNb9vzBfRL96YOSu8o7x3MfIH9Mo5cPJFGrW6A==}
     engines: {node: ^10 || ^12 || >=14}
     dependencies:
       nanoid: 3.3.1
@@ -10970,7 +10961,7 @@ packages:
     dependencies:
       commander: 8.3.0
       glob: 7.2.0
-      postcss: 8.4.7
+      postcss: 8.4.12
       postcss-selector-parser: 6.0.9
     dev: false
 
@@ -12409,7 +12400,7 @@ packages:
     resolution: {integrity: sha512-40pEZ2mhjaZzK0BnI+QGNjJO8UYx9pP5v7BGe17SORTO0OEuuaAwQTkAp8whcZvqon44wKFOikD+Al11K3JICQ==}
     dev: false
 
-  /tailwindcss/2.2.19_812b64524966b3ecd09b12d793c8b57f:
+  /tailwindcss/2.2.19_6667f7f6d694fd3da65be78039a4f8b9:
     resolution: {integrity: sha512-6Ui7JSVtXadtTUo2NtkBBacobzWiQYVjYW0ZnKaP9S1ZCKQ0w7KVNz+YSDI/j7O7KCMHbOkz94ZMQhbT9pOqjw==}
     engines: {node: '>=12.13.0'}
     hasBin: true
@@ -12418,7 +12409,7 @@ packages:
       postcss: ^8.0.9
     dependencies:
       arg: 5.0.1
-      autoprefixer: 10.4.2_postcss@8.4.7
+      autoprefixer: 10.4.2_postcss@8.4.12
       bytes: 3.1.2
       chalk: 4.1.2
       chokidar: 3.5.3
@@ -12439,10 +12430,10 @@ packages:
       node-emoji: 1.11.0
       normalize-path: 3.0.0
       object-hash: 2.2.0
-      postcss: 8.4.7
+      postcss: 8.4.12
       postcss-js: 3.0.3
       postcss-load-config: 3.1.3_ts-node@10.7.0
-      postcss-nested: 5.0.6_postcss@8.4.7
+      postcss-nested: 5.0.6_postcss@8.4.12
       postcss-selector-parser: 6.0.9
       postcss-value-parser: 4.2.0
       pretty-hrtime: 1.0.3
@@ -12475,10 +12466,10 @@ packages:
       is-glob: 4.0.3
       normalize-path: 3.0.0
       object-hash: 2.2.0
-      postcss: 8.4.7
-      postcss-js: 4.0.0_postcss@8.4.7
+      postcss: 8.4.12
+      postcss-js: 4.0.0_postcss@8.4.12
       postcss-load-config: 3.1.3_ts-node@10.7.0
-      postcss-nested: 5.0.6_postcss@8.4.7
+      postcss-nested: 5.0.6_postcss@8.4.12
       postcss-selector-parser: 6.0.9
       postcss-value-parser: 4.2.0
       quick-lru: 5.1.1
@@ -12821,7 +12812,7 @@ packages:
     dependencies:
       '@babel/parser': 7.17.3
       '@babel/template': 7.16.7
-      autoprefixer: 10.4.2_postcss@8.4.7
+      autoprefixer: 10.4.2_postcss@8.4.12
       babel-plugin-macros: 2.8.0
       chalk: 4.1.2
       clean-set: 1.1.2
@@ -12830,9 +12821,9 @@ packages:
       lodash.flatmap: 4.5.0
       lodash.get: 4.4.2
       lodash.merge: 4.6.2
-      postcss: 8.4.7
+      postcss: 8.4.12
       string-similarity: 4.0.4
-      tailwindcss: 2.2.19_812b64524966b3ecd09b12d793c8b57f
+      tailwindcss: 2.2.19_6667f7f6d694fd3da65be78039a4f8b9
       timsort: 0.3.0
     transitivePeerDependencies:
       - ts-node
