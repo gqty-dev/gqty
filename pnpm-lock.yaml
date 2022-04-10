@@ -589,7 +589,7 @@ importers:
       '@size-limit/preset-small-lib': ^7.0.8
       '@testing-library/jest-dom': ^5.16.4
       '@testing-library/react': ^12.1.4
-      '@testing-library/react-hooks': ^7.0.2
+      '@testing-library/react-hooks': ^8.0.0
       '@types/jest': ^27.4.1
       '@types/lodash': ^4.14.181
       '@types/react': ^17.0.44
@@ -614,7 +614,7 @@ importers:
       '@size-limit/preset-small-lib': 7.0.8_size-limit@7.0.8
       '@testing-library/jest-dom': 5.16.4
       '@testing-library/react': 12.1.4_react-dom@17.0.2+react@17.0.2
-      '@testing-library/react-hooks': 7.0.2_fc2bb8a5b006d3f25c5f84ea777e678d
+      '@testing-library/react-hooks': 8.0.0_9c4875ab9a52476f0be64c27d36d3f21
       '@types/jest': 27.4.1
       '@types/lodash': 4.14.181
       '@types/react': 17.0.44
@@ -4210,14 +4210,17 @@ packages:
       redent: 3.0.0
     dev: true
 
-  /@testing-library/react-hooks/7.0.2_fc2bb8a5b006d3f25c5f84ea777e678d:
-    resolution: {integrity: sha512-dYxpz8u9m4q1TuzfcUApqi8iFfR6R0FaMbr2hjZJy1uC8z+bO/K4v8Gs9eogGKYQop7QsrBTFkv/BCF7MzD2Cg==}
+  /@testing-library/react-hooks/8.0.0_9c4875ab9a52476f0be64c27d36d3f21:
+    resolution: {integrity: sha512-uZqcgtcUUtw7Z9N32W13qQhVAD+Xki2hxbTR461MKax8T6Jr8nsUvZB+vcBTkzY2nFvsUet434CsgF0ncW2yFw==}
     engines: {node: '>=12'}
     peerDependencies:
-      react: '>=16.9.0'
-      react-dom: '>=16.9.0'
-      react-test-renderer: '>=16.9.0'
+      '@types/react': ^16.9.0 || ^17.0.0
+      react: ^16.9.0 || ^17.0.0
+      react-dom: ^16.9.0 || ^17.0.0
+      react-test-renderer: ^16.9.0 || ^17.0.0
     peerDependenciesMeta:
+      '@types/react':
+        optional: true
       react-dom:
         optional: true
       react-test-renderer:
@@ -4225,8 +4228,6 @@ packages:
     dependencies:
       '@babel/runtime': 7.17.2
       '@types/react': 17.0.44
-      '@types/react-dom': 17.0.15
-      '@types/react-test-renderer': 17.0.1
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
       react-error-boundary: 3.1.4_react@17.0.2
@@ -4616,12 +4617,6 @@ packages:
 
   /@types/react-dom/17.0.15:
     resolution: {integrity: sha512-Tr9VU9DvNoHDWlmecmcsE5ZZiUkYx+nKBzum4Oxe1K0yJVyBlfbq7H3eXjxXqJczBKqPGq3EgfTru4MgKb9+Yw==}
-    dependencies:
-      '@types/react': 17.0.44
-    dev: true
-
-  /@types/react-test-renderer/17.0.1:
-    resolution: {integrity: sha512-3Fi2O6Zzq/f3QR9dRnlnHso9bMl7weKCviFmfF6B4LS1Uat6Hkm15k0ZAQuDz+UBq6B3+g+NM6IT2nr5QgPzCw==}
     dependencies:
       '@types/react': 17.0.44
     dev: true
