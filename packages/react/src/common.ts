@@ -34,9 +34,11 @@ const updateReducer = (num: number): number => (num + 1) % 1_000_000;
 export function useForceUpdate({ doTimeout }: { doTimeout?: boolean } = {}) {
   const [, update] = React.useReducer(updateReducer, 0);
 
+  const isMounted = useIsMounted();
   const wasCalled = React.useRef(false);
 
   React.useEffect(() => {
+    isMounted.current = true;
     wasCalled.current = false;
   });
 
@@ -45,17 +47,18 @@ export function useForceUpdate({ doTimeout }: { doTimeout?: boolean } = {}) {
       () => {
         if (wasCalled.current) return;
         wasCalled.current = true;
+        const safeUpdate = () => isMounted.current && update();
         if (doTimeout) {
-          setTimeout(update, 0);
+          setTimeout(safeUpdate, 0);
         } else {
-          Promise.resolve().then(update);
+          Promise.resolve().then(safeUpdate);
         }
       },
       {
         wasCalled,
       }
     );
-  }, [update, wasCalled, doTimeout]);
+  }, [update, wasCalled, doTimeout, isMounted]);
 }
 
 const InitSymbol: any = Symbol();
