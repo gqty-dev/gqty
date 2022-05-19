@@ -39,8 +39,6 @@ jobs:
           cache: 'pnpm'
       - name: Install dependencies and build
         run: pnpm install
-      - name: Global Jest
-        run: pnpm i -g jest
       - name: Test ESM
         run: node scripts/test-esm.mjs
       - name: Test everything
