@@ -37,6 +37,7 @@ export interface ConnectionArgs {
 /** Dog Type */
 export enum DogType {
   Big = 'Big',
+  /** @deprecated Field no longer supported */
   Other = 'Other',
   Small = 'Small',
 }

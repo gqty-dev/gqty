@@ -1,5 +1,5 @@
 import Fastify from 'fastify';
-import FastifyNext from 'fastify-nextjs';
+import FastifyNext from '@fastify/nextjs';
 import ms from 'ms';
 import { dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
