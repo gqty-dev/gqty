@@ -169,6 +169,7 @@ export type Species = Human | Dog;
 export enum DogType {
   Big = 'Big',
   Small = 'Small',
+  /** @deprecated Field no longer supported */
   Other = 'Other',
 }
 
