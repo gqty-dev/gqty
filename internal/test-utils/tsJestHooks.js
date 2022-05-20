@@ -10,11 +10,13 @@ exports.afterProcess = function afterProcess(
    */
   [],
   /**
-   * @type {string}
+   * @type {{code: string}}
    */
   result
 ) {
-  return result
-    .replace(metaImportUrlRegex, 'new URL("file:" + __filename)')
-    .replace(depsFileRegex, './deps');
+  return {
+    code: result.code
+      .replace(metaImportUrlRegex, 'new URL("file:" + __filename)')
+      .replace(depsFileRegex, './deps'),
+  };
 };

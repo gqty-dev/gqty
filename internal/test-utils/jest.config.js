@@ -23,7 +23,9 @@ const defaultConfig = {
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
   testEnvironment: 'node',
   testMatch: ['**/test/**/*.test.ts', '**/test/**/*.test.tsx'],
-  testURL: 'http://localhost',
+  testEnvironmentOptions: {
+    url: 'http://localhost',
+  },
   testPathIgnorePatterns: ['/node_modules/', '/test/generated'],
   collectCoverage: true,
   collectCoverageFrom: ['./src/**/*.ts', './src/**/*.tsx', '!**/*.d.ts'],
