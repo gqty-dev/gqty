@@ -68,6 +68,11 @@ export interface GenerateOptions {
    */
   enumsAsStrings?: boolean;
   /**
+   * Define enums as const types instead of enums objects
+   * @default false
+   */
+  enumsAsConst?: boolean;
+  /**
    * Generate subscriptions client
    * @default false
    */
@@ -103,6 +108,7 @@ export async function generate(
     react,
     endpoint,
     enumsAsStrings,
+    enumsAsConst,
     subscriptions,
     javascriptOutput,
     transformSchema,
@@ -133,6 +139,16 @@ export async function generate(
   } else {
     enumsAsStrings ??= gqtyConfig.enumsAsStrings ?? false;
   }
+
+  if (isJavascriptOutput) {
+    if (gqtyConfig.enumsAsConst) {
+      console.warn(
+        `"enumsAsConst" is automatically set as "false" with "javascriptOutput" enabled.`
+      );
+    }
+    enumsAsConst = false;
+  }
+  enumsAsConst ??= gqtyConfig.enumsAsConst ?? defaultConfig.enumsAsConst;
 
   scalarTypes ||= gqtyConfig.scalarTypes || defaultConfig.scalarTypes;
   endpoint ||=
@@ -181,6 +197,7 @@ export async function generate(
           scalars: scalarTypes,
           namingConvention: 'keep',
           enumsAsTypes: enumsAsStrings,
+          enumsAsConst: enumsAsConst,
         } as deps.typescriptPlugin.TypeScriptPluginConfig,
       },
     ],
@@ -205,7 +222,6 @@ export async function generate(
   const subscriptionType = config.subscription;
 
   const descriptions = new Map<string, string>();
-
 
   const fieldsDescriptions = new Map<
     string,
@@ -658,8 +674,13 @@ export async function generate(
             return acum;
           }
 
-          const typeFieldArgDescriptions = fieldsArgsDescriptions.has(typeName) ? fieldsArgsDescriptions.get(typeName) : undefined;
-          const argDescriptions = typeFieldArgDescriptions && typeFieldArgDescriptions[fieldKey] ? typeFieldArgDescriptions[fieldKey] : {};
+          const typeFieldArgDescriptions = fieldsArgsDescriptions.has(typeName)
+            ? fieldsArgsDescriptions.get(typeName)
+            : undefined;
+          const argDescriptions =
+            typeFieldArgDescriptions && typeFieldArgDescriptions[fieldKey]
+              ? typeFieldArgDescriptions[fieldKey]
+              : {};
           const fieldValueProps = parseSchemaType(fieldValue.__type);
           const typeToReturn = parseFinalType(fieldValueProps);
           let finalType: string;
@@ -667,8 +688,14 @@ export async function generate(
             const argsEntries = Object.entries(fieldValue.__args);
             let onlyNullableArgs = true;
             const argTypes = argsEntries.reduce((acum, [argKey, argValue]) => {
-              const argValueProps = parseSchemaType(argValue, argDescriptions[argKey]);
-              const connector = argValueProps.isNullable || argValueProps.hasDefaultValue ? '?:' : ':';
+              const argValueProps = parseSchemaType(
+                argValue,
+                argDescriptions[argKey]
+              );
+              const connector =
+                argValueProps.isNullable || argValueProps.hasDefaultValue
+                  ? '?:'
+                  : ':';
 
               if (!argValueProps.isNullable) {
                 onlyNullableArgs = false;

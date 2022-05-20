@@ -122,6 +122,7 @@ test('completely invalid config', () => {
               \\"subscriptions\\": false,
               \\"javascriptOutput\\": false,
               \\"enumsAsStrings\\": false,
+              \\"enumsAsConst\\": false,
               \\"preImport\\": \\"\\"
             }"
           `);
