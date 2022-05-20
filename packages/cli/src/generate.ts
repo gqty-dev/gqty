@@ -140,6 +140,16 @@ export async function generate(
     enumsAsStrings ??= gqtyConfig.enumsAsStrings ?? false;
   }
 
+  if (isJavascriptOutput) {
+    if (gqtyConfig.enumsAsConst) {
+      console.warn(
+        `"enumsAsConst" is automatically set as "false" with "javascriptOutput" enabled.`
+      );
+    }
+    enumsAsConst = false;
+  }
+  enumsAsConst ??= gqtyConfig.enumsAsConst ?? defaultConfig.enumsAsConst;
+
   scalarTypes ||= gqtyConfig.scalarTypes || defaultConfig.scalarTypes;
   endpoint ||=
     gqtyConfig.introspection?.endpoint ?? defaultConfig.introspection.endpoint;
