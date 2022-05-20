@@ -54,6 +54,7 @@ export const defaultConfig: Omit<Required<GQtyConfig>, 'transformSchema'> &
   subscriptions: false,
   javascriptOutput: false,
   enumsAsStrings: false,
+  enumsAsConst: false,
   preImport: '',
 };
 
@@ -98,6 +99,14 @@ export function getValidConfig(v: unknown): GQtyConfig {
         case 'react':
         case 'subscriptions':
         case 'enumsAsStrings': {
+          if (typeof value === 'boolean') {
+            newConfig[key] = value;
+          } else {
+            warnConfig(key, value, 'boolean', defaultConfig[key]);
+          }
+          break;
+        }
+        case 'enumsAsConst': {
           if (typeof value === 'boolean') {
             newConfig[key] = value;
           } else {
