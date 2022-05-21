@@ -229,7 +229,7 @@ importers:
       react-error-boundary: ^3.1.4
       react-intersection-observer: ^9.1.0
       react-ssr-prepass: ^1.5.0
-      react-use: ^17.3.2
+      react-use: ^17.4.0
       serialize-error: ^11.0.0
       typescript: ^4.6.4
       use-error-boundary: ^2.0.6
@@ -443,7 +443,7 @@ importers:
       react: ^17.0.2
       react-dom: ^17.0.2
       react-icons: ^4.3.1
-      react-use: ^17.3.2
+      react-use: ^17.4.0
       shiki: ^0.10.1
       typescript: ^4.6.4
       wait-on: ^6.0.1
@@ -4622,10 +4622,7 @@ packages:
   /@radix-ui/react-use-callback-ref/0.1.0_react@17.0.2:
     resolution: {integrity: sha512-Va041McOFFl+aV+sejvl0BS2aeHx86ND9X/rVFmEFQKTXCp6xgUK0NGUAGcgBlIjnJSbMYPGEk1xKSSlVcN2Aw==}
     peerDependencies:
-      react: '*'
-    peerDependenciesMeta:
-      react:
-        optional: true
+      react: ^16.8 || ^17.0
     dependencies:
       '@babel/runtime': 7.18.0
       react: 17.0.2
@@ -4663,10 +4660,7 @@ packages:
   /@radix-ui/react-use-layout-effect/0.1.0_react@17.0.2:
     resolution: {integrity: sha512-+wdeS51Y+E1q1Wmd+1xSSbesZkpVj4jsg0BojCbopWvgq5iBvixw5vgemscdh58ep98BwUbsFYnrywFhV9yrVg==}
     peerDependencies:
-      react: '*'
-    peerDependenciesMeta:
-      react:
-        optional: true
+      react: ^16.8 || ^17.0
     dependencies:
       '@babel/runtime': 7.18.0
       react: 17.0.2
@@ -4694,13 +4688,8 @@ packages:
   /@reach/alert/0.13.2_sfoxds7t5ydpegc3knd667wn6m:
     resolution: {integrity: sha512-LDz83AXCrClyq/MWe+0vaZfHp1Ytqn+kgL5VxG7rirUvmluWaj/snxzfNPWn0Ma4K2YENmXXRC/iHt5X95SqIg==}
     peerDependencies:
-      react: '*'
+      react: ^16.8.0 || 17.x
       react-dom: ^16.8.0 || 17.x
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@reach/utils': 0.13.2_sfoxds7t5ydpegc3knd667wn6m
       '@reach/visually-hidden': 0.13.2_sfoxds7t5ydpegc3knd667wn6m
