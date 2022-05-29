@@ -1,8 +1,9 @@
-import type { AsyncExecutor } from '@graphql-tools/utils';
-import type { GraphQLSchema } from 'graphql';
-import * as graphql from 'graphql';
+import type {
+  ExecutionResult,
+  GraphQLSchema,
+  IntrospectionQuery,
+} from 'graphql';
 import { defaultConfig, gqtyConfigPromise } from './config';
-import * as deps from './deps.js';
 
 export interface IntrospectionOptions {
   /**
@@ -25,31 +26,34 @@ export const getRemoteSchema = async (
    */
   { headers }: Pick<IntrospectionOptions, 'headers'> = {}
 ): Promise<GraphQLSchema> => {
-  const executor: AsyncExecutor = async ({ document, variables }) => {
-    headers ||=
-      (await gqtyConfigPromise).config.introspection?.headers ||
-      defaultConfig.introspection.headers;
-    const query = graphql.print(document);
-    const { request } = await import('undici');
-    const { body } = await request(endpoint, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        ...headers,
-      },
-      body: JSON.stringify({ query, variables }),
-    });
-    const response = await body.json();
+  const [{ request }, { buildClientSchema, getIntrospectionQuery }] =
+    await Promise.all([import('undici'), import('graphql')]);
 
-    return response;
-  };
+  headers ||=
+    (await gqtyConfigPromise).config.introspection?.headers ||
+    defaultConfig.introspection.headers;
 
-  const schema = deps.wrapSchema({
-    schema: await deps.introspectSchema(executor, {
-      endpoint,
-    }),
-    executor,
+  const query = getIntrospectionQuery({
+    inputValueDeprecation: true,
+    descriptions: true,
+    schemaDescription: true,
+    specifiedByUrl: true,
   });
 
-  return schema;
+  const { body } = await request(endpoint, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      ...headers,
+    },
+    body: JSON.stringify({ query }),
+  });
+
+  const introspectionQuery: ExecutionResult<IntrospectionQuery> =
+    await body.json();
+
+  if (!introspectionQuery.data)
+    throw Error('Unexpected error while introspecting schema');
+
+  return buildClientSchema(introspectionQuery.data);
 };

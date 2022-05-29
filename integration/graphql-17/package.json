@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "generate": "bob-tsm src/generate.ts",
+    "generate": "node --loader=bob-tsm src/generate.ts",
     "test": "pnpm i --ignore-scripts && c8 ava"
   },
   "devDependencies": {

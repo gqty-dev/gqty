@@ -17,24 +17,9 @@ import type {
   GraphQLSchema,
   GraphQLUnionType,
 } from 'graphql';
-import * as graphql from 'graphql';
 import { defaultConfig, gqtyConfigPromise } from './config';
 import * as deps from './deps.js';
 import { formatPrettier } from './prettier';
-
-const {
-  isEnumType,
-  isInputObjectType,
-  isInterfaceType,
-  isNullableType,
-  isObjectType,
-  isScalarType,
-  isUnionType,
-  lexicographicSortSchema,
-  parse,
-  isSchema,
-  assertSchema,
-} = graphql;
 
 export interface GenerateOptions {
   /**
@@ -88,7 +73,7 @@ export interface GenerateOptions {
    */
   transformSchema?: (
     schema: GraphQLSchema,
-    graphql_js: typeof graphql
+    graphql_js: typeof import('graphql')
   ) => Promise<GraphQLSchema> | GraphQLSchema;
 }
 
@@ -122,7 +107,24 @@ export async function generate(
   scalarsEnumsHash: ScalarsEnumsHash;
   isJavascriptOutput: boolean;
 }> {
-  const gqtyConfig = (await gqtyConfigPromise).config;
+  const [gqtyConfig, graphql] = await Promise.all([
+    gqtyConfigPromise.then((v) => v.config),
+    import('graphql'),
+  ]);
+
+  const {
+    isEnumType,
+    isInputObjectType,
+    isInterfaceType,
+    isNullableType,
+    isObjectType,
+    isScalarType,
+    isUnionType,
+    lexicographicSortSchema,
+    parse,
+    isSchema,
+    assertSchema,
+  } = graphql;
 
   const isJavascriptOutput =
     javascriptOutput ??

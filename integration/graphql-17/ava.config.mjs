@@ -3,5 +3,5 @@ export default {
   extensions: {
     ts: 'module',
   },
-  nodeArguments: ['--require=bob-tsm', '--loader=bob-tsm'],
+  nodeArguments: ['--loader=bob-tsm'],
 };
