@@ -55,7 +55,7 @@ async function main() {
       minify: true,
       external: ['graphql'],
       banner: {
-        js: `import{createRequire}from"module";const require=createRequire(import.meta.url);\n`,
+        js: `import{createRequire as createRequireTop}from"module";const require=createRequireTop(import.meta.url);\nimport{dirname as dirnameRoot}from"path";import{fileURLToPath as fileURLToPathRoot}from"url";const __dirname=dirnameRoot(fileURLToPathRoot(import.meta.url));`,
       },
     }),
     promises.copyFile('LICENSE', 'dist/LICENSE'),
