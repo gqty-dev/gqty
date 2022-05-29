@@ -4,6 +4,7 @@ import { buildCode } from 'bob-ts';
 import { build } from 'esbuild';
 import { promises } from 'fs';
 import rimraf from 'rimraf';
+import replace from '@rollup/plugin-replace';
 import pkg from './package.json';
 
 async function main() {
@@ -44,6 +45,19 @@ async function main() {
       minify: true,
       external: ['graphql'],
     }),
+    build({
+      bundle: true,
+      format: 'esm',
+      target: 'node12.20',
+      entryPoints: ['./src/deps.ts'],
+      outfile: 'dist/deps.mjs',
+      platform: 'node',
+      minify: true,
+      external: ['graphql'],
+      banner: {
+        js: `import{createRequire}from"module";const require=createRequire(import.meta.url);\n`,
+      },
+    }),
     promises.copyFile('LICENSE', 'dist/LICENSE'),
     promises.copyFile('README.md', 'dist/README.md'),
     writePackageJson({
@@ -65,7 +79,7 @@ async function main() {
         './src/index.ts',
       ],
       clean: false,
-      format: 'interop',
+      format: 'cjs',
       outDir: 'dist',
       target: 'node12.20',
       esbuild: {
@@ -76,6 +90,31 @@ async function main() {
       keepDynamicImport: false,
       rollup: {
         interop: 'esModule',
+      },
+    }),
+    buildCode({
+      entryPoints: [
+        './src/inspectWriteGenerate.ts',
+        './src/envelop.ts',
+        './src/index.ts',
+      ],
+      clean: false,
+      format: 'esm',
+      outDir: 'dist',
+      target: 'node12.20',
+      esbuild: {
+        minify: false,
+      },
+      sourcemap: false,
+      external: ['./deps.js'],
+      keepDynamicImport: false,
+      rollup: {
+        interop: 'esModule',
+        plugins: [
+          replace({
+            'deps.js': 'deps.mjs',
+          }),
+        ],
       },
     }),
   ]);

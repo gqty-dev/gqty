@@ -1,14 +1,11 @@
 import { existsSync, promises } from 'fs';
 import type { GraphQLSchema, IntrospectionQuery } from 'graphql';
-import * as graphql from 'graphql';
 import { extname, resolve } from 'path';
 import { defaultConfig, DUMMY_ENDPOINT, gqtyConfigPromise } from './config';
 import * as deps from './deps.js';
 import type { GenerateOptions, TransformSchemaOptions } from './generate';
 import { getRemoteSchema } from './introspection';
 import { writeGenerate } from './writeGenerate';
-
-const { buildClientSchema, buildSchema } = graphql;
 
 export async function inspectWriteGenerate({
   endpoint,
@@ -101,7 +98,10 @@ export async function inspectWriteGenerate({
   } else {
     defaultConfig.introspection.endpoint = DUMMY_ENDPOINT;
 
-    const files = await deps.fg(endpoint);
+    const [files, { buildClientSchema, buildSchema }] = await Promise.all([
+      deps.fg(endpoint),
+      import('graphql'),
+    ]);
     if (files.length) {
       const gqlextensions = ['.graphql', '.gql'];
       const jsonFiles = files.filter((file) => extname(file) === '.json');
