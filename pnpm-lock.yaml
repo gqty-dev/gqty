@@ -580,7 +580,7 @@ importers:
       tsc-watch: ^5.0.3
       typescript: ^4.7.3
       wait-on: ^6.0.1
-      ws: ^8.7.0
+      ws: ^8.8.0
     dependencies:
       lodash: 4.17.21
     devDependencies:
@@ -610,7 +610,7 @@ importers:
       tsc-watch: 5.0.3_typescript@4.7.3
       typescript: 4.7.3
       wait-on: 6.0.1
-      ws: 8.7.0
+      ws: 8.8.0
 
   packages/logger:
     specifiers:
@@ -710,10 +710,10 @@ importers:
       test-utils: workspace:^0.1.0
       tslib: ^2.4.0
       typescript: ^4.7.3
-      ws: ^8.7.0
+      ws: ^8.8.0
     dependencies:
-      isomorphic-ws: 4.0.1_ws@8.7.0
-      ws: 8.7.0
+      isomorphic-ws: 4.0.1_ws@8.8.0
+      ws: 8.8.0
     devDependencies:
       '@types/node': 17.0.35
       '@types/ws': 8.5.3
@@ -9413,12 +9413,12 @@ packages:
     dependencies:
       ws: 8.6.0
 
-  /isomorphic-ws/4.0.1_ws@8.7.0:
+  /isomorphic-ws/4.0.1_ws@8.8.0:
     resolution: {integrity: sha512-BhBvN2MBpWTaSHdWRb/bwdZJ1WaehQ2L1KngkCkfLUGF0mAWAT1sQUQacEmQ0jXkFw/czDXPNQSL5u2/Krsz1w==}
     peerDependencies:
       ws: '*'
     dependencies:
-      ws: 8.7.0
+      ws: 8.8.0
     dev: false
 
   /istanbul-lib-coverage/3.2.0:
@@ -14695,6 +14695,19 @@ packages:
 
   /ws/8.7.0:
     resolution: {integrity: sha512-c2gsP0PRwcLFzUiA8Mkr37/MI7ilIlHQxaEAtd0uNMbVMoy8puJyafRlm0bV9MbGSabUPeLrRRaqIBcFcA2Pqg==}
+    engines: {node: '>=10.0.0'}
+    peerDependencies:
+      bufferutil: ^4.0.1
+      utf-8-validate: ^5.0.2
+    peerDependenciesMeta:
+      bufferutil:
+        optional: true
+      utf-8-validate:
+        optional: true
+    dev: true
+
+  /ws/8.8.0:
+    resolution: {integrity: sha512-JDAgSYQ1ksuwqfChJusw1LSJ8BizJ2e/vVu5Lxjq3YvNJNlROv1ui4i+c/kUUrPheBvQl4c5UbERhTwKa6QBJQ==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
       bufferutil: ^4.0.1
