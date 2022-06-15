@@ -193,7 +193,7 @@ importers:
       '@graphql-ez/fastify': ^0.10.0
       '@graphql-ez/plugin-altair': ^0.9.10
       '@graphql-ez/plugin-codegen': ^0.7.10
-      '@graphql-ez/plugin-dataloader': ^0.6.1
+      '@graphql-ez/plugin-dataloader': ^0.7.0
       '@graphql-ez/plugin-schema': ^0.8.5
       '@graphql-ez/plugin-upload': ^0.7.2
       '@graphql-ez/plugin-websockets': ^0.10.5
@@ -246,7 +246,7 @@ importers:
       '@graphql-ez/fastify': 0.10.0_b6ds4dmpnjhgygqs55iww5stom
       '@graphql-ez/plugin-altair': 0.9.10_vjdylhzirvv22mzisb3i3rvrge
       '@graphql-ez/plugin-codegen': 0.7.10_vjdylhzirvv22mzisb3i3rvrge
-      '@graphql-ez/plugin-dataloader': 0.6.1_ntmw7gwgaxsi3yizy35ygkaaca
+      '@graphql-ez/plugin-dataloader': 0.7.0_ntmw7gwgaxsi3yizy35ygkaaca
       '@graphql-ez/plugin-schema': 0.8.5_vjdylhzirvv22mzisb3i3rvrge
       '@graphql-ez/plugin-upload': 0.7.2_itjbt5rykukkvs5agiiqhjootq
       '@graphql-ez/plugin-websockets': 0.10.5_vjdylhzirvv22mzisb3i3rvrge
@@ -3052,10 +3052,10 @@ packages:
       graphql: 17.0.0-alpha.1
     dev: true
 
-  /@envelop/dataloader/3.3.2_zzr5vqrmsfvdtadykyyunzcoha:
-    resolution: {integrity: sha512-k35arB5lJvoMn6pPDcdKZABtVyAO0KjmxXLVTX65Yx1IuGPKI42h0A/bC9oYYOssXJasPsZGd+b8mwtEikR+OA==}
+  /@envelop/dataloader/3.3.3_zzr5vqrmsfvdtadykyyunzcoha:
+    resolution: {integrity: sha512-4uL8AeY6Edj17NRFkwU3NKLDjWqSZl7z+r4GJK5iE7f48Qxu4R7Zwe8iKDi8cBuduxKG63mpqvnJWWL1rRb/ow==}
     peerDependencies:
-      '@envelop/core': ^2.3.2
+      '@envelop/core': ^2.3.3
       dataloader: ^2.0.0
       graphql: '*'
     peerDependenciesMeta:
@@ -3063,6 +3063,18 @@ packages:
         optional: true
     dependencies:
       dataloader: 2.1.0
+      graphql: 16.5.0
+    dev: false
+
+  /@envelop/execute-subscription-event/2.3.3_graphql@16.5.0:
+    resolution: {integrity: sha512-GIniETpXluiNlOAf0RCXxG4V1ehYu8oA4CRfPNdnLUHtX2VNzmcVgxo53vOm3o82CI24E4WpJW9j4dDGzuIMYw==}
+    peerDependencies:
+      '@envelop/core': ^2.3.3
+      graphql: '*'
+    peerDependenciesMeta:
+      '@envelop/core':
+        optional: true
+    dependencies:
       graphql: 16.5.0
     dev: false
 
@@ -3489,13 +3501,14 @@ packages:
       - supports-color
     dev: false
 
-  /@graphql-ez/plugin-dataloader/0.6.1_ntmw7gwgaxsi3yizy35ygkaaca:
-    resolution: {integrity: sha512-axn3fZjmGszwoFAzt8ZaM+MRdRk+dLKjTwsc092c7lf8jpgKXeJm1kMTiekThFmoL6+PFHzu9NKESu5qWR62cw==}
+  /@graphql-ez/plugin-dataloader/0.7.0_ntmw7gwgaxsi3yizy35ygkaaca:
+    resolution: {integrity: sha512-2h09GSLFOsrog/ad/emDdeINicp+ID9lCc/HkFKeJCVbxBkSCBrn0NHmM/U8vINzT4eUJqXdNm+8AA4cFY0H3A==}
     engines: {node: '>=14.13.1'}
     peerDependencies:
-      graphql-ez: ^0.15.0
+      graphql-ez: ^0.15.1
     dependencies:
-      '@envelop/dataloader': 3.3.2_zzr5vqrmsfvdtadykyyunzcoha
+      '@envelop/dataloader': 3.3.3_zzr5vqrmsfvdtadykyyunzcoha
+      '@envelop/execute-subscription-event': 2.3.3_graphql@16.5.0
       dataloader: 2.1.0
       graphql-ez: 0.15.1_q6qi6dame5k4ytdcjqikteqque
     transitivePeerDependencies:
