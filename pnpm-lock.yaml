@@ -18,7 +18,7 @@ importers:
       bufferutil: ^4.0.6
       chalk: ^5.0.1
       changesets-github-release: ^0.1.0
-      concurrently: ^7.2.1
+      concurrently: ^7.2.2
       esbuild: ^0.14.43
       globby: ^13.1.2
       graphql: ^16.5.0
@@ -45,7 +45,7 @@ importers:
       bufferutil: 4.0.6
       chalk: 5.0.1
       changesets-github-release: 0.1.0
-      concurrently: 7.2.1
+      concurrently: 7.2.2
       esbuild: 0.14.43
       globby: 13.1.2
       graphql: 16.5.0
@@ -121,7 +121,7 @@ importers:
       '@types/node': ^17.0.35
       '@types/react': ^17.0.45
       '@types/react-dom': ^17.0.17
-      concurrently: ^7.2.1
+      concurrently: ^7.2.2
       esbuild: ^0.14.43
       gqty: workspace:^2.2.0
       graphql: ^16.5.0
@@ -150,7 +150,7 @@ importers:
       '@types/node': 17.0.35
       '@types/react': 17.0.45
       '@types/react-dom': 17.0.17
-      concurrently: 7.2.1
+      concurrently: 7.2.2
       esbuild: 0.14.43
       open-cli: 7.0.1
       typescript: 4.7.3
@@ -205,7 +205,7 @@ importers:
       '@types/react': ^17.0.45
       '@types/react-dom': ^17.0.17
       bob-tsm: ^1.0.0
-      concurrently: ^7.2.1
+      concurrently: ^7.2.2
       cross-env: ^7.0.3
       date-fns: ^2.28.0
       esbuild: ^0.14.43
@@ -282,7 +282,7 @@ importers:
       '@types/react': 17.0.45
       '@types/react-dom': 17.0.17
       bob-tsm: 1.0.0_rfzdi44t3f7d4pftnjts7dki7e
-      concurrently: 7.2.1
+      concurrently: 7.2.2
       cross-env: 7.0.3
       esbuild: 0.14.43
       jest: 28.1.1_@types+node@17.0.35
@@ -370,7 +370,7 @@ importers:
       '@types/randomstring': ^1.1.8
       bob-esbuild-cli: ^4.0.0
       bob-ts: ^4.0.0
-      concurrently: ^7.2.1
+      concurrently: ^7.2.2
       cross-env: ^7.0.3
       esbuild: ^0.14.43
       fastify: ^3.29.0
@@ -408,7 +408,7 @@ importers:
       '@types/randomstring': 1.1.8
       bob-esbuild-cli: 4.0.0
       bob-ts: 4.0.0_wg4pgkh2a6e7p57b747zxd4yqu
-      concurrently: 7.2.1
+      concurrently: 7.2.2
       esbuild: 0.14.43
       tslib: 2.4.0
       typescript: 4.7.3
@@ -430,7 +430,7 @@ importers:
       '@types/react': ^17.0.45
       '@types/react-dom': ^17.0.17
       bob-tsm: ^1.0.0
-      concurrently: ^7.2.1
+      concurrently: ^7.2.2
       cross-env: ^7.0.3
       csstype: ^3.1.0
       esbuild: ^0.14.43
@@ -474,7 +474,7 @@ importers:
       '@types/react': 17.0.45
       '@types/react-dom': 17.0.17
       bob-tsm: 1.0.0_rfzdi44t3f7d4pftnjts7dki7e
-      concurrently: 7.2.1
+      concurrently: 7.2.2
       cross-env: 7.0.3
       esbuild: 0.14.43
       next-remote-watch: 1.0.0
@@ -563,7 +563,7 @@ importers:
       '@types/wait-on': ^5.3.1
       '@types/ws': ^8.5.3
       bob-esbuild-cli: ^4.0.0
-      concurrently: ^7.2.1
+      concurrently: ^7.2.2
       cross-env: ^7.0.3
       esbuild: ^0.14.43
       graphql: ^16.5.0
@@ -594,7 +594,7 @@ importers:
       '@types/wait-on': 5.3.1
       '@types/ws': 8.5.3
       bob-esbuild-cli: 4.0.0
-      concurrently: 7.2.1
+      concurrently: 7.2.2
       cross-env: 7.0.3
       esbuild: 0.14.43
       graphql: 16.5.0
@@ -6873,15 +6873,15 @@ packages:
       well-known-symbols: 2.0.0
     dev: true
 
-  /concurrently/7.2.1:
-    resolution: {integrity: sha512-7cab/QyqipqghrVr9qZmoWbidu0nHsmxrpNqQ7r/67vfl1DWJElexehQnTH1p+87tDkihaAjM79xTZyBQh7HLw==}
+  /concurrently/7.2.2:
+    resolution: {integrity: sha512-DcQkI0ruil5BA/g7Xy3EWySGrFJovF5RYAYxwGvv9Jf9q9B1v3jPFP2tl6axExNf1qgF30kjoNYrangZ0ey4Aw==}
     engines: {node: ^12.20.0 || ^14.13.0 || >=16.0.0}
     hasBin: true
     dependencies:
       chalk: 4.1.2
       date-fns: 2.28.0
       lodash: 4.17.21
-      rxjs: 6.6.7
+      rxjs: 7.5.5
       shell-quote: 1.7.3
       spawn-command: 0.0.2-1
       supports-color: 8.1.1
@@ -13139,6 +13139,7 @@ packages:
     engines: {npm: '>=2.0.0'}
     dependencies:
       tslib: 1.14.1
+    dev: false
 
   /rxjs/7.5.5:
     resolution: {integrity: sha512-sy+H0pQofO95VDmFLzyaw9xNJU4KTRSwQIGM6+iG3SypAtCiLDzpeG8sJrNCWn2Up9km+KhkvTdbkrdy+yzZdw==}
@@ -13577,7 +13578,7 @@ packages:
     dev: false
 
   /spawn-command/0.0.2-1:
-    resolution: {integrity: sha1-YvXpRmmBwbeW3Fkpk34RycaSG9A=}
+    resolution: {integrity: sha512-n98l9E2RMSJ9ON1AKisHzz7V42VDiBQGY6PB1BwRglz99wpVsSuGzQ+jOi6lFXBGVTCrRpltvjm+/XA+tpeJrg==}
     dev: true
 
   /spawndamnit/2.0.0:
@@ -14259,6 +14260,7 @@ packages:
 
   /tslib/1.14.1:
     resolution: {integrity: sha512-Xni35NKzjgMrwevysHTCArtLDpPvye8zV/0E4EyYn43P7/7qvQwPh9BGkHewbMulVntbigmcT7rdX3BNo9wRJg==}
+    dev: false
 
   /tslib/2.3.1:
     resolution: {integrity: sha512-77EbyPPpMz+FRFRuAFlWMtmgUWGe9UOG2Z25NqCwiIjRhOf5iKGuzSe5P2w1laq+FkRy4p+PCuVkJSGkzTEKVw==}
