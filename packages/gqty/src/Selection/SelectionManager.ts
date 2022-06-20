@@ -1,3 +1,5 @@
+import { sha1 } from '@gqty/utils/sha1';
+
 import { serializeVariables } from '../Utils/cachedJSON';
 import {
   Selection,
@@ -59,13 +61,11 @@ export interface SelectionManager {
   backup(): SelectionsBackup;
 }
 
-export type AliasBackupTuple = [aliasKey: string, alias: string];
 export type VariableHashTuple = [
   serializedVariables: string,
-  incVariablesStringId: number
+  variablesStringId: string
 ];
-export type AliasIncTuple = [key: string | number, incId: number];
-const selectionsBackupVersion = 'v0';
+const selectionsBackupVersion = 'v1';
 
 function isSelectionsBackup(
   selectionsBackup?: unknown
@@ -79,12 +79,7 @@ function isSelectionsBackup(
   );
 }
 
-export type SelectionsBackup = [
-  AliasBackupTuple[],
-  VariableHashTuple[],
-  AliasIncTuple[],
-  string
-];
+export type SelectionsBackup = [VariableHashTuple[], string];
 
 let uniqueSelectionId = 0;
 
@@ -97,52 +92,21 @@ export function createSelectionManager(): SelectionManager {
     Selection
   >();
 
-  const incIds: Record<
-    /**
-     * key
-     */
-    string | number,
-    /**
-     * incId
-     */
-    number
-  > = {};
-  const aliasMap = new Map<
-    /**
-     * aliasKey
-     */
-    string,
-    /**
-     * alias
-     */
-    string
-  >();
-
-  let incHashId = -1;
-  const stringsHash: Record<string, number> = {};
+  const stringsHash: Record<string, string> = {};
 
   let restoredBackup: SelectionsBackup | undefined;
 
   function getSerializedVariablesId(variables: Record<string, unknown>) {
     const serializedVariables = serializeVariables(variables);
 
-    let hashId: number;
+    let hashId: string;
 
     if ((hashId = stringsHash[serializedVariables]) === undefined) {
-      hashId = stringsHash[serializedVariables] = ++incHashId;
+      hashId = stringsHash[serializedVariables] = sha1(
+        serializedVariables
+      ).slice(0, 5);
 
-      if (restoredBackup) restoredBackup[1].push([serializedVariables, hashId]);
-    }
-
-    return hashId;
-  }
-
-  function getKeyHashId(key: string) {
-    let hashId: number;
-    if ((hashId = stringsHash[key]) === undefined) {
-      hashId = stringsHash[key] = ++incHashId;
-
-      if (restoredBackup) restoredBackup[1].push([key, hashId]);
+      if (restoredBackup) restoredBackup[0].push([serializedVariables, hashId]);
     }
 
     return hashId;
@@ -153,36 +117,23 @@ export function createSelectionManager(): SelectionManager {
 
     restoredBackup = backup;
 
-    for (const [aliasKey, alias] of backup[0]) {
-      aliasMap.set(aliasKey, alias);
-    }
-
-    for (const [stringKey, incHashIdValue] of backup[1]) {
-      stringsHash[stringKey] = incHashIdValue;
-      incHashId = incHashIdValue;
-    }
-
-    for (const [key, incId] of backup[2]) {
-      incIds[key] = incId;
+    for (const [stringKey, hashIdValue] of backup[1]) {
+      stringsHash[stringKey] = hashIdValue;
     }
   }
 
   function backup(): SelectionsBackup {
     if (restoredBackup) {
-      restoredBackup[2] = [];
-      for (const key in incIds) restoredBackup[2].push([~~key, incIds[key]]);
+      restoredBackup[0] = [];
 
       return restoredBackup;
     }
 
-    const backup: SelectionsBackup = [[], [], [], selectionsBackupVersion];
-    for (const [aliasKey, alias] of aliasMap.entries()) {
-      backup[0].push([aliasKey, alias]);
-    }
+    const backup: SelectionsBackup = [[], selectionsBackupVersion];
+
     for (const serializedVariables in stringsHash) {
-      backup[1].push([serializedVariables, stringsHash[serializedVariables]]);
+      backup[0].push([serializedVariables, stringsHash[serializedVariables]]);
     }
-    for (const key in incIds) backup[2].push([~~key, incIds[key]]);
 
     return (restoredBackup = backup);
   }
@@ -192,21 +143,13 @@ export function createSelectionManager(): SelectionManager {
     variables: Record<string, unknown>,
     variableTypes: Record<string, string>
   ) {
-    const hashedKey = typeof key === 'string' ? getKeyHashId(key) : key;
-    const aliasKey = `${hashedKey}-${getSerializedVariablesId(
-      variables
-    )}-${getSerializedVariablesId(variableTypes)}`;
-    let alias = aliasMap.get(aliasKey);
-
-    if (alias == null) {
-      incIds[hashedKey] ??= -1;
-      alias = `${key}${++incIds[hashedKey]}`;
-      aliasMap.set(aliasKey, alias);
-
-      if (restoredBackup) restoredBackup[0].push([aliasKey, alias]);
-    }
-
-    return alias;
+    return (
+      key +
+      '_' +
+      getSerializedVariablesId(variableTypes) +
+      '_' +
+      getSerializedVariablesId(variables)
+    );
   }
 
   function getSelection({

@@ -123,10 +123,10 @@ describe('interfaces and unions', () => {
     expect(queries).toMatchInlineSnapshot(`
       [
         {
-          "query": "query($type1:NodeType!){node0:node(type:$type1){__typename id ...on A{id a}...on B{id b}}}",
+          "query": "query($type1:NodeType!){node_6c4a1_78028:node(type:$type1){__typename id ...on A{id a}...on B{id b}}}",
           "result": {
             "data": {
-              "node0": {
+              "node_6c4a1_78028": {
                 "__typename": "A",
                 "a": 1,
                 "id": "1",
@@ -181,10 +181,10 @@ describe('interfaces and unions', () => {
     expect(queries).toMatchInlineSnapshot(`
       [
         {
-          "query": "query($type1:NodeType!){node0:node(type:$type1){__typename id ...on A{id a node{__typename id ...on A{id node{__typename id ...on C{id node{__typename id ...on A{id}}}}}}}...on B{id b}}}",
+          "query": "query($type1:NodeType!){node_6c4a1_78028:node(type:$type1){__typename id ...on A{id a node{__typename id ...on A{id node{__typename id ...on C{id node{__typename id ...on A{id}}}}}}}...on B{id b}}}",
           "result": {
             "data": {
-              "node0": {
+              "node_6c4a1_78028": {
                 "__typename": "A",
                 "a": 1,
                 "id": "1",
