@@ -42,6 +42,7 @@
     "test:watch-coverage": "rimraf coverage && mkdirp coverage/lcov-report && concurrently --raw \"jest --watchAll\" \"serve -l 8787 coverage/lcov-report\" \"wait-on tcp:8787 coverage/lcov-report/index.html && open-cli http://localhost:8787\""
   },
   "dependencies": {
+    "@gqty/utils": "workspace:^0.0.1",
     "lodash": "^4.17.21"
   },
   "devDependencies": {
@@ -52,6 +53,7 @@
     "@types/react": "^17.0.47",
     "@types/react-dom": "^17.0.17",
     "@types/rimraf": "^3.0.2",
+    "@types/sha1": "^1.1.3",
     "@types/wait-on": "^5.3.1",
     "@types/ws": "^8.5.3",
     "bob-esbuild-cli": "^4.0.0",
@@ -69,7 +71,7 @@
     "size-limit": "^7.0.8",
     "test-utils": "workspace:^0.1.0",
     "tsc-watch": "^5.0.3",
-    "typescript": "^4.7.3",
+    "typescript": "^4.7.4",
     "wait-on": "^6.0.1",
     "ws": "^8.8.0"
   },

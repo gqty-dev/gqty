@@ -53,9 +53,9 @@ describe('selection creation', () => {
       },
     });
 
-    expect(selectionD.cachePath).toEqual(['a', 'b', 0, 'd0']);
-    expect(selectionD.pathString).toBe('a.b.0.d0');
-    expect(selectionD.alias).toBe('d0');
+    expect(selectionD.cachePath).toEqual(['a', 'b', 0, 'd_3153c_9f89c']);
+    expect(selectionD.pathString).toBe('a.b.0.d_3153c_9f89c');
+    expect(selectionD.alias).toBe('d_3153c_9f89c');
 
     const repeatSelectionD = manager.getSelection({
       key: 'd',
@@ -68,17 +68,17 @@ describe('selection creation', () => {
       },
     });
 
-    expect(repeatSelectionD.cachePath).toEqual(['a', 'b', 0, 'd0']);
-    expect(repeatSelectionD.pathString).toBe('a.b.0.d0');
-    expect(repeatSelectionD.alias).toBe('d0');
+    expect(repeatSelectionD.cachePath).toEqual(['a', 'b', 0, 'd_3153c_9f89c']);
+    expect(repeatSelectionD.pathString).toBe('a.b.0.d_3153c_9f89c');
+    expect(repeatSelectionD.alias).toBe('d_3153c_9f89c');
 
     const selectionE = manager.getSelection({
       key: 'e',
       prevSelection: selectionD,
     });
 
-    expect(selectionE.cachePath).toEqual(['a', 'b', 0, 'd0', 'e']);
-    expect(selectionE.pathString).toBe('a.b.0.d0.e');
+    expect(selectionE.cachePath).toEqual(['a', 'b', 0, 'd_3153c_9f89c', 'e']);
+    expect(selectionE.pathString).toBe('a.b.0.d_3153c_9f89c.e');
 
     const selectionF = manager.getSelection({
       key: 'f',
