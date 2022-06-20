@@ -1,0 +1,43 @@
+name: Canary Release
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  publish-canary:
+    name: Publish Canary
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+        with:
+          # This makes Actions fetch all Git history so that Changesets can generate changelogs with the correct commits
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v2.2.2
+        with:
+          version: ^7.1.1
+      - name: Setup Node.js 16.x
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16.x
+          cache: 'pnpm'
+
+      - name: Setup NPM credentials
+        run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Install Dependencies
+        run: pnpm install
+
+      - name: Release Canary
+        id: canary
+        uses: 'kamilkisiela/release-canary@master'
+        with:
+          npm-token: ${{ secrets.NPM_TOKEN }}
+          npm-script: 'pnpm release:canary'
+          changesets: true
