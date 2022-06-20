@@ -73,9 +73,7 @@ function isSelectionsBackup(
   return (
     Array.isArray(selectionsBackup) &&
     Array.isArray(selectionsBackup[0]) &&
-    Array.isArray(selectionsBackup[1]) &&
-    Array.isArray(selectionsBackup[2]) &&
-    selectionsBackup[3] === selectionsBackupVersion
+    selectionsBackup[1] === selectionsBackupVersion
   );
 }
 
