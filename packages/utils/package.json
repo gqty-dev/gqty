@@ -15,7 +15,7 @@
     "build": "concurrently pnpm:build:* && bob-esbuild tsc",
     "build:cjs": "esbuild --bundle --format=cjs --target=es2020 --platform=node --minify-syntax --minify-identifiers --outfile=dist/sha1.cjs lib/sha1.ts",
     "build:esm": "esbuild --bundle --format=esm --target=es2020 --platform=node --minify-syntax --minify-identifiers --outfile=dist/sha1.mjs lib/sha1.ts",
-    "prepack": "pnpm build"
+    "prepare": "pnpm build"
   },
   "devDependencies": {
     "@types/sha1": "1.1.3",
