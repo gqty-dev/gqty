@@ -67,7 +67,7 @@ async function updateVersions() {
       console.warn(
         `Unable to find any relevant package for canary releasing. Please make sure changesets exists!`
       );
-      process.exit(1);
+      process.exit(0);
     } else {
       for (const release of releasePlan.releases) {
         if (release.type !== 'none') {
@@ -85,6 +85,10 @@ async function updateVersions() {
         false,
         true
       );
+
+      cp.execSync(`pnpm ci:release`, {
+        stdio: 'inherit',
+      });
     }
   }
 }
