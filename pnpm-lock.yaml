@@ -6181,6 +6181,22 @@ packages:
       commander: 9.2.0
     dev: true
 
+  /bob-esbuild-plugin/4.0.0_ktu2kzacvi5wdos6kd33ysa7ja:
+    resolution: {integrity: sha512-Ymk0kEPc0JhL3eZQVnWpjT4/HMX8Hw7aD5CzqSvNAXeUgaR1+8m5O1RtkP/D42ZwNv+FPgD1wKM4pdoQ4ScmAQ==}
+    peerDependencies:
+      esbuild: '>=0.14.39'
+      rollup: '*'
+    peerDependenciesMeta:
+      esbuild:
+        optional: true
+      rollup:
+        optional: true
+    dependencies:
+      '@rollup/pluginutils': 4.2.1
+      esbuild: 0.14.47
+      rollup: 2.75.6
+    dev: true
+
   /bob-esbuild-plugin/4.0.0_o2olcipil3agd5jzujz3336mqu:
     resolution: {integrity: sha512-Ymk0kEPc0JhL3eZQVnWpjT4/HMX8Hw7aD5CzqSvNAXeUgaR1+8m5O1RtkP/D42ZwNv+FPgD1wKM4pdoQ4ScmAQ==}
     peerDependencies:
@@ -6197,22 +6213,6 @@ packages:
       rollup: 2.74.1
     dev: true
 
-  /bob-esbuild-plugin/4.0.0_qrpxjnto46iodaa4efitqiw3he:
-    resolution: {integrity: sha512-Ymk0kEPc0JhL3eZQVnWpjT4/HMX8Hw7aD5CzqSvNAXeUgaR1+8m5O1RtkP/D42ZwNv+FPgD1wKM4pdoQ4ScmAQ==}
-    peerDependencies:
-      esbuild: '>=0.14.39'
-      rollup: '*'
-    peerDependenciesMeta:
-      esbuild:
-        optional: true
-      rollup:
-        optional: true
-    dependencies:
-      '@rollup/pluginutils': 4.2.1
-      esbuild: 0.14.47
-      rollup: 2.75.7
-    dev: true
-
   /bob-esbuild/4.0.3_6vtzbgpbems4joemkk7l27poq4:
     resolution: {integrity: sha512-9AGuh6V5Whsditj5n2oJjWAvHwgadgD2HD0qZ4rEBwY9tpj8YbfYeiaXQQV9qJxwT9oUYOsQE53wPNYBFDIfJA==}
     peerDependencies:
@@ -6225,9 +6225,9 @@ packages:
         optional: true
     dependencies:
       '@pnpm/types': 8.2.0
-      bob-esbuild-plugin: 4.0.0_qrpxjnto46iodaa4efitqiw3he
+      bob-esbuild-plugin: 4.0.0_ktu2kzacvi5wdos6kd33ysa7ja
       esbuild: 0.14.47
-      rollup: 2.75.7
+      rollup: 2.75.6
       typescript: 4.7.4
     dev: true
 
@@ -13147,8 +13147,8 @@ packages:
       fsevents: 2.3.2
     dev: true
 
-  /rollup/2.75.7:
-    resolution: {integrity: sha512-VSE1iy0eaAYNCxEXaleThdFXqZJ42qDBatAwrfnPlENEZ8erQ+0LYX4JXOLPceWfZpV1VtZwZ3dFCuOZiSyFtQ==}
+  /rollup/2.75.6:
+    resolution: {integrity: sha512-OEf0TgpC9vU6WGROJIk1JA3LR5vk/yvqlzxqdrE2CzzXnqKXNzbAwlWUXis8RS3ZPe7LAq+YUxsRa0l3r27MLA==}
     engines: {node: '>=10.0.0'}
     hasBin: true
     optionalDependencies:
