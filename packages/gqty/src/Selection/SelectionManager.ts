@@ -115,7 +115,7 @@ export function createSelectionManager(): SelectionManager {
 
     restoredBackup = backup;
 
-    for (const [stringKey, hashIdValue] of backup[1]) {
+    for (const [stringKey, hashIdValue] of backup[0]) {
       stringsHash[stringKey] = hashIdValue;
     }
   }
