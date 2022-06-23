@@ -13,18 +13,12 @@ export declare function mergeWith<TObject, TSource>(
   source: TSource,
   customizer: MergeWithCustomizer
 ): TObject & TSource;
-/**
- * @see _.mergeWith
- */
 export declare function mergeWith<TObject, TSource1, TSource2>(
   object: TObject,
   source1: TSource1,
   source2: TSource2,
   customizer: MergeWithCustomizer
 ): TObject & TSource1 & TSource2;
-/**
- * @see _.mergeWith
- */
 export declare function mergeWith<TObject, TSource1, TSource2, TSource3>(
   object: TObject,
   source1: TSource1,
@@ -32,9 +26,6 @@ export declare function mergeWith<TObject, TSource1, TSource2, TSource3>(
   source3: TSource3,
   customizer: MergeWithCustomizer
 ): TObject & TSource1 & TSource2 & TSource3;
-/**
- * @see _.mergeWith
- */
 export declare function mergeWith<
   TObject,
   TSource1,
@@ -49,7 +40,4 @@ export declare function mergeWith<
   source4: TSource4,
   customizer: MergeWithCustomizer
 ): TObject & TSource1 & TSource2 & TSource3 & TSource4;
-/**
- * @see _.mergeWith
- */
 export declare function mergeWith(object: any, ...otherArgs: any[]): any;
