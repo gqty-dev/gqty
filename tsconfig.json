@@ -3,8 +3,8 @@
     "rootDir": ".",
     "outDir": "dist",
     "declaration": true,
-    "target": "es2020",
-    "module": "es2020",
+    "target": "esnext",
+    "module": "esnext",
     "strict": true,
     "esModuleInterop": true,
     "allowJs": false,
@@ -22,6 +22,7 @@
       "gqty/*": ["packages/gqty/src/*"],
       "@gqty/cli": ["packages/cli/src/index.ts"],
       "@gqty/cli/*": ["packages/cli/src/*"],
+      "@gqty/utils/sha1": ["packages/utils/lib/sha1.ts"],
       "test-utils": ["internal/test-utils/src/index.ts"]
     },
     "importsNotUsedAsValues": "error"

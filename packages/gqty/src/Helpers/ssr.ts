@@ -114,8 +114,7 @@ export function createSSRHelpers({
         ...decycle({
           cache: isEmptyObject(cache) ? undefined : cache,
         }),
-        selections:
-          selections[0].length || selections[1].length ? selections : undefined,
+        selections: selections[0].length ? selections : undefined,
       }),
     };
   };

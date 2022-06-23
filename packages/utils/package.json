@@ -1,0 +1,28 @@
+{
+  "name": "@gqty/utils",
+  "version": "0.0.1",
+  "exports": {
+    "./*": {
+      "types": "./dist/*.d.ts",
+      "require": "./dist/*.cjs",
+      "import": "./dist/*.mjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "concurrently pnpm:build:*",
+    "build:cjs": "esbuild --bundle --format=cjs --target=es2020 --platform=node --minify-syntax --minify-identifiers --outfile=dist/sha1.cjs lib/sha1.ts",
+    "build:esm": "esbuild --bundle --format=esm --target=es2020 --platform=node --minify-syntax --minify-identifiers --outfile=dist/sha1.mjs lib/sha1.ts",
+    "build:ts": "bob-tsm build.ts",
+    "prepare": "pnpm build"
+  },
+  "devDependencies": {
+    "@types/sha1": "1.1.3",
+    "sha1": "1.1.1"
+  },
+  "publishConfig": {
+    "directory": "dist"
+  }
+}
