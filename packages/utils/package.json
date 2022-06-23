@@ -4,7 +4,7 @@
   "exports": {
     "./*": {
       "types": "./dist/*.d.ts",
-      "require": "./dist/*.cjs",
+      "require": "./dist/*.js",
       "import": "./dist/*.mjs"
     }
   },
@@ -14,10 +14,10 @@
   "scripts": {
     "build": "concurrently pnpm:build:sha1 pnpm:build:merge pnpm:build:ts",
     "build:merge": "concurrently pnpm:build:merge:*",
-    "build:merge:cjs": "esbuild --bundle --format=cjs --target=es2020 --platform=node --minify-syntax --minify-identifiers --outfile=dist/mergeWith.cjs lib/mergeWith.ts",
+    "build:merge:cjs": "esbuild --bundle --format=cjs --target=es2020 --platform=node --minify-syntax --minify-identifiers --outfile=dist/mergeWith.js lib/mergeWith.ts",
     "build:merge:esm": "esbuild --bundle --format=esm --target=es2020 --platform=node --minify-syntax --minify-identifiers --outfile=dist/mergeWith.mjs lib/mergeWith.ts",
     "build:sha1": "concurrently pnpm:build:sha1:*",
-    "build:sha1:cjs": "esbuild --bundle --format=cjs --target=es2020 --platform=node --minify-syntax --minify-identifiers --outfile=dist/sha1.cjs lib/sha1.ts",
+    "build:sha1:cjs": "esbuild --bundle --format=cjs --target=es2020 --platform=node --minify-syntax --minify-identifiers --outfile=dist/sha1.js lib/sha1.ts",
     "build:sha1:esm": "esbuild --bundle --format=esm --target=es2020 --platform=node --minify-syntax --minify-identifiers --outfile=dist/sha1.mjs lib/sha1.ts",
     "build:ts": "bob-tsm build.ts",
     "prepare": "pnpm build"
