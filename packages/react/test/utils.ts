@@ -13,8 +13,6 @@ import {
 import { createSubscriptionsClient } from '../../subscriptions/src/index';
 import { createReactClient } from '../src';
 
-globalThis.setImmediate = globalThis.setTimeout as any;
-
 type ObjectTypesNames = 'Human' | 'Query' | 'Mutation' | 'Subscription';
 
 type ObjectTypes = {
