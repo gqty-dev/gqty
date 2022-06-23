@@ -53,7 +53,7 @@ async function updateVersions() {
     console.warn(
       `Unable to find any relevant package for canary publishing. Please make sure changesets exists!`
     );
-    process.exit(1);
+    process.exit(0);
   } else {
     const releasePlan = assembleReleasePlan(
       changesets,
