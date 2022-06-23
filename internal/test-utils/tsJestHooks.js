@@ -16,6 +16,7 @@ exports.afterProcess = function afterProcess(
 ) {
   return {
     code: result.code
+      .replaceAll('lodash-es', 'lodash')
       .replace(metaImportUrlRegex, 'new URL("file:" + __filename)')
       .replace(depsFileRegex, './deps'),
   };
