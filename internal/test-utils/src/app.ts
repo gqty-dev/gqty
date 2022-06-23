@@ -12,7 +12,7 @@ import { inspect } from 'util';
 
 inspect.defaultOptions.depth = null;
 
-typeof afterAll !== 'undefined' && afterAll(GlobalTeardown);
+typeof afterAll !== 'undefined' && afterAll(() => void GlobalTeardown());
 
 interface PubSubCtx {
   pubsub: InMemoryPubSub;
