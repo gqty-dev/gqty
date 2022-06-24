@@ -1,5 +1,18 @@
 # gqty
 
+## 2.3.0
+
+### Minor Changes
+
+- 6ecd2b0: Use lodash mergeWith from "@gqty/utils" package
+- 59d38ad: Change variable aliasing to be deterministic with cached and sliced sha1 hashing
+
+### Patch Changes
+
+- Updated dependencies [6ecd2b0]
+- Updated dependencies [59d38ad]
+  - @gqty/utils@1.0.0
+
 ## 2.2.0
 
 ### Minor Changes

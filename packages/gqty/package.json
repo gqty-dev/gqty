@@ -1,6 +1,6 @@
 {
   "name": "gqty",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "description": "gqty client without queries",
   "homepage": "https://gqty.dev",
   "repository": {
@@ -42,7 +42,7 @@
     "test:watch-coverage": "rimraf coverage && mkdirp coverage/lcov-report && concurrently --raw \"jest --watchAll\" \"serve -l 8787 coverage/lcov-report\" \"wait-on tcp:8787 coverage/lcov-report/index.html && open-cli http://localhost:8787\""
   },
   "dependencies": {
-    "@gqty/utils": "workspace:^0.0.1"
+    "@gqty/utils": "workspace:^1.0.0"
   },
   "devDependencies": {
     "@size-limit/preset-small-lib": "^7.0.8",
