@@ -313,7 +313,7 @@ importers:
       react: ^17.0.2
       react-dom: ^17.0.2
       typescript: ^4.7.4
-      vite: ^2.9.12
+      vite: ^2.9.13
     dependencies:
       '@gqty/cli': link:../../packages/cli
       '@gqty/react': link:../../packages/react
@@ -327,7 +327,7 @@ importers:
       '@vitejs/plugin-react-refresh': 1.3.6
       esbuild: 0.14.47
       typescript: 4.7.4
-      vite: 2.9.12
+      vite: 2.9.13
 
   integration/graphql-17:
     specifiers:
@@ -346,7 +346,7 @@ importers:
       graphql-ez: ^0.15.1
       typescript: ^4.7.4
     devDependencies:
-      '@gqty/cli': link:../../packages/cli
+      '@gqty/cli': file:packages/cli_graphql@17.0.0-alpha.1
       '@graphql-ez/fastify': 0.11.0_lgyng5t754birqcsrcmaijooda
       '@graphql-ez/fastify-testing': 0.3.0_iv2hrczpd6kroj7nzqvofx7cwy
       '@graphql-typed-document-node/core': 3.1.1_graphql@17.0.0-alpha.1
@@ -356,7 +356,7 @@ importers:
       c8: 7.11.3
       esbuild: 0.14.47
       fastify: 4.1.0
-      gqty: link:../../packages/gqty
+      gqty: file:packages/gqty_graphql@17.0.0-alpha.1
       graphql: 17.0.0-alpha.1
       graphql-ez: 0.15.1_c4va7fuwlgwlze7hxhdsm2p7nu
       typescript: 4.7.4
@@ -14663,8 +14663,8 @@ packages:
       vfile-message: 3.1.2
     dev: false
 
-  /vite/2.9.12:
-    resolution: {integrity: sha512-suxC36dQo9Rq1qMB2qiRorNJtJAdxguu5TMvBHOc/F370KvqAe9t48vYp+/TbPKRNrMh/J55tOUmkuIqstZaew==}
+  /vite/2.9.13:
+    resolution: {integrity: sha512-AsOBAaT0AD7Mhe8DuK+/kE4aWYFMx/i0ZNi98hJclxb4e0OhQcZYUrvLjIaQ8e59Ui7txcvKMiJC1yftqpQoDw==}
     engines: {node: '>=12.2.0'}
     hasBin: true
     peerDependencies:
@@ -15041,3 +15041,37 @@ packages:
   /zwitch/2.0.2:
     resolution: {integrity: sha512-JZxotl7SxAJH0j7dN4pxsTV6ZLXoLdGME+PsjkL/DaBrVryK9kTGq06GfKrwcSOqypP+fdXGoCHE36b99fWVoA==}
     dev: false
+
+  file:packages/cli_graphql@17.0.0-alpha.1:
+    resolution: {directory: packages/cli, type: directory}
+    id: file:packages/cli
+    name: '@gqty/cli'
+    version: 3.3.0
+    engines: {node: ^12.20.0 || >=14.13.0}
+    hasBin: true
+    peerDependencies:
+      graphql: '*'
+    peerDependenciesMeta:
+      graphql:
+        optional: true
+    dependencies:
+      gqty: link:packages/gqty
+      graphql: 17.0.0-alpha.1
+      undici: 5.5.1
+    dev: true
+
+  file:packages/gqty_graphql@17.0.0-alpha.1:
+    resolution: {directory: packages/gqty, type: directory}
+    id: file:packages/gqty
+    name: gqty
+    version: 2.3.0
+    engines: {node: ^12.20.0 || >=14.13.0}
+    peerDependencies:
+      graphql: '*'
+    peerDependenciesMeta:
+      graphql:
+        optional: true
+    dependencies:
+      '@gqty/utils': link:packages/utils
+      graphql: 17.0.0-alpha.1
+    dev: true
