@@ -524,11 +524,11 @@ importers:
       tmp-promise: ^3.0.3
       tslib: ^2.4.0
       typescript: ^4.7.4
-      undici: ^5.5.1
+      undici: ^5.6.0
       wait-on: ^6.0.1
     dependencies:
       gqty: link:../gqty
-      undici: 5.5.1
+      undici: 5.6.0
     devDependencies:
       '@graphql-codegen/core': 2.5.1_graphql@16.5.0
       '@graphql-codegen/typescript': 2.5.1_graphql@16.5.0
@@ -14345,6 +14345,10 @@ packages:
     resolution: {integrity: sha512-MEvryPLf18HvlCbLSzCW0U00IMftKGI5udnjrQbC5D4P0Hodwffhv+iGfWuJwg16Y/TK11ZFK8i+BPVW2z/eAw==}
     engines: {node: '>=12.18'}
 
+  /undici/5.6.0:
+    resolution: {integrity: sha512-mc+8SY1fXubTrdx4CXDkeFFGV8lI3Tq4I/70U1V8Z6g4iscGII0uLO7CPnDt56bXEbvaKwo2T2+VrteWbZiXiQ==}
+    engines: {node: '>=12.18'}
+
   /unfetch/4.2.0:
     resolution: {integrity: sha512-F9p7yYCn6cIW9El1zi0HI6vqpeIvBsr3dSuRO6Xuppb1u5rXpCPmMvLSyECLhybr9isec8Ohl0hPekMVrEinDA==}
     dev: true
@@ -15075,7 +15079,7 @@ packages:
     dependencies:
       gqty: link:packages/gqty
       graphql: 17.0.0-alpha.1
-      undici: 5.5.1
+      undici: 5.6.0
     dev: true
 
   file:packages/gqty_graphql@17.0.0-alpha.1:
