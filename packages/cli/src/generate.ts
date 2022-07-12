@@ -73,6 +73,11 @@ export interface GenerateOptions {
    */
   enumsAsConst?: boolean;
   /**
+   * Add undefined to generated schema types
+   * @default true
+   */
+  generateUndefined?: boolean;
+  /**
    * Generate subscriptions client
    * @default false
    */
@@ -109,6 +114,7 @@ export async function generate(
     endpoint,
     enumsAsStrings,
     enumsAsConst,
+    generateUndefined,
     subscriptions,
     javascriptOutput,
     transformSchema,
@@ -149,6 +155,9 @@ export async function generate(
     enumsAsConst = false;
   }
   enumsAsConst ??= gqtyConfig.enumsAsConst ?? defaultConfig.enumsAsConst;
+
+  generateUndefined ??=
+    gqtyConfig.generateUndefined ?? defaultConfig.generateUndefined;
 
   scalarTypes ||= gqtyConfig.scalarTypes || defaultConfig.scalarTypes;
   endpoint ||=
@@ -777,18 +786,27 @@ export async function generate(
     }
     `;
 
-  typescriptTypes += `
-    export type MakeNullable<T> = {
-      [K in keyof T]: T[K] | undefined;
-    };
-  
-    export interface ScalarsEnums extends MakeNullable<Scalars> {
-      ${deps.sortBy(enumsNames).reduce((acum, enumName) => {
-        acum += `${enumName}: ${enumName} | undefined;`;
-        return acum;
-      }, '')}
-    }
-    `;
+  typescriptTypes += generateUndefined
+    ? `
+      export type MakeNullable<T> = {
+        [K in keyof T]: T[K] | undefined;
+      };
+    
+      export interface ScalarsEnums extends MakeNullable<Scalars> {
+        ${deps.sortBy(enumsNames).reduce((acum, enumName) => {
+          acum += `${enumName}: ${enumName} | undefined;`;
+          return acum;
+        }, '')}
+      }
+      `
+    : `
+      export interface ScalarsEnums extends Scalars {
+        ${deps.sortBy(enumsNames).reduce((acum, enumName) => {
+          acum += `${enumName}: ${enumName};`;
+          return acum;
+        }, '')}
+      }
+      `;
 
   function typeDoc(type: string) {
     return `/**\n * @type {${type}}\n */\n`;

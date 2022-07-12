@@ -123,6 +123,7 @@ test('completely invalid config', () => {
               \\"javascriptOutput\\": false,
               \\"enumsAsStrings\\": false,
               \\"enumsAsConst\\": false,
+              \\"generateUndefined\\": true,
               \\"preImport\\": \\"\\"
             }"
           `);

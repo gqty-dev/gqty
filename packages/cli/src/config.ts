@@ -55,6 +55,7 @@ export const defaultConfig: Omit<Required<GQtyConfig>, 'transformSchema'> &
   javascriptOutput: false,
   enumsAsStrings: false,
   enumsAsConst: false,
+  generateUndefined: true,
   preImport: '',
 };
 
@@ -107,6 +108,14 @@ export function getValidConfig(v: unknown): GQtyConfig {
           break;
         }
         case 'enumsAsConst': {
+          if (typeof value === 'boolean') {
+            newConfig[key] = value;
+          } else {
+            warnConfig(key, value, 'boolean', defaultConfig[key]);
+          }
+          break;
+        }
+        case 'generateUndefined': {
           if (typeof value === 'boolean') {
             newConfig[key] = value;
           } else {
