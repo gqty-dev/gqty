@@ -387,7 +387,7 @@ importers:
       graphql: ^16.5.0
       graphql-ez: ^0.15.1
       jest: ^28.1.2
-      jest-watch-typeahead: ^1.1.0
+      jest-watch-typeahead: ^2.0.0
       prettier: ^2.7.1
       randomstring: ^1.2.2
       ts-jest: ^28.0.5
@@ -406,7 +406,7 @@ importers:
       graphql: 16.5.0
       graphql-ez: 0.15.1_exvfdlvhcng26fz4bmdxzrzhyu
       jest: 28.1.2_@types+node@17.0.45
-      jest-watch-typeahead: 1.1.0_jest@28.1.2
+      jest-watch-typeahead: 2.0.0_jest@28.1.2
       prettier: 2.7.1
       randomstring: 1.2.2
       ts-jest: 28.0.5_cwl72qy3gbfinomrolpnxvxnhm
@@ -5417,7 +5417,6 @@ packages:
 
   /@types/node/18.0.3:
     resolution: {integrity: sha512-HzNRZtp4eepNitP+BD6k2L6DROIDG4Q0fm4x+dwfsr6LGmROENnok75VGw40628xf+iR24WeMFcHuuBDUAzzsQ==}
-    dev: true
 
   /@types/normalize-package-data/2.4.1:
     resolution: {integrity: sha512-Gj7cI7z+98M282Tqmp2K5EIsoouUEzbBJhQQzDE3jSIRk6r9gsz0oUokqIUR4u1R3dMHo0pDHM7sNOHyhulypw==}
@@ -5708,6 +5707,13 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       type-fest: 0.21.3
+
+  /ansi-escapes/5.0.0:
+    resolution: {integrity: sha512-5GFMVX8HqE/TB+FuBJGuO5XG0WrsA6ptUqoODaT/n9mmUaZFkqnBueB4leqGBCmrUHnCnC4PCZTCd0E7QQ83bA==}
+    engines: {node: '>=12'}
+    dependencies:
+      type-fest: 1.4.0
+    dev: false
 
   /ansi-regex/5.0.1:
     resolution: {integrity: sha512-quJQXlTSUGL2LH9SUXo8VwsY4soanhgo6LNSm84E1LBcE8s3O0wpdiRzyR9z/ZZJMlMWv37qOOb9pdJlMUEKFQ==}
@@ -10138,7 +10144,7 @@ packages:
     engines: {node: ^12.13.0 || ^14.15.0 || ^16.10.0 || >=17.0.0}
     dependencies:
       '@jest/types': 28.1.1
-      '@types/node': 17.0.45
+      '@types/node': 18.0.3
       chalk: 4.1.2
       ci-info: 3.3.2
       graceful-fs: 4.2.10
@@ -10155,13 +10161,13 @@ packages:
       leven: 3.1.0
       pretty-format: 28.1.1
 
-  /jest-watch-typeahead/1.1.0_jest@28.1.2:
-    resolution: {integrity: sha512-Va5nLSJTN7YFtC2jd+7wsoe1pNe5K4ShLux/E5iHEwlB9AxaxmggY7to9KUqKojhaJw3aXqt5WAb4jGPOolpEw==}
-    engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+  /jest-watch-typeahead/2.0.0_jest@28.1.2:
+    resolution: {integrity: sha512-LX/jrTNkOIZV1n7fnEWlKJ73lhVPKF9B6F0L7pbje3xNPw1NddPLn0n8EFt7YwbCnC0+vlLylp7JehV6M06J6Q==}
+    engines: {node: ^14.17.0 || ^16.10.0 || >=18.0.0}
     peerDependencies:
       jest: ^27.0.0 || ^28.0.0
     dependencies:
-      ansi-escapes: 4.3.2
+      ansi-escapes: 5.0.0
       chalk: 4.1.2
       jest: 28.1.2_@types+node@17.0.45
       jest-regex-util: 28.0.2
@@ -10177,7 +10183,7 @@ packages:
     dependencies:
       '@jest/test-result': 28.1.1
       '@jest/types': 28.1.1
-      '@types/node': 17.0.45
+      '@types/node': 18.0.3
       ansi-escapes: 4.3.2
       chalk: 4.1.2
       emittery: 0.10.2
@@ -14351,7 +14357,6 @@ packages:
   /type-fest/1.4.0:
     resolution: {integrity: sha512-yGSza74xk0UG8k+pLh5oeoYirvIiWo5t0/o3zHHAO2tRDiZcxWP7fywNlXhqb6/r6sWvwi+RsyQMWhVLe4BVuA==}
     engines: {node: '>=10'}
-    dev: true
 
   /type-fest/2.16.0:
     resolution: {integrity: sha512-qpaThT2HQkFb83gMOrdKVsfCN7LKxP26Yq+smPzY1FqoHRjqmjqHXA7n5Gkxi8efirtbeEUxzfEdePthQWCuHw==}
