@@ -148,7 +148,7 @@ export function createSubscriptionsClient({
         for (const selection of selections) {
           if (operationSelections.has(selection)) {
             operationIds.push(operationId);
-            promises.push(wsClient.unsubscribe(operationId, true));
+            promises.push(wsClient.unsubscribe(operationId));
             SubscriptionsSelections.delete(operationId);
             continue checkOperations;
           }
