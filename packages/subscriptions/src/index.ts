@@ -123,7 +123,7 @@ export function createSubscriptionsClient({
 
         function returnSub(operationId: string) {
           const unsubscribe = async () => {
-            await wsSubClient.unsubscribe(operationId, true);
+            await wsSubClient.unsubscribe(operationId);
             SubscriptionsSelections.delete(operationId);
           };
           SubscriptionsSelections.set(operationId, new Set(selections));
@@ -148,7 +148,7 @@ export function createSubscriptionsClient({
         for (const selection of selections) {
           if (operationSelections.has(selection)) {
             operationIds.push(operationId);
-            promises.push(wsClient.unsubscribe(operationId, true));
+            promises.push(wsClient.unsubscribe(operationId));
             SubscriptionsSelections.delete(operationId);
             continue checkOperations;
           }
