@@ -231,7 +231,7 @@ importers:
       lodash: ^4.17.21
       ms: ^3.0.0-canary.1
       next: ^12.2.3
-      node-json-db: ^1.6.0
+      node-json-db: ^2.0.0
       open: ^8.4.0
       open-cli: ^7.0.1
       react: ^17.0.2
@@ -274,7 +274,7 @@ importers:
       lodash: 4.17.21
       ms: 3.0.0-canary.1
       next: 12.2.3_sfoxds7t5ydpegc3knd667wn6m
-      node-json-db: 1.6.0
+      node-json-db: 2.0.0
       open: 8.4.0
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
@@ -5980,6 +5980,11 @@ packages:
   /atomic-sleep/1.0.0:
     resolution: {integrity: sha512-kNOjDqAh7px0XWNI+4QbzoiR/nTkHAWNud2uvnJquD1/x5a7EQZMJT0AczqK0Qn67oY/TTQ1LbUKajZpp3I9tQ==}
     engines: {node: '>=8.0.0'}
+
+  /atomically/1.7.0:
+    resolution: {integrity: sha512-Xcz9l0z7y9yQ9rdDaxlmaI4uJHf/T8g9hOEzJcsEqX2SjCj4J20uK7+ldkDHMbpJDK76wF7xEIgxc/vSlsfw5w==}
+    engines: {node: '>=10.12.0'}
+    dev: false
 
   /auto-bind/4.0.0:
     resolution: {integrity: sha512-Hdw8qdNiqdJ8LqT0iK0sVzkFbzg6fhnQqqfWhBDxcHZvU75+B+ayzTy8x+k5Ix0Y92XOhOUlx74ps+bA6BeYMQ==}
@@ -11807,10 +11812,10 @@ packages:
   /node-int64/0.4.0:
     resolution: {integrity: sha512-O5lz91xSOeoXP6DulyHfllpq+Eg00MWitZIbtPfoSEvqIHdl5gfcY6hYzDWnj0qD5tz52PI08u9qUvSVeUBeHw==}
 
-  /node-json-db/1.6.0:
-    resolution: {integrity: sha512-Cpvuqejlx354aH5d1uqK9KB0/LOKslnexqgOrhgCqcvvzJ0I2hrAEA7eIct6hRqS9gxnuge+eXqd++za87tchA==}
+  /node-json-db/2.0.0:
+    resolution: {integrity: sha512-CGIz93XR1PGr06lHMhe6O8N7wqbEX93TtklPjK5x2DbLnydD6xZvux3nB8xgVmYEt1j/j0Os0l4+++DoLWXjmA==}
     dependencies:
-      mkdirp: 1.0.4
+      atomically: 1.7.0
     dev: false
 
   /node-releases/2.0.6:
