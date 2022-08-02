@@ -1,5 +1,11 @@
 # @gqty/subscriptions
 
+## 2.0.1
+
+### Patch Changes
+
+- f6277a4: Don't force unsubscribe in cleanup functions
+
 ## 2.0.0
 
 ### Patch Changes
