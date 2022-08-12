@@ -248,7 +248,7 @@ importers:
       '@chakra-ui/react': 1.8.8_md5suviohiaq54w63y7fac25e4
       '@emotion/react': 11.10.0_skqlhrap4das3cz5b6iqdn2lqi
       '@emotion/styled': 11.10.0_wiynxy2xmewqltyl3r22mlxgsm
-      '@faker-js/faker': 7.3.0
+      '@faker-js/faker': 7.4.0
       '@gqty/cli': link:../../packages/cli
       '@gqty/logger': link:../../packages/logger
       '@gqty/react': link:../../packages/react
@@ -2761,24 +2761,6 @@ packages:
       semver: 5.7.1
     dev: true
 
-  /@changesets/apply-release-plan/6.0.4:
-    resolution: {integrity: sha512-PutV/ymf8cZMqvaLe/Lh5cP3kBQ9FZl6oGQ3qRDxWD1ML+/uH3jrCE7S7Zw7IVSXkD0lnMD+1dAX7fsOJ6ZvgA==}
-    dependencies:
-      '@babel/runtime': 7.18.6
-      '@changesets/config': 2.1.1
-      '@changesets/get-version-range-type': 0.3.2
-      '@changesets/git': 1.4.1
-      '@changesets/types': 5.1.0
-      '@manypkg/get-packages': 1.1.3
-      detect-indent: 6.1.0
-      fs-extra: 7.0.1
-      lodash.startcase: 4.4.0
-      outdent: 0.5.0
-      prettier: 1.19.1
-      resolve-from: 5.0.0
-      semver: 5.7.1
-    dev: true
-
   /@changesets/assemble-release-plan/5.2.0:
     resolution: {integrity: sha512-ewY24PEbSec2eKX0+KM7eyENA2hUUp6s4LF9p/iBxTtc+TX2Xbx5rZnlLKZkc8tpuQ3PZbyjLFXWhd1PP6SjCg==}
     dependencies:
@@ -3165,8 +3147,8 @@ packages:
     requiresBuild: true
     optional: true
 
-  /@faker-js/faker/7.3.0:
-    resolution: {integrity: sha512-1W0PZezq2rxlAssoWemi9gFRD8IQxvf0FPL5Km3TOmGHFG7ib0TbFBJ0yC7D/1NsxunjNTK6WjUXV8ao/mKZ5w==}
+  /@faker-js/faker/7.4.0:
+    resolution: {integrity: sha512-xDd3Tvkt2jgkx1LkuwwxpNBy/Oe+LkZBTwkgEFTiWpVSZgQ5sc/LenbHKRHbFl0dq/KFeeq/szyyPtpJRKY0fg==}
     engines: {node: '>=14.0.0', npm: '>=6.0.0'}
     dev: false
 
@@ -3409,7 +3391,7 @@ packages:
       '@graphql-typed-document-node/core': 3.1.1_graphql@17.0.0-alpha.1
       '@types/node': 17.0.45
       graphql: 17.0.0-alpha.1
-      undici: 5.8.0
+      undici: 5.7.0
     dev: true
 
   /@graphql-ez/client/0.6.0_rpxxjygyrfbco5r6vrjsynu4qy:
@@ -3446,6 +3428,7 @@ packages:
     transitivePeerDependencies:
       - '@graphql-typed-document-node/core'
       - '@types/node'
+    dev: false
 
   /@graphql-ez/fastify-testing/0.3.0_t2655k2jkuea6pttzjckgfefue:
     resolution: {integrity: sha512-x+pChJRHEqoW6F+JdtvvQWLvYUeSkZLlzy7FvNEnP5CB4HqBXrx2Rxye8u6hnTbd2zu7O0a3mVU/R7wTySlmMA==}
@@ -3483,6 +3466,7 @@ packages:
     transitivePeerDependencies:
       - '@graphql-typed-document-node/core'
       - '@types/node'
+    dev: false
 
   /@graphql-ez/fastify/0.11.0_moqwig7n2ems3wudgdiabxlb64:
     resolution: {integrity: sha512-TcpJUI0iGiyGyNUydBGAFwtS04F6OdnHyPdwes6nqHG3/ZnMHfMNsF8Sa+r054VUpal1RkztfIHY/B+lAFew8Q==}
@@ -3504,6 +3488,7 @@ packages:
       fastify: 4.3.0
       graphql: 16.5.0
       graphql-ez: 0.15.1_exvfdlvhcng26fz4bmdxzrzhyu
+    dev: false
 
   /@graphql-ez/fastify/0.11.0_wsqjclij4dwzqifircpjwwwak4:
     resolution: {integrity: sha512-TcpJUI0iGiyGyNUydBGAFwtS04F6OdnHyPdwes6nqHG3/ZnMHfMNsF8Sa+r054VUpal1RkztfIHY/B+lAFew8Q==}
@@ -3869,6 +3854,7 @@ packages:
       graphql: '*'
     dependencies:
       graphql: 16.5.0
+    dev: false
 
   /@graphql-typed-document-node/core/3.1.1_graphql@17.0.0-alpha.1:
     resolution: {integrity: sha512-NQ17ii0rK1b34VZonlmT2QMJFI70m0TRwbknO/ihlbatXyaktDhN/98vBiUU6kNBPljqGqyIrl2T4nY2RpFANg==}
@@ -14609,12 +14595,6 @@ packages:
   /undici/5.7.0:
     resolution: {integrity: sha512-ORgxwDkiPS+gK2VxE7iyVeR7JliVn5DqhZ4LgQqYLBXsuK+lwOEmnJ66dhvlpLM0tC3fC7eYF1Bti2frbw2eAA==}
     engines: {node: '>=12.18'}
-    dev: false
-
-  /undici/5.8.0:
-    resolution: {integrity: sha512-1F7Vtcez5w/LwH2G2tGnFIihuWUlc58YidwLiCv+jR2Z50x0tNXpRRw7eOIJ+GvqCqIkg9SB7NWAJ/T9TLfv8Q==}
-    engines: {node: '>=12.18'}
-    dev: true
 
   /undici/5.8.1:
     resolution: {integrity: sha512-iDRmWX4Zar/4A/t+1LrKQRm102zw2l9Wgat3LtTlTn8ykvMZmAmpq9tjyHEigx18FsY7IfATvyN3xSw9BDz0eA==}
