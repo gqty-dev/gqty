@@ -524,11 +524,11 @@ importers:
       tmp-promise: ^3.0.3
       tslib: ^2.4.0
       typescript: ^4.7.4
-      undici: ^5.8.2
+      undici: 5.8.1
       wait-on: ^6.0.1
     dependencies:
       gqty: link:../gqty
-      undici: 5.8.2
+      undici: 5.8.1
     devDependencies:
       '@graphql-codegen/core': 2.6.2_graphql@16.5.0
       '@graphql-codegen/typescript': 2.7.3_graphql@16.5.0
@@ -3203,35 +3203,6 @@ packages:
       '@graphql-tools/utils': 8.10.0_graphql@16.5.0
       graphql: 16.5.0
       tslib: 2.4.0
-    dev: true
-
-  /@graphql-codegen/plugin-helpers/2.5.0_graphql@16.5.0:
-    resolution: {integrity: sha512-0jM5/14EdM4yow5v8OGOnUmRqfA1gaWkh+J5berqQUpcFYfSQXD6+Idnkiju/jjIypEN7UvbPkC7BgryWVxexA==}
-    peerDependencies:
-      graphql: '*'
-    dependencies:
-      '@graphql-tools/utils': 8.8.0_graphql@16.5.0
-      change-case-all: 1.0.14
-      common-tags: 1.8.2
-      graphql: 16.5.0
-      import-from: 4.0.0
-      lodash: 4.17.21
-      tslib: 2.4.0
-    dev: false
-
-  /@graphql-codegen/plugin-helpers/2.6.0_graphql@16.5.0:
-    resolution: {integrity: sha512-z8uw6GdUvtKyt5YSijtj1yRqI0A2lBWdGIgTjgXaAKqSC+InlVBy+89859LlKNMrO7somdt44cbMys8r4Hbqeg==}
-    peerDependencies:
-      graphql: '*'
-    dependencies:
-      '@graphql-tools/utils': 8.9.0_graphql@16.5.0
-      change-case-all: 1.0.14
-      common-tags: 1.8.2
-      graphql: 16.5.0
-      import-from: 4.0.0
-      lodash: 4.17.21
-      tslib: 2.4.0
-    dev: false
 
   /@graphql-codegen/plugin-helpers/2.6.2_graphql@16.5.0:
     resolution: {integrity: sha512-bt5PNix0MwzWP53UdaYm6URrVMWU8RlQhrTSLFjxQ8ShS5zoTlQtpZJGZc5ONqFgKa83qbUmzXUtP8oRVVn8zw==}
@@ -14676,6 +14647,11 @@ packages:
 
   /undici/5.0.0:
     resolution: {integrity: sha512-VhUpiZ3No1DOPPQVQnsDZyfcbTTcHdcgWej1PdFnSvOeJmOVDgiOHkunJmBLfmjt4CqgPQddPVjSWW0dsTs5Yg==}
+    engines: {node: '>=12.18'}
+    dev: false
+
+  /undici/5.8.1:
+    resolution: {integrity: sha512-iDRmWX4Zar/4A/t+1LrKQRm102zw2l9Wgat3LtTlTn8ykvMZmAmpq9tjyHEigx18FsY7IfATvyN3xSw9BDz0eA==}
     engines: {node: '>=12.18'}
     dev: false
 
