@@ -195,7 +195,7 @@ importers:
       '@emotion/react': ^11.10.0
       '@emotion/styled': ^11.10.0
       '@faker-js/faker': ^7.4.0
-      '@fastify/nextjs': ^8.0.2
+      '@fastify/nextjs': ^9.0.0
       '@gqty/cli': workspace:^3.3.0
       '@gqty/logger': workspace:^2.0.2
       '@gqty/react': workspace:^2.1.0
@@ -285,7 +285,7 @@ importers:
       serialize-error: 11.0.0
       use-error-boundary: 2.0.6_sfoxds7t5ydpegc3knd667wn6m
     devDependencies:
-      '@fastify/nextjs': 8.0.2_next@12.2.4
+      '@fastify/nextjs': 9.0.0_next@12.2.4
       '@types/graphql-upload': 8.0.11
       '@types/lodash': 4.14.182
       '@types/node': 17.0.45
@@ -3177,15 +3177,21 @@ packages:
     dependencies:
       fast-json-stringify: 5.1.0
 
-  /@fastify/nextjs/8.0.2_next@12.2.4:
-    resolution: {integrity: sha512-1BtaonQMoS4pmLCtSYEBy4miHtBMykSGamTO254+cUasGh+E6eSP3CX/iwo5jwPaqNov9UnUL3CDQsvioe0QKA==}
-    engines: {node: '>=10'}
+  /@fastify/nextjs/9.0.0_next@12.2.4:
+    resolution: {integrity: sha512-mBkolQza2+qbDPsWA84PPcawV2kbQsBEiB1BkWe0BHmKMLRmHrxgc+P7cCb/1xqHp4vWGU2+gwQIL46gOj6krg==}
     peerDependencies:
       next: 9.x.x || 10.x.x || 11.x.x || 12.x.x
     dependencies:
-      fastify-plugin: 3.0.1
+      '@fastify/under-pressure': 7.0.0
+      fastify-plugin: 4.2.0
       next: 12.2.4_sfoxds7t5ydpegc3knd667wn6m
-      under-pressure: 5.8.1
+    dev: true
+
+  /@fastify/under-pressure/7.0.0:
+    resolution: {integrity: sha512-UhdC9+wEJRmLnbSYyINOcykiJDgPwflSxGz5Vw91192D25MmddbwM4+nCnG9JX2ZzMDJ57b0aQjYJj+asfqYMg==}
+    dependencies:
+      '@fastify/error': 2.0.0
+      fastify-plugin: 3.0.1
     dev: true
 
   /@graphql-codegen/core/2.6.0_graphql@16.5.0:
@@ -8701,6 +8707,10 @@ packages:
 
   /fastify-plugin/3.0.1:
     resolution: {integrity: sha512-qKcDXmuZadJqdTm6vlCqioEbyewF60b/0LOFCcYN1B6BIZGlYJumWWOYs70SFYLDAH4YqdE1cxH/RKMG7rFxgA==}
+
+  /fastify-plugin/4.2.0:
+    resolution: {integrity: sha512-hovKzEXZc2YgeuXn41/2EA/IaIOdRu1pB9WKgnzDBj3lhKSdDCEsckHa7I6LiT/LhflvAQX7ZY8IQ6eBX0htTg==}
+    dev: true
 
   /fastify/4.4.0:
     resolution: {integrity: sha512-ePI4g9vPJXIBF4YlVcDSLxjvtdTrlM8QzdgYAPFGdCH+rot+4MXoFFAUb10fGrIcRRjaq6CvcbIzxiWQzMMHkw==}
@@ -14858,14 +14868,6 @@ packages:
   /unc-path-regex/0.1.2:
     resolution: {integrity: sha512-eXL4nmJT7oCpkZsHZUOJo8hcX3GbsiDOa0Qu9F646fi8dT3XuSVopVqAcEiVzSKKH7UoDti23wNX3qGFxcW5Qg==}
     engines: {node: '>=0.10.0'}
-
-  /under-pressure/5.8.1:
-    resolution: {integrity: sha512-5c1e0HoNmF2J3NQS4j7j5M5cu5GLR21FqvmOI/V6R+rhwS+HH0ocEFwCYC0CeKbLL/b1NyvMCQzlx15O9CoaEQ==}
-    engines: {node: '>=10'}
-    dependencies:
-      '@fastify/error': 2.0.0
-      fastify-plugin: 3.0.1
-    dev: true
 
   /undici/5.0.0:
     resolution: {integrity: sha512-VhUpiZ3No1DOPPQVQnsDZyfcbTTcHdcgWej1PdFnSvOeJmOVDgiOHkunJmBLfmjt4CqgPQddPVjSWW0dsTs5Yg==}
