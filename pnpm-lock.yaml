@@ -10,7 +10,7 @@ importers:
     specifiers:
       '@changesets/apply-release-plan': ^6.0.4
       '@changesets/assemble-release-plan': ^5.2.0
-      '@changesets/cli': ^2.24.2
+      '@changesets/cli': ^2.24.3
       '@changesets/config': ^2.1.1
       '@changesets/read': ^0.5.7
       '@manypkg/get-packages': ^1.1.3
@@ -42,7 +42,7 @@ importers:
     devDependencies:
       '@changesets/apply-release-plan': 6.0.4
       '@changesets/assemble-release-plan': 5.2.0
-      '@changesets/cli': 2.24.2
+      '@changesets/cli': 2.24.3
       '@changesets/config': 2.1.1
       '@changesets/read': 0.5.7
       '@manypkg/get-packages': 1.1.3
@@ -2772,24 +2772,35 @@ packages:
       semver: 5.7.1
     dev: true
 
+  /@changesets/assemble-release-plan/5.2.1:
+    resolution: {integrity: sha512-d6ckasOWlKF9Mzs82jhl6TKSCgVvfLoUK1ERySrTg2TQJdrVUteZue6uEIYUTA7SgMu67UOSwol6R9yj1nTdjw==}
+    dependencies:
+      '@babel/runtime': 7.18.6
+      '@changesets/errors': 0.1.4
+      '@changesets/get-dependents-graph': 1.3.3
+      '@changesets/types': 5.1.0
+      '@manypkg/get-packages': 1.1.3
+      semver: 5.7.1
+    dev: true
+
   /@changesets/changelog-git/0.1.12:
     resolution: {integrity: sha512-Xv2CPjTBmwjl8l4ZyQ3xrsXZMq8WafPUpEonDpTmcb24XY8keVzt7ZSCJuDz035EiqrjmDKDhODoQ6XiHudlig==}
     dependencies:
       '@changesets/types': 5.1.0
     dev: true
 
-  /@changesets/cli/2.24.2:
-    resolution: {integrity: sha512-Bya7bnxF8Sz+O25M6kseAludVsCy5nXSW9u2Lbje/XbJTyU5q/xwIiXF9aTUzVi/4jyKoKoOasx7B1/z+NJLzg==}
+  /@changesets/cli/2.24.3:
+    resolution: {integrity: sha512-okhRV+0WCQJa2Kmil/WvN5TK1o3+1JYSjrsGHqhjv+PYcDgDDgQ6I9J9OMBO9lfmNIpN7xSO80/BzxgvReO4Wg==}
     hasBin: true
     dependencies:
       '@babel/runtime': 7.18.6
       '@changesets/apply-release-plan': 6.0.4
-      '@changesets/assemble-release-plan': 5.2.0
+      '@changesets/assemble-release-plan': 5.2.1
       '@changesets/changelog-git': 0.1.12
       '@changesets/config': 2.1.1
       '@changesets/errors': 0.1.4
       '@changesets/get-dependents-graph': 1.3.3
-      '@changesets/get-release-plan': 3.0.13
+      '@changesets/get-release-plan': 3.0.14
       '@changesets/git': 1.4.1
       '@changesets/logger': 0.0.5
       '@changesets/pre': 1.0.12
@@ -2845,11 +2856,11 @@ packages:
       semver: 5.7.1
     dev: true
 
-  /@changesets/get-release-plan/3.0.13:
-    resolution: {integrity: sha512-Zl/UN4FUzb5LwmzhO2STRijJT5nQCN4syPEs0p1HSIR+O2iVOzes+2yTLF2zGiOx8qPOsFx/GRSAvuhSzm+9ig==}
+  /@changesets/get-release-plan/3.0.14:
+    resolution: {integrity: sha512-xzSfeyIOvUnbqMuQXVKTYUizreWQfICwoQpvEHoePVbERLocc1tPo5lzR7dmVCFcaA/DcnbP6mxyioeq+JuzSg==}
     dependencies:
       '@babel/runtime': 7.18.6
-      '@changesets/assemble-release-plan': 5.2.0
+      '@changesets/assemble-release-plan': 5.2.1
       '@changesets/config': 2.1.1
       '@changesets/pre': 1.0.12
       '@changesets/read': 0.5.7
