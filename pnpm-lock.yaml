@@ -219,7 +219,7 @@ importers:
       cross-env: ^7.0.3
       date-fns: ^2.29.2
       esbuild: ^0.15.6
-      extract-files: 11.0.0
+      extract-files: 13.0.0
       fastify: ^4.5.3
       framer-motion: ^6.5.1
       gqty: workspace:^2.3.0
@@ -263,7 +263,7 @@ importers:
       '@react-native-async-storage/async-storage': 1.17.10
       '@types/extract-files': 8.1.1
       date-fns: 2.29.2
-      extract-files: 11.0.0
+      extract-files: 13.0.0
       fastify: 4.5.3
       framer-motion: 6.5.1_sfoxds7t5ydpegc3knd667wn6m
       gqty: link:../../packages/gqty
@@ -8686,9 +8686,11 @@ packages:
       - supports-color
     dev: false
 
-  /extract-files/11.0.0:
-    resolution: {integrity: sha512-FuoE1qtbJ4bBVvv94CC7s0oTnKUGvQs+Rjf1L2SJFfS+HTVVjhPFtehPdQ0JiGPqVNfSSZvL5yzHHQq2Z4WNhQ==}
-    engines: {node: ^12.20 || >= 14.13}
+  /extract-files/13.0.0:
+    resolution: {integrity: sha512-FXD+2Tsr8Iqtm3QZy1Zmwscca7Jx3mMC5Crr+sEP1I303Jy1CYMuYCm7hRTplFNg3XdUavErkxnTzpaqdSoi6g==}
+    engines: {node: ^14.17.0 || ^16.0.0 || >= 18.0.0}
+    dependencies:
+      is-plain-obj: 4.1.0
     dev: false
 
   /fast-deep-equal/3.1.3:
