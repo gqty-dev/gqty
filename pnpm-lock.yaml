@@ -313,7 +313,7 @@ importers:
       react: ^17.0.2
       react-dom: ^17.0.2
       typescript: ^4.7.4
-      vite: ^3.0.9
+      vite: ^3.1.0
     dependencies:
       '@gqty/cli': link:../../packages/cli
       '@gqty/react': link:../../packages/react
@@ -327,7 +327,7 @@ importers:
       '@vitejs/plugin-react-refresh': 1.3.6
       esbuild: 0.15.7
       typescript: 4.7.4
-      vite: 3.0.9
+      vite: 3.1.0
 
   integration/graphql-17:
     specifiers:
@@ -6112,7 +6112,7 @@ packages:
     resolution: {integrity: sha512-Hdw8qdNiqdJ8LqT0iK0sVzkFbzg6fhnQqqfWhBDxcHZvU75+B+ayzTy8x+k5Ix0Y92XOhOUlx74ps+bA6BeYMQ==}
     engines: {node: '>=8'}
 
-  /autoprefixer/10.4.7_postcss@8.4.14:
+  /autoprefixer/10.4.7_postcss@8.4.16:
     resolution: {integrity: sha512-ypHju4Y2Oav95SipEcCcI5J7CGPuvz8oat7sUtYj3ClK44bldfvtvcxK6IEK++7rqB7YchDGzweZIBG+SD0ZAA==}
     engines: {node: ^10 || ^12 || >=14}
     hasBin: true
@@ -6124,7 +6124,7 @@ packages:
       fraction.js: 4.2.0
       normalize-range: 0.1.2
       picocolors: 1.0.0
-      postcss: 8.4.14
+      postcss: 8.4.16
       postcss-value-parser: 4.2.0
     dev: false
 
@@ -12671,10 +12671,10 @@ packages:
     engines: {node: '>=10.0'}
     dependencies:
       camelcase-css: 2.0.1
-      postcss: 8.4.14
+      postcss: 8.4.16
     dev: false
 
-  /postcss-load-config/3.1.4_postcss@8.4.14:
+  /postcss-load-config/3.1.4_postcss@8.4.16:
     resolution: {integrity: sha512-6DiM4E7v4coTE4uzA8U//WhtPwyhiim3eyjEMFCnUpzbrkK9wJHgKDT2mR+HbtSrd/NubVaYTOpSpjUl8NQeRg==}
     engines: {node: '>= 10'}
     peerDependencies:
@@ -12687,17 +12687,17 @@ packages:
         optional: true
     dependencies:
       lilconfig: 2.0.6
-      postcss: 8.4.14
+      postcss: 8.4.16
       yaml: 1.10.2
     dev: false
 
-  /postcss-nested/5.0.6_postcss@8.4.14:
+  /postcss-nested/5.0.6_postcss@8.4.16:
     resolution: {integrity: sha512-rKqm2Fk0KbA8Vt3AdGN0FB9OBOMDVajMG6ZCf/GoHgdxUJ4sBFp0A/uMIRm+MJUdo33YXEtjqIz8u7DAp8B7DA==}
     engines: {node: '>=12.0'}
     peerDependencies:
       postcss: ^8.2.14
     dependencies:
-      postcss: 8.4.14
+      postcss: 8.4.16
       postcss-selector-parser: 6.0.10
     dev: false
 
@@ -12732,7 +12732,6 @@ packages:
       nanoid: 3.3.4
       picocolors: 1.0.0
       source-map-js: 1.0.2
-    dev: true
 
   /preact/10.9.0:
     resolution: {integrity: sha512-jO6/OvCRL+OT8gst/+Q2ir7dMybZAX8ioP02Zmzh3BkQMHLyqZSujvxbUriXvHi8qmhcHKC2Gwbog6Kt+YTh+Q==}
@@ -12875,7 +12874,7 @@ packages:
     dependencies:
       commander: 8.3.0
       glob: 7.2.3
-      postcss: 8.4.14
+      postcss: 8.4.16
       postcss-selector-parser: 6.0.10
     dev: false
 
@@ -14402,7 +14401,7 @@ packages:
     resolution: {integrity: sha512-QD9qKY3StfbZqWOPLp0++pOrAVb/HbUi5xCc8cUo4XjP19808oaMiDzn0leBY5mCespIBM0CIZePzZjgzR83kA==}
     dev: false
 
-  /tailwindcss/2.2.19_ugi4xkrfysqkt4c4y6hkyfj344:
+  /tailwindcss/2.2.19_3vnygek3yzhyjlvmmgk3sqgzme:
     resolution: {integrity: sha512-6Ui7JSVtXadtTUo2NtkBBacobzWiQYVjYW0ZnKaP9S1ZCKQ0w7KVNz+YSDI/j7O7KCMHbOkz94ZMQhbT9pOqjw==}
     engines: {node: '>=12.13.0'}
     hasBin: true
@@ -14411,7 +14410,7 @@ packages:
       postcss: ^8.0.9
     dependencies:
       arg: 5.0.2
-      autoprefixer: 10.4.7_postcss@8.4.14
+      autoprefixer: 10.4.7_postcss@8.4.16
       bytes: 3.1.2
       chalk: 4.1.2
       chokidar: 3.5.3
@@ -14432,10 +14431,10 @@ packages:
       node-emoji: 1.11.0
       normalize-path: 3.0.0
       object-hash: 2.2.0
-      postcss: 8.4.14
+      postcss: 8.4.16
       postcss-js: 3.0.3
-      postcss-load-config: 3.1.4_postcss@8.4.14
-      postcss-nested: 5.0.6_postcss@8.4.14
+      postcss-load-config: 3.1.4_postcss@8.4.16
+      postcss-nested: 5.0.6_postcss@8.4.16
       postcss-selector-parser: 6.0.10
       postcss-value-parser: 4.2.0
       pretty-hrtime: 1.0.3
@@ -14795,7 +14794,7 @@ packages:
     dependencies:
       '@babel/parser': 7.18.8
       '@babel/template': 7.18.6
-      autoprefixer: 10.4.7_postcss@8.4.14
+      autoprefixer: 10.4.7_postcss@8.4.16
       babel-plugin-macros: 2.8.0
       chalk: 4.1.2
       clean-set: 1.1.2
@@ -14804,9 +14803,9 @@ packages:
       lodash.flatmap: 4.5.0
       lodash.get: 4.4.2
       lodash.merge: 4.6.2
-      postcss: 8.4.14
+      postcss: 8.4.16
       string-similarity: 4.0.4
-      tailwindcss: 2.2.19_ugi4xkrfysqkt4c4y6hkyfj344
+      tailwindcss: 2.2.19_3vnygek3yzhyjlvmmgk3sqgzme
       timsort: 0.3.0
     transitivePeerDependencies:
       - ts-node
@@ -15227,8 +15226,8 @@ packages:
       vfile-message: 3.1.2
     dev: false
 
-  /vite/3.0.9:
-    resolution: {integrity: sha512-waYABTM+G6DBTCpYAxvevpG50UOlZuynR0ckTK5PawNVt7ebX6X7wNXHaGIO6wYYFXSM7/WcuFuO2QzhBB6aMw==}
+  /vite/3.1.0:
+    resolution: {integrity: sha512-YBg3dUicDpDWFCGttmvMbVyS9ydjntwEjwXRj2KBFwSB8SxmGcudo1yb8FW5+M/G86aS8x828ujnzUVdsLjs9g==}
     engines: {node: ^14.18.0 || >=16.0.0}
     hasBin: true
     peerDependencies:
@@ -15246,10 +15245,10 @@ packages:
       terser:
         optional: true
     dependencies:
-      esbuild: 0.14.53
+      esbuild: 0.15.7
       postcss: 8.4.16
       resolve: 1.22.1
-      rollup: 2.76.0
+      rollup: 2.78.1
     optionalDependencies:
       fsevents: 2.3.2
     dev: true
