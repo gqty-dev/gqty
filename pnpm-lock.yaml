@@ -446,7 +446,7 @@ importers:
       esbuild: ^0.15.7
       framer-motion: ^6.5.1
       next: ^12.2.5
-      next-i18next: ^12.0.0
+      next-i18next: ^12.0.1
       next-remote-watch: ^1.0.0
       next-seo: ^5.5.0
       open-cli: ^7.0.1
@@ -464,14 +464,14 @@ importers:
       '@chakra-ui/utils': 1.10.4
       '@emotion/react': 11.10.4_t4v2ig6j532zggk4vxuuplsqcq
       '@emotion/styled': 11.10.4_35dtyzacsenk6ahz35hir52gj4
-      '@guild-docs/client': 2.1.1_e4vmkfjsct3kibxozrczzxefsa
-      '@guild-docs/server': 4.0.0_rvdjqpxm4fshk7ofevv4pigq5m
+      '@guild-docs/client': 2.1.1_5rn4msassvg6wzkqqpefdftrvu
+      '@guild-docs/server': 4.0.0_64jns3nll6isvsc7ombfnumqki
       '@mdx-js/react': 2.1.3_react@17.0.2
       '@theguild/components': 1.12.0_j6sw2p2tdbh6crpcmkxtmmhma4
       csstype: 3.1.0
       framer-motion: 6.5.1_sfoxds7t5ydpegc3knd667wn6m
       next: 12.2.5_sfoxds7t5ydpegc3knd667wn6m
-      next-i18next: 12.0.0_pzmtmsmkyiq4foirxc7gldcjme
+      next-i18next: 12.0.1_pzmtmsmkyiq4foirxc7gldcjme
       next-seo: 5.5.0_pzmtmsmkyiq4foirxc7gldcjme
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
@@ -940,7 +940,7 @@ packages:
       '@babel/core': 7.18.6
       '@babel/generator': 7.18.7
       '@babel/parser': 7.18.8
-      '@babel/runtime': 7.18.6
+      '@babel/runtime': 7.18.9
       '@babel/traverse': 7.18.8
       '@babel/types': 7.18.8
       babel-preset-fbjs: 3.4.0_@babel+core@7.18.6
@@ -3963,7 +3963,7 @@ packages:
       graphql: 17.0.0-alpha.1
     dev: true
 
-  /@guild-docs/client/2.1.1_e4vmkfjsct3kibxozrczzxefsa:
+  /@guild-docs/client/2.1.1_5rn4msassvg6wzkqqpefdftrvu:
     resolution: {integrity: sha512-ikdcOnjeLvwih+V+WvDCKwP6u8752mVtzK1zjm01H7O+EosmiHHgilHPER7lvvwf7DJ/tBjZJJfqTtvSSrw1zQ==}
     peerDependencies:
       '@chakra-ui/icons': '*'
@@ -3990,8 +3990,8 @@ packages:
       '@chakra-ui/react': 1.8.8_f23omk2cg6airnxgeyakfnpldm
       '@chakra-ui/utils': 1.10.4
       '@emotion/react': 11.10.4_t4v2ig6j532zggk4vxuuplsqcq
-      '@guild-docs/mdx-remote': 2.0.2_o32njdfrgu52aph2oig56dm3tm
-      '@guild-docs/types': 2.0.0_qxiiwmcrpmdooirq2cza3fb3rq
+      '@guild-docs/mdx-remote': 2.0.2_a7xcdu4jqzu54362n26znle3py
+      '@guild-docs/types': 2.0.0_3i4otk6z4riikhi6hlsamu5534
       '@mdx-js/react': 2.1.3_react@17.0.2
       '@theguild/components': 1.12.0_j6sw2p2tdbh6crpcmkxtmmhma4
       framer-motion: 6.5.1_sfoxds7t5ydpegc3knd667wn6m
@@ -3999,7 +3999,7 @@ packages:
       mdx-mermaid: 1.2.2_kiidlhfndo6uojt2z2sy3fi7nm
       mermaid: 8.11.5
       next: 12.2.5_sfoxds7t5ydpegc3knd667wn6m
-      next-i18next: 12.0.0_pzmtmsmkyiq4foirxc7gldcjme
+      next-i18next: 12.0.1_pzmtmsmkyiq4foirxc7gldcjme
       next-seo: 5.5.0_pzmtmsmkyiq4foirxc7gldcjme
       nprogress: 0.2.0
       react: 17.0.2
@@ -4020,14 +4020,14 @@ packages:
       - unist-util-visit
     dev: false
 
-  /@guild-docs/mdx-remote/2.0.2_o32njdfrgu52aph2oig56dm3tm:
+  /@guild-docs/mdx-remote/2.0.2_a7xcdu4jqzu54362n26znle3py:
     resolution: {integrity: sha512-g35B/Lo7s4l3HLcB9Z7jvTYrhMjCLMbfeS4i3rEhzhP54S0lvQ6gFTbVY25nDGZjZGMgMpkykY4Rk/p73UF2qQ==}
     peerDependencies:
       '@mdx-js/react': ^2.1.1
       react: '*'
     dependencies:
       '@babel/code-frame': 7.16.7
-      '@guild-docs/types': 3.0.0_qxiiwmcrpmdooirq2cza3fb3rq
+      '@guild-docs/types': 3.0.0_3i4otk6z4riikhi6hlsamu5534
       '@mdx-js/mdx': 2.1.1
       '@mdx-js/react': 2.1.3_react@17.0.2
       '@stefanprobst/rehype-shiki': 2.2.0_shiki@0.10.1
@@ -4045,7 +4045,7 @@ packages:
       - supports-color
     dev: false
 
-  /@guild-docs/server/4.0.0_rvdjqpxm4fshk7ofevv4pigq5m:
+  /@guild-docs/server/4.0.0_64jns3nll6isvsc7ombfnumqki:
     resolution: {integrity: sha512-LlDr4U8LMwoE3LEmbMgUXlmFBUdHVKzGIOofKG1SR6VNwZEQ8/qAR5eEIdl3xA5VyOCs4PJ0lDJg5pzoECxq8w==}
     peerDependencies:
       next: '>=12.1.5'
@@ -4054,14 +4054,14 @@ packages:
       react-dom: '*'
       shiki: '*'
     dependencies:
-      '@guild-docs/mdx-remote': 2.0.2_o32njdfrgu52aph2oig56dm3tm
-      '@guild-docs/types': 3.0.0_qxiiwmcrpmdooirq2cza3fb3rq
+      '@guild-docs/mdx-remote': 2.0.2_a7xcdu4jqzu54362n26znle3py
+      '@guild-docs/types': 3.0.0_3i4otk6z4riikhi6hlsamu5534
       '@stefanprobst/remark-shiki': 2.1.0_shiki@0.10.1
       github-slugger: 1.4.0
       globby: 13.1.1
       gray-matter: 4.0.3
       next: 12.2.5_sfoxds7t5ydpegc3knd667wn6m
-      next-i18next: 12.0.0_pzmtmsmkyiq4foirxc7gldcjme
+      next-i18next: 12.0.1_pzmtmsmkyiq4foirxc7gldcjme
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
       rehype-slug: 5.0.1
@@ -4076,7 +4076,7 @@ packages:
       - supports-color
     dev: false
 
-  /@guild-docs/types/2.0.0_qxiiwmcrpmdooirq2cza3fb3rq:
+  /@guild-docs/types/2.0.0_3i4otk6z4riikhi6hlsamu5534:
     resolution: {integrity: sha512-BeObMB7WokzcFO5quSWOOouJL96zneEzE0VS6rkZmg/bG/ukX0S6ODy4/UhxsWphxPYqQ68VAdM57WqTkdlamg==}
     peerDependencies:
       '@chakra-ui/react': '*'
@@ -4086,13 +4086,13 @@ packages:
       '@chakra-ui/react': 1.8.8_f23omk2cg6airnxgeyakfnpldm
       '@mdx-js/mdx': 2.1.2
       '@types/react': 17.0.49
-      next-i18next: 12.0.0_pzmtmsmkyiq4foirxc7gldcjme
+      next-i18next: 12.0.1_pzmtmsmkyiq4foirxc7gldcjme
       unified: 10.1.2
     transitivePeerDependencies:
       - supports-color
     dev: false
 
-  /@guild-docs/types/3.0.0_qxiiwmcrpmdooirq2cza3fb3rq:
+  /@guild-docs/types/3.0.0_3i4otk6z4riikhi6hlsamu5534:
     resolution: {integrity: sha512-Vd8lgw+p7boag31I2hqpiCgp3aKsLgPNs2WNWx3MZA2bWJ7+qKKDvPP3KiioMGK5nadEq9SsCbG72ogBZbwpag==}
     peerDependencies:
       '@chakra-ui/react': '*'
@@ -4102,7 +4102,7 @@ packages:
       '@chakra-ui/react': 1.8.8_f23omk2cg6airnxgeyakfnpldm
       '@mdx-js/mdx': 2.1.2
       '@types/react': 17.0.49
-      next-i18next: 12.0.0_pzmtmsmkyiq4foirxc7gldcjme
+      next-i18next: 12.0.1_pzmtmsmkyiq4foirxc7gldcjme
       unified: 10.1.2
     transitivePeerDependencies:
       - supports-color
@@ -12000,8 +12000,8 @@ packages:
     resolution: {integrity: sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==}
     dev: false
 
-  /next-i18next/12.0.0_pzmtmsmkyiq4foirxc7gldcjme:
-    resolution: {integrity: sha512-8tDySpERz+x3GNxJQUxJfR01GO77tH4wdjrZrRWXywsQCeY+660tLTomITqRocqBm2j7FY6YUI9IUFCeeNg8wA==}
+  /next-i18next/12.0.1_pzmtmsmkyiq4foirxc7gldcjme:
+    resolution: {integrity: sha512-i1yLpOvokldjqnnkP4KfZtnbp2+DILlUvavzJ9rvCSu1Yk5w45IRAYrJfu20/0WDeWxea/ktYDmXw+z/2roo3g==}
     engines: {node: '>=12'}
     peerDependencies:
       next: '>= 10.0.0'
@@ -13405,7 +13405,7 @@ packages:
   /relay-runtime/12.0.0:
     resolution: {integrity: sha512-QU6JKr1tMsry22DXNy9Whsq5rmvwr3LSZiiWV/9+DFpuTWvp+WFhobWMc8TC4OjKFfNhEZy7mOiqUAn5atQtug==}
     dependencies:
-      '@babel/runtime': 7.18.6
+      '@babel/runtime': 7.18.9
       fbjs: 3.0.4
       invariant: 2.2.4
     transitivePeerDependencies:
