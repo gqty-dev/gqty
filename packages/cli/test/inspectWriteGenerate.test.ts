@@ -1514,7 +1514,7 @@ describe('inspect headers', () => {
           destination: tempDir.clientPath,
         })
       ).rejects.toThrowErrorMatchingInlineSnapshot(
-        `"Could not obtain introspection result, received: {\\"statusCode\\":500,\\"error\\":\\"Internal Server Error\\",\\"message\\":\\"Unauthorized!\\"}"`
+        `\n"Could not obtain introspection result, received the following as response; \n { statusCode: 500, error: \\"Internal Server Error\\", message: \\"Unauthorized!\\" }"\n`
       );
 
       const generatedFileContent = await readFile(tempDir.clientPath, {
