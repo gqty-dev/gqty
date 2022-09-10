@@ -144,7 +144,7 @@ export function createUseMutation<
     opts: UseMutationOptions<TData> = {}
   ): readonly [
     ({
-      fn: fnArg,
+      fn,
       args,
     }?: {
       fn?: (mutation: GeneratedSchema['mutation'], args: TArgs) => TData;
