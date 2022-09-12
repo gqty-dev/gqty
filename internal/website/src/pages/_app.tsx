@@ -265,10 +265,6 @@ function AppContent(appProps: AppProps) {
   );
 }
 
-const AppContentWrapper = appWithTranslation(function TranslatedApp(appProps) {
-  return <AppContent {...appProps} />;
-});
-
 const defaultSeo: AppSeoProps = {
   title: 'GQty',
   description: 'a GraphQL client built for rapid iteration.',
@@ -279,14 +275,14 @@ const defaultSeo: AppSeoProps = {
   },
 };
 
-export default function App(appProps: AppProps) {
+export default appWithTranslation(function App(appProps) {
   return (
     <CombinedThemeProvider
       theme={theme}
       accentColor={accentColor}
       defaultSeo={defaultSeo}
     >
-      <AppContentWrapper {...appProps} />
+      <AppContent {...appProps} />
     </CombinedThemeProvider>
   );
-}
+});
