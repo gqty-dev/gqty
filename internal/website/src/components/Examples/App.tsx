@@ -61,7 +61,7 @@ const Topbar = () => {
 
 let globalIsClientSide = false;
 
-export function WithExamplePage<T>(Cmp: FC<T>) {
+export function WithExamplePage<T extends JSX.IntrinsicAttributes>(Cmp: FC<T>) {
   return function WithExamplePage(props: T) {
     const [isClientSide, setIsClientSide] = useState(globalIsClientSide);
 
