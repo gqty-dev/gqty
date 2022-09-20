@@ -447,7 +447,7 @@ importers:
       framer-motion: ^6.5.1
       next: ^12.3.1
       next-i18next: ^12.0.1
-      next-remote-watch: ^1.0.0
+      next-remote-watch: ^2.0.0
       next-seo: ^5.5.0
       open-cli: ^7.0.1
       react: ^17.0.2
@@ -487,7 +487,7 @@ importers:
       concurrently: 7.4.0
       cross-env: 7.0.3
       esbuild: 0.15.8
-      next-remote-watch: 1.0.0
+      next-remote-watch: 2.0.0_next@12.3.1
       open-cli: 7.0.1
       typescript: 4.8.3
       wait-on: 6.0.1
@@ -11904,15 +11904,18 @@ packages:
       - react-native
     dev: false
 
-  /next-remote-watch/1.0.0:
-    resolution: {integrity: sha512-kV+pglCwcnKyqJIXPHUUrnZr9d3rCqCIEQWBkFYC02GDXHyKVmcFytoY6q0+wMIQqh/izIAQL1x6OKXZhksjLA==}
+  /next-remote-watch/2.0.0_next@12.3.1:
+    resolution: {integrity: sha512-FyKDFMwbjKCPdu8ypZ8WTkDBzuxnH6rgfR89vgQwsND4ErrfXnDFZcZJAmSpwND6QA7G9f0DRzYMSdspY6t8Uw==}
+    engines: {node: '>= 10'}
     hasBin: true
+    peerDependencies:
+      next: '>=10'
     dependencies:
-      body-parser: 1.20.0
       chalk: 4.1.2
       chokidar: 3.5.3
       commander: 5.1.0
       express: 4.18.1
+      next: 12.3.1_sfoxds7t5ydpegc3knd667wn6m
     transitivePeerDependencies:
       - supports-color
     dev: true
