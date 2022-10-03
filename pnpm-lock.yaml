@@ -524,11 +524,11 @@ importers:
       tmp-promise: ^3.0.3
       tslib: ^2.4.0
       typescript: ^4.8.4
-      undici: ^5.10.0
+      undici: ^5.11.0
       wait-on: ^6.0.1
     dependencies:
       gqty: link:../gqty
-      undici: 5.10.0
+      undici: 5.11.0
     devDependencies:
       '@graphql-codegen/core': 2.6.2_graphql@16.6.0
       '@graphql-codegen/typescript': 2.7.3_graphql@16.6.0
@@ -3466,7 +3466,7 @@ packages:
       '@graphql-ez/utils': 0.1.4_onug3sa4ph53e46o3zvxbixsym
       '@types/node': 17.0.45
       graphql: 16.6.0
-      undici: 5.10.0
+      undici: 5.11.0
     dev: false
 
   /@graphql-ez/client/0.6.0_oukplfrmrlozavwcehdltlkkqu:
@@ -3483,7 +3483,7 @@ packages:
       '@graphql-typed-document-node/core': 3.1.1_graphql@17.0.0-alpha.2
       '@types/node': 17.0.45
       graphql: 17.0.0-alpha.2
-      undici: 5.10.0
+      undici: 5.11.0
     dev: true
 
   /@graphql-ez/client/0.6.0_yqcghhhok4qjbr6xodpnabk3ba:
@@ -3500,7 +3500,7 @@ packages:
       '@graphql-typed-document-node/core': 3.1.1_graphql@16.6.0
       '@types/node': 17.0.45
       graphql: 16.6.0
-      undici: 5.10.0
+      undici: 5.11.0
     dev: false
 
   /@graphql-ez/fastify-testing/0.3.0_4khfia7ca4z3aiuk6pks54c5ym:
@@ -6706,6 +6706,12 @@ packages:
     dependencies:
       dicer: 0.3.0
     dev: false
+
+  /busboy/1.6.0:
+    resolution: {integrity: sha512-8SFQbg/0hQ9xy3UNTB0YEnsNBbWfhf7RtnzpL7TkBiTBRfrQ9Fxcnz7VJsleJpyp6rVLvXiuORqjlHi5q+PYuA==}
+    engines: {node: '>=10.16.0'}
+    dependencies:
+      streamsearch: 1.1.0
 
   /bytes-iec/3.1.1:
     resolution: {integrity: sha512-fey6+4jDK7TFtFg/klGSvNKJctyU7n2aQdnM+CO0ruLPbqqMOM8Tio0Pc+deqUeVKX1tL5DQep1zQ7+37aTAsA==}
@@ -14096,6 +14102,10 @@ packages:
     engines: {node: '>=0.8.0'}
     dev: false
 
+  /streamsearch/1.1.0:
+    resolution: {integrity: sha512-Mcc5wHehp9aXz1ax6bZUyY5afg9u2rv5cqQI3mRrYkGC8rW2hM02jWuwjtL++LS5qinSyhj2QfLyNsuc+VsExg==}
+    engines: {node: '>=10.0.0'}
+
   /string-argv/0.1.2:
     resolution: {integrity: sha512-mBqPGEOMNJKXRo7z0keX0wlAhbBAjilUdPW13nN0PecVryZxdHIeM7TqbsSUA7VYuS00HGC6mojP7DlQzfa9ZA==}
     engines: {node: '>=0.6.19'}
@@ -14823,9 +14833,11 @@ packages:
     engines: {node: '>=12.18'}
     dev: false
 
-  /undici/5.10.0:
-    resolution: {integrity: sha512-c8HsD3IbwmjjbLvoZuRI26TZic+TSEe8FPMLLOkN1AfYRhdjnKBU6yL+IwcSCbdZiX4e5t0lfMDLDCqj4Sq70g==}
+  /undici/5.11.0:
+    resolution: {integrity: sha512-oWjWJHzFet0Ow4YZBkyiJwiK5vWqEYoH7BINzJAJOLedZ++JpAlCbUktW2GQ2DS2FpKmxD/JMtWUUWl1BtghGw==}
     engines: {node: '>=12.18'}
+    dependencies:
+      busboy: 1.6.0
 
   /unfetch/4.2.0:
     resolution: {integrity: sha512-F9p7yYCn6cIW9El1zi0HI6vqpeIvBsr3dSuRO6Xuppb1u5rXpCPmMvLSyECLhybr9isec8Ohl0hPekMVrEinDA==}
@@ -15583,7 +15595,7 @@ packages:
     dependencies:
       gqty: link:packages/gqty
       graphql: 17.0.0-alpha.2
-      undici: 5.10.0
+      undici: 5.11.0
     dev: true
 
   file:packages/gqty_graphql@17.0.0-alpha.2:
