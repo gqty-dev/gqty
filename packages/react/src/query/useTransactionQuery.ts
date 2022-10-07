@@ -42,7 +42,7 @@ function UseTransactionQueryReducer<TData>(
 ): UseTransactionQueryState<TData> {
   switch (action.type) {
     case 'loading': {
-      if (state.isLoading) return state;
+      if (state.isLoading) return { ...state };
       return {
         data: state.data,
         isLoading: true,
