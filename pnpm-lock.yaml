@@ -3,6 +3,7 @@ lockfileVersion: 5.4
 overrides:
   trim@<0.0.3: '>=0.0.3'
   glob-parent@<5.1.2: '>=5.1.2'
+  undici: 5.7.0
 
 importers:
 
@@ -524,11 +525,11 @@ importers:
       tmp-promise: ^3.0.3
       tslib: ^2.4.0
       typescript: ^4.8.4
-      undici: ^5.10.0
+      undici: 5.7.0
       wait-on: ^6.0.1
     dependencies:
       gqty: link:../gqty
-      undici: 5.11.0
+      undici: 5.7.0
     devDependencies:
       '@graphql-codegen/core': 2.6.2_graphql@16.6.0
       '@graphql-codegen/typescript': 2.7.4_graphql@16.6.0
@@ -3342,7 +3343,7 @@ packages:
       '@graphql-ez/utils': 0.1.4_onug3sa4ph53e46o3zvxbixsym
       '@types/node': 17.0.45
       graphql: 16.6.0
-      undici: 5.11.0
+      undici: 5.7.0
     dev: false
 
   /@graphql-ez/client/0.6.0_oukplfrmrlozavwcehdltlkkqu:
@@ -3359,7 +3360,7 @@ packages:
       '@graphql-typed-document-node/core': 3.1.1_graphql@17.0.0-alpha.2
       '@types/node': 17.0.45
       graphql: 17.0.0-alpha.2
-      undici: 5.11.0
+      undici: 5.7.0
     dev: true
 
   /@graphql-ez/client/0.6.0_yqcghhhok4qjbr6xodpnabk3ba:
@@ -3376,7 +3377,7 @@ packages:
       '@graphql-typed-document-node/core': 3.1.1_graphql@16.6.0
       '@types/node': 17.0.45
       graphql: 16.6.0
-      undici: 5.11.0
+      undici: 5.7.0
     dev: false
 
   /@graphql-ez/fastify-testing/0.3.0_7n4mae43v3uwy5g3fuzqdks5h4:
@@ -3938,7 +3939,7 @@ packages:
       remark-emoji: 3.0.2
       shiki: 0.10.1
       tiny-lru: 8.0.2
-      undici: 5.0.0
+      undici: 5.7.0
     transitivePeerDependencies:
       - '@chakra-ui/react'
       - '@mdx-js/react'
@@ -4967,13 +4968,8 @@ packages:
   /@reach/alert/0.13.2_sfoxds7t5ydpegc3knd667wn6m:
     resolution: {integrity: sha512-LDz83AXCrClyq/MWe+0vaZfHp1Ytqn+kgL5VxG7rirUvmluWaj/snxzfNPWn0Ma4K2YENmXXRC/iHt5X95SqIg==}
     peerDependencies:
-      react: '*'
+      react: ^16.8.0 || 17.x
       react-dom: ^16.8.0 || 17.x
-    peerDependenciesMeta:
-      react:
-        optional: true
-      react-dom:
-        optional: true
     dependencies:
       '@reach/utils': 0.13.2_sfoxds7t5ydpegc3knd667wn6m
       '@reach/visually-hidden': 0.13.2_sfoxds7t5ydpegc3knd667wn6m
@@ -6568,6 +6564,7 @@ packages:
     engines: {node: '>=10.16.0'}
     dependencies:
       streamsearch: 1.1.0
+    dev: false
 
   /bytes-iec/3.1.1:
     resolution: {integrity: sha512-fey6+4jDK7TFtFg/klGSvNKJctyU7n2aQdnM+CO0ruLPbqqMOM8Tio0Pc+deqUeVKX1tL5DQep1zQ7+37aTAsA==}
@@ -7261,7 +7258,7 @@ packages:
       form-data-encoder: 1.7.2
       formdata-node: 4.4.1
       node-fetch: 2.6.7
-      undici: 5.5.1
+      undici: 5.7.0
       web-streams-polyfill: 3.2.1
     transitivePeerDependencies:
       - encoding
@@ -13979,6 +13976,7 @@ packages:
   /streamsearch/1.1.0:
     resolution: {integrity: sha512-Mcc5wHehp9aXz1ax6bZUyY5afg9u2rv5cqQI3mRrYkGC8rW2hM02jWuwjtL++LS5qinSyhj2QfLyNsuc+VsExg==}
     engines: {node: '>=10.0.0'}
+    dev: false
 
   /string-argv/0.1.2:
     resolution: {integrity: sha512-mBqPGEOMNJKXRo7z0keX0wlAhbBAjilUdPW13nN0PecVryZxdHIeM7TqbsSUA7VYuS00HGC6mojP7DlQzfa9ZA==}
@@ -14698,21 +14696,9 @@ packages:
     resolution: {integrity: sha512-eXL4nmJT7oCpkZsHZUOJo8hcX3GbsiDOa0Qu9F646fi8dT3XuSVopVqAcEiVzSKKH7UoDti23wNX3qGFxcW5Qg==}
     engines: {node: '>=0.10.0'}
 
-  /undici/5.0.0:
-    resolution: {integrity: sha512-VhUpiZ3No1DOPPQVQnsDZyfcbTTcHdcgWej1PdFnSvOeJmOVDgiOHkunJmBLfmjt4CqgPQddPVjSWW0dsTs5Yg==}
+  /undici/5.7.0:
+    resolution: {integrity: sha512-ORgxwDkiPS+gK2VxE7iyVeR7JliVn5DqhZ4LgQqYLBXsuK+lwOEmnJ66dhvlpLM0tC3fC7eYF1Bti2frbw2eAA==}
     engines: {node: '>=12.18'}
-    dev: false
-
-  /undici/5.11.0:
-    resolution: {integrity: sha512-oWjWJHzFet0Ow4YZBkyiJwiK5vWqEYoH7BINzJAJOLedZ++JpAlCbUktW2GQ2DS2FpKmxD/JMtWUUWl1BtghGw==}
-    engines: {node: '>=12.18'}
-    dependencies:
-      busboy: 1.6.0
-
-  /undici/5.5.1:
-    resolution: {integrity: sha512-MEvryPLf18HvlCbLSzCW0U00IMftKGI5udnjrQbC5D4P0Hodwffhv+iGfWuJwg16Y/TK11ZFK8i+BPVW2z/eAw==}
-    engines: {node: '>=12.18'}
-    dev: false
 
   /unfetch/4.2.0:
     resolution: {integrity: sha512-F9p7yYCn6cIW9El1zi0HI6vqpeIvBsr3dSuRO6Xuppb1u5rXpCPmMvLSyECLhybr9isec8Ohl0hPekMVrEinDA==}
@@ -15480,7 +15466,7 @@ packages:
     dependencies:
       gqty: link:packages/gqty
       graphql: 17.0.0-alpha.2
-      undici: 5.11.0
+      undici: 5.7.0
     dev: true
 
   file:packages/gqty_graphql@17.0.0-alpha.2:
