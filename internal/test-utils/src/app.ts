@@ -14,6 +14,10 @@ inspect.defaultOptions.depth = null;
 
 typeof afterAll !== 'undefined' && afterAll(() => void GlobalTeardown());
 
+const codegenPromises: Promise<void>[] = [];
+
+typeof afterAll !== 'undefined' && afterAll(() => Promise.all(codegenPromises));
+
 interface PubSubCtx {
   pubsub: InMemoryPubSub;
 }
@@ -61,6 +65,8 @@ export async function createTestApp(
   if (codegenPath) {
     const codegenDone = createDeferredPromise();
     codegenDonePromise = codegenDone.promise;
+
+    codegenPromises.push(codegenDonePromise);
 
     ezPlugins.push(
       ezCodegen({
