@@ -10,6 +10,11 @@
     {
       "matchPackagePrefixes": ["@types/", "@graphql-ez/"],
       "automerge": true
+    },
+    {
+      "matchUpdateTypes": ["minor", "patch"],
+      "matchCurrentVersion": "!/^0/",
+      "automerge": true
     }
   ],
   "ignoreDeps": ["pnpm"]
