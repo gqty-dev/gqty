@@ -278,7 +278,7 @@ test('creates dir, generates code and writes new file', async () => {
         variables,
         fetchOptions
       ) {
-        // Modify \\"/api/graphql\\" if needed
+        // Modify "/api/graphql" if needed
         const response = await fetch('/api/graphql', {
           method: 'POST',
           headers: {
@@ -326,7 +326,7 @@ test('creates dir, generates code and writes new file', async () => {
         prepareQuery,
       } = createReactClient<GeneratedSchema>(client, {
         defaults: {
-          // Set this flag as \\"true\\" if your usage involves React Suspense
+          // Set this flag as "true" if your usage involves React Suspense
           // Keep in mind that you can overwrite it in a per-hook basis
           suspense: false,
 
