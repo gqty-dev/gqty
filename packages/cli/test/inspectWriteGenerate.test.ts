@@ -74,7 +74,7 @@ test('basic inspectWriteGenerate functionality', async () => {
         variables,
         fetchOptions
       ) {
-        // Modify \\"/api/graphql\\" if needed
+        // Modify "/api/graphql" if needed
         const response = await fetch('/api/graphql', {
           method: 'POST',
           headers: {
@@ -122,7 +122,7 @@ test('basic inspectWriteGenerate functionality', async () => {
         prepareQuery,
       } = createReactClient<GeneratedSchema>(client, {
         defaults: {
-          // Set this flag as \\"true\\" if your usage involves React Suspense
+          // Set this flag as "true" if your usage involves React Suspense
           // Keep in mind that you can overwrite it in a per-hook basis
           suspense: false,
 
@@ -282,7 +282,7 @@ describe('from file', () => {
           variables,
           fetchOptions
         ) {
-          // Modify \\"/api/graphql\\" if needed
+          // Modify "/api/graphql" if needed
           const response = await fetch('/api/graphql', {
             method: 'POST',
             headers: {
@@ -330,7 +330,7 @@ describe('from file', () => {
           prepareQuery,
         } = createReactClient<GeneratedSchema>(client, {
           defaults: {
-            // Set this flag as \\"true\\" if your usage involves React Suspense
+            // Set this flag as "true" if your usage involves React Suspense
             // Keep in mind that you can overwrite it in a per-hook basis
             suspense: false,
 
@@ -488,7 +488,7 @@ describe('from file', () => {
           variables,
           fetchOptions
         ) {
-          // Modify \\"/api/graphql\\" if needed
+          // Modify "/api/graphql" if needed
           const response = await fetch('/api/graphql', {
             method: 'POST',
             headers: {
@@ -536,7 +536,7 @@ describe('from file', () => {
           prepareQuery,
         } = createReactClient<GeneratedSchema>(client, {
           defaults: {
-            // Set this flag as \\"true\\" if your usage involves React Suspense
+            // Set this flag as "true" if your usage involves React Suspense
             // Keep in mind that you can overwrite it in a per-hook basis
             suspense: false,
 
@@ -693,7 +693,7 @@ describe('from file', () => {
           variables,
           fetchOptions
         ) {
-          // Modify \\"/api/graphql\\" if needed
+          // Modify "/api/graphql" if needed
           const response = await fetch('/api/graphql', {
             method: 'POST',
             headers: {
@@ -741,7 +741,7 @@ describe('from file', () => {
           prepareQuery,
         } = createReactClient<GeneratedSchema>(client, {
           defaults: {
-            // Set this flag as \\"true\\" if your usage involves React Suspense
+            // Set this flag as "true" if your usage involves React Suspense
             // Keep in mind that you can overwrite it in a per-hook basis
             suspense: false,
 
@@ -942,7 +942,7 @@ describe('from multiple files', () => {
           variables,
           fetchOptions
         ) {
-          // Modify \\"/api/graphql\\" if needed
+          // Modify "/api/graphql" if needed
           const response = await fetch('/api/graphql', {
             method: 'POST',
             headers: {
@@ -990,7 +990,7 @@ describe('from multiple files', () => {
           prepareQuery,
         } = createReactClient<GeneratedSchema>(client, {
           defaults: {
-            // Set this flag as \\"true\\" if your usage involves React Suspense
+            // Set this flag as "true" if your usage involves React Suspense
             // Keep in mind that you can overwrite it in a per-hook basis
             suspense: false,
 
@@ -1207,7 +1207,7 @@ test('specify generateOptions to inspectWriteGenerate', async () => {
         variables,
         fetchOptions
       ) {
-        // Modify \\"/api/graphql\\" if needed
+        // Modify "/api/graphql" if needed
         const response = await fetch('/api/graphql', {
           method: 'POST',
           headers: {
@@ -1255,7 +1255,7 @@ test('specify generateOptions to inspectWriteGenerate', async () => {
         prepareQuery,
       } = createReactClient<GeneratedSchema>(client, {
         defaults: {
-          // Set this flag as \\"true\\" if your usage involves React Suspense
+          // Set this flag as "true" if your usage involves React Suspense
           // Keep in mind that you can overwrite it in a per-hook basis
           suspense: false,
 
@@ -1514,7 +1514,7 @@ describe('inspect headers', () => {
           destination: tempDir.clientPath,
         })
       ).rejects.toThrowErrorMatchingInlineSnapshot(
-        `\n"Could not obtain introspection result, received the following as response; \n { statusCode: 500, error: \\"Internal Server Error\\", message: \\"Unauthorized!\\" }"\n`
+        `\n"Could not obtain introspection result, received the following as response; \n { statusCode: 500, error: "Internal Server Error", message: "Unauthorized!" }"\n`
       );
 
       const generatedFileContent = await readFile(tempDir.clientPath, {
@@ -1573,7 +1573,7 @@ describe('CLI behavior', () => {
           variables,
           fetchOptions
         ) {
-          // Modify \\"/api/graphql\\" if needed
+          // Modify "/api/graphql" if needed
           const response = await fetch('/api/graphql', {
             method: 'POST',
             headers: {
@@ -1621,7 +1621,7 @@ describe('CLI behavior', () => {
           prepareQuery,
         } = createReactClient<GeneratedSchema>(client, {
           defaults: {
-            // Set this flag as \\"true\\" if your usage involves React Suspense
+            // Set this flag as "true" if your usage involves React Suspense
             // Keep in mind that you can overwrite it in a per-hook basis
             suspense: false,
 
@@ -1741,16 +1741,16 @@ test('detect client config change between files', async () => {
       case 1: {
         expect(message.replace(clientPathRegex, 'client.ts'))
           .toMatchInlineSnapshot(`
-          "[Warning] You've changed the option \\"subscriptions\\" to 'true', which is different from your existing \\"client.ts\\".
-          If you meant to change this, please remove \\"client.ts\\" and re-run code generation."
+          "[Warning] You've changed the option "subscriptions" to 'true', which is different from your existing "client.ts".
+          If you meant to change this, please remove "client.ts" and re-run code generation."
         `);
         break;
       }
       case 2: {
         expect(message.replace(clientPathRegex, 'client.ts'))
           .toMatchInlineSnapshot(`
-          "[Warning] You've changed the option \\"react\\" to 'true', which is different from your existing \\"client.ts\\".
-          If you meant to change this, please remove \\"client.ts\\" and re-run code generation."
+          "[Warning] You've changed the option "react" to 'true', which is different from your existing "client.ts".
+          If you meant to change this, please remove "client.ts" and re-run code generation."
         `);
         break;
       }

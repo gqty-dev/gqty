@@ -1,10 +1,10 @@
 import {
-  getArrayFields,
-  getFields,
-  selectFields,
-  prepass,
   castNotSkeleton,
   castNotSkeletonDeep,
+  getArrayFields,
+  getFields,
+  prepass,
+  selectFields,
 } from '../src';
 import { createTestClient, expectConsoleWarn } from './utils';
 
@@ -1285,7 +1285,7 @@ describe('get fields', () => {
     await scheduler.resolving!.promise;
 
     expect(JSON.stringify(human2)).toMatchInlineSnapshot(
-      `"{\\"__typename\\":\\"Human\\",\\"id\\":\\"2\\",\\"name\\":\\"other\\"}"`
+      `"{"__typename":"Human","id":"2","name":"other"}"`
     );
 
     expect(getFields(null)).toBe(null);

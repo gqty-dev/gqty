@@ -442,62 +442,62 @@ describe('mutate accessors', () => {
     expect(JSON.stringify(owner, null, 2)).toMatchInlineSnapshot(
       `
       "{
-        \\"__typename\\": \\"Human\\",
-        \\"dogs\\": [
+        "__typename": "Human",
+        "dogs": [
           {
-            \\"__typename\\": \\"Dog\\",
-            \\"name\\": \\"zxc\\",
-            \\"owner\\": {
-              \\"name\\": \\"hello\\",
-              \\"father\\": [
+            "__typename": "Dog",
+            "name": "zxc",
+            "owner": {
+              "name": "hello",
+              "father": [
                 {
-                  \\"$ref\\": \\"$\\"
+                  "$ref": "$"
                 }
               ]
             }
           }
         ],
-        \\"father\\": {
-          \\"name\\": \\"hello\\",
-          \\"father\\": {
-            \\"$ref\\": \\"$\\"
+        "father": {
+          "name": "hello",
+          "father": {
+            "$ref": "$"
           },
-          \\"dogs\\": [
+          "dogs": [
             {
-              \\"__typename\\": \\"Dog\\",
-              \\"name\\": \\"zxc\\",
-              \\"owner\\": {
-                \\"name\\": \\"hello\\",
-                \\"father\\": {
-                  \\"$ref\\": \\"$[\\\\\\"dogs\\\\\\"]\\"
+              "__typename": "Dog",
+              "name": "zxc",
+              "owner": {
+                "name": "hello",
+                "father": {
+                  "$ref": "$[\\"dogs\\"]"
                 }
               }
             }
           ]
         },
-        \\"name\\": \\"ModifiedOwner\\",
-        \\"sons\\": [
+        "name": "ModifiedOwner",
+        "sons": [
           {
-            \\"name\\": \\"hello\\",
-            \\"father\\": {
-              \\"$ref\\": \\"$\\"
+            "name": "hello",
+            "father": {
+              "$ref": "$"
             },
-            \\"dogs\\": [
+            "dogs": [
               {
-                \\"__typename\\": \\"Dog\\",
-                \\"name\\": \\"zxc\\",
-                \\"owner\\": {
-                  \\"name\\": \\"hello\\",
-                  \\"father\\": {
-                    \\"$ref\\": \\"$[\\\\\\"dogs\\\\\\"]\\"
+                "__typename": "Dog",
+                "name": "zxc",
+                "owner": {
+                  "name": "hello",
+                  "father": {
+                    "$ref": "$[\\"dogs\\"]"
                   }
                 }
               }
             ]
           }
         ],
-        \\"node\\": [],
-        \\"union\\": []
+        "node": [],
+        "union": []
       }"
     `
     );

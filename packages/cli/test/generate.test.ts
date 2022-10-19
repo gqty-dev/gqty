@@ -148,7 +148,7 @@ test('basic functionality works', async () => {
       variables,
       fetchOptions
     ) {
-      // Modify \\"/api/graphql\\" if needed
+      // Modify "/api/graphql" if needed
       const response = await fetch('/api/graphql', {
         method: 'POST',
         headers: {
@@ -210,7 +210,7 @@ test('basic functionality works', async () => {
       useSubscription,
     } = createReactClient<GeneratedSchema>(client, {
       defaults: {
-        // Set this flag as \\"true\\" if your usage involves React Suspense
+        // Set this flag as "true" if your usage involves React Suspense
         // Keep in mind that you can overwrite it in a per-hook basis
         suspense: false,
 
@@ -240,30 +240,30 @@ test('basic functionality works', async () => {
 
   expect(JSON.stringify(generatedSchema, null, 2)).toMatchInlineSnapshot(`
     "{
-      \\"query\\": {
-        \\"__typename\\": {
-          \\"__type\\": \\"String!\\"
+      "query": {
+        "__typename": {
+          "__type": "String!"
         },
-        \\"deprecatedArg\\": {
-          \\"__type\\": \\"Int\\",
-          \\"__args\\": {
-            \\"arg\\": \\"Int\\"
+        "deprecatedArg": {
+          "__type": "Int",
+          "__args": {
+            "arg": "Int"
           }
         },
-        \\"hello\\": {
-          \\"__type\\": \\"String!\\"
+        "hello": {
+          "__type": "String!"
         }
       },
-      \\"mutation\\": {},
-      \\"subscription\\": {}
+      "mutation": {},
+      "subscription": {}
     }"
   `);
 
   expect(JSON.stringify(scalarsEnumsHash, null, 2)).toMatchInlineSnapshot(`
     "{
-      \\"Boolean\\": true,
-      \\"Int\\": true,
-      \\"String\\": true
+      "Boolean": true,
+      "Int": true,
+      "String": true
     }"
   `);
 
@@ -326,7 +326,7 @@ test('custom scalars works', async () => {
       variables,
       fetchOptions
     ) {
-      // Modify \\"/api/graphql\\" if needed
+      // Modify "/api/graphql" if needed
       const response = await fetch('/api/graphql', {
         method: 'POST',
         headers: {
@@ -374,7 +374,7 @@ test('custom scalars works', async () => {
       prepareQuery,
     } = createReactClient<GeneratedSchema>(client, {
       defaults: {
-        // Set this flag as \\"true\\" if your usage involves React Suspense
+        // Set this flag as "true" if your usage involves React Suspense
         // Keep in mind that you can overwrite it in a per-hook basis
         suspense: false,
 
@@ -474,24 +474,24 @@ test('custom scalars works', async () => {
 
   expect(JSON.stringify(generatedSchema, null, 2)).toMatchInlineSnapshot(`
     "{
-      \\"query\\": {
-        \\"__typename\\": {
-          \\"__type\\": \\"String!\\"
+      "query": {
+        "__typename": {
+          "__type": "String!"
         },
-        \\"hello\\": {
-          \\"__type\\": \\"Custom!\\"
+        "hello": {
+          "__type": "Custom!"
         }
       },
-      \\"mutation\\": {},
-      \\"subscription\\": {}
+      "mutation": {},
+      "subscription": {}
     }"
   `);
 
   expect(JSON.stringify(scalarsEnumsHash, null, 2)).toMatchInlineSnapshot(`
     "{
-      \\"Boolean\\": true,
-      \\"Custom\\": true,
-      \\"String\\": true
+      "Boolean": true,
+      "Custom": true,
+      "String": true
     }"
   `);
 
@@ -813,11 +813,11 @@ describe('feature complete app', () => {
         stringNullableWithArgs: (args: {
           hello: Scalars['String'];
           /**
-           * @defaultValue \`\\"Hi\\"\`
+           * @defaultValue \`"Hi"\`
            */
           helloThree?: Maybe<Scalars['String']>;
           /**
-           * @defaultValue \`\\"Hi\\"\`
+           * @defaultValue \`"Hi"\`
            */
           helloTwo?: Maybe<Scalars['String']>;
         }) => Maybe<ScalarsEnums['String']>;
@@ -1420,10 +1420,10 @@ test('javascript output works', async () => {
     import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
     /**
-     * @type {import(\\"gqty\\").QueryFetcher}
+     * @type {import("gqty").QueryFetcher}
      */
     const queryFetcher = async function (query, variables, fetchOptions) {
-      // Modify \\"/api/graphql\\" if needed
+      // Modify "/api/graphql" if needed
       const response = await fetch('/api/graphql', {
         method: 'POST',
         headers: {
@@ -1455,7 +1455,7 @@ test('javascript output works', async () => {
         : undefined;
 
     /**
-     * @type {import(\\"gqty\\").GQtyClient<import(\\"./schema.generated\\").GeneratedSchema>}
+     * @type {import("gqty").GQtyClient<import("./schema.generated").GeneratedSchema>}
      */
     export const client = createClient({
       schema: generatedSchema,
@@ -1470,11 +1470,11 @@ test('javascript output works', async () => {
     export { query, mutation, mutate, subscription, resolved, refetch, track };
 
     /**
-     * @type {import(\\"@gqty/react\\").ReactClient<import(\\"./schema.generated\\").GeneratedSchema>}
+     * @type {import("@gqty/react").ReactClient<import("./schema.generated").GeneratedSchema>}
      */
     const reactClient = createReactClient(client, {
       defaults: {
-        // Set this flag as \\"true\\" if your usage involves React Suspense
+        // Set this flag as "true" if your usage involves React Suspense
         // Keep in mind that you can overwrite it in a per-hook basis
         suspense: false,
 
@@ -1523,7 +1523,7 @@ test('javascript output works', async () => {
     import { SchemaUnionsKey } from 'gqty';
 
     /**
-     * @type {import(\\"gqty\\").ScalarsEnumsHash}
+     * @type {import("gqty").ScalarsEnumsHash}
      */
     export const scalarsEnumsHash = { Boolean: true, Int: true, String: true };
 
@@ -1752,7 +1752,7 @@ test('ignoreArgs transform', async () => {
       variables,
       fetchOptions
     ) {
-      // Modify \\"/api/graphql\\" if needed
+      // Modify "/api/graphql" if needed
       const response = await fetch('/api/graphql', {
         method: 'POST',
         headers: {
@@ -1800,7 +1800,7 @@ test('ignoreArgs transform', async () => {
       prepareQuery,
     } = createReactClient<GeneratedSchema>(client, {
       defaults: {
-        // Set this flag as \\"true\\" if your usage involves React Suspense
+        // Set this flag as "true" if your usage involves React Suspense
         // Keep in mind that you can overwrite it in a per-hook basis
         suspense: false,
 
@@ -1853,7 +1853,7 @@ test('ignoreArgs transform', async () => {
      */
 
     /**
-     * @type {import(\\"gqty\\").ScalarsEnumsHash}
+     * @type {import("gqty").ScalarsEnumsHash}
      */
     export const scalarsEnumsHash = { Boolean: true, Int: true, String: true };
 
@@ -2142,7 +2142,7 @@ test('fields with default value works', async () => {
       __typename?: 'Query';
       hello: (args: {
         /**
-         * @defaultValue \`\\"world\\"\`
+         * @defaultValue \`"world"\`
          */
         world?: Maybe<Scalars['String']>;
       }) => ScalarsEnums['String'];
