@@ -1,5 +1,11 @@
 # @gqty/react
 
+## 2.1.1
+
+### Patch Changes
+
+- 929f2b15: fix(react): stale state in useTransactionQuery
+
 ## 2.1.0
 
 ### Minor Changes
