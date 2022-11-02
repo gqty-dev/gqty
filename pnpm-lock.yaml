@@ -501,8 +501,8 @@ importers:
 
   packages/cli:
     specifiers:
-      '@graphql-codegen/core': ^2.6.2
-      '@graphql-codegen/typescript': ^2.8.0
+      '@graphql-codegen/core': ^2.6.4
+      '@graphql-codegen/typescript': ^2.8.1
       '@graphql-tools/delegate': ^9.0.10
       '@graphql-tools/utils': ^8.13.1
       '@graphql-tools/wrap': ^9.2.5
@@ -537,7 +537,7 @@ importers:
       gqty: link:../gqty
       undici: 5.7.0
     devDependencies:
-      '@graphql-codegen/core': 2.6.3_graphql@16.6.0
+      '@graphql-codegen/core': 2.6.4_graphql@16.6.0
       '@graphql-codegen/typescript': 2.8.1_graphql@16.6.0
       '@graphql-tools/delegate': 9.0.10_graphql@16.6.0
       '@graphql-tools/utils': 8.13.1_graphql@16.6.0
@@ -3131,6 +3131,19 @@ packages:
       '@graphql-tools/utils': 8.13.1_graphql@16.6.0
       graphql: 16.6.0
       tslib: 2.4.1
+    dev: false
+
+  /@graphql-codegen/core/2.6.4_graphql@16.6.0:
+    resolution: {integrity: sha512-gmiRJIkmzeODBpX5ATDLWBTAs2zl21cRqwOmcYtLY3RMxNa3SIpHFII6BIYLOo/ZO767+2DH8FOKWCR78w6cvQ==}
+    peerDependencies:
+      graphql: '*'
+    dependencies:
+      '@graphql-codegen/plugin-helpers': 2.7.2_graphql@16.6.0
+      '@graphql-tools/schema': 9.0.6_graphql@16.6.0
+      '@graphql-tools/utils': 9.0.0_graphql@16.6.0
+      graphql: 16.6.0
+      tslib: 2.4.1
+    dev: true
 
   /@graphql-codegen/plugin-helpers/2.7.2_graphql@16.6.0:
     resolution: {integrity: sha512-kln2AZ12uii6U59OQXdjLk5nOlh1pHis1R98cDZGFnfaiAbX9V3fxcZ1MMJkB7qFUymTALzyjZoXXdyVmPMfRg==}
@@ -3724,6 +3737,15 @@ packages:
       graphql: 16.6.0
       tslib: 2.4.1
     dev: false
+
+  /@graphql-tools/utils/9.0.0_graphql@16.6.0:
+    resolution: {integrity: sha512-kaCwyWnURxMsYbxzkfylLqFFelu83jKk3BJOOy0GIuxEtgXVS9v7Y/tojljo69Q+jaZ2YxAi3+d8IpM+hx768A==}
+    peerDependencies:
+      graphql: '*'
+    dependencies:
+      graphql: 16.6.0
+      tslib: 2.4.1
+    dev: true
 
   /@graphql-tools/wrap/9.2.5_graphql@16.6.0:
     resolution: {integrity: sha512-fv6v69bVnr+E22wfaz4rlyVIuhQxgsXgeSLKRcNjIByjhKA+jROdL5Zwk+VxUXSiyBudT3GktbRn7c75g7LXYg==}
