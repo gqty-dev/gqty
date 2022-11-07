@@ -382,7 +382,7 @@ importers:
       '@graphql-ez/plugin-websockets': ^0.10.5
       '@jest/types': ^29.2.1
       '@rollup/plugin-babel': ^6.0.2
-      '@types/jest': ^29.2.1
+      '@types/jest': ^29.2.2
       '@types/node': ^18.11.9
       '@types/randomstring': ^1.1.8
       bob-esbuild-cli: ^4.0.0
@@ -407,7 +407,7 @@ importers:
       '@graphql-ez/plugin-codegen': 0.7.11_b4wwgzkeypzu4464xvmdl53bpi
       '@graphql-ez/plugin-schema': 0.8.5_b4wwgzkeypzu4464xvmdl53bpi
       '@rollup/plugin-babel': 6.0.2
-      '@types/jest': 29.2.1
+      '@types/jest': 29.2.2
       cross-env: 7.0.3
       fastify: 4.9.2
       graphql: 16.6.0
@@ -597,7 +597,7 @@ importers:
       tsc-watch: ^5.0.3
       typescript: ^4.8.4
       wait-on: ^6.0.1
-      ws: ^8.10.0
+      ws: ^8.11.0
     dependencies:
       '@gqty/utils': link:../utils
     devDependencies:
@@ -626,7 +626,7 @@ importers:
       tsc-watch: 5.0.3_typescript@4.8.4
       typescript: 4.8.4
       wait-on: 6.0.1
-      ws: 8.10.0
+      ws: 8.11.0
     publishDirectory: dist
 
   packages/logger:
@@ -667,7 +667,7 @@ importers:
       '@testing-library/jest-dom': ^5.16.5
       '@testing-library/react': ^12.1.5
       '@testing-library/react-hooks': ^8.0.1
-      '@types/jest': ^29.2.1
+      '@types/jest': ^29.2.2
       '@types/lodash': ^4.14.188
       '@types/node': ^18.11.9
       '@types/react': ^17.0.52
@@ -695,7 +695,7 @@ importers:
       '@testing-library/jest-dom': 5.16.5
       '@testing-library/react': 12.1.5_sfoxds7t5ydpegc3knd667wn6m
       '@testing-library/react-hooks': 8.0.1_t7oceqfn6n5cdjacpgcj22xdky
-      '@types/jest': 29.2.1
+      '@types/jest': 29.2.2
       '@types/lodash': 4.14.188
       '@types/node': 18.11.9
       '@types/react': 17.0.52
@@ -729,10 +729,10 @@ importers:
       test-utils: workspace:^0.1.0
       tslib: ^2.4.1
       typescript: ^4.8.4
-      ws: ^8.10.0
+      ws: ^8.11.0
     dependencies:
-      isomorphic-ws: 5.0.0_ws@8.10.0
-      ws: 8.10.0
+      isomorphic-ws: 5.0.0_ws@8.11.0
+      ws: 8.11.0
     devDependencies:
       '@types/node': 18.11.9
       '@types/ws': 8.5.3
@@ -5229,8 +5229,8 @@ packages:
     dependencies:
       '@types/istanbul-lib-report': 3.0.0
 
-  /@types/jest/29.2.1:
-    resolution: {integrity: sha512-nKixEdnGDqFOZkMTF74avFNr3yRqB1ZJ6sRZv5/28D5x2oLN14KApv7F9mfDT/vUic0L3tRCsh3XWpWjtJisUQ==}
+  /@types/jest/29.2.2:
+    resolution: {integrity: sha512-og1wAmdxKoS71K2ZwSVqWPX6OVn3ihZ6ZT2qvZvZQm90lJVDyXIjYcu4Khx2CNIeaFv12rOU/YObOsI3VOkzog==}
     dependencies:
       expect: 29.2.2
       pretty-format: 29.2.1
@@ -5402,7 +5402,7 @@ packages:
   /@types/testing-library__jest-dom/5.14.5:
     resolution: {integrity: sha512-SBwbxYoyPIvxHbeHxTZX2Pe/74F/tX2/D3mMvzabdeJ25bBojfW0TyB8BHrbq/9zaaKICJZjLP+8r6AeZMFCuQ==}
     dependencies:
-      '@types/jest': 29.2.1
+      '@types/jest': 29.2.2
     dev: true
 
   /@types/tough-cookie/4.0.2:
@@ -6155,7 +6155,7 @@ packages:
     dependencies:
       ansi-align: 3.0.1
       camelcase: 7.0.0
-      chalk: 5.0.1
+      chalk: 5.1.2
       cli-boxes: 3.0.0
       string-width: 5.1.2
       type-fest: 2.19.0
@@ -9548,12 +9548,12 @@ packages:
     dependencies:
       ws: 8.10.0
 
-  /isomorphic-ws/5.0.0_ws@8.10.0:
+  /isomorphic-ws/5.0.0_ws@8.11.0:
     resolution: {integrity: sha512-muId7Zzn9ywDsyXgTIafTry2sV3nySZeUDe6YedVd1Hvuuep5AsIlqK+XefWpYTyJG5e503F2xIuT2lcU6rCSw==}
     peerDependencies:
       ws: '*'
     dependencies:
-      ws: 8.10.0
+      ws: 8.11.0
     dev: false
 
   /istanbul-lib-coverage/3.2.0:
@@ -10179,7 +10179,7 @@ packages:
       whatwg-encoding: 2.0.0
       whatwg-mimetype: 3.0.0
       whatwg-url: 11.0.0
-      ws: 8.10.0
+      ws: 8.11.0
       xml-name-validator: 4.0.0
     transitivePeerDependencies:
       - bufferutil
@@ -14487,6 +14487,18 @@ packages:
 
   /ws/8.10.0:
     resolution: {integrity: sha512-+s49uSmZpvtAsd2h37vIPy1RBusaLawVe8of+GyEPsaJTCMpj/2v8NpeK1SHXjBlQ95lQTmQofOJnFiLoaN3yw==}
+    engines: {node: '>=10.0.0'}
+    peerDependencies:
+      bufferutil: ^4.0.1
+      utf-8-validate: ^5.0.2
+    peerDependenciesMeta:
+      bufferutil:
+        optional: true
+      utf-8-validate:
+        optional: true
+
+  /ws/8.11.0:
+    resolution: {integrity: sha512-HPG3wQd9sNQoT9xHyNCXoDUa+Xw/VevmY9FoHyQ+g+rrMn4j6FB4np7Z0OhdTgjx6MgQLK7jwSy1YecU1+4Asg==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
       bufferutil: ^4.0.1
