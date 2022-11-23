@@ -217,4 +217,46 @@ describe('basic', () => {
 
     expect(officialStripIgnoredCharacters(query)).toBe(query);
   });
+
+  test('operation name', () => {
+    const baseSelection = new Selection({
+      key: 'query',
+      type: SelectionType.Query,
+      id: 0,
+    });
+
+    const selectionA = new Selection({
+      key: 'a',
+      prevSelection: baseSelection,
+      args: {
+        a: 1,
+        b: 1,
+      },
+      argTypes: {
+        a: 'Int!',
+        b: 'String!',
+      },
+      alias: 'gqtyAlias_1',
+      id: 1,
+    });
+
+    const { query, variables } = buildQuery([selectionA], {
+      type: 'query',
+      operationName: 'TestQuery',
+    });
+
+    expect(query.trim().startsWith('query TestQuery(')).toBeTruthy();
+
+    expect(query).toMatchInlineSnapshot(
+      `"query TestQuery($a1:Int!$b2:String!){gqtyAlias_1:a(a:$a1 b:$b2)}"`
+    );
+
+    expect(() => {
+      parse(query);
+    }).not.toThrow();
+
+    expect(variables).toEqual({ a1: 1, b2: 1 });
+
+    expect(officialStripIgnoredCharacters(query)).toBe(query);
+  });
 });
