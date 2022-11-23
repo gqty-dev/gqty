@@ -35,8 +35,10 @@ export function createQueryBuilder() {
     selections: Set<Selection> | Selection[],
     {
       type,
+      operationName,
     }: {
       type: 'query' | 'mutation' | 'subscription';
+      operationName?: string;
     },
     normalization?: boolean,
     isGlobalCache?: boolean

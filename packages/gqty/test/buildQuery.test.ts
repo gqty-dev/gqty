@@ -210,19 +210,7 @@ describe('buildQuery()', () => {
     expect(officialStripIgnoredCharacters(query)).toBe(query);
   });
 
-  it('should fails on mismatched selection type', () => {
-    const baseSelection = new Selection({
-      key: 'mutation',
-      type: SelectionType.Query,
-      id: 0,
-    });
-
-    expect(() => {
-      buildQuery([baseSelection], { type: 'query' });
-    }).toThrow('Expected root selection of type "query", found "mutation".');
-  });
-
-  it('should query with operation name', () => {
+  test('operation name', () => {
     const baseSelection = new Selection({
       key: 'query',
       type: SelectionType.Query,
@@ -232,19 +220,34 @@ describe('buildQuery()', () => {
     const selectionA = new Selection({
       key: 'a',
       prevSelection: baseSelection,
+      args: {
+        a: 1,
+        b: 1,
+      },
+      argTypes: {
+        a: 'Int!',
+        b: 'String!',
+      },
+      alias: 'gqtyAlias_1',
       id: 1,
+    });
+
+    const { query, variables } = buildQuery([selectionA], {
+      type: 'query',
       operationName: 'TestQuery',
     });
 
-    const { query } = buildQuery([selectionA], {
-      type: 'query',
-    });
+    expect(query.trim().startsWith('query TestQuery(')).toBeTruthy();
 
-    expect(query).toMatchInlineSnapshot(`"query TestQuery{a}"`);
+    expect(query).toMatchInlineSnapshot(
+      `"query TestQuery($a1:Int!$b2:String!){gqtyAlias_1:a(a:$a1 b:$b2)}"`
+    );
 
     expect(() => {
       parse(query);
     }).not.toThrow();
+
+    expect(variables).toEqual({ a1: 1, b2: 1 });
 
     expect(officialStripIgnoredCharacters(query)).toBe(query);
   });
