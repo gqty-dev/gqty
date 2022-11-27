@@ -44,3 +44,27 @@ test('Basic Suspense', async () => {
 
   expect(result.current).toBe('hello world');
 });
+
+it.only('should fetches with operation name', async () => {
+  let fetchedQuery: string | undefined;
+  const { useQuery } = await createReactTestClient(undefined, (query) => {
+    fetchedQuery = query;
+    return { data: { hello: 'hello world' } };
+  });
+
+  const { result, waitForNextUpdate } = renderHook(() => {
+    const query = useQuery({
+      operationName: 'TestQuery',
+      suspense: true,
+    });
+
+    return query.hello;
+  });
+
+  expect(result.current).toBe(undefined);
+
+  await waitForNextUpdate();
+
+  expect(fetchedQuery).toBe('query TestQuery{hello}');
+  expect(result.current).toBe('hello world');
+});

@@ -39,6 +39,8 @@ export interface UseMutationOptions<TData> {
    * @default false
    */
   nonSerializableVariables?: boolean;
+  /** Optional operation name for this mutation request. */
+  operationName?: string;
 }
 
 export interface UseMutationState<TData> {
@@ -215,6 +217,7 @@ export function createUseMutation<
           noCache: optsRef.current.noCache,
           refetch: true,
           nonSerializableVariables: optsRef.current.nonSerializableVariables,
+          operationName: optsRef.current.operationName,
         }).then(
           async (data) => {
             const refetchingQueries = callRefetchQueries();

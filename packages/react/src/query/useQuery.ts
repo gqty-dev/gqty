@@ -24,6 +24,7 @@ export interface UseQueryOptions<
   suspense?: boolean;
   staleWhileRevalidate?: boolean | object | number | string | null;
   onError?: OnErrorHandler;
+  operationName?: string;
   prepare?: (helpers: UseQueryPrepareHelpers<GeneratedSchema>) => void;
 }
 
@@ -80,6 +81,7 @@ export function createUseQuery<
     staleWhileRevalidate = defaultStaleWhileRevalidate,
     onError,
     prepare,
+    operationName,
   }: UseQueryOptions<GeneratedSchema> = {}): UseQueryReturnValue<GeneratedSchema> {
     const [$state] = React.useState<Writeable<UseQueryState>>(() => {
       const state: Writeable<UseQueryState> = {
@@ -101,6 +103,18 @@ export function createUseQuery<
       updateOnFetchPromise: true,
     });
 
+    const removeOperationNameInterceptor = React.useMemo(() => {
+      const interceptor = interceptorManager.createInterceptor();
+
+      interceptor.selectionAddListeners.add((selection) => {
+        selection.operationName = operationName;
+      });
+
+      return () => {
+        interceptorManager.removeInterceptor(interceptor);
+      };
+    }, [operationName]);
+
     if (prepare) {
       try {
         prepare(prepareHelpers);
@@ -111,6 +125,8 @@ export function createUseQuery<
         throw err;
       }
     }
+
+    useIsomorphicLayoutEffect(removeOperationNameInterceptor);
 
     useIsomorphicLayoutEffect(() => {
       return scheduler.errors.subscribeErrors((ev) => {

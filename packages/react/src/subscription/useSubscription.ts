@@ -13,7 +13,11 @@ export interface UseSubscription<
     subscription: object;
   }
 > {
-  (): GeneratedSchema['subscription'];
+  (opts?: UseSubscriptionOptions): GeneratedSchema['subscription'];
+}
+
+export interface UseSubscriptionOptions {
+  operationName?: string;
 }
 
 export function createUseSubscription<
@@ -36,7 +40,7 @@ export function createUseSubscription<
     client.subscription;
 
   const useSubscription: UseSubscription<GeneratedSchema> =
-    function useSubscription() {
+    function useSubscription(opts?: UseSubscriptionOptions) {
       const forceUpdate = useForceUpdate({
         doTimeout: true,
       });
@@ -45,6 +49,10 @@ export function createUseSubscription<
       const interceptor = createInterceptor();
 
       Promise.resolve(interceptor).then(removeInterceptor);
+
+      interceptor.selectionAddListeners.add((selection) => {
+        selection.operationName = opts?.operationName;
+      });
 
       interceptor.selectionAddListeners.add((selection) => {
         if (selection.type === 2) hookSelections.add(selection);
