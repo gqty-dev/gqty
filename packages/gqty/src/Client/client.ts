@@ -186,9 +186,9 @@ export interface Mutate<
 
 export interface GQtyClient<
   GeneratedSchema extends {
-    query: {};
-    mutation: {};
-    subscription: {};
+    query: object;
+    mutation: object;
+    subscription: object;
   }
 > extends PersistenceHelpers {
   query: GeneratedSchema['query'];
