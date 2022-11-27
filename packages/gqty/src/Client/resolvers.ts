@@ -18,13 +18,13 @@ import {
 import type { FetchEventData } from '../Events';
 import type { NormalizationHandler } from '../Normalization';
 import type { SchedulerPromiseValue } from '../Scheduler';
-import type { Selection } from '../Selection/selection';
+import type { FetchOptions } from '../Schema/types';
+import { Selection, SelectionType } from '../Selection/selection';
 import type {
   InnerClientState,
   SubscribeEvents,
   SubscriptionsClient,
 } from './client';
-import type { FetchOptions } from '../Schema/types';
 
 export interface ResolveOptions<TData> {
   /**
@@ -96,6 +96,11 @@ export interface ResolveOptions<TData> {
    * Pass any extra fetch options
    */
   fetchOptions?: FetchOptions;
+
+  /**
+   * Query operation name
+   */
+  operationName?: string;
 }
 
 export type RetryOptions =
@@ -188,7 +193,7 @@ export interface BuildAndFetchSelections {
     type: 'query' | 'mutation',
     cache?: CacheInstance,
     options?: FetchResolveOptions,
-    lastTryParam?: boolean | undefined
+    lastTry?: boolean | undefined
   ): Promise<TData | null | undefined>;
 }
 
@@ -224,6 +229,10 @@ export interface InlineResolveOptions<TData> {
    * On valid cache data found callback
    */
   onCacheData?: (data: TData) => void;
+  /**
+   * Query operation name
+   */
+  operationName?: string;
 }
 
 export function createResolvers(
@@ -252,6 +261,7 @@ export function createResolvers(
       onEmptyResolve,
       onSelection,
       onCacheData,
+      operationName,
     }: InlineResolveOptions<TData> = {}
   ) {
     const prevFoundValidCache = innerState.foundValidCache;
@@ -260,7 +270,8 @@ export function createResolvers(
     const interceptor = interceptorManager.createInterceptor();
 
     let noSelection = true;
-    function onScalarSelection() {
+    function onScalarSelection(selection: Selection) {
+      selection.operationName = operationName;
       noSelection = false;
     }
     interceptor.selectionAddListeners.add(onScalarSelection);
@@ -280,9 +291,9 @@ export function createResolvers(
 
       const foundValidCache = innerState.foundValidCache;
 
+      innerState.allowCache = prevAllowCache;
       innerState.foundValidCache = prevFoundValidCache;
       interceptorManager.removeInterceptor(interceptor);
-      innerState.allowCache = prevAllowCache;
 
       if (noSelection) {
         if (process.env.NODE_ENV !== 'production') {
@@ -322,9 +333,9 @@ export function createResolvers(
 
       return data;
     } finally {
+      innerState.allowCache = prevAllowCache;
       innerState.foundValidCache = prevFoundValidCache;
       interceptorManager.removeInterceptor(interceptor);
-      innerState.allowCache = prevAllowCache;
     }
   };
 
@@ -346,6 +357,7 @@ export function createResolvers(
       onNoCacheFound,
       onEmptyResolve,
       fetchOptions,
+      operationName,
     }: ResolveOptions<T> = {}
   ): Promise<T> {
     const prevFoundValidCache = innerState.foundValidCache;
@@ -357,11 +369,11 @@ export function createResolvers(
     }
 
     let tempCache: typeof innerState.clientCache | undefined;
-    let tempSelectionManager: SelectionManager | undefined;
     if (noCache) {
       innerState.clientCache = tempCache = createCache();
     }
 
+    let tempSelectionManager: SelectionManager | undefined;
     if (nonSerializableVariables) {
       innerState.selectionManager = tempSelectionManager =
         createSelectionManager();
@@ -374,7 +386,8 @@ export function createResolvers(
 
     let noSelection = true;
 
-    function onScalarSelection() {
+    function onScalarSelection(selection: Selection) {
+      selection.operationName = operationName;
       noSelection = false;
     }
     interceptor.selectionAddListeners.add(onScalarSelection);
@@ -400,13 +413,11 @@ export function createResolvers(
       interceptorManager.removeInterceptor(interceptor);
 
       if (innerState.foundValidCache) {
-        if (onCacheData) {
-          const shouldContinue = onCacheData(data);
-
-          if (!shouldContinue) return data;
+        if (onCacheData && !onCacheData(data)) {
+          return data;
         }
-      } else if (onNoCacheFound) {
-        onNoCacheFound();
+      } else {
+        onNoCacheFound?.();
       }
 
       innerState.foundValidCache = prevFoundValidCache;
@@ -521,16 +532,12 @@ export function createResolvers(
     type: 'query' | 'mutation',
     cache: CacheInstance = innerState.clientCache,
     options: FetchResolveOptions = {},
-    lastTryParam?: boolean
+    lastTry?: boolean
   ): Promise<TData | null | undefined> {
     if (!selections) return;
 
     const isLastTry =
-      lastTryParam === undefined
-        ? options.retry
-          ? false
-          : true
-        : lastTryParam;
+      lastTry === undefined ? (options.retry ? false : true) : lastTry;
 
     const { query, variables, cachedData, cacheKey } =
       buildQueryAndCheckTempCache<TData>(
@@ -548,9 +555,7 @@ export function createResolvers(
 
     if (promise) return promise;
 
-    promise = LazyPromise(() => {
-      return resolve();
-    });
+    promise = LazyPromise(resolve);
     resolveQueryPromisesMap[cacheKey] = promise;
 
     try {
@@ -915,29 +920,42 @@ export function createResolvers(
     cache: CacheInstance = innerState.clientCache,
     options: FetchResolveOptions = {}
   ) {
-    const { querySelections, mutationSelections, subscriptionSelections } =
-      separateSelectionTypes(selections);
+    const selectionBranches = separateSelectionTypes(selections);
 
     try {
-      await Promise.all([
-        buildAndFetchSelections<TQuery>(
-          querySelections,
-          'query',
-          cache,
-          options
-        ),
-        buildAndFetchSelections<TMutation>(
-          mutationSelections,
-          'mutation',
-          cache,
-          options
-        ),
-        buildAndSubscribeSelections<TSubscription>(
-          subscriptionSelections,
-          cache,
-          options
-        ),
-      ]);
+      await Promise.all(
+        selectionBranches.map((selections) => {
+          const [
+            {
+              noIndexSelections: [{ type }],
+            },
+          ] = selections;
+
+          if (type === SelectionType.Query) {
+            return buildAndFetchSelections<TQuery>(
+              selections,
+              'query',
+              cache,
+              options
+            );
+          } else if (type === SelectionType.Mutation) {
+            return buildAndFetchSelections<TMutation>(
+              selections,
+              'mutation',
+              cache,
+              options
+            );
+          } else if (type === SelectionType.Subscription) {
+            return buildAndSubscribeSelections<TSubscription>(
+              selections,
+              cache,
+              options
+            );
+          } else {
+            throw new TypeError('Invalid selection type');
+          }
+        })
+      );
     } catch (err) {
       throw GQtyError.create(err);
     }

@@ -35,10 +35,8 @@ export function createQueryBuilder() {
     selections: Set<Selection> | Selection[],
     {
       type,
-      operationName,
     }: {
       type: 'query' | 'mutation' | 'subscription';
-      operationName?: string;
     },
     normalization?: boolean,
     isGlobalCache?: boolean
@@ -49,6 +47,7 @@ export function createQueryBuilder() {
     const variablesMap = new Map<string, string>();
     const variableTypes: Record<string, string> = {};
     const variablesMapKeyValue: Record<string, unknown> = {};
+    const [{ operationName }] = selections;
 
     if (normalization) {
       const selectionsSet = new Set<Selection>();
@@ -66,7 +65,7 @@ export function createQueryBuilder() {
     }
 
     let builtQuery: BuiltQuery | undefined;
-    let idAcum = '';
+    let idAcum = operationName ?? '';
 
     if (isGlobalCache) {
       for (const { id } of selections) idAcum += id;
@@ -75,6 +74,12 @@ export function createQueryBuilder() {
     }
 
     for (const { noIndexSelections } of selections) {
+      if (noIndexSelections[0]?.key !== type) {
+        throw new Error(
+          `Expected root selection of type "${type}", found "${noIndexSelections[0].key}".`
+        );
+      }
+
       const selectionBranches: string[][] = [];
 
       function createSelectionBranch(

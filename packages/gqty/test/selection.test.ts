@@ -104,9 +104,8 @@ describe('selection creation', () => {
         selectionF,
         selectionG,
       ])
-    ).toEqual({
-      querySelections: [selectionF],
-      mutationSelections: [
+    ).toEqual([
+      [
         selectionA,
         selectionB,
         selectionC,
@@ -115,7 +114,8 @@ describe('selection creation', () => {
         selectionD,
         repeatSelectionD,
       ],
-      subscriptionSelections: [selectionG],
-    });
+      [selectionF],
+      [selectionG],
+    ]);
   });
 });
