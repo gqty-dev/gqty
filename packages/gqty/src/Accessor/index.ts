@@ -13,8 +13,8 @@ import {
   decycle,
   isInteger,
   isObject,
-  retrocycle,
   isObjectWithType,
+  retrocycle,
 } from '../Utils';
 
 const ProxySymbol = Symbol('gqty-proxy');

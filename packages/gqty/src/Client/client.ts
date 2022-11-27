@@ -21,6 +21,7 @@ import { EventHandler } from '../Events';
 import { createPrefetch, Prefetch } from '../Helpers/prefetch';
 import { createRefetch, Refetch } from '../Helpers/refetch';
 import { createSSRHelpers, HydrateCache, PrepareRender } from '../Helpers/ssr';
+import { createTracker, Track } from '../Helpers/track';
 import { createInterceptorManager, InterceptorManager } from '../Interceptor';
 import {
   createNormalizationHandler,
@@ -42,7 +43,6 @@ import {
   Resolvers,
   RetryOptions,
 } from './resolvers';
-import { createTracker, Track } from '../Helpers/track';
 
 export interface InnerClientState {
   allowCache: boolean;
