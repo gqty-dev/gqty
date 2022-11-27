@@ -1,5 +1,6 @@
 import React from 'react';
 import { renderToString } from 'react-dom/server';
+import semver from 'semver';
 import { waitForExpect } from 'test-utils';
 
 import { createTestClient } from './utils';
@@ -111,7 +112,11 @@ describe('server side rendering', () => {
       .spyOn(console, 'error')
       .mockImplementation((message) => {
         expect(message).toEqual(
-          SyntaxError('Unexpected token i in JSON at position 0')
+          SyntaxError(
+            semver.gte(process.version, '18.0.0')
+              ? `Unexpected token 'i', "invalid" is not valid JSON`
+              : `Unexpected token i in JSON at position 0`
+          )
         );
       });
 
