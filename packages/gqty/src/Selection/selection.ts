@@ -53,7 +53,7 @@ export class Selection {
     unions,
     id,
   }: SelectionConstructorArgs) {
-    this.id = id.toString();
+    this.id = id + '';
     this.key = key;
     this.operationName = operationName;
     this.prevSelection = prevSelection ?? null;
