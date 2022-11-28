@@ -3,7 +3,7 @@ id: fetching-data
 title: Fetching data
 ---
 
-#### Prerequisites
+### Prerequisites
 
 Make sure you've completed [Getting Started](/docs/getting-started) first.
 
@@ -57,6 +57,28 @@ if (possibleData instanceof Promise) {
   // data == string
 } else {
   // possibleData == string
+}
+```
+
+### Operation name
+
+A custom operation name can be added to GraphQL queries, mutations and subscriptions.
+
+This is useful when mocking for unit tests, and advanced server logics.
+
+```ts
+import { query, resolved, inlineResolved } from '../gqty';
+
+resolved(() => query.helloWorld, { operationName: 'MyQuery' });
+
+inlineResolved(() => query.helloWorld, { operationName: 'MyQuery' });
+```
+
+Both `resolved` and `inlineResolved` above will generate the following query:
+
+```graphql
+query MyQuery {
+  helloWorld
 }
 ```
 
