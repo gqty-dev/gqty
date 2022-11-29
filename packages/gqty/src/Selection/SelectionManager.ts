@@ -1,58 +1,35 @@
 import { sha1 } from '@gqty/utils/sha1';
 
 import { serializeVariables } from '../Utils/cachedJSON';
-import {
-  Selection,
-  SelectionConstructorArgs,
-  SelectionType,
-} from './selection';
+import { Selection, SelectionConstructorArgs } from './selection';
 
 export function separateSelectionTypes(
   selections: Selection[] | Set<Selection>
 ) {
-  let querySelections: Selection[] | undefined;
-  let mutationSelections: Selection[] | undefined;
-  let subscriptionSelections: Selection[] | undefined;
+  /** Group selections by root type and operation names. */
+  const selectionBranches = new Map<string, Selection[]>();
 
   for (const selection of selections) {
-    switch (selection.type) {
-      case SelectionType.Query: {
-        querySelections ||= [];
-        querySelections.push(selection);
-        break;
-      }
-      case SelectionType.Mutation: {
-        mutationSelections ||= [];
-        mutationSelections.push(selection);
-        break;
-      }
-      case SelectionType.Subscription: {
-        subscriptionSelections ||= [];
-        subscriptionSelections.push(selection);
-        break;
-      }
+    const { type, operationName } = selection;
+    const branchKey = `${type}.${operationName}`;
+
+    if (!selectionBranches.has(branchKey)) {
+      selectionBranches.set(branchKey, []);
     }
+
+    selectionBranches.get(branchKey)!.push(selection);
   }
 
-  return {
-    querySelections,
-    mutationSelections,
-    subscriptionSelections,
-  };
+  return [...selectionBranches.values()];
 }
 
 export interface GetSelection {
-  ({
-    key,
-    prevSelection,
-    args,
-    argTypes,
-    type,
-    unions,
-  }: Pick<
-    SelectionConstructorArgs,
-    'key' | 'prevSelection' | 'args' | 'argTypes' | 'type' | 'unions'
-  >): Selection;
+  (
+    options: Pick<
+      SelectionConstructorArgs,
+      'key' | 'prevSelection' | 'args' | 'argTypes' | 'type' | 'unions'
+    >
+  ): Selection;
 }
 
 export interface SelectionManager {

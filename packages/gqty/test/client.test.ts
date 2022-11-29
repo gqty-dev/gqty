@@ -87,6 +87,62 @@ describe('core', () => {
 
     expect(onCacheData2).toBeCalledTimes(1);
   });
+
+  test('resolved with operationName', async () => {
+    const fetchHistory: string[] = [];
+    const { query, resolved } = await createTestClient(
+      undefined,
+      async (query) => {
+        fetchHistory.push(query);
+        return {};
+      }
+    );
+
+    await Promise.all([
+      resolved(() => query.hello, { operationName: 'TestQueryA' }),
+      resolved(() => query.hello, { operationName: 'TestQueryB' }),
+    ]);
+
+    expect(fetchHistory).toEqual(
+      expect.arrayContaining([
+        'query TestQueryA{hello}',
+        'query TestQueryB{hello}',
+      ])
+    );
+  });
+
+  test('inlineResolved with operationName', async () => {
+    const fetchHistory: string[] = [];
+    const { query, mutation, inlineResolved } = await createTestClient(
+      undefined,
+      async (query) => {
+        fetchHistory.push(query);
+        await new Promise((resolve) => setTimeout(resolve, 5));
+        return { data: { query: 'hello' } };
+      }
+    );
+
+    await Promise.all([
+      inlineResolved(() => query.human({ name: 'John' }).__typename, {
+        operationName: 'TestQueryA',
+      }),
+      inlineResolved(
+        () => mutation.humanMutation({ nameArg: 'Jane' }).__typename,
+        { operationName: 'TestMutation' }
+      ),
+      inlineResolved(() => query.hello, {
+        operationName: 'TestQueryB',
+      }),
+    ]);
+
+    expect(fetchHistory).toEqual(
+      expect.arrayContaining([
+        'mutation TestMutation($nameArg1:String!){humanMutation_70c5e_90943:humanMutation(nameArg:$nameArg1){__typename id}}',
+        'query TestQueryA($name1:String){human_b8c92_7a4a6:human(name:$name1){__typename id}}',
+        'query TestQueryB{hello}',
+      ])
+    );
+  });
 });
 
 describe('resolved cache options', () => {

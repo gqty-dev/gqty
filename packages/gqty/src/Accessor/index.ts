@@ -13,8 +13,8 @@ import {
   decycle,
   isInteger,
   isObject,
-  retrocycle,
   isObjectWithType,
+  retrocycle,
 } from '../Utils';
 
 const ProxySymbol = Symbol('gqty-proxy');
@@ -97,9 +97,9 @@ export interface AssignSelections {
 
 export interface AccessorCreators<
   GeneratedSchema extends {
-    query: {};
-    mutation: {};
-    subscription: {};
+    query: object;
+    mutation: object;
+    subscription: object;
   }
 > {
   createAccessor: (
@@ -123,9 +123,9 @@ export interface AccessorCreators<
 
 export function createAccessorCreators<
   GeneratedSchema extends {
-    query: {};
-    mutation: {};
-    subscription: {};
+    query: object;
+    mutation: object;
+    subscription: object;
   } = never
 >(innerState: InnerClientState): AccessorCreators<GeneratedSchema> {
   const {

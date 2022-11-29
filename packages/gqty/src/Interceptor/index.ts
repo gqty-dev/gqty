@@ -8,28 +8,28 @@ export class Interceptor {
   selectionCacheRefetchListeners = new Set<(selection: Selection) => void>();
 
   addSelection(selection: Selection) {
-    if (this.listening) {
-      this.fetchSelections.add(selection);
+    if (!this.listening) return;
 
-      for (const listener of this.selectionAddListeners) {
-        listener(selection);
-      }
+    this.fetchSelections.add(selection);
+
+    for (const listener of this.selectionAddListeners) {
+      listener(selection);
     }
   }
 
   addSelectionCache(selection: Selection) {
-    if (this.listening) {
-      for (const listener of this.selectionCacheListeners) {
-        listener(selection);
-      }
+    if (!this.listening) return;
+
+    for (const listener of this.selectionCacheListeners) {
+      listener(selection);
     }
   }
 
   addSelectionCacheRefetch(selection: Selection) {
-    if (this.listening && this.selectionCacheRefetchListeners.size) {
-      for (const listener of this.selectionCacheRefetchListeners) {
-        listener(selection);
-      }
+    if (!this.listening) return;
+
+    for (const listener of this.selectionCacheRefetchListeners) {
+      listener(selection);
     }
   }
 

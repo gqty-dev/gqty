@@ -9,6 +9,7 @@ export type SelectionConstructorArgs = {
   key: string | number;
   prevSelection?: Selection;
   type?: SelectionType;
+  operationName?: string;
   alias?: string;
   args?: Record<string, unknown>;
   argTypes?: Record<string, string>;
@@ -21,6 +22,8 @@ export class Selection {
   key: string | number;
 
   type: SelectionType;
+
+  operationName?: string;
 
   unions?: string[];
 
@@ -45,34 +48,35 @@ export class Selection {
     args,
     argTypes,
     type,
+    operationName,
     alias,
     unions,
     id,
   }: SelectionConstructorArgs) {
     this.id = id + '';
     this.key = key;
+    this.operationName = operationName;
+    this.prevSelection = prevSelection ?? null;
 
     const pathKey = alias || key;
 
     const isInterfaceUnionSelection = key === '$on';
 
     this.cachePath = isInterfaceUnionSelection
-      ? prevSelection?.cachePath || []
+      ? prevSelection?.cachePath ?? []
       : prevSelection
       ? [...prevSelection.cachePath, pathKey]
       : [pathKey];
 
     this.pathString = isInterfaceUnionSelection
-      ? prevSelection?.pathString || ''
-      : prevSelection
-      ? prevSelection.pathString + '.' + pathKey
-      : pathKey.toString();
+      ? prevSelection?.pathString ?? ''
+      : `${prevSelection?.pathString.concat('.') ?? ''}${pathKey}`;
 
-    const prevSelectionsList = prevSelection?.selectionsList || [];
+    const prevSelectionsList = prevSelection?.selectionsList ?? [];
 
     this.selectionsList = [...prevSelectionsList, this];
 
-    const prevNoSelectionsList = prevSelection?.noIndexSelections || [];
+    const prevNoSelectionsList = prevSelection?.noIndexSelections ?? [];
 
     this.noIndexSelections =
       typeof key === 'string'
@@ -89,9 +93,7 @@ export class Selection {
     this.argTypes = argTypes;
     this.unions = unions;
 
-    this.type = type || prevSelection?.type || SelectionType.Query;
-
-    if (prevSelection) this.prevSelection = prevSelection;
+    this.type = type ?? prevSelection?.type ?? SelectionType.Query;
   }
 
   addCofetchSelections(selections: Selection[] | Set<Selection>) {

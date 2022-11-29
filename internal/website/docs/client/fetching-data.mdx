@@ -3,7 +3,7 @@ id: fetching-data
 title: Fetching data
 ---
 
-#### Prerequisites
+### Prerequisites
 
 Make sure you've completed [Getting Started](/docs/getting-started) first.
 
@@ -60,49 +60,6 @@ if (possibleData instanceof Promise) {
 }
 ```
 
-## track
-
-The function `track` accepts a callback that gets automatically called every time related data arrives or related cache changes, particularly useful for subscriptions, but it also works for queries.
-
-The returned function `stop` unsubscribes and stops tracking and `data` is an object that has a field `.current` that has the latest returned value from the callback.
-
-```ts
-import { track, subscription } from '../gqty';
-
-const { stop, data } = track(() => {
-  return subscription.newNotification;
-});
-
-// data.current === string | undefined
-
-setTimeout(() => {
-  stop();
-}, 5000);
-```
-
-### track options
-
-```ts
-track(
-  (info) => {
-    /**
-     * info === { type: "initial" | "cache_change" }
-     **/
-  },
-  {
-    onError(err) {
-      /**
-       * err === GQtyError
-       **/
-
-      console.error(err);
-    },
-    // Refetch on initial call
-    refetch: true,
-  }
-);
-```
-
 ## Refetching data
 
 ### refetch
@@ -138,7 +95,74 @@ const data = await resolved(() => {
 const refetchedUser = await refetch(query.user);
 ```
 
-## Using the Scheduler directly
+## Advanced Usages
+
+### Operation name
+
+A custom operation name can be added to GraphQL queries, mutations and subscriptions.
+
+This is useful when mocking for unit tests, and advanced server logics.
+
+```ts
+import { query, resolved, inlineResolved } from '../gqty';
+
+resolved(() => query.helloWorld, { operationName: 'MyQuery' });
+
+inlineResolved(() => query.helloWorld, { operationName: 'MyQuery' });
+```
+
+Both `resolved` and `inlineResolved` above will generate the following query:
+
+```graphql
+query MyQuery {
+  helloWorld
+}
+```
+
+### track
+
+The function `track` accepts a callback that gets automatically called every time related data arrives or related cache changes, particularly useful for subscriptions, but it also works for queries.
+
+The returned function `stop` unsubscribes and stops tracking and `data` is an object that has a field `.current` that has the latest returned value from the callback.
+
+```ts
+import { track, subscription } from '../gqty';
+
+const { stop, data } = track(() => {
+  return subscription.newNotification;
+});
+
+// data.current === string | undefined
+
+setTimeout(() => {
+  stop();
+}, 5000);
+```
+
+#### track options
+
+```ts
+track(
+  (info) => {
+    /**
+     * info === { type: "initial" | "cache_change" }
+     **/
+  },
+  {
+    onError(err) {
+      /**
+       * err === GQtyError
+       **/
+
+      console.error(err);
+    },
+    // Refetch on initial call
+    refetch: true,
+  }
+);
+```
+
+### The scheduler
 
 GQty exposes the Scheduler API, which is used by the helper functions above.
 
@@ -155,7 +179,7 @@ async function Example() {
 }
 ```
 
-### Error handling
+#### Error handling
 
 The scheduler resolves to a promise of a `GQtyError`:
 
