@@ -2,7 +2,7 @@ import '../src/Client';
 
 import { waitForExpect } from 'test-utils';
 
-import { GQtyError, Selection } from '../src';
+import { GQtyError, prepass, Selection } from '../src';
 import { createTestClient } from './utils';
 
 describe('core', () => {
@@ -107,6 +107,29 @@ describe('core', () => {
       expect.arrayContaining([
         'query TestQueryA{hello}',
         'query TestQueryB{hello}',
+      ])
+    );
+  });
+
+  test('resolved with unions', async () => {
+    const fetchHistory: string[] = [];
+    const { query, resolved } = await createTestClient(
+      undefined,
+      async (query) => {
+        fetchHistory.push(query);
+        return {};
+      }
+    );
+
+    await Promise.all([
+      resolved(() => {
+        return prepass(query.union({ type: 'A' }).$on, 'A.a', 'B.b');
+      }),
+    ]);
+
+    expect(fetchHistory).toEqual(
+      expect.arrayContaining([
+        expect.stringContaining('...on A{id a}...on B{id b}'),
       ])
     );
   });
