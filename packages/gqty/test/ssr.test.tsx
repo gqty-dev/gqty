@@ -113,7 +113,7 @@ describe('server side rendering', () => {
       .mockImplementation((message) => {
         expect(message).toEqual(
           SyntaxError(
-            semver.gte(process.version, '18.0.0')
+            semver.gt(process.version, '19.0.0')
               ? `Unexpected token 'i', "invalid" is not valid JSON`
               : `Unexpected token i in JSON at position 0`
           )
