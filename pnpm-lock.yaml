@@ -440,7 +440,7 @@ importers:
       '@emotion/styled': ^11.10.5
       '@guild-docs/client': 2.1.1
       '@guild-docs/server': 4.0.0
-      '@mdx-js/react': ^2.1.5
+      '@mdx-js/react': ^2.2.1
       '@next/bundle-analyzer': ^12.3.4
       '@theguild/components': ^1.12.0
       '@types/node': ^18.11.15
@@ -473,9 +473,9 @@ importers:
       '@chakra-ui/utils': 1.10.4
       '@emotion/react': 11.10.5_q5o373oqrklnndq2vhekyuzhxi
       '@emotion/styled': 11.10.5_5fe5shuv5xwkc5kpkr6h4jqd6u
-      '@guild-docs/client': 2.1.1_jkoe4iahc3c7orq2a7aoezsyaq
-      '@guild-docs/server': 4.0.0_f36vvkhpaui62gabx2i6x6b2di
-      '@mdx-js/react': 2.1.5_react@17.0.2
+      '@guild-docs/client': 2.1.1_mxlm5qdobbjcm3phimopbwh3le
+      '@guild-docs/server': 4.0.0_uhutf2kuxmxcuwspz43sas4vmm
+      '@mdx-js/react': 2.2.1_react@17.0.2
       '@theguild/components': 1.12.0_gzv7pa6nrbev3fs6gyzn7sadkq
       csstype: 3.1.1
       framer-motion: 6.5.1_sfoxds7t5ydpegc3knd667wn6m
@@ -4049,7 +4049,7 @@ packages:
       graphql: 17.0.0-alpha.2
     dev: true
 
-  /@guild-docs/client/2.1.1_jkoe4iahc3c7orq2a7aoezsyaq:
+  /@guild-docs/client/2.1.1_mxlm5qdobbjcm3phimopbwh3le:
     resolution: {integrity: sha512-ikdcOnjeLvwih+V+WvDCKwP6u8752mVtzK1zjm01H7O+EosmiHHgilHPER7lvvwf7DJ/tBjZJJfqTtvSSrw1zQ==}
     peerDependencies:
       '@chakra-ui/icons': '*'
@@ -4076,9 +4076,9 @@ packages:
       '@chakra-ui/react': 1.8.9_o5c335hb37452635324gukb6yi
       '@chakra-ui/utils': 1.10.4
       '@emotion/react': 11.10.5_q5o373oqrklnndq2vhekyuzhxi
-      '@guild-docs/mdx-remote': 2.0.2_zovcvhbn36b4nzy64xmxn4ryru
+      '@guild-docs/mdx-remote': 2.0.2_ofkg3s5fcke4pqiua25e6tmide
       '@guild-docs/types': 2.0.0_5cpnpu54ai6vtjva3tq4quxusa
-      '@mdx-js/react': 2.1.5_react@17.0.2
+      '@mdx-js/react': 2.2.1_react@17.0.2
       '@theguild/components': 1.12.0_gzv7pa6nrbev3fs6gyzn7sadkq
       framer-motion: 6.5.1_sfoxds7t5ydpegc3knd667wn6m
       immer: 9.0.12
@@ -4105,7 +4105,7 @@ packages:
       - unist-util-visit
     dev: false
 
-  /@guild-docs/mdx-remote/2.0.2_zovcvhbn36b4nzy64xmxn4ryru:
+  /@guild-docs/mdx-remote/2.0.2_ofkg3s5fcke4pqiua25e6tmide:
     resolution: {integrity: sha512-g35B/Lo7s4l3HLcB9Z7jvTYrhMjCLMbfeS4i3rEhzhP54S0lvQ6gFTbVY25nDGZjZGMgMpkykY4Rk/p73UF2qQ==}
     peerDependencies:
       '@mdx-js/react': ^2.1.1
@@ -4114,7 +4114,7 @@ packages:
       '@babel/code-frame': 7.16.7
       '@guild-docs/types': 3.0.0_5cpnpu54ai6vtjva3tq4quxusa
       '@mdx-js/mdx': 2.1.1
-      '@mdx-js/react': 2.1.5_react@17.0.2
+      '@mdx-js/react': 2.2.1_react@17.0.2
       '@stefanprobst/rehype-shiki': 2.2.0_shiki@0.10.1
       react: 17.0.2
       remark-gfm: 3.0.1
@@ -4130,7 +4130,7 @@ packages:
       - supports-color
     dev: false
 
-  /@guild-docs/server/4.0.0_f36vvkhpaui62gabx2i6x6b2di:
+  /@guild-docs/server/4.0.0_uhutf2kuxmxcuwspz43sas4vmm:
     resolution: {integrity: sha512-LlDr4U8LMwoE3LEmbMgUXlmFBUdHVKzGIOofKG1SR6VNwZEQ8/qAR5eEIdl3xA5VyOCs4PJ0lDJg5pzoECxq8w==}
     peerDependencies:
       next: '>=12.1.5'
@@ -4139,7 +4139,7 @@ packages:
       react-dom: '*'
       shiki: '*'
     dependencies:
-      '@guild-docs/mdx-remote': 2.0.2_zovcvhbn36b4nzy64xmxn4ryru
+      '@guild-docs/mdx-remote': 2.0.2_ofkg3s5fcke4pqiua25e6tmide
       '@guild-docs/types': 3.0.0_5cpnpu54ai6vtjva3tq4quxusa
       '@stefanprobst/remark-shiki': 2.1.0_shiki@0.10.1
       github-slugger: 1.4.0
@@ -4565,8 +4565,8 @@ packages:
       - supports-color
     dev: false
 
-  /@mdx-js/react/2.1.5_react@17.0.2:
-    resolution: {integrity: sha512-3Az1I6SAWA9R38rYjz5rXBrGKeZhq96CSSyQtqY+maPj8stBsoUH5pNcmIixuGkufYsh8F5+ka2CVPo2fycWZw==}
+  /@mdx-js/react/2.2.1_react@17.0.2:
+    resolution: {integrity: sha512-YdXcMcEnqZhzql98RNrqYo9cEhTTesBiCclEtoiQUbJwx87q9453GTapYU6kJ8ZZ2ek1Vp25SiAXEFy5O/eAPw==}
     peerDependencies:
       react: '>=16'
     dependencies:
