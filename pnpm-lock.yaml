@@ -131,7 +131,7 @@ importers:
       '@gqty/cli': workspace:^3.3.0
       '@gqty/logger': workspace:^2.0.2
       '@gqty/react': workspace:^2.1.1
-      '@graphql-ez/nextjs': ^0.10.2
+      '@graphql-ez/nextjs': ^0.11.0
       '@graphql-ez/plugin-codegen': ^0.7.12
       '@graphql-ez/plugin-graphiql': ^0.11.6
       '@graphql-ez/plugin-schema': ^0.8.6
@@ -152,7 +152,7 @@ importers:
     dependencies:
       '@gqty/logger': link:../../packages/logger
       '@gqty/react': link:../../packages/react
-      '@graphql-ez/nextjs': 0.10.2_dplb5gmnf5zspj5bnrdganxiby
+      '@graphql-ez/nextjs': 0.11.0_dplb5gmnf5zspj5bnrdganxiby
       '@graphql-ez/plugin-codegen': 0.7.12_4ebkw6sv47ikvydz3dyvvabfqq
       '@graphql-ez/plugin-graphiql': 0.11.6_4ebkw6sv47ikvydz3dyvvabfqq
       '@graphql-ez/plugin-schema': 0.8.6_4ebkw6sv47ikvydz3dyvvabfqq
@@ -3614,21 +3614,21 @@ packages:
       graphql-ez: 0.15.2_ra5ssf4jdsmbifiv5fjidbsw6i
     dev: true
 
-  /@graphql-ez/nextjs/0.10.2_dplb5gmnf5zspj5bnrdganxiby:
-    resolution: {integrity: sha512-+hZ+tvHtW6uYdD7apjFZGJ0t5ASLbccCyKC2zpqYE9FAETBUevsV2TweeUjT/J3BgNSkJC2uQQflKhg2WrtrVg==}
+  /@graphql-ez/nextjs/0.11.0_dplb5gmnf5zspj5bnrdganxiby:
+    resolution: {integrity: sha512-oZNeAu8Kbi0QmGpyK17QIjS5Vxzn6smCjZ4qE5+OKmAeJ8iSlTJlZtUn+ALEG0DzEIFg2nPM5xTAMlKO47WdCg==}
     engines: {node: '>=14.13.1'}
     peerDependencies:
       '@types/node': '*'
       graphql: '*'
-      graphql-ez: ^0.15.0
-      next: ^12.1.6
+      graphql-ez: ^0.16.0
+      next: ^12.3.4
     peerDependenciesMeta:
       graphql:
         optional: true
       next:
         optional: true
     dependencies:
-      '@types/cors': 2.8.12
+      '@types/cors': 2.8.13
       '@types/node': 18.11.17
       cors: 2.8.5
       graphql: 16.6.0
@@ -5308,8 +5308,10 @@ packages:
       '@types/keygrip': 1.0.2
       '@types/node': 18.11.17
 
-  /@types/cors/2.8.12:
-    resolution: {integrity: sha512-vt+kDhq/M2ayberEtJcIN/hxXy1Pk+59g2FV/ZQceeaTyCtCucjL2Q7FXlFjtWn4n15KCr1NE2lNNFhp0lEThw==}
+  /@types/cors/2.8.13:
+    resolution: {integrity: sha512-RG8AStHlUiV5ysZQKq97copd2UmVYw3/pRMLefISZ3S1hK104Cwm7iLQ3fTKx+lsUH2CE8FlLaYeEA2LSeqYUA==}
+    dependencies:
+      '@types/node': 18.11.17
     dev: false
 
   /@types/debug/4.1.7:
