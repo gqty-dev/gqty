@@ -18,7 +18,7 @@ importers:
       '@changesets/apply-release-plan': ^6.1.3
       '@changesets/assemble-release-plan': ^5.2.3
       '@changesets/cli': ^2.26.0
-      '@changesets/config': ^2.2.0
+      '@changesets/config': ^2.3.0
       '@changesets/read': ^0.5.8
       '@manypkg/get-packages': ^1.1.3
       '@types/node': ^18.11.17
@@ -50,7 +50,7 @@ importers:
       '@changesets/apply-release-plan': 6.1.3
       '@changesets/assemble-release-plan': 5.2.3
       '@changesets/cli': 2.26.0
-      '@changesets/config': 2.2.0
+      '@changesets/config': 2.3.0
       '@changesets/read': 0.5.8
       '@manypkg/get-packages': 1.1.3
       '@types/node': 18.11.17
@@ -2743,18 +2743,6 @@ packages:
       tty-table: 4.1.6
     dev: true
 
-  /@changesets/config/2.2.0:
-    resolution: {integrity: sha512-GGaokp3nm5FEDk/Fv2PCRcQCOxGKKPRZ7prcMqxEr7VSsG75MnChQE8plaW1k6V8L2bJE+jZWiRm19LbnproOw==}
-    dependencies:
-      '@changesets/errors': 0.1.4
-      '@changesets/get-dependents-graph': 1.3.4
-      '@changesets/logger': 0.0.5
-      '@changesets/types': 5.2.0
-      '@manypkg/get-packages': 1.1.3
-      fs-extra: 7.0.1
-      micromatch: 4.0.5
-    dev: true
-
   /@changesets/config/2.3.0:
     resolution: {integrity: sha512-EgP/px6mhCx8QeaMAvWtRrgyxW08k/Bx2tpGT+M84jEdX37v3VKfh4Cz1BkwrYKuMV2HZKeHOh8sHvja/HcXfQ==}
     dependencies:
@@ -2771,16 +2759,6 @@ packages:
     resolution: {integrity: sha512-HAcqPF7snsUJ/QzkWoKfRfXushHTu+K5KZLJWPb34s4eCZShIf8BFO3fwq6KU8+G7L5KdtN2BzQAXOSXEyiY9Q==}
     dependencies:
       extendable-error: 0.1.7
-    dev: true
-
-  /@changesets/get-dependents-graph/1.3.4:
-    resolution: {integrity: sha512-+C4AOrrFY146ydrgKOo5vTZfj7vetNu1tWshOID+UjPUU9afYGDXI8yLnAeib1ffeBXV3TuGVcyphKpJ3cKe+A==}
-    dependencies:
-      '@changesets/types': 5.2.1
-      '@manypkg/get-packages': 1.1.3
-      chalk: 2.4.2
-      fs-extra: 7.0.1
-      semver: 5.7.1
     dev: true
 
   /@changesets/get-dependents-graph/1.3.5:
