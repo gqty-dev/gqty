@@ -463,7 +463,7 @@ importers:
       react-i18next: ^12.1.1
       react-icons: ^4.7.1
       react-use: ^17.4.0
-      shiki: ^0.10.1
+      shiki: ^0.12.0
       typescript: ^4.9.4
       wait-on: ^7.0.1
     dependencies:
@@ -473,8 +473,8 @@ importers:
       '@chakra-ui/utils': 1.10.4
       '@emotion/react': 11.10.5_q5o373oqrklnndq2vhekyuzhxi
       '@emotion/styled': 11.10.5_5fe5shuv5xwkc5kpkr6h4jqd6u
-      '@guild-docs/client': 2.1.1_7e4hr27iqpqjwmvk4i6223r4ca
-      '@guild-docs/server': 4.0.0_vcghum6bnus6effvhme2cp56la
+      '@guild-docs/client': 2.1.1_ijk6uq4johlavsnmwffiaat7mi
+      '@guild-docs/server': 4.0.0_skkzkmiglgxjh3l4gyk3wzwiqm
       '@mdx-js/react': 2.2.1_react@17.0.2
       '@theguild/components': 1.12.0_gzv7pa6nrbev3fs6gyzn7sadkq
       csstype: 3.1.1
@@ -488,7 +488,7 @@ importers:
       react-i18next: 12.1.1_5e5hyi6tqxm4kcuij4pqpwru5u
       react-icons: 4.7.1_react@17.0.2
       react-use: 17.4.0_sfoxds7t5ydpegc3knd667wn6m
-      shiki: 0.10.1
+      shiki: 0.12.0
     devDependencies:
       '@next/bundle-analyzer': 12.3.4
       '@types/node': 18.11.17
@@ -3939,7 +3939,7 @@ packages:
       graphql: 17.0.0-alpha.2
     dev: true
 
-  /@guild-docs/client/2.1.1_7e4hr27iqpqjwmvk4i6223r4ca:
+  /@guild-docs/client/2.1.1_ijk6uq4johlavsnmwffiaat7mi:
     resolution: {integrity: sha512-ikdcOnjeLvwih+V+WvDCKwP6u8752mVtzK1zjm01H7O+EosmiHHgilHPER7lvvwf7DJ/tBjZJJfqTtvSSrw1zQ==}
     peerDependencies:
       '@chakra-ui/icons': '*'
@@ -3966,7 +3966,7 @@ packages:
       '@chakra-ui/react': 1.8.9_o5c335hb37452635324gukb6yi
       '@chakra-ui/utils': 1.10.4
       '@emotion/react': 11.10.5_q5o373oqrklnndq2vhekyuzhxi
-      '@guild-docs/mdx-remote': 2.0.2_vknhjbbmyfxnhc76i2s4vk47ca
+      '@guild-docs/mdx-remote': 2.0.2_tfcqjwb2lzimnr6ltzutrto2sm
       '@guild-docs/types': 2.0.0_xpbgumsgrr7ytapk5gosxnhw4q
       '@mdx-js/react': 2.2.1_react@17.0.2
       '@theguild/components': 1.12.0_gzv7pa6nrbev3fs6gyzn7sadkq
@@ -3995,7 +3995,7 @@ packages:
       - unist-util-visit
     dev: false
 
-  /@guild-docs/mdx-remote/2.0.2_vknhjbbmyfxnhc76i2s4vk47ca:
+  /@guild-docs/mdx-remote/2.0.2_tfcqjwb2lzimnr6ltzutrto2sm:
     resolution: {integrity: sha512-g35B/Lo7s4l3HLcB9Z7jvTYrhMjCLMbfeS4i3rEhzhP54S0lvQ6gFTbVY25nDGZjZGMgMpkykY4Rk/p73UF2qQ==}
     peerDependencies:
       '@mdx-js/react': ^2.1.1
@@ -4005,7 +4005,7 @@ packages:
       '@guild-docs/types': 3.0.0_xpbgumsgrr7ytapk5gosxnhw4q
       '@mdx-js/mdx': 2.1.1
       '@mdx-js/react': 2.2.1_react@17.0.2
-      '@stefanprobst/rehype-shiki': 2.2.0_shiki@0.10.1
+      '@stefanprobst/rehype-shiki': 2.2.0_shiki@0.12.0
       react: 17.0.2
       remark-gfm: 3.0.1
       unified: 10.1.2
@@ -4020,7 +4020,7 @@ packages:
       - supports-color
     dev: false
 
-  /@guild-docs/server/4.0.0_vcghum6bnus6effvhme2cp56la:
+  /@guild-docs/server/4.0.0_skkzkmiglgxjh3l4gyk3wzwiqm:
     resolution: {integrity: sha512-LlDr4U8LMwoE3LEmbMgUXlmFBUdHVKzGIOofKG1SR6VNwZEQ8/qAR5eEIdl3xA5VyOCs4PJ0lDJg5pzoECxq8w==}
     peerDependencies:
       next: '>=12.1.5'
@@ -4029,9 +4029,9 @@ packages:
       react-dom: '*'
       shiki: '*'
     dependencies:
-      '@guild-docs/mdx-remote': 2.0.2_vknhjbbmyfxnhc76i2s4vk47ca
+      '@guild-docs/mdx-remote': 2.0.2_tfcqjwb2lzimnr6ltzutrto2sm
       '@guild-docs/types': 3.0.0_xpbgumsgrr7ytapk5gosxnhw4q
-      '@stefanprobst/remark-shiki': 2.1.0_shiki@0.10.1
+      '@stefanprobst/remark-shiki': 2.1.0_shiki@0.12.0
       github-slugger: 1.4.0
       globby: 13.1.1
       gray-matter: 4.0.3
@@ -4041,7 +4041,7 @@ packages:
       react-dom: 17.0.2_react@17.0.2
       rehype-slug: 5.0.1
       remark-emoji: 3.0.2
-      shiki: 0.10.1
+      shiki: 0.12.0
       tiny-lru: 8.0.2
       undici: 5.7.0
     transitivePeerDependencies:
@@ -5030,7 +5030,7 @@ packages:
       size-limit: 8.1.0
     dev: true
 
-  /@stefanprobst/rehype-shiki/2.2.0_shiki@0.10.1:
+  /@stefanprobst/rehype-shiki/2.2.0_shiki@0.12.0:
     resolution: {integrity: sha512-X/m9hUMifZYJk77pc9dTl8Q5DLWdXegzmHhPZ5yraFpQXG9n/m2jKMLvIR7F6gI8l5plj6aNx/qcMCMnfBwBOA==}
     engines: {node: '>=14.17', yarn: 1.x}
     peerDependencies:
@@ -5041,15 +5041,15 @@ packages:
       parse-numeric-range: 1.3.0
       remark-parse: 10.0.1
       remark-rehype: 10.1.0
-      shiki: 0.10.1
-      shiki-renderer-hast: 1.1.5_shiki@0.10.1
+      shiki: 0.12.0
+      shiki-renderer-hast: 1.1.5_shiki@0.12.0
       unified: 10.1.2
       unist-util-visit: 4.1.1
     transitivePeerDependencies:
       - supports-color
     dev: false
 
-  /@stefanprobst/remark-shiki/2.1.0_shiki@0.10.1:
+  /@stefanprobst/remark-shiki/2.1.0_shiki@0.12.0:
     resolution: {integrity: sha512-cIQBMke/gP2W8sqxW2QW0qWQFbPnE8WQU4k32lKwEAOm/hZRuXxULRDdhNgJzMRoZBtVedyuW0RsedKKD94CCQ==}
     engines: {node: '>=14.17', yarn: 1.x}
     peerDependencies:
@@ -5057,7 +5057,7 @@ packages:
     dependencies:
       json5: 2.2.1
       parse-numeric-range: 1.3.0
-      shiki: 0.10.1
+      shiki: 0.12.0
       unified: 10.1.2
       unist-util-visit: 4.1.1
     dev: false
@@ -13164,21 +13164,21 @@ packages:
     resolution: {integrity: sha512-8o/QEhSSRb1a5i7TFR0iM4G16Z0vYB2OQVs4G3aAFXjn3T6yEx8AZxy1PgDF7I00LZHYA3WxaSYIf5e5sAX8Rw==}
     dev: true
 
-  /shiki-renderer-hast/1.1.5_shiki@0.10.1:
+  /shiki-renderer-hast/1.1.5_shiki@0.12.0:
     resolution: {integrity: sha512-XOHX0/mIRJZnqPNGoyyJ9bUrqUwj/tLUJQ5SuU/UkQLTiSJjiHaCP17HRB7/VSQoor4+WJF3QkT8BXbipyJN0Q==}
     peerDependencies:
       shiki: ^0.9 || ^0.10.0
     dependencies:
       hastscript: 7.1.0
-      shiki: 0.10.1
+      shiki: 0.12.0
     dev: false
 
-  /shiki/0.10.1:
-    resolution: {integrity: sha512-VsY7QJVzU51j5o1+DguUd+6vmCmZ5v/6gYu4vyYAhzjuNQU6P/vmSy4uQaOhvje031qQMiW0d2BwgMH52vqMng==}
+  /shiki/0.12.0:
+    resolution: {integrity: sha512-YDmjxrHnp8RUliAYM5b66OAKODAdOtlZtRbdp9BFtORB3eH0z1YIGZ+W5xz46JSi2emwrJqJ8lS9cvPxfgvCUw==}
     dependencies:
       jsonc-parser: 3.2.0
-      vscode-oniguruma: 1.6.2
-      vscode-textmate: 5.2.0
+      vscode-oniguruma: 1.7.0
+      vscode-textmate: 8.0.0
     dev: false
 
   /side-channel/1.0.4:
@@ -14459,12 +14459,12 @@ packages:
     engines: {node: '>=0.10.0'}
     dev: false
 
-  /vscode-oniguruma/1.6.2:
-    resolution: {integrity: sha512-KH8+KKov5eS/9WhofZR8M8dMHWN2gTxjMsG4jd04YhpbPR91fUj7rYQ2/XjeHCJWbg7X++ApRIU9NUwM2vTvLA==}
+  /vscode-oniguruma/1.7.0:
+    resolution: {integrity: sha512-L9WMGRfrjOhgHSdOYgCt/yRMsXzLDJSL7BPrOZt73gU0iWO4mpqzqQzOz5srxqTvMBaR0XZTSrVWo4j55Rc6cA==}
     dev: false
 
-  /vscode-textmate/5.2.0:
-    resolution: {integrity: sha512-Uw5ooOQxRASHgu6C7GVvUxisKXfSgW4oFlO+aa+PAkgmH89O3CXxEEzNRNtHSqtXFTl0nAC1uYj0GMSH27uwtQ==}
+  /vscode-textmate/8.0.0:
+    resolution: {integrity: sha512-AFbieoL7a5LMqcnOF04ji+rpXadgOXnZsxQr//r83kLPr7biP7am3g9zbaZIaBGwBRWeSvoMD4mgPdX3e4NWBg==}
     dev: false
 
   /w3c-xmlserializer/3.0.0:
