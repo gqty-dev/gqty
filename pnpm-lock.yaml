@@ -213,7 +213,7 @@ importers:
       '@graphql-ez/plugin-dataloader': ^0.8.0
       '@graphql-ez/plugin-schema': ^0.9.0
       '@graphql-ez/plugin-upload': ^0.8.0
-      '@graphql-ez/plugin-websockets': ^0.10.5
+      '@graphql-ez/plugin-websockets': ^0.11.0
       '@react-native-async-storage/async-storage': ^1.17.11
       '@types/extract-files': ^8.1.1
       '@types/graphql-upload': ^8.0.12
@@ -266,7 +266,7 @@ importers:
       '@graphql-ez/plugin-dataloader': 0.8.0_hgwk6ljxgctw3jexqhbow2oohi
       '@graphql-ez/plugin-schema': 0.9.0_4ebkw6sv47ikvydz3dyvvabfqq
       '@graphql-ez/plugin-upload': 0.8.0_li6x7zydqf5pyzsw5c4ik7h6qu
-      '@graphql-ez/plugin-websockets': 0.10.5_4ebkw6sv47ikvydz3dyvvabfqq
+      '@graphql-ez/plugin-websockets': 0.11.0_4ebkw6sv47ikvydz3dyvvabfqq
       '@react-native-async-storage/async-storage': 1.17.11
       '@types/extract-files': 8.1.1
       date-fns: 2.29.3
@@ -379,7 +379,7 @@ importers:
       '@graphql-ez/fastify-testing': ^0.4.0
       '@graphql-ez/plugin-codegen': ^0.8.0
       '@graphql-ez/plugin-schema': ^0.9.0
-      '@graphql-ez/plugin-websockets': ^0.10.5
+      '@graphql-ez/plugin-websockets': ^0.11.0
       '@jest/types': ^29.3.1
       '@rollup/plugin-babel': ^6.0.3
       '@types/jest': ^29.2.4
@@ -419,7 +419,7 @@ importers:
       ts-jest: 29.0.3_fqssfg56hcc4kb2n4vw5pi3foa
       wait-for-expect: 3.0.2
     devDependencies:
-      '@graphql-ez/plugin-websockets': 0.10.5_4ebkw6sv47ikvydz3dyvvabfqq
+      '@graphql-ez/plugin-websockets': 0.11.0_4ebkw6sv47ikvydz3dyvvabfqq
       '@jest/types': 29.3.1
       '@types/node': 18.11.17
       '@types/randomstring': 1.1.8
@@ -3753,23 +3753,23 @@ packages:
       - '@types/node'
     dev: false
 
-  /@graphql-ez/plugin-websockets/0.10.5_4ebkw6sv47ikvydz3dyvvabfqq:
-    resolution: {integrity: sha512-Slb4DcZ0n25553GtaQSDBsCjhcPvqGOSIdE1iw1Ao0raZ+B4dUgXxQPhRUF9mh297EXFFUQArxxK5M+g/9bvRg==}
+  /@graphql-ez/plugin-websockets/0.11.0_4ebkw6sv47ikvydz3dyvvabfqq:
+    resolution: {integrity: sha512-jtvw5o3rw3Y6JNFfl+CoybQWdzqy0ml+eHNelHEd1Jd1b/Jbsc9RsIyOHE6uRqOxQhsBi6/1HL+nJCUuW+/n9A==}
     engines: {node: '>=14.13.1'}
     peerDependencies:
       graphql: '*'
-      graphql-ez: ^0.15.0
+      graphql-ez: ^0.16.0
     peerDependenciesMeta:
       graphql:
         optional: true
     dependencies:
-      '@graphql-ez/utils': 0.1.4_cra75ky6nasod3lqlqzw65fjtq
+      '@graphql-ez/utils': 0.2.0_cra75ky6nasod3lqlqzw65fjtq
       '@types/ws': 8.5.3
       graphql: 16.6.0
       graphql-ez: 0.15.2_cra75ky6nasod3lqlqzw65fjtq
       graphql-ws: 5.11.2_graphql@16.6.0
-      subscriptions-transport-ws-envelop: 2.0.2_graphql@16.6.0+ws@8.10.0
-      ws: 8.10.0
+      subscriptions-transport-ws-envelop: 2.0.2_graphql@16.6.0+ws@8.11.0
+      ws: 8.11.0
     transitivePeerDependencies:
       - '@types/node'
       - bufferutil
@@ -3802,7 +3802,6 @@ packages:
     dependencies:
       '@types/node': 18.11.17
       graphql: 16.6.0
-    dev: false
 
   /@graphql-ez/utils/0.2.0_ra5ssf4jdsmbifiv5fjidbsw6i:
     resolution: {integrity: sha512-oYsmJPG6Ru1ODKni5QvtbBh6OhofIm+jRMTaGL2lZo9ZXqj2WFm4lI4heKTiJQv/VOqKpXOVFS38FvnJzW15Aw==}
@@ -9756,12 +9755,12 @@ packages:
       - encoding
     dev: true
 
-  /isomorphic-ws/4.0.1_ws@8.10.0:
+  /isomorphic-ws/4.0.1_ws@8.11.0:
     resolution: {integrity: sha512-BhBvN2MBpWTaSHdWRb/bwdZJ1WaehQ2L1KngkCkfLUGF0mAWAT1sQUQacEmQ0jXkFw/czDXPNQSL5u2/Krsz1w==}
     peerDependencies:
       ws: '*'
     dependencies:
-      ws: 8.10.0
+      ws: 8.11.0
 
   /isomorphic-ws/5.0.0_ws@8.11.0:
     resolution: {integrity: sha512-muId7Zzn9ywDsyXgTIafTry2sV3nySZeUDe6YedVd1Hvuuep5AsIlqK+XefWpYTyJG5e503F2xIuT2lcU6rCSw==}
@@ -13612,7 +13611,7 @@ packages:
     resolution: {integrity: sha512-GP6WDNWf+o403jrEp9c5jibKavrtLW+/qYGhFxFrG8maXhwTBI7gLLhiBb0o7uFccWN+EOS9aMO6cGHWAO07OA==}
     dev: false
 
-  /subscriptions-transport-ws-envelop/2.0.2_graphql@16.6.0+ws@8.10.0:
+  /subscriptions-transport-ws-envelop/2.0.2_graphql@16.6.0+ws@8.11.0:
     resolution: {integrity: sha512-HMwQgdiMBgWC48LplRtDsgrdQKnsns7VvLZTN1eIFNT01XJd6yuuudrl85TbO5QnTAiw6g2Sh5bjTFYKjFIGwQ==}
     peerDependencies:
       graphql: '*'
@@ -13621,10 +13620,10 @@ packages:
       backo2: 1.0.2
       eventemitter3: 4.0.7
       graphql: 16.6.0
-      isomorphic-ws: 4.0.1_ws@8.10.0
+      isomorphic-ws: 4.0.1_ws@8.11.0
       iterall: 1.3.0
       symbol-observable: 4.0.0
-      ws: 8.10.0
+      ws: 8.11.0
 
   /supertap/3.0.1:
     resolution: {integrity: sha512-u1ZpIBCawJnO+0QePsEiOknOfCRq0yERxiAchT0i4li0WHNUJbf0evXXSXOcCAR4M8iMDoajXYmstm/qO81Isw==}
@@ -14736,18 +14735,6 @@ packages:
       utf-8-validate:
         optional: true
     dev: true
-
-  /ws/8.10.0:
-    resolution: {integrity: sha512-+s49uSmZpvtAsd2h37vIPy1RBusaLawVe8of+GyEPsaJTCMpj/2v8NpeK1SHXjBlQ95lQTmQofOJnFiLoaN3yw==}
-    engines: {node: '>=10.0.0'}
-    peerDependencies:
-      bufferutil: ^4.0.1
-      utf-8-validate: ^5.0.2
-    peerDependenciesMeta:
-      bufferutil:
-        optional: true
-      utf-8-validate:
-        optional: true
 
   /ws/8.11.0:
     resolution: {integrity: sha512-HPG3wQd9sNQoT9xHyNCXoDUa+Xw/VevmY9FoHyQ+g+rrMn4j6FB4np7Z0OhdTgjx6MgQLK7jwSy1YecU1+4Asg==}
