@@ -133,7 +133,7 @@ importers:
       '@gqty/react': workspace:^2.1.1
       '@graphql-ez/nextjs': ^0.11.0
       '@graphql-ez/plugin-codegen': ^0.8.0
-      '@graphql-ez/plugin-graphiql': ^0.11.6
+      '@graphql-ez/plugin-graphiql': ^0.12.0
       '@graphql-ez/plugin-schema': ^0.8.6
       '@types/node': ^18.11.17
       '@types/react': ^17.0.52
@@ -154,7 +154,7 @@ importers:
       '@gqty/react': link:../../packages/react
       '@graphql-ez/nextjs': 0.11.0_dplb5gmnf5zspj5bnrdganxiby
       '@graphql-ez/plugin-codegen': 0.8.0_4ebkw6sv47ikvydz3dyvvabfqq
-      '@graphql-ez/plugin-graphiql': 0.11.6_4ebkw6sv47ikvydz3dyvvabfqq
+      '@graphql-ez/plugin-graphiql': 0.12.0_4ebkw6sv47ikvydz3dyvvabfqq
       '@graphql-ez/plugin-schema': 0.8.6_4ebkw6sv47ikvydz3dyvvabfqq
       gqty: link:../../packages/gqty
       graphql: 16.6.0
@@ -3697,14 +3697,14 @@ packages:
       - graphql
     dev: false
 
-  /@graphql-ez/plugin-graphiql/0.11.6_4ebkw6sv47ikvydz3dyvvabfqq:
-    resolution: {integrity: sha512-w0+buGQKkADQRFTZQC6CFyOgqEl4bU2V6TFBN2ktpoOfvem7fZDRhFrVehINUQIbX9HB/0bM6vySjiztS6ZSgQ==}
+  /@graphql-ez/plugin-graphiql/0.12.0_4ebkw6sv47ikvydz3dyvvabfqq:
+    resolution: {integrity: sha512-d2MPAi6MXaDzKPr/Ai2+GNn/6mQKoNfbeQLudIzNOr1/zc00tO5HAgDaO8WwhHTDfCX+GwFw2Bgr4ZOU3lv+Uw==}
     engines: {node: '>=14.13.1'}
     peerDependencies:
-      graphql-ez: ^0.15.2
+      graphql-ez: ^0.16.0
     dependencies:
-      '@graphql-ez/utils': 0.1.4_cra75ky6nasod3lqlqzw65fjtq
-      '@pablosz/graphql-helix-graphiql': 4.2.1_cra75ky6nasod3lqlqzw65fjtq
+      '@graphql-ez/utils': 0.2.0_cra75ky6nasod3lqlqzw65fjtq
+      '@pablosz/graphql-helix-graphiql': 4.2.2_cra75ky6nasod3lqlqzw65fjtq
       graphql-ez: 0.15.2_cra75ky6nasod3lqlqzw65fjtq
     transitivePeerDependencies:
       - '@types/node'
@@ -4692,10 +4692,10 @@ packages:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.13.0
 
-  /@pablosz/graphql-helix-graphiql/4.2.1_cra75ky6nasod3lqlqzw65fjtq:
-    resolution: {integrity: sha512-dBxg7MbXwdU2uonXuIJXqjgYfrm0HQuP0Xrp242c4dTA+/PWb0WgM8XIrBYqOb8xAsw/mXNS2034kjytkPQMhA==}
+  /@pablosz/graphql-helix-graphiql/4.2.2_cra75ky6nasod3lqlqzw65fjtq:
+    resolution: {integrity: sha512-KvSzKAM7amhSsr1D2ZeAynSXzkZfCWOrRPdawcCowKR2t7o8BkUQc91o0wcVgnqzf5YJLp1xYKhxUvzYsHxy1g==}
     dependencies:
-      '@graphql-ez/utils': 0.1.5_cra75ky6nasod3lqlqzw65fjtq
+      '@graphql-ez/utils': 0.2.0_cra75ky6nasod3lqlqzw65fjtq
     transitivePeerDependencies:
       - '@types/node'
       - graphql
