@@ -507,7 +507,7 @@ importers:
     specifiers:
       '@graphql-codegen/core': ^2.6.8
       '@graphql-codegen/typescript': ^2.8.5
-      '@graphql-tools/delegate': ^9.0.20
+      '@graphql-tools/delegate': ^9.0.21
       '@graphql-tools/utils': ^9.1.3
       '@graphql-tools/wrap': ^9.2.22
       '@size-limit/preset-small-lib': ^8.1.0
@@ -543,7 +543,7 @@ importers:
     devDependencies:
       '@graphql-codegen/core': 2.6.8_graphql@16.6.0
       '@graphql-codegen/typescript': 2.8.5_graphql@16.6.0
-      '@graphql-tools/delegate': 9.0.20_graphql@16.6.0
+      '@graphql-tools/delegate': 9.0.21_graphql@16.6.0
       '@graphql-tools/utils': 9.1.3_graphql@16.6.0
       '@graphql-tools/wrap': 9.2.22_graphql@16.6.0
       '@size-limit/preset-small-lib': 8.1.0_size-limit@8.1.0
@@ -3748,6 +3748,21 @@ packages:
 
   /@graphql-tools/delegate/9.0.20_graphql@16.6.0:
     resolution: {integrity: sha512-m/de++kSxa/JABQ15tyt6SMlc4qfl3MgFFWmwbPcWgJxlAvZ7oIdGXcUvU6VJcXiyXfo6MZ/zr4V2E2UwMehew==}
+    peerDependencies:
+      graphql: '*'
+    dependencies:
+      '@graphql-tools/batch-execute': 8.5.14_graphql@16.6.0
+      '@graphql-tools/executor': 0.0.11_graphql@16.6.0
+      '@graphql-tools/schema': 9.0.12_graphql@16.6.0
+      '@graphql-tools/utils': 9.1.3_graphql@16.6.0
+      dataloader: 2.1.0
+      graphql: 16.6.0
+      tslib: 2.4.1
+      value-or-promise: 1.0.11
+    dev: true
+
+  /@graphql-tools/delegate/9.0.21_graphql@16.6.0:
+    resolution: {integrity: sha512-SM8tFeq6ogFGhIxDE82WTS44/3IQ/wz9QksAKT7xWkcICQnyR9U6Qyt+W7VGnHiybqNsVK3kHNNS/i4KGSF85g==}
     peerDependencies:
       graphql: '*'
     dependencies:
