@@ -116,13 +116,14 @@ export function createUseQuery<
       return scheduler.errors.subscribeErrors((ev) => {
         switch (ev.type) {
           case 'errors_clean':
-          case 'new_error':
+          case 'new_error': {
             const error = getLastError();
             if (error) {
               $state.error = error;
             } else {
               delete $state.error;
             }
+          }
         }
       });
     }, []);
