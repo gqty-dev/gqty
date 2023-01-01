@@ -438,7 +438,7 @@ importers:
       '@chakra-ui/utils': ^1.10.4
       '@emotion/react': ^11.10.5
       '@emotion/styled': ^11.10.5
-      '@guild-docs/client': 2.1.1
+      '@guild-docs/client': 3.1.0
       '@guild-docs/server': 4.0.0
       '@mdx-js/react': ^2.2.1
       '@next/bundle-analyzer': ^12.3.4
@@ -473,7 +473,7 @@ importers:
       '@chakra-ui/utils': 1.10.4
       '@emotion/react': 11.10.5_q5o373oqrklnndq2vhekyuzhxi
       '@emotion/styled': 11.10.5_5fe5shuv5xwkc5kpkr6h4jqd6u
-      '@guild-docs/client': 2.1.1_nqlt2ebo7ocs52olt6hvo7ybba
+      '@guild-docs/client': 3.1.0_nqlt2ebo7ocs52olt6hvo7ybba
       '@guild-docs/server': 4.0.0_wl3cmpofgmth5v6qqyadkvfxiy
       '@mdx-js/react': 2.2.1_react@17.0.2
       '@theguild/components': 1.12.0_gzv7pa6nrbev3fs6gyzn7sadkq
@@ -3945,17 +3945,17 @@ packages:
       graphql: 17.0.0-alpha.2
     dev: true
 
-  /@guild-docs/client/2.1.1_nqlt2ebo7ocs52olt6hvo7ybba:
-    resolution: {integrity: sha512-ikdcOnjeLvwih+V+WvDCKwP6u8752mVtzK1zjm01H7O+EosmiHHgilHPER7lvvwf7DJ/tBjZJJfqTtvSSrw1zQ==}
+  /@guild-docs/client/3.1.0_nqlt2ebo7ocs52olt6hvo7ybba:
+    resolution: {integrity: sha512-Uc2dv+30qYPNEg02PZ1r5PGZSPkgM7C5mblKEMUArqJhM6bxpFJG5JBi248f//O/y07/x7oEZaRbLn4Ktn0MPw==}
     peerDependencies:
       '@chakra-ui/icons': '*'
       '@chakra-ui/react': '*'
       '@chakra-ui/utils': '*'
       '@emotion/react': '*'
       '@mdx-js/react': ^2.1.1
-      '@theguild/components': ^1.10.3
+      '@theguild/components': ^1.11.2
       framer-motion: '*'
-      next: '>=12.1.4'
+      next: '>=12.1.5'
       next-i18next: '*'
       next-seo: ^5.4.0
       react: '*'
@@ -3973,7 +3973,7 @@ packages:
       '@chakra-ui/utils': 1.10.4
       '@emotion/react': 11.10.5_q5o373oqrklnndq2vhekyuzhxi
       '@guild-docs/mdx-remote': 2.0.2_mtv2one5kdhczwl2ucx73ysbam
-      '@guild-docs/types': 2.0.0_xpbgumsgrr7ytapk5gosxnhw4q
+      '@guild-docs/types': 3.0.0_xpbgumsgrr7ytapk5gosxnhw4q
       '@mdx-js/react': 2.2.1_react@17.0.2
       '@theguild/components': 1.12.0_gzv7pa6nrbev3fs6gyzn7sadkq
       framer-motion: 6.5.1_sfoxds7t5ydpegc3knd667wn6m
@@ -3985,14 +3985,14 @@ packages:
       next-seo: 5.15.0_dwjfwrt6uv2f53xn6wotzcxyoa
       nprogress: 0.2.0
       react: 17.0.2
-      react-children-utilities: 2.7.0_react@17.0.2
+      react-children-utilities: 2.7.1_react@17.0.2
       react-dom: 17.0.2_react@17.0.2
       react-icons: 4.7.1_react@17.0.2
-      react-intersection-observer: 8.33.1_react@17.0.2
+      react-intersection-observer: 8.34.0_react@17.0.2
       react-sticky-box: 1.0.2_react@17.0.2
       react-use: 17.4.0_sfoxds7t5ydpegc3knd667wn6m
-      remove-markdown: 0.3.0
-      use-immer: 0.6.0_immer@9.0.12+react@17.0.2
+      remove-markdown: 0.5.0
+      use-immer: 0.7.0_immer@9.0.12+react@17.0.2
       zustand: 3.7.2_react@17.0.2
     transitivePeerDependencies:
       - '@types/react'
@@ -4054,22 +4054,6 @@ packages:
       - '@chakra-ui/react'
       - '@mdx-js/react'
       - '@types/react'
-      - supports-color
-    dev: false
-
-  /@guild-docs/types/2.0.0_xpbgumsgrr7ytapk5gosxnhw4q:
-    resolution: {integrity: sha512-BeObMB7WokzcFO5quSWOOouJL96zneEzE0VS6rkZmg/bG/ukX0S6ODy4/UhxsWphxPYqQ68VAdM57WqTkdlamg==}
-    peerDependencies:
-      '@chakra-ui/react': '*'
-      '@types/react': '*'
-      next-i18next: '*'
-    dependencies:
-      '@chakra-ui/react': 1.8.9_o5c335hb37452635324gukb6yi
-      '@mdx-js/mdx': 2.1.5
-      '@types/react': 17.0.52
-      next-i18next: 13.0.2_245kyrx75s2pzarn5iidk2xtcu
-      unified: 10.1.2
-    transitivePeerDependencies:
       - supports-color
     dev: false
 
@@ -12346,8 +12330,8 @@ packages:
       strip-json-comments: 2.0.1
     dev: true
 
-  /react-children-utilities/2.7.0_react@17.0.2:
-    resolution: {integrity: sha512-8vvGyL8+MTB/WZnTZKll3ph8rKhYQ3s0TOeojFcSi9yF8hMHwYmCS3y5RZyPxTg4/gGW6ev299ehV9DrNU8dow==}
+  /react-children-utilities/2.7.1_react@17.0.2:
+    resolution: {integrity: sha512-olV2IcUcARN/VrgYnijbxEtvc2P07BcmAWKdLI0txZgAqs8YODxbYu68GMDv/uretA1sVlPMCQXRgY0Msh4dmA==}
     peerDependencies:
       react: 17.x.x || 16.x.x || 15.x.x
     dependencies:
@@ -12462,8 +12446,8 @@ packages:
       - algoliasearch
     dev: false
 
-  /react-intersection-observer/8.33.1_react@17.0.2:
-    resolution: {integrity: sha512-3v+qaJvp3D1MlGHyM+KISVg/CMhPiOlO6FgPHcluqHkx4YFCLuyXNlQ/LE6UkbODXlQcLOppfX6UMxCEkUhDLw==}
+  /react-intersection-observer/8.34.0_react@17.0.2:
+    resolution: {integrity: sha512-TYKh52Zc0Uptp5/b4N91XydfSGKubEhgZRtcg1rhTKABXijc4Sdr1uTp5lJ8TN27jwUsdXxjHXtHa0kPj704sw==}
     peerDependencies:
       react: ^15.0.0 || ^16.0.0 || ^17.0.0|| ^18.0.0
     dependencies:
@@ -12849,8 +12833,8 @@ packages:
       unified: 10.1.2
     dev: false
 
-  /remove-markdown/0.3.0:
-    resolution: {integrity: sha512-5392eIuy1mhjM74739VunOlsOYKjsH82rQcTBlJ1bkICVC3dQ3ksQzTHh4jGHQFnM+1xzLzcFOMH+BofqXhroQ==}
+  /remove-markdown/0.5.0:
+    resolution: {integrity: sha512-x917M80K97K5IN1L8lUvFehsfhR8cYjGQ/yAMRI9E7JIKivtl5Emo5iD13DhMr+VojzMCiYk8V2byNPwT/oapg==}
     dev: false
 
   /remove-trailing-separator/1.1.0:
@@ -14333,11 +14317,11 @@ packages:
       react-dom: 17.0.2_react@17.0.2
     dev: false
 
-  /use-immer/0.6.0_immer@9.0.12+react@17.0.2:
-    resolution: {integrity: sha512-dFGRfvWCqPDTOt/S431ETYTg6+uxbpb7A1pptufwXVzGJY3RlXr38+3wyLNpc6SbbmAKjWl6+EP6uW74fkEsXQ==}
+  /use-immer/0.7.0_immer@9.0.12+react@17.0.2:
+    resolution: {integrity: sha512-Re4hjrP3a/2ABZjAc0b7AK9s626bnO+H33RO2VUhiDZ2StBz5B663K6WNNlr4QtHWaGUmvLpwt3whFvvWuolQw==}
     peerDependencies:
       immer: '>=2.0.0'
-      react: ^16.8.0 || ^17.0.1
+      react: ^16.8.0 || ^17.0.1 || ^18.0.0
     dependencies:
       immer: 9.0.12
       react: 17.0.2
