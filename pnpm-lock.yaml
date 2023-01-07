@@ -601,7 +601,7 @@ importers:
       tsc-watch: ^6.0.0
       typescript: ^4.9.4
       wait-on: ^7.0.1
-      ws: ^8.11.0
+      ws: ^8.12.0
     dependencies:
       '@gqty/utils': link:../utils
     devDependencies:
@@ -630,7 +630,7 @@ importers:
       tsc-watch: 6.0.0_typescript@4.9.4
       typescript: 4.9.4
       wait-on: 7.0.1
-      ws: 8.11.0
+      ws: 8.12.0
     publishDirectory: dist
 
   packages/logger:
@@ -733,10 +733,10 @@ importers:
       test-utils: workspace:^0.1.0
       tslib: ^2.4.1
       typescript: ^4.9.4
-      ws: ^8.11.0
+      ws: ^8.12.0
     dependencies:
-      isomorphic-ws: 5.0.0_ws@8.11.0
-      ws: 8.11.0
+      isomorphic-ws: 5.0.0_ws@8.12.0
+      ws: 8.12.0
     devDependencies:
       '@types/node': 18.11.18
       '@types/ws': 8.5.4
@@ -9768,12 +9768,12 @@ packages:
     dependencies:
       ws: 8.11.0
 
-  /isomorphic-ws/5.0.0_ws@8.11.0:
+  /isomorphic-ws/5.0.0_ws@8.12.0:
     resolution: {integrity: sha512-muId7Zzn9ywDsyXgTIafTry2sV3nySZeUDe6YedVd1Hvuuep5AsIlqK+XefWpYTyJG5e503F2xIuT2lcU6rCSw==}
     peerDependencies:
       ws: '*'
     dependencies:
-      ws: 8.11.0
+      ws: 8.12.0
     dev: false
 
   /istanbul-lib-coverage/3.2.0:
@@ -10409,7 +10409,7 @@ packages:
       whatwg-encoding: 2.0.0
       whatwg-mimetype: 3.0.0
       whatwg-url: 11.0.0
-      ws: 8.11.0
+      ws: 8.12.0
       xml-name-validator: 4.0.0
     transitivePeerDependencies:
       - bufferutil
@@ -14757,6 +14757,18 @@ packages:
     peerDependencies:
       bufferutil: ^4.0.1
       utf-8-validate: ^5.0.2
+    peerDependenciesMeta:
+      bufferutil:
+        optional: true
+      utf-8-validate:
+        optional: true
+
+  /ws/8.12.0:
+    resolution: {integrity: sha512-kU62emKIdKVeEIOIKVegvqpXMSTAMLJozpHZaJNDYqBjzlSYXQGviYwN1osDLJ9av68qHd4a2oSjd7yD4pacig==}
+    engines: {node: '>=10.0.0'}
+    peerDependencies:
+      bufferutil: ^4.0.1
+      utf-8-validate: '>=5.0.2'
     peerDependenciesMeta:
       bufferutil:
         optional: true
