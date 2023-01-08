@@ -37,7 +37,7 @@ export default function Index() {
             <>
               <section
                 className={css`
-                  padding: 2rem 0;
+                  padding: ${isDarkTheme ? '2rem' : '0'} 0 2rem;
                   text-align: center;
 
                   > div {
@@ -58,11 +58,7 @@ export default function Index() {
                 <p>Update the component and see how the query change.</p>
 
                 <div>
-                  <iframe
-                    src={`https://stackblitz.com/edit/nextjs-2jqmx4?embed=1&file=graphql/schema.graphql,src/components/Query.tsx&hideExplorer=1&hideNavigation=1&theme=${
-                      isDarkTheme ? 'dark' : 'light'
-                    }`}
-                  ></iframe>
+                  <iframe src="https://stackblitz.com/edit/nextjs-2jqmx4?embed=1&file=graphql/schema.graphql,src/components/Query.tsx&hideExplorer=1&hideNavigation=1"></iframe>
                 </div>
               </section>
 
