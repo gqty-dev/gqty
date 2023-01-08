@@ -15,12 +15,13 @@ import {
   ExtendComponents,
   handlePushRoute,
 } from '@guild-docs/client';
-import { Subheader } from '@theguild/components';
+import { Subheader, useThemeContext } from '@theguild/components';
 import { appWithTranslation } from 'next-i18next';
 import type { AppProps } from 'next/app';
 import Router from 'next/router';
+import { BsBook, BsMoonFill, BsSun } from 'react-icons/bs';
+import { FaBookOpen, FaDiscord, FaGithub, FaHome } from 'react-icons/fa';
 import '../../public/style.css';
-import { ThemeSwitch } from '../components/ThemeSwitch';
 
 const BaseAnchor = chakra('a', {
   baseStyle: {
@@ -166,6 +167,7 @@ const mdxRoutes = { data: serializedMdx && JSON.parse(serializedMdx) };
 function AppContent(appProps: AppProps) {
   const { Component, pageProps, router } = appProps;
   const isDocs = router.asPath.startsWith('/docs');
+  const { setDarkTheme, isDarkTheme } = useThemeContext();
 
   return (
     <>
@@ -193,34 +195,58 @@ function AppContent(appProps: AppProps) {
                 }}
                 links={[
                   {
-                    children: 'Home',
-                    title: 'Read about Guild Docs',
+                    children: <FaHome size={20} />,
+                    title: 'GQty Home',
                     href: '/',
                     onClick: (e) => handlePushRoute('/', e),
                   },
                   {
-                    children: 'Examples',
-                    title: 'Check Examples',
-                    href: '/examples',
-                    onClick: (e) => handlePushRoute('/examples', e),
+                    children: isDarkTheme ? (
+                      <BsBook size={20} />
+                    ) : (
+                      <FaBookOpen size={20} />
+                    ),
+                    title: 'Read the docs',
+                    href: '/docs',
+                    onClick: (e) => handlePushRoute('/docs/intro', e),
                   },
                   {
-                    children: 'GitHub',
+                    children: <FaGithub size={20} />,
                     href: 'https://github.com/gqty-dev/gqty',
                     target: '_blank',
                     rel: 'noopener norefereer',
                     title: "Head to the project's GitHub",
                   },
                   {
-                    children: 'Docs',
-                    title: 'Check Documentation',
-                    href: '/docs',
-                    onClick: (e) => handlePushRoute('/docs/getting-started', e),
+                    children: <FaDiscord size={24} />,
+                    href: 'https://discord.gg/YNux4cde',
+                    target: '_blank',
+                    rel: 'noopener norefereer',
+                    title: 'Join our Discord server',
                   },
                   {
-                    children: <ThemeSwitch />,
+                    children:
+                      setDarkTheme &&
+                      (isDarkTheme ? (
+                        <BsMoonFill
+                          size={18}
+                          className={css`
+                            cursor: pointer;
+                          `}
+                        />
+                      ) : (
+                        <BsSun
+                          size={18}
+                          className={css`
+                            cursor: pointer;
+                          `}
+                        />
+                      )),
                     href: null as any,
-                    title: '',
+                    onClick: () => setDarkTheme?.((dark) => !dark),
+                    title: isDarkTheme
+                      ? 'Switch to light theme'
+                      : 'Switch to dark mode',
                   },
                 ]}
                 cta={{
