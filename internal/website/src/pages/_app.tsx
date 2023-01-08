@@ -123,7 +123,7 @@ ExtendComponents({
   td,
 });
 
-const styles: typeof chakraTheme['styles'] = {
+const styles: (typeof chakraTheme)['styles'] = {
   global: (props) => ({
     body: {
       bg: mode('white', 'gray.850')(props),
@@ -267,7 +267,7 @@ function AppContent(appProps: AppProps) {
 
 const defaultSeo: AppSeoProps = {
   title: 'GQty',
-  description: 'a GraphQL client built for rapid iteration.',
+  description: 'Your GraphQL client since day 0.',
   logo: {
     url: 'https://gqty.dev/logo.png',
     width: 50,

@@ -5,13 +5,13 @@
 </p>
 
 <h2 align="center">
-  a GraphQL client built for rapid iteration.
+  Your GraphQL client since day 0.
   <a href="https://gqty.dev">
     <img alt="Documentation" src="https://img.shields.io/badge/documentation-documentation?color=C00B84">
   </a>
     <a href="https://discord.gg/U967mp5qbQ">
     <img alt="Discord" src="https://img.shields.io/discord/874477141834739762?color=7289d9&label=discord">
-  </a>  
+  </a>
 </h2>
 
 <a href="https://gqty.dev">

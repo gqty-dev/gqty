@@ -14,7 +14,7 @@ export default function Index() {
     <>
       <HeroGradient
         title="GQty"
-        description="a GraphQL client built for rapid iteration."
+        description="Your GraphQL client since day 0."
         link={{
           href: '/docs/getting-started',
           children: 'Get Started',
