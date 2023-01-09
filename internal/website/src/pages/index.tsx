@@ -40,6 +40,10 @@ export default function Index() {
                   padding: ${isDarkTheme ? '2rem' : '0'} 0 2rem;
                   text-align: center;
 
+                  @media (max-width: 1024px) {
+                    display: none;
+                  }
+
                   > div {
                     width: 1024px;
                     height: 640px;
@@ -76,20 +80,13 @@ export default function Index() {
                     title: (
                       <HStack>
                         <Image src={GraphQLLogo} width="50px" height="50px" />
-                        <Heading fontSize="1em">
-                          Invisible data fetching
-                        </Heading>
+                        <Heading fontSize="1em">Invisible data fetching</Heading>
                       </HStack>
                     ),
-                    description:
-                      'Queries, Mutations and Subscriptions are generated at runtime using ES6 Proxies.',
+                    description: 'Queries, Mutations and Subscriptions are generated at runtime using ES6 Proxies.',
                     link: {
                       href: '/docs/intro/features#invisible-data-fetching',
-                      onClick: (e) =>
-                        handlePushRoute(
-                          '/docs/intro/features#invisible-data-fetching',
-                          e
-                        ),
+                      onClick: (e) => handlePushRoute('/docs/intro/features#invisible-data-fetching', e),
                       title: 'Read more',
                       children: 'Read more',
                     },
@@ -97,20 +94,14 @@ export default function Index() {
                   {
                     title: (
                       <HStack>
-                        <Image
-                          src={TypeScriptLogo}
-                          width="50px"
-                          height="50px"
-                        />
+                        <Image src={TypeScriptLogo} width="50px" height="50px" />
                         <Heading fontSize="1em">Strongly typed</Heading>
                       </HStack>
                     ),
-                    description:
-                      'Built from the ground up to work with Typescript — no more code generation',
+                    description: 'Built from the ground up to work with Typescript — no more code generation',
                     link: {
                       href: '/docs/intro/features#typescript',
-                      onClick: (e) =>
-                        handlePushRoute('/docs/intro/features#typescript', e),
+                      onClick: (e) => handlePushRoute('/docs/intro/features#typescript', e),
                       title: 'Read more',
                       children: 'Read more',
                     },
@@ -122,12 +113,10 @@ export default function Index() {
                         <Heading fontSize="1em">React.js</Heading>
                       </HStack>
                     ),
-                    description:
-                      'React Suspense support, hooks, automatic component updates and more.',
+                    description: 'React Suspense support, hooks, automatic component updates and more.',
                     link: {
                       href: '/docs/react/fetching-data',
-                      onClick: (e) =>
-                        handlePushRoute('/docs/react/fetching-data', e),
+                      onClick: (e) => handlePushRoute('/docs/react/fetching-data', e),
                       title: 'Read more',
                       children: 'Read more',
                     },
@@ -135,11 +124,7 @@ export default function Index() {
                   {
                     title: (
                       <HStack>
-                        <Image
-                          src={ProductionReady}
-                          width="50px"
-                          height="50px"
-                        />
+                        <Image src={ProductionReady} width="50px" height="50px" />
                         <Heading fontSize="1em">Production ready</Heading>
                       </HStack>
                     ),
@@ -147,8 +132,7 @@ export default function Index() {
                       'Fully-featured with inbuilt normalized cache, server side rendering, subscriptions and more.',
                     link: {
                       href: '/docs/intro/features',
-                      onClick: (e) =>
-                        handlePushRoute('/docs/intro/features', e),
+                      onClick: (e) => handlePushRoute('/docs/intro/features', e),
                       title: 'Read more',
                       children: 'Read more',
                     },

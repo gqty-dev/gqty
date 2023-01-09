@@ -1,26 +1,15 @@
-import {
-  Box,
-  BoxProps,
-  chakra,
-  extendTheme,
-  theme as chakraTheme,
-  useColorModeValue,
-} from '@chakra-ui/react';
+import { Box, BoxProps, chakra, extendTheme, theme as chakraTheme, useColorModeValue } from '@chakra-ui/react';
 import { mode } from '@chakra-ui/theme-tools';
 import { ClassNames } from '@emotion/react';
-import {
-  AppSeoProps,
-  CombinedThemeProvider,
-  DocsPage,
-  ExtendComponents,
-  handlePushRoute,
-} from '@guild-docs/client';
+import { AppSeoProps, CombinedThemeProvider, DocsPage, ExtendComponents, handlePushRoute } from '@guild-docs/client';
 import { Subheader, useThemeContext } from '@theguild/components';
 import { appWithTranslation } from 'next-i18next';
 import type { AppProps } from 'next/app';
 import Router from 'next/router';
+import { CSSProperties, HTMLAttributes } from 'react';
 import { BsBook, BsMoonFill, BsSun } from 'react-icons/bs';
 import { FaBookOpen, FaDiscord, FaGithub, FaHome } from 'react-icons/fa';
+
 import '../../public/style.css';
 
 const BaseAnchor = chakra('a', {
@@ -33,10 +22,7 @@ const BaseAnchor = chakra('a', {
 });
 
 const a: typeof BaseAnchor = (props) => {
-  const localHref =
-    typeof props.href === 'string' && !props.href.startsWith('http')
-      ? props.href
-      : undefined;
+  const localHref = typeof props.href === 'string' && !props.href.startsWith('http') ? props.href : undefined;
 
   return (
     <BaseAnchor
@@ -81,35 +67,16 @@ const blockquote = (props: BoxProps) => {
     />
   );
 };
-export const table = (props: BoxProps) => (
-  <Box as="table" textAlign="left" mt="32px" width="full" {...props} />
-);
+export const table = (props: BoxProps) => <Box as="table" textAlign="left" mt="32px" width="full" {...props} />;
 
 export const th = (props: BoxProps) => {
   const bg = useColorModeValue('gray.50', 'whiteAlpha.100');
 
-  return (
-    <Box
-      as="th"
-      bg={bg}
-      minW="148px"
-      fontWeight="semibold"
-      p={2}
-      fontSize="sm"
-      {...props}
-    />
-  );
+  return <Box as="th" bg={bg} minW="148px" fontWeight="semibold" p={2} fontSize="sm" {...props} />;
 };
 
 export const td = (props: BoxProps) => (
-  <Box
-    as="td"
-    p={2}
-    borderTopWidth="1px"
-    borderColor="inherit"
-    fontSize="sm"
-    {...props}
-  />
+  <Box as="td" p={2} borderTopWidth="1px" borderColor="inherit" fontSize="sm" {...props} />
 );
 
 ExtendComponents({
@@ -164,10 +131,37 @@ const accentColor = '#C00B84';
 const serializedMdx = process.env.SERIALIZED_MDX_ROUTES;
 const mdxRoutes = { data: serializedMdx && JSON.parse(serializedMdx) };
 
+const MobileLabel = ({ className, ...props }: HTMLAttributes<HTMLSpanElement>) => (
+  <ClassNames>
+    {({ css }) => (
+      <span
+        className={[
+          css`
+            @media (min-width: 768px) {
+              display: none;
+            }
+          `,
+          className,
+        ]
+          .filter(Boolean)
+          .join(' ')}
+        {...props}
+      />
+    )}
+  </ClassNames>
+);
+
 function AppContent(appProps: AppProps) {
   const { Component, pageProps, router } = appProps;
   const isDocs = router.asPath.startsWith('/docs');
   const { setDarkTheme, isDarkTheme } = useThemeContext();
+  const linkStyles: CSSProperties = {
+    alignItems: 'center',
+    cursor: 'pointer',
+    display: 'flex',
+    flexWrap: 'nowrap',
+    gap: '0.5rem',
+  };
 
   return (
     <>
@@ -195,67 +189,83 @@ function AppContent(appProps: AppProps) {
                 }}
                 links={[
                   {
-                    children: <FaHome size={20} />,
-                    title: 'GQty Home',
+                    children: (
+                      <>
+                        <FaHome size={20} />
+                        <MobileLabel>Home</MobileLabel>
+                      </>
+                    ),
                     href: '/',
                     onClick: (e) => handlePushRoute('/', e),
+                    style: linkStyles,
+                    title: 'GQty Home',
                   },
                   {
-                    children: isDarkTheme ? (
-                      <BsBook size={20} />
-                    ) : (
-                      <FaBookOpen size={20} />
+                    children: (
+                      <>
+                        {isDarkTheme ? <BsBook size={20} /> : <FaBookOpen size={20} />}
+                        <MobileLabel>Docs</MobileLabel>
+                      </>
                     ),
-                    title: 'Read the docs',
                     href: '/docs',
                     onClick: (e) => handlePushRoute('/docs/intro', e),
+                    style: linkStyles,
+                    title: 'Read the docs',
                   },
                   {
-                    children: <FaGithub size={20} />,
+                    children: (
+                      <>
+                        <FaGithub size={20} />
+                        <MobileLabel>GitHub</MobileLabel>
+                      </>
+                    ),
                     href: 'https://github.com/gqty-dev/gqty',
-                    target: '_blank',
                     rel: 'noopener norefereer',
+                    style: linkStyles,
+                    target: '_blank',
                     title: "Head to the project's GitHub",
                   },
                   {
-                    children: <FaDiscord size={24} />,
+                    children: (
+                      <>
+                        <FaDiscord size={24} />
+                        <MobileLabel>Discord</MobileLabel>
+                      </>
+                    ),
                     href: 'https://discord.gg/YNux4cde',
-                    target: '_blank',
                     rel: 'noopener norefereer',
+                    style: linkStyles,
+                    target: '_blank',
                     title: 'Join our Discord server',
                   },
                   {
                     children:
                       setDarkTheme &&
                       (isDarkTheme ? (
-                        <BsMoonFill
-                          size={18}
-                          className={css`
-                            cursor: pointer;
-                          `}
-                        />
+                        <>
+                          <BsSun size={18} />
+                          <MobileLabel>Light Mode</MobileLabel>
+                        </>
                       ) : (
-                        <BsSun
-                          size={18}
-                          className={css`
-                            cursor: pointer;
-                          `}
-                        />
+                        <>
+                          <BsMoonFill size={18} />
+                          <MobileLabel>Dark Mode</MobileLabel>
+                        </>
                       )),
                     href: null as any,
                     onClick: () => setDarkTheme?.((dark) => !dark),
-                    title: isDarkTheme
-                      ? 'Switch to light theme'
-                      : 'Switch to dark mode',
+                    style: linkStyles,
+                    title: isDarkTheme ? 'Switch to light theme' : 'Switch to dark mode',
                   },
                 ]}
                 cta={{
                   children: 'Get Started',
-                  title: 'Start using GQty',
                   href: '/docs/getting-started',
                   onClick: (e) => handlePushRoute('/docs/getting-started', e),
-                  target: '_blank',
                   rel: 'noopener noreferrer',
+                  style: linkStyles,
+                  target: '_blank',
+                  title: 'Start using GQty',
                 }}
               />
             </>
@@ -303,11 +313,7 @@ const defaultSeo: AppSeoProps = {
 
 export default appWithTranslation(function App(appProps) {
   return (
-    <CombinedThemeProvider
-      theme={theme}
-      accentColor={accentColor}
-      defaultSeo={defaultSeo}
-    >
+    <CombinedThemeProvider theme={theme} accentColor={accentColor} defaultSeo={defaultSeo}>
       <AppContent {...appProps} />
     </CombinedThemeProvider>
   );
