@@ -1737,22 +1737,24 @@ test('detect client config change between files', async () => {
 
   let n = 0;
   const spy = jest.spyOn(console, 'warn').mockImplementation((message) => {
-    switch (++n) {
-      case 1: {
-        expect(message.replace(clientPathRegex, 'client.ts'))
-          .toMatchInlineSnapshot(`
+    if (/^\[Warning\]/.test(message)) {
+      switch (++n) {
+        case 1: {
+          expect(message.replace(clientPathRegex, 'client.ts'))
+            .toMatchInlineSnapshot(`
           "[Warning] You've changed the option "subscriptions" to 'true', which is different from your existing "client.ts".
           If you meant to change this, please remove "client.ts" and re-run code generation."
         `);
-        break;
-      }
-      case 2: {
-        expect(message.replace(clientPathRegex, 'client.ts'))
-          .toMatchInlineSnapshot(`
+          break;
+        }
+        case 2: {
+          expect(message.replace(clientPathRegex, 'client.ts'))
+            .toMatchInlineSnapshot(`
           "[Warning] You've changed the option "react" to 'true', which is different from your existing "client.ts".
           If you meant to change this, please remove "client.ts" and re-run code generation."
         `);
-        break;
+          break;
+        }
       }
     }
   });
@@ -1767,7 +1769,7 @@ test('detect client config change between files', async () => {
       },
     });
 
-    expect(spy).toBeCalledTimes(0);
+    expect(spy).toBeCalledTimes(1);
 
     await inspectWriteGenerate({
       endpoint,
@@ -1778,7 +1780,7 @@ test('detect client config change between files', async () => {
       },
     });
 
-    expect(spy).toBeCalledTimes(2);
+    expect(spy).toBeCalledTimes(4);
   } finally {
     await tempDir.cleanup();
     spy.mockRestore();

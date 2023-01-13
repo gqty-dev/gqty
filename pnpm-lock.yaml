@@ -581,7 +581,6 @@ importers:
       '@types/node': ^18.11.18
       '@types/react': ^17.0.52
       '@types/react-dom': ^18.0.10
-      '@types/rimraf': ^3.0.2
       '@types/wait-on': ^5.3.1
       '@types/ws': ^8.5.4
       bob-esbuild-cli: ^4.0.0
@@ -610,7 +609,6 @@ importers:
       '@types/node': 18.11.18
       '@types/react': 17.0.52
       '@types/react-dom': 18.0.10
-      '@types/rimraf': 3.0.2
       '@types/wait-on': 5.3.1
       '@types/ws': 8.5.4
       bob-esbuild-cli: 4.0.0
@@ -643,7 +641,6 @@ importers:
       gqty: workspace:^2.3.0
       jest: ^29.3.1
       prettier: ^2.8.2
-      rimraf: ^4.0.4
       size-limit: ^8.1.1
       test-utils: workspace:^0.1.0
       tslib: ^2.4.1
@@ -658,7 +655,6 @@ importers:
       esbuild: 0.16.17
       gqty: link:../gqty
       jest: 29.3.1_@types+node@18.11.18
-      rimraf: 4.0.4
       size-limit: 8.1.1
       test-utils: link:../../internal/test-utils
       tslib: 2.4.1
@@ -687,7 +683,6 @@ importers:
       react-ssr-prepass: ^1.5.0
       react-test-renderer: ^17.0.2
       regenerator-runtime: ^0.13.11
-      rimraf: ^4.0.4
       size-limit: ^8.1.1
       test-utils: workspace:^0.1.0
       tslib: ^2.4.1
@@ -714,7 +709,6 @@ importers:
       react-dom: 17.0.2_react@17.0.2
       react-test-renderer: 17.0.2_react@17.0.2
       regenerator-runtime: 0.13.11
-      rimraf: 4.0.4
       size-limit: 8.1.1
       test-utils: link:../../internal/test-utils
       tslib: 2.4.1
@@ -5325,13 +5319,6 @@ packages:
     resolution: {integrity: sha512-dMJJqBqyhsfJKuK7p7HyyNmki7qj1AlwhUKWx6KrU7i1K2T2SPsUsSUTWFmr/sEM1q8rfR8j5IyUmYrDbrhfjQ==}
     dev: false
 
-  /@types/glob/8.0.0:
-    resolution: {integrity: sha512-l6NQsDDyQUVeoTynNpC9uRvCUint/gSUXQA2euwmTuWGvPY5LSDUu6tkCtJB2SvGQlJQzLaKqcGZP4//7EDveA==}
-    dependencies:
-      '@types/minimatch': 5.1.2
-      '@types/node': 18.11.18
-    dev: true
-
   /@types/graceful-fs/4.1.5:
     resolution: {integrity: sha512-anKkLmZZ+xm4p8JWBf4hElkM4XR+EZeA2M9BAkkTldmcyDY4mbdIJnRghDJH3Ov5ooY7/UAoENtmdMSkaAd7Cw==}
     dependencies:
@@ -5463,10 +5450,6 @@ packages:
     resolution: {integrity: sha512-Klz949h02Gz2uZCMGwDUSDS1YBlTdDDgbWHi+81l29tQALUtvz4rAYi5uoVhE5Lagoq6DeqAUlbrHvW/mXDgdQ==}
     dev: true
 
-  /@types/minimatch/5.1.2:
-    resolution: {integrity: sha512-K0VQKziLUWkVKiRVrx4a40iPaxTUefQmjtkQofBkYRcoaaL/8rhwDWww9qWbrgicNOgnpIsMxyNIUM4+n6dUIA==}
-    dev: true
-
   /@types/minimist/1.2.2:
     resolution: {integrity: sha512-jhuKLIRrhvCPLqwPcx6INqmKeiA5EWrsCOPhrlFSrbrmU4ZMPjj5Ul/oLCMDO98XRUIwVm78xICz4EPCektzeQ==}
     dev: true
@@ -5534,13 +5517,6 @@ packages:
       '@types/prop-types': 15.7.5
       '@types/scheduler': 0.16.2
       csstype: 3.1.1
-
-  /@types/rimraf/3.0.2:
-    resolution: {integrity: sha512-F3OznnSLAUxFrCEu/L5PY8+ny8DtcFRjx7fZZ9bycvXRi3KPTRS9HOitGZwvPg0juRhXFWIeKX58cnX5YqLohQ==}
-    dependencies:
-      '@types/glob': 8.0.0
-      '@types/node': 18.11.18
-    dev: true
 
   /@types/scheduler/0.16.2:
     resolution: {integrity: sha512-hppQEBDmlwhFAXKJX2KnWLYu5yMfi91yazPb2l+lbJiwW+wdo1gNeRA+3RgNSO39WYX2euey41KEwnqesU2Jew==}
