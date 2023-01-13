@@ -31,7 +31,7 @@ export default MDXPage(
       category: 'Q&A',
       categoryId: 'DIC_kwDOFmaXcc4B-nRb',
     },
-  }
+  },
 );
 
 export const getStaticProps: GetStaticProps = (ctx) => {
@@ -42,7 +42,7 @@ export const getStaticProps: GetStaticProps = (ctx) => {
     ctx,
     {
       getRoutes,
-    }
+    },
   );
 };
 
