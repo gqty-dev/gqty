@@ -7,7 +7,7 @@ import rimraf from 'rimraf';
 import pkg from './package.json';
 
 async function main() {
-  await new Promise((resolve) => rimraf('dist', resolve));
+  await rimraf('dist');
 
   const tscPromise = Promise.allSettled([buildTsc()]).then((v) => v[0]);
 

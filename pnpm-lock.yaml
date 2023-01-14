@@ -38,7 +38,7 @@ importers:
       open: ^8.4.0
       prettier: ^2.8.3
       pretty-quick: ^3.1.3
-      rimraf: ^3.0.2
+      rimraf: ^4.0.4
       semver: ^7.3.8
       ts-jest: ^29.0.5
       ts-node: ^10.9.1
@@ -70,7 +70,7 @@ importers:
       open: 8.4.0
       prettier: 2.8.3
       pretty-quick: 3.1.3_prettier@2.8.3
-      rimraf: 3.0.2
+      rimraf: 4.0.4
       semver: 7.3.8
       ts-jest: 29.0.5_gknik6k3e7uyjkjtbjkdmrff2q
       ts-node: 10.9.1_awa2wsr5thmg3i7jqycphctjfq
@@ -528,7 +528,7 @@ importers:
       mkdirp: ^1.0.4
       open-cli: ^7.1.0
       prettier: ^2.8.3
-      rimraf: ^3.0.2
+      rimraf: ^4.0.4
       serve: ^14.1.2
       size-limit: ^8.1.1
       test-utils: workspace:^0.1.0
@@ -563,7 +563,7 @@ importers:
       mkdirp: 1.0.4
       open-cli: 7.1.0
       prettier: 2.8.3
-      rimraf: 3.0.2
+      rimraf: 4.0.4
       serve: 14.1.2
       size-limit: 8.1.1
       test-utils: link:../../internal/test-utils
@@ -581,7 +581,6 @@ importers:
       '@types/node': ^18.11.18
       '@types/react': ^17.0.52
       '@types/react-dom': ^18.0.10
-      '@types/rimraf': ^3.0.2
       '@types/wait-on': ^5.3.1
       '@types/ws': ^8.5.4
       bob-esbuild-cli: ^4.0.0
@@ -594,7 +593,7 @@ importers:
       open-cli: ^7.1.0
       react: ^17.0.2
       react-dom: ^17.0.2
-      rimraf: ^3.0.2
+      rimraf: ^4.0.4
       serve: ^14.1.2
       size-limit: ^8.1.1
       test-utils: workspace:^0.1.0
@@ -610,7 +609,6 @@ importers:
       '@types/node': 18.11.18
       '@types/react': 17.0.52
       '@types/react-dom': 18.0.10
-      '@types/rimraf': 3.0.2
       '@types/wait-on': 5.3.1
       '@types/ws': 8.5.4
       bob-esbuild-cli: 4.0.0
@@ -623,7 +621,7 @@ importers:
       open-cli: 7.1.0
       react: 17.0.2
       react-dom: 17.0.2_react@17.0.2
-      rimraf: 3.0.2
+      rimraf: 4.0.4
       serve: 14.1.2
       size-limit: 8.1.1
       test-utils: link:../../internal/test-utils
@@ -658,7 +656,6 @@ importers:
       esbuild: 0.16.17
       gqty: link:../gqty
       jest: 29.3.1_@types+node@18.11.18
-      rimraf: 3.0.2
       size-limit: 8.1.1
       test-utils: link:../../internal/test-utils
       tslib: 2.4.1
@@ -687,7 +684,6 @@ importers:
       react-ssr-prepass: ^1.5.0
       react-test-renderer: ^17.0.2
       regenerator-runtime: ^0.13.11
-      rimraf: ^3.0.2
       size-limit: ^8.1.1
       test-utils: workspace:^0.1.0
       tslib: ^2.4.1
@@ -714,7 +710,6 @@ importers:
       react-dom: 17.0.2_react@17.0.2
       react-test-renderer: 17.0.2_react@17.0.2
       regenerator-runtime: 0.13.11
-      rimraf: 3.0.2
       size-limit: 8.1.1
       test-utils: link:../../internal/test-utils
       tslib: 2.4.1
@@ -5325,13 +5320,6 @@ packages:
     resolution: {integrity: sha512-dMJJqBqyhsfJKuK7p7HyyNmki7qj1AlwhUKWx6KrU7i1K2T2SPsUsSUTWFmr/sEM1q8rfR8j5IyUmYrDbrhfjQ==}
     dev: false
 
-  /@types/glob/8.0.0:
-    resolution: {integrity: sha512-l6NQsDDyQUVeoTynNpC9uRvCUint/gSUXQA2euwmTuWGvPY5LSDUu6tkCtJB2SvGQlJQzLaKqcGZP4//7EDveA==}
-    dependencies:
-      '@types/minimatch': 5.1.2
-      '@types/node': 18.11.18
-    dev: true
-
   /@types/graceful-fs/4.1.5:
     resolution: {integrity: sha512-anKkLmZZ+xm4p8JWBf4hElkM4XR+EZeA2M9BAkkTldmcyDY4mbdIJnRghDJH3Ov5ooY7/UAoENtmdMSkaAd7Cw==}
     dependencies:
@@ -5463,10 +5451,6 @@ packages:
     resolution: {integrity: sha512-Klz949h02Gz2uZCMGwDUSDS1YBlTdDDgbWHi+81l29tQALUtvz4rAYi5uoVhE5Lagoq6DeqAUlbrHvW/mXDgdQ==}
     dev: true
 
-  /@types/minimatch/5.1.2:
-    resolution: {integrity: sha512-K0VQKziLUWkVKiRVrx4a40iPaxTUefQmjtkQofBkYRcoaaL/8rhwDWww9qWbrgicNOgnpIsMxyNIUM4+n6dUIA==}
-    dev: true
-
   /@types/minimist/1.2.2:
     resolution: {integrity: sha512-jhuKLIRrhvCPLqwPcx6INqmKeiA5EWrsCOPhrlFSrbrmU4ZMPjj5Ul/oLCMDO98XRUIwVm78xICz4EPCektzeQ==}
     dev: true
@@ -5534,13 +5518,6 @@ packages:
       '@types/prop-types': 15.7.5
       '@types/scheduler': 0.16.2
       csstype: 3.1.1
-
-  /@types/rimraf/3.0.2:
-    resolution: {integrity: sha512-F3OznnSLAUxFrCEu/L5PY8+ny8DtcFRjx7fZZ9bycvXRi3KPTRS9HOitGZwvPg0juRhXFWIeKX58cnX5YqLohQ==}
-    dependencies:
-      '@types/glob': 8.0.0
-      '@types/node': 18.11.18
-    dev: true
 
   /@types/scheduler/0.16.2:
     resolution: {integrity: sha512-hppQEBDmlwhFAXKJX2KnWLYu5yMfi91yazPb2l+lbJiwW+wdo1gNeRA+3RgNSO39WYX2euey41KEwnqesU2Jew==}
@@ -12733,6 +12710,12 @@ packages:
     hasBin: true
     dependencies:
       glob: 7.2.3
+
+  /rimraf/4.0.4:
+    resolution: {integrity: sha512-R0hoVr9xTwemarQjoWlNt/nb5dEGVTBhVdkRmEX2zEkT8T6onH0XKiGjuaC7rNNj/gYzY2p4NVRJ3sjO1ascHQ==}
+    engines: {node: '>=14'}
+    hasBin: true
+    dev: true
 
   /robust-predicates/3.0.1:
     resolution: {integrity: sha512-ndEIpszUHiG4HtDsQLeIuMvRsDnn8c8rYStabochtUeCvfuvNptb5TUbVD68LRAILPX7p9nqQGh4xJgn3EHS/g==}
