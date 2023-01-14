@@ -43,8 +43,8 @@
     "test:watch-coverage": "rimraf coverage && mkdirp coverage/lcov-report && concurrently --raw \"jest --watchAll\" \"serve -l 8787 coverage/lcov-report\" \"wait-on tcp:8787 coverage/lcov-report/index.html && open-cli http://localhost:8787\""
   },
   "dependencies": {
-    "gqty": "workspace:^2.3.0",
-    "undici": "^5.16.0"
+    "cross-undici-fetch": "^0.4.14",
+    "gqty": "workspace:^2.3.0"
   },
   "devDependencies": {
     "@graphql-codegen/core": "^2.6.8",

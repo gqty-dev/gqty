@@ -1,4 +1,5 @@
 import type { AsyncExecutor } from '@graphql-tools/utils';
+import { fetch } from 'cross-undici-fetch';
 import type { GraphQLSchema } from 'graphql';
 import * as graphql from 'graphql';
 import { defaultConfig, gqtyConfigPromise } from './config';
@@ -30,7 +31,6 @@ export const getRemoteSchema = async (
       (await gqtyConfigPromise).config.introspection?.headers ||
       defaultConfig.introspection.headers;
     const query = graphql.print(document);
-    const { fetch } = await import('undici');
     const response = await fetch(endpoint, {
       method: 'POST',
       headers: {
