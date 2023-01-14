@@ -1,7 +1,8 @@
-import { Avatar, Heading, Link, Text } from '@chakra-ui/react';
+import { Avatar, Button, Heading, Link, LinkOverlay, Text } from '@chakra-ui/react';
 import { ClassNames } from '@emotion/react';
 import { useThemeContext } from '@theguild/components';
 import { FunctionComponent } from 'react';
+import { FaHeart } from 'react-icons/fa';
 import { SponsorLike } from '../utils/fetchSponsors';
 
 export type Props = {
@@ -20,9 +21,9 @@ const Sponsors: FunctionComponent<Props> = ({ sponsors }) => {
 
             > div {
               width: 1024px;
-              margin: auto;
+              margin: 1.5rem auto;
               text-align: left;
-              padding: 1rem 1.5rem 0;
+              padding: 0 1.5rem;
 
               display: flex;
               gap: 0.5rem;
@@ -53,6 +54,12 @@ const Sponsors: FunctionComponent<Props> = ({ sponsors }) => {
               </Link>
             ))}
           </div>
+
+          <Button leftIcon={<FaHeart color="red" />} colorScheme="gray" variant="outline" fontWeight="normal">
+            <LinkOverlay href="https://github.com/sponsors/gqty-dev" target="_blank">
+              Become a Sponsor
+            </LinkOverlay>
+          </Button>
         </section>
       )}
     </ClassNames>
