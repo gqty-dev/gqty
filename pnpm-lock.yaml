@@ -518,7 +518,7 @@ importers:
       bob-ts: ^4.1.1
       bob-tsm: ^1.1.2
       changesets-github-release: ^0.1.0
-      commander: ^9.5.0
+      commander: ^10.0.0
       cosmiconfig: ^8.0.0
       esbuild: ^0.16.17
       fast-glob: ^3.2.12
@@ -554,7 +554,7 @@ importers:
       bob-ts: 4.1.1_nvikhx5wqlynu6sf3salf5m36u
       bob-tsm: 1.1.2_xsjpiiizcdrnzc6stjvl6qcrsi
       changesets-github-release: 0.1.0
-      commander: 9.5.0
+      commander: 10.0.0
       cosmiconfig: 8.0.0
       esbuild: 0.16.17
       fast-glob: 3.2.12
@@ -641,7 +641,6 @@ importers:
       gqty: workspace:^2.3.0
       jest: ^29.3.1
       prettier: ^2.8.3
-      rimraf: ^3.0.2
       size-limit: ^8.1.1
       test-utils: workspace:^0.1.0
       tslib: ^2.4.1
@@ -6762,6 +6761,11 @@ packages:
     resolution: {integrity: sha512-G5yTt3KQN4Yn7Yk4ed73hlZ1evrFKXeUW3086p3PRFNp7m2vIjI6Pg+Kgb+oyzhd9F2qdcoj67+y3SdxL5XWsg==}
     dev: false
 
+  /commander/10.0.0:
+    resolution: {integrity: sha512-zS5PnTI22FIRM6ylNW8G4Ap0IEOyk62fhLSD0+uHRT9McRCLGpkVNvao4bjimpK/GShynyQkFFxHhwMcETmduA==}
+    engines: {node: '>=14'}
+    dev: true
+
   /commander/2.20.3:
     resolution: {integrity: sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==}
     dev: false
@@ -6788,11 +6792,6 @@ packages:
 
   /commander/9.4.1:
     resolution: {integrity: sha512-5EEkTNyHNGFPD2H+c/dXXfQZYa/scCKasxWcXJaWnNJ99pnQN9Vnmqow+p+PlFPE63Q6mThaZws1T+HxfpgtPw==}
-    engines: {node: ^12.20.0 || >=14}
-    dev: true
-
-  /commander/9.5.0:
-    resolution: {integrity: sha512-KRs7WVDKg86PWiuAqhDrAQnTXZKraVcCc6vFdL14qrZ/DcWwuRo7VoiYXalXO7S5GKpqYiVEwCbgFDfxNHKJBQ==}
     engines: {node: ^12.20.0 || >=14}
     dev: true
 
