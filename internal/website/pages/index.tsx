@@ -18,8 +18,10 @@ type PageProps = {
 
 const AVATAR_SIZE = 50;
 
-export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
+export const getServerSideProps: GetServerSideProps<PageProps> = async ({ res }) => {
   const sponsors = await fetchSponsors('gqty-dev', AVATAR_SIZE);
+
+  res.setHeader('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400');
 
   return {
     props: { sponsors },
