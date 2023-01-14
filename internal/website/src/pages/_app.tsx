@@ -3,8 +3,9 @@ import { mode } from '@chakra-ui/theme-tools';
 import { ClassNames } from '@emotion/react';
 import { AppSeoProps, CombinedThemeProvider, DocsPage, ExtendComponents, handlePushRoute } from '@guild-docs/client';
 import { Subheader, useThemeContext } from '@theguild/components';
+import withTwindApp from '@twind/next/shim/app';
 import { appWithTranslation } from 'next-i18next';
-import type { AppProps } from 'next/app';
+import type { AppProps, AppType } from 'next/app';
 import Router from 'next/router';
 import { CSSProperties, HTMLAttributes } from 'react';
 import { BsBook, BsMoonFill, BsSun } from 'react-icons/bs';
@@ -311,10 +312,10 @@ const defaultSeo: AppSeoProps = {
   },
 };
 
-export default appWithTranslation(function App(appProps) {
-  return (
-    <CombinedThemeProvider theme={theme} accentColor={accentColor} defaultSeo={defaultSeo}>
-      <AppContent {...appProps} />
-    </CombinedThemeProvider>
-  );
-});
+const App: AppType = (props) => (
+  <CombinedThemeProvider theme={theme} accentColor={accentColor} defaultSeo={defaultSeo}>
+    <AppContent {...props} />
+  </CombinedThemeProvider>
+);
+
+export default withTwindApp({}, appWithTranslation(App));
