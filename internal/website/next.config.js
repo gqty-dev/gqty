@@ -17,6 +17,14 @@ module.exports = withBundleAnalyzer(
     experimental: {
       esmExternals: false,
     },
+    images: {
+      remotePatterns: [
+        {
+          hostname: 'avatars.githubusercontent.com',
+          pathname: '/u/**',
+        },
+      ],
+    },
     async redirects() {
       return [
         {
@@ -26,5 +34,5 @@ module.exports = withBundleAnalyzer(
         },
       ];
     },
-  })
+  }),
 );

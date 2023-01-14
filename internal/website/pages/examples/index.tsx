@@ -1,18 +1,18 @@
 import { FaCircle, FaReact } from 'react-icons/fa';
 
-import { Heading, Stack, Text, Link as ChakraLink } from '@chakra-ui/react';
+import { Heading, Link as ChakraLink, Stack, Text } from '@chakra-ui/react';
 import Link from 'next/link';
 
-import { WithExamplePage } from '../../components/Examples/App';
-import { NavLink } from '../../components/Examples/NavLink';
+import { WithExamplePage } from '../../src/components/Examples/App';
+import { NavLink } from '../../src/components/Examples/NavLink';
 
 export default WithExamplePage(function Page() {
   return (
     <Stack maxW="75ch">
       <Heading as="h1">API</Heading>
       <Text>
-        All the examples made here are around a playground API specially made to
-        showcase usual usage of GraphQL APIs in <b>gqty</b>.
+        All the examples made here are around a playground API specially made to showcase usual usage of GraphQL APIs in{' '}
+        <b>gqty</b>.
       </Text>
       <Text>
         You can also check it{' '}
@@ -38,21 +38,18 @@ export default WithExamplePage(function Page() {
             <b>CodeSandbox</b>
           </ChakraLink>
         </Link>
-        , which allows you to modify the examples and play with gqty{' '}
-        <b>without installing anything</b>.
+        , which allows you to modify the examples and play with gqty <b>without installing anything</b>.
       </Text>
       <Heading as="h2">Examples</Heading>
       <Text>
-        We are planning to add more examples about all the different expected
-        usages of <b>gqty</b>.
+        We are planning to add more examples about all the different expected usages of <b>gqty</b>.
       </Text>
       <Text>
         And we encourage you to open a new{' '}
         <Link href="https://github.com/PabloSzx/gqty/issues" passHref>
           <ChakraLink color="blue.500">GitHub issue</ChakraLink>
         </Link>{' '}
-        to request some examples about specific issues you might have, and you
-        will also be helping everyone.
+        to request some examples about specific issues you might have, and you will also be helping everyone.
       </Text>
       <br />
       <Text>For now, you can check some examples about:</Text>
@@ -65,16 +62,8 @@ export default WithExamplePage(function Page() {
       </Heading>
 
       <Stack isInline spacing="1">
-        <NavLink
-          label="React Suspense Query"
-          href="/examples/suspense/query"
-          icon={FaReact}
-        />
-        <NavLink
-          label="React Suspense Authentication"
-          href="/examples/suspense/auth"
-          icon={FaReact}
-        />
+        <NavLink label="React Suspense Query" href="/examples/suspense/query" icon={FaReact} />
+        <NavLink label="React Suspense Authentication" href="/examples/suspense/auth" icon={FaReact} />
       </Stack>
     </Stack>
   );

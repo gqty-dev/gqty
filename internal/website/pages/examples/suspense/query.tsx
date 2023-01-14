@@ -1,10 +1,8 @@
-import React from 'react';
-
-import { Heading, Text, Link as ChakraLink } from '@chakra-ui/react';
+import { Heading, Link as ChakraLink, Text } from '@chakra-ui/react';
 import Link from 'next/link';
 
-import { WithExamplePage } from '../../../components/Examples/App';
-import { CodeSandboxEmbed } from '../../../components/Examples/Embed';
+import { WithExamplePage } from '../../../src/components/Examples/App';
+import { CodeSandboxEmbed } from '../../../src/components/Examples/Embed';
 
 export default WithExamplePage(function Page() {
   return (

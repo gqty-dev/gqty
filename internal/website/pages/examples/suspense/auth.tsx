@@ -1,21 +1,11 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 
-import {
-  Heading,
-  ListItem,
-  Stack,
-  Text,
-  UnorderedList,
-  Link as ChakraLink,
-} from '@chakra-ui/react';
+import { Heading, Link as ChakraLink, ListItem, Stack, Text, UnorderedList } from '@chakra-ui/react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
-import { WithExamplePage } from '../../../components/Examples/App';
-import {
-  CodeSandboxEmbed,
-  EmbedProps,
-} from '../../../components/Examples/Embed';
+import { WithExamplePage } from '../../../src/components/Examples/App';
+import { CodeSandboxEmbed, EmbedProps } from '../../../src/components/Examples/Embed';
 
 export default WithExamplePage(function Page() {
   const { query = {} } = useRouter();
@@ -53,9 +43,8 @@ export default WithExamplePage(function Page() {
       <Heading as="h1">GraphQL Authentication in React Suspense</Heading>
 
       <Text>
-        In this example you can check some examples of{' '}
-        <Link href="/react/mutations">useMutation</Link> inside a authentication
-        inside GraphQL Flow.
+        In this example you can check some examples of <Link href="/react/mutations">useMutation</Link> inside a
+        authentication inside GraphQL Flow.
       </Text>
       <Stack>
         <Heading as="h2" fontSize="1rem">
@@ -77,9 +66,7 @@ export default WithExamplePage(function Page() {
           <ListItem>
             Register:{' '}
             <Link href="#register">
-              <ChakraLink color="blue.500">
-                src/Components/Register.tsx
-              </ChakraLink>
+              <ChakraLink color="blue.500">src/Components/Register.tsx</ChakraLink>
             </Link>
           </ListItem>
           <ListItem>

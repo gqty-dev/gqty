@@ -3,7 +3,7 @@ import Head from 'next/head';
 import { DocsContent, DocsTOC, MDXPage } from '@guild-docs/client';
 import { MDXPaths, MDXProps } from '@guild-docs/server';
 
-import { getRoutes } from '../../../routes';
+import { getRoutes } from '../../routes';
 
 import type { GetStaticPaths, GetStaticProps } from 'next';
 

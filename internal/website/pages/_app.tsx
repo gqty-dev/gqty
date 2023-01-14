@@ -11,7 +11,7 @@ import { CSSProperties, HTMLAttributes } from 'react';
 import { BsBook, BsMoonFill, BsSun } from 'react-icons/bs';
 import { FaBookOpen, FaDiscord, FaGithub, FaHome } from 'react-icons/fa';
 
-import '../../public/style.css';
+import '../public/style.css';
 
 const BaseAnchor = chakra('a', {
   baseStyle: {
