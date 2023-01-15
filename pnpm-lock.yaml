@@ -9,7 +9,7 @@ overrides:
   mermaid@<8.13.8: '>=8.13.8'
   mermaid@>=8.0.0 <9.1.2: '>=9.1.2'
   trim@<0.0.3: '>=0.0.3'
-  undici: ^5.7.0
+  undici: 5.8.0
 
 importers:
 
@@ -3653,7 +3653,7 @@ packages:
       '@graphql-typed-document-node/core': 3.1.1_graphql@17.0.0-alpha.2
       '@types/node': 18.11.18
       graphql: 17.0.0-alpha.2
-      undici: 5.15.0
+      undici: 5.8.0
     dev: true
 
   /@graphql-ez/client/0.6.1_ykzowzmb7rcumunkscnbisnkom:
@@ -3669,7 +3669,7 @@ packages:
       '@graphql-ez/utils': 0.2.0_ykzowzmb7rcumunkscnbisnkom
       '@types/node': 18.11.18
       graphql: 16.6.0
-      undici: 5.15.0
+      undici: 5.8.0
     dev: false
 
   /@graphql-ez/client/0.6.1_yosdtifjgyl5o6gd7gyhtyjrjm:
@@ -3686,7 +3686,7 @@ packages:
       '@graphql-typed-document-node/core': 3.1.1_graphql@16.6.0
       '@types/node': 18.11.18
       graphql: 16.6.0
-      undici: 5.15.0
+      undici: 5.8.0
     dev: false
 
   /@graphql-ez/fastify-testing/0.4.0_bqw7dvzmw4lohiz6reyuam6p7m:
@@ -4268,7 +4268,7 @@ packages:
       remark-emoji: 3.0.2
       shiki: 0.10.1
       tiny-lru: 8.0.2
-      undici: 5.15.0
+      undici: 5.8.0
     transitivePeerDependencies:
       - '@chakra-ui/react'
       - '@mdx-js/react'
@@ -7236,7 +7236,7 @@ packages:
       form-data-encoder: 1.7.2
       formdata-node: 4.4.1
       node-fetch: 2.6.7
-      undici: 5.15.0
+      undici: 5.8.0
       web-streams-polyfill: 3.2.1
     transitivePeerDependencies:
       - encoding
@@ -14348,16 +14348,14 @@ packages:
     resolution: {integrity: sha512-eXL4nmJT7oCpkZsHZUOJo8hcX3GbsiDOa0Qu9F646fi8dT3XuSVopVqAcEiVzSKKH7UoDti23wNX3qGFxcW5Qg==}
     engines: {node: '>=0.10.0'}
 
-  /undici/5.15.0:
-    resolution: {integrity: sha512-wCAZJDyjw9Myv+Ay62LAoB+hZLPW9SmKbQkbHIhMw/acKSlpn7WohdMUc/Vd4j1iSMBO0hWwU8mjB7a5p5bl8g==}
-    engines: {node: '>=12.18'}
-    dependencies:
-      busboy: 1.6.0
-
   /undici/5.7.0:
     resolution: {integrity: sha512-ORgxwDkiPS+gK2VxE7iyVeR7JliVn5DqhZ4LgQqYLBXsuK+lwOEmnJ66dhvlpLM0tC3fC7eYF1Bti2frbw2eAA==}
     engines: {node: '>=12.18'}
     dev: true
+
+  /undici/5.8.0:
+    resolution: {integrity: sha512-1F7Vtcez5w/LwH2G2tGnFIihuWUlc58YidwLiCv+jR2Z50x0tNXpRRw7eOIJ+GvqCqIkg9SB7NWAJ/T9TLfv8Q==}
+    engines: {node: '>=12.18'}
 
   /unfetch/5.0.0:
     resolution: {integrity: sha512-3xM2c89siXg0nHvlmYsQ2zkLASvVMBisZm5lF3gFDqfF2xonNStDJyMpvaOBe0a1Edxmqrf2E0HBdmy9QyZaeg==}
