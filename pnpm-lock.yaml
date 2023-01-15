@@ -343,7 +343,7 @@ importers:
       '@graphql-ez/fastify-testing': ^0.4.0
       '@graphql-typed-document-node/core': ^3.1.1
       '@types/node': ^18.11.18
-      ava: ^5.1.0
+      ava: ^5.1.1
       bob-tsm: ^1.1.2
       c8: ^7.12.0
       esbuild: ^0.17.0
@@ -358,7 +358,7 @@ importers:
       '@graphql-ez/fastify-testing': 0.4.0_fqvzwgcjrvefkpamvr4xulrzkm
       '@graphql-typed-document-node/core': 3.1.1_graphql@17.0.0-alpha.2
       '@types/node': 18.11.18
-      ava: 5.1.0
+      ava: 5.1.1
       bob-tsm: 1.1.2_u7qcgmz6z3q5y55rujsjwz2hiu
       c8: 7.12.0
       esbuild: 0.17.0
@@ -5552,7 +5552,7 @@ packages:
   /@types/is-ci/3.0.0:
     resolution: {integrity: sha512-Q0Op0hdWbYd1iahB+IFNQcWXFq4O0Q5MwQP7uN0souuQ4rPg1vEYcnIOfr1gY+M+6rc8FGoRaBO1mOOvL29sEQ==}
     dependencies:
-      ci-info: 3.6.1
+      ci-info: 3.7.1
     dev: true
 
   /@types/istanbul-lib-coverage/2.0.4:
@@ -6130,8 +6130,8 @@ packages:
       postcss-value-parser: 4.2.0
     dev: false
 
-  /ava/5.1.0:
-    resolution: {integrity: sha512-e5VFrSQ0WBPyZJWRXVrO7RFOizFeNM0t2PORwrPvWtApgkORI6cvGnY3GX1G+lzpd0HjqNx5Jus22AhxVnUMNA==}
+  /ava/5.1.1:
+    resolution: {integrity: sha512-od1CWgWVIKZSdEc1dhQWhbsd6KBs0EYjek7eqZNGPvy+NyC9Q1bXixcadlgOXwDG9aM0zLMQZwRXfe9gMb1LQQ==}
     engines: {node: '>=14.19 <15 || >=16.15 <17 || >=18'}
     hasBin: true
     peerDependencies:
@@ -6150,7 +6150,7 @@ packages:
       chalk: 5.2.0
       chokidar: 3.5.3
       chunkd: 2.0.1
-      ci-info: 3.6.1
+      ci-info: 3.7.1
       ci-parallel-vars: 1.0.1
       clean-yaml-object: 0.1.0
       cli-truncate: 3.1.0
@@ -6812,6 +6812,10 @@ packages:
 
   /ci-info/3.6.1:
     resolution: {integrity: sha512-up5ggbaDqOqJ4UqLKZ2naVkyqSJQgJi5lwD6b6mM748ysrghDBX0bx/qJTUHzw7zu6Mq4gycviSF5hJnwceD8w==}
+    engines: {node: '>=8'}
+
+  /ci-info/3.7.1:
+    resolution: {integrity: sha512-4jYS4MOAaCIStSRwiuxc4B8MYhIe676yO1sYGzARnjXkWpmzZMMYxY6zu8WYWDhSuth5zhrQ1rhNSibyyvv4/w==}
     engines: {node: '>=8'}
 
   /ci-job-number/1.2.2:
@@ -9495,7 +9499,7 @@ packages:
     resolution: {integrity: sha512-ZYvCgrefwqoQ6yTyYUbQu64HsITZ3NfKX1lzaEYdkTDcfKzzCI/wthRRYKkdjHKFVgNiXKAKm65Zo1pk2as/QQ==}
     hasBin: true
     dependencies:
-      ci-info: 3.6.1
+      ci-info: 3.7.1
     dev: true
 
   /is-color-stop/1.1.0:
@@ -9932,7 +9936,7 @@ packages:
       '@types/node': 18.11.18
       babel-jest: 29.3.1_@babel+core@7.19.6
       chalk: 4.1.2
-      ci-info: 3.6.1
+      ci-info: 3.7.1
       deepmerge: 4.2.2
       glob: 7.2.3
       graceful-fs: 4.2.10
@@ -9970,7 +9974,7 @@ packages:
       '@types/node': 18.11.18
       babel-jest: 29.3.1_@babel+core@7.19.6
       chalk: 4.1.2
-      ci-info: 3.6.1
+      ci-info: 3.7.1
       deepmerge: 4.2.2
       glob: 7.2.3
       graceful-fs: 4.2.10
@@ -10244,7 +10248,7 @@ packages:
       '@jest/types': 29.3.1
       '@types/node': 18.11.18
       chalk: 4.1.2
-      ci-info: 3.6.1
+      ci-info: 3.7.1
       graceful-fs: 4.2.10
       picomatch: 2.3.1
 
