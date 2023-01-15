@@ -1,18 +1,20 @@
 import { Heading, HStack } from '@chakra-ui/react';
 import { ClassNames } from '@emotion/react';
 import { handlePushRoute } from '@guild-docs/client';
-import { HeroGradient, InfoList, useThemeContext } from '@theguild/components';
+import { HeroGradient, InfoList } from '@theguild/components';
 import { GetServerSideProps, NextPage } from 'next';
 import Image from 'next/image';
 import GraphQLLogo from '../public/img/graphql.svg';
 import ProductionReady from '../public/img/production_ready.png';
 import ReactLogo from '../public/img/react.svg';
 import TypeScriptLogo from '../public/img/typescript.png';
+import Community from '../src/components/Community';
 import LiveEditor from '../src/components/LiveEditor';
-import Sponsors from '../src/components/Sponsors';
-import { fetchSponsors, SponsorLike } from '../src/utils/fetchSponsors';
+import { fetchMembers, type MemberLike } from '../src/utils/fetchMembers';
+import { fetchSponsors, type SponsorLike } from '../src/utils/fetchSponsors';
 
 type PageProps = {
+  members: MemberLike[];
   sponsors: SponsorLike[];
 };
 
@@ -20,17 +22,16 @@ const AVATAR_SIZE = 50;
 
 export const getServerSideProps: GetServerSideProps<PageProps> = async ({ res }) => {
   const sponsors = await fetchSponsors('gqty-dev', AVATAR_SIZE);
+  const members = await fetchMembers();
 
   res.setHeader('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400');
 
   return {
-    props: { sponsors },
+    props: { members, sponsors },
   };
 };
 
-const Index: NextPage<PageProps> = ({ sponsors }) => {
-  const { isDarkTheme } = useThemeContext();
-
+const Index: NextPage<PageProps> = ({ members, sponsors }) => {
   return (
     <>
       <HeroGradient
@@ -129,7 +130,7 @@ const Index: NextPage<PageProps> = ({ sponsors }) => {
 
             <LiveEditor />
 
-            <Sponsors sponsors={sponsors} />
+            <Community members={members} sponsors={sponsors} />
           </>
         )}
       </ClassNames>

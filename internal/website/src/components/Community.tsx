@@ -1,15 +1,17 @@
-import { Avatar, Button, Heading, Link, LinkOverlay, Text } from '@chakra-ui/react';
+import { Avatar, Button, Heading, Link, LinkOverlay, Text, Tooltip } from '@chakra-ui/react';
 import { ClassNames } from '@emotion/react';
 import { useThemeContext } from '@theguild/components';
 import { FunctionComponent } from 'react';
 import { FaHeart } from 'react-icons/fa';
+import { MemberLike } from '../utils/fetchMembers';
 import { SponsorLike } from '../utils/fetchSponsors';
 
 export type Props = {
+  members: MemberLike[];
   sponsors: SponsorLike[];
 };
 
-const Sponsors: FunctionComponent<Props> = ({ sponsors }) => {
+const Community: FunctionComponent<Props> = ({ members, sponsors }) => {
   const { isDarkTheme } = useThemeContext();
   return (
     <ClassNames>
@@ -18,8 +20,13 @@ const Sponsors: FunctionComponent<Props> = ({ sponsors }) => {
           className={css`
             text-align: center;
             margin: 2rem 0 5rem;
+          `}
+        >
+          <Heading>Our Community</Heading>
+          <Text>GQty is here because of our amazing community and sponsors!</Text>
 
-            > div {
+          <div
+            className={css`
               width: 1024px;
               margin: 1.5rem auto;
               text-align: left;
@@ -27,15 +34,12 @@ const Sponsors: FunctionComponent<Props> = ({ sponsors }) => {
 
               display: flex;
               gap: 0.5rem;
-            }
-          `}
-        >
-          <Heading>Our Community</Heading>
-          <Text>GQty is here because of our amazing community and sponsors!</Text>
-
-          <div>
+              flex-wrap: wrap;
+            `}
+          >
             {sponsors.map(({ id, name, login, avatarUrl, url, websiteUrl }) => (
               <Link
+                key={id}
                 href={websiteUrl ?? url}
                 target="_blank"
                 className={css`
@@ -43,15 +47,29 @@ const Sponsors: FunctionComponent<Props> = ({ sponsors }) => {
                   text-align: center;
                 `}
               >
-                <Avatar
-                  key={id}
-                  src={avatarUrl}
-                  name={name}
-                  showBorder
-                  borderColor={isDarkTheme ? 'lightgray' : 'darkgray'}
-                />
-                <Text fontSize="xs">{login}</Text>
+                <Tooltip label={name ?? login} aria-label={name ?? login}>
+                  <Avatar
+                    src={avatarUrl}
+                    name={name}
+                    borderColor={isDarkTheme ? 'goldenrod' : 'gold'}
+                    borderWidth={3}
+                  />
+                </Tooltip>
               </Link>
+            ))}
+
+            {members.map(({ id, username, avatarUrl }) => (
+              <Tooltip
+                key={id}
+                className={css`
+                  display: inline-block;
+                  text-align: center;
+                `}
+                label={username}
+                aria-label={username}
+              >
+                <Avatar name={username} src={avatarUrl} />
+              </Tooltip>
             ))}
           </div>
 
@@ -66,4 +84,4 @@ const Sponsors: FunctionComponent<Props> = ({ sponsors }) => {
   );
 };
 
-export default Sponsors;
+export default Community;
