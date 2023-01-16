@@ -1,6 +1,7 @@
 import { ColorModeScript } from '@chakra-ui/react';
 import withTwindDocument from '@twind/next/shim/document';
 import BaseDocument, { Head, Html, Main, NextScript } from 'next/document';
+import twindConfig from '../twind.config';
 
 class Document extends BaseDocument {
   render() {
@@ -28,4 +29,4 @@ class Document extends BaseDocument {
   }
 }
 
-export default withTwindDocument({}, Document);
+export default withTwindDocument(twindConfig, Document);

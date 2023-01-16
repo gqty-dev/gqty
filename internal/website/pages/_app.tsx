@@ -10,6 +10,7 @@ import Router from 'next/router';
 import { CSSProperties, HTMLAttributes } from 'react';
 import { BsBook, BsMoonFill, BsSun } from 'react-icons/bs';
 import { FaBookOpen, FaDiscord, FaGithub, FaHome } from 'react-icons/fa';
+import twindConfig from '../twind.config';
 
 import '../public/style.css';
 
@@ -307,4 +308,4 @@ const App: AppType = (props) => (
   </CombinedThemeProvider>
 );
 
-export default withTwindApp({}, appWithTranslation(App));
+export default withTwindApp(twindConfig, appWithTranslation(App));
