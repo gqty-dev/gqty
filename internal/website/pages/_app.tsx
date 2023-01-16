@@ -132,24 +132,8 @@ const accentColor = '#C00B84';
 const serializedMdx = process.env.SERIALIZED_MDX_ROUTES;
 const mdxRoutes = { data: serializedMdx && JSON.parse(serializedMdx) };
 
-const MobileLabel = ({ className, ...props }: HTMLAttributes<HTMLSpanElement>) => (
-  <ClassNames>
-    {({ css }) => (
-      <span
-        className={[
-          css`
-            @media (min-width: 768px) {
-              display: none;
-            }
-          `,
-          className,
-        ]
-          .filter(Boolean)
-          .join(' ')}
-        {...props}
-      />
-    )}
-  </ClassNames>
+const MobileLabel = ({ className = '', ...props }: HTMLAttributes<HTMLSpanElement>) => (
+  <span className={`${className} md:hidden`} {...props} />
 );
 
 function AppContent(appProps: AppProps) {
@@ -184,7 +168,7 @@ function AppContent(appProps: AppProps) {
                   description: '',
                   image: {
                     src: '/logo/logo.svg',
-                    alt: 'Docs',
+                    alt: 'GQty Logo',
                   },
                   onClick: (e) => handlePushRoute('/', e),
                 }}
@@ -204,7 +188,12 @@ function AppContent(appProps: AppProps) {
                   {
                     children: (
                       <>
-                        {isDarkTheme ? <BsBook size={20} /> : <FaBookOpen size={20} />}
+                        {isDarkTheme ? (
+                          <BsBook size={20} />
+                        ) : (
+                          // Increase contrast for light mode in desktop
+                          <FaBookOpen size={20} />
+                        )}
                         <MobileLabel>Docs</MobileLabel>
                       </>
                     ),

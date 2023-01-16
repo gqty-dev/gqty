@@ -21,8 +21,7 @@ type PageProps = {
 const AVATAR_SIZE = 50;
 
 export const getServerSideProps: GetServerSideProps<PageProps> = async ({ res }) => {
-  const sponsors = await fetchSponsors('gqty-dev', AVATAR_SIZE);
-  const members = await fetchMembers();
+  const [sponsors, members] = await Promise.all([fetchSponsors('gqty-dev', AVATAR_SIZE), fetchMembers()]);
 
   res.setHeader('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400');
 
@@ -53,87 +52,85 @@ const Index: NextPage<PageProps> = ({ members, sponsors }) => {
 
       <ClassNames>
         {({ css }) => (
-          <>
-            <InfoList
-              containerProps={{
-                className: css`
-                  > div {
-                    align-items: center;
-                    justify-content: center;
-                  }
-                `,
-              }}
-              items={[
-                {
-                  title: (
-                    <HStack>
-                      <Image src={GraphQLLogo} alt="GraphQL" width={50} height={50} />
-                      <Heading fontSize="1em">Invisible data fetching</Heading>
-                    </HStack>
-                  ),
-                  description: 'Queries, Mutations and Subscriptions are generated at runtime using ES6 Proxies.',
-                  link: {
-                    href: '/docs/intro/features#invisible-data-fetching',
-                    onClick: (e) => handlePushRoute('/docs/intro/features#invisible-data-fetching', e),
-                    title: 'Read more',
-                    children: 'Read more',
-                  },
+          <InfoList
+            containerProps={{
+              className: css`
+                > div {
+                  align-items: center;
+                  justify-content: center;
+                }
+              `,
+            }}
+            items={[
+              {
+                title: (
+                  <HStack>
+                    <Image src={GraphQLLogo} alt="GraphQL" width={50} height={50} />
+                    <Heading fontSize="1em">Invisible data fetching</Heading>
+                  </HStack>
+                ),
+                description: 'Queries, Mutations and Subscriptions are generated at runtime using ES6 Proxies.',
+                link: {
+                  href: '/docs/intro/features#invisible-data-fetching',
+                  onClick: (e) => handlePushRoute('/docs/intro/features#invisible-data-fetching', e),
+                  title: 'Read more',
+                  children: 'Read more',
                 },
-                {
-                  title: (
-                    <HStack>
-                      <Image src={TypeScriptLogo} alt="TypeScript" width={50} height={50} />
-                      <Heading fontSize="1em">Strongly typed</Heading>
-                    </HStack>
-                  ),
-                  description: 'Built from the ground up to work with Typescript — no more code generation',
-                  link: {
-                    href: '/docs/intro/features#typescript',
-                    onClick: (e) => handlePushRoute('/docs/intro/features#typescript', e),
-                    title: 'Read more',
-                    children: 'Read more',
-                  },
+              },
+              {
+                title: (
+                  <HStack>
+                    <Image src={TypeScriptLogo} alt="TypeScript" width={50} height={50} />
+                    <Heading fontSize="1em">Strongly typed</Heading>
+                  </HStack>
+                ),
+                description: 'Built from the ground up to work with Typescript — no more code generation',
+                link: {
+                  href: '/docs/intro/features#typescript',
+                  onClick: (e) => handlePushRoute('/docs/intro/features#typescript', e),
+                  title: 'Read more',
+                  children: 'Read more',
                 },
-                {
-                  title: (
-                    <HStack>
-                      <Image src={ReactLogo} alt="React" width={50} height={50} />
-                      <Heading fontSize="1em">React.js</Heading>
-                    </HStack>
-                  ),
-                  description: 'React Suspense support, hooks, automatic component updates and more.',
-                  link: {
-                    href: '/docs/react/fetching-data',
-                    onClick: (e) => handlePushRoute('/docs/react/fetching-data', e),
-                    title: 'Read more',
-                    children: 'Read more',
-                  },
+              },
+              {
+                title: (
+                  <HStack>
+                    <Image src={ReactLogo} alt="React" width={50} height={50} />
+                    <Heading fontSize="1em">React.js</Heading>
+                  </HStack>
+                ),
+                description: 'React Suspense support, hooks, automatic component updates and more.',
+                link: {
+                  href: '/docs/react/fetching-data',
+                  onClick: (e) => handlePushRoute('/docs/react/fetching-data', e),
+                  title: 'Read more',
+                  children: 'Read more',
                 },
-                {
-                  title: (
-                    <HStack>
-                      <Image src={ProductionReady} alt="Production Ready" width={50} height={50} />
-                      <Heading fontSize="1em">Production ready</Heading>
-                    </HStack>
-                  ),
-                  description:
-                    'Fully-featured with inbuilt normalized cache, server side rendering, subscriptions and more.',
-                  link: {
-                    href: '/docs/intro/features',
-                    onClick: (e) => handlePushRoute('/docs/intro/features', e),
-                    title: 'Read more',
-                    children: 'Read more',
-                  },
+              },
+              {
+                title: (
+                  <HStack>
+                    <Image src={ProductionReady} alt="Production Ready" width={50} height={50} />
+                    <Heading fontSize="1em">Production ready</Heading>
+                  </HStack>
+                ),
+                description:
+                  'Fully-featured with inbuilt normalized cache, server side rendering, subscriptions and more.',
+                link: {
+                  href: '/docs/intro/features',
+                  onClick: (e) => handlePushRoute('/docs/intro/features', e),
+                  title: 'Read more',
+                  children: 'Read more',
                 },
-              ]}
-            />
-
-            <LiveEditor />
-
-            <Community members={members} sponsors={sponsors} />
-          </>
+              },
+            ]}
+          />
         )}
       </ClassNames>
+
+      <LiveEditor />
+
+      <Community members={members} sponsors={sponsors} />
     </>
   );
 };
