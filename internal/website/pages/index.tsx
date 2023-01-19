@@ -23,7 +23,7 @@ const AVATAR_SIZE = 50;
 export const getServerSideProps: GetServerSideProps<PageProps> = async ({ res }) => {
   const [sponsors, members] = await Promise.all([fetchSponsors('gqty-dev', AVATAR_SIZE), fetchMembers()]);
 
-  res.setHeader('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=86400');
+  res.setHeader('Cache-Control', 'public, s-maxage=86400, stale-while-revalidate=86400');
 
   return {
     props: { members, sponsors },
