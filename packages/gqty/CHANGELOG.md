@@ -1,5 +1,11 @@
 # gqty
 
+## 2.5.0
+
+### Minor Changes
+
+- f39bb450: feat(pacakge/gqty): support GraphQL operation names
+
 ## 2.3.0
 
 ### Minor Changes
@@ -105,7 +111,7 @@
     return query.user(args).name;
   }
 
-  function getUserEmail(args: Args<typeof query['user']>) {
+  function getUserEmail(args: Args<(typeof query)['user']>) {
     return query.user(args).email;
   }
   ```
