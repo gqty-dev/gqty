@@ -53,14 +53,14 @@ export function useForceUpdate({ doTimeout }: { doTimeout?: boolean } = {}) {
   }, [update, wasCalled, doTimeout]);
 }
 
-const InitSymbol: any = Symbol();
+const InitSymbol = Symbol();
 
 export function useLazyRef<T>(initialValFunc: () => T) {
-  const ref: React.MutableRefObject<T> = React.useRef(InitSymbol);
+  const ref = React.useRef<T | Symbol>(InitSymbol);
   if (ref.current === InitSymbol) {
     ref.current = initialValFunc();
   }
-  return ref;
+  return ref as React.MutableRefObject<T>;
 }
 
 export const useUpdateEffect: typeof React.useEffect = (effect, deps) => {
