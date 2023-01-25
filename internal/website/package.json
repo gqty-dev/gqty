@@ -7,7 +7,8 @@
     "build:docs": "next build",
     "dev:docs": "concurrently -r \"next-remote-watch ./docs ./src/pages/_app.tsx ./src/pages/_document.tsx\" \"wait-on -s 1 http://localhost:3000 && open-cli http://localhost:3000\"",
     "next": "next",
-    "start": "next start"
+    "start": "next start",
+    "generate": "gqty generate"
   },
   "prettier": {
     "arrowParens": "always",
@@ -38,6 +39,7 @@
     "discord.js": "^14.7.1",
     "framer-motion": "^6.5.1",
     "gqty": "workspace:^2.3.0",
+    "graphql": "^16.6.0",
     "i18next": "^22.4.9",
     "next": "^12.3.4",
     "next-i18next": "^13.0.3",
