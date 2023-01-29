@@ -1,30 +1,46 @@
-import { Box, BoxProps, chakra, extendTheme, theme as chakraTheme, useColorModeValue } from '@chakra-ui/react';
-import { mode } from '@chakra-ui/theme-tools';
-import { ClassNames } from '@emotion/react';
-import { AppSeoProps, CombinedThemeProvider, DocsPage, ExtendComponents, handlePushRoute } from '@guild-docs/client';
-import { Subheader, useThemeContext } from '@theguild/components';
-import withTwindApp from '@twind/next/shim/app';
-import { appWithTranslation } from 'next-i18next';
-import type { AppProps, AppType } from 'next/app';
-import Router from 'next/router';
-import { CSSProperties, HTMLAttributes } from 'react';
-import { BsBook, BsMoonFill, BsSun } from 'react-icons/bs';
-import { FaBookOpen, FaDiscord, FaGithub, FaHome } from 'react-icons/fa';
-import twindConfig from '../twind.config';
+import {
+  Box,
+  BoxProps,
+  chakra,
+  extendTheme,
+  theme as chakraTheme,
+  useColorModeValue,
+} from "@chakra-ui/react";
+import { mode } from "@chakra-ui/theme-tools";
+import { ClassNames } from "@emotion/react";
+import {
+  AppSeoProps,
+  CombinedThemeProvider,
+  DocsPage,
+  ExtendComponents,
+  handlePushRoute,
+} from "@guild-docs/client";
+import { Subheader, useThemeContext } from "@theguild/components";
+import withTwindApp from "@twind/next/shim/app";
+import { appWithTranslation } from "next-i18next";
+import type { AppProps, AppType } from "next/app";
+import Router from "next/router";
+import { CSSProperties, HTMLAttributes } from "react";
+import { BsBook, BsMoonFill, BsSun } from "react-icons/bs";
+import { FaBookOpen, FaDiscord, FaGithub, FaHome } from "react-icons/fa";
+import twindConfig from "../twind.config";
 
-import '../public/style.css';
+import "../public/style.css";
 
-const BaseAnchor = chakra('a', {
+const BaseAnchor = chakra("a", {
   baseStyle: {
-    color: '#2f77c9',
+    color: "#2f77c9",
     _hover: {
-      textDecoration: 'underline',
+      textDecoration: "underline",
     },
   },
 });
 
 const a: typeof BaseAnchor = (props) => {
-  const localHref = typeof props.href === 'string' && !props.href.startsWith('http') ? props.href : undefined;
+  const localHref =
+    typeof props.href === "string" && !props.href.startsWith("http")
+      ? props.href
+      : undefined;
 
   return (
     <BaseAnchor
@@ -48,7 +64,7 @@ const a: typeof BaseAnchor = (props) => {
 };
 
 const blockquote = (props: BoxProps) => {
-  const bgColor = useColorModeValue('pink.500', 'pink.700');
+  const bgColor = useColorModeValue("pink.500", "pink.700");
 
   return (
     <Box
@@ -61,7 +77,7 @@ const blockquote = (props: BoxProps) => {
       variant="left-accent"
       status="info"
       css={{
-        '> *:first-of-type': {
+        "> *:first-of-type": {
           marginTop: 0,
         },
       }}
@@ -69,16 +85,35 @@ const blockquote = (props: BoxProps) => {
     />
   );
 };
-export const table = (props: BoxProps) => <Box as="table" textAlign="left" mt="32px" width="full" {...props} />;
+export const table = (props: BoxProps) => (
+  <Box as="table" textAlign="left" mt="32px" width="full" {...props} />
+);
 
 export const th = (props: BoxProps) => {
-  const bg = useColorModeValue('gray.50', 'whiteAlpha.100');
+  const bg = useColorModeValue("gray.50", "whiteAlpha.100");
 
-  return <Box as="th" bg={bg} minW="148px" fontWeight="semibold" p={2} fontSize="sm" {...props} />;
+  return (
+    <Box
+      as="th"
+      bg={bg}
+      minW="148px"
+      fontWeight="semibold"
+      p={2}
+      fontSize="sm"
+      {...props}
+    />
+  );
 };
 
 export const td = (props: BoxProps) => (
-  <Box as="td" p={2} borderTopWidth="1px" borderColor="inherit" fontSize="sm" {...props} />
+  <Box
+    as="td"
+    p={2}
+    borderTopWidth="1px"
+    borderColor="inherit"
+    fontSize="sm"
+    {...props}
+  />
 );
 
 ExtendComponents({
@@ -93,10 +128,10 @@ ExtendComponents({
   td,
 });
 
-const styles: (typeof chakraTheme)['styles'] = {
+const styles: (typeof chakraTheme)["styles"] = {
   global: (props) => ({
     body: {
-      bg: mode('white', 'gray.850')(props),
+      bg: mode("white", "gray.850")(props),
     },
   }),
 };
@@ -104,49 +139,52 @@ const styles: (typeof chakraTheme)['styles'] = {
 const theme = extendTheme({
   colors: {
     gray: {
-      50: '#fafafa',
-      100: '#f5f5f5',
-      200: '#e5e5e5',
-      300: '#d4d4d4',
-      400: '#a3a3a3',
-      500: '#737373',
-      600: '#525252',
-      700: '#404040',
-      800: '#262626',
-      850: '#1b1b1b',
-      900: '#171717',
+      50: "#fafafa",
+      100: "#f5f5f5",
+      200: "#e5e5e5",
+      300: "#d4d4d4",
+      400: "#a3a3a3",
+      500: "#737373",
+      600: "#525252",
+      700: "#404040",
+      800: "#262626",
+      850: "#1b1b1b",
+      900: "#171717",
     },
   },
   fonts: {
-    heading: 'TGCFont, sans-serif',
-    body: 'TGCFont, sans-serif',
+    heading: "TGCFont, sans-serif",
+    body: "TGCFont, sans-serif",
   },
   config: {
-    initialColorMode: 'light',
+    initialColorMode: "light",
     useSystemColorMode: false,
   },
   styles,
 });
 
-const accentColor = '#C00B84';
+const accentColor = "#C00B84";
 
 const serializedMdx = process.env.SERIALIZED_MDX_ROUTES;
 const mdxRoutes = { data: serializedMdx && JSON.parse(serializedMdx) };
 
-const MobileLabel = ({ className = '', ...props }: HTMLAttributes<HTMLSpanElement>) => (
-  <span className={`${className} md:hidden`} {...props} />
+const MobileLabel = ({
+  className = "",
+  ...props
+}: HTMLAttributes<HTMLSpanElement>) => (
+  <span className={[className, `md:hidden`].join(" ")} {...props} />
 );
 
 function AppContent(appProps: AppProps) {
   const { Component, pageProps, router } = appProps;
-  const isDocs = router.asPath.startsWith('/docs');
+  const isDocs = router.asPath.startsWith("/docs");
   const { setDarkTheme, isDarkTheme } = useThemeContext();
   const linkStyles: CSSProperties = {
-    alignItems: 'center',
-    cursor: 'pointer',
-    display: 'flex',
-    flexWrap: 'nowrap',
-    gap: '0.5rem',
+    alignItems: "center",
+    cursor: "pointer",
+    display: "flex",
+    flexWrap: "nowrap",
+    gap: "0.5rem",
   };
 
   return (
@@ -160,18 +198,18 @@ function AppContent(appProps: AppProps) {
                 logoProps={{
                   className: css({
                     img: {
-                      width: '6rem !important',
+                      width: "6rem !important",
                     },
                   }),
                 }}
                 product={{
-                  title: '',
-                  description: '',
+                  title: "",
+                  description: "",
                   image: {
-                    src: '/logo/logo.svg',
-                    alt: 'GQty Logo',
+                    src: "/logo/logo.svg",
+                    alt: "GQty Logo",
                   },
-                  onClick: (e) => handlePushRoute('/', e),
+                  onClick: (e) => handlePushRoute("/", e),
                 }}
                 links={[
                   {
@@ -181,10 +219,10 @@ function AppContent(appProps: AppProps) {
                         <MobileLabel>Home</MobileLabel>
                       </>
                     ),
-                    href: '/',
-                    onClick: (e) => handlePushRoute('/', e),
+                    href: "/",
+                    onClick: (e) => handlePushRoute("/", e),
                     style: linkStyles,
-                    title: 'GQty Home',
+                    title: "GQty Home",
                   },
                   {
                     children: (
@@ -198,10 +236,10 @@ function AppContent(appProps: AppProps) {
                         <MobileLabel>Docs</MobileLabel>
                       </>
                     ),
-                    href: '/docs',
-                    onClick: (e) => handlePushRoute('/docs/intro', e),
+                    href: "/docs",
+                    onClick: (e) => handlePushRoute("/docs/intro", e),
                     style: linkStyles,
-                    title: 'Read the docs',
+                    title: "Read the docs",
                   },
                   {
                     children: (
@@ -210,10 +248,10 @@ function AppContent(appProps: AppProps) {
                         <MobileLabel>GitHub</MobileLabel>
                       </>
                     ),
-                    href: 'https://github.com/gqty-dev/gqty',
-                    rel: 'noopener norefereer',
+                    href: "https://github.com/gqty-dev/gqty",
+                    rel: "noopener norefereer",
                     style: linkStyles,
-                    target: '_blank',
+                    target: "_blank",
                     title: "Head to the project's GitHub",
                   },
                   {
@@ -223,11 +261,11 @@ function AppContent(appProps: AppProps) {
                         <MobileLabel>Discord</MobileLabel>
                       </>
                     ),
-                    href: 'https://discord.gg/YNux4cde',
-                    rel: 'noopener norefereer',
+                    href: "https://discord.gg/YNux4cde",
+                    rel: "noopener norefereer",
                     style: linkStyles,
-                    target: '_blank',
-                    title: 'Join our Discord server',
+                    target: "_blank",
+                    title: "Join our Discord server",
                   },
                   {
                     children:
@@ -246,17 +284,19 @@ function AppContent(appProps: AppProps) {
                     href: null as any,
                     onClick: () => setDarkTheme?.((dark) => !dark),
                     style: linkStyles,
-                    title: isDarkTheme ? 'Switch to light theme' : 'Switch to dark mode',
+                    title: isDarkTheme
+                      ? "Switch to light theme"
+                      : "Switch to dark mode",
                   },
                 ]}
                 cta={{
-                  children: 'Get Started',
-                  href: '/docs/getting-started',
-                  onClick: (e) => handlePushRoute('/docs/getting-started', e),
-                  rel: 'noopener noreferrer',
+                  children: "Get Started",
+                  href: "/docs/getting-started",
+                  onClick: (e) => handlePushRoute("/docs/getting-started", e),
+                  rel: "noopener noreferrer",
                   style: linkStyles,
-                  target: '_blank',
-                  title: 'Start using GQty',
+                  target: "_blank",
+                  title: "Start using GQty",
                 }}
               />
             </>
@@ -273,14 +313,14 @@ function AppContent(appProps: AppProps) {
             wrapperProps({ depth }) {
               return depth === 0
                 ? {
-                    height: 'calc(100vh - 240px)',
-                    overflowY: 'auto',
+                    height: "calc(100vh - 240px)",
+                    overflowY: "auto",
                   }
                 : {};
             },
             summaryLabelProps() {
               return {
-                textTransform: 'none',
+                textTransform: "none",
               };
             },
           }}
@@ -293,17 +333,21 @@ function AppContent(appProps: AppProps) {
 }
 
 const defaultSeo: AppSeoProps = {
-  title: 'GQty',
-  description: 'Your GraphQL client since day 0.',
+  title: "GQty",
+  description: "Your GraphQL client since day 0.",
   logo: {
-    url: 'https://gqty.dev/logo.png',
+    url: "https://gqty.dev/logo.png",
     width: 50,
     height: 54,
   },
 };
 
 const App: AppType = (props) => (
-  <CombinedThemeProvider theme={theme} accentColor={accentColor} defaultSeo={defaultSeo}>
+  <CombinedThemeProvider
+    theme={theme}
+    accentColor={accentColor}
+    defaultSeo={defaultSeo}
+  >
     <AppContent {...props} />
   </CombinedThemeProvider>
 );
