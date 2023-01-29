@@ -1,8 +1,9 @@
-import { GQtyClient, GQtyError, prepass } from 'gqty';
+import { GQtyClient, GQtyError, prepass, SelectionType } from 'gqty';
 import * as React from 'react';
 
 import {
   OnErrorHandler,
+  useForceUpdate,
   useInterceptSelections,
   useIsomorphicLayoutEffect,
 } from '../common';
@@ -39,9 +40,12 @@ export interface UseQueryState {
   error?: GQtyError;
 }
 
+export type Writeable<T> = { -readonly [P in keyof T]: T[P] };
+
 export type UseQueryReturnValue<GeneratedSchema extends { query: object }> =
   GeneratedSchema['query'] & {
     $state: UseQueryState;
+    $refetch: () => Promise<void> | void;
   };
 export interface UseQuery<GeneratedSchema extends { query: object }> {
   (
@@ -55,25 +59,27 @@ export function createUseQuery<
     mutation: object;
     subscription: object;
   }
->(client: GQtyClient<GeneratedSchema>, opts: ReactClientOptionsWithDefaults) {
-  const {
-    suspense: defaultSuspense,
-    staleWhileRevalidate: defaultStaleWhileRevalidate,
-  } = opts.defaults;
-  const { scheduler, eventHandler, interceptorManager } = client;
-
-  const clientQuery: GeneratedSchema['query'] = client.query;
-
+>(
+  {
+    scheduler,
+    eventHandler,
+    interceptorManager,
+    query,
+    buildAndFetchSelections,
+  }: GQtyClient<GeneratedSchema>,
+  {
+    defaults: {
+      suspense: defaultSuspense,
+      staleWhileRevalidate: defaultStaleWhileRevalidate,
+    },
+  }: ReactClientOptionsWithDefaults
+) {
+  const errorsMap = scheduler.errors.map;
+  const getLastError = () => Array.from(errorsMap.values()).pop();
   const prepareHelpers: UseQueryPrepareHelpers<GeneratedSchema> = {
     prepass,
-    query: clientQuery,
+    query,
   };
-
-  type Writeable<T> = { -readonly [P in keyof T]: T[P] };
-
-  const errorsMap = scheduler.errors.map;
-
-  const getLastError = () => Array.from(errorsMap.values()).pop();
 
   const useQuery: UseQuery<GeneratedSchema> = function useQuery({
     suspense = defaultSuspense,
@@ -81,18 +87,15 @@ export function createUseQuery<
     onError,
     prepare,
   }: UseQueryOptions<GeneratedSchema> = {}): UseQueryReturnValue<GeneratedSchema> {
-    const [$state] = React.useState<Writeable<UseQueryState>>(() => {
-      const state: Writeable<UseQueryState> = {
-        isLoading: true,
-      };
-
-      const error = getLastError();
-
-      if (error) state.error = error;
-
-      return state;
-    });
-    const { unsubscribe, fetchingPromise } = useInterceptSelections({
+    const [$state] = React.useState(
+      (): Writeable<UseQueryState> => ({
+        get isLoading() {
+          return fetchingPromise.current !== null;
+        },
+        error: getLastError(),
+      })
+    );
+    const { fetchingPromise, selections } = useInterceptSelections({
       staleWhileRevalidate,
       eventHandler,
       interceptorManager,
@@ -112,53 +115,49 @@ export function createUseQuery<
       }
     }
 
-    useIsomorphicLayoutEffect(() => {
-      return scheduler.errors.subscribeErrors((ev) => {
-        switch (ev.type) {
-          case 'errors_clean':
-          case 'new_error': {
-            const error = getLastError();
-            if (error) {
-              $state.error = error;
-            } else {
-              delete $state.error;
+    useIsomorphicLayoutEffect(
+      () =>
+        scheduler.errors.subscribeErrors((ev) => {
+          switch (ev.type) {
+            case 'errors_clean':
+            case 'new_error': {
+              $state.error = getLastError();
             }
           }
-        }
-      });
-    }, []);
+        }),
+      []
+    );
 
-    useIsomorphicLayoutEffect(unsubscribe);
-
-    if (fetchingPromise.current) {
-      $state.isLoading = true;
-
-      if (suspense) throw fetchingPromise.current;
-    } else {
-      $state.isLoading = false;
+    if (fetchingPromise.current && suspense) {
+      throw fetchingPromise.current;
     }
 
-    return React.useMemo<UseQueryReturnValue<GeneratedSchema>>(() => {
-      const gqtyProxy = Symbol('gqty-proxy');
-      return new Proxy(
-        Object.keys(clientQuery).reduce(
-          (acum, value) => {
-            //@ts-expect-error
-            acum[value] = gqtyProxy;
-            return acum;
-          },
-          {
-            $state,
-          }
-        ),
-        {
-          set(_t, key, value) {
-            return Reflect.set(clientQuery, key, value);
-          },
-          get(_t, key) {
-            if (key === '$state') return $state;
+    const forceUpdate = useForceUpdate();
 
-            return Reflect.get(clientQuery, key);
+    return React.useMemo(() => {
+      return new Proxy<UseQueryReturnValue<GeneratedSchema>>(
+        {
+          $state,
+          $refetch: async () => {
+            fetchingPromise.current = buildAndFetchSelections(
+              Array.from(selections).filter(
+                (v) => v.type === SelectionType.Query
+              ),
+              'query'
+            );
+            forceUpdate();
+
+            await fetchingPromise.current;
+            fetchingPromise.current = null;
+            forceUpdate();
+          },
+        },
+        {
+          set(_, key, value) {
+            return Reflect.set(query, key, value);
+          },
+          get(target, key) {
+            return Reflect.get(target, key) ?? Reflect.get(query, key);
           },
         }
       );

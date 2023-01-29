@@ -452,7 +452,11 @@ export function useInterceptSelections({
     },
   });
 
-  return { fetchingPromise, unsubscribe };
+  return {
+    fetchingPromise,
+    selections,
+    unsubscribe,
+  };
 }
 
 export function useSuspensePromise(optsRef: {

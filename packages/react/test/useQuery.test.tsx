@@ -1,46 +1,67 @@
 import { renderHook } from '@testing-library/react-hooks';
-
 import { createReactTestClient } from './utils';
 
-test('Basic Non-Suspense', async () => {
-  const { useQuery } = await createReactTestClient();
+describe('useQuery', () => {
+  it('should fetch without suspense', async () => {
+    const { useQuery } = await createReactTestClient();
 
-  const { result, waitFor } = renderHook(() => {
-    const query = useQuery({
-      suspense: false,
+    const { result, waitFor } = renderHook(() => {
+      const query = useQuery({ suspense: false });
+
+      return {
+        hello: query.hello,
+        $state: query.$state,
+      };
     });
 
-    return {
-      hello: query.hello,
-      $state: query.$state,
-    };
+    expect(result.current.hello).toBe(undefined);
+
+    await waitFor(() => result.current.$state.isLoading === true);
+
+    expect(result.current.hello).toBe(undefined);
+
+    await waitFor(() => result.current.$state.isLoading === false);
+
+    expect(result.current.hello).toBe('hello world');
   });
 
-  expect(result.current.hello).toBe(undefined);
+  it('should $refetch', async () => {
+    const { useQuery } = await createReactTestClient();
 
-  await waitFor(() => result.current.$state.isLoading === true);
+    const { result, waitFor } = renderHook(() => {
+      const query = useQuery({ suspense: false });
 
-  expect(result.current.hello).toBe(undefined);
-
-  await waitFor(() => result.current.$state.isLoading === false);
-
-  expect(result.current.hello).toBe('hello world');
-});
-
-test('Basic Suspense', async () => {
-  const { useQuery } = await createReactTestClient();
-
-  const { result, waitForNextUpdate } = renderHook(() => {
-    const query = useQuery({
-      suspense: true,
+      return {
+        hello: query.hello,
+        $state: query.$state,
+        $refetch: query.$refetch,
+      };
     });
 
-    return query.hello;
+    await waitFor(() => result.current.$state.isLoading === true);
+    await waitFor(() => result.current.$state.isLoading === false);
+
+    result.current.$refetch();
+
+    await waitFor(() => result.current.$state.isLoading === true);
+    await waitFor(() => result.current.$state.isLoading === false);
+
+    expect(result.current.hello).toBe('hello world');
   });
 
-  expect(result.current).toBe(undefined);
+  it('should fetch with suspense', async () => {
+    const { useQuery } = await createReactTestClient();
 
-  await waitForNextUpdate();
+    const { result, waitForNextUpdate } = renderHook(() => {
+      const query = useQuery({ suspense: true });
 
-  expect(result.current).toBe('hello world');
+      return query.hello;
+    });
+
+    expect(result.current).toBe(undefined);
+
+    await waitForNextUpdate();
+
+    expect(result.current).toBe('hello world');
+  });
 });
