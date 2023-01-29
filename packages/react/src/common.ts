@@ -29,11 +29,8 @@ export const useIsomorphicLayoutEffect = IS_BROWSER
   ? React.useLayoutEffect
   : React.useEffect;
 
-const updateReducer = (num: number): number => (num + 1) % 1_000_000;
-
 export function useForceUpdate({ doTimeout }: { doTimeout?: boolean } = {}) {
-  const [, update] = React.useReducer(updateReducer, 0);
-
+  const [, update] = React.useReducer((num) => (num + 1) % 1_000_000, 0);
   const wasCalled = React.useRef(false);
 
   React.useEffect(() => {
@@ -51,9 +48,7 @@ export function useForceUpdate({ doTimeout }: { doTimeout?: boolean } = {}) {
           Promise.resolve().then(update);
         }
       },
-      {
-        wasCalled,
-      }
+      { wasCalled }
     );
   }, [update, wasCalled, doTimeout]);
 }
@@ -283,12 +278,12 @@ export function useSelectionsState() {
 }
 
 export function useSubscribeCacheChanges({
-  hookSelections,
+  selections,
   eventHandler,
   onChange,
   shouldSubscribe = true,
 }: {
-  hookSelections: Set<Selection>;
+  selections: Set<Selection>;
   eventHandler: EventHandler;
   onChange: () => void;
   shouldSubscribe?: boolean;
@@ -306,7 +301,7 @@ export function useSubscribeCacheChanges({
       (fetchPromise, promiseSelections) => {
         if (
           onChangeCalled.current ||
-          !promiseSelections.some((selection) => hookSelections.has(selection))
+          !promiseSelections.some((selection) => selections.has(selection))
         ) {
           return;
         }
@@ -323,11 +318,7 @@ export function useSubscribeCacheChanges({
 
     const unsubscribeCache = eventHandler.onCacheChangeSubscribe(
       ({ selection }) => {
-        if (
-          isMounted &&
-          !onChangeCalled.current &&
-          hookSelections.has(selection)
-        ) {
+        if (isMounted && !onChangeCalled.current && selections.has(selection)) {
           onChangeCalled.current = true;
           Promise.resolve().then(onChange);
         }
@@ -339,7 +330,7 @@ export function useSubscribeCacheChanges({
       unsubscribeFetch();
       unsubscribeCache();
     };
-  }, [shouldSubscribe, hookSelections, eventHandler, onChange]);
+  }, [shouldSubscribe, selections, eventHandler, onChange]);
 }
 
 function hasEnabledStaleWhileRevalidate(
@@ -369,22 +360,22 @@ export function useInterceptSelections({
   onError: OnErrorHandler | undefined;
   updateOnFetchPromise?: boolean;
 }) {
-  const hookSelections = useSelectionsState();
-  const forceUpdate = useDeferDispatch(useForceUpdate());
-  const fetchingPromise = React.useRef<Promise<void> | null>(null);
-
-  const interceptor = createInterceptor();
-
   const enabledStaleWhileRevalidate =
     hasEnabledStaleWhileRevalidate(staleWhileRevalidate);
   const cacheRefetchSelections = enabledStaleWhileRevalidate
     ? new Set<Selection>()
     : null;
+  const fetchingPromise = React.useRef<Promise<void> | null>(null);
+  const forceUpdate = useDeferDispatch(useForceUpdate());
+  const interceptor = createInterceptor();
+  const selections = useSelectionsState();
 
   interceptor.selectionCacheRefetchListeners.add((selection) => {
-    if (cacheRefetchSelections) cacheRefetchSelections.add(selection);
+    if (cacheRefetchSelections) {
+      cacheRefetchSelections.add(selection);
+    }
 
-    hookSelections.add(selection);
+    selections.add(selection);
   });
 
   useIsomorphicLayoutEffect(() => {
@@ -396,11 +387,11 @@ export function useInterceptSelections({
   }, [staleWhileRevalidate, enabledStaleWhileRevalidate]);
 
   interceptor.selectionAddListeners.add((selection) => {
-    hookSelections.add(selection);
+    selections.add(selection);
   });
 
   interceptor.selectionCacheListeners.add((selection) => {
-    hookSelections.add(selection);
+    selections.add(selection);
   });
 
   const deferredCall = React.useRef<(() => void) | null>(null);
@@ -419,7 +410,7 @@ export function useInterceptSelections({
       if (
         fetchingPromise.current === null &&
         deferredCall.current === null &&
-        hookSelections.has(selection)
+        selections.has(selection)
       ) {
         const newPromise = new Promise<void>((resolve) => {
           promise.then(({ error }) => {
@@ -454,7 +445,7 @@ export function useInterceptSelections({
   Promise.resolve().then(unsubscribe);
 
   useSubscribeCacheChanges({
-    hookSelections,
+    selections,
     eventHandler,
     onChange() {
       if (!fetchingPromise.current) forceUpdate();

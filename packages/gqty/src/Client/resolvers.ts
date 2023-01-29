@@ -194,7 +194,7 @@ export interface BuildAndFetchSelections {
     cache?: CacheInstance,
     options?: FetchResolveOptions,
     lastTry?: boolean | undefined
-  ): Promise<TData | null | undefined>;
+  ): Promise<TData | undefined>;
 }
 
 export interface ResolveSelections {
@@ -533,7 +533,7 @@ export function createResolvers(
     cache: CacheInstance = innerState.clientCache,
     options: FetchResolveOptions = {},
     lastTry?: boolean
-  ): Promise<TData | null | undefined> {
+  ) {
     if (!selections) return;
 
     const isLastTry =

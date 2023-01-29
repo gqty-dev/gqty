@@ -23,14 +23,14 @@ import {
   UseSubscription,
 } from './subscription/useSubscription';
 
-import type { RetryOptions, GQtyClient } from 'gqty';
+import type { GQtyClient, RetryOptions } from 'gqty';
 import type { FetchPolicy } from './common';
-import type { ReactClientOptionsWithDefaults } from './utils';
 import {
   createUsePaginatedQuery,
   PaginatedQueryFetchPolicy,
   UsePaginatedQuery,
 } from './query/usePaginatedQuery';
+import type { ReactClientOptionsWithDefaults } from './utils';
 
 export interface ReactClientDefaults {
   /**
@@ -227,19 +227,6 @@ export function createReactClient<
     defaults,
   });
 
-  const state = new Proxy(
-    {
-      isLoading: false,
-    },
-    {
-      get(target, key, receiver) {
-        if (key === 'isLoading') return Boolean(client.scheduler.resolving);
-
-        return Reflect.get(target, key, receiver);
-      },
-    }
-  );
-
   const { prepareReactRender, useHydrateCache } = createSSRHelpers(
     client,
     opts
@@ -256,7 +243,11 @@ export function createReactClient<
     usePaginatedQuery: createUsePaginatedQuery<GeneratedSchema>(client, opts),
     useMutation: createUseMutation<GeneratedSchema>(client, opts),
     graphql: createGraphqlHOC(client, opts),
-    state,
+    state: {
+      get isLoading() {
+        return client.scheduler.resolving !== null;
+      },
+    },
     prepareReactRender,
     useHydrateCache,
     useMetaState: createUseMetaState(client),

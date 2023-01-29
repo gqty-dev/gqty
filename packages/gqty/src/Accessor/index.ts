@@ -639,8 +639,7 @@ export function createAccessorCreators<
                    * and the __typename doesn't correspond to the target object type
                    */
                   if (
-                    // SelectionType.Subscription === 2
-                    selection.type === 2 ||
+                    selection.type === SelectionType.Subscription ||
                     (!isUnionWithDifferentTypeResult &&
                       (schedulerClientCache !== innerState.clientCache ||
                         !schedulerErrorsMap.has(selection)))
@@ -652,8 +651,7 @@ export function createAccessorCreators<
                   return isArray ? emptyScalarArray : undefined;
                 } else if (
                   !innerState.allowCache ||
-                  // SelectionType.Subscription === 2
-                  selection.type === 2
+                  selection.type === SelectionType.Subscription
                 ) {
                   // Or if you are making the network fetch always
                   interceptorManager.addSelection(selection);

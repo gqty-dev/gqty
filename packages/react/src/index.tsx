@@ -1,36 +1,9 @@
 export * from './client';
-
+export { coreHelpers, sortBy, uniqBy } from './common';
+export type { CoreHelpers, FetchPolicy, OnErrorHandler } from './common';
 export type {
-  UseQuery,
-  UseQueryOptions,
-  UseQueryState,
-  UseQueryReturnValue,
-} from './query/useQuery';
-export type { GraphQLHOC, GraphQLHOCOptions } from './query/hoc';
-export type {
-  UseTransactionQuery,
-  UseTransactionQueryOptions,
-  UseTransactionQueryState,
-} from './query/useTransactionQuery';
-export type {
-  LazyFetchPolicy,
-  UseLazyQuery,
-  UseLazyQueryOptions,
-  UseLazyQueryState,
-} from './query/useLazyQuery';
-export type {
-  UseRefetch,
-  UseRefetchOptions,
-  UseRefetchState,
-} from './query/useRefetch';
-export type {
-  PrepareQuery,
-  PreparedQuery,
-  UsePreparedQueryOptions,
-} from './query/preparedQuery';
-export type {
-  UseMetaState,
   MetaState,
+  UseMetaState,
   UseMetaStateOptions,
 } from './meta/useMetaState';
 export type {
@@ -38,21 +11,42 @@ export type {
   UseMutationOptions,
   UseMutationState,
 } from './mutation/useMutation';
-export type { UseSubscription } from './subscription/useSubscription';
+export type { GraphQLHOC, GraphQLHOCOptions } from './query/hoc';
 export type {
+  PreparedQuery,
+  PrepareQuery,
+  UsePreparedQueryOptions,
+} from './query/preparedQuery';
+export type {
+  LazyFetchPolicy,
+  UseLazyQuery,
+  UseLazyQueryOptions,
+  UseLazyQueryState,
+} from './query/useLazyQuery';
+export type {
+  FetchMoreCallbackArgs,
   PaginatedQueryFetchPolicy,
   UsePaginatedQuery,
-  FetchMoreCallbackArgs,
   UsePaginatedQueryData,
   UsePaginatedQueryMergeParams,
   UsePaginatedQueryOptions,
 } from './query/usePaginatedQuery';
 export type {
-  UseHydrateCache,
+  UseQuery,
+  UseQueryOptions,
+  UseQueryReturnValue,
+  UseQueryState,
+} from './query/useQuery';
+export type { UseRefetch, UseRefetchOptions } from './query/useRefetch';
+export type {
+  UseTransactionQuery,
+  UseTransactionQueryOptions,
+  UseTransactionQueryState,
+} from './query/useTransactionQuery';
+export type {
   PrepareReactRender,
   PropsWithServerCache,
+  UseHydrateCache,
   UseHydrateCacheOptions,
 } from './ssr/ssr';
-
-export type { OnErrorHandler, FetchPolicy, CoreHelpers } from './common';
-export { coreHelpers, uniqBy, sortBy } from './common';
+export type { UseSubscription } from './subscription/useSubscription';
