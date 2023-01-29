@@ -31,7 +31,6 @@
     "build": "bob-esbuild build",
     "dev": "bob-esbuild watch",
     "prepare": "bob-esbuild build",
-    "postpublish": "gh-release",
     "size": "size-limit",
     "start": "bob-esbuild watch",
     "start:with:example": "bob-esbuild watch --onSuccess \"pnpm -r --filter react-example dev\"",

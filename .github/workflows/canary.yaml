@@ -6,8 +6,8 @@ on:
       - main
 
 jobs:
-  publish-canary:
-    name: Publish Canary
+  release-canary:
+    name: Canary release
     runs-on: ubuntu-latest
     if: github.event.pull_request.head.repo.full_name == github.repository
     steps:
@@ -36,8 +36,9 @@ jobs:
 
       - name: Release Canary
         id: canary
-        uses: 'kamilkisiela/release-canary@master'
+        uses: changesets/action@v1
         with:
-          npm-token: ${{ secrets.NPM_TOKEN }}
-          npm-script: 'pnpm release:canary'
-          changesets: true
+          publish: pnpm release:canary
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
