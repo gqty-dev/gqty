@@ -1,6 +1,6 @@
 import type { GQtyError } from '../Error';
 import type { InterceptorManager } from '../Interceptor';
-import { Selection } from '../Selection';
+import { Selection, SelectionType } from '../Selection';
 import { createDeferredPromise, DeferredPromise } from '../Utils';
 import { debounce } from '../Utils/debounce';
 
@@ -9,10 +9,12 @@ export type SchedulerPromiseValue = {
   data?: unknown;
   selections: Set<Selection>;
 };
-
 export type ResolvingLazyPromise = DeferredPromise<SchedulerPromiseValue>;
 export type ResolvedLazyPromise = Promise<SchedulerPromiseValue>;
-
+export type ResolveSubscriptionFn = (
+  promise: ResolvedLazyPromise,
+  selection: Selection
+) => void;
 export type ErrorSubscriptionEvent =
   | {
       type: 'new_error';
@@ -29,9 +31,7 @@ export type ErrorSubscriptionEvent =
       retryPromise: Promise<SchedulerPromiseValue>;
       selections: Set<Selection>;
     };
-
 export type ErrorSubscriptionFn = (event: ErrorSubscriptionEvent) => void;
-
 export type IsFetchingSubscriptionFn = (isFetching: boolean) => void;
 
 export interface Scheduler {
@@ -68,146 +68,124 @@ export const createScheduler = (
   { globalInterceptor }: InterceptorManager,
   resolveSchedulerSelections: (selections: Set<Selection>) => Promise<void>,
   catchSelectionsTimeMS: number
-): Scheduler => {
-  type ResolveSubscriptionFn = (
+) => {
+  const resolveListeners = new Set<ResolveSubscriptionFn>();
+  const notifyResolves = (
     promise: ResolvedLazyPromise,
     selection: Selection
-  ) => void;
+  ) => {
+    for (const notify of resolveListeners) {
+      notify(promise, selection);
+    }
+  };
 
-  const resolveListeners = new Set<ResolveSubscriptionFn>();
-
-  function subscribeResolve(fn: ResolveSubscriptionFn) {
-    resolveListeners.add(fn);
-
-    return function unsubscribe() {
-      resolveListeners.delete(fn);
-    };
-  }
-
+  const errorsListeners = new Set<ErrorSubscriptionFn>();
   const errorsMap = new Map<Selection, GQtyError>();
+  const notifyErrors = (event: ErrorSubscriptionEvent) => {
+    for (const notify of errorsListeners) {
+      notify(event);
+    }
+  };
 
   const pendingSelectionsGroups = new Set<Set<Selection>>();
   const pendingSelectionsGroupsPromises = new Map<
     Set<Selection>,
     ResolvedLazyPromise
   >();
-
   const selectionsOnTheFly = new Set<Selection>();
-
   const selectionsWithFinalErrors = new Set<Selection>();
 
   const scheduler: Scheduler = {
-    resolving: null as null | ResolvingLazyPromise,
-    subscribeResolve,
+    resolving: null,
+    subscribeResolve: (fn) => {
+      resolveListeners.add(fn);
+
+      return () => {
+        resolveListeners.delete(fn);
+      };
+    },
     errors: {
       map: errorsMap,
-      subscribeErrors,
-      triggerError,
-      removeErrors,
-      retryPromise,
+      subscribeErrors: (fn) => {
+        errorsListeners.add(fn);
+
+        return () => {
+          errorsListeners.delete(fn);
+        };
+      },
+      triggerError: (newError, selections, isLastTry) => {
+        if (!selections.length) return;
+
+        for (const selection of selections) {
+          errorsMap.set(selection, newError);
+        }
+
+        notifyErrors({
+          type: 'new_error',
+          newError,
+          selections,
+          isLastTry,
+        });
+      },
+      removeErrors: (selectionsCleaned: Selection[]) => {
+        if (errorsMap.size === 0) return;
+
+        for (const selection of selectionsCleaned) {
+          errorsMap.delete(selection);
+          selectionsWithFinalErrors.delete(selection);
+        }
+
+        notifyErrors({
+          type: 'errors_clean',
+          selectionsCleaned,
+        });
+      },
+      retryPromise: (retryPromise, selections) => {
+        pendingSelectionsGroups.add(selections);
+        pendingSelectionsGroupsPromises.set(selections, retryPromise);
+
+        retryPromise.finally(() => {
+          pendingSelectionsGroups.delete(selections);
+          pendingSelectionsGroupsPromises.delete(selections);
+        });
+
+        notifyErrors({
+          type: 'retry',
+          retryPromise,
+          selections,
+        });
+      },
     },
     isFetching: false,
     pendingSelectionsGroups,
     pendingSelectionsGroupsPromises,
-    getResolvingPromise,
+    getResolvingPromise: (selections) => {
+      if (selections instanceof Selection) {
+        for (const [group, promise] of pendingSelectionsGroupsPromises) {
+          if (group.has(selections)) return promise;
+        }
+      } else {
+        for (const selection of selections) {
+          for (const [group, promise] of pendingSelectionsGroupsPromises) {
+            if (group.has(selection)) return promise;
+          }
+        }
+      }
+
+      return;
+    },
   };
-
-  const errorsListeners = new Set<ErrorSubscriptionFn>();
-
-  function subscribeErrors(fn: ErrorSubscriptionFn) {
-    errorsListeners.add(fn);
-
-    return function unsubscribe() {
-      errorsListeners.delete(fn);
-    };
-  }
-
-  function retryPromise(
-    retryPromise: Promise<SchedulerPromiseValue>,
-    selections: Set<Selection>
-  ) {
-    pendingSelectionsGroups.add(selections);
-    pendingSelectionsGroupsPromises.set(selections, retryPromise);
-
-    retryPromise.finally(() => {
-      pendingSelectionsGroups.delete(selections);
-      pendingSelectionsGroupsPromises.delete(selections);
-    });
-
-    const data: ErrorSubscriptionEvent = {
-      type: 'retry',
-      retryPromise,
-      selections,
-    };
-    errorsListeners.forEach((listener) => {
-      listener(data);
-    });
-  }
-
-  function triggerError(
-    newError: GQtyError,
-    selections: Selection[],
-    isLastTry: boolean
-  ) {
-    if (!selections.length) return;
-
-    for (const selection of selections) errorsMap.set(selection, newError);
-
-    const data: ErrorSubscriptionEvent = {
-      type: 'new_error',
-      newError,
-      selections,
-      isLastTry,
-    };
-    errorsListeners.forEach((listener) => {
-      listener(data);
-    });
-  }
-
-  function removeErrors(selectionsCleaned: Selection[]) {
-    if (errorsMap.size === 0) return;
-
-    for (const selection of selectionsCleaned) {
-      errorsMap.delete(selection);
-      selectionsWithFinalErrors.delete(selection);
-    }
-
-    const data: ErrorSubscriptionEvent = {
-      type: 'errors_clean',
-      selectionsCleaned,
-    };
-    errorsListeners.forEach((listener) => {
-      listener(data);
-    });
-  }
 
   let resolvingPromise: ResolvingLazyPromise | null = null;
 
-  function getResolvingPromise(
-    selections: Selection | Set<Selection>
-  ): ResolvedLazyPromise | void {
-    if (selections instanceof Selection) {
-      for (const [group, promise] of pendingSelectionsGroupsPromises) {
-        if (group.has(selections)) return promise;
-      }
-    } else {
-      for (const selection of selections) {
-        for (const [group, promise] of pendingSelectionsGroupsPromises) {
-          if (group.has(selection)) return promise;
-        }
-      }
-    }
-  }
-
   const fetchSelections = debounce((lazyPromise: ResolvingLazyPromise) => {
     resolvingPromise = null;
-
-    const selectionsToFetch = new Set(globalInterceptor.fetchSelections);
 
     selectionsOnTheFly.clear();
     pendingSelectionsGroups.delete(selectionsOnTheFly);
     pendingSelectionsGroupsPromises.delete(selectionsOnTheFly);
 
+    const selectionsToFetch = new Set(globalInterceptor.fetchSelections);
     pendingSelectionsGroups.add(selectionsToFetch);
     pendingSelectionsGroupsPromises.set(selectionsToFetch, lazyPromise.promise);
 
@@ -215,17 +193,18 @@ export const createScheduler = (
       () => {
         pendingSelectionsGroups.delete(selectionsToFetch);
         pendingSelectionsGroupsPromises.delete(selectionsToFetch);
-        if (scheduler.resolving === lazyPromise) scheduler.resolving = null;
-        lazyPromise.resolve({
-          selections: selectionsToFetch,
-        });
+        if (scheduler.resolving === lazyPromise) {
+          scheduler.resolving = null;
+        }
+
+        lazyPromise.resolve({ selections: selectionsToFetch });
       },
       (error) => {
         pendingSelectionsGroups.delete(selectionsToFetch);
         pendingSelectionsGroupsPromises.delete(selectionsToFetch);
-
-        /* istanbul ignore else */
-        if (scheduler.resolving === lazyPromise) scheduler.resolving = null;
+        if (scheduler.resolving === lazyPromise) {
+          scheduler.resolving = null;
+        }
 
         lazyPromise.resolve({
           error,
@@ -236,29 +215,26 @@ export const createScheduler = (
   }, catchSelectionsTimeMS);
 
   function addSelectionToScheduler(selection: Selection, notifyResolve = true) {
-    if (selection.type === 2) notifyResolve = false;
+    if (selection.type === SelectionType.Subscription) {
+      notifyResolve = false;
+    }
 
-    const existingPromise = getResolvingPromise(selection);
-    if (existingPromise) {
-      if (!notifyResolve) return;
-
-      for (const sub of resolveListeners) {
-        sub(existingPromise, selection);
+    {
+      const promise = scheduler.getResolvingPromise(selection);
+      if (notifyResolve && promise) {
+        notifyResolves(promise, selection);
       }
     }
 
-    let lazyPromise: ResolvingLazyPromise;
+    const lazyPromise =
+      resolvingPromise ?? createDeferredPromise<SchedulerPromiseValue>();
     if (resolvingPromise === null) {
-      lazyPromise = createDeferredPromise<SchedulerPromiseValue>();
-
       lazyPromise.promise.then(({ error }) => {
         if (error) console.error(error);
       });
 
       resolvingPromise = lazyPromise;
       scheduler.resolving = lazyPromise;
-    } else {
-      lazyPromise = resolvingPromise;
     }
 
     pendingSelectionsGroups.add(selectionsOnTheFly);
@@ -269,20 +245,19 @@ export const createScheduler = (
     );
 
     if (notifyResolve) {
-      const promise = lazyPromise.promise;
-      resolveListeners.forEach((subscription) => {
-        subscription(promise, selection);
-      });
+      notifyResolves(lazyPromise.promise, selection);
     }
 
     fetchSelections(lazyPromise);
   }
 
+  globalInterceptor.selectionAddListeners.add((selection) => {
+    addSelectionToScheduler(selection);
+  });
+
   globalInterceptor.selectionCacheRefetchListeners.add((selection) =>
     addSelectionToScheduler(selection, false)
   );
-
-  globalInterceptor.selectionAddListeners.add(addSelectionToScheduler);
 
   return scheduler;
 };

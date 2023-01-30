@@ -5,11 +5,11 @@ import {
   coreHelpers,
   CoreHelpers,
   FetchPolicy,
+  sortBy,
+  uniqBy,
   useSelectionsState,
   useSubscribeCacheChanges,
   useSuspensePromise,
-  uniqBy,
-  sortBy,
 } from '../common';
 import type { ReactClientOptionsWithDefaults } from '../utils';
 
@@ -228,7 +228,7 @@ export function createUsePaginatedQuery<
       React.Dispatch<UsePaginatedQueryReducerAction<TData>>
     ];
 
-    const hookSelections = useSelectionsState();
+    const selections = useSelectionsState();
 
     const stateRef = React.useRef(state);
     stateRef.current = state;
@@ -288,7 +288,7 @@ export function createUsePaginatedQuery<
 
         let incomingData = inlineResolved(resolvedFn, {
           onSelection(selection) {
-            hookSelections.add(selection);
+            selections.add(selection);
           },
           refetch,
           onCacheData(data) {
@@ -334,7 +334,7 @@ export function createUsePaginatedQuery<
     );
 
     useSubscribeCacheChanges({
-      hookSelections,
+      selections,
       eventHandler,
       onChange() {
         if (isMerging.current) return;

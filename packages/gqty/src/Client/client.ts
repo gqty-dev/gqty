@@ -316,13 +316,10 @@ export function createClient<
     try {
       await resolvePromise;
     } catch (error: any) {
-      /* istanbul ignore else */
-      if (resolvingPromise) {
-        resolvingPromise.resolve({
-          error,
-          selections,
-        });
-      }
+      resolvingPromise?.resolve({
+        error,
+        selections,
+      });
     }
   }
 

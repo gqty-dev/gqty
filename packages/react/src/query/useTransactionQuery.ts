@@ -182,7 +182,7 @@ export function createUseTransactionQuery<
         lazy: true,
       });
 
-      const hookSelections = useSelectionsState();
+      const selections = useSelectionsState();
 
       const resolveOptions = React.useMemo<ResolveOptions<TData>>(() => {
         return fetchPolicyDefaultResolveOptions(fetchPolicy);
@@ -237,7 +237,7 @@ export function createUseTransactionQuery<
             ...resolveOptions,
             ...resolveOptsArg,
             onSelection(selection) {
-              hookSelections.add(selection);
+              selections.add(selection);
             },
             onEmptyResolve() {
               instaResolved = true;
@@ -439,7 +439,7 @@ export function createUseTransactionQuery<
       ]);
 
       useSubscribeCacheChanges({
-        hookSelections,
+        selections,
         eventHandler,
         shouldSubscribe: fetchPolicy !== 'no-cache',
         onChange() {

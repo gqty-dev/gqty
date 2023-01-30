@@ -61,11 +61,13 @@ export function createInterceptorManager(): InterceptorManager {
   function createInterceptor() {
     const interceptor = new Interceptor();
     interceptors.add(interceptor);
+    // console.debug('+ interceptor', interceptors.size);
     return interceptor;
   }
 
   function removeInterceptor(interceptor: Interceptor) {
     interceptors.delete(interceptor);
+    // console.debug('- interceptor', interceptors.size);
   }
 
   function addSelection(selection: Selection) {

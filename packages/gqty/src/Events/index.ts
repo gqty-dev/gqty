@@ -31,38 +31,38 @@ interface OnCacheChangeEventFn {
 export class EventHandler {
   public hasFetchSubscribers = false;
   private onFetchListeners = new Set<OnFetchEventFn>();
-
   private onCacheChangeListeners = new Set<OnCacheChangeEventFn>();
 
   public sendCacheChange(data: CacheChangeEventData) {
-    for (const listener of this.onCacheChangeListeners) listener(data);
+    for (const listener of this.onCacheChangeListeners) {
+      listener(data);
+    }
   }
 
   public sendFetchPromise(
     data: Promise<FetchEventData>,
     selections: Selection[]
   ) {
-    for (const listener of this.onFetchListeners) listener(data, selections);
+    for (const listener of this.onFetchListeners) {
+      listener(data, selections);
+    }
   }
 
   public onCacheChangeSubscribe(fn: OnCacheChangeEventFn) {
-    const self = this;
+    this.onCacheChangeListeners.add(fn);
 
-    self.onCacheChangeListeners.add(fn);
-
-    return function unsubscribe() {
-      self.onCacheChangeListeners.delete(fn);
+    return () => {
+      this.onCacheChangeListeners.delete(fn);
     };
   }
 
   public onFetchSubscribe(fn: OnFetchEventFn) {
-    const self = this;
+    this.onFetchListeners.add(fn);
+    this.hasFetchSubscribers = this.onFetchListeners.size > 0;
 
-    self.hasFetchSubscribers = Boolean(self.onFetchListeners.add(fn).size);
-
-    return function unsubscribe() {
-      self.onFetchListeners.delete(fn);
-      self.hasFetchSubscribers = Boolean(self.onFetchListeners.size);
+    return () => {
+      this.onFetchListeners.delete(fn);
+      this.hasFetchSubscribers = this.onFetchListeners.size > 0;
     };
   }
 }

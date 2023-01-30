@@ -1,5 +1,5 @@
 import type { InnerClientState } from '../Client/client';
-import type { InlineResolveOptions, Resolvers } from '../Client/resolvers';
+import type { Resolvers } from '../Client/resolvers';
 
 export function isFunction<T>(v: T | (() => T)): v is () => T {
   return typeof v === 'function';
@@ -16,13 +16,9 @@ export function createRefetch(
 ): Refetch {
   const { accessorCache } = innerState;
 
-  const inlineResolveRefetch: InlineResolveOptions<unknown> = {
-    refetch: true,
-  };
-
   async function refetch<T = undefined | void>(refetchArg: T | (() => T)) {
     if (isFunction(refetchArg))
-      return inlineResolved(refetchArg, inlineResolveRefetch);
+      return inlineResolved(refetchArg, { refetch: true });
 
     if (accessorCache.isProxy(refetchArg)) {
       const selectionSet = accessorCache.getSelectionSetHistory(refetchArg);
