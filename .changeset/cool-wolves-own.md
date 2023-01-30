@@ -2,4 +2,4 @@
 'gqty': minor
 ---
 
-feat(pacakge/gqty): support GraphQL operation names
+Add `operationName` option to `resolved()` and `inlineResolved()`.
