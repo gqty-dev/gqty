@@ -114,7 +114,7 @@ export interface CoreClientDefaults {
      */
     noCache?: boolean;
     /**
-     * Set the default `noCache` option
+     * Set the default `refetch` option
      *
      * @default false
      */
