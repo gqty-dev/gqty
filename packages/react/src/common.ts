@@ -365,7 +365,7 @@ export function useInterceptSelections({
   const cacheRefetchSelections = enabledStaleWhileRevalidate
     ? new Set<Selection>()
     : null;
-  const fetchingPromise = React.useRef<Promise<void> | null>(null);
+  const fetchingPromise = React.useRef<Promise<unknown> | null>(null);
   const forceUpdate = useDeferDispatch(useForceUpdate());
   const interceptor = createInterceptor();
   const selections = useSelectionsState();

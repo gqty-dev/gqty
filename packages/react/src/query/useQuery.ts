@@ -2,6 +2,7 @@ import { GQtyClient, GQtyError, prepass, SelectionType } from 'gqty';
 import * as React from 'react';
 
 import {
+  IS_BROWSER,
   OnErrorHandler,
   useForceUpdate,
   useInterceptSelections,
@@ -22,10 +23,11 @@ export interface UseQueryOptions<
     query: object;
   } = never
 > {
-  suspense?: boolean;
-  staleWhileRevalidate?: boolean | object | number | string | null;
   onError?: OnErrorHandler;
   prepare?: (helpers: UseQueryPrepareHelpers<GeneratedSchema>) => void;
+  refetchOnWindowVisible?: boolean;
+  staleWhileRevalidate?: boolean | object | number | string | null;
+  suspense?: boolean;
 }
 
 export interface UseQueryState {
@@ -45,7 +47,7 @@ export type Writeable<T> = { -readonly [P in keyof T]: T[P] };
 export type UseQueryReturnValue<GeneratedSchema extends { query: object }> =
   GeneratedSchema['query'] & {
     $state: UseQueryState;
-    $refetch: () => Promise<void> | void;
+    $refetch: () => Promise<unknown> | void;
   };
 export interface UseQuery<GeneratedSchema extends { query: object }> {
   (
@@ -82,11 +84,12 @@ export function createUseQuery<
   };
 
   const useQuery: UseQuery<GeneratedSchema> = function useQuery({
-    suspense = defaultSuspense,
-    staleWhileRevalidate = defaultStaleWhileRevalidate,
     onError,
     prepare,
-  }: UseQueryOptions<GeneratedSchema> = {}): UseQueryReturnValue<GeneratedSchema> {
+    refetchOnWindowVisible = false,
+    staleWhileRevalidate = defaultStaleWhileRevalidate,
+    suspense = defaultSuspense,
+  } = {}) {
     const [$state] = React.useState(
       (): Writeable<UseQueryState> => ({
         get isLoading() {
@@ -133,24 +136,45 @@ export function createUseQuery<
     }
 
     const forceUpdate = useForceUpdate();
+    const refetch = async ({ force = false }: { force?: boolean } = {}) => {
+      if (!force && fetchingPromise.current) {
+        return fetchingPromise.current;
+      }
+
+      const promise = buildAndFetchSelections(
+        Array.from(selections).filter((v) => v.type === SelectionType.Query),
+        'query'
+      );
+      fetchingPromise.current = promise;
+      forceUpdate();
+
+      await promise;
+
+      if (fetchingPromise.current === promise) {
+        fetchingPromise.current = null;
+        forceUpdate();
+      }
+    };
+
+    useIsomorphicLayoutEffect(() => {
+      if (!refetchOnWindowVisible || !IS_BROWSER) return;
+
+      const refetches = () => refetch();
+
+      window.addEventListener('visibilitychange', refetches);
+      window.addEventListener('focus', refetches);
+
+      return () => {
+        window.removeEventListener('visibilitychange', refetches);
+        window.removeEventListener('focus', refetches);
+      };
+    }, [refetchOnWindowVisible]);
 
     return React.useMemo(() => {
       return new Proxy<UseQueryReturnValue<GeneratedSchema>>(
         {
           $state,
-          $refetch: async () => {
-            fetchingPromise.current = buildAndFetchSelections(
-              Array.from(selections).filter(
-                (v) => v.type === SelectionType.Query
-              ),
-              'query'
-            );
-            forceUpdate();
-
-            await fetchingPromise.current;
-            fetchingPromise.current = null;
-            forceUpdate();
-          },
+          $refetch: refetch,
         },
         {
           set(_, key, value) {
