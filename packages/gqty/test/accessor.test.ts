@@ -398,13 +398,7 @@ describe('mutate accessors', () => {
   test('works', async () => {
     const { query, setCache, resolved } = await createTestClient();
 
-    setCache(
-      query.human,
-      {},
-      {
-        name: 'hello',
-      }
-    );
+    setCache(query.human, {}, { name: 'hello' });
 
     const humanHello = query.human();
 
