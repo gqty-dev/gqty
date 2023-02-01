@@ -11,6 +11,7 @@ import {
 import { Selection, SelectionType } from '../Selection';
 import {
   decycle,
+  isEmptyObject,
   isInteger,
   isObject,
   isObjectWithType,
@@ -207,6 +208,8 @@ export function createAccessorCreators<
         });
       }
 
+      const args = dataOrArgs as Record<string, unknown>;
+
       const resolveInfo = (
         accessorOrSelection as Function & {
           [ResolveInfoSymbol]?: ResolveInfo;
@@ -221,7 +224,7 @@ export function createAccessorCreators<
 
       const selection = innerState.selectionManager.getSelection({
         ...resolveInfo,
-        args: dataOrArgs as Record<string, unknown>,
+        args: isEmptyObject(args) ? undefined : args,
       });
 
       const data = extractDataFromProxy(possibleData);
@@ -598,7 +601,7 @@ export function createAccessorCreators<
             let { pureType, isArray } = parseSchemaType(__type);
 
             const resolve = (args?: {
-              argValues: Record<string, unknown>;
+              argValues?: Record<string, unknown>;
               argTypes: Record<string, string>;
             }): unknown => {
               const selection = innerState.selectionManager.getSelection({
@@ -696,9 +699,7 @@ export function createAccessorCreators<
               };
 
               return Object.assign(
-                function ProxyFn(
-                  argValues: Record<string, unknown> = emptyVariablesObject
-                ) {
+                function ProxyFn(argValues?: Record<string, unknown>) {
                   return resolve({
                     argValues,
                     argTypes: __args,
@@ -715,6 +716,7 @@ export function createAccessorCreators<
         });
       }
     );
+
     return accessor;
   }
 
@@ -794,5 +796,3 @@ export function createAccessorCreators<
     subscription,
   };
 }
-
-const emptyVariablesObject = {};
