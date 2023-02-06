@@ -171,9 +171,7 @@ export function createUseLazyQuery<
           fetchPolicy?: LazyFetchPolicy;
         } = {}
       ) {
-        dispatch({
-          type: 'loading',
-        });
+        dispatch({ type: 'loading' });
 
         const {
           fn: fnArg,
@@ -190,9 +188,7 @@ export function createUseLazyQuery<
           : (() => {
               throw new GQtyError(
                 'You have to specify a function to be resolved',
-                {
-                  caller: callback,
-                }
+                { caller: callback }
               );
             })();
 
@@ -203,10 +199,7 @@ export function createUseLazyQuery<
           onCacheData(data): boolean {
             switch (fetchPolicy) {
               case 'cache-and-network': {
-                dispatch({
-                  type: 'cache-found',
-                  data,
-                });
+                dispatch({ type: 'cache-found', data });
                 stateRef.current.data = data;
                 return true;
               }
@@ -217,19 +210,13 @@ export function createUseLazyQuery<
         }).then(
           (data) => {
             optsRef.current.onCompleted?.(data);
-            dispatch({
-              type: 'success',
-              data,
-            });
+            dispatch({ type: 'success', data });
             return data;
           },
           (err) => {
             const error = GQtyError.create(err, useLazyQuery);
             optsRef.current.onError?.(error);
-            dispatch({
-              type: 'failure',
-              error,
-            });
+            dispatch({ type: 'failure', error });
 
             throw error;
           }
