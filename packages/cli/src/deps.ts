@@ -8,7 +8,7 @@ export * as typescriptPlugin from '@graphql-codegen/typescript';
 
 export { printSchemaWithDirectives } from '@graphql-tools/utils';
 
-export { default as sortBy } from 'lodash/sortBy.js';
+export { default as sortBy } from 'lodash-es/sortBy.js';
 
 export { introspectSchema, wrapSchema } from '@graphql-tools/wrap';
 

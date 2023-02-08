@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom/extend-expect';
-import { merge } from 'lodash';
+import { merge } from 'lodash-es';
 import { createTestApp, gql } from 'test-utils';
 import { generate } from '../../cli/src/generate';
 import {
