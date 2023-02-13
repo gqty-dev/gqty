@@ -510,7 +510,7 @@ importers:
       '@graphql-tools/delegate': ^9.0.25
       '@graphql-tools/utils': ^9.2.0
       '@graphql-tools/wrap': ^9.3.4
-      '@size-limit/preset-small-lib': ^8.1.2
+      '@size-limit/preset-small-lib': ^8.2.4
       '@types/lodash': ^4.14.191
       '@types/lodash.sortby': ^4.7.7
       '@types/mkdirp': ^1.0.2
@@ -546,7 +546,7 @@ importers:
       '@graphql-tools/delegate': 9.0.25_graphql@16.6.0
       '@graphql-tools/utils': 9.2.0_graphql@16.6.0
       '@graphql-tools/wrap': 9.3.4_graphql@16.6.0
-      '@size-limit/preset-small-lib': 8.1.2_size-limit@8.1.2
+      '@size-limit/preset-small-lib': 8.2.4_size-limit@8.1.2
       '@types/lodash': 4.14.191
       '@types/lodash.sortby': 4.7.7
       '@types/mkdirp': 1.0.2
@@ -576,7 +576,7 @@ importers:
   packages/gqty:
     specifiers:
       '@gqty/utils': workspace:^1.0.0
-      '@size-limit/preset-small-lib': ^8.1.2
+      '@size-limit/preset-small-lib': ^8.2.4
       '@types/mkdirp': ^1.0.2
       '@types/node': ^18.13.0
       '@types/react': ^17.0.53
@@ -604,7 +604,7 @@ importers:
     dependencies:
       '@gqty/utils': link:../utils
     devDependencies:
-      '@size-limit/preset-small-lib': 8.1.2_size-limit@8.1.2
+      '@size-limit/preset-small-lib': 8.2.4_size-limit@8.1.2
       '@types/mkdirp': 1.0.2
       '@types/node': 18.13.0
       '@types/react': 17.0.53
@@ -633,7 +633,7 @@ importers:
 
   packages/logger:
     specifiers:
-      '@size-limit/preset-small-lib': ^8.1.2
+      '@size-limit/preset-small-lib': ^8.2.4
       '@types/node': ^18.13.0
       '@types/prettier': ^2.7.2
       bob-esbuild-cli: ^4.0.0
@@ -648,7 +648,7 @@ importers:
     dependencies:
       prettier: 2.8.4
     devDependencies:
-      '@size-limit/preset-small-lib': 8.1.2_size-limit@8.1.2
+      '@size-limit/preset-small-lib': 8.2.4_size-limit@8.1.2
       '@types/node': 18.13.0
       '@types/prettier': 2.7.2
       bob-esbuild-cli: 4.0.0
@@ -663,7 +663,7 @@ importers:
 
   packages/react:
     specifiers:
-      '@size-limit/preset-small-lib': ^8.1.2
+      '@size-limit/preset-small-lib': ^8.2.4
       '@testing-library/jest-dom': ^5.16.5
       '@testing-library/react': ^12.1.5
       '@testing-library/react-hooks': ^8.0.1
@@ -690,7 +690,7 @@ importers:
     dependencies:
       react-ssr-prepass: 1.5.0_react@17.0.2
     devDependencies:
-      '@size-limit/preset-small-lib': 8.1.2_size-limit@8.1.2
+      '@size-limit/preset-small-lib': 8.2.4_size-limit@8.1.2
       '@testing-library/jest-dom': 5.16.5
       '@testing-library/react': 12.1.5_sfoxds7t5ydpegc3knd667wn6m
       '@testing-library/react-hooks': 8.0.1_x4rus6jnwzjq3zgm4bvjbdzauy
@@ -5321,34 +5321,34 @@ packages:
     dependencies:
       '@sinonjs/commons': 2.0.0
 
-  /@size-limit/esbuild/8.1.2_size-limit@8.1.2:
-    resolution: {integrity: sha512-BQZg+8QDVz4qQK4Iok8bjrAmzUPDTQW5ht6IrqLfeinHZQOn05fkxbcQuGoja0r6xoQ9+bM7b4cnqgCl61dXEw==}
+  /@size-limit/esbuild/8.2.4_size-limit@8.1.2:
+    resolution: {integrity: sha512-kPgNfpwUvBD98s5axlf1UciFg4Ki4AYSl/cOmSyyYBuzksHiwW7Myeu0w4mTxtV9nwBFbkrrNXqszE7b+OhFLA==}
     engines: {node: ^14.0.0 || ^16.0.0 || >=18.0.0}
     peerDependencies:
-      size-limit: 8.1.2
+      size-limit: 8.2.4
     dependencies:
       esbuild: 0.17.7
       nanoid: 3.3.4
       size-limit: 8.1.2
     dev: true
 
-  /@size-limit/file/8.1.2_size-limit@8.1.2:
-    resolution: {integrity: sha512-cjtGk1GejrmT+ik3LjXpRe+zrS/U15h+Py3L8sYN0XGat0+Y6pPbli1VuRRRcdXZNegpiW+UcxDxPN1AuZC5qA==}
+  /@size-limit/file/8.2.4_size-limit@8.1.2:
+    resolution: {integrity: sha512-xLuF97W7m7lxrRJvqXRlxO/4t7cpXtfxOnjml/t4aRVUCMXLdyvebRr9OM4jjoK8Fmiz8jomCbETUCI3jVhLzA==}
     engines: {node: ^14.0.0 || ^16.0.0 || >=18.0.0}
     peerDependencies:
-      size-limit: 8.1.2
+      size-limit: 8.2.4
     dependencies:
       semver: 7.3.8
       size-limit: 8.1.2
     dev: true
 
-  /@size-limit/preset-small-lib/8.1.2_size-limit@8.1.2:
-    resolution: {integrity: sha512-KfczbDq+4qFUXVMdNJlIZycp1WY1aqSfHfz4nRZNVaSxBSixrgBYkV6/M+qwP2axNFIXGzIMolqbTCUxvqikyQ==}
+  /@size-limit/preset-small-lib/8.2.4_size-limit@8.1.2:
+    resolution: {integrity: sha512-AL4384oBgMcDPlNblgWHreqFSSOui0J9NbgyHhegB1h8AgRyHbdVGC3yWLpEESYQXHYnKdbNrYeRE/TclsViog==}
     peerDependencies:
-      size-limit: 8.1.2
+      size-limit: 8.2.4
     dependencies:
-      '@size-limit/esbuild': 8.1.2_size-limit@8.1.2
-      '@size-limit/file': 8.1.2_size-limit@8.1.2
+      '@size-limit/esbuild': 8.2.4_size-limit@8.1.2
+      '@size-limit/file': 8.2.4_size-limit@8.1.2
       size-limit: 8.1.2
     dev: true
 
