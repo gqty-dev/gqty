@@ -1,7 +1,7 @@
 import type { ExecutionResult, GraphQLError } from 'graphql';
 import { CacheInstance, createCache } from '../Cache';
 import { GQtyError } from '../Error';
-import { doRetry } from '../Error/retry';
+import { doRetry, type RetryOptions } from '../Error/retry';
 import { createQueryBuilder } from '../QueryBuilder';
 import {
   createSelectionManager,
@@ -102,30 +102,6 @@ export interface ResolveOptions<TData> {
    */
   operationName?: string;
 }
-
-export type RetryOptions =
-  | {
-      /**
-       * Amount of retries to be made
-       * @default 3
-       */
-      maxRetries?: number;
-      /**
-       * Amount of milliseconds between each attempt, it can be a static number,
-       * or a function based on the attempt number
-       *
-       * @default attemptIndex => Math.min(1000 * 2 ** attemptIndex, 30000)
-       */
-      retryDelay?: number | ((attemptIndex: number) => number);
-    }
-  /** If retries should be enabled
-   * @default true
-   */
-  | boolean
-  /** Amount of retries to be made
-   * @default 3
-   */
-  | number;
 
 export interface FetchResolveOptions {
   retry?: RetryOptions;
@@ -581,8 +557,7 @@ export function createResolvers(
         }
 
         const executionResult = await queryFetcher(
-          query,
-          variables,
+          { query, variables },
           options.fetchOptions
         );
 

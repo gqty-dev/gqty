@@ -16,7 +16,7 @@ import {
   createPersistenceHelpers,
   PersistenceHelpers,
 } from '../Cache/persistence';
-import { GQtyError } from '../Error';
+import { GQtyError, type RetryOptions } from '../Error';
 import { EventHandler } from '../Events';
 import { createPrefetch, Prefetch } from '../Helpers/prefetch';
 import { createRefetch, Refetch } from '../Helpers/refetch';
@@ -41,7 +41,6 @@ import {
   InlineResolved,
   Resolved,
   Resolvers,
-  RetryOptions,
 } from './resolvers';
 
 export interface InnerClientState {

@@ -113,7 +113,7 @@ export function createNormalizationHandler(
     | NormalizationOptions<string, Record<string, any>>
     | undefined
     | boolean,
-  eventHandler: EventHandler,
+  eventHandler: EventHandler | undefined,
   schema: Readonly<Schema>,
   scalarsEnumsHash: ScalarsEnumsHash
 ): NormalizationHandler | undefined {

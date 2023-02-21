@@ -558,7 +558,7 @@ export async function generate(
   const unionsMapObj = Array.from(
     unionsAndInterfacesObjectTypesMap.entries()
   ).reduce((acum, [key, value]) => {
-    generatedSchema[key]['$on'] = {
+    generatedSchema[key]!['$on'] = {
       __type: `$${key}!`,
     };
     acum[key] = value;
@@ -663,7 +663,7 @@ export async function generate(
           interfaceOrUnionsObjectTypes
             ? interfaceOrUnionsObjectTypes.map((v) => `"${v}"`).join(' | ')
             : `"${typeName}"`
-        }; ${Object.entries(typeValue).reduce(
+        }; ${Object.entries(typeValue!).reduce(
         (acum, [fieldKey, fieldValue]) => {
           if (fieldKey === '__typename') {
             objectTypeMap.set(fieldKey, `?: "${typeName}"`);

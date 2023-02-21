@@ -542,7 +542,7 @@ export function createAccessorCreators<
         const proxyValue =
           schemaValue instanceof SchemaUnion
             ? schemaValue.fieldsProxy
-            : Object.keys(schemaValue).reduce((acum, key) => {
+            : Object.keys(schemaValue!).reduce((acum, key) => {
                 acum[key] = ProxySymbol;
                 return acum;
               }, {} as Record<string, unknown>);
@@ -597,7 +597,7 @@ export function createAccessorCreators<
 
             if (!proxyValue.hasOwnProperty(key)) return;
 
-            const { __type, __args } = schemaValue[key];
+            const { __type, __args } = schemaValue![key];
             let { pureType, isArray } = parseSchemaType(__type);
 
             const resolve = (args?: {
@@ -668,7 +668,7 @@ export function createAccessorCreators<
               }
 
               let typeValue: Record<string, Type> | SchemaUnion =
-                schema[pureType];
+                schema[pureType]!;
 
               if (!typeValue && pureType.startsWith('$')) {
                 typeValue = schemaUnions[(pureType = pureType.slice(1))];
@@ -686,7 +686,7 @@ export function createAccessorCreators<
 
               throw new GQtyError(
                 `GraphQL Type not found: ${pureType}, available fields: "${Object.keys(
-                  schemaValue
+                  schemaValue!
                 ).join(' | ')}"`
               );
             };
