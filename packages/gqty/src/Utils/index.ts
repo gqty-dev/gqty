@@ -5,9 +5,5 @@ export function isEmptyObject(obj: object) {
   return true;
 }
 
-export * from './debounce';
 export * from './object';
-export * from './cycle';
-export { mergeWith } from '@gqty/utils/mergeWith';
-export * from './selectionsInclude';
 export * from './promise';

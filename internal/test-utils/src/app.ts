@@ -91,7 +91,7 @@ export async function createTestApp(
   );
 
   if (websockets) {
-    ezPlugins.push(ezWebSockets('legacy'));
+    ezPlugins.push(ezWebSockets());
   }
 
   const client = await CreateTestClient({

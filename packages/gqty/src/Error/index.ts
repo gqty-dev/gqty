@@ -1,6 +1,8 @@
 import type { GraphQLError } from 'graphql';
 
 export class GQtyError extends Error {
+  readonly name = 'GQtyError';
+
   graphQLErrors?: ReadonlyArray<GraphQLError>;
   otherError?: unknown;
 

@@ -1,21 +1,26 @@
-import { waitForExpect } from 'test-utils';
-import { getArrayFields, SelectionType } from '../src';
-import type { CacheChangeEventData } from '../src/Events';
+import { getArrayFields, GQtyError } from '../src';
+import { $meta, assignSelections, setCache } from '../src/Accessor';
 import { createTestClient, Dog, expectConsoleWarn } from './utils';
+
+test('legacy warning', async () => {
+  const { query } = await createTestClient();
+
+  expectConsoleWarn((n, message) => {
+    switch (n) {
+      case 1:
+        return expect(message).toMatchInlineSnapshot(
+          `"[GQty] global query, mutation and subscription is deprecated, please see the migration guide for scoped query."`
+        );
+      default:
+        throw Error('Unexpected warn: ' + message);
+    }
+  });
+
+  query.hello;
+});
 
 describe('array accessors', () => {
   test('array query', async () => {
-    const { query, resolved } = await createTestClient();
-
-    const data = await resolved(() => {
-      const human = query.human();
-      return human.sons.map((son) => {
-        return son.name;
-      });
-    });
-
-    expect(data).toEqual(['default', 'default']);
-
     expectConsoleWarn((n, message) => {
       switch (n) {
         case 1:
@@ -26,6 +31,17 @@ describe('array accessors', () => {
           throw Error('Unexpected warn: ' + message);
       }
     });
+
+    const { query, resolved } = await createTestClient();
+
+    const data = await resolved(() => {
+      const human = query.human();
+      return human.sons.map((son) => {
+        return son.name;
+      });
+    });
+
+    expect(data).toEqual(['default', 'default']);
 
     const cachedDataHumanOutOfSize = await resolved(() => {
       const human = query.human();
@@ -71,7 +87,18 @@ describe('accessor undefined paths', () => {
   });
 
   test('intentionally manipulated schema', async () => {
-    const { query } = await createTestClient({
+    expectConsoleWarn((n, message) => {
+      switch (n) {
+        case 1:
+          return expect(message).toMatchInlineSnapshot(
+            `"[gqty] Warning! No data requested."`
+          );
+        default:
+          throw Error('Unexpected warn: ' + message);
+      }
+    });
+
+    const { query, resolved } = await createTestClient({
       query: {
         other: {
           __type: 'error',
@@ -80,201 +107,217 @@ describe('accessor undefined paths', () => {
       wrongroot: false as any,
     });
 
-    expect(() => {
-      //@ts-expect-error
-      query.other;
-    }).toThrow('GraphQL Type not found: error');
+    await expect(() =>
+      resolved(
+        () =>
+          // @ts-expect-error
+          query.other
+      )
+    ).rejects.toEqual(new GQtyError(`GraphQL type not found: error`));
 
-    expect(
-      //@ts-expect-error
-      query.wrongroot
-    ).toBe(undefined);
+    await expect(
+      resolved(
+        () =>
+          // @ts-expect-error
+          query.wrongRoot
+      )
+    ).resolves.toBe(undefined);
   });
 });
 
 describe('setCache', () => {
   test('expected functionality', async () => {
-    const { scheduler, query, mutation, setCache } = await createTestClient();
+    const {
+      schema: { query, mutation },
+      resolve,
+    } = await createTestClient();
 
-    const humanQuery = query.human({
-      name: 'aaa',
-    });
+    {
+      expect(query.human({ name: 'aaa' }).name).toBe(undefined);
 
-    const name1 = humanQuery.name;
+      await resolve(({ query }) => {
+        query.human({ name: 'aaa' }).name;
+      });
+      expect(query.human({ name: 'aaa' }).name).toBe('aaa');
+    }
 
-    expect(name1).toBe(undefined);
+    {
+      expect(mutation.humanMutation({ nameArg: 'bbb' }).name).toBe(undefined);
 
-    expect(scheduler.resolving).toBeTruthy();
-    await scheduler.resolving!.promise;
+      await resolve(({ mutation }) => {
+        mutation.humanMutation({ nameArg: 'bbb' }).name;
+      });
+      expect(mutation.humanMutation({ nameArg: 'bbb' }).name).toBe('bbb');
+    }
 
-    const name2 = humanQuery.name;
+    {
+      const humanQuery = query.human({ name: 'aaa' });
+      const humanMutation = mutation.humanMutation({ nameArg: 'bbb' });
 
-    expect(name2).toBe('aaa');
+      Object.assign(humanQuery, humanMutation);
+      expect(humanQuery.name).toBe('bbb');
 
-    const humanMutation = mutation.humanMutation({
-      nameArg: 'zzz',
-    });
+      humanQuery.name = 'ccc';
+      expect(humanQuery.name).toBe('ccc');
 
-    const name3 = humanMutation.name;
+      $meta(humanQuery)!.cache.data = {};
+      Object.assign(humanQuery, query.human({ name: 'nnn' }));
+      expect(humanQuery.name).toBe(undefined);
+    }
 
-    expect(name3).toBe(undefined);
+    {
+      await resolve(
+        ({ query }) => {
+          query.human({ name: 'aaa' }).name;
+        },
+        { fetchPolicy: 'no-cache' }
+      );
 
-    expect(scheduler.resolving).toBeTruthy();
-    await scheduler.resolving!.promise;
+      const humanQuery = query.human({ name: 'aaa' });
+      expect(humanQuery.name).toBe('aaa');
 
-    const name4 = humanMutation.name;
+      humanQuery.sons[0] = { ...humanQuery };
+      expect(humanQuery.sons[0].name).toBe('aaa');
 
-    expect(name4).toBe('zzz');
+      humanQuery.name = 'bbb';
+      expect(query.human({ name: 'aaa' }).name).toBe('bbb');
 
-    expect(scheduler.resolving).toBe(null);
+      humanQuery.sons[0].name = 'ccc';
 
-    setCache(humanQuery, humanMutation);
+      expect(humanQuery.sons[0].name).toBe('ccc');
+      expect(humanQuery.name).toBe('bbb');
 
-    expect(humanQuery.name).toBe(name4);
+      Object.assign(query.human({ name: 'hhh' }), { name: 'nnn' });
+      expect(query.human({ name: 'hhh' }).name).toBe('nnn');
 
-    humanQuery.name = 'bbb';
+      query.human().name = 'zzz';
+      query.human().name = 'zzz';
 
-    expect(humanQuery.name).toBe('bbb');
+      query.human().name = 'zzz';
 
-    setCache(
-      humanQuery,
-      query.human({
-        name: 'nnn',
-      })
-    );
-
-    const name5 = humanQuery.name;
-
-    expect(name5).toBe(undefined);
-
-    expect(scheduler.resolving).toBeTruthy();
-    await scheduler.resolving!.promise;
-
-    await waitForExpect(() => {
-      const name6 = humanQuery.name;
-
-      expect(name6).toBe('aaa');
-    }, 1000);
-
-    humanQuery.sons[0] = humanQuery;
-
-    expect(humanQuery.sons[0].name).toBe('aaa');
-
-    setCache(
-      query.human,
-      {
-        name: 'hhh',
-      },
-      {
-        name: 'nnn',
-      }
-    );
-
-    expect(
-      query.human({
-        name: 'hhh',
-      }).name
-    ).toBe('nnn');
-
-    query.human().name = 'zzz';
-
-    expect(query.human().name).toBe('zzz');
+      expect(query.human().name).toBe('zzz');
+    }
   });
 
   test('with listeners', async () => {
-    const { setCache, query, eventHandler } = await createTestClient();
+    const {
+      schema: { query },
+      subscribeLegacySelections: subscribeSelections,
+    } = await createTestClient();
 
-    const eventListener1 = jest
-      .fn()
-      .mockImplementation(({ selection, data }: CacheChangeEventData) => {
-        expect(selection.type).toBe(SelectionType.Query);
-        expect(selection.key).toBe('hello');
-        expect(data).toBe('12345');
+    {
+      const selections: Array<[string, any]> = [];
+      const mockedFn = jest.fn((selection, cache) => {
+        selections.push([selection.cacheKeys.join('.'), cache?.data]);
       });
 
-    const unsubscribe = eventHandler.onCacheChangeSubscribe(eventListener1);
+      const unsubscribe = subscribeSelections(mockedFn);
 
-    try {
       query.hello = '12345';
 
-      expect(eventListener1).toBeCalledTimes(1);
+      unsubscribe();
 
       expect(query.hello).toBe('12345');
-    } finally {
-      unsubscribe();
+      expect(mockedFn).toBeCalledTimes(1);
+      expect(selections).toMatchInlineSnapshot(`
+        [
+          [
+            "query.hello",
+            "12345",
+          ],
+        ]
+      `);
+      expect(query).toMatchInlineSnapshot(`
+        {
+          "__typename": "Query",
+          "hello": "12345",
+        }
+      `);
     }
 
-    const eventListener2 = jest
-      .fn()
-      .mockImplementation(({ selection, data }: CacheChangeEventData) => {
-        expect(selection.type).toBe(SelectionType.Query);
-        expect(selection.key).toBe('query');
-        expect(data).toStrictEqual({ hello: '6789' });
+    {
+      const selections: Array<[string, any]> = [];
+      const mockedFn = jest.fn((selection, cache) => {
+        selections.push([selection.cacheKeys.join('.'), cache?.data]);
       });
 
-    const unsubscribe2 = eventHandler.onCacheChangeSubscribe(eventListener2);
+      const unsubscribe = subscribeSelections(mockedFn);
 
-    try {
-      setCache(query, { hello: '6789' });
+      Object.assign(query, { hello: '6789' });
 
-      expect(eventListener2).toBeCalledTimes(1);
+      unsubscribe();
 
+      expect(mockedFn).toBeCalledTimes(1);
+      expect(selections).toMatchInlineSnapshot(`
+        [
+          [
+            "query.hello",
+            "6789",
+          ],
+        ]
+      `);
       expect(query.hello).toBe('6789');
-    } finally {
-      unsubscribe2();
+      expect(query).toMatchInlineSnapshot(`
+        {
+          "__typename": "Query",
+          "hello": "6789",
+        }
+      `);
     }
   });
 
   test('validation', async () => {
-    const { setCache, query } = await createTestClient();
+    const {
+      schema: { query },
+    } = await createTestClient();
 
     expect(() => {
-      setCache((_args?: { a: string }) => {}, undefined, undefined);
-    }).toThrowError('Invalid gqty function');
+      // @ts-expect-error
+      setCache((_args?: { a: string }) => {}, undefined);
+    }).toThrowError('Subject must be an accessor.');
 
     expect(() => {
-      setCache(
-        (_args?: { a: string }) => {},
-        () => {}
-      );
-    }).toThrowError('Invalid arguments of type: ' + 'function');
+      setCache(query, (() => {}) as any);
+    }).toThrowError(
+      'Data must be a subset the schema object, got type: ' + 'function'
+    );
 
     expect(() => {
-      setCache((_args?: { a: string }) => {}, 123123 as any);
-    }).toThrowError('Invalid arguments of type: ' + 'number');
+      setCache(query, 123123 as any);
+    }).toThrowError(
+      'Data must be a subset the schema object, got type: ' + 'number'
+    );
 
     expect(() => {
       setCache({}, {});
-    }).toThrowError('Invalid gqty proxy');
+    }).toThrowError('Subject must be an accessor.');
 
     expect(() => {
-      //@ts-expect-error
+      // @ts-expect-error
       query.human({ name: 'ñññ' }).sons['hello'] = null;
-    }).toThrowError('Invalid array assignation');
-
-    expect(() => {
-      //@ts-expect-error
-      query.human({ name: 'ñññ' }).zxc = null;
-    }).toThrowError('Invalid proxy assignation');
+    }).toThrowError('Invalid array assignment.');
   });
 });
 
 describe('assign selections', () => {
   test('expected usage', async () => {
-    const { query, scheduler, mutate, assignSelections } =
-      await createTestClient();
+    const {
+      mutate,
+      resolve,
+      schema: { query },
+    } = await createTestClient();
 
-    const human = query.human({
-      name: 'A',
+    await resolve(({ query }) => {
+      const human = query.human({ name: 'A' });
+
+      human.name;
+      human.father.name;
+      human.father.father.name;
+      human.father.name;
+      human.sons.map((son) => son.name);
     });
 
-    human.name;
-    human.father.name;
-    human.father.father.name;
-    human.sons.map((son) => son.name);
-
-    await scheduler.resolving!.promise;
-
+    const human = query.human({ name: 'A' });
     expect(human.name).toBe('A');
     expect(human.father.name).toBeTruthy();
     expect(human.father.father.name).toBeTruthy();
@@ -294,13 +337,10 @@ describe('assign selections', () => {
     });
 
     expect(humanMutation.name).toBe('B');
-
     expect(humanMutation.father.name).toBeTruthy();
     expect(human.father.name).toBeTruthy();
-
     expect(humanMutation.father.father.name).toBeTruthy();
     expect(human.father.father.name).toBeTruthy();
-
     expect(humanMutation.sons.length).toBe(2);
     expect(
       humanMutation.sons.every((son) => typeof son.name === 'string')
@@ -308,11 +348,7 @@ describe('assign selections', () => {
   });
 
   test('Source proxy without selections warn in non-production env', async () => {
-    const {
-      query,
-
-      assignSelections,
-    } = await createTestClient();
+    const { query } = await createTestClient();
 
     const human = query.human({
       name: 'L',
@@ -341,14 +377,14 @@ describe('assign selections', () => {
   });
 
   test('null proxies', async () => {
-    const { assignSelections, query } = await createTestClient();
+    const { query } = await createTestClient();
 
     assignSelections(query, null);
     assignSelections(null, query);
   });
 
   test('Invalid proxies', async () => {
-    const { assignSelections, query } = await createTestClient();
+    const { query } = await createTestClient();
 
     expect(() => {
       assignSelections({}, {});
@@ -367,7 +403,6 @@ describe('unions support', () => {
     await resolved(() => {
       return query.species.map((v) => {
         const onSpecies = v.$on;
-
         const dogName = onSpecies.Dog?.name;
         const humanName = onSpecies.Human?.name;
         return {
@@ -396,9 +431,9 @@ describe('unions support', () => {
 
 describe('mutate accessors', () => {
   test('works', async () => {
-    const { query, setCache, resolved } = await createTestClient();
+    const { query, resolved } = await createTestClient();
 
-    setCache(query.human, {}, { name: 'hello' });
+    Object.assign(query.human(), { name: 'hello' });
 
     const humanHello = query.human();
 
@@ -415,9 +450,19 @@ describe('mutate accessors', () => {
     ];
     humanHello.dogs = newDogs;
 
-    expect(JSON.stringify(humanHello.dogs)).toBe(
-      '[{"__typename":"Dog","name":"zxc","owner":{"name":"hello","father":{"$ref":"$"}}}]'
-    );
+    expect(humanHello.dogs).toMatchInlineSnapshot(`
+      [
+        {
+          "__typename": "Dog",
+          "name": "zxc",
+          "owner": {
+            "dogs": [Circular],
+            "father": [Circular],
+            "name": "hello",
+          },
+        },
+      ]
+    `);
 
     const dogs = await resolved(() => {
       return getArrayFields(query.dogs, 'name');
@@ -433,67 +478,50 @@ describe('mutate accessors', () => {
       union: [],
     });
 
-    expect(JSON.stringify(owner, null, 2)).toMatchInlineSnapshot(
-      `
-      "{
+    expect(owner).toMatchInlineSnapshot(`
+      {
         "__typename": "Human",
         "dogs": [
           {
             "__typename": "Dog",
             "name": "zxc",
             "owner": {
+              "dogs": [
+                [Circular],
+              ],
+              "father": [Circular],
               "name": "hello",
-              "father": [
-                {
-                  "$ref": "$"
-                }
-              ]
-            }
-          }
+            },
+          },
         ],
         "father": {
-          "name": "hello",
-          "father": {
-            "$ref": "$"
-          },
           "dogs": [
             {
               "__typename": "Dog",
               "name": "zxc",
-              "owner": {
-                "name": "hello",
-                "father": {
-                  "$ref": "$[\\"dogs\\"]"
-                }
-              }
-            }
-          ]
+              "owner": [Circular],
+            },
+          ],
+          "father": [Circular],
+          "name": "hello",
         },
         "name": "ModifiedOwner",
+        "node": [],
         "sons": [
           {
-            "name": "hello",
-            "father": {
-              "$ref": "$"
-            },
             "dogs": [
               {
                 "__typename": "Dog",
                 "name": "zxc",
-                "owner": {
-                  "name": "hello",
-                  "father": {
-                    "$ref": "$[\\"dogs\\"]"
-                  }
-                }
-              }
-            ]
-          }
+                "owner": [Circular],
+              },
+            ],
+            "father": [Circular],
+            "name": "hello",
+          },
         ],
-        "node": [],
-        "union": []
-      }"
-    `
-    );
+        "union": [],
+      }
+    `);
   });
 });

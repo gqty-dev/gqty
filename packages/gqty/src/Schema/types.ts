@@ -24,11 +24,9 @@ export interface Scalars {
 
 export type ScalarsEnumsHash = Record<string, true>;
 
-export interface FetchOptions extends Omit<RequestInit, 'body'> {}
-
 export type QueryFetcher<TData = Record<string, unknown>> = (
   payload: QueryPayload,
-  fetchOptions?: FetchOptions
+  fetchOptions?: Omit<RequestInit, 'body' | 'mode'>
 ) => Promise<ExecutionResult<TData>> | ExecutionResult;
 
 export type QueryPayload<
@@ -93,13 +91,8 @@ export const parseSchemaType = memoize(
   }
 );
 
-export type DeepPartial<T> = T extends Function
-  ? T
-  : T extends Array<infer U>
-  ? _DeepPartialArray<U>
-  : T extends object
-  ? _DeepPartialObject<T>
-  : T | undefined;
-
-interface _DeepPartialArray<T> extends Array<DeepPartial<T>> {}
-type _DeepPartialObject<T> = { [P in keyof T]?: DeepPartial<T[P]> };
+export type GeneratedSchemaObject<
+  T extends Record<string, any> = Record<string, any>
+> = T & {
+  __typename?: string;
+};

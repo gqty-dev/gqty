@@ -1,14 +1,16 @@
-export enum SelectionType {
+import type { Selection } from '../../Selection';
+
+export enum LegacySelectionType {
   Query,
   Mutation,
   Subscription,
 }
 
-export type SelectionConstructorArgs = {
+export type LegacySelectionConstructorArgs = {
   id: number;
   key: string | number;
-  prevSelection?: Selection;
-  type?: SelectionType;
+  prevSelection?: LegacySelection;
+  type?: LegacySelectionType;
   operationName?: string;
   alias?: string;
   args?: Record<string, unknown>;
@@ -16,12 +18,12 @@ export type SelectionConstructorArgs = {
   unions?: string[];
 };
 
-export class Selection {
+export class LegacySelection {
   id: string;
 
   key: string | number;
 
-  type: SelectionType;
+  type: LegacySelectionType;
 
   operationName?: string;
 
@@ -34,13 +36,13 @@ export class Selection {
   cachePath: readonly (string | number)[] = [];
   pathString: string;
 
-  selectionsList: readonly Selection[];
+  selectionsList: readonly LegacySelection[];
 
-  noIndexSelections: readonly Selection[];
+  noIndexSelections: readonly LegacySelection[];
 
-  prevSelection: Selection | null = null;
+  prevSelection: LegacySelection | null = null;
 
-  currentCofetchSelections: Set<Selection> | null = null;
+  currentCofetchSelections: Set<LegacySelection> | null = null;
 
   constructor({
     key,
@@ -52,7 +54,7 @@ export class Selection {
     alias,
     unions,
     id,
-  }: SelectionConstructorArgs) {
+  }: LegacySelectionConstructorArgs) {
     this.id = id + '';
     this.key = key;
     this.operationName = operationName;
@@ -93,10 +95,10 @@ export class Selection {
     this.argTypes = argTypes;
     this.unions = unions;
 
-    this.type = type ?? prevSelection?.type ?? SelectionType.Query;
+    this.type = type ?? prevSelection?.type ?? LegacySelectionType.Query;
   }
 
-  addCofetchSelections(selections: Selection[] | Set<Selection>) {
+  addCofetchSelections(selections: LegacySelection[] | Set<LegacySelection>) {
     const cofetchSet = (this.currentCofetchSelections ||= new Set());
 
     for (const selection of selections) {
@@ -121,3 +123,29 @@ export class Selection {
     return this.currentCofetchSelections;
   }
 }
+
+export const convertSelection = (
+  selection: Selection,
+  selectionId = 0,
+  operationName?: string
+): LegacySelection => {
+  return new LegacySelection({
+    id: ++selectionId,
+    key: selection.key,
+    // translate the whole selection chain upwards
+    prevSelection: selection.parent
+      ? convertSelection(selection.parent, selectionId, operationName)
+      : undefined,
+    args: selection.input?.values,
+    argTypes: selection.input?.types,
+    type:
+      selection.root.key === 'query'
+        ? LegacySelectionType.Query
+        : selection.root.key === 'mutation'
+        ? LegacySelectionType.Mutation
+        : LegacySelectionType.Subscription,
+    operationName,
+    alias: selection.alias,
+    unions: selection.isUnion ? [selection.key.toString()] : undefined,
+  });
+};

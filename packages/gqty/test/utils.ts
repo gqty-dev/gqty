@@ -1,39 +1,16 @@
+import { createClient as createWsClient } from 'graphql-ws';
 import { createTestApp, gql, TestApp } from 'test-utils';
-
-import { generate } from '../../cli/src/generate';
-import { createSubscriptionsClient } from '../../subscriptions/src/index';
-import {
-  ClientOptions,
-  createClient,
-  DeepPartial,
-  QueryFetcher,
-  Schema,
-  SchemaUnionsKey,
-  SubscriptionsClient,
-  GQtyClient,
-} from '../src';
-import { deepAssign } from '../src/Utils';
-
+import type { PartialDeep } from 'type-fest';
+import { WebSocket } from 'ws';
 import { gqtyConfigPromise } from '../../cli/src/config';
+import { generate } from '../../cli/src/generate';
+import { QueryFetcher, Schema, SchemaUnionsKey } from '../src';
+import { ClientOptions, createClient as createGQtyClient } from '../src/Client';
+import { deepAssign } from '../src/Utils';
 
 afterAll(async () => {
   await gqtyConfigPromise;
 });
-
-type ObjectTypesNames = 'Human' | 'Query' | 'Mutation' | 'Subscription';
-
-type ObjectTypes = {
-  Human: Human;
-  Query: {
-    __typename: 'Query';
-  };
-  Mutation: {
-    __typename: 'Mutation';
-  };
-  Subscription: {
-    __typename: 'Subscription';
-  };
-};
 
 export type Maybe<T> = T | null;
 export type Human = {
@@ -149,7 +126,7 @@ export interface TestClientConfig {
   subscriptions?: boolean;
 }
 
-export type TestClient = GQtyClient<GeneratedSchema> & {
+export type TestClient = ReturnType<typeof createGQtyClient> & {
   client: TestApp;
   queries: {
     query: string;
@@ -158,11 +135,11 @@ export type TestClient = GQtyClient<GeneratedSchema> & {
 };
 
 export const createTestClient = async (
-  addedToGeneratedSchema?: DeepPartial<Schema>,
+  addedToGeneratedSchema?: PartialDeep<Schema>,
   queryFetcher?: QueryFetcher,
   config?: TestClientConfig,
-  clientConfig: Partial<ClientOptions<ObjectTypesNames, ObjectTypes>> = {}
-): Promise<TestClient> => {
+  clientConfig: Partial<ClientOptions> = {}
+) => {
   let dogId = 0;
   const dogs: { name: string; id: number }[] = [
     {
@@ -552,7 +529,7 @@ export const createTestClient = async (
     );
 
   if (queryFetcher == null) {
-    queryFetcher = async (query, variables) => {
+    queryFetcher = async ({ query, variables }) => {
       const index =
         queries.push({
           query,
@@ -569,29 +546,32 @@ export const createTestClient = async (
     };
   }
 
-  let subscriptionsClient: SubscriptionsClient | undefined;
-
-  subscriptionsClient = config?.subscriptions
-    ? createSubscriptionsClient({
-        wsEndpoint: client.endpoint.replace('http:', 'ws:'),
-        reconnect: false,
+  const subscriptionsClient = config?.subscriptions
+    ? createWsClient({
+        url: client.endpoint.replace('http:', 'ws:'),
+        retryAttempts: 0,
+        webSocketImpl: WebSocket,
+        lazy: true,
       })
     : undefined;
 
   subscriptionsClient &&
     TeardownPromises.push(
       LazyPromise(() => {
-        subscriptionsClient!.close();
+        subscriptionsClient.terminate();
       })
     );
 
   const testClient = Object.assign(
-    createClient<GeneratedSchema, ObjectTypesNames, ObjectTypes>({
-      schema: deepAssign(generatedSchema, [addedToGeneratedSchema]) as Schema,
-      scalarsEnumsHash,
-      queryFetcher,
-      subscriptionsClient,
+    createGQtyClient<GeneratedSchema>({
       ...clientConfig,
+      schema: deepAssign(generatedSchema, [addedToGeneratedSchema]) as Schema,
+      fetchOptions: {
+        ...clientConfig.fetchOptions,
+        fetcher: queryFetcher,
+        subscriber: subscriptionsClient,
+      },
+      scalars: scalarsEnumsHash,
     }),
     {
       client,

@@ -1,10 +1,12 @@
-import { createTestClient, TestClient } from './utils';
+import { createTestClient } from './utils';
 
 const testClientPromise = createTestClient(undefined, undefined, undefined, {
-  normalization: true,
+  cacheOptions: {
+    normalization: true,
+  },
 });
 
-let testClient: TestClient;
+let testClient: Awaited<typeof testClientPromise>;
 beforeAll(async () => {
   testClient = await testClientPromise;
 });
@@ -123,10 +125,10 @@ describe('interfaces and unions', () => {
     expect(queries).toMatchInlineSnapshot(`
       [
         {
-          "query": "query($type1:NodeType!){node_6c4a1_78028:node(type:$type1){__typename id ...on A{id a}...on B{id b}}}",
+          "query": "query($v1:NodeType!){b55fc:node(type:$v1){__typename id ...on A{a}...on B{b}}}",
           "result": {
             "data": {
-              "node_6c4a1_78028": {
+              "b55fc": {
                 "__typename": "A",
                 "a": 1,
                 "id": "1",
@@ -134,7 +136,7 @@ describe('interfaces and unions', () => {
             },
           },
           "variables": {
-            "type1": "A",
+            "v1": "A",
           },
         },
       ]
@@ -148,7 +150,12 @@ describe('interfaces and unions', () => {
   });
 
   test('deep', async () => {
-    const { resolved, query, queries } = await createTestClient();
+    const { resolved, query, queries } = await createTestClient(
+      undefined,
+      undefined,
+      undefined,
+      { cacheOptions: { normalization: false } }
+    );
 
     const nodeResult = await resolved(() => {
       const nodeA = query.node({
@@ -181,10 +188,10 @@ describe('interfaces and unions', () => {
     expect(queries).toMatchInlineSnapshot(`
       [
         {
-          "query": "query($type1:NodeType!){node_6c4a1_78028:node(type:$type1){__typename id ...on A{id a node{__typename id ...on A{id node{__typename id ...on C{id node{__typename id ...on A{id}}}}}}}...on B{id b}}}",
+          "query": "query($v1:NodeType!){b55fc:node(type:$v1){__typename id ...on A{a node{__typename id ...on A{id node{__typename id ...on C{node{__typename id ...on A{id}}}}}}}...on B{b}}}",
           "result": {
             "data": {
-              "node_6c4a1_78028": {
+              "b55fc": {
                 "__typename": "A",
                 "a": 1,
                 "id": "1",
@@ -200,7 +207,7 @@ describe('interfaces and unions', () => {
             },
           },
           "variables": {
-            "type1": "A",
+            "v1": "A",
           },
         },
       ]

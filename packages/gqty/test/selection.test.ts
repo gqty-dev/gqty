@@ -1,121 +1,96 @@
-import { SelectionType } from '../src/Selection/selection';
-import {
-  createSelectionManager,
-  separateSelectionTypes,
-} from '../src/Selection/SelectionManager';
+import { buildQuery } from 'gqty/QueryBuilder';
+import { Selection } from '../src/Selection';
 
 describe('selection creation', () => {
-  const manager = createSelectionManager();
-
   test('selection with manager and separating types', () => {
-    const selectionA = manager.getSelection({
-      key: 'a',
-      type: SelectionType.Mutation,
-    });
+    const mutationRoot = Selection.createRoot('mutation');
+    const selectionA = mutationRoot.getChild('a');
 
-    expect(selectionA.key).toBe('a'), expect(selectionA.alias).toBe(undefined);
-    expect(selectionA.type).toBe(SelectionType.Mutation);
+    expect(selectionA.key).toBe('a');
+    expect(selectionA.alias).toBe(undefined);
+    expect(selectionA.root.key).toBe('mutation');
 
-    expect(selectionA.args).toBe(undefined);
-    expect(selectionA.argTypes).toBe(undefined);
-    expect(selectionA.noIndexSelections).toEqual([selectionA]);
+    expect(selectionA.input?.values).toBe(undefined);
+    expect(selectionA.input?.types).toBe(undefined);
+    expect(selectionA.ancestry).toEqual([mutationRoot, selectionA]);
 
-    expect(selectionA.cachePath).toEqual(['a']);
-    expect(selectionA.pathString).toBe('a');
+    expect(selectionA.cacheKeys).toEqual(['mutation', 'a']);
 
-    const selectionB = manager.getSelection({
-      key: 'b',
-      prevSelection: selectionA,
-    });
+    const selectionB = selectionA.getChild('b');
 
     expect(selectionB.key).toBe('b');
-    expect(selectionB.type).toBe(SelectionType.Mutation);
+    expect(selectionB.root.key).toBe('mutation');
 
-    expect(selectionB.noIndexSelections).toEqual([selectionA, selectionB]);
-    expect(selectionB.cachePath).toEqual(['a', 'b']);
-    expect(selectionB.pathString).toBe('a.b');
+    expect(selectionB.ancestry).toEqual([mutationRoot, selectionA, selectionB]);
+    expect(selectionB.cacheKeys).toEqual(['mutation', 'a', 'b']);
 
-    const selectionC = manager.getSelection({
-      key: 0,
-      prevSelection: selectionB,
-    });
+    const selectionC = selectionB.getChild(0);
 
-    expect(selectionC.noIndexSelections).toEqual(selectionB.noIndexSelections);
+    expect(selectionC.cacheKeys).toEqual(selectionB.cacheKeys);
 
-    const selectionD = manager.getSelection({
-      key: 'd',
-      prevSelection: selectionC,
-      args: {
-        a: 1,
-      },
-      argTypes: {
-        a: 'Int!',
+    const selectionD = selectionC.getChild('d', {
+      input: {
+        types: { a: 'Int!' },
+        values: { a: 1 },
       },
     });
 
-    expect(selectionD.cachePath).toEqual(['a', 'b', 0, 'd_3153c_9f89c']);
-    expect(selectionD.pathString).toBe('a.b.0.d_3153c_9f89c');
-    expect(selectionD.alias).toBe('d_3153c_9f89c');
+    expect(selectionD.ancestry.map((s) => s.alias ?? s.key)).toEqual([
+      'mutation',
+      'a',
+      'b',
+      0,
+      'b424a',
+    ]);
+    expect(selectionD.alias).toBe('b424a');
 
-    const repeatSelectionD = manager.getSelection({
-      key: 'd',
-      prevSelection: selectionC,
-      args: {
-        a: 1,
+    const repeatSelectionD = selectionC.getChild('d', {
+      input: {
+        types: { a: 'Int!' },
+        values: { a: 1 },
       },
-      argTypes: {
-        a: 'Int!',
-      },
     });
 
-    expect(repeatSelectionD.cachePath).toEqual(['a', 'b', 0, 'd_3153c_9f89c']);
-    expect(repeatSelectionD.pathString).toBe('a.b.0.d_3153c_9f89c');
-    expect(repeatSelectionD.alias).toBe('d_3153c_9f89c');
+    expect(repeatSelectionD.ancestry.map((s) => s.alias ?? s.key)).toEqual([
+      'mutation',
+      'a',
+      'b',
+      0,
+      'b424a',
+    ]);
+    expect(repeatSelectionD.alias).toBe('b424a');
 
-    const selectionE = manager.getSelection({
-      key: 'e',
-      prevSelection: selectionD,
-    });
+    const selectionE = selectionD.getChild('e');
 
-    expect(selectionE.cachePath).toEqual(['a', 'b', 0, 'd_3153c_9f89c', 'e']);
-    expect(selectionE.pathString).toBe('a.b.0.d_3153c_9f89c.e');
+    expect(selectionE.ancestry.map((s) => s.alias ?? s.key)).toEqual([
+      'mutation',
+      'a',
+      'b',
+      0,
+      'b424a',
+      'e',
+    ]);
 
-    const selectionF = manager.getSelection({
-      key: 'f',
-    });
+    const selectionF = Selection.createRoot('f');
 
-    const selectionG = manager.getSelection({
-      key: 'g',
-      type: SelectionType.Subscription,
-    });
+    const selectionG = Selection.createRoot('subscription').getChild('g');
 
-    expect(selectionF.cachePath).toEqual(['f']);
-    expect(selectionF.pathString).toBe('f');
+    expect(selectionF.cacheKeys).toEqual(['f']);
 
     expect(
-      separateSelectionTypes([
-        selectionA,
-        selectionB,
-        selectionC,
-        selectionD,
-        selectionE,
-        selectionD,
-        repeatSelectionD,
-        selectionF,
-        selectionG,
-      ])
-    ).toEqual([
-      [
-        selectionA,
-        selectionB,
-        selectionC,
-        selectionD,
-        selectionE,
-        selectionD,
-        repeatSelectionD,
-      ],
-      [selectionF],
-      [selectionG],
-    ]);
+      buildQuery(
+        new Set([
+          selectionA,
+          selectionB,
+          selectionC,
+          selectionD,
+          selectionE,
+          selectionD,
+          repeatSelectionD,
+          selectionF,
+          selectionG,
+        ])
+      ).length
+    ).toEqual(3);
   });
 });
