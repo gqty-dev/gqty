@@ -14,10 +14,12 @@ import type {
   Schema,
 } from '../Schema';
 import { createLegacyClient, LegacyClient } from './compat/client';
-import { createContext } from './createContext';
-import { createResolvers, ResolveFn, SubscribeFn } from './createResolvers';
+import { createContext } from './context';
+import { createDebugger } from './debugger';
+import { createResolvers, ResolveFn, SubscribeFn } from './resolvers';
 
-export type { ResolveContext, SchemaContext } from './createContext';
+export type { ResolveContext, SchemaContext } from './context';
+export type { DebugEvent } from './debugger';
 
 /** A generated schema type in it's most basic form */
 export type BaseGeneratedSchema = {
@@ -124,6 +126,9 @@ export type Client<TSchema extends BaseGeneratedSchema> = Persistors & {
   subscribe: SubscribeFn<TSchema>;
 
   schema: TSchema;
+
+  /** Subscribe to debug events, useful for logging. */
+  subscribeDebugEvents: ReturnType<typeof createDebugger>['subscribe'];
 };
 
 export const createClient = <TSchema extends BaseGeneratedSchema>({
@@ -159,10 +164,13 @@ export const createClient = <TSchema extends BaseGeneratedSchema>({
     staleWhileRevalidate,
   });
 
+  const debug = createDebugger();
+
   const { resolve, subscribe } = createResolvers<TSchema>({
     scalars,
     schema,
     cache: clientCache,
+    debugger: debug,
     fetchOptions: {
       fetcher,
       fetchPolicy,
@@ -192,10 +200,13 @@ export const createClient = <TSchema extends BaseGeneratedSchema>({
 
     ...createPersistors(clientCache),
 
+    subscribeDebugEvents: debug.subscribe,
+
     ...createLegacyClient({
       accessor,
       cache: clientCache,
       context: clientContext,
+      debugger: debug,
       fetchOptions: {
         fetcher,
         fetchPolicy,

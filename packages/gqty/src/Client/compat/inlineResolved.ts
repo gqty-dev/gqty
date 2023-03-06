@@ -33,6 +33,7 @@ export const createLegacyInlineResolved = <
   TSchema extends BaseGeneratedSchema = BaseGeneratedSchema
 >({
   cache,
+  debugger: debug,
   fetchOptions: { fetchPolicy, ...fetchOptions },
   subscribeLegacySelections: subscribeSelections,
 }: CreateLegacyMethodOptions<TSchema>): LegacyInlineResolved => {
@@ -77,7 +78,11 @@ export const createLegacyInlineResolved = <
       onCacheData?.(data);
     }
 
-    return fetchSelections(selections, { fetchOptions, operationName })
+    return fetchSelections(selections, {
+      debugger: debug,
+      fetchOptions,
+      operationName,
+    })
       .then((results) => updateCaches(results, [cache]))
       .then(() => fn())
       .finally(() => {

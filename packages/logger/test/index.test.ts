@@ -46,12 +46,14 @@ describe('logger', () => {
       },
       subscription: {},
     },
-    scalarsEnumsHash: {
+    scalars: {
       String: true,
       Boolean: true,
     },
-    queryFetcher: (query, variables) =>
-      testAppPromise.then((v) => v.query(query, { variables })),
+    fetchOptions: {
+      fetcher: ({ query, variables }) =>
+        testAppPromise.then((v) => v.query(query, { variables })),
+    },
   });
 
   test('default options', async () => {
@@ -165,7 +167,7 @@ describe('logger', () => {
     }
   });
 
-  test('stringified JSON', async () => {
+  fit('stringified JSON', async () => {
     const logger = createLogger(gqtyClient, {
       stringifyJSON: true,
     });

@@ -38,6 +38,7 @@ export const createLegacyTrack = <
 >({
   cache,
   context,
+  debugger: debug,
   fetchOptions: { fetchPolicy, ...fetchOptions },
   subscribeLegacySelections,
 }: CreateLegacyMethodOptions<TSchema>) => {
@@ -103,6 +104,7 @@ export const createLegacyTrack = <
         }
       },
       {
+        debugger: debug,
         fetchOptions: {
           fetchPolicy: refetch ? 'no-cache' : fetchPolicy,
           ...fetchOptions,

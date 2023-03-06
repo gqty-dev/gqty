@@ -2,7 +2,8 @@ import type { BaseGeneratedSchema, FetchOptions, SchemaContext } from '../..';
 import type { Cache } from '../../Cache';
 import type { ScalarsEnumsHash, Schema } from '../../Schema';
 import type { Selection } from '../../Selection';
-import type { createResolvers } from '../createResolvers';
+import type { createDebugger } from '../debugger';
+import type { createResolvers } from '../resolvers';
 import { createLegacyHydrateCache, LegacyHydrateCache } from './hydrateCache';
 import {
   createLegacyInlineResolved,
@@ -21,14 +22,15 @@ import { createLegacyTrack, LegacyTrack } from './track';
 // TODO: Add deprecation warning
 let deprecationWarningMessage: string | undefined =
   !process.env.NODE_ENV || process.env.NODE_ENV === 'development'
-    ? '[GQty] global query, mutation and subscription is deprecated, please see ' +
-      'the migration guide for scoped query.'
+    ? '[GQty] global query, mutation and subscription is deprecated, use ' +
+      '`schema` instead.'
     : undefined;
 
 export type CreateLegacyClientOptions<TSchema extends BaseGeneratedSchema> = {
   accessor: TSchema;
   cache: Cache;
   context: SchemaContext;
+  debugger: ReturnType<typeof createDebugger>;
   fetchOptions: FetchOptions;
   resolve: ReturnType<typeof createResolvers<TSchema>>['resolve'];
   scalars: ScalarsEnumsHash;
@@ -155,9 +157,26 @@ export const createLegacyClient = <TSchema extends BaseGeneratedSchema>(
     prepareRender: createLegacyPrepareRender(methodOptions),
     hydrateCache: createLegacyHydrateCache(methodOptions),
 
-    query: options.accessor.query,
-    mutation: options.accessor.mutation,
-    subscription: options.accessor.subscription,
+    get query() {
+      deprecationWarningMessage && console.warn(deprecationWarningMessage);
+      deprecationWarningMessage = undefined;
+
+      return options.accessor.query;
+    },
+
+    get mutation() {
+      deprecationWarningMessage && console.warn(deprecationWarningMessage);
+      deprecationWarningMessage = undefined;
+
+      return options.accessor.mutation;
+    },
+
+    get subscription() {
+      deprecationWarningMessage && console.warn(deprecationWarningMessage);
+      deprecationWarningMessage = undefined;
+
+      return options.accessor.subscription;
+    },
 
     subscribeLegacySelections: methodOptions.subscribeLegacySelections,
   };

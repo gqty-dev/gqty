@@ -10,7 +10,10 @@ export const updateCaches = <TData extends Record<string, unknown>>(
 ) => {
   const errorSet = new Set<GraphQLError>();
 
-  for (const { data, errors, extensions } of results) {
+  for (const response of results) {
+    if (response === undefined) return;
+
+    const { data, errors, extensions } = response;
     const type = `${extensions?.type}`;
 
     if (data !== undefined) {

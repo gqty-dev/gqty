@@ -71,6 +71,7 @@ export const isLegacyCacheSnapshot = (
 
 export const createLegacyPrepareRender = <TSchema extends BaseGeneratedSchema>({
   cache,
+  debugger: debug,
   fetchOptions,
   subscribeLegacySelections,
 }: CreateLegacyMethodOptions<TSchema>): LegacyPrepareRender => {
@@ -89,6 +90,7 @@ export const createLegacyPrepareRender = <TSchema extends BaseGeneratedSchema>({
 
     const results = await fetchSelections(selections, {
       cache,
+      debugger: debug,
       fetchOptions,
     });
 

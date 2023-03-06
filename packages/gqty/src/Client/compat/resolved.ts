@@ -1,4 +1,6 @@
+import type { QueryPayload } from 'gqty/Schema';
 import type { GraphQLError } from 'graphql';
+import { MessageType } from 'graphql-ws';
 import type { BaseGeneratedSchema } from '..';
 import { Cache } from '../../Cache';
 import { GQtyError, RetryOptions } from '../../Error';
@@ -8,6 +10,7 @@ import {
   FetchResult,
   fetchSelections,
   isCloseEvent,
+  QueryExtensions,
 } from '../resolveSelections';
 import { updateCaches } from '../updateCaches';
 import type { CreateLegacyMethodOptions } from './client';
@@ -107,6 +110,7 @@ export const createLegacyResolved = <
 >({
   cache,
   context,
+  debugger: debug,
   fetchOptions: { fetcher, subscriber, retryPolicy },
   subscribeLegacySelections: subscribeSelections,
 }: CreateLegacyMethodOptions<TSchema>): LegacyResolved => {
@@ -170,74 +174,121 @@ export const createLegacyResolved = <
       onNoCacheFound?.();
     }
 
-    // Queries and mutations
-    await fetchSelections(
-      new Set(
-        [...selections].filter(({ root: { key } }) => key !== 'subscription')
-      ),
-      {
-        fetchOptions: { fetcher, retryPolicy: retry, ...fetchOptions },
-        operationName,
-      }
-    ).then(
-      (results) => {
-        updateCaches(results, [resolutionCache]);
-      },
-      (error) => Promise.reject(GQtyError.create(error, () => {}))
-    );
-
     // Subscriptions
     buildQuery(
       new Set(
         [...selections].filter(({ root: { key } }) => key === 'subscription')
       ),
       operationName
-    ).map(({ query, variables, operationName }) => {
-      const _unsubscribe = subscriber?.subscribe(
-        { query, variables, operationName },
-        {
-          next(result) {
-            if (result.data != null) {
-              result.extensions = { type: 'subscription' };
-              updateCaches([result as FetchResult], [resolutionCache]);
+    ).map(
+      ({
+        query,
+        variables,
+        operationName,
+        extensions: { type, hash } = {},
+      }) => {
+        if (!type) throw new GQtyError(`Invalid query type: ${type}`);
+        if (!hash) throw new GQtyError(`Expected query hash: ${hash}`);
+
+        const payload: QueryPayload<QueryExtensions> = {
+          query,
+          variables,
+          operationName,
+          extensions: { type, hash },
+        };
+
+        let subscriptionId: string | undefined;
+        subscriber?.on('message', (message) => {
+          switch (message.type) {
+            case MessageType.Subscribe: {
+              if (message.payload.extensions?.hash !== hash) break;
+
+              subscriptionId = message.id;
+
+              debug?.dispatch({
+                cache,
+                label: `[id=${subscriptionId}] [create]`,
+                request: payload,
+                selections,
+              });
+
+              break;
             }
+          }
+        });
 
-            onSubscription?.({
-              type: 'data',
-              data: dataFn() ?? (result as TData),
-              unsubscribe,
-            });
-          },
-          error(error: Error | readonly GraphQLError[] | CloseEvent) {
-            if (isCloseEvent(error)) {
-              unsubscribe();
-              return this.complete();
-            }
+        const _unsubscribe = subscriber?.subscribe<TData, QueryExtensions>(
+          { query, variables, operationName },
+          {
+            next(result) {
+              result.extensions = payload.extensions;
 
-            onSubscription?.({
-              type: 'with-errors',
-              error: Array.isArray(error)
-                ? GQtyError.fromGraphQLErrors(error)
-                : new GQtyError(`Subscription error`, { otherError: error }),
-              unsubscribe,
-            });
-          },
-          complete() {
-            onSubscription?.({
-              type: 'complete',
-              unsubscribe,
-            });
-          },
-        }
-      );
+              if (result.data != null) {
+                updateCaches([result as FetchResult], [resolutionCache]);
+              }
 
-      const unsubscribe = async () => _unsubscribe?.();
+              debug?.dispatch({
+                cache,
+                label: subscriptionId
+                  ? `[id=${subscriptionId}] [data]`
+                  : undefined,
+                request: payload,
+                result: result as FetchResult,
+                selections,
+              });
 
-      onSubscription?.({
-        type: 'start',
-        unsubscribe,
-      });
-    });
+              onSubscription?.({
+                type: 'data',
+                data: dataFn() ?? (result as TData),
+                unsubscribe,
+              });
+            },
+            error(error: Error | readonly GraphQLError[] | CloseEvent) {
+              if (isCloseEvent(error)) {
+                unsubscribe();
+                return this.complete();
+              }
+
+              onSubscription?.({
+                type: 'with-errors',
+                error: Array.isArray(error)
+                  ? GQtyError.fromGraphQLErrors(error)
+                  : new GQtyError(`Subscription error`, { otherError: error }),
+                unsubscribe,
+              });
+            },
+            complete() {
+              onSubscription?.({
+                type: 'complete',
+                unsubscribe,
+              });
+            },
+          }
+        );
+
+        const unsubscribe = async () => _unsubscribe?.();
+
+        onSubscription?.({
+          type: 'start',
+          unsubscribe,
+        });
+      }
+    );
+
+    // Queries and mutations
+    await fetchSelections(
+      new Set(
+        [...selections].filter(({ root: { key } }) => key !== 'subscription')
+      ),
+      {
+        debugger: debug,
+        fetchOptions: { fetcher, retryPolicy: retry, ...fetchOptions },
+        operationName,
+      }
+    ).then(
+      (results) => updateCaches(results, [resolutionCache]),
+      (error) => Promise.reject(GQtyError.create(error, () => {}))
+    );
 
     return dataFn();
   };

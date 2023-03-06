@@ -5,12 +5,14 @@ import { GQtyError } from '../Error';
 import type { ScalarsEnumsHash, Schema } from '../Schema';
 import type { Selection } from '../Selection';
 import { pick } from '../Utils/pick';
-import { createContext, ResolveContext } from './createContext';
+import { createContext, ResolveContext } from './context';
+import type { Debugger } from './debugger';
 import { fetchSelections, subscribeSelections } from './resolveSelections';
 import { updateCaches } from './updateCaches';
 
 export type CreateResolvedOptions = {
   cache: Cache;
+  debugger?: Debugger;
   depthLimit: number;
   fetchOptions: FetchOptions;
   scalars: ScalarsEnumsHash;
@@ -99,6 +101,7 @@ export type SubscribeFn<TSchema extends BaseGeneratedSchema> = <
 
 export const createResolvers = <TSchema extends BaseGeneratedSchema>({
   cache: clientCache,
+  debugger: debug,
   depthLimit,
   fetchOptions,
   fetchOptions: { fetchPolicy: defaultFetchPolicy = 'default' },
@@ -143,8 +146,9 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
         throw new TypeError('Failed to fetch');
       }
       const fetchPromises = fetchSelections(selections, {
-        operationName,
+        debugger: debug,
         fetchOptions,
+        operationName,
       })
         .then((results) => {
           updateCaches(
@@ -235,7 +239,7 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
 
     const unsubscribeSelections = subscribeSelections(
       selections,
-      ({ errors, data, extensions }) => {
+      ({ data, errors, extensions }) => {
         if (errors) {
           const error =
             errors.length > 1
@@ -256,7 +260,7 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
           }
         } else if (data !== undefined) {
           updateCaches(
-            [{ data, extensions }],
+            [{ data, errors, extensions }],
             fetchPolicy !== 'no-store' && context.cache !== clientCache
               ? [context.cache, clientCache]
               : [context.cache],
@@ -268,6 +272,7 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
         }
       },
       {
+        debugger: debug,
         fetchOptions,
         operationName,
       }

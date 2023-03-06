@@ -140,7 +140,7 @@ export const buildQuery = (
       operationName,
       extensions: {
         type: rootKey,
-        hash: hash(query), // For query dedupe and cache keys
+        hash: hash({ query, variables }), // For query dedupe and cache keys
       },
     };
   });

@@ -1,10 +1,8 @@
+import { DebugEvent, GQtyClient, GQtyError } from 'gqty';
 import parserJSON from 'prettier/parser-babel.js';
 import parserGraphQL from 'prettier/parser-graphql.js';
 import prettier from 'prettier/standalone.js';
 import { serializeError } from './serializeError';
-
-import type { GQtyClient } from 'gqty';
-import type { FetchEventData } from 'gqty/Events';
 
 function parseGraphQL(query: string) {
   return prettier.format(query, {
@@ -63,7 +61,7 @@ export function createLogger(
   options.stringifyJSON ??= false;
 
   const stringifyJSONIfEnabled = <T extends object>(v: T) => {
-    if (options.stringifyJSON) {
+    if (options.stringifyJSON && v) {
       return prettier.format(JSON.stringify(v), {
         parser: 'json',
         plugins: [parserJSON],
@@ -72,24 +70,25 @@ export function createLogger(
     return v;
   };
 
-  const eventHandler = client.eventHandler;
-
   let idMapper = 0;
   const QueryIdMapper: Record<string, number> = {};
 
-  async function onFetch(dataPromise: Promise<FetchEventData>) {
+  async function onFetch({
+    cache,
+    label,
+    request: { query, variables, operationName, extensions },
+    result,
+    result: { errors = [] } = {},
+    selections,
+  }: DebugEvent) {
     const startTime = Date.now();
 
-    const {
-      query,
-      variables,
-      error,
-      selections,
-      executionResult,
-      cacheSnapshot,
-      type,
-      label,
-    } = await dataPromise;
+    const error =
+      errors.length > 1
+        ? GQtyError.fromGraphQLErrors(errors)
+        : errors.length === 1
+        ? errors[0]
+        : undefined;
 
     const queryId = (QueryIdMapper[query] ||= ++idMapper);
 
@@ -98,11 +97,14 @@ export function createLogger(
     console.groupCollapsed(
       ...format(
         ['GraphQL ', 'color: gray'],
-        [type + ' ', `color: ${error ? 'red' : '#03A9F4'}; font-weight: bold`],
+        [
+          extensions?.type + (operationName ? ` (${operationName})` : ' '),
+          `color: ${error ? 'red' : '#03A9F4'}; font-weight: bold`,
+        ],
         ['ID ' + queryId + ' ', 'color: green'],
         ...(label ? [[label + ' ', 'color: green']] : []),
         [`(${fetchTime}ms)`, 'color: gray'],
-        [` ${selections.length} selections`, 'color: gray'],
+        [` ${selections.size} selections`, 'color: gray'],
 
         error && [
           'FAILED',
@@ -136,38 +138,33 @@ export function createLogger(
 
     if (error) {
       console.error(...format(['Error', headerStyles]), serializeError(error));
-    } else if (executionResult) {
+    } else if (result) {
       console.log(
         ...format(['Result', headerStyles]),
-        stringifyJSONIfEnabled(executionResult)
+        stringifyJSONIfEnabled(result)
       );
     }
 
     if (options.showSelections) {
       console.groupCollapsed(...format(['Selections', headerStyles]));
-      selections.forEach(
-        ({ id, cachePath, key, pathString, alias, argTypes, args, unions }) => {
-          console.log(
-            stringifyJSONIfEnabled({
-              id,
-              cachePath,
-              key,
-              pathString,
-              alias,
-              argTypes,
-              args,
-              unions,
-            })
-          );
-        }
-      );
+      selections.forEach(({ key, cacheKeys, alias, input, isUnion }) => {
+        console.log(
+          stringifyJSONIfEnabled({
+            key,
+            cacheKeys: cacheKeys.join('.'),
+            alias,
+            input,
+            isUnion,
+          })
+        );
+      });
       console.groupEnd();
     }
 
     if (options.showCache) {
       console.log(
         ...format(['Cache snapshot', headerStyles]),
-        stringifyJSONIfEnabled(cacheSnapshot)
+        stringifyJSONIfEnabled(cache?.toJSON())
       );
       console.groupEnd();
     }
@@ -177,7 +174,7 @@ export function createLogger(
    * Start logging, it returns the "stop" function
    */
   function start() {
-    const unsubscribe = eventHandler.onFetchSubscribe(onFetch);
+    const unsubscribe = client.subscribeDebugEvents(onFetch);
 
     return unsubscribe;
   }

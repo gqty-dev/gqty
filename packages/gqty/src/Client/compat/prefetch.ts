@@ -14,6 +14,7 @@ export const createLegacyPrefetch = <
 >({
   accessor,
   cache,
+  debugger: debug,
   fetchOptions: { fetcher, retryPolicy, subscriber, ...fetchOptions },
   subscribeLegacySelections: subscribeSelections,
 }: CreateLegacyMethodOptions<TSchema>): LegacyPrefetch<TSchema> => {
@@ -35,6 +36,7 @@ export const createLegacyPrefetch = <
     }
 
     return fetchSelections(selections, {
+      debugger: debug,
       fetchOptions: { fetcher, retryPolicy, ...fetchOptions },
       operationName,
     }).then(

@@ -1,7 +1,7 @@
 import { Cache, CacheDataContainer, CacheGetOptions } from '../Cache';
 import type { ScalarsEnumsHash, Schema } from '../Schema';
 import type { Selection } from '../Selection';
-import type { ResolveOptions } from './createResolvers';
+import type { ResolveOptions } from './resolvers';
 
 export type ResolveContext = SchemaContext<{
   notifyCacheUpdate: boolean;

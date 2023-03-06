@@ -1,5 +1,5 @@
 import type { ExecutionResult } from 'graphql';
-import type { SubscribePayload } from 'graphql-ws';
+import { MessageType, SubscribePayload } from 'graphql-ws';
 import { CloseEvent, WebSocket } from 'ws';
 import type { FetchOptions } from '.';
 import type { Cache } from '../Cache';
@@ -8,22 +8,31 @@ import { doRetry, GQtyError } from '../Error';
 import { buildQuery } from '../QueryBuilder';
 import type { QueryPayload } from '../Schema';
 import type { Selection } from '../Selection';
+import type { Debugger } from './debugger';
 
 export type FetchSelectionsOptions = {
+  cache?: Cache;
+  debugger?: Debugger;
   fetchOptions: FetchOptions;
   operationName?: string;
-  cache?: Cache;
 };
+
+export type QueryExtensions = { type: string; hash: string };
 
 export type FetchResult<
   TData extends Record<string, unknown> = Record<string, unknown>
-> = ExecutionResult<TData, { type: string; hash: string }>;
+> = ExecutionResult<TData>;
 
 export const fetchSelections = <
   TData extends Record<string, unknown> = Record<string, unknown>
 >(
   selections: Set<Selection>,
-  { cache, fetchOptions, operationName }: FetchSelectionsOptions
+  {
+    cache,
+    debugger: debug,
+    fetchOptions,
+    operationName,
+  }: FetchSelectionsOptions
 ): Promise<FetchResult<TData>[]> =>
   Promise.all(
     buildQuery(selections, operationName).map(
@@ -41,7 +50,11 @@ export const fetchSelections = <
           throw new GQtyError(`Expected query hash.`);
         }
 
-        const payload = { query, variables, operationName };
+        const payload: QueryPayload<QueryExtensions> = {
+          query,
+          variables,
+          operationName,
+        };
 
         // Dedupe
         const result = await dedupePromise(
@@ -52,13 +65,20 @@ export const fetchSelections = <
             : () => doFetch<TData>(payload, fetchOptions)
         );
 
+        debug?.dispatch({
+          cache,
+          request: { query, variables, operationName },
+          result,
+          selections,
+        });
+
         return { ...result, extensions: { type, hash } };
       }
     )
   );
 
 export type SubscriptionCallback<TData extends Record<string, unknown>> = (
-  result: FetchResult<TData> | Record<string, never>
+  result: FetchResult<TData>
 ) => void;
 
 export type Unsubscribe = () => void;
@@ -74,89 +94,146 @@ export const subscribeSelections = <
   fn: SubscriptionCallback<TData>,
   {
     cache,
+    debugger: debug,
     fetchOptions: { subscriber, ...fetchOptions },
     operationName,
   }: FetchSelectionsOptions
 ): Unsubscribe => {
   const unsubscribers = new Set<() => void>();
 
-  Promise.all(
-    buildQuery(selections, operationName).map(
-      ({
+  buildQuery(selections, operationName).map(
+    ({ query, variables, operationName, extensions: { type, hash } = {} }) => {
+      if (!type) {
+        throw new GQtyError(`Invalid query type: ${type}`);
+      }
+
+      if (!hash) {
+        throw new GQtyError(`Expected query hash.`);
+      }
+
+      if (type === 'subscription' && !subscriber) {
+        throw new GQtyError(`Missing subscriber for subscriptions.`);
+      }
+
+      const queryPayload: QueryPayload<QueryExtensions> = {
         query,
         variables,
         operationName,
-        extensions: { type, hash } = {},
-      }) => {
-        if (!type) {
-          throw new GQtyError(`Invalid query type: ${type}`);
-        }
+        extensions: { type, hash },
+      };
 
-        if (!hash) {
-          throw new GQtyError(`Expected query hash.`);
-        }
+      let subscriptionId: string | undefined;
+      {
+        const unsubscribeEvents = subscriber?.on('message', (message) => {
+          switch (message.type) {
+            case MessageType.Subscribe: {
+              if (message.payload.extensions?.hash !== hash) return;
 
-        const queryPayload = { query, variables, operationName };
+              subscriptionId = message.id;
 
-        const next = ({ data, errors, extensions }: ExecutionResult<TData>) => {
-          if (data === undefined) return;
+              debug?.dispatch({
+                cache,
+                label: `[id=${subscriptionId}] [create]`,
+                request: queryPayload,
+                selections,
+              });
 
-          fn({ data, errors, extensions: { ...extensions, type, hash } });
-        };
-
-        const error = (error: unknown) => {
-          if (error == null) {
-            throw new GQtyError(`Subscription sink closed without an error.`);
+              unsubscribeEvents?.();
+              break;
+            }
           }
-
-          fn({ errors: [error as any] });
-        };
-
-        // Dedupe
-        return dedupePromise(
-          type === 'subscription' ? undefined : cache,
-          hash,
-          type === 'subscription'
-            ? () =>
-                new Promise<void>((complete) => {
-                  const unsubscribe = subscriber?.subscribe<TData>(
-                    queryPayload,
-                    {
-                      next,
-                      error(err) {
-                        if (isCloseEvent(err)) {
-                          this.complete();
-                        } else if (Array.isArray(err)) {
-                          error(GQtyError.fromGraphQLErrors(err));
-                        } else {
-                          error(err);
-                        }
-                      },
-                      complete,
-                    }
-                  );
-
-                  if (unsubscribe) {
-                    unsubscribers.add(unsubscribe);
-                  }
-                })
-            : () =>
-                new Promise<void>((complete) => {
-                  const aborter = new AbortController();
-
-                  doFetch<TData>(queryPayload, {
-                    ...fetchOptions,
-                    signal: aborter.signal,
-                  })
-                    .then(next, error)
-                    .finally(complete);
-
-                  unsubscribers.add(() => aborter.abort());
-                })
-        );
+        });
       }
-    )
-  ).finally(() => fn({}));
+
+      const next = ({ data, errors, extensions }: ExecutionResult<TData>) => {
+        if (data === undefined) return;
+
+        debug?.dispatch({
+          cache,
+          label: subscriptionId ? `[id=${subscriptionId}] [data]` : undefined,
+          request: queryPayload,
+          result: { data, errors, extensions },
+          selections,
+        });
+
+        fn({
+          data,
+          errors,
+          extensions: {
+            ...extensions,
+            ...queryPayload.extensions!,
+          },
+        });
+      };
+
+      const error = (error: unknown) => {
+        if (error == null) {
+          throw new GQtyError(`Subscription sink closed without an error.`);
+        }
+
+        debug?.dispatch({
+          cache,
+          label: subscriptionId ? `[id=${subscriptionId}] [error]` : undefined,
+          request: queryPayload,
+          selections,
+        });
+
+        fn({
+          errors: [error as any],
+          extensions: queryPayload.extensions,
+        });
+      };
+
+      // Dedupe
+      return dedupePromise(
+        type === 'subscription' ? undefined : cache,
+        hash,
+        type === 'subscription'
+          ? () =>
+              new Promise<void>((complete) => {
+                const unsubscribe = subscriber!.subscribe<TData>(queryPayload, {
+                  next,
+                  error(err) {
+                    if (Array.isArray(err)) {
+                      error(GQtyError.fromGraphQLErrors(err));
+                    } else if (!isCloseEvent(err)) {
+                      error(err);
+                    }
+
+                    this.complete();
+                  },
+                  complete() {
+                    debug?.dispatch({
+                      cache,
+                      label: subscriptionId
+                        ? `[id=${subscriptionId}] [unsubscribe]`
+                        : undefined,
+                      request: queryPayload,
+                      selections,
+                    });
+
+                    complete();
+                  },
+                });
+
+                unsubscribers.add(unsubscribe);
+              })
+          : () =>
+              new Promise<void>((complete) => {
+                const aborter = new AbortController();
+
+                doFetch<TData>(queryPayload, {
+                  ...fetchOptions,
+                  signal: aborter.signal,
+                })
+                  .then(next, error)
+                  .finally(complete);
+
+                unsubscribers.add(() => aborter.abort());
+              })
+      );
+    }
+  );
 
   return () => {
     unsubscribers.forEach((fn) => fn());
