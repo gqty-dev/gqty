@@ -14,12 +14,14 @@ import type {
   Schema,
 } from '../Schema';
 import { createLegacyClient, LegacyClient } from './compat/client';
-import { createContext } from './context';
+import { createContext, CreateContextOptions } from './context';
 import { createDebugger } from './debugger';
-import { createResolvers, ResolveFn, SubscribeFn } from './resolvers';
+import { createResolvers, Resolvers } from './resolvers';
 
-export type { ResolveContext, SchemaContext } from './context';
+export { $meta } from '../Accessor';
+export type { SchemaContext } from './context';
 export type { DebugEvent } from './debugger';
+export { fetchSelections, subscribeSelections } from './resolveSelections';
 
 /** A generated schema type in it's most basic form */
 export type BaseGeneratedSchema = {
@@ -96,40 +98,14 @@ export type ClientOptions = {
   __depthLimit?: number;
 };
 
-export type Client<TSchema extends BaseGeneratedSchema> = Persistors & {
-  /**
-   * Query, mutation and subscription in a promise.
-   *
-   * Selections to queries and mutations are fetched with
-   * `fetchOptions.fetcher`, the result is resolved with the cache updated
-   * according to the current fetch policy
-   *
-   * Subscriptions are disconnected upon delivery of the first data message,
-   * the cache is updated and the data is resolved, essentially behaving like
-   * a promise.
-   */
-  resolve: ResolveFn<TSchema>;
+export type Client<TSchema extends BaseGeneratedSchema> = Persistors &
+  Resolvers<TSchema> & {
+    /** Global cache accessors. */
+    schema: TSchema;
 
-  /**
-   * Query, mutation and subscription in an async generator.
-   *
-   * Subscription data continuously update the cache, while queries and
-   * mutations are fetched once and then listen to future cache changes
-   * from the same selections.
-   *
-   * This function subscribes to *cache changes*, termination of underlying
-   * subscription (WebSocket/EventSource) does not stop this generator.
-   *
-   * Calling `.return()` does not terminate pending promise. Use the `signal`
-   * option to exist the generator without waiting for the next update.
-   */
-  subscribe: SubscribeFn<TSchema>;
-
-  schema: TSchema;
-
-  /** Subscribe to debug events, useful for logging. */
-  subscribeDebugEvents: ReturnType<typeof createDebugger>['subscribe'];
-};
+    /** Subscribe to debug events, useful for logging. */
+    subscribeDebugEvents: ReturnType<typeof createDebugger>['subscribe'];
+  };
 
 export const createClient = <TSchema extends BaseGeneratedSchema>({
   cacheOptions: {
@@ -164,9 +140,10 @@ export const createClient = <TSchema extends BaseGeneratedSchema>({
     staleWhileRevalidate,
   });
 
+  // TODO: Defer creation until `@gqty/logger` is used.
   const debug = createDebugger();
 
-  const { resolve, subscribe } = createResolvers<TSchema>({
+  const resolvers = createResolvers<TSchema>({
     scalars,
     schema,
     cache: clientCache,
@@ -181,26 +158,25 @@ export const createClient = <TSchema extends BaseGeneratedSchema>({
     depthLimit: __depthLimit,
   });
 
-  /** For cache accessors outside of resolver scopes. */
-  const clientContext = createContext({
+  const defaultContextOptions: CreateContextOptions = {
     cache: clientCache,
     depthLimit: __depthLimit,
     fetchPolicy,
     scalars,
     schema,
     typeKeys: normalizationOptions?.schemaKeys,
-  });
+  };
+
+  /** Global scope for accessing the cache via `schema` property. */
+  const clientContext = createContext(defaultContextOptions);
 
   const accessor = createSchemaAccessor<TSchema>(clientContext);
 
   return {
-    resolve,
-    subscribe,
+    ...resolvers,
     schema: accessor,
-
-    ...createPersistors(clientCache),
-
     subscribeDebugEvents: debug.subscribe,
+    ...createPersistors(clientCache),
 
     ...createLegacyClient({
       accessor,
@@ -214,10 +190,9 @@ export const createClient = <TSchema extends BaseGeneratedSchema>({
         subscriber,
         ...fetchOptions,
       },
-      resolve,
       scalars,
       schema,
-      subscribe,
+      resolvers,
       __depthLimit,
     }),
   };

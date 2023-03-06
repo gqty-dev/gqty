@@ -22,11 +22,12 @@ export interface LegacyMutate<TSchema extends BaseGeneratedSchema> {
   ): Promise<T>;
 }
 
-export const createLegacyMutate = <TSchema extends BaseGeneratedSchema>({
-  accessor,
-  resolve,
-}: CreateLegacyMethodOptions<TSchema>): LegacyMutate<TSchema> => {
-  return async (fn, { onComplete, onError } = {}) => {
+export const createLegacyMutate =
+  <TSchema extends BaseGeneratedSchema>({
+    accessor,
+    resolvers: { resolve },
+  }: CreateLegacyMethodOptions<TSchema>): LegacyMutate<TSchema> =>
+  async (fn, { onComplete, onError } = {}) => {
     try {
       const data = (await resolve(({ mutation }) => fn(mutation), {
         fetchPolicy: 'no-cache',
@@ -51,4 +52,3 @@ export const createLegacyMutate = <TSchema extends BaseGeneratedSchema>({
       throw e;
     }
   };
-};

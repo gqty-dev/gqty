@@ -1,7 +1,4 @@
 import type { BaseGeneratedSchema } from '../..';
-import type { Selection } from '../../Selection';
-import { fetchSelections } from '../resolveSelections';
-import { updateCaches } from '../updateCaches';
 import type { CreateLegacyMethodOptions } from './client';
 import { convertSelection, LegacySelection } from './selection';
 
@@ -32,9 +29,7 @@ export interface LegacyInlineResolveOptions<TData> {
 export const createLegacyInlineResolved = <
   TSchema extends BaseGeneratedSchema = BaseGeneratedSchema
 >({
-  cache,
-  debugger: debug,
-  fetchOptions: { fetchPolicy, ...fetchOptions },
+  resolvers: { createResolver },
   subscribeLegacySelections: subscribeSelections,
 }: CreateLegacyMethodOptions<TSchema>): LegacyInlineResolved => {
   return (
@@ -47,16 +42,16 @@ export const createLegacyInlineResolved = <
       operationName,
     } = {}
   ) => {
-    let hasCacheHit = false;
-    let shouldFetch = refetch;
-    const selections = new Set<Selection>();
+    const { context, selections, resolve } = createResolver({
+      fetchPolicy: refetch ? 'no-cache' : 'default',
+      operationName,
+    });
     const unsubscribe = subscribeSelections((selection, cache) => {
-      shouldFetch ||= cache?.data === undefined;
-      hasCacheHit ||= cache?.data !== undefined;
-
-      selections.add(selection);
+      context.onSelect?.(selection, cache);
       onSelection?.(convertSelection(selection));
     });
+
+    context.shouldFetch ||= refetch;
 
     const data = fn();
 
@@ -70,23 +65,14 @@ export const createLegacyInlineResolved = <
       return data;
     }
 
-    if (!shouldFetch) {
+    if (!context.shouldFetch) {
       return data;
     }
 
-    if (hasCacheHit && !refetch) {
+    if (context.hasCacheHit && !refetch) {
       onCacheData?.(data);
     }
 
-    return fetchSelections(selections, {
-      debugger: debug,
-      fetchOptions,
-      operationName,
-    })
-      .then((results) => updateCaches(results, [cache]))
-      .then(() => fn())
-      .finally(() => {
-        selections.clear();
-      });
+    return resolve().then(() => fn());
   };
 };

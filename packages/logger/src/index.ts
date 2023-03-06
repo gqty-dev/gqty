@@ -1,4 +1,4 @@
-import { DebugEvent, GQtyClient, GQtyError } from 'gqty';
+import type { DebugEvent, GQtyClient } from 'gqty';
 import parserJSON from 'prettier/parser-babel.js';
 import parserGraphQL from 'prettier/parser-graphql.js';
 import prettier from 'prettier/standalone.js';
@@ -78,17 +78,10 @@ export function createLogger(
     label,
     request: { query, variables, operationName, extensions },
     result,
-    result: { errors = [] } = {},
+    result: { error } = {},
     selections,
   }: DebugEvent) {
     const startTime = Date.now();
-
-    const error =
-      errors.length > 1
-        ? GQtyError.fromGraphQLErrors(errors)
-        : errors.length === 1
-        ? errors[0]
-        : undefined;
 
     const queryId = (QueryIdMapper[query] ||= ++idMapper);
 

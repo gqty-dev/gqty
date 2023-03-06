@@ -3,7 +3,7 @@ import type { Cache } from '../../Cache';
 import type { ScalarsEnumsHash, Schema } from '../../Schema';
 import type { Selection } from '../../Selection';
 import type { createDebugger } from '../debugger';
-import type { createResolvers } from '../resolvers';
+import type { Resolvers } from '../resolvers';
 import { createLegacyHydrateCache, LegacyHydrateCache } from './hydrateCache';
 import {
   createLegacyInlineResolved,
@@ -19,7 +19,6 @@ import { createRefetch, LegacyRefetch } from './refetch';
 import { createLegacyResolved, LegacyResolved } from './resolved';
 import { createLegacyTrack, LegacyTrack } from './track';
 
-// TODO: Add deprecation warning
 let deprecationWarningMessage: string | undefined =
   !process.env.NODE_ENV || process.env.NODE_ENV === 'development'
     ? '[GQty] global query, mutation and subscription is deprecated, use ' +
@@ -32,10 +31,9 @@ export type CreateLegacyClientOptions<TSchema extends BaseGeneratedSchema> = {
   context: SchemaContext;
   debugger: ReturnType<typeof createDebugger>;
   fetchOptions: FetchOptions;
-  resolve: ReturnType<typeof createResolvers<TSchema>>['resolve'];
+  resolvers: Resolvers<TSchema>;
   scalars: ScalarsEnumsHash;
   schema: Readonly<Schema>;
-  subscribe: ReturnType<typeof createResolvers<TSchema>>['subscribe'];
   __depthLimit?: number;
 };
 
@@ -140,10 +138,29 @@ export const createLegacyClient = <TSchema extends BaseGeneratedSchema>(
     },
   };
 
-  // refetch needs this
+  // `refetch` needs `inlineResolved`
   const inlineResolved = createLegacyInlineResolved<TSchema>(methodOptions);
 
   return {
+    get query() {
+      deprecationWarningMessage && console.warn(deprecationWarningMessage);
+      deprecationWarningMessage = undefined;
+
+      return options.accessor.query;
+    },
+    get mutation() {
+      deprecationWarningMessage && console.warn(deprecationWarningMessage);
+      deprecationWarningMessage = undefined;
+
+      return options.accessor.mutation;
+    },
+    get subscription() {
+      deprecationWarningMessage && console.warn(deprecationWarningMessage);
+      deprecationWarningMessage = undefined;
+
+      return options.accessor.subscription;
+    },
+
     resolved: createLegacyResolved<TSchema>(methodOptions),
     inlineResolved,
     mutate: createLegacyMutate<TSchema>(methodOptions),
@@ -156,27 +173,6 @@ export const createLegacyClient = <TSchema extends BaseGeneratedSchema>(
     }),
     prepareRender: createLegacyPrepareRender(methodOptions),
     hydrateCache: createLegacyHydrateCache(methodOptions),
-
-    get query() {
-      deprecationWarningMessage && console.warn(deprecationWarningMessage);
-      deprecationWarningMessage = undefined;
-
-      return options.accessor.query;
-    },
-
-    get mutation() {
-      deprecationWarningMessage && console.warn(deprecationWarningMessage);
-      deprecationWarningMessage = undefined;
-
-      return options.accessor.mutation;
-    },
-
-    get subscription() {
-      deprecationWarningMessage && console.warn(deprecationWarningMessage);
-      deprecationWarningMessage = undefined;
-
-      return options.accessor.subscription;
-    },
 
     subscribeLegacySelections: methodOptions.subscribeLegacySelections,
   };

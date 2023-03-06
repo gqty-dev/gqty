@@ -13,7 +13,7 @@ export const updateCaches = <TData extends Record<string, unknown>>(
   for (const response of results) {
     if (response === undefined) return;
 
-    const { data, errors, extensions } = response;
+    const { data, error, extensions } = response;
     const type = `${extensions?.type}`;
 
     if (data !== undefined) {
@@ -24,7 +24,13 @@ export const updateCaches = <TData extends Record<string, unknown>>(
       }
     }
 
-    errors?.forEach((error) => errorSet.add(error));
+    if (error) {
+      if (!(error instanceof GQtyError) || !error.graphQLErrors?.length) {
+        throw error;
+      } else {
+        error.graphQLErrors.forEach((error) => errorSet.add(error));
+      }
+    }
   }
 
   if (errorSet.size) {

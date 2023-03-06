@@ -21,9 +21,9 @@ describe('core#resolve', () => {
         resolve(({ query }) => query.nFetchCalls, { fetchPolicy: 'default' })
       ).resolves.toBe(1);
 
-      expect(
+      await expect(
         resolve(({ query }) => query.nFetchCalls, { fetchPolicy: 'default' })
-      ).toBe(1);
+      ).resolves.toBe(1);
 
       await new Promise((resolve) => setTimeout(resolve, 100));
 
@@ -62,7 +62,7 @@ describe('core#resolve', () => {
       ).resolves.toBe('hello world');
       expect(query.nFetchCalls).toBe(1);
 
-      expect(
+      await expect(
         resolve(
           ({ query }) => {
             query.nFetchCalls;
@@ -70,7 +70,7 @@ describe('core#resolve', () => {
           },
           { fetchPolicy: 'force-cache' }
         )
-      ).toBe('hello world');
+      ).resolves.toBe('hello world');
       expect(query.nFetchCalls).toBe(1);
 
       await new Promise((resolve) => setTimeout(resolve, 100));
@@ -109,9 +109,9 @@ describe('core#resolve', () => {
         resolve(({ query }) => query.nFetchCalls, { fetchPolicy: 'no-cache' })
       ).resolves.toBe(2);
 
-      expect(
+      await expect(
         resolve(({ query }) => query.nFetchCalls, { fetchPolicy: 'default' })
-      ).toBe(2);
+      ).resolves.toBe(2);
     });
 
     it('no-store', async () => {
@@ -136,7 +136,7 @@ describe('core#resolve', () => {
      * When multiple tests are running, GC gets triggered more often and this
      * randomly fails. Should work when run individually.
      */
-    xit('only-if-cached', async () => {
+    it('only-if-cached', async () => {
       const { resolve } = await createTestClient(
         undefined,
         undefined,
@@ -149,17 +149,17 @@ describe('core#resolve', () => {
         }
       );
 
-      expect(() =>
+      await expect(() =>
         resolve(({ query }) => query.hello, { fetchPolicy: 'only-if-cached' })
-      ).toThrowError(new TypeError('Failed to fetch'));
+      ).rejects.toThrowError(new TypeError('Failed to fetch'));
 
       await expect(resolve(({ query }) => query.hello)).resolves.toBe(
         'hello world'
       );
 
-      expect(
+      await expect(
         resolve(({ query }) => query.hello, { fetchPolicy: 'only-if-cached' })
-      ).toBe('hello world');
+      ).resolves.toBe('hello world');
     });
 
     it('cache-and-network', async () => {

@@ -1,16 +1,16 @@
 import type { BaseGeneratedSchema, FetchOptions } from '.';
 import { createSchemaAccessor } from '../Accessor';
 import type { Cache } from '../Cache';
-import { GQtyError } from '../Error';
+import type { GQtyError } from '../Error';
 import type { ScalarsEnumsHash, Schema } from '../Schema';
 import type { Selection } from '../Selection';
 import { pick } from '../Utils/pick';
-import { createContext, ResolveContext } from './context';
+import { createContext, SchemaContext } from './context';
 import type { Debugger } from './debugger';
 import { fetchSelections, subscribeSelections } from './resolveSelections';
 import { updateCaches } from './updateCaches';
 
-export type CreateResolvedOptions = {
+export type CreateResolversOptions = {
   cache: Cache;
   debugger?: Debugger;
   depthLimit: number;
@@ -18,6 +18,79 @@ export type CreateResolvedOptions = {
   scalars: ScalarsEnumsHash;
   schema: Readonly<Schema>;
 };
+
+export type Resolvers<TSchema extends BaseGeneratedSchema> = {
+  /** Create parts used by `resolve()`, useful for deferring fetches. */
+  createResolver: CreateResolverFn<TSchema>;
+
+  /** Create parts used by `subscribe()`, useful for deferring subscriptions. */
+  createSubscriber: CreateSubscriberFn<TSchema>;
+
+  /**
+   * Query, mutation and subscription in a promise.
+   *
+   * Selections to queries and mutations are fetched with
+   * `fetchOptions.fetcher`, the result is resolved with the cache updated
+   * according to the current fetch policy
+   *
+   * Subscriptions are disconnected upon delivery of the first data message,
+   * the cache is updated and the data is resolved, essentially behaving like
+   * a promise.
+   */
+  resolve: ResolveFn<TSchema>;
+
+  /**
+   * Query, mutation and subscription in an async generator.
+   *
+   * Subscription data continuously update the cache, while queries and
+   * mutations are fetched once and then listen to future cache changes
+   * from the same selections.
+   *
+   * This function subscribes to *cache changes*, termination of underlying
+   * subscription (WebSocket/EventSource) does not stop this generator.
+   *
+   * Calling `.return()` does not terminate pending promise. Use the `signal`
+   * option to exist the generator without waiting for the next update.
+   */
+  subscribe: SubscribeFn<TSchema>;
+};
+
+export type CreateResolverFn<TSchema extends BaseGeneratedSchema> = (
+  options?: ResolveOptions
+) => {
+  accessor: TSchema;
+  context: SchemaContext;
+  resolve: () => Promise<void>;
+  selections: Set<Selection>;
+};
+
+export type CreateSubscriberFn<TSchema extends BaseGeneratedSchema> = (
+  options?: SubscribeOptions
+) => {
+  accessor: TSchema;
+  context: SchemaContext;
+  selections: Set<Selection>;
+  subscribe: (callbacks: {
+    onError: (error: Error | GQtyError) => void;
+    onNext: (value: unknown) => void;
+  }) => () => void;
+};
+
+export type ResolveFn<TSchema extends BaseGeneratedSchema> = <
+  TData extends Record<string, unknown> = Record<string, unknown>
+>(
+  fn: DataFn<TSchema>,
+  options?: ResolveOptions
+) => Promise<TData>;
+
+const asyncItDoneMessage = { done: true } as IteratorResult<never>;
+
+export type SubscribeFn<TSchema extends BaseGeneratedSchema> = <
+  TData extends Record<string, unknown> = Record<string, unknown>
+>(
+  fn: DataFn<TSchema>,
+  options?: SubscribeOptions
+) => AsyncGenerator<TData, void, unknown>;
 
 export type DataFn<TSchema> = (schema: TSchema) => void;
 
@@ -55,7 +128,7 @@ export type ResolveOptions = {
 
   onFetch?: (fetchPromise: Promise<unknown>) => void;
 
-  onSelect?: NonNullable<ResolveContext['onSelect']>;
+  onSelect?: NonNullable<SchemaContext['onSelect']>;
 
   operationName?: string;
 };
@@ -73,7 +146,7 @@ export type SubscribeOptions = {
    */
   onError?: (error: unknown) => void;
 
-  onSelect?: NonNullable<ResolveContext['onSelect']>;
+  onSelect?: NonNullable<SchemaContext['onSelect']>;
 
   operationName?: string;
 
@@ -83,22 +156,6 @@ export type SubscribeOptions = {
   signal?: AbortSignal;
 };
 
-export type ResolveFn<TSchema extends BaseGeneratedSchema> = <
-  TData extends Record<string, unknown> = Record<string, unknown>
->(
-  fn: DataFn<TSchema>,
-  options?: ResolveOptions
-) => Promise<TData> | TData;
-
-const asyncItDoneMessage = { done: true } as IteratorResult<never>;
-
-export type SubscribeFn<TSchema extends BaseGeneratedSchema> = <
-  TData extends Record<string, unknown> = Record<string, unknown>
->(
-  fn: DataFn<TSchema>,
-  options?: SubscribeOptions
-) => AsyncGenerator<TData, void, unknown>;
-
 export const createResolvers = <TSchema extends BaseGeneratedSchema>({
   cache: clientCache,
   debugger: debug,
@@ -107,19 +164,14 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
   fetchOptions: { fetchPolicy: defaultFetchPolicy = 'default' },
   scalars,
   schema,
-}: CreateResolvedOptions) => {
-  const resolve: ResolveFn<TSchema> = <
-    TData extends Record<string, unknown> = Record<string, unknown>
-  >(
-    fn: DataFn<TSchema>,
-    {
-      awaitsFetch = true,
-      fetchPolicy = defaultFetchPolicy ?? 'default',
-      operationName,
-      onFetch,
-      onSelect,
-    }: ResolveOptions = {}
-  ): Promise<TData> | TData => {
+}: CreateResolversOptions): Resolvers<TSchema> => {
+  const createResolver = ({
+    awaitsFetch = true,
+    fetchPolicy = defaultFetchPolicy ?? 'default',
+    operationName,
+    onFetch,
+    onSelect,
+  }: ResolveOptions = {}) => {
     const selections = new Set<Selection>();
     const context = createContext({
       cache: clientCache,
@@ -134,13 +186,9 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
     });
     const accessor = createSchemaAccessor<TSchema>(context);
 
-    const compatDataFn = () =>
-      // compat: resolved(fn) and inlineResolved(fn) returns accessors
-      (fn(accessor) as unknown as TData) ?? pick(accessor, selections);
+    const resolve = async () => {
+      if (!context.shouldFetch) return;
 
-    const data = compatDataFn();
-
-    if (context.shouldFetch) {
       if (fetchPolicy === 'only-if-cached') {
         // Mimic fetch error in the Chromium/WebKit monopoly
         throw new TypeError('Failed to fetch');
@@ -166,31 +214,20 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
         });
 
       if (awaitsFetch) {
-        return fetchPromises.then(compatDataFn);
+        await fetchPromises;
       } else {
         onFetch?.(fetchPromises);
       }
-    }
+    };
 
-    return data;
+    return { accessor, context, resolve, selections };
   };
 
-  /**
-   * Initiates selected queries, mutations and subscriptions, then subscribes
-   * to caches changes until the generator is closed.
-   */
-  const subscribe: SubscribeFn<TSchema> = function subscribe<
-    TData extends Record<string, unknown> = Record<string, unknown>
-  >(
-    fn: DataFn<TSchema>,
-    {
-      fetchPolicy = defaultFetchPolicy,
-      onError,
-      onSelect,
-      operationName,
-      signal,
-    }: SubscribeOptions = {}
-  ): AsyncGenerator<TData, void, unknown> {
+  const createSubscriber = ({
+    fetchPolicy = defaultFetchPolicy,
+    onSelect,
+    operationName,
+  }: SubscribeOptions = {}) => {
     const selections = new Set<Selection>();
     const context = createContext({
       cache: clientCache,
@@ -205,113 +242,138 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
     });
     const accessor = createSchemaAccessor<TSchema>(context);
 
-    fn(accessor);
+    const subscribe = ({
+      onError,
+      onNext,
+    }: {
+      onError: (error: Error | GQtyError) => void;
+      onNext: (value: unknown) => void;
+    }) => {
+      const unsubscribeCache = context.cache.subscribe(
+        [...selections].map(({ cacheKeys }) => cacheKeys.join('.')),
+        onNext
+      );
 
-    // Assuming selections are cached, otherwise uncomment the following line.
-    //context.onSelect = undefined;
-
-    let deferred:
-      | {
-          resolve: () => void;
-          reject: (err: unknown) => void;
-        }
-      | undefined;
-    let rejected: unknown;
-    let done = false;
-    const pending = [] as TData[];
-
-    if (selections.size === 0) {
-      done = true;
-    }
-
-    signal?.addEventListener('abort', () => {
-      done = true;
-      deferred?.resolve();
-    });
-
-    const unsubscribeCache = context.cache.subscribe(
-      [...selections].map(({ cacheKeys }) => cacheKeys.join('.')),
-      (value) => {
-        pending.push((fn(accessor) as any) ?? (value as any));
-        deferred?.resolve();
-      }
-    );
-
-    const unsubscribeSelections = subscribeSelections(
-      selections,
-      ({ data, errors, extensions }) => {
-        if (errors) {
-          const error =
-            errors.length > 1
-              ? GQtyError.fromGraphQLErrors(errors)
-              : errors.length === 1
-              ? errors[0]
-              : new GQtyError('Subscription thrown an unknown error.');
-
-          if (onError) {
+      const unsubscribeSelections = subscribeSelections(
+        selections,
+        ({ data, error, extensions }) => {
+          if (error) {
             onError(error);
-          } else {
+
             // Discard data here because of how generators work
             if (data !== undefined) {
             }
-
-            rejected = error;
-            deferred?.reject(error);
+          } else if (data !== undefined) {
+            updateCaches(
+              [{ data, error, extensions }],
+              fetchPolicy !== 'no-store' && context.cache !== clientCache
+                ? [context.cache, clientCache]
+                : [context.cache],
+              { skipNotify: !context.notifyCacheUpdate }
+            );
+          } else {
+            // Fetches responded, subscriptions closed, but cache subscription is
+            // still active.
           }
-        } else if (data !== undefined) {
-          updateCaches(
-            [{ data, errors, extensions }],
-            fetchPolicy !== 'no-store' && context.cache !== clientCache
-              ? [context.cache, clientCache]
-              : [context.cache],
-            { skipNotify: !context.notifyCacheUpdate }
-          );
-        } else {
-          // Fetches responded, subscriptions closed, but cache subscription is
-          // still active.
+        },
+        {
+          debugger: debug,
+          fetchOptions,
+          operationName,
         }
-      },
-      {
-        debugger: debug,
-        fetchOptions,
-        operationName,
-      }
-    );
+      );
 
-    return {
-      [Symbol.asyncIterator]() {
-        return this;
-      },
-      async next() {
-        if (rejected !== undefined) {
-          throw rejected;
-        } else if (done) {
-          return asyncItDoneMessage;
-        } else if (pending.length > 0) {
-          return { value: pending.shift()! };
-        } else {
-          await new Promise<void>((resolve, reject) => {
-            deferred = { resolve, reject };
-          });
-
-          return this.next();
-        }
-      },
-      async throw(error) {
-        throw error;
-      },
-      async return() {
+      return () => {
         unsubscribeCache();
         unsubscribeSelections();
-        return asyncItDoneMessage;
-      },
+      };
     };
+
+    return { accessor, context, selections, subscribe };
   };
 
   return {
-    resolve,
-    subscribe,
+    createResolver,
+    createSubscriber,
+
+    resolve: async (fn, options) => {
+      const { accessor, resolve, selections } = createResolver(options);
+
+      fn(accessor) as unknown;
+
+      await resolve();
+
+      return ((fn(accessor) as unknown) ?? pick(accessor, selections)) as any;
+    },
+    /**
+     * Initiates selected queries, mutations and subscriptions, then subscribes
+     * to caches changes until the generator is closed.
+     */
+    subscribe: (fn, options): AsyncGenerator<any> => {
+      const { accessor, selections, subscribe } = createSubscriber(options);
+
+      fn(accessor);
+
+      const unsubscribe = subscribe({
+        onError: (error) => {
+          rejected = error;
+          deferred?.reject(error);
+        },
+        onNext(value) {
+          pending.push((fn(accessor) as any) ?? (value as any));
+          deferred?.resolve();
+        },
+      });
+
+      // Assuming selections are cached, otherwise uncomment the following line.
+      //context.onSelect = undefined;
+
+      let deferred:
+        | {
+            resolve: () => void;
+            reject: (err: unknown) => void;
+          }
+        | undefined;
+      let rejected: unknown;
+      let done = false;
+      const pending = [] as unknown[];
+
+      if (selections.size === 0) {
+        done = true;
+      }
+
+      options?.signal?.addEventListener('abort', () => {
+        done = true;
+        deferred?.resolve();
+      });
+
+      return {
+        [Symbol.asyncIterator]() {
+          return this;
+        },
+        async next() {
+          if (rejected !== undefined) {
+            throw rejected;
+          } else if (done) {
+            return asyncItDoneMessage;
+          } else if (pending.length > 0) {
+            return { value: pending.shift()! };
+          } else {
+            await new Promise<void>((resolve, reject) => {
+              deferred = { resolve, reject };
+            });
+
+            return this.next();
+          }
+        },
+        async throw(error) {
+          throw error;
+        },
+        async return() {
+          unsubscribe();
+          return asyncItDoneMessage;
+        },
+      };
+    },
   };
 };
-
-// TODO: AbortController#signal aborts query and mutation fetches, if any.

@@ -6,7 +6,7 @@ const nullObjectKey = {};
 
 const deduplicationCache = new WeakMap<
   Cache | typeof nullObjectKey,
-  Map<string, Promise<ExecutionResult | void>>
+  Map<string, Promise<ExecutionResult>>
 >([[nullObjectKey, new Map()]]);
 
 /**
@@ -48,7 +48,8 @@ export const dedupePromise = <
 };
 
 /** Retrieve active promises associated provided cache, useful for SSR. */
-export const getActivePromises = (cache?: Cache) =>
-  deduplicationCache.get(cache ?? nullObjectKey)?.values();
+export const getActivePromises = (cache?: Cache) => [
+  ...(deduplicationCache.get(cache ?? nullObjectKey)?.values() ?? []),
+];
 
-// TODO: test this file
+// TODO: Test concurrent fetch and subscriptions

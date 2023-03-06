@@ -2,10 +2,8 @@ import type { QueryPayload } from 'gqty/Schema';
 import type { GraphQLError } from 'graphql';
 import { MessageType } from 'graphql-ws';
 import type { BaseGeneratedSchema } from '..';
-import { Cache } from '../../Cache';
 import { GQtyError, RetryOptions } from '../../Error';
 import { buildQuery } from '../../QueryBuilder';
-import type { Selection } from '../../Selection';
 import {
   FetchResult,
   fetchSelections,
@@ -109,9 +107,10 @@ export const createLegacyResolved = <
   TSchema extends BaseGeneratedSchema = BaseGeneratedSchema
 >({
   cache,
-  context,
+  context: globalContext,
   debugger: debug,
   fetchOptions: { fetcher, subscriber, retryPolicy },
+  resolvers: { createResolver },
   subscribeLegacySelections: subscribeSelections,
 }: CreateLegacyMethodOptions<TSchema>): LegacyResolved => {
   return async <TData = unknown>(
@@ -130,27 +129,31 @@ export const createLegacyResolved = <
       retry = retryPolicy,
     }: LegacyResolveOptions<TData> = {}
   ) => {
-    let hasCacheHit = false;
-    let shouldFetch = refetch || noCache;
-    const selections = new Set<Selection>();
-    const resolutionCache = noCache ? new Cache() : cache;
+    const { context, selections } = createResolver({
+      fetchPolicy: noCache ? 'no-store' : refetch ? 'no-cache' : 'default',
+      operationName,
+    });
+    const unsubscribe = subscribeSelections((selection, cache) => {
+      context.onSelect?.(selection, cache);
+      onSelection?.(convertSelection(selection));
+    });
+    const resolutionCache = refetch ? cache : context.cache;
+    const targetCaches = noCache
+      ? [context.cache]
+      : refetch
+      ? [context.cache, cache]
+      : [cache];
     const dataFn = () => {
-      context.cache = resolutionCache;
+      globalContext.cache = resolutionCache;
 
       try {
         return fn();
       } finally {
-        context.cache = cache;
+        globalContext.cache = cache;
       }
     };
 
-    const unsubscribe = subscribeSelections((selection, cache) => {
-      shouldFetch ||= cache?.data === undefined;
-      hasCacheHit ||= cache?.data !== undefined;
-
-      selections.add(selection);
-      onSelection?.(convertSelection(selection));
-    });
+    context.shouldFetch ||= noCache || refetch;
 
     const data = dataFn();
 
@@ -164,11 +167,11 @@ export const createLegacyResolved = <
       return data;
     }
 
-    if (!shouldFetch) {
+    if (!context.shouldFetch) {
       return data;
     }
 
-    if (hasCacheHit) {
+    if (context.hasCacheHit) {
       onCacheData?.(data);
     } else {
       onNoCacheFound?.();
@@ -224,7 +227,7 @@ export const createLegacyResolved = <
               result.extensions = payload.extensions;
 
               if (result.data != null) {
-                updateCaches([result as FetchResult], [resolutionCache]);
+                updateCaches([result as FetchResult], targetCaches);
               }
 
               debug?.dispatch({
@@ -286,7 +289,7 @@ export const createLegacyResolved = <
         operationName,
       }
     ).then(
-      (results) => updateCaches(results, [resolutionCache]),
+      (results) => updateCaches(results, targetCaches),
       (error) => Promise.reject(GQtyError.create(error, () => {}))
     );
 

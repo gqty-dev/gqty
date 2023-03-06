@@ -21,7 +21,7 @@ export type QueryExtensions = { type: string; hash: string };
 
 export type FetchResult<
   TData extends Record<string, unknown> = Record<string, unknown>
-> = ExecutionResult<TData>;
+> = Omit<ExecutionResult<TData>, 'errors'> & { error?: Error | GQtyError };
 
 export const fetchSelections = <
   TData extends Record<string, unknown> = Record<string, unknown>
@@ -50,29 +50,42 @@ export const fetchSelections = <
           throw new GQtyError(`Expected query hash.`);
         }
 
-        const payload: QueryPayload<QueryExtensions> = {
+        const queryPayload: QueryPayload<QueryExtensions> = {
           query,
           variables,
           operationName,
+          extensions: { type, hash },
         };
 
         // Dedupe
-        const result = await dedupePromise(
+        const { data, errors, extensions } = await dedupePromise(
           cache,
           hash,
           type === 'subscription'
-            ? () => doSubscribeOnce<TData>(payload, fetchOptions)
-            : () => doFetch<TData>(payload, fetchOptions)
+            ? () => doSubscribeOnce<TData>(queryPayload, fetchOptions)
+            : () => doFetch<TData>(queryPayload, fetchOptions)
         );
+
+        const error = errors?.length
+          ? GQtyError.fromGraphQLErrors(errors)
+          : undefined;
 
         debug?.dispatch({
           cache,
           request: { query, variables, operationName },
-          result,
+          result: {
+            data,
+            error,
+            extensions: { ...extensions, ...queryPayload.extensions },
+          },
           selections,
         });
 
-        return { ...result, extensions: { type, hash } };
+        return {
+          data,
+          error,
+          extensions: { ...extensions, ...queryPayload.extensions },
+        };
       }
     )
   );
@@ -82,6 +95,18 @@ export type SubscriptionCallback<TData extends Record<string, unknown>> = (
 ) => void;
 
 export type Unsubscribe = () => void;
+
+/**
+ * Reference count when there are more than one listeners, unsubscription
+ * happens when all listeners are unsubscribed.
+ */
+const subsRef = new WeakMap<
+  Promise<unknown>,
+  {
+    dispose: () => void;
+    count: number;
+  }
+>();
 
 export const subscribeSelections = <
   TData extends Record<string, unknown> = Record<string, unknown>
@@ -148,25 +173,30 @@ export const subscribeSelections = <
       const next = ({ data, errors, extensions }: ExecutionResult<TData>) => {
         if (data === undefined) return;
 
+        const error = errors?.length
+          ? GQtyError.fromGraphQLErrors(errors)
+          : undefined;
+
         debug?.dispatch({
           cache,
           label: subscriptionId ? `[id=${subscriptionId}] [data]` : undefined,
           request: queryPayload,
-          result: { data, errors, extensions },
+          result: {
+            data,
+            error,
+            extensions: { ...extensions, ...queryPayload.extensions },
+          },
           selections,
         });
 
         fn({
           data,
-          errors,
-          extensions: {
-            ...extensions,
-            ...queryPayload.extensions!,
-          },
+          error,
+          extensions: { ...extensions, ...queryPayload.extensions },
         });
       };
 
-      const error = (error: unknown) => {
+      const error = (error: GQtyError) => {
         if (error == null) {
           throw new GQtyError(`Subscription sink closed without an error.`);
         }
@@ -179,25 +209,37 @@ export const subscribeSelections = <
         });
 
         fn({
-          errors: [error as any],
+          error,
           extensions: queryPayload.extensions,
         });
       };
 
+      let dispose: (() => void) | undefined;
+
       // Dedupe
-      return dedupePromise(
+      const promise = dedupePromise(
         type === 'subscription' ? undefined : cache,
         hash,
         type === 'subscription'
           ? () =>
               new Promise<void>((complete) => {
-                const unsubscribe = subscriber!.subscribe<TData>(queryPayload, {
+                dispose = subscriber!.subscribe<TData>(queryPayload, {
                   next,
                   error(err) {
                     if (Array.isArray(err)) {
                       error(GQtyError.fromGraphQLErrors(err));
                     } else if (!isCloseEvent(err)) {
-                      error(err);
+                      if (err instanceof GQtyError) {
+                        error(err);
+                      } else {
+                        error(
+                          new GQtyError(
+                            (err as Error).message ??
+                              'Unknown subscription error',
+                            { otherError: err }
+                          )
+                        );
+                      }
                     }
 
                     this.complete();
@@ -215,8 +257,6 @@ export const subscribeSelections = <
                     complete();
                   },
                 });
-
-                unsubscribers.add(unsubscribe);
               })
           : () =>
               new Promise<void>((complete) => {
@@ -229,9 +269,22 @@ export const subscribeSelections = <
                   .then(next, error)
                   .finally(complete);
 
-                unsubscribers.add(() => aborter.abort());
+                dispose = () => aborter.abort();
               })
       );
+
+      if (dispose) {
+        subsRef.set(promise, { dispose, count: 1 });
+      } else if (subsRef.get(promise)) {
+        subsRef.get(promise)!.count++;
+      }
+
+      unsubscribers.add(() => {
+        const ref = subsRef.get(promise);
+        if (ref && --ref.count <= 0) {
+          ref.dispose();
+        }
+      });
     }
   );
 
@@ -323,3 +376,5 @@ export const isCloseEvent = (input: unknown): input is CloseEvent => {
       ].includes(error.code))
   );
 };
+
+// TODO: Test unsubscribe on both subscription and fetch with concurrent subscribers.

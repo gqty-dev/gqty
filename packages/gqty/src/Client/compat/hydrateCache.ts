@@ -63,8 +63,6 @@ export const createLegacyHydrateCache =
         shouldRefetch === true ? 0 : shouldRefetch
       );
     }
-
-    // TODO: shouldRefetch: number; Skip networks for X ms to prevent unnecessary no-cache/no-store renders.
   };
 
 // TODO: New SSR should always trust the cache during hydration, never refetch

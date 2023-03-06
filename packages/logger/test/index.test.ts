@@ -167,7 +167,7 @@ describe('logger', () => {
     }
   });
 
-  fit('stringified JSON', async () => {
+  test('stringified JSON', async () => {
     const logger = createLogger(gqtyClient, {
       stringifyJSON: true,
     });
