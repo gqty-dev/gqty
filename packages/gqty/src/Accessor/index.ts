@@ -66,7 +66,7 @@ export const setCache = <TData extends GeneratedSchemaObject>(
   data = ($meta(data)?.cache.data as TData | undefined) ?? data;
   if (!data || typeof data !== 'object') {
     throw new GQtyError(
-      `Data must be a subset the schema object, got type: ${typeof data}.`
+      `Data must be a subset of the schema object, got type: ${typeof data}.`
     );
   }
 

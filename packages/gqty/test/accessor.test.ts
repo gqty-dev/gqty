@@ -279,13 +279,13 @@ describe('setCache', () => {
     expect(() => {
       setCache(query, (() => {}) as any);
     }).toThrowError(
-      'Data must be a subset the schema object, got type: ' + 'function'
+      'Data must be a subset of the schema object, got type: ' + 'function'
     );
 
     expect(() => {
       setCache(query, 123123 as any);
     }).toThrowError(
-      'Data must be a subset the schema object, got type: ' + 'number'
+      'Data must be a subset of the schema object, got type: ' + 'number'
     );
 
     expect(() => {
