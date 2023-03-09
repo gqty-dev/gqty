@@ -62,16 +62,11 @@ test('basic inspectWriteGenerate functionality', async () => {
 
       import type { QueryFetcher } from 'gqty';
       import { createClient } from 'gqty';
-      import type {
-        GeneratedSchema,
-        SchemaObjectTypes,
-        SchemaObjectTypesNames,
-      } from './schema.generated';
+      import type { GeneratedSchema } from './schema.generated';
       import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
       const queryFetcher: QueryFetcher = async function (
-        query,
-        variables,
+        { query, variables, operationName },
         fetchOptions
       ) {
         // Modify "/api/graphql" if needed
@@ -83,6 +78,7 @@ test('basic inspectWriteGenerate functionality', async () => {
           body: JSON.stringify({
             query,
             variables,
+            operationName,
           }),
           mode: 'cors',
           ...fetchOptions,
@@ -93,14 +89,12 @@ test('basic inspectWriteGenerate functionality', async () => {
         return json;
       };
 
-      export const client = createClient<
-        GeneratedSchema,
-        SchemaObjectTypesNames,
-        SchemaObjectTypes
-      >({
+      export const client = createClient<GeneratedSchema>({
         schema: generatedSchema,
-        scalarsEnumsHash,
-        queryFetcher,
+        scalars: scalarsEnumsHash,
+        fetchOptions: {
+          fetcher: queryFetcher,
+        },
       });
 
       const { query, mutation, mutate, subscription, resolved, refetch, track } =
@@ -201,13 +195,6 @@ test('basic inspectWriteGenerate functionality', async () => {
         __typename?: 'Subscription';
       }
 
-      export interface SchemaObjectTypes {
-        Mutation: Mutation;
-        Query: Query;
-        Subscription: Subscription;
-      }
-      export type SchemaObjectTypesNames = 'Mutation' | 'Query' | 'Subscription';
-
       export interface GeneratedSchema {
         query: Query;
         mutation: Mutation;
@@ -270,16 +257,11 @@ describe('from file', () => {
 
         import type { QueryFetcher } from 'gqty';
         import { createClient } from 'gqty';
-        import type {
-          GeneratedSchema,
-          SchemaObjectTypes,
-          SchemaObjectTypesNames,
-        } from './schema.generated';
+        import type { GeneratedSchema } from './schema.generated';
         import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
         const queryFetcher: QueryFetcher = async function (
-          query,
-          variables,
+          { query, variables, operationName },
           fetchOptions
         ) {
           // Modify "/api/graphql" if needed
@@ -291,6 +273,7 @@ describe('from file', () => {
             body: JSON.stringify({
               query,
               variables,
+              operationName,
             }),
             mode: 'cors',
             ...fetchOptions,
@@ -301,14 +284,12 @@ describe('from file', () => {
           return json;
         };
 
-        export const client = createClient<
-          GeneratedSchema,
-          SchemaObjectTypesNames,
-          SchemaObjectTypes
-        >({
+        export const client = createClient<GeneratedSchema>({
           schema: generatedSchema,
-          scalarsEnumsHash,
-          queryFetcher,
+          scalars: scalarsEnumsHash,
+          fetchOptions: {
+            fetcher: queryFetcher,
+          },
         });
 
         const { query, mutation, mutate, subscription, resolved, refetch, track } =
@@ -405,13 +386,6 @@ describe('from file', () => {
           __typename?: 'Subscription';
         }
 
-        export interface SchemaObjectTypes {
-          Mutation: Mutation;
-          Query: Query;
-          Subscription: Subscription;
-        }
-        export type SchemaObjectTypesNames = 'Mutation' | 'Query' | 'Subscription';
-
         export interface GeneratedSchema {
           query: Query;
           mutation: Mutation;
@@ -476,16 +450,11 @@ describe('from file', () => {
 
         import type { QueryFetcher } from 'gqty';
         import { createClient } from 'gqty';
-        import type {
-          GeneratedSchema,
-          SchemaObjectTypes,
-          SchemaObjectTypesNames,
-        } from './schema.generated';
+        import type { GeneratedSchema } from './schema.generated';
         import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
         const queryFetcher: QueryFetcher = async function (
-          query,
-          variables,
+          { query, variables, operationName },
           fetchOptions
         ) {
           // Modify "/api/graphql" if needed
@@ -497,6 +466,7 @@ describe('from file', () => {
             body: JSON.stringify({
               query,
               variables,
+              operationName,
             }),
             mode: 'cors',
             ...fetchOptions,
@@ -507,14 +477,12 @@ describe('from file', () => {
           return json;
         };
 
-        export const client = createClient<
-          GeneratedSchema,
-          SchemaObjectTypesNames,
-          SchemaObjectTypes
-        >({
+        export const client = createClient<GeneratedSchema>({
           schema: generatedSchema,
-          scalarsEnumsHash,
-          queryFetcher,
+          scalars: scalarsEnumsHash,
+          fetchOptions: {
+            fetcher: queryFetcher,
+          },
         });
 
         const { query, mutation, mutate, subscription, resolved, refetch, track } =
@@ -609,13 +577,6 @@ describe('from file', () => {
         export interface Subscription {
           __typename?: 'Subscription';
         }
-
-        export interface SchemaObjectTypes {
-          Mutation: Mutation;
-          Query: Query;
-          Subscription: Subscription;
-        }
-        export type SchemaObjectTypesNames = 'Mutation' | 'Query' | 'Subscription';
 
         export interface GeneratedSchema {
           query: Query;
@@ -681,16 +642,11 @@ describe('from file', () => {
 
         import type { QueryFetcher } from 'gqty';
         import { createClient } from 'gqty';
-        import type {
-          GeneratedSchema,
-          SchemaObjectTypes,
-          SchemaObjectTypesNames,
-        } from './schema.generated';
+        import type { GeneratedSchema } from './schema.generated';
         import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
         const queryFetcher: QueryFetcher = async function (
-          query,
-          variables,
+          { query, variables, operationName },
           fetchOptions
         ) {
           // Modify "/api/graphql" if needed
@@ -702,6 +658,7 @@ describe('from file', () => {
             body: JSON.stringify({
               query,
               variables,
+              operationName,
             }),
             mode: 'cors',
             ...fetchOptions,
@@ -712,14 +669,12 @@ describe('from file', () => {
           return json;
         };
 
-        export const client = createClient<
-          GeneratedSchema,
-          SchemaObjectTypesNames,
-          SchemaObjectTypes
-        >({
+        export const client = createClient<GeneratedSchema>({
           schema: generatedSchema,
-          scalarsEnumsHash,
-          queryFetcher,
+          scalars: scalarsEnumsHash,
+          fetchOptions: {
+            fetcher: queryFetcher,
+          },
         });
 
         const { query, mutation, mutate, subscription, resolved, refetch, track } =
@@ -814,13 +769,6 @@ describe('from file', () => {
         export interface Subscription {
           __typename?: 'Subscription';
         }
-
-        export interface SchemaObjectTypes {
-          Mutation: Mutation;
-          Query: Query;
-          Subscription: Subscription;
-        }
-        export type SchemaObjectTypesNames = 'Mutation' | 'Query' | 'Subscription';
 
         export interface GeneratedSchema {
           query: Query;
@@ -930,16 +878,11 @@ describe('from multiple files', () => {
 
         import type { QueryFetcher } from 'gqty';
         import { createClient } from 'gqty';
-        import type {
-          GeneratedSchema,
-          SchemaObjectTypes,
-          SchemaObjectTypesNames,
-        } from './schema.generated';
+        import type { GeneratedSchema } from './schema.generated';
         import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
         const queryFetcher: QueryFetcher = async function (
-          query,
-          variables,
+          { query, variables, operationName },
           fetchOptions
         ) {
           // Modify "/api/graphql" if needed
@@ -951,6 +894,7 @@ describe('from multiple files', () => {
             body: JSON.stringify({
               query,
               variables,
+              operationName,
             }),
             mode: 'cors',
             ...fetchOptions,
@@ -961,14 +905,12 @@ describe('from multiple files', () => {
           return json;
         };
 
-        export const client = createClient<
-          GeneratedSchema,
-          SchemaObjectTypesNames,
-          SchemaObjectTypes
-        >({
+        export const client = createClient<GeneratedSchema>({
           schema: generatedSchema,
-          scalarsEnumsHash,
-          queryFetcher,
+          scalars: scalarsEnumsHash,
+          fetchOptions: {
+            fetcher: queryFetcher,
+          },
         });
 
         const { query, mutation, mutate, subscription, resolved, refetch, track } =
@@ -1069,13 +1011,6 @@ describe('from multiple files', () => {
         export interface Subscription {
           __typename?: 'Subscription';
         }
-
-        export interface SchemaObjectTypes {
-          Mutation: Mutation;
-          Query: Query;
-          Subscription: Subscription;
-        }
-        export type SchemaObjectTypesNames = 'Mutation' | 'Query' | 'Subscription';
 
         export interface GeneratedSchema {
           query: Query;
@@ -1195,16 +1130,11 @@ test('specify generateOptions to inspectWriteGenerate', async () => {
 
       import type { QueryFetcher } from 'gqty';
       import { createClient } from 'gqty';
-      import type {
-        GeneratedSchema,
-        SchemaObjectTypes,
-        SchemaObjectTypesNames,
-      } from './schema.generated';
+      import type { GeneratedSchema } from './schema.generated';
       import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
       const queryFetcher: QueryFetcher = async function (
-        query,
-        variables,
+        { query, variables, operationName },
         fetchOptions
       ) {
         // Modify "/api/graphql" if needed
@@ -1216,6 +1146,7 @@ test('specify generateOptions to inspectWriteGenerate', async () => {
           body: JSON.stringify({
             query,
             variables,
+            operationName,
           }),
           mode: 'cors',
           ...fetchOptions,
@@ -1226,14 +1157,12 @@ test('specify generateOptions to inspectWriteGenerate', async () => {
         return json;
       };
 
-      export const client = createClient<
-        GeneratedSchema,
-        SchemaObjectTypesNames,
-        SchemaObjectTypes
-      >({
+      export const client = createClient<GeneratedSchema>({
         schema: generatedSchema,
-        scalarsEnumsHash,
-        queryFetcher,
+        scalars: scalarsEnumsHash,
+        fetchOptions: {
+          fetcher: queryFetcher,
+        },
       });
 
       const { query, mutation, mutate, subscription, resolved, refetch, track } =
@@ -1330,13 +1259,6 @@ test('specify generateOptions to inspectWriteGenerate', async () => {
       export interface Subscription {
         __typename?: 'Subscription';
       }
-
-      export interface SchemaObjectTypes {
-        Mutation: Mutation;
-        Query: Query;
-        Subscription: Subscription;
-      }
-      export type SchemaObjectTypesNames = 'Mutation' | 'Query' | 'Subscription';
 
       export interface GeneratedSchema {
         query: Query;
@@ -1469,13 +1391,6 @@ describe('inspect headers', () => {
           __typename?: 'Subscription';
         }
 
-        export interface SchemaObjectTypes {
-          Mutation: Mutation;
-          Query: Query;
-          Subscription: Subscription;
-        }
-        export type SchemaObjectTypesNames = 'Mutation' | 'Query' | 'Subscription';
-
         export interface GeneratedSchema {
           query: Query;
           mutation: Mutation;
@@ -1561,16 +1476,11 @@ describe('CLI behavior', () => {
 
         import type { QueryFetcher } from 'gqty';
         import { createClient } from 'gqty';
-        import type {
-          GeneratedSchema,
-          SchemaObjectTypes,
-          SchemaObjectTypesNames,
-        } from './schema.generated';
+        import type { GeneratedSchema } from './schema.generated';
         import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
         const queryFetcher: QueryFetcher = async function (
-          query,
-          variables,
+          { query, variables, operationName },
           fetchOptions
         ) {
           // Modify "/api/graphql" if needed
@@ -1582,6 +1492,7 @@ describe('CLI behavior', () => {
             body: JSON.stringify({
               query,
               variables,
+              operationName,
             }),
             mode: 'cors',
             ...fetchOptions,
@@ -1592,14 +1503,12 @@ describe('CLI behavior', () => {
           return json;
         };
 
-        export const client = createClient<
-          GeneratedSchema,
-          SchemaObjectTypesNames,
-          SchemaObjectTypes
-        >({
+        export const client = createClient<GeneratedSchema>({
           schema: generatedSchema,
-          scalarsEnumsHash,
-          queryFetcher,
+          scalars: scalarsEnumsHash,
+          fetchOptions: {
+            fetcher: queryFetcher,
+          },
         });
 
         const { query, mutation, mutate, subscription, resolved, refetch, track } =
@@ -1700,13 +1609,6 @@ describe('CLI behavior', () => {
           __typename?: 'Subscription';
         }
 
-        export interface SchemaObjectTypes {
-          Mutation: Mutation;
-          Query: Query;
-          Subscription: Subscription;
-        }
-        export type SchemaObjectTypesNames = 'Mutation' | 'Query' | 'Subscription';
-
         export interface GeneratedSchema {
           query: Query;
           mutation: Mutation;
@@ -1742,17 +1644,17 @@ test('detect client config change between files', async () => {
         case 1: {
           expect(message.replace(clientPathRegex, 'client.ts'))
             .toMatchInlineSnapshot(`
-          "[Warning] You've changed the option "subscriptions" to 'true', which is different from your existing "client.ts".
-          If you meant to change this, please remove "client.ts" and re-run code generation."
-        `);
+            "[Warning] You've changed the option "subscriptions" to 'true', which is different from your existing "client.ts".
+            If you meant to change this, please remove "client.ts" and re-run code generation."
+          `);
           break;
         }
         case 2: {
           expect(message.replace(clientPathRegex, 'client.ts'))
             .toMatchInlineSnapshot(`
-          "[Warning] You've changed the option "react" to 'true', which is different from your existing "client.ts".
-          If you meant to change this, please remove "client.ts" and re-run code generation."
-        `);
+            "[Warning] You've changed the option "react" to 'true', which is different from your existing "client.ts".
+            If you meant to change this, please remove "client.ts" and re-run code generation."
+          `);
           break;
         }
       }
@@ -1769,7 +1671,7 @@ test('detect client config change between files', async () => {
       },
     });
 
-    expect(spy).toBeCalledTimes(1);
+    expect(spy).toBeCalledTimes(0);
 
     await inspectWriteGenerate({
       endpoint,
@@ -1780,7 +1682,7 @@ test('detect client config change between files', async () => {
       },
     });
 
-    expect(spy).toBeCalledTimes(4);
+    expect(spy).toBeCalledTimes(2);
   } finally {
     await tempDir.cleanup();
     spy.mockRestore();

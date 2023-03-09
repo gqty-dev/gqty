@@ -1,59 +1,51 @@
 import type { Selection } from '../Selection';
 
-export class RetryEvent<TData> extends Event {
-  constructor(
-    readonly promise: Promise<TData>,
-    readonly selections: Set<Selection>,
-    readonly isLastTry = false
-  ) {
-    super('gqty$retry');
-  }
-}
+const retryEventListeners = new Set<(event: RetryEvent) => void>();
+
+export type RetryEvent = {
+  readonly promise: Promise<unknown>;
+  readonly selections: Set<Selection>;
+  readonly isLastTry: boolean;
+};
 
 export const notifyRetry = (
   promise: Promise<unknown>,
   selections: Set<Selection>,
   isLastTry = false
 ) => {
-  globalThis.dispatchEvent?.(new RetryEvent(promise, selections, isLastTry));
+  for (const listener of retryEventListeners) {
+    listener({ promise, selections, isLastTry });
+  }
 };
 
-export const subscribeRetry = (
-  callback: (event: RetryEvent<unknown>) => void
-) => {
-  // @ts-expect-error A hack for useMetaState()
-  globalThis.addEventListener?.('gqty$retry', callback);
+export const subscribeRetry = (callback: (event: RetryEvent) => void) => {
+  retryEventListeners.add(callback);
 
   return () => {
-    // @ts-expect-error A hack for useMetaState()
-    globalThis.removeEventListener?.('gqty$retry', callback);
+    retryEventListeners.delete(callback);
   };
 };
 
-export class Fetchevent<TData> extends Event {
-  constructor(
-    readonly promise: Promise<TData>,
-    readonly selections: Set<Selection>
-  ) {
-    super('gqty$fetch');
-  }
-}
+const fetchEventListeners = new Set<(event: FetchEvent) => void>();
+
+export type FetchEvent = {
+  readonly promise: Promise<unknown>;
+  readonly selections: Set<Selection>;
+};
 
 export const notifyFetch = (
   promise: Promise<unknown>,
   selections: Set<Selection>
 ) => {
-  globalThis.dispatchEvent?.(new Fetchevent(promise, selections));
+  for (const listener of fetchEventListeners) {
+    listener({ promise, selections });
+  }
 };
 
-export const subscribeFetch = (
-  callback: (event: Fetchevent<unknown>) => void
-) => {
-  // @ts-expect-error A hack for useMetaState()
-  globalThis.addEventListener?.('gqty$fetch', callback);
+export const subscribeFetch = (callback: (event: FetchEvent) => void) => {
+  fetchEventListeners.add(callback);
 
   return () => {
-    // @ts-expect-error A hack for useMetaState()
-    globalThis.removeEventListener?.('gqty$fetch', callback);
+    fetchEventListeners.delete(callback);
   };
 };

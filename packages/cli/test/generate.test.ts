@@ -106,13 +106,6 @@ test('basic functionality works', async () => {
       __typename?: 'Subscription';
     }
 
-    export interface SchemaObjectTypes {
-      Mutation: Mutation;
-      Query: Query;
-      Subscription: Subscription;
-    }
-    export type SchemaObjectTypesNames = 'Mutation' | 'Query' | 'Subscription';
-
     export interface GeneratedSchema {
       query: Query;
       mutation: Mutation;
@@ -133,19 +126,14 @@ test('basic functionality works', async () => {
      */
 
     import { createReactClient } from '@gqty/react';
-    import { createSubscriptionsClient } from '@gqty/subscriptions';
+    import { createClient as createSubscriptionsClient } from 'graphql-ws';
     import type { QueryFetcher } from 'gqty';
     import { createClient } from 'gqty';
-    import type {
-      GeneratedSchema,
-      SchemaObjectTypes,
-      SchemaObjectTypesNames,
-    } from './schema.generated';
+    import type { GeneratedSchema } from './schema.generated';
     import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
     const queryFetcher: QueryFetcher = async function (
-      query,
-      variables,
+      { query, variables, operationName },
       fetchOptions
     ) {
       // Modify "/api/graphql" if needed
@@ -157,6 +145,7 @@ test('basic functionality works', async () => {
         body: JSON.stringify({
           query,
           variables,
+          operationName,
         }),
         mode: 'cors',
         ...fetchOptions,
@@ -179,15 +168,13 @@ test('basic functionality works', async () => {
           })
         : undefined;
 
-    export const client = createClient<
-      GeneratedSchema,
-      SchemaObjectTypesNames,
-      SchemaObjectTypes
-    >({
+    export const client = createClient<GeneratedSchema>({
       schema: generatedSchema,
-      scalarsEnumsHash,
-      queryFetcher,
-      subscriptionsClient,
+      scalars: scalarsEnumsHash,
+      fetchOptions: {
+        fetcher: queryFetcher,
+        subscriber: subscriptionsClient,
+      },
     });
 
     const { query, mutation, mutate, subscription, resolved, refetch, track } =
@@ -314,16 +301,11 @@ test('custom scalars works', async () => {
 
     import type { QueryFetcher } from 'gqty';
     import { createClient } from 'gqty';
-    import type {
-      GeneratedSchema,
-      SchemaObjectTypes,
-      SchemaObjectTypesNames,
-    } from './schema.generated';
+    import type { GeneratedSchema } from './schema.generated';
     import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
     const queryFetcher: QueryFetcher = async function (
-      query,
-      variables,
+      { query, variables, operationName },
       fetchOptions
     ) {
       // Modify "/api/graphql" if needed
@@ -335,6 +317,7 @@ test('custom scalars works', async () => {
         body: JSON.stringify({
           query,
           variables,
+          operationName,
         }),
         mode: 'cors',
         ...fetchOptions,
@@ -345,14 +328,12 @@ test('custom scalars works', async () => {
       return json;
     };
 
-    export const client = createClient<
-      GeneratedSchema,
-      SchemaObjectTypesNames,
-      SchemaObjectTypes
-    >({
+    export const client = createClient<GeneratedSchema>({
       schema: generatedSchema,
-      scalarsEnumsHash,
-      queryFetcher,
+      scalars: scalarsEnumsHash,
+      fetchOptions: {
+        fetcher: queryFetcher,
+      },
     });
 
     const { query, mutation, mutate, subscription, resolved, refetch, track } =
@@ -450,13 +431,6 @@ test('custom scalars works', async () => {
     export interface Subscription {
       __typename?: 'Subscription';
     }
-
-    export interface SchemaObjectTypes {
-      Mutation: Mutation;
-      Query: Query;
-      Subscription: Subscription;
-    }
-    export type SchemaObjectTypesNames = 'Mutation' | 'Query' | 'Subscription';
 
     export interface GeneratedSchema {
       query: Query;
@@ -833,20 +807,6 @@ describe('feature complete app', () => {
         __typename?: 'Subscription';
       }
 
-      export interface SchemaObjectTypes {
-        Human: Human;
-        Mutation: Mutation;
-        OtherHuman: OtherHuman;
-        Query: Query;
-        Subscription: Subscription;
-      }
-      export type SchemaObjectTypesNames =
-        | 'Human'
-        | 'Mutation'
-        | 'OtherHuman'
-        | 'Query'
-        | 'Subscription';
-
       export interface $HumanType {
         Human?: Human;
         OtherHuman?: OtherHuman;
@@ -1179,13 +1139,6 @@ describe('mutation', () => {
         __typename?: 'Subscription';
       }
 
-      export interface SchemaObjectTypes {
-        Mutation: Mutation;
-        Query: Query;
-        Subscription: Subscription;
-      }
-      export type SchemaObjectTypesNames = 'Mutation' | 'Query' | 'Subscription';
-
       export interface GeneratedSchema {
         query: Query;
         mutation: Mutation;
@@ -1315,13 +1268,6 @@ describe('subscription', () => {
         newNotification: ScalarsEnums['String'];
       }
 
-      export interface SchemaObjectTypes {
-        Mutation: Mutation;
-        Query: Query;
-        Subscription: Subscription;
-      }
-      export type SchemaObjectTypesNames = 'Mutation' | 'Query' | 'Subscription';
-
       export interface GeneratedSchema {
         query: Query;
         mutation: Mutation;
@@ -1413,7 +1359,7 @@ test('javascript output works', async () => {
      */
 
     import { createReactClient } from '@gqty/react';
-    import { createSubscriptionsClient } from '@gqty/subscriptions';
+    import { createClient as createSubscriptionsClient } from 'graphql-ws';
 
     import { createClient } from 'gqty';
 
@@ -1422,7 +1368,10 @@ test('javascript output works', async () => {
     /**
      * @type {import("gqty").QueryFetcher}
      */
-    const queryFetcher = async function (query, variables, fetchOptions) {
+    const queryFetcher = async function (
+      { query, variables, operationName },
+      fetchOptions
+    ) {
       // Modify "/api/graphql" if needed
       const response = await fetch('/api/graphql', {
         method: 'POST',
@@ -1432,6 +1381,7 @@ test('javascript output works', async () => {
         body: JSON.stringify({
           query,
           variables,
+          operationName,
         }),
         mode: 'cors',
         ...fetchOptions,
@@ -1459,9 +1409,11 @@ test('javascript output works', async () => {
      */
     export const client = createClient({
       schema: generatedSchema,
-      scalarsEnumsHash,
-      queryFetcher,
-      subscriptionsClient,
+      scalars: scalarsEnumsHash,
+      fetchOptions: {
+        fetcher: queryFetcher,
+        subscriber: subscriptionsClient,
+      },
     });
 
     const { query, mutation, mutate, subscription, resolved, refetch, track } =
@@ -1662,20 +1614,6 @@ test('javascript output works', async () => {
       newNotification: ScalarsEnums['String'];
     }
 
-    export interface SchemaObjectTypes {
-      A: A;
-      B: B;
-      Mutation: Mutation;
-      Query: Query;
-      Subscription: Subscription;
-    }
-    export type SchemaObjectTypesNames =
-      | 'A'
-      | 'B'
-      | 'Mutation'
-      | 'Query'
-      | 'Subscription';
-
     export interface $C {
       A?: A;
       B?: B;
@@ -1740,16 +1678,11 @@ test('ignoreArgs transform', async () => {
 
     import type { QueryFetcher } from 'gqty';
     import { createClient } from 'gqty';
-    import type {
-      GeneratedSchema,
-      SchemaObjectTypes,
-      SchemaObjectTypesNames,
-    } from './schema.generated';
+    import type { GeneratedSchema } from './schema.generated';
     import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
     const queryFetcher: QueryFetcher = async function (
-      query,
-      variables,
+      { query, variables, operationName },
       fetchOptions
     ) {
       // Modify "/api/graphql" if needed
@@ -1761,6 +1694,7 @@ test('ignoreArgs transform', async () => {
         body: JSON.stringify({
           query,
           variables,
+          operationName,
         }),
         mode: 'cors',
         ...fetchOptions,
@@ -1771,14 +1705,12 @@ test('ignoreArgs transform', async () => {
       return json;
     };
 
-    export const client = createClient<
-      GeneratedSchema,
-      SchemaObjectTypesNames,
-      SchemaObjectTypes
-    >({
+    export const client = createClient<GeneratedSchema>({
       schema: generatedSchema,
-      scalarsEnumsHash,
-      queryFetcher,
+      scalars: scalarsEnumsHash,
+      fetchOptions: {
+        fetcher: queryFetcher,
+      },
     });
 
     const { query, mutation, mutate, subscription, resolved, refetch, track } =
@@ -1924,13 +1856,6 @@ test('ignoreArgs transform', async () => {
     export interface Subscription {
       __typename?: 'Subscription';
     }
-
-    export interface SchemaObjectTypes {
-      Mutation: Mutation;
-      Query: Query;
-      Subscription: Subscription;
-    }
-    export type SchemaObjectTypesNames = 'Mutation' | 'Query' | 'Subscription';
 
     export interface GeneratedSchema {
       query: Query;
@@ -2151,13 +2076,6 @@ test('fields with default value works', async () => {
     export interface Subscription {
       __typename?: 'Subscription';
     }
-
-    export interface SchemaObjectTypes {
-      Mutation: Mutation;
-      Query: Query;
-      Subscription: Subscription;
-    }
-    export type SchemaObjectTypesNames = 'Mutation' | 'Query' | 'Subscription';
 
     export interface GeneratedSchema {
       query: Query;

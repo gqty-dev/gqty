@@ -7,14 +7,7 @@ import { createReactTestClient } from './utils';
 test('Basic Non-Suspense', async () => {
   const { query, graphql } = await createReactTestClient();
 
-  const Comp = graphql(
-    () => {
-      return <p>{query.hello}</p>;
-    },
-    {
-      suspense: false,
-    }
-  );
+  const Comp = graphql(() => <p>{query.hello}</p>, { suspense: false });
 
   const { container } = render(<Comp />);
 

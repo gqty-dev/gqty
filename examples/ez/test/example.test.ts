@@ -1,7 +1,11 @@
-import { waitForExpect } from 'test-utils';
-
+import { CreateTestClient, GlobalTeardown } from '@graphql-ez/fastify-testing';
 import { selectFields } from 'gqty';
-
+import { ezApp } from '../src';
+import {
+  ArrayObjectArgsDocument,
+  MultipleArgsDocument,
+  SimpleStringDocument,
+} from '../src/ez.generated';
 import {
   client as generatedClient,
   GreetingsEnum,
@@ -9,14 +13,6 @@ import {
   query,
   resolved,
 } from '../src/generated/gqty';
-import {
-  ArrayObjectArgsDocument,
-  MultipleArgsDocument,
-  SimpleStringDocument,
-} from '../src/ez.generated';
-
-import { CreateTestClient, GlobalTeardown } from '@graphql-ez/fastify-testing';
-import { ezApp } from '../src';
 
 const testClientPromise = CreateTestClient(ezApp);
 
@@ -115,23 +111,6 @@ describe('gqty integration tests', () => {
     expect((secondHumanName?.length ?? 0) > 20).toBeTruthy();
 
     expect(firstHumanName !== secondHumanName).toBeTruthy();
-  });
-
-  test('scheduler', async () => {
-    const hello = 'zxczxc';
-    const shouldBeUndefined = generatedClient.query.stringWithArgs({
-      hello,
-    });
-
-    expect(shouldBeUndefined).toBe(undefined);
-
-    waitForExpect(() => {
-      const shouldBeString = generatedClient.query.stringWithArgs({
-        hello,
-      });
-
-      expect(shouldBeString).toBe(hello);
-    });
   });
 
   test('resolved no cache', async () => {

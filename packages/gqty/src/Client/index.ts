@@ -47,7 +47,6 @@ export type BaseGeneratedSchema = {
   query: GeneratedSchemaObject;
   mutation?: GeneratedSchemaObject;
   subscription?: GeneratedSchemaObject;
-  [key: string]: GeneratedSchemaObject | undefined;
 };
 
 export type SchemaObjectKeys<TSchema extends BaseGeneratedSchema> = Exclude<
@@ -129,7 +128,7 @@ export type Client<TSchema extends BaseGeneratedSchema> = Persistors &
 
 export const createClient = <TSchema extends BaseGeneratedSchema>({
   cacheOptions: {
-    maxAge = 0,
+    maxAge = 100,
     normalization = true,
     staleWhileRevalidate = 5 * 60 * 1000,
   } = {},

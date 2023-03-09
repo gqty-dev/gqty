@@ -2,8 +2,8 @@
  * GQTY: You can safely modify this file and Query Fetcher based on your needs
  */
 
-import 'isomorphic-unfetch';
 import 'dotenv/config';
+import 'isomorphic-unfetch';
 
 import { createClient, QueryFetcher } from 'gqty';
 
@@ -11,8 +11,6 @@ import {
   generatedSchema,
   GeneratedSchema,
   scalarsEnumsHash,
-  SchemaObjectTypes,
-  SchemaObjectTypesNames,
 } from './schema.generated';
 
 if (!process.env.GITHUB_TOKEN) {
@@ -41,18 +39,15 @@ const queryFetcher: QueryFetcher = async function (query, variables) {
   return json;
 };
 
-export const client = createClient<
-  GeneratedSchema,
-  SchemaObjectTypesNames,
-  SchemaObjectTypes
->({
+export const client = createClient<GeneratedSchema>({
   schema: generatedSchema,
-  scalarsEnumsHash,
-  queryFetcher,
+  scalars: scalarsEnumsHash,
+  fetchOptions: {
+    fetcher: queryFetcher,
+  },
 });
 
 const { query, mutation, mutate, subscription, resolved, refetch } = client;
 
-export { query, mutation, mutate, subscription, resolved, refetch };
-
 export * from './schema.generated';
+export { query, mutation, mutate, subscription, resolved, refetch };

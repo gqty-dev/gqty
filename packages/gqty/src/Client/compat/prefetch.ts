@@ -2,7 +2,7 @@ import type { BaseGeneratedSchema } from '../..';
 import type { CreateLegacyMethodOptions } from './client';
 
 export type LegacyPrefetch<TSchema extends BaseGeneratedSchema> = {
-  <TData>(fn: (query: TSchema['query']) => TData): Promise<TData>;
+  <TData>(fn: (query: TSchema['query']) => TData): TData | Promise<TData>;
 };
 
 export const createLegacyPrefetch =
@@ -10,12 +10,16 @@ export const createLegacyPrefetch =
     resolvers: { createResolver },
     subscribeLegacySelections,
   }: CreateLegacyMethodOptions<TSchema>): LegacyPrefetch<TSchema> =>
-  async (fn, { operationName }: { operationName?: string } = {}) => {
-    const { accessor, context, resolve } = createResolver({ operationName });
+  (fn, { operationName }: { operationName?: string } = {}) => {
+    const {
+      accessor: { query },
+      context,
+      resolve,
+    } = createResolver({ operationName });
     const unsubscribe = subscribeLegacySelections((selection, cache) => {
       context.onSelect?.(selection, cache);
     });
-    const data = fn(accessor.query);
+    const data = fn(query);
 
     unsubscribe();
 
@@ -23,7 +27,5 @@ export const createLegacyPrefetch =
       return data;
     }
 
-    await resolve();
-
-    return fn(accessor.query);
+    return resolve().then(() => fn(query));
   };

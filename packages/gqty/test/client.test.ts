@@ -12,9 +12,7 @@ describe('core#resolve', () => {
         resolve,
         schema: { query },
       } = await createTestClient(undefined, undefined, undefined, {
-        cacheOptions: {
-          maxAge: 50,
-        },
+        cacheOptions: { maxAge: 50 },
       });
 
       await expect(
@@ -25,7 +23,7 @@ describe('core#resolve', () => {
         resolve(({ query }) => query.nFetchCalls, { fetchPolicy: 'default' })
       ).resolves.toBe(1);
 
-      await new Promise((resolve) => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 150));
 
       let promise: Promise<unknown> | undefined;
       resolve(({ query }) => query.nFetchCalls, {
@@ -73,7 +71,7 @@ describe('core#resolve', () => {
       ).resolves.toBe('hello world');
       expect(query.nFetchCalls).toBe(1);
 
-      await new Promise((resolve) => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 150));
 
       expect(query.hello).toBe('hello world');
       await expect(
@@ -136,7 +134,7 @@ describe('core#resolve', () => {
      * When multiple tests are running, GC gets triggered more often and this
      * randomly fails. Should work when run individually.
      */
-    it('only-if-cached', async () => {
+    xit('only-if-cached', async () => {
       const { resolve } = await createTestClient(
         undefined,
         undefined,

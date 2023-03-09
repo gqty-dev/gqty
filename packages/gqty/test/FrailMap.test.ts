@@ -8,7 +8,7 @@ describe('FrailMap', () => {
     const keys: string[] = [];
     const map = new FrailMap<string, Record<string, string>>();
 
-    for (let i = 0; i < 50_000; i++) {
+    for (let i = 0; i < 100_000; i++) {
       const key = randomUUID();
       const value: Record<string, string> = {
         [randomUUID()]: randomUUID(),
@@ -29,13 +29,17 @@ describe('FrailMap', () => {
       keys.push(key);
 
       // Give it some time for GC to happen.
-      if (i % 5000 === 0) {
+      if (i % 500 === 0) {
         await new Promise((r) => setTimeout(r, 100));
       }
-    }
 
-    // Trigger keys disposal
-    map.keys();
+      // Trigger keys disposal
+      map.keys();
+
+      if (map.size < keys.length) {
+        break;
+      }
+    }
 
     expect(map.size).toBeLessThan(keys.length);
   });

@@ -53,8 +53,8 @@ export type Resolvers<TSchema extends BaseGeneratedSchema> = {
    * This function subscribes to *cache changes*, termination of underlying
    * subscription (WebSocket/EventSource) does not stop this generator.
    *
-   * Calling `.return()` does not terminate pending promise. Use the `signal`
-   * option to exist the generator without waiting for the next update.
+   * Calling `.return()` does not terminate pending promises, use
+   * `onSubscribe()` to acquire the unsubscribe function.
    */
   subscribe: SubscribeFn<TSchema>;
 };
@@ -93,12 +93,7 @@ export type SubscribeFn<TSchema extends BaseGeneratedSchema> = <
   TData extends Record<string, unknown> = Record<string, unknown>
 >(
   fn: DataFn<TSchema>,
-  options?: SubscribeOptions & {
-    /**
-     * Interrupts the pending promise and exists the generator.
-     */
-    signal?: AbortSignal;
-  }
+  options?: SubscribeOptions
 ) => AsyncGenerator<TData, void, unknown>;
 
 export type DataFn<TSchema> = (schema: TSchema) => void;
@@ -181,6 +176,13 @@ export type SubscribeOptions = {
 
   onSelect?: NonNullable<SchemaContext['onSelect']>;
 
+  /**
+   * Called when a subscription is established, receives an unsubscribe
+   * function that immediately terminates the async generator and any pending
+   * promise.
+   */
+  onSubscribe?: (unsubscribe: () => void) => void;
+
   operationName?: string;
 };
 
@@ -209,9 +211,13 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
       depthLimit,
       fetchPolicy,
       onSelect(selection, cache) {
-        selections.add(selection);
+        // Prevents infinite loop created by legacy functions
+        if (!selections.has(selection)) {
+          selections.add(selection);
+          parentContext?.onSelect(selection, cache);
+        }
+
         onSelect?.(selection, cache);
-        parentContext?.onSelect(selection, cache);
       },
       scalars,
       schema,
@@ -253,6 +259,7 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
   const createSubscriber = ({
     fetchPolicy = defaultFetchPolicy,
     onSelect,
+    onSubscribe,
     operationName,
     retryPolicy = defaultRetryPoliy,
   }: SubscribeOptions = {}) => {
@@ -278,17 +285,22 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
       onNext?: (value: unknown) => void;
     } = {}) => {
       const unsubscibers = new Set<() => void>();
+      const unsubscribe = () => {
+        for (const unsubscribe of unsubscibers) {
+          unsubscribe();
+        }
+      };
 
       if (onNext) {
-        const unsubscribe = context.cache.subscribe(
+        const unsub = context.cache.subscribe(
           [...selections].map(({ cacheKeys }) => cacheKeys.join('.')),
           onNext
         );
 
-        unsubscibers.add(unsubscribe);
+        unsubscibers.add(unsub);
       }
 
-      const unsubscribe = subscribeSelections(
+      const unsub = subscribeSelections(
         selections,
         ({ data, error, extensions }) => {
           if (error) {
@@ -314,16 +326,15 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
           debugger: debug,
           fetchOptions: { ...fetchOptions, fetchPolicy, retryPolicy },
           operationName,
+          onSubscribe() {
+            onSubscribe?.(unsubscribe);
+          },
         }
       );
 
-      unsubscibers.add(unsubscribe);
+      unsubscibers.add(unsub);
 
-      return () => {
-        for (const unsubscribe of unsubscibers) {
-          unsubscribe();
-        }
-      };
+      return unsubscribe;
     };
 
     return { accessor, context, selections, subscribe };
@@ -355,8 +366,17 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
      * Initiates selected queries, mutations and subscriptions, then subscribes
      * to caches changes until the generator is closed.
      */
-    subscribe: (fn, options): AsyncGenerator<any> => {
-      const { accessor, selections, subscribe } = createSubscriber(options);
+    subscribe: (fn, { onSubscribe, ...options } = {}): AsyncGenerator<any> => {
+      const { accessor, selections, subscribe } = createSubscriber({
+        ...options,
+        onSubscribe: (unsubscribe) => {
+          onSubscribe?.(() => {
+            unsubscribe();
+            done = true;
+            deferred?.resolve();
+          });
+        },
+      });
 
       fn(accessor);
 
@@ -387,11 +407,6 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
       if (selections.size === 0) {
         done = true;
       }
-
-      options?.signal?.addEventListener('abort', () => {
-        done = true;
-        deferred?.resolve();
-      });
 
       return {
         [Symbol.asyncIterator]() {

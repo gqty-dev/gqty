@@ -112,7 +112,7 @@ export const createLegacyResolved = <
   debugger: debug,
   fetchOptions: { fetcher, subscriber, retryPolicy },
   resolvers: { createResolver },
-  subscribeLegacySelections: subscribeSelections,
+  subscribeLegacySelections,
 }: CreateLegacyMethodOptions<TSchema>): LegacyResolved => {
   const resolved: LegacyResolved = async <TData = unknown>(
     fn: () => TData,
@@ -134,7 +134,7 @@ export const createLegacyResolved = <
       fetchPolicy: noCache ? 'no-store' : refetch ? 'no-cache' : 'default',
       operationName,
     });
-    const unsubscribe = subscribeSelections((selection, cache) => {
+    const unsubscribe = subscribeLegacySelections((selection, cache) => {
       context.onSelect?.(selection, cache);
       onSelection?.(convertSelection(selection));
     });

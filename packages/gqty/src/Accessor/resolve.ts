@@ -1,3 +1,5 @@
+import get from 'just-safe-get';
+import set from 'just-safe-set';
 import type { CacheObject } from '../Cache';
 import { flattenObject } from '../Cache/crawl';
 import { isCacheObject } from '../Cache/utils';
@@ -9,6 +11,7 @@ import {
   Type,
 } from '../Schema';
 import type { Selection } from '../Selection';
+import { deepAssign, isObject } from '../Utils';
 import type { Meta } from './meta';
 import { $meta, $setMeta } from './meta';
 import { createSkeleton, isSkeleton } from './skeleton';
@@ -136,6 +139,27 @@ export const resolve = (
   }
 
   cache.data = data;
+
+  // Subscribe to cache changes at root level, child accessors should have new
+  // values reflected after cache updates. Listeners created this way have no
+  // way to be garbage collected, but the number of accessed root keys are
+  // assumed to be manageable.
+  if (selection.parent === selection.root) {
+    const listenerCacheKey = `__accessorCacheListeners.${cacheKeys.join('/')}`;
+
+    get(context, listenerCacheKey)?.();
+
+    const unsubscribe = context.cache.subscribe(
+      [cacheKeys.join('.')],
+      (cache) => {
+        if (isObject(cache) && isObject(data)) {
+          deepAssign(data, [get(cache, cacheKeys.join('.'))]);
+        }
+      }
+    );
+
+    set(context, listenerCacheKey, unsubscribe);
+  }
 
   return isArray && !isNumericSelection
     ? createArrayAccessor({

@@ -8,7 +8,7 @@ export const pick = (
 ) => {
   const result: Record<string, any> = {};
 
-  for (const { ancestry, cacheKeys } of selections) {
+  for (const { ancestry } of selections) {
     let node = schema;
     for (const { key, input } of ancestry) {
       if (input) {
@@ -19,11 +19,9 @@ export const pick = (
     }
 
     if (node !== undefined) {
-      set(result, cacheKeys, node);
+      set(result, ancestry.map((s) => s.alias ?? s.key).join('.'), node);
     }
   }
 
   return result;
 };
-
-// TODO: support arrays

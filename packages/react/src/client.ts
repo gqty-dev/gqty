@@ -158,9 +158,6 @@ export interface CreateReactClientOptions {
    * Default behaviour values
    */
   defaults?: ReactClientDefaults;
-
-  /** Debounce timer for fetchSelections, defaults to 10. */
-  fetchDebounce?: number;
 }
 
 export interface ReactClient<TSchema extends BaseGeneratedSchema> {
@@ -179,16 +176,10 @@ export interface ReactClient<TSchema extends BaseGeneratedSchema> {
   prepareQuery: PrepareQuery<TSchema>;
 }
 
-export function createReactClient<
-  GeneratedSchema extends {
-    query: object;
-    mutation: object;
-    subscription: object;
-  }
->(
-  client: GQtyClient<GeneratedSchema>,
+export function createReactClient<TSchema extends BaseGeneratedSchema>(
+  client: GQtyClient<TSchema>,
   optsCreate: CreateReactClientOptions = {}
-): ReactClient<GeneratedSchema> {
+): ReactClient<TSchema> {
   const { suspense = false } = (optsCreate.defaults ||= {});
 
   const {
@@ -231,15 +222,12 @@ export function createReactClient<
   );
 
   return {
-    useQuery: createUseQuery<GeneratedSchema>(client, opts),
+    useQuery: createUseQuery<TSchema>(client, opts),
     useRefetch: createUseRefetch(client, opts),
-    useLazyQuery: createUseLazyQuery<GeneratedSchema>(client, opts),
-    useTransactionQuery: createUseTransactionQuery<GeneratedSchema>(
-      client,
-      opts
-    ),
-    usePaginatedQuery: createUsePaginatedQuery<GeneratedSchema>(client, opts),
-    useMutation: createUseMutation<GeneratedSchema>(client, opts),
+    useLazyQuery: createUseLazyQuery<TSchema>(client, opts),
+    useTransactionQuery: createUseTransactionQuery<TSchema>(client, opts),
+    usePaginatedQuery: createUsePaginatedQuery<TSchema>(client, opts),
+    useMutation: createUseMutation<TSchema>(client, opts),
     graphql: createGraphqlHOC(client, opts),
     state: {
       get isLoading() {
@@ -252,7 +240,7 @@ export function createReactClient<
     prepareReactRender,
     useHydrateCache,
     useMetaState: createUseMetaState(),
-    useSubscription: createUseSubscription<GeneratedSchema>(client),
-    prepareQuery: createPrepareQuery<GeneratedSchema>(client, opts),
+    useSubscription: createUseSubscription<TSchema>(client),
+    prepareQuery: createPrepareQuery<TSchema>(client, opts),
   };
 }

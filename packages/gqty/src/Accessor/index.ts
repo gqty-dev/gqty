@@ -26,8 +26,13 @@ export function createSchemaAccessor<TSchema extends BaseGeneratedSchema>(
 
         if (!Reflect.has(target, key)) return;
 
-        const __typename = target[key]?.__typename;
-        if (!__typename || !context.schema[key]) return;
+        const schemaKey = key as keyof TSchema;
+
+        if (
+          !Reflect.get(target[schemaKey] as object, '__typename') ||
+          !context.schema[key]
+        )
+          return;
 
         // Reuse root selections and their internally cached children, accessors
         // can in turn be safely cached by selections but still scoped.
@@ -40,7 +45,7 @@ export function createSchemaAccessor<TSchema extends BaseGeneratedSchema>(
         return createObjectAccessor({
           context,
           cache: {
-            data: target[key],
+            data: target[key as keyof BaseGeneratedSchema],
             expiresAt: Infinity,
           },
           selection,
@@ -130,34 +135,6 @@ export const assignSelections = <TData extends GeneratedSchemaObject>(
     }
   }
 };
-
-/* TODO: Selection - null
- *
- * Cache accessor and selections such that subsequent selections are
- * retained when null types are returned from the cache, where new selections
- * are prevented from happening.
- *
- * Make sure such cache is cleared when new selections can be made again.
- *
- * Triggering onSelect() for all scalar selections inside would suffice, no
- * need to cache the whole selection tree.
- *
- * Cache by value, nullObjectKey? Every single fetch should cache selections
- * from last time, cached selections are only used as long as we got nulls.
- *
- * Caching accessors may prevent accessors from showing new values, so we only
- * cache selections by null values and empty arrays.
- */
-
-/* TODO: Selection - Conditional Rendering
- *
- * Handles conditional rendering that triggers query update on itself
- * which results in infinite circular renderings.
- *
- * When a cache is still fresh, subsequent fetches should merge with objects
- * instead of replacing them. Except on refetches, i.e. no-cache and no-store,
- * which should instead invalidate reachable cache roots during selection.
- */
 
 /* TODO: Selection - use()
  *

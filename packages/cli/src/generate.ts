@@ -729,23 +729,6 @@ export async function generate(
       return acum;
     }, '');
 
-  const objectTypesEntries = deps.sortBy(
-    Array.from(objectTypeTSTypes.entries()),
-    (v) => v[0]
-  );
-
-  typescriptTypes += `
-  export interface SchemaObjectTypes {
-    ${objectTypesEntries.reduce((acum, [typeName]) => {
-      acum += `${typeName}:${typeName};`;
-      return acum;
-    }, '')}
-  }
-  export type SchemaObjectTypesNames = ${objectTypesEntries
-    .map(([key]) => `"${key}"`)
-    .join(' | ')};
-  `;
-
   if (unionsAndInterfacesObjectTypesMap.size) {
     typescriptTypes += `
     ${deps
@@ -794,8 +777,8 @@ export async function generate(
     ${
       isJavascriptOutput
         ? typeDoc('import("gqty").QueryFetcher') + 'const queryFetcher'
-        : 'const queryFetcher : QueryFetcher'
-    } = async function (query, variables, fetchOptions) {
+        : 'const queryFetcher: QueryFetcher'
+    } = async function ({ query, variables, operationName }, fetchOptions) {
         // Modify "${endpoint}" if needed
         const response = await fetch("${endpoint}", {
           method: "POST",
@@ -805,6 +788,7 @@ export async function generate(
           body: JSON.stringify({
             query,
             variables,
+            operationName,
           }),
           mode: "cors",
           ...fetchOptions
@@ -973,7 +957,7 @@ export const generatedSchema = {${generatedSchemaCodeString}};
   ${react ? `import { createReactClient } from "@gqty/react"` : ''}
   ${
     subscriptions
-      ? `import { createSubscriptionsClient } from "@gqty/subscriptions"`
+      ? `import { createClient as createSubscriptionsClient } from "graphql-ws"`
       : ''
   }
   ${isJavascriptOutput ? '' : 'import type { QueryFetcher } from "gqty";'}
@@ -981,7 +965,7 @@ export const generatedSchema = {${generatedSchemaCodeString}};
   ${
     isJavascriptOutput
       ? ''
-      : 'import type { GeneratedSchema, SchemaObjectTypes, SchemaObjectTypesNames } from "./schema.generated";'
+      : 'import type { GeneratedSchema } from "./schema.generated";'
   }
   import { generatedSchema, scalarsEnumsHash } from "./schema.generated";
 
@@ -1011,18 +995,21 @@ export const generatedSchema = {${generatedSchemaCodeString}};
           'import("gqty").GQtyClient<import("./schema.generated").GeneratedSchema>'
         )}export const client = createClient({
         schema: generatedSchema,
-        scalarsEnumsHash,
-        queryFetcher
-        ${subscriptions ? ', subscriptionsClient' : ''}
+        scalars: scalarsEnumsHash,
+        fetchOptions: {
+          fetcher: queryFetcher,
+          ${subscriptions ? 'subscriber: subscriptionsClient' : ''}
+        },
       });`
-      : `export const client = createClient<GeneratedSchema, SchemaObjectTypesNames, SchemaObjectTypes>({
+      : `export const client = createClient<GeneratedSchema>({
     schema: generatedSchema,
-    scalarsEnumsHash,
-    queryFetcher
-    ${subscriptions ? ', subscriptionsClient' : ''}
+    scalars: scalarsEnumsHash,
+    fetchOptions:{
+      fetcher: queryFetcher,
+      ${subscriptions ? 'subscriber: subscriptionsClient' : ''}
+    },
   });`
   }
-
 
   const { query, mutation, mutate, subscription, resolved, refetch, track } = client;
 

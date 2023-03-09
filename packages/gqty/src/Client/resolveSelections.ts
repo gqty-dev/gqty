@@ -1,4 +1,3 @@
-import { notifyFetch, notifyRetry } from 'gqty/Helpers/useMetaStateHack';
 import type { ExecutionResult } from 'graphql';
 import { MessageType, SubscribePayload } from 'graphql-ws';
 import { CloseEvent, WebSocket } from 'ws';
@@ -6,6 +5,7 @@ import type { FetchOptions } from '.';
 import type { Cache } from '../Cache';
 import { dedupePromise } from '../Cache/query';
 import { doRetry, GQtyError } from '../Error';
+import { notifyFetch, notifyRetry } from '../Helpers/useMetaStateHack';
 import { buildQuery } from '../QueryBuilder';
 import type { QueryPayload } from '../Schema';
 import type { Selection } from '../Selection';
@@ -43,13 +43,8 @@ export const fetchSelections = <
         operationName,
         extensions: { type, hash } = {},
       }) => {
-        if (!type) {
-          throw new GQtyError(`Invalid query type: ${type}`);
-        }
-
-        if (!hash) {
-          throw new GQtyError(`Expected query hash.`);
-        }
+        if (!type) throw new GQtyError(`Invalid query type: ${type}`);
+        if (!hash) throw new GQtyError(`Expected query hash.`);
 
         const queryPayload: QueryPayload<QueryExtensions> = {
           query,
@@ -68,29 +63,30 @@ export const fetchSelections = <
                 doFetch<TData>(queryPayload, { ...fetchOptions, selections })
         );
 
-        const error = errors?.length
-          ? GQtyError.fromGraphQLErrors(errors)
-          : undefined;
+        const result: FetchResult<TData> = {
+          data,
+          extensions: { ...extensions, ...queryPayload.extensions },
+        };
+
+        if (errors?.length) {
+          result.error = GQtyError.fromGraphQLErrors(errors);
+        }
 
         debug?.dispatch({
           cache,
           request: { query, variables, operationName },
-          result: {
-            data,
-            error,
-            extensions: { ...extensions, ...queryPayload.extensions },
-          },
+          result,
           selections,
         });
 
-        return {
-          data,
-          error,
-          extensions: { ...extensions, ...queryPayload.extensions },
-        };
+        return result;
       }
     )
   );
+
+export type SubscribeSelectionOptions = FetchSelectionsOptions & {
+  onSubscribe?: () => void;
+};
 
 export type SubscriptionCallback<TData extends Record<string, unknown>> = (
   result: FetchResult<TData>
@@ -124,7 +120,8 @@ export const subscribeSelections = <
     debugger: debug,
     fetchOptions: { subscriber, ...fetchOptions },
     operationName,
-  }: FetchSelectionsOptions
+    onSubscribe,
+  }: SubscribeSelectionOptions
 ): Unsubscribe => {
   const unsubscribers = new Set<() => void>();
 
@@ -149,10 +146,25 @@ export const subscribeSelections = <
         extensions: { type, hash },
       };
 
+      {
+        const unsub = subscriber?.on('message', (message) => {
+          switch (message.type) {
+            case MessageType.ConnectionAck: {
+              unsub?.();
+              onSubscribe?.();
+              break;
+            }
+          }
+        });
+      }
+
       let subscriptionId: string | undefined;
       {
-        const unsubscribeEvents = subscriber?.on('message', (message) => {
+        const unsub = subscriber?.on('message', (message) => {
           switch (message.type) {
+            case MessageType.ConnectionAck: {
+              break;
+            }
             case MessageType.Subscribe: {
               if (message.payload.extensions?.hash !== hash) return;
 
@@ -165,7 +177,7 @@ export const subscribeSelections = <
                 selections,
               });
 
-              unsubscribeEvents?.();
+              unsub?.();
               break;
             }
           }
@@ -175,27 +187,24 @@ export const subscribeSelections = <
       const next = ({ data, errors, extensions }: ExecutionResult<TData>) => {
         if (data === undefined) return;
 
-        const error = errors?.length
-          ? GQtyError.fromGraphQLErrors(errors)
-          : undefined;
+        const result: FetchResult<TData> = {
+          data,
+          extensions: { ...extensions, ...queryPayload.extensions },
+        };
+
+        if (errors?.length) {
+          result.error = GQtyError.fromGraphQLErrors(errors);
+        }
 
         debug?.dispatch({
           cache,
           label: subscriptionId ? `[id=${subscriptionId}] [data]` : undefined,
           request: queryPayload,
-          result: {
-            data,
-            error,
-            extensions: { ...extensions, ...queryPayload.extensions },
-          },
+          result,
           selections,
         });
 
-        fn({
-          data,
-          error,
-          extensions: { ...extensions, ...queryPayload.extensions },
-        });
+        fn(result);
       };
 
       const error = (error: GQtyError) => {
@@ -252,17 +261,20 @@ export const subscribeSelections = <
               })
           : () =>
               new Promise<void>((complete) => {
-                const aborter = new AbortController();
-
-                doFetch<TData>(queryPayload, {
+                const options: Parameters<typeof doFetch>[1] = {
                   ...fetchOptions,
                   selections,
-                  signal: aborter.signal,
-                })
+                };
+
+                if (typeof AbortController !== 'undefined') {
+                  const aborter = new AbortController();
+                  dispose = () => aborter.abort();
+                  options.signal = aborter.signal;
+                }
+
+                doFetch<TData>(queryPayload, options)
                   .then(next, error)
                   .finally(complete);
-
-                dispose = () => aborter.abort();
               })
       );
 
@@ -313,19 +325,20 @@ const doFetch = async <
     return new Promise((resolve, reject) => {
       // Selections are attached solely for useMetaState()
       doRetry(retryPolicy!, {
-        onLastTry: () => {
-          const promise = doDoFetch().then(resolve, reject);
-
-          notifyRetry(promise, selections);
-
-          return promise;
+        onLastTry: async () => {
+          try {
+            const promise = doDoFetch();
+            notifyRetry(promise, selections);
+            resolve(await promise);
+          } catch (e) {
+            reject(e);
+          }
         },
-        onRetry: () => {
-          const promise = doDoFetch().then(resolve);
-
+        onRetry: async () => {
+          const promise = doDoFetch();
           notifyRetry(promise, selections);
 
-          return promise;
+          resolve(await promise);
         },
       });
     });

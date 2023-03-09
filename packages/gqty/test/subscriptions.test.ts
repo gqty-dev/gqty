@@ -97,17 +97,18 @@ describe('core#subscribe', () => {
     const { subscribe } = await createTestClient(undefined, undefined, {
       subscriptions: true,
     });
-    const aborter = new AbortController();
-
-    setTimeout(() => aborter.abort(), 100);
 
     for await (const _ of subscribe(
       ({ subscription }) => subscription.newNotification,
-      { signal: aborter.signal }
+      {
+        onSubscribe(unsubscribe) {
+          unsubscribe();
+        },
+      }
     )) {
       // no-op
     }
-  }, 500);
+  }, 1000);
 });
 
 describe('legacy subscriptions', () => {

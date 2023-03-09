@@ -1,4 +1,4 @@
-import { renderHook } from '@testing-library/react-hooks';
+import { act, renderHook } from '@testing-library/react-hooks';
 import { createReactTestClient } from './utils';
 
 describe('useQuery', () => {
@@ -32,21 +32,23 @@ describe('useQuery', () => {
       const query = useQuery({ suspense: false });
 
       return {
-        hello: query.hello,
+        time: query.time,
         $state: query.$state,
         $refetch: query.$refetch,
       };
     });
 
-    await waitFor(() => result.current.$state.isLoading === true);
-    await waitFor(() => result.current.$state.isLoading === false);
+    expect(result.current.time).toBe(undefined);
 
-    result.current.$refetch();
+    await waitFor(() => result.current.time !== undefined);
 
-    await waitFor(() => result.current.$state.isLoading === true);
-    await waitFor(() => result.current.$state.isLoading === false);
+    const time = result.current.time;
 
-    expect(result.current.hello).toBe('hello world');
+    await act(async () => {
+      await result.current.$refetch();
+    });
+
+    expect(result.current.time).not.toBe(time);
   });
 
   it('should fetch with suspense', async () => {

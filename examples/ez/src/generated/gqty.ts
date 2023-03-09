@@ -5,46 +5,48 @@ import {
   GeneratedSchema,
   generatedSchema,
   scalarsEnumsHash,
-  SchemaObjectTypes,
-  SchemaObjectTypesNames,
 } from './schema.generated';
 
 import { CreateTestClient } from '@graphql-ez/fastify-testing';
 
 const testClientPromise = CreateTestClient(ezApp);
-const queryFetcher: QueryFetcher = async function (query, variables) {
+const queryFetcher: QueryFetcher = async function ({
+  query,
+  variables,
+  operationName,
+}) {
   const testClient = await testClientPromise;
 
   return testClient.query(query, {
     variables,
+    operationName,
   });
 };
 
-export const client = createClient<
-  GeneratedSchema,
-  SchemaObjectTypesNames,
-  SchemaObjectTypes
->({
+export const client = createClient<GeneratedSchema>({
   schema: generatedSchema,
-  scalarsEnumsHash,
-  queryFetcher,
-  normalization: {
-    identifier(obj) {
-      switch (obj.__typename) {
-        case 'A': {
-          return obj.a;
+  scalars: scalarsEnumsHash,
+  cacheOptions: {
+    normalization: {
+      identity(obj) {
+        switch (obj.__typename) {
+          case 'A': {
+            return `${obj.a ?? ''}`;
+          }
+          default: {
+            return;
+          }
         }
-        default: {
-          return;
-        }
-      }
+      },
+      schemaKeys: {},
     },
-    keyFields: {},
+  },
+  fetchOptions: {
+    fetcher: queryFetcher,
   },
 });
 
 const { query, mutation, mutate, subscription, resolved, refetch } = client;
 
-export { query, mutation, mutate, subscription, resolved, refetch };
-
 export * from './schema.generated';
+export { query, mutation, mutate, subscription, resolved, refetch };

@@ -246,8 +246,6 @@ export const createUsePaginatedQuery =
       );
     }, [fn, args, selections.size]);
 
-    // TODO: subscribe to cache changes (cache-first = render)
-
     return React.useMemo(
       () => ({ data, args, fetchMore, isLoading: fetchPromise === undefined }),
       [data, args, fetchMore, fetchPromise]

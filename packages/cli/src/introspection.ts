@@ -45,7 +45,7 @@ export const getRemoteSchema = async (
   };
 
   const schema = deps.wrapSchema({
-    schema: await deps.introspectSchema(executor, {
+    schema: await deps.schemaFromExecutor(executor, {
       endpoint,
     }),
     executor,

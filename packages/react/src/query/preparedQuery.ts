@@ -1,5 +1,5 @@
 import { BaseGeneratedSchema, GQtyClient, GQtyError } from 'gqty';
-import { useSyncExternalStore } from 'use-sync-external-store';
+import { useSyncExternalStore } from 'use-sync-external-store/shim';
 
 import { createMemoryStore } from '../memoryStore';
 import type { ReactClientOptionsWithDefaults } from '../utils';

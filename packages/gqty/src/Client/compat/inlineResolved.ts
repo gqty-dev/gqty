@@ -30,7 +30,7 @@ export const createLegacyInlineResolved = <
   TSchema extends BaseGeneratedSchema = BaseGeneratedSchema
 >({
   resolvers: { createResolver },
-  subscribeLegacySelections: subscribeSelections,
+  subscribeLegacySelections,
 }: CreateLegacyMethodOptions<TSchema>): LegacyInlineResolved => {
   return (
     fn,
@@ -46,7 +46,7 @@ export const createLegacyInlineResolved = <
       fetchPolicy: refetch ? 'no-cache' : 'default',
       operationName,
     });
-    const unsubscribe = subscribeSelections((selection, cache) => {
+    const unsubscribe = subscribeLegacySelections((selection, cache) => {
       context.onSelect?.(selection, cache);
       onSelection?.(convertSelection(selection));
     });

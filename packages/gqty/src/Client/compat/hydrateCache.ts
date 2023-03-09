@@ -45,7 +45,9 @@ export const createLegacyHydrateCache =
     if (selectionSnapshots && shouldRefetch) {
       const selections = new Set<Selection>();
       for (const [[root], ...snapshot] of selectionSnapshots) {
-        const { selection } = $meta(accessor[root as string]!)!;
+        const { selection } = $meta(
+          accessor[root as keyof BaseGeneratedSchema]!
+        )!;
 
         selections.add(selection.fromJSON(snapshot));
       }

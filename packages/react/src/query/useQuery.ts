@@ -74,7 +74,12 @@ export const createUseQuery =
     staleWhileRevalidate = defaultStaleWhileRevalidate,
     suspense = defaultSuspense,
   } = {}) => {
-    const { accessor, context, resolve, selections } = useMemo(
+    const {
+      accessor: { query },
+      context,
+      resolve,
+      selections,
+    } = useMemo(
       () => client.createResolver({ operationName, retryPolicy: retry }),
       [operationName, retry]
     );
@@ -93,7 +98,7 @@ export const createUseQuery =
 
     if (prepare) {
       // TODO: See if `Error.captureStackTrace(error, useQuery);` is needed
-      prepare({ prepass, query: accessor.query });
+      prepare({ prepass, query });
 
       // Assuming the fetch always fulfills selections in prepare(), otherwise
       // this may cause an infinite render loop.
@@ -105,10 +110,10 @@ export const createUseQuery =
     const fetchQuery = useCallback(async () => {
       setError(undefined);
 
-      const fetchPromise = resolve();
-      setFetchPromise(fetchPromise);
-
       try {
+        const fetchPromise = resolve();
+        setFetchPromise(fetchPromise);
+
         await fetchPromise;
       } catch (error) {
         const theError = GQtyError.create(error);
@@ -123,12 +128,10 @@ export const createUseQuery =
       }
     }, [onError, resolve]);
 
-    {
-      // Invoke it on client side automatically.
-      useEffect(() => {
-        fetchQuery();
-      }, [fetchQuery]);
-    }
+    // Invoke it on client side automatically.
+    useEffect(() => {
+      fetchQuery();
+    }, [fetchQuery]);
 
     // staleWhileRevalidate
     useEffect(() => {
@@ -142,15 +145,15 @@ export const createUseQuery =
       // happen if any of the accessed cache value is stale.
       useWindowFocusEffect(render, { enabled: refetchOnWindowVisible });
 
-      // Re-renders on cache changes from others
-      useEffect(
-        () =>
-          context.cache.subscribe(
-            [...selections].map(({ cacheKeys }) => cacheKeys.join('.')),
-            render
-          ),
-        [selections, selections.size]
-      );
+      // Rerenders on cache changes from others
+      useEffect(() => {
+        if (selections.size === 0) return;
+
+        return context.cache.subscribe(
+          [...selections].map(({ cacheKeys }) => cacheKeys.join('.')),
+          render
+        );
+      }, [selections, selections.size]);
     }
 
     const $refetch = useCallback(() => {
@@ -159,13 +162,21 @@ export const createUseQuery =
       const promise = fetchQuery();
       context.shouldFetch = prevShouldFetch;
 
+      promise.catch(console.error);
+
       return promise;
     }, [fetchQuery]);
 
-    const $state = {
-      isLoading: fetchPromise !== undefined,
-      error,
-    };
-
-    return { ...accessor, $refetch, $state };
+    return useMemo(() => {
+      return new Proxy(
+        Object.freeze({
+          $refetch,
+          $state: { isLoading: fetchPromise !== undefined, error },
+        }),
+        {
+          get: (target, key, proxy) =>
+            Reflect.get(target, key, proxy) ?? Reflect.get(query, key),
+        }
+      );
+    }, [query, $refetch, fetchPromise, error]);
   };

@@ -1,19 +1,10 @@
-export { program } from 'commander';
-
-export { cosmiconfig, Loader } from 'cosmiconfig';
-
 export { codegen } from '@graphql-codegen/core';
-
 export * as typescriptPlugin from '@graphql-codegen/typescript';
-
 export { printSchemaWithDirectives } from '@graphql-tools/utils';
-
-export { default as sortBy } from 'lodash-es/sortBy.js';
-
-export { introspectSchema, wrapSchema } from '@graphql-tools/wrap';
-
-export { default as prettier, Options as PrettierOptions } from 'prettier';
-
-export { default as mkdirp } from 'mkdirp';
-
+export { schemaFromExecutor, wrapSchema } from '@graphql-tools/wrap';
+export { program } from 'commander';
+export { cosmiconfig, Loader } from 'cosmiconfig';
 export { default as fg } from 'fast-glob';
+export { default as sortBy } from 'lodash-es/sortBy.js';
+export { default as mkdirp } from 'mkdirp';
+export { default as prettier, Options as PrettierOptions } from 'prettier';

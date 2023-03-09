@@ -1317,11 +1317,14 @@ describe('get fields', () => {
 
 describe('prefetch', () => {
   test('returns promise only data not found', async () => {
-    const { prefetch } = await createTestClient();
+    const { prefetch } = await createTestClient(
+      undefined,
+      undefined,
+      undefined,
+      { cacheOptions: { maxAge: 100 } }
+    );
 
-    const resultPromise = prefetch((query) => {
-      return query.time;
-    });
+    const resultPromise = prefetch((query) => query.time);
 
     expect(resultPromise).toBeInstanceOf(Promise);
 

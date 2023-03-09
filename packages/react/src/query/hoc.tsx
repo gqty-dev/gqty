@@ -1,13 +1,14 @@
+import { useRerender } from '@react-hookz/web';
 import type { GQtyClient } from 'gqty';
 import * as React from 'react';
 import type { OnErrorHandler } from '../common';
 import type { ReactClientOptionsWithDefaults } from '../utils';
 
 export interface GraphQLHOCOptions {
-  suspense?: boolean | { fallback: React.SuspenseProps['fallback'] };
-  staleWhileRevalidate?: boolean;
   onError?: OnErrorHandler;
   operationName?: string;
+  staleWhileRevalidate?: boolean;
+  suspense?: boolean | { fallback: React.SuspenseProps['fallback'] };
 }
 
 export interface GraphQLHOC {
@@ -30,6 +31,7 @@ export function createGraphqlHOC(
     {
       onError,
       operationName,
+      staleWhileRevalidate,
       suspense = defaultSuspense,
     }: GraphQLHOCOptions = {}
   ) {
@@ -48,7 +50,8 @@ export function createGraphqlHOC(
       const unsubscribe = subscribeLegacySelections((selection, cache) => {
         context.onSelect?.(selection, cache);
       });
-      const fetchPromise = React.useRef<Promise<any>>();
+      const render = useRerender();
+      React.useEffect(render, [staleWhileRevalidate]);
 
       let elm: React.ReactElement | null = null;
       try {
@@ -61,19 +64,19 @@ export function createGraphqlHOC(
         return elm;
       }
 
-      fetchPromise.current = resolve();
+      const promise = resolve().finally(render);
 
       if (onError) {
-        fetchPromise.current.catch(onError);
+        promise.catch(onError);
       }
 
       if (suspense === true) {
-        throw fetchPromise.current;
+        throw promise;
       } else if (typeof suspense === 'object') {
         const Suspender: React.FunctionComponent = () => {
-          if (!fetchPromise.current) return null;
+          if (!promise) return null;
 
-          throw fetchPromise.current;
+          throw promise;
         };
 
         return (

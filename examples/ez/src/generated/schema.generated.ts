@@ -212,26 +212,6 @@ export interface Subscription {
   __typename?: 'Subscription';
 }
 
-export interface SchemaObjectTypes {
-  A: A;
-  B: B;
-  C: C;
-  Dog: Dog;
-  Human: Human;
-  Mutation: Mutation;
-  Query: Query;
-  Subscription: Subscription;
-}
-export type SchemaObjectTypesNames =
-  | 'A'
-  | 'B'
-  | 'C'
-  | 'Dog'
-  | 'Human'
-  | 'Mutation'
-  | 'Query'
-  | 'Subscription';
-
 export interface $NamedEntity {
   Dog?: Dog;
   Human?: Human;

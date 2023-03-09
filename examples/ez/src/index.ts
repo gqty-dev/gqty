@@ -4,7 +4,7 @@ import { ezAltairIDE } from '@graphql-ez/plugin-altair/static';
 import { ezCodegen } from '@graphql-ez/plugin-codegen';
 import { ezSchema } from '@graphql-ez/plugin-schema';
 import Fastify, { LogLevel } from 'fastify';
-import { random, range } from 'lodash';
+import { random, range } from 'lodash-es';
 import { generate } from 'randomstring';
 import { gql } from 'test-utils';
 import { GreetingsEnum, Human, TestUnion } from './ez.generated';

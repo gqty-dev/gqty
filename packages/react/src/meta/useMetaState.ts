@@ -79,10 +79,7 @@ export function createUseMetaState() {
     }, []);
 
     React.useEffect(() => {
-      const onRetryEvent = ({
-        promise,
-        selections,
-      }: useMetaStateHack.RetryEvent<unknown>) => {
+      return useMetaStateHack.subscribeRetry(({ promise, selections }) => {
         if (targetSelections.size > 0) {
           for (const selection of targetSelections) {
             if (selections.has(selection)) return;
@@ -93,9 +90,7 @@ export function createUseMetaState() {
           retryPromise: promise,
           selections,
         });
-      };
-
-      return useMetaStateHack.subscribeRetry(onRetryEvent);
+      });
     }, []);
 
     return Object.freeze({
