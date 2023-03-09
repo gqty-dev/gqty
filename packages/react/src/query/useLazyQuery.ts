@@ -1,16 +1,13 @@
-import { doRetry, GQtyClient, GQtyError, RetryOptions } from 'gqty';
+import { BaseGeneratedSchema, GQtyClient, GQtyError, RetryOptions } from 'gqty';
 import * as React from 'react';
-
 import {
-  FetchPolicy,
-  fetchPolicyDefaultResolveOptions,
+  LegacyFetchPolicy,
   OnErrorHandler,
-  useDeferDispatch,
-  useSuspensePromise,
+  translateFetchPolicy,
 } from '../common';
 import type { ReactClientOptionsWithDefaults } from '../utils';
 
-export type LazyFetchPolicy = Exclude<FetchPolicy, 'cache-first'>;
+export type LazyFetchPolicy = Exclude<LegacyFetchPolicy, 'cache-first'>;
 
 export interface UseLazyQueryOptions<TData> {
   onCompleted?: (data: TData) => void;
@@ -25,13 +22,14 @@ export interface UseLazyQueryState<TData> {
   error?: GQtyError;
   isLoading: boolean;
   isCalled: boolean;
+  promise?: Promise<TData>;
 }
 
 type UseLazyQueryReducerAction<TData> =
   | { type: 'cache-found'; data: TData }
   | { type: 'success'; data: TData }
   | { type: 'failure'; error: GQtyError }
-  | { type: 'loading' };
+  | { type: 'loading'; promise: Promise<TData> };
 
 function UseLazyQueryReducer<TData>(
   state: UseLazyQueryState<TData>,
@@ -44,6 +42,7 @@ function UseLazyQueryReducer<TData>(
         data: state.data,
         isLoading: true,
         isCalled: true,
+        promise: action.promise,
       };
     }
     case 'success': {
@@ -79,11 +78,7 @@ function InitUseLazyQueryReducer<TData>(): UseLazyQueryState<TData> {
   };
 }
 
-export interface UseLazyQuery<
-  GeneratedSchema extends {
-    query: object;
-  }
-> {
+export interface UseLazyQuery<GeneratedSchema extends BaseGeneratedSchema> {
   <TData = unknown, TArgs = undefined>(
     queryFn: (query: GeneratedSchema['query'], args: TArgs) => TData,
     options?: UseLazyQueryOptions<TData>
@@ -109,14 +104,8 @@ export interface UseLazyQuery<
   ];
 }
 
-export function createUseLazyQuery<
-  GeneratedSchema extends {
-    query: object;
-    mutation: object;
-    subscription: object;
-  }
->(
-  client: GQtyClient<GeneratedSchema>,
+export function createUseLazyQuery<TSchema extends BaseGeneratedSchema>(
+  client: GQtyClient<TSchema>,
   {
     defaults: {
       retry: defaultRetry,
@@ -125,23 +114,26 @@ export function createUseLazyQuery<
     },
   }: ReactClientOptionsWithDefaults
 ) {
-  const { resolved } = client;
-  const clientQuery: GeneratedSchema['query'] = client.query;
-
-  const useLazyQuery: UseLazyQuery<GeneratedSchema> = function useLazyQuery<
-    TData,
-    TArgs = undefined
-  >(
-    fn: (query: typeof clientQuery, args: TArgs) => TData,
-    opts: UseLazyQueryOptions<TData> = {}
-  ): readonly [
-    (callbackArgs?: {
-      fn?: (query: GeneratedSchema['query'], args: TArgs) => TData;
+  const useLazyQuery: UseLazyQuery<TSchema> = (
+    fn,
+    {
+      onCompleted,
+      onError,
+      fetchPolicy: hookDefaultFetchPolicy = defaultFetchPolicy,
+      retry = defaultRetry,
+      suspense = defaultSuspense,
+    } = {}
+  ) => {
+    type TCallback = typeof fn;
+    type TArgs = Parameters<TCallback>[1];
+    type TData = ReturnType<TCallback>;
+    type TCallbackArgs = {
+      fn?: TCallback;
       args?: TArgs;
-    }) => Promise<TData>,
-    UseLazyQueryState<TData>
-  ] {
-    const [state, dispatchReducer] = React.useReducer(
+      fetchPolicy?: LazyFetchPolicy;
+    };
+
+    const [state, dispatch] = React.useReducer(
       UseLazyQueryReducer,
       undefined,
       InitUseLazyQueryReducer
@@ -149,115 +141,60 @@ export function createUseLazyQuery<
       UseLazyQueryState<TData>,
       React.Dispatch<UseLazyQueryReducerAction<TData>>
     ];
-    const dispatch = useDeferDispatch(dispatchReducer);
 
-    const stateRef = React.useRef(state);
-    stateRef.current = state;
-
-    const fnRef = React.useRef(fn);
-    fnRef.current = fn;
-
-    const optsRef = React.useRef(opts);
-    optsRef.current = Object.assign({}, opts);
-    optsRef.current.suspense ??= defaultSuspense;
-
-    const setSuspensePromise = useSuspensePromise(optsRef);
-
-    const queryFn = React.useCallback(
-      function callback(
-        callbackArgs: {
-          fn?: typeof fn;
-          args?: any;
-          fetchPolicy?: LazyFetchPolicy;
-        } = {}
-      ) {
-        dispatch({ type: 'loading' });
-
-        const {
-          fn: fnArg,
-          args,
-          fetchPolicy = optsRef.current.fetchPolicy ?? defaultFetchPolicy,
-        } = callbackArgs;
-
-        const refFn = fnRef.current;
-
-        const functionResolve = fnArg
-          ? () => fnArg(clientQuery, args)
-          : refFn
-          ? () => refFn(clientQuery, args)
-          : (() => {
-              throw new GQtyError(
-                'You have to specify a function to be resolved',
-                { caller: callback }
-              );
-            })();
-
-        const resolveOptions = fetchPolicyDefaultResolveOptions(fetchPolicy);
-
-        return resolved<TData>(functionResolve, {
-          ...resolveOptions,
-          onCacheData(data): boolean {
-            switch (fetchPolicy) {
-              case 'cache-and-network': {
-                dispatch({ type: 'cache-found', data });
-                stateRef.current.data = data;
-                return true;
-              }
-              default:
-                return false;
-            }
-          },
-        }).then(
-          (data) => {
-            optsRef.current.onCompleted?.(data);
-            dispatch({ type: 'success', data });
-            return data;
-          },
-          (err) => {
-            const error = GQtyError.create(err, useLazyQuery);
-            optsRef.current.onError?.(error);
-            dispatch({ type: 'failure', error });
-
-            throw error;
-          }
-        );
-      },
-      [fnRef, dispatch, optsRef]
-    );
-
-    const { retry = defaultRetry } = opts;
+    if (suspense) {
+      if (state.promise) throw state.promise;
+      if (state.error) throw state.error;
+    }
 
     return React.useMemo(() => {
-      const fn: typeof queryFn = retry
-        ? (...args) => {
-            const promise = queryFn(...args).catch((err) => {
-              doRetry(retry, {
-                onRetry: () => {
-                  const promise = queryFn(...args).then(() => {});
+      const fetchQuery = async ({
+        fn: resolveFn = fn,
+        args,
+        fetchPolicy = hookDefaultFetchPolicy,
+      }: TCallbackArgs = {}) => {
+        let innerFetchPromise: Promise<TData> | undefined;
 
-                  setSuspensePromise(promise);
+        try {
+          const fetchPromise = client
+            .resolve(({ query }) => resolveFn(query, args as TArgs), {
+              awaitsFetch: false,
+              fetchPolicy: translateFetchPolicy(fetchPolicy),
+              onFetch(promise) {
+                innerFetchPromise = promise as Promise<TData>;
+              },
+              retryPolicy: retry,
+            })
+            .then((data) => {
+              const typedData = data as TData;
 
-                  return promise;
-                },
-              });
+              if (fetchPolicy === 'cache-and-network') {
+                dispatch({ type: 'cache-found', data: typedData });
+              }
 
-              throw err;
+              return innerFetchPromise ?? typedData;
             });
 
-            setSuspensePromise(promise);
+          dispatch({ type: 'loading', promise: fetchPromise });
 
-            return promise;
-          }
-        : (...args: any[]) => {
-            const promise = queryFn(...args);
+          const data = await fetchPromise;
 
-            setSuspensePromise(promise);
+          onCompleted?.(data);
+          dispatch({ type: 'success', data });
 
-            return promise;
-          };
+          return data;
+        } catch (error) {
+          const typedError = GQtyError.create(error);
 
-      return [fn, state];
-    }, [state, queryFn, retry, optsRef, setSuspensePromise]);
+          onError?.(typedError);
+          dispatch({ type: 'failure', error: typedError });
+
+          throw error;
+        }
+      };
+
+      return Object.freeze([fetchQuery, state]);
+    }, [fn, onCompleted, onError, retry]);
   };
 
   return useLazyQuery;

@@ -1,9 +1,14 @@
-import type { GQtyClient, HydrateCacheOptions } from 'gqty';
+import { useMountEffect } from '@react-hookz/web';
+import type {
+  BaseGeneratedSchema,
+  GQtyClient,
+  LegacyHydrateCacheOptions,
+} from 'gqty';
 import * as React from 'react';
-import { useOnFirstMount } from '../common';
 import { getDefault, ReactClientOptionsWithDefaults } from '../utils';
 
-export interface UseHydrateCacheOptions extends Partial<HydrateCacheOptions> {
+export interface UseHydrateCacheOptions
+  extends Partial<LegacyHydrateCacheOptions> {
   /**
    * Cache snapshot, returned from `prepareReactRender`
    */
@@ -21,7 +26,7 @@ export interface UseHydrateCacheOptions extends Partial<HydrateCacheOptions> {
  * Props with `cacheSnapshot` that would be returned from `prepareReactRender`
  */
 export type PropsWithServerCache<
-  T extends Record<string | number, unknown> = {}
+  T extends Record<string | number, unknown> = Record<string | number, unknown>
 > = {
   /**
    * Cache snapshot, returned from `prepareReactRender`
@@ -39,28 +44,28 @@ export interface PrepareReactRender {
   }>;
 }
 
-export function createSSRHelpers(
-  client: GQtyClient<any>,
+export function createSSRHelpers<TSchema extends BaseGeneratedSchema>(
+  { hydrateCache, prepareRender, query, refetch }: GQtyClient<TSchema>,
   { defaults: { refetchAfterHydrate } }: ReactClientOptionsWithDefaults
 ) {
   const prepareReactRender: PrepareReactRender =
     async function prepareReactRender(element: React.ReactNode) {
       const ssrPrepass = getDefault(await import('react-ssr-prepass'));
 
-      return client.prepareRender(() => ssrPrepass(element));
+      return prepareRender(() => ssrPrepass(element));
     };
   const useHydrateCache: UseHydrateCache = function useHydrateCache({
     cacheSnapshot,
     shouldRefetch = refetchAfterHydrate,
   }: UseHydrateCacheOptions) {
-    useOnFirstMount(() => {
+    useMountEffect(() => {
       if (cacheSnapshot) {
-        client.hydrateCache({ cacheSnapshot, shouldRefetch: false });
+        hydrateCache({ cacheSnapshot, shouldRefetch: false });
       }
     });
     React.useEffect(() => {
       if (shouldRefetch) {
-        client.refetch(client.query).catch(console.error);
+        refetch(query).catch(console.error);
       }
     }, [shouldRefetch]);
   };

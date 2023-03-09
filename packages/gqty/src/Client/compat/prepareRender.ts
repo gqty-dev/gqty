@@ -78,6 +78,11 @@ export const createLegacyPrepareRender = <TSchema extends BaseGeneratedSchema>({
   return async (render) => {
     const ssrCache = new Cache();
     const selections = new Set<Selection>();
+
+    // This works even for the new scoped hooks because there is a hack at
+    // SchemaContext.parentContext which sends selections upwards to the context
+    // at client level. Which should be removed in the future when a proper way
+    // to chain selection callbacks is implemented.
     const unsubscribe = subscribeLegacySelections((selection) => {
       selections.add(selection);
     });
@@ -88,15 +93,19 @@ export const createLegacyPrepareRender = <TSchema extends BaseGeneratedSchema>({
       unsubscribe();
     }
 
-    const results = await fetchSelections(selections, {
-      cache,
-      debugger: debug,
-      fetchOptions,
-    });
-
-    updateCaches(results, [cache, ssrCache], { skipNotify: true });
-
-    // await Promise.all(getActivePromises(cache) ?? []);
+    // We can simply fetch here because subscriptions are be skipped on
+    // server side. Deferred fetches such as useLazyQuery and useMutation
+    // also don't fire during SSR.
+    await fetchSelections(
+      new Set([...selections].filter((s) => s.root.key !== 'subscription')),
+      {
+        cache,
+        debugger: debug,
+        fetchOptions,
+      }
+    ).then((results) =>
+      updateCaches(results, [cache, ssrCache], { skipNotify: true })
+    );
 
     return {
       cacheSnapshot: toJSON(

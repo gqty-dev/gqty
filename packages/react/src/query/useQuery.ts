@@ -1,13 +1,14 @@
-import { GQtyClient, GQtyError, prepass, SelectionType } from 'gqty';
-import * as React from 'react';
-
+import { useRerender } from '@react-hookz/web';
 import {
-  IS_BROWSER,
-  OnErrorHandler,
-  useForceUpdate,
-  useInterceptSelections,
-  useIsomorphicLayoutEffect,
-} from '../common';
+  BaseGeneratedSchema,
+  GQtyClient,
+  GQtyError,
+  prepass,
+  RetryOptions,
+} from 'gqty';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import type { OnErrorHandler } from '../common';
+import { useWindowFocusEffect } from '../useWindowFocusEffect';
 import type { ReactClientOptionsWithDefaults } from '../utils';
 
 export interface UseQueryPrepareHelpers<
@@ -18,14 +19,12 @@ export interface UseQueryPrepareHelpers<
   readonly prepass: typeof prepass;
   readonly query: GeneratedSchema['query'];
 }
-export interface UseQueryOptions<
-  GeneratedSchema extends {
-    query: object;
-  } = never
-> {
+export interface UseQueryOptions<TSchema extends BaseGeneratedSchema> {
   onError?: OnErrorHandler;
-  prepare?: (helpers: UseQueryPrepareHelpers<GeneratedSchema>) => void;
+  operationName?: string;
+  prepare?: (helpers: UseQueryPrepareHelpers<TSchema>) => void;
   refetchOnWindowVisible?: boolean;
+  retry?: RetryOptions;
   staleWhileRevalidate?: boolean | object | number | string | null;
   suspense?: boolean;
 }
@@ -55,138 +54,118 @@ export interface UseQuery<GeneratedSchema extends { query: object }> {
   ): UseQueryReturnValue<GeneratedSchema>;
 }
 
-export function createUseQuery<
-  GeneratedSchema extends {
-    query: object;
-    mutation: object;
-    subscription: object;
-  }
->(
-  {
-    scheduler,
-    eventHandler,
-    interceptorManager,
-    query,
-    buildAndFetchSelections,
-  }: GQtyClient<GeneratedSchema>,
-  {
-    defaults: {
-      suspense: defaultSuspense,
-      staleWhileRevalidate: defaultStaleWhileRevalidate,
-    },
-  }: ReactClientOptionsWithDefaults
-) {
-  const errorsMap = scheduler.errors.map;
-  const getLastError = () => Array.from(errorsMap.values()).pop();
-  const prepareHelpers: UseQueryPrepareHelpers<GeneratedSchema> = {
-    prepass,
-    query,
-  };
-
-  const useQuery: UseQuery<GeneratedSchema> = function useQuery({
+export const createUseQuery =
+  <TSchema extends BaseGeneratedSchema>(
+    client: GQtyClient<TSchema>,
+    {
+      defaults: {
+        suspense: defaultSuspense,
+        staleWhileRevalidate: defaultStaleWhileRevalidate,
+        retry: defaultRetry,
+      },
+    }: ReactClientOptionsWithDefaults
+  ): UseQuery<TSchema> =>
+  ({
     onError,
+    operationName,
     prepare,
     refetchOnWindowVisible = false,
+    retry = defaultRetry,
     staleWhileRevalidate = defaultStaleWhileRevalidate,
     suspense = defaultSuspense,
-  } = {}) {
-    const [$state] = React.useState(
-      (): Writeable<UseQueryState> => ({
-        get isLoading() {
-          return fetchingPromise.current !== null;
-        },
-        error: getLastError(),
-      })
+  } = {}) => {
+    const { accessor, context, resolve, selections } = useMemo(
+      () => client.createResolver({ operationName, retryPolicy: retry }),
+      [operationName, retry]
     );
-    const { fetchingPromise, selections } = useInterceptSelections({
-      staleWhileRevalidate,
-      eventHandler,
-      interceptorManager,
-      scheduler,
-      onError,
-      updateOnFetchPromise: true,
-    });
+    const [error, setError] = useState<GQtyError>();
+    const [fetchPromise, setFetchPromise] = useState<Promise<unknown>>();
+
+    if (suspense) {
+      if (error) throw error;
+      if (fetchPromise) throw fetchPromise;
+    }
+
+    // Reset these, or createResolver() each time and deal with the new resolve.
+    context.shouldFetch = false;
+    context.hasCacheHit = false;
+    context.hasCacheMiss = false;
 
     if (prepare) {
+      // TODO: See if `Error.captureStackTrace(error, useQuery);` is needed
+      prepare({ prepass, query: accessor.query });
+
+      // Assuming the fetch always fulfills selections in prepare(), otherwise
+      // this may cause an infinite render loop.
+      if (suspense && context.shouldFetch) {
+        throw resolve();
+      }
+    }
+
+    const fetchQuery = useCallback(async () => {
+      setError(undefined);
+
+      const fetchPromise = resolve();
+      setFetchPromise(fetchPromise);
+
       try {
-        prepare(prepareHelpers);
-      } catch (err) {
-        if (err instanceof Error && Error.captureStackTrace!) {
-          Error.captureStackTrace(err, useQuery);
-        }
-        throw err;
+        await fetchPromise;
+      } catch (error) {
+        const theError = GQtyError.create(error);
+
+        onError?.(theError);
+
+        if (suspense) throw theError;
+
+        setError(theError);
+      } finally {
+        setFetchPromise(undefined);
       }
+    }, [onError, resolve]);
+
+    {
+      // Invoke it on client side automatically.
+      useEffect(() => {
+        fetchQuery();
+      }, [fetchQuery]);
     }
 
-    useIsomorphicLayoutEffect(
-      () =>
-        scheduler.errors.subscribeErrors((ev) => {
-          switch (ev.type) {
-            case 'errors_clean':
-            case 'new_error': {
-              $state.error = getLastError();
-            }
-          }
-        }),
-      []
-    );
+    // staleWhileRevalidate
+    useEffect(() => {
+      $refetch();
+    }, [staleWhileRevalidate]);
 
-    if (fetchingPromise.current && suspense) {
-      throw fetchingPromise.current;
-    }
+    {
+      const render = useRerender();
 
-    const forceUpdate = useForceUpdate();
-    const refetch = async ({ force = false }: { force?: boolean } = {}) => {
-      if (!force && fetchingPromise.current) {
-        return fetchingPromise.current;
-      }
+      // A rerender should be enough to trigger a soft check, fetch will
+      // happen if any of the accessed cache value is stale.
+      useWindowFocusEffect(render, { enabled: refetchOnWindowVisible });
 
-      const promise = buildAndFetchSelections(
-        Array.from(selections).filter((v) => v.type === SelectionType.Query),
-        'query'
+      // Re-renders on cache changes from others
+      useEffect(
+        () =>
+          context.cache.subscribe(
+            [...selections].map(({ cacheKeys }) => cacheKeys.join('.')),
+            render
+          ),
+        [selections, selections.size]
       );
-      fetchingPromise.current = promise;
-      forceUpdate();
+    }
 
-      await promise;
+    const $refetch = useCallback(() => {
+      const prevShouldFetch = context.shouldFetch;
+      context.shouldFetch = true;
+      const promise = fetchQuery();
+      context.shouldFetch = prevShouldFetch;
 
-      if (fetchingPromise.current === promise) {
-        fetchingPromise.current = null;
-        forceUpdate();
-      }
+      return promise;
+    }, [fetchQuery]);
+
+    const $state = {
+      isLoading: fetchPromise !== undefined,
+      error,
     };
 
-    useIsomorphicLayoutEffect(() => {
-      if (!refetchOnWindowVisible || !IS_BROWSER) return;
-
-      const refetches = () => refetch();
-
-      window.addEventListener('visibilitychange', refetches);
-      window.addEventListener('focus', refetches);
-
-      return () => {
-        window.removeEventListener('visibilitychange', refetches);
-        window.removeEventListener('focus', refetches);
-      };
-    }, [refetchOnWindowVisible]);
-
-    return React.useMemo(() => {
-      return new Proxy<UseQueryReturnValue<GeneratedSchema>>(
-        {
-          $state,
-          $refetch: refetch,
-        },
-        {
-          set(_, key, value) {
-            return Reflect.set(query, key, value);
-          },
-          get(target, key) {
-            return Reflect.get(target, key) ?? Reflect.get(query, key);
-          },
-        }
-      );
-    }, [$state]);
+    return { ...accessor, $refetch, $state };
   };
-
-  return useQuery;
-}

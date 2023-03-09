@@ -1,3 +1,6 @@
+import { $meta, BaseGeneratedSchema, GQtyClient, RetryOptions } from 'gqty';
+import { getActivePromises } from 'gqty/Cache/query';
+import type { LegacyFetchPolicy } from './common';
 import { createUseMetaState, UseMetaState } from './meta/useMetaState';
 import { createUseMutation, UseMutation } from './mutation/useMutation';
 import { createGraphqlHOC, GraphQLHOC } from './query/hoc';
@@ -7,6 +10,11 @@ import {
   LazyFetchPolicy,
   UseLazyQuery,
 } from './query/useLazyQuery';
+import {
+  createUsePaginatedQuery,
+  PaginatedQueryFetchPolicy,
+  UsePaginatedQuery,
+} from './query/usePaginatedQuery';
 import { createUseQuery, UseQuery } from './query/useQuery';
 import { createUseRefetch, UseRefetch } from './query/useRefetch';
 import {
@@ -22,14 +30,6 @@ import {
   createUseSubscription,
   UseSubscription,
 } from './subscription/useSubscription';
-
-import type { GQtyClient, RetryOptions } from 'gqty';
-import type { FetchPolicy } from './common';
-import {
-  createUsePaginatedQuery,
-  PaginatedQueryFetchPolicy,
-  UsePaginatedQuery,
-} from './query/usePaginatedQuery';
 import type { ReactClientOptionsWithDefaults } from './utils';
 
 export interface ReactClientDefaults {
@@ -102,7 +102,7 @@ export interface ReactClientDefaults {
    *
    * @default "cache-first"
    */
-  transactionFetchPolicy?: FetchPolicy;
+  transactionFetchPolicy?: LegacyFetchPolicy;
   /**
    * Define default 'fetchPolicy' hooks behaviour
    *
@@ -158,28 +158,25 @@ export interface CreateReactClientOptions {
    * Default behaviour values
    */
   defaults?: ReactClientDefaults;
+
+  /** Debounce timer for fetchSelections, defaults to 10. */
+  fetchDebounce?: number;
 }
 
-export interface ReactClient<
-  GeneratedSchema extends {
-    query: object;
-    mutation: object;
-    subscription: object;
-  }
-> {
-  useQuery: UseQuery<GeneratedSchema>;
-  useRefetch: UseRefetch;
-  useLazyQuery: UseLazyQuery<GeneratedSchema>;
-  useTransactionQuery: UseTransactionQuery<GeneratedSchema>;
-  usePaginatedQuery: UsePaginatedQuery<GeneratedSchema>;
-  useMutation: UseMutation<GeneratedSchema>;
+export interface ReactClient<TSchema extends BaseGeneratedSchema> {
+  useQuery: UseQuery<TSchema>;
+  useRefetch: UseRefetch<TSchema>;
+  useLazyQuery: UseLazyQuery<TSchema>;
+  useTransactionQuery: UseTransactionQuery<TSchema>;
+  usePaginatedQuery: UsePaginatedQuery<TSchema>;
+  useMutation: UseMutation<TSchema>;
   graphql: GraphQLHOC;
   state: { isLoading: boolean };
   prepareReactRender: PrepareReactRender;
   useHydrateCache: UseHydrateCache;
   useMetaState: UseMetaState;
-  useSubscription: UseSubscription<GeneratedSchema>;
-  prepareQuery: PrepareQuery<GeneratedSchema>;
+  useSubscription: UseSubscription<TSchema>;
+  prepareQuery: PrepareQuery<TSchema>;
 }
 
 export function createReactClient<
@@ -223,9 +220,10 @@ export function createReactClient<
     paginatedQuerySuspense,
   };
 
-  const opts: ReactClientOptionsWithDefaults = Object.assign({}, optsCreate, {
+  const opts: ReactClientOptionsWithDefaults = {
+    ...optsCreate,
     defaults,
-  });
+  };
 
   const { prepareReactRender, useHydrateCache } = createSSRHelpers(
     client,
@@ -245,13 +243,16 @@ export function createReactClient<
     graphql: createGraphqlHOC(client, opts),
     state: {
       get isLoading() {
-        return client.scheduler.resolving !== null;
+        const cache = $meta(client.schema.query)?.context.cache;
+        const promises = cache && getActivePromises(cache);
+
+        return (promises?.length ?? 0) > 0;
       },
     },
     prepareReactRender,
     useHydrateCache,
-    useMetaState: createUseMetaState(client),
-    useSubscription: createUseSubscription<GeneratedSchema>(client, opts),
+    useMetaState: createUseMetaState(),
+    useSubscription: createUseSubscription<GeneratedSchema>(client),
     prepareQuery: createPrepareQuery<GeneratedSchema>(client, opts),
   };
 }

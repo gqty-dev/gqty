@@ -17,6 +17,10 @@ export type CreateResolversOptions = {
   fetchOptions: FetchOptions;
   scalars: ScalarsEnumsHash;
   schema: Readonly<Schema>;
+
+  // `useRefetch` and `HOC` needs to grab selections from hooks of the same
+  // component, we need to simulate what InterceptorManager did.
+  parentContext?: SchemaContext;
 };
 
 export type Resolvers<TSchema extends BaseGeneratedSchema> = {
@@ -60,7 +64,7 @@ export type CreateResolverFn<TSchema extends BaseGeneratedSchema> = (
 ) => {
   accessor: TSchema;
   context: SchemaContext;
-  resolve: () => Promise<void>;
+  resolve: () => Promise<unknown>;
   selections: Set<Selection>;
 };
 
@@ -70,9 +74,9 @@ export type CreateSubscriberFn<TSchema extends BaseGeneratedSchema> = (
   accessor: TSchema;
   context: SchemaContext;
   selections: Set<Selection>;
-  subscribe: (callbacks: {
-    onError: (error: Error | GQtyError) => void;
-    onNext: (value: unknown) => void;
+  subscribe: (callbacks?: {
+    onError?: (error: Error | GQtyError) => void;
+    onNext?: (value: unknown) => void;
   }) => () => void;
 };
 
@@ -89,7 +93,12 @@ export type SubscribeFn<TSchema extends BaseGeneratedSchema> = <
   TData extends Record<string, unknown> = Record<string, unknown>
 >(
   fn: DataFn<TSchema>,
-  options?: SubscribeOptions
+  options?: SubscribeOptions & {
+    /**
+     * Interrupts the pending promise and exists the generator.
+     */
+    signal?: AbortSignal;
+  }
 ) => AsyncGenerator<TData, void, unknown>;
 
 export type DataFn<TSchema> = (schema: TSchema) => void;
@@ -126,6 +135,8 @@ export type ResolveOptions = {
    */
   fetchPolicy?: FetchOptions['fetchPolicy'];
 
+  retryPolicy?: FetchOptions['retryPolicy'];
+
   onFetch?: (fetchPromise: Promise<unknown>) => void;
 
   onSelect?: NonNullable<SchemaContext['onSelect']>;
@@ -134,7 +145,29 @@ export type ResolveOptions = {
 };
 
 export type SubscribeOptions = {
+  /**
+   * Defines how a query should fetch from the cache and network.
+   *
+   * - `default`: Serves the cached contents when it is fresh, and if they are
+   * stale within `staleWhileRevalidate` window, fetches in the background and
+   * updates the cache. Or simply fetches on cache stale or cache miss. During
+   * SWR, a successful fetch will not notify cache updates. New contents are
+   * served on next query.
+   * - `no-store`: Always fetch and does not update on response.
+   * GQty creates a temporary cache at query-level which immediately expires.
+   * - `no-cache`: Always fetch, updates on response.
+   * - `force-cache`: Serves the cached contents regardless of staleness. It
+   * fetches on cache miss or a stale cache, updates cache on response.
+   * - `only-if-cached`: Serves the cached contents regardless of staleness,
+   * throws a network error on cache miss.
+   *
+   * _It takes effort to make sure the above stays true for all supported
+   * frameworks, please consider sponsoring so we can dedicate even more time on
+   * this._
+   */
   fetchPolicy?: FetchOptions['fetchPolicy'];
+
+  retryPolicy?: FetchOptions['retryPolicy'];
 
   /**
    * Intercept errors thrown from the underlying subscription client or query
@@ -149,11 +182,6 @@ export type SubscribeOptions = {
   onSelect?: NonNullable<SchemaContext['onSelect']>;
 
   operationName?: string;
-
-  /**
-   * Interrupts the pending promise and exists the generator.
-   */
-  signal?: AbortSignal;
 };
 
 export const createResolvers = <TSchema extends BaseGeneratedSchema>({
@@ -161,16 +189,19 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
   debugger: debug,
   depthLimit,
   fetchOptions,
-  fetchOptions: { fetchPolicy: defaultFetchPolicy = 'default' },
+  fetchOptions: {
+    fetchPolicy: defaultFetchPolicy = 'default',
+    retryPolicy: defaultRetryPoliy,
+  },
   scalars,
   schema,
+  parentContext,
 }: CreateResolversOptions): Resolvers<TSchema> => {
   const createResolver = ({
-    awaitsFetch = true,
     fetchPolicy = defaultFetchPolicy ?? 'default',
     operationName,
-    onFetch,
     onSelect,
+    retryPolicy = defaultRetryPoliy,
   }: ResolveOptions = {}) => {
     const selections = new Set<Selection>();
     const context = createContext({
@@ -180,6 +211,7 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
       onSelect(selection, cache) {
         selections.add(selection);
         onSelect?.(selection, cache);
+        parentContext?.onSelect(selection, cache);
       },
       scalars,
       schema,
@@ -193,9 +225,10 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
         // Mimic fetch error in the Chromium/WebKit monopoly
         throw new TypeError('Failed to fetch');
       }
-      const fetchPromises = fetchSelections(selections, {
+
+      return fetchSelections(selections, {
         debugger: debug,
-        fetchOptions,
+        fetchOptions: { ...fetchOptions, fetchPolicy, retryPolicy },
         operationName,
       })
         .then((results) => {
@@ -212,12 +245,6 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
         .finally(() => {
           selections.clear();
         });
-
-      if (awaitsFetch) {
-        await fetchPromises;
-      } else {
-        onFetch?.(fetchPromises);
-      }
     };
 
     return { accessor, context, resolve, selections };
@@ -227,6 +254,7 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
     fetchPolicy = defaultFetchPolicy,
     onSelect,
     operationName,
+    retryPolicy = defaultRetryPoliy,
   }: SubscribeOptions = {}) => {
     const selections = new Set<Selection>();
     const context = createContext({
@@ -246,19 +274,25 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
       onError,
       onNext,
     }: {
-      onError: (error: Error | GQtyError) => void;
-      onNext: (value: unknown) => void;
-    }) => {
-      const unsubscribeCache = context.cache.subscribe(
-        [...selections].map(({ cacheKeys }) => cacheKeys.join('.')),
-        onNext
-      );
+      onError?: (error: Error | GQtyError) => void;
+      onNext?: (value: unknown) => void;
+    } = {}) => {
+      const unsubscibers = new Set<() => void>();
 
-      const unsubscribeSelections = subscribeSelections(
+      if (onNext) {
+        const unsubscribe = context.cache.subscribe(
+          [...selections].map(({ cacheKeys }) => cacheKeys.join('.')),
+          onNext
+        );
+
+        unsubscibers.add(unsubscribe);
+      }
+
+      const unsubscribe = subscribeSelections(
         selections,
         ({ data, error, extensions }) => {
           if (error) {
-            onError(error);
+            onError?.(error);
 
             // Discard data here because of how generators work
             if (data !== undefined) {
@@ -278,14 +312,17 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
         },
         {
           debugger: debug,
-          fetchOptions,
+          fetchOptions: { ...fetchOptions, fetchPolicy, retryPolicy },
           operationName,
         }
       );
 
+      unsubscibers.add(unsubscribe);
+
       return () => {
-        unsubscribeCache();
-        unsubscribeSelections();
+        for (const unsubscribe of unsubscibers) {
+          unsubscribe();
+        }
       };
     };
 
@@ -301,9 +338,18 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
 
       fn(accessor) as unknown;
 
-      await resolve();
+      const dataFn = () =>
+        ((fn(accessor) as unknown) ?? pick(accessor, selections)) as any;
 
-      return ((fn(accessor) as unknown) ?? pick(accessor, selections)) as any;
+      const fetchPromise = resolve().then(dataFn);
+
+      if (options?.awaitsFetch ?? true) {
+        return fetchPromise;
+      }
+
+      options?.onFetch?.(fetchPromise);
+
+      return dataFn();
     },
     /**
      * Initiates selected queries, mutations and subscriptions, then subscribes

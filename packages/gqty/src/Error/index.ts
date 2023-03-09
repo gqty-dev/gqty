@@ -1,5 +1,10 @@
 import type { GraphQLError } from 'graphql';
 
+export type GQtyErrorOptions = {
+  graphQLErrors?: GQtyError['graphQLErrors'];
+  otherError?: GQtyError['otherError'];
+};
+
 export class GQtyError extends Error {
   readonly name = 'GQtyError';
 
@@ -8,15 +13,7 @@ export class GQtyError extends Error {
 
   constructor(
     message: string,
-    {
-      graphQLErrors,
-      otherError,
-    }: {
-      graphQLErrors?: GQtyError['graphQLErrors'];
-      otherError?: GQtyError['otherError'];
-      // TODO: Remove
-      caller?: Function;
-    } = {}
+    { graphQLErrors, otherError }: GQtyErrorOptions = {}
   ) {
     super(message);
 
@@ -32,11 +29,7 @@ export class GQtyError extends Error {
     };
   }
 
-  static create(
-    error: unknown,
-    // TODO: Remove caller from definitino
-    _caller?: Function
-  ): GQtyError {
+  static create(error: unknown): GQtyError {
     let newError: GQtyError;
 
     if (error instanceof GQtyError) {

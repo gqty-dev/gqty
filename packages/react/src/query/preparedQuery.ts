@@ -1,195 +1,160 @@
-import type { GQtyClient, GQtyError } from 'gqty';
-import type { SchedulerPromiseValue } from 'gqty/Scheduler';
+import { BaseGeneratedSchema, GQtyClient, GQtyError } from 'gqty';
+import { useSyncExternalStore } from 'use-sync-external-store';
 
-import {
-  useForceUpdate,
-  useIsMounted,
-  useIsomorphicLayoutEffect,
-} from '../common';
+import { createMemoryStore } from '../memoryStore';
 import type { ReactClientOptionsWithDefaults } from '../utils';
 
 export interface UsePreparedQueryOptions {
   suspense?: boolean;
 }
 
+export type TQueryFunction<
+  TSchema extends BaseGeneratedSchema,
+  TArgs = Record<string, any> | undefined,
+  TData = unknown
+> = (query: TSchema['query'], args: TArgs) => TData;
+
 export interface PreparedQuery<
-  GeneratedSchema extends {
-    query: object;
-  },
-  TFunction extends (query: GeneratedSchema['query'], args: any) => any
+  TSchema extends BaseGeneratedSchema,
+  TFunction extends TQueryFunction<TSchema>
 > {
-  preload(
-    ...[args]: undefined extends Parameters<TFunction>['1']
-      ? [Parameters<TFunction>['1']?]
-      : [Parameters<TFunction>['1']]
-  ): Promise<ReturnType<TFunction>>;
-  refetch(
-    ...[args]: undefined extends Parameters<TFunction>['1']
-      ? [Parameters<TFunction>['1']?]
-      : [Parameters<TFunction>['1']]
-  ): Promise<ReturnType<TFunction>>;
-  usePrepared(opts?: UsePreparedQueryOptions): {
-    data: ReturnType<TFunction> | undefined;
-    error?: GQtyError | undefined;
-    isLoading: boolean;
-    isRefetching: boolean;
-    called: boolean;
-  };
+  preload: PreloadFn<TSchema, TFunction>;
+  refetch: RefetchFn<TSchema, TFunction>;
+  usePrepared: UsePreparedHook<TSchema, TFunction>;
   callback: TFunction;
 }
 
-export interface PrepareQuery<
-  GeneratedSchema extends {
-    query: object;
-  }
-> {
-  <TFunction extends (query: GeneratedSchema['query'], args: any) => any>(
-    fn: TFunction
-  ): PreparedQuery<GeneratedSchema, TFunction>;
+export type PreloadFn<
+  TSchema extends BaseGeneratedSchema,
+  TFunction extends TQueryFunction<TSchema>
+> = (args?: Parameters<TFunction>[1]) => Promise<ReturnType<TFunction>>;
+
+export type RefetchFn<
+  TSchema extends BaseGeneratedSchema,
+  TFunction extends TQueryFunction<TSchema>
+> = (args?: Parameters<TFunction>[1]) => Promise<ReturnType<TFunction>>;
+
+export type UsePreparedHook<
+  TSchema extends BaseGeneratedSchema,
+  TFunction extends TQueryFunction<TSchema>
+> = (
+  options?: UsePreparedQueryOptions
+) => PreparedQueryState<ReturnType<TFunction>>;
+
+export type PreparedQueryState<TData = unknown> = {
+  data?: TData;
+  error?: GQtyError;
+  promise?: Promise<TData>;
+  isLoading: boolean;
+  isRefetching: boolean;
+  called: boolean;
+};
+
+export interface PrepareQuery<TSchema extends BaseGeneratedSchema> {
+  <TFunction extends TQueryFunction<TSchema>>(fn: TFunction): PreparedQuery<
+    TSchema,
+    TFunction
+  >;
 }
 
-export function createPrepareQuery<
-  GeneratedSchema extends {
-    query: object;
-    mutation: object;
-    subscription: object;
-  }
->(
-  { prefetch, query, refetch: refetchClient }: GQtyClient<GeneratedSchema>,
+export function createPrepareQuery<TSchema extends BaseGeneratedSchema>(
+  { prefetch, query, refetch: refetchClient }: GQtyClient<TSchema>,
   {
     defaults: { preparedSuspense: defaultSuspense },
   }: ReactClientOptionsWithDefaults
 ) {
-  const emptyDataSymbol = Symbol();
+  const prepareQuery: PrepareQuery<TSchema> = (fn) => {
+    type TFunction = typeof fn;
+    type TData = ReturnType<TFunction>;
 
-  const prepareQuery: PrepareQuery<GeneratedSchema> = function prepareQuery<
-    TFunction extends (query: GeneratedSchema['query'], args: any) => any
-  >(fn: TFunction): PreparedQuery<GeneratedSchema, TFunction> {
-    const state: {
-      data: ReturnType<TFunction> | typeof emptyDataSymbol;
-      error?: GQtyError;
-      isLoading: boolean;
-      isRefetching: boolean;
-      called: boolean;
-    } = {
-      data: emptyDataSymbol,
+    const store = createMemoryStore<PreparedQueryState<TData>>({
+      called: false,
       isLoading: false,
       isRefetching: false,
-      called: false,
+    });
+
+    const preload: PreloadFn<TSchema, TFunction> = async (args) => {
+      store.set({
+        data: undefined,
+        error: undefined,
+        promise: undefined,
+        called: true,
+        isLoading: true,
+        isRefetching: false,
+      });
+
+      const promise = prefetch((query) => fn(query, args)) as Promise<TData>;
+
+      store.add({ promise });
+
+      try {
+        const data = await promise;
+
+        store.add({
+          data,
+          promise: undefined,
+          isLoading: false,
+        });
+
+        return data;
+      } catch (error) {
+        store.add({
+          error: GQtyError.create(error),
+          promise: undefined,
+          isLoading: false,
+        });
+
+        throw error;
+      }
     };
 
-    let promiseOnTheFly:
-      | (Promise<ReturnType<TFunction>> & {
-          schedulerPromise: Promise<SchedulerPromiseValue>;
-        })
-      | undefined;
+    const refetch: RefetchFn<TSchema, TFunction> = async (args) => {
+      store.set({
+        data: undefined,
+        error: undefined,
+        promise: undefined,
+        called: true,
+        isLoading: false,
+        isRefetching: true,
+      });
 
-    const subscribers = new Set<() => void>();
+      const promise = refetchClient(() => fn(query, args)) as Promise<TData>;
 
-    function updateSubs() {
-      setTimeout(() => {
-        if (subscribers.size) {
-          for (const cb of subscribers) cb();
-        }
-      }, 0);
-    }
+      store.add({ promise });
 
-    async function refetch(
-      ...[args]: undefined extends Parameters<TFunction>['1']
-        ? [Parameters<TFunction>['1']?]
-        : [Parameters<TFunction>['1']]
-    ): Promise<ReturnType<TFunction>> {
-      state.called = true;
-      state.isLoading = true;
-      state.isRefetching = true;
-      updateSubs();
       try {
-        await refetchClient(() =>
-          fn(query, args as Parameters<TFunction>['1'])
-        );
+        const data = await promise;
 
-        return await preload(
-          //@ts-ignore
-          args
-        );
-      } finally {
-        state.isLoading = false;
-        state.isRefetching = false;
-      }
-    }
-
-    async function preload(
-      ...[args]: undefined extends Parameters<TFunction>['1']
-        ? [Parameters<TFunction>['1']?]
-        : [Parameters<TFunction>['1']]
-    ): Promise<ReturnType<TFunction>> {
-      state.called = true;
-      state.isLoading = true;
-      try {
-        const result = prefetch(
-          (query) =>
-            fn(
-              query,
-              args as Parameters<TFunction>['1']
-            ) as ReturnType<TFunction>
-        );
-
-        if (result instanceof Promise) {
-          promiseOnTheFly = result;
-          updateSubs();
-          result.schedulerPromise.then(({ error }) => {
-            if (error) {
-              state.error = error;
-            } else {
-              delete state.error;
-            }
-          });
-          const data = (state.data = await result);
-
-          if (promiseOnTheFly === result) promiseOnTheFly = undefined;
-
-          return data;
-        } else {
-          delete state.error;
-        }
-
-        return (state.data = result);
-      } finally {
-        state.isLoading = false;
-        updateSubs();
-      }
-    }
-
-    function usePrepared({
-      suspense = defaultSuspense,
-    }: UsePreparedQueryOptions = {}) {
-      const isMounted = useIsMounted();
-
-      const forceUpdate = useForceUpdate();
-
-      if (promiseOnTheFly) {
-        const promise = promiseOnTheFly.then(() => {
-          if (isMounted.current) forceUpdate();
+        store.add({
+          data,
+          promise: undefined,
+          isRefetching: false,
         });
-        if (suspense) throw promise;
+
+        return data;
+      } catch (error) {
+        store.add({
+          error: GQtyError.create(error),
+          promise: undefined,
+          isRefetching: false,
+        });
+
+        throw error;
+      }
+    };
+
+    const usePrepared: UsePreparedHook<TSchema, TFunction> = ({
+      suspense = defaultSuspense,
+    } = {}) => {
+      const state = useSyncExternalStore(store.subscribe, store.get);
+
+      if (suspense) {
+        if (state.promise) throw state.promise;
+        if (state.error) throw state.error;
       }
 
-      useIsomorphicLayoutEffect(() => {
-        let isMounted = true;
-        const cb = () => isMounted && forceUpdate();
-        subscribers.add(cb);
-
-        return () => {
-          isMounted = false;
-          subscribers.delete(cb);
-        };
-      }, [forceUpdate]);
-
-      return {
-        ...state,
-        data: state.data !== emptyDataSymbol ? state.data : undefined,
-      };
-    }
+      return state;
+    };
 
     return {
       preload,

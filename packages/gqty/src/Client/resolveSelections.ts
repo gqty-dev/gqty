@@ -1,3 +1,4 @@
+import { notifyFetch, notifyRetry } from 'gqty/Helpers/useMetaStateHack';
 import type { ExecutionResult } from 'graphql';
 import { MessageType, SubscribePayload } from 'graphql-ws';
 import { CloseEvent, WebSocket } from 'ws';
@@ -63,7 +64,8 @@ export const fetchSelections = <
           hash,
           type === 'subscription'
             ? () => doSubscribeOnce<TData>(queryPayload, fetchOptions)
-            : () => doFetch<TData>(queryPayload, fetchOptions)
+            : () =>
+                doFetch<TData>(queryPayload, { ...fetchOptions, selections })
         );
 
         const error = errors?.length
@@ -229,17 +231,7 @@ export const subscribeSelections = <
                     if (Array.isArray(err)) {
                       error(GQtyError.fromGraphQLErrors(err));
                     } else if (!isCloseEvent(err)) {
-                      if (err instanceof GQtyError) {
-                        error(err);
-                      } else {
-                        error(
-                          new GQtyError(
-                            (err as Error).message ??
-                              'Unknown subscription error',
-                            { otherError: err }
-                          )
-                        );
-                      }
+                      error(GQtyError.create(err));
                     }
 
                     this.complete();
@@ -264,6 +256,7 @@ export const subscribeSelections = <
 
                 doFetch<TData>(queryPayload, {
                   ...fetchOptions,
+                  selections,
                   signal: aborter.signal,
                 })
                   .then(next, error)
@@ -297,28 +290,42 @@ const doFetch = async <
   TData extends Record<string, unknown> = Record<string, unknown>
 >(
   payload: QueryPayload,
-  { fetcher, retryPolicy, ...fetchOptions }: FetchOptions
+  {
+    fetcher,
+    retryPolicy,
+    selections,
+    ...fetchOptions
+  }: FetchOptions & { selections: Set<Selection> }
 ): Promise<ExecutionResult<TData>> => {
   // lol
   const doDoFetch = () =>
     fetcher(payload, fetchOptions) as Promise<ExecutionResult<TData>>;
 
   try {
-    return await doDoFetch();
+    const promise = doDoFetch();
+
+    notifyFetch(promise, selections);
+
+    return await promise;
   } catch (error) {
     if (!retryPolicy || !(error instanceof Error)) throw error;
 
     return new Promise((resolve, reject) => {
+      // Selections are attached solely for useMetaState()
       doRetry(retryPolicy!, {
-        onLastTry: async () => {
-          try {
-            resolve(await doDoFetch());
-          } catch (e) {
-            reject(e);
-          }
+        onLastTry: () => {
+          const promise = doDoFetch().then(resolve, reject);
+
+          notifyRetry(promise, selections);
+
+          return promise;
         },
-        onRetry: async () => {
-          resolve(await doDoFetch());
+        onRetry: () => {
+          const promise = doDoFetch().then(resolve);
+
+          notifyRetry(promise, selections);
+
+          return promise;
         },
       });
     });

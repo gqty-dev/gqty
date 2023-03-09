@@ -19,6 +19,25 @@ import { createRefetch, LegacyRefetch } from './refetch';
 import { createLegacyResolved, LegacyResolved } from './resolved';
 import { createLegacyTrack, LegacyTrack } from './track';
 
+export type {
+  LegacyHydrateCache,
+  LegacyHydrateCacheOptions,
+} from './hydrateCache';
+export type {
+  LegacyInlineResolved,
+  LegacyInlineResolveOptions,
+} from './inlineResolved';
+export type { LegacyMutate, LegacyMutateHelpers } from './mutate';
+export type { LegacyPrefetch } from './prefetch';
+export type { LegacyRefetch } from './refetch';
+export type { LegacyResolved, LegacyResolveOptions } from './resolved';
+export type {
+  LegacyTrack,
+  LegacyTrackCallInfo,
+  LegacyTrackCallType,
+  LegacyTrackOptions,
+} from './track';
+
 let deprecationWarningMessage: string | undefined =
   !process.env.NODE_ENV || process.env.NODE_ENV === 'development'
     ? '[GQty] global query, mutation and subscription is deprecated, use ' +

@@ -19,6 +19,25 @@ import { createDebugger } from './debugger';
 import { createResolvers, Resolvers } from './resolvers';
 
 export { $meta } from '../Accessor';
+export { getFields, prepass, selectFields } from '../Helpers';
+export * as useMetaStateHack from '../Helpers/useMetaStateHack';
+export { pick } from '../Utils';
+export type {
+  LegacyHydrateCache,
+  LegacyHydrateCacheOptions,
+  LegacyInlineResolved,
+  LegacyInlineResolveOptions,
+  LegacyMutate,
+  LegacyMutateHelpers,
+  LegacyPrefetch,
+  LegacyRefetch,
+  LegacyResolved,
+  LegacyResolveOptions,
+  LegacyTrack,
+  LegacyTrackCallInfo,
+  LegacyTrackCallType,
+  LegacyTrackOptions,
+} from './compat/client';
 export type { SchemaContext } from './context';
 export type { DebugEvent } from './debugger';
 export { fetchSelections, subscribeSelections } from './resolveSelections';
@@ -99,7 +118,8 @@ export type ClientOptions = {
 };
 
 export type Client<TSchema extends BaseGeneratedSchema> = Persistors &
-  Resolvers<TSchema> & {
+  Resolvers<TSchema> &
+  LegacyClient<TSchema> & {
     /** Global cache accessors. */
     schema: TSchema;
 
@@ -126,7 +146,7 @@ export const createClient = <TSchema extends BaseGeneratedSchema>({
   scalars,
   schema,
   __depthLimit = 15,
-}: ClientOptions): Client<TSchema> & LegacyClient<TSchema> => {
+}: ClientOptions): Client<TSchema> => {
   const normalizationOptions =
     normalization === true
       ? defaultNormalizationOptions
@@ -143,6 +163,18 @@ export const createClient = <TSchema extends BaseGeneratedSchema>({
   // TODO: Defer creation until `@gqty/logger` is used.
   const debug = createDebugger();
 
+  const defaultContextOptions: CreateContextOptions = {
+    cache: clientCache,
+    depthLimit: __depthLimit,
+    fetchPolicy,
+    scalars,
+    schema,
+    typeKeys: normalizationOptions?.schemaKeys,
+  };
+
+  /** Global scope for accessing the cache via `schema` property. */
+  const clientContext = createContext(defaultContextOptions);
+
   const resolvers = createResolvers<TSchema>({
     scalars,
     schema,
@@ -156,19 +188,8 @@ export const createClient = <TSchema extends BaseGeneratedSchema>({
       ...fetchOptions,
     },
     depthLimit: __depthLimit,
+    parentContext: clientContext,
   });
-
-  const defaultContextOptions: CreateContextOptions = {
-    cache: clientCache,
-    depthLimit: __depthLimit,
-    fetchPolicy,
-    scalars,
-    schema,
-    typeKeys: normalizationOptions?.schemaKeys,
-  };
-
-  /** Global scope for accessing the cache via `schema` property. */
-  const clientContext = createContext(defaultContextOptions);
 
   const accessor = createSchemaAccessor<TSchema>(clientContext);
 

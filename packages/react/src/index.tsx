@@ -1,6 +1,6 @@
 export * from './client';
 export { coreHelpers, sortBy, uniqBy } from './common';
-export type { CoreHelpers, FetchPolicy, OnErrorHandler } from './common';
+export type { LegacyFetchPolicy, OnErrorHandler } from './common';
 export type {
   MetaState,
   UseMetaState,

@@ -1,9 +1,6 @@
-// Cache/slim.ts: A slim version of the original data cache
-
 import set from 'just-safe-set';
 import { isSkeleton } from '../Accessor/skeleton';
-import { deepCopy } from '../Helpers/deepCopy';
-import { FrailMap } from '../Helpers/FrailMap';
+import { deepCopy, FrailMap, select } from '../Helpers';
 import type { GeneratedSchemaObject } from '../Schema';
 import type { Selection } from '../Selection';
 import { crawl } from './crawl';
@@ -370,23 +367,4 @@ export class Cache {
       return snapshot;
     }
   }
-}
-
-/**
- * Similar to _.get() but dots goes into arrays.
- *
- * JSONata, JSONPath and JMESPath does similar things but they're overkill here.
- */
-export function select(node: CacheNode, path: string[]): CacheNode {
-  if (node == null || typeof node !== 'object' || path.length === 0) {
-    return node;
-  }
-
-  if (Array.isArray(node)) {
-    return node.map((item) => select(item, path));
-  }
-
-  const [key, ...rest] = path;
-
-  return select(node[key], rest);
 }

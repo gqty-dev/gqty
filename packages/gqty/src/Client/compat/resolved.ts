@@ -1,6 +1,7 @@
 import type { QueryPayload } from 'gqty/Schema';
 import type { GraphQLError } from 'graphql';
 import { MessageType } from 'graphql-ws';
+import type { CloseEvent } from 'ws';
 import type { BaseGeneratedSchema } from '..';
 import { GQtyError, RetryOptions } from '../../Error';
 import { buildQuery } from '../../QueryBuilder';
@@ -113,7 +114,7 @@ export const createLegacyResolved = <
   resolvers: { createResolver },
   subscribeLegacySelections: subscribeSelections,
 }: CreateLegacyMethodOptions<TSchema>): LegacyResolved => {
-  return async <TData = unknown>(
+  const resolved: LegacyResolved = async <TData = unknown>(
     fn: () => TData,
     {
       fetchOptions,
@@ -172,7 +173,9 @@ export const createLegacyResolved = <
     }
 
     if (context.hasCacheHit) {
-      onCacheData?.(data);
+      if (onCacheData?.(data) === false) {
+        return data;
+      }
     } else {
       onNoCacheFound?.();
     }
@@ -252,15 +255,36 @@ export const createLegacyResolved = <
                 return this.complete();
               }
 
+              const theError = Array.isArray(error)
+                ? GQtyError.fromGraphQLErrors(error)
+                : GQtyError.create(error);
+
+              debug?.dispatch({
+                cache,
+                label: subscriptionId
+                  ? `[id=${subscriptionId}] [error]`
+                  : undefined,
+                request: payload,
+                result: { error: theError },
+                selections,
+              });
+
               onSubscription?.({
                 type: 'with-errors',
-                error: Array.isArray(error)
-                  ? GQtyError.fromGraphQLErrors(error)
-                  : new GQtyError(`Subscription error`, { otherError: error }),
+                error: theError,
                 unsubscribe,
               });
             },
             complete() {
+              debug?.dispatch({
+                cache,
+                label: subscriptionId
+                  ? `[id=${subscriptionId}] [unsubscribe]`
+                  : undefined,
+                request: payload,
+                selections,
+              });
+
               onSubscription?.({
                 type: 'complete',
                 unsubscribe,
@@ -290,9 +314,11 @@ export const createLegacyResolved = <
       }
     ).then(
       (results) => updateCaches(results, targetCaches),
-      (error) => Promise.reject(GQtyError.create(error, () => {}))
+      (error) => Promise.reject(GQtyError.create(error))
     );
 
     return dataFn();
   };
+
+  return resolved;
 };

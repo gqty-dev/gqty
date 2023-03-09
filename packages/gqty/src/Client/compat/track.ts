@@ -64,12 +64,7 @@ export const createLegacyTrack = <
 
     const stop = subscribe({
       onError(error) {
-        const theError =
-          error instanceof GQtyError
-            ? error
-            : new GQtyError('Unknown subscription error', {
-                otherError: error,
-              });
+        const theError = GQtyError.create(error);
 
         if (onError) {
           onError(theError);

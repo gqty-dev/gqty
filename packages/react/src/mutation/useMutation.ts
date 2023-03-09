@@ -1,11 +1,6 @@
-import { doRetry, GQtyClient, GQtyError, RetryOptions } from 'gqty';
+import { BaseGeneratedSchema, GQtyClient, GQtyError, RetryOptions } from 'gqty';
 import * as React from 'react';
-
-import {
-  OnErrorHandler,
-  useDeferDispatch,
-  useSuspensePromise,
-} from '../common';
+import type { OnErrorHandler } from '../common';
 import type { ReactClientOptionsWithDefaults } from '../utils';
 
 export interface UseMutationOptions<TData> {
@@ -37,6 +32,7 @@ export interface UseMutationOptions<TData> {
    * for example, files uploading
    *
    * @default false
+   * @deprecated
    */
   nonSerializableVariables?: boolean;
 }
@@ -47,230 +43,116 @@ export interface UseMutationState<TData> {
   isLoading: boolean;
 }
 
-type UseMutationReducerAction<TData> =
-  | { type: 'success'; data: TData }
-  | { type: 'failure'; error: GQtyError }
-  | { type: 'loading' };
-
-function UseMutationReducer<TData>(
-  state: UseMutationState<TData>,
-  action: UseMutationReducerAction<TData>
-): UseMutationState<TData> {
-  switch (action.type) {
-    case 'loading': {
-      if (state.isLoading) return state;
-      return {
-        data: state.data,
-        isLoading: true,
-      };
-    }
-    case 'success': {
-      return {
-        data: action.data,
-        isLoading: false,
-      };
-    }
-    case 'failure': {
-      return {
-        data: state.data,
-        isLoading: false,
-        error: action.error,
-      };
-    }
-  }
-}
-
-function InitUseMutationReducer<TData>(): UseMutationState<TData> {
-  return {
-    data: undefined,
-    isLoading: false,
-  };
-}
-
-export interface UseMutation<
-  GeneratedSchema extends {
-    mutation: object;
-  }
-> {
-  <TData = unknown, TArgs = undefined>(
-    mutationFn?: (mutation: GeneratedSchema['mutation'], args: TArgs) => TData,
+export interface UseMutation<TSchema extends BaseGeneratedSchema> {
+  <TData, TArgs = never>(
+    mutationFn?: (
+      mutation: NonNullable<TSchema['mutation']>,
+      args: TArgs
+    ) => TData,
     options?: UseMutationOptions<TData>
   ): readonly [
-    (
-      ...opts: undefined extends TArgs
-        ? [
-            {
-              fn?: (
-                mutation: GeneratedSchema['mutation'],
-                args: TArgs
-              ) => TData;
-              args?: TArgs;
-            }?
-          ]
-        : [
-            {
-              fn?: (
-                mutation: GeneratedSchema['mutation'],
-                args: TArgs
-              ) => TData;
-              args: TArgs;
-            }
-          ]
-    ) => Promise<TData>,
+    (options?: { fn?: typeof mutationFn; args: TArgs }) => Promise<TData>,
     UseMutationState<TData>
   ];
 }
 
-export function createUseMutation<
-  GeneratedSchema extends {
-    mutation: object;
-    query: object;
-    subscription: object;
-  }
->(
-  client: GQtyClient<GeneratedSchema>,
+export const createUseMutation = <TSchema extends BaseGeneratedSchema>(
+  { resolve, refetch }: GQtyClient<TSchema>,
   {
-    defaults: { mutationSuspense: defaultSuspense },
+    defaults: { mutationSuspense: defaultSuspense, retry: defaultRetry },
   }: ReactClientOptionsWithDefaults
-) {
-  const { resolved, refetch } = client;
-  const clientMutation: GeneratedSchema['mutation'] = client.mutation;
+) => {
+  const useMutation: UseMutation<TSchema> = (
+    mutationFn,
+    {
+      onCompleted,
+      onError,
+      retry = defaultRetry,
+      refetchQueries = [],
+      awaitRefetchQueries,
+      suspense = defaultSuspense,
+      noCache = false,
+    } = {}
+  ) => {
+    type TCallback = typeof mutationFn;
+    type TData = ReturnType<Exclude<TCallback, undefined>>;
+    type TArgs = TCallback extends undefined
+      ? undefined
+      : Parameters<Exclude<TCallback, undefined>>[1];
 
-  const useMutation: UseMutation<GeneratedSchema> = function useMutation<
-    TData,
-    TArgs = undefined
-  >(
-    mutationFn?: (mutation: typeof clientMutation, args: TArgs) => TData,
-    opts: UseMutationOptions<TData> = {}
-  ): readonly [
-    ({
-      fn,
-      args,
-    }?: {
-      fn?: (mutation: GeneratedSchema['mutation'], args: TArgs) => TData;
-      args?: TArgs;
-    }) => Promise<TData>,
-    UseMutationState<TData>
-  ] {
-    const optsRef = React.useRef(opts);
-    optsRef.current = Object.assign({}, opts);
-    optsRef.current.suspense ??= defaultSuspense;
+    const [data, setData] = React.useState<TData>();
+    const [error, setError] = React.useState<GQtyError>();
+    const [fetchPromise, setFetchPromise] = React.useState<Promise<TData>>();
 
-    const setSuspensePromise = useSuspensePromise(optsRef);
-
-    const [state, dispatchReducer] = React.useReducer(
-      UseMutationReducer,
-      undefined,
-      InitUseMutationReducer
-    ) as [
-      UseMutationState<TData>,
-      React.Dispatch<UseMutationReducerAction<TData>>
-    ];
-    const dispatch = useDeferDispatch(dispatchReducer);
-
-    const fnRef = React.useRef(mutationFn);
-    fnRef.current = mutationFn;
-
-    const callRefetchQueries =
-      React.useCallback((): Promise<unknown> | void => {
-        const { refetchQueries, awaitRefetchQueries } = optsRef.current;
-
-        if (refetchQueries?.length) {
-          const refetchPromise = Promise.all(
-            refetchQueries.map((v) => refetch(v))
-          ).catch((err) => {
-            dispatch({
-              type: 'failure',
-              error: GQtyError.create(err, useMutation),
-            });
-          });
-
-          if (awaitRefetchQueries) return refetchPromise;
-        }
-      }, [optsRef, dispatch]);
+    if (suspense) {
+      if (fetchPromise) throw fetchPromise;
+      if (error) throw error;
+    }
 
     const mutate = React.useCallback(
-      function mutateFn({
-        fn: fnArg,
+      async ({
+        fn = mutationFn,
         args,
-      }: { fn?: typeof mutationFn; args?: any } = {}) {
-        dispatch({ type: 'loading' });
+      }: { fn?: TCallback; args?: TArgs } = {}) => {
+        if (!fn) {
+          throw new GQtyError(`Please specify a mutation function.`);
+        }
 
-        const refFn = fnRef.current;
+        setError(undefined);
 
-        const functionResolve = fnArg
-          ? () => fnArg(clientMutation, args)
-          : refFn
-          ? () => refFn(clientMutation, args)
-          : (() => {
-              throw new GQtyError(
-                'You have to specify a function to be resolved',
-                {
-                  caller: mutateFn,
-                }
-              );
-            })();
+        const promise = resolve(
+          ({ mutation }) => {
+            if (mutation === undefined) {
+              throw new GQtyError(`Mutation is not defined in the schema.`);
+            }
 
-        return resolved<TData>(functionResolve, {
-          noCache: optsRef.current.noCache,
-          refetch: true,
-          nonSerializableVariables: optsRef.current.nonSerializableVariables,
-        }).then(
-          async (data) => {
-            const refetchingQueries = callRefetchQueries();
-            if (refetchingQueries) await refetchingQueries;
-
-            optsRef.current.onCompleted?.(data);
-            dispatch({
-              type: 'success',
-              data,
-            });
-
-            return data;
+            return fn(mutation, args as TArgs);
           },
-          (err: unknown) => {
-            const error = GQtyError.create(err, useMutation);
-            optsRef.current.onError?.(error);
-            dispatch({
-              type: 'failure',
-              error,
-            });
-
-            throw error;
+          {
+            fetchPolicy: noCache ? 'no-store' : 'no-cache',
+            retryPolicy: retry,
           }
-        );
+        ).then((data) => {
+          const refetchPromise = Promise.all(
+            refetchQueries.map((v) => refetch(v))
+          );
+
+          return awaitRefetchQueries ? refetchPromise.then(() => data) : data;
+        }) as Promise<TData>;
+
+        setFetchPromise(promise);
+
+        try {
+          const data = await promise;
+
+          const refetchPromise = Promise.all(
+            refetchQueries.map((v) => refetch(v))
+          );
+
+          if (awaitRefetchQueries) {
+            await refetchPromise;
+          }
+
+          onCompleted?.(data);
+          setData(data);
+
+          return data;
+        } catch (error) {
+          const theError = GQtyError.create(error);
+
+          onError?.(theError);
+          setError(theError);
+
+          throw theError;
+        } finally {
+          setFetchPromise(undefined);
+        }
       },
-      [optsRef, fnRef, dispatch, callRefetchQueries]
+      [mutationFn, noCache, retry, refetchQueries, awaitRefetchQueries]
     );
 
-    const { retry = false } = opts;
-
-    return React.useMemo(() => {
-      const fn: typeof mutate = retry
-        ? (...args: any[]) => {
-            const promise = mutate(...args).catch((err) => {
-              doRetry(retry, {
-                onRetry: () => {
-                  const promise = mutate(...args).then(() => {});
-
-                  setSuspensePromise(promise);
-
-                  return promise;
-                },
-              });
-
-              throw err;
-            });
-
-            setSuspensePromise(promise);
-
-            return promise;
-          }
-        : mutate;
-
-      return [fn, state];
-    }, [state, mutate, retry, optsRef, setSuspensePromise]);
+    return Object.freeze([mutate, { data, error, isLoading: !!fetchPromise }]);
   };
 
   return useMutation;
-}
+};

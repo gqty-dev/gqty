@@ -1,6 +1,7 @@
 import set from 'just-safe-set';
 import type { Selection } from '../Selection';
 
+/** Similiar to the `select()` helper, but for accessor proxies. */
 export const pick = (
   schema: Record<string, any>,
   selections: Set<Selection>
