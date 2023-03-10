@@ -45,13 +45,6 @@ export interface Subscription {
   __typename?: 'Subscription';
 }
 
-export interface SchemaObjectTypes {
-  Mutation: Mutation;
-  Query: Query;
-  Subscription: Subscription;
-}
-export type SchemaObjectTypesNames = 'Mutation' | 'Query' | 'Subscription';
-
 export interface GeneratedSchema {
   query: Query;
   mutation: Mutation;

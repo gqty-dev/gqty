@@ -9,8 +9,6 @@ import {
   generatedSchema,
   GeneratedSchema,
   scalarsEnumsHash,
-  SchemaObjectTypes,
-  SchemaObjectTypesNames,
 } from './schema.generated';
 
 const endpoint =
@@ -19,8 +17,7 @@ const endpoint =
     : 'http://localhost:3000/api/graphql';
 
 const queryFetcher: QueryFetcher = async function (
-  query,
-  variables,
+  { query, variables, operationName },
   fetchOptions
 ) {
   const response = await fetch(endpoint, {
@@ -31,6 +28,7 @@ const queryFetcher: QueryFetcher = async function (
     body: JSON.stringify({
       query,
       variables,
+      operationName,
     }),
     ...fetchOptions,
   });
@@ -40,14 +38,12 @@ const queryFetcher: QueryFetcher = async function (
   return json;
 };
 
-export const client = createClient<
-  GeneratedSchema,
-  SchemaObjectTypesNames,
-  SchemaObjectTypes
->({
+export const client = createClient<GeneratedSchema>({
   schema: generatedSchema,
-  scalarsEnumsHash,
-  queryFetcher,
+  scalars: scalarsEnumsHash,
+  fetchOptions: {
+    fetcher: queryFetcher,
+  },
 });
 
 if (typeof window !== 'undefined') {
@@ -59,7 +55,21 @@ if (typeof window !== 'undefined') {
 const { query, mutation, mutate, subscription, resolved, refetch, track } =
   client;
 
+export * from './schema.generated';
 export { query, mutation, mutate, subscription, resolved, refetch, track };
+export {
+  graphql,
+  useQuery,
+  usePaginatedQuery,
+  useTransactionQuery,
+  useLazyQuery,
+  useRefetch,
+  useMutation,
+  useMetaState,
+  prepareReactRender,
+  useHydrateCache,
+  prepareQuery,
+};
 
 const {
   graphql,
@@ -83,19 +93,3 @@ const {
     staleWhileRevalidate: false,
   },
 });
-
-export {
-  graphql,
-  useQuery,
-  usePaginatedQuery,
-  useTransactionQuery,
-  useLazyQuery,
-  useRefetch,
-  useMutation,
-  useMetaState,
-  prepareReactRender,
-  useHydrateCache,
-  prepareQuery,
-};
-
-export * from './schema.generated';

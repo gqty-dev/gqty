@@ -266,28 +266,6 @@ export interface Subscription {
   __typename?: 'Subscription';
 }
 
-export interface SchemaObjectTypes {
-  AuthResult: AuthResult;
-  Category: Category;
-  CursorPageInfo: CursorPageInfo;
-  Mutation: Mutation;
-  Post: Post;
-  PostsConnection: PostsConnection;
-  Query: Query;
-  Subscription: Subscription;
-  User: User;
-}
-export type SchemaObjectTypesNames =
-  | 'AuthResult'
-  | 'Category'
-  | 'CursorPageInfo'
-  | 'Mutation'
-  | 'Post'
-  | 'PostsConnection'
-  | 'Query'
-  | 'Subscription'
-  | 'User';
-
 export interface GeneratedSchema {
   query: Query;
   mutation: Mutation;

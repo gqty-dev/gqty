@@ -7,13 +7,15 @@ import { createReactClient } from '@gqty/react';
 import { createClient, QueryFetcher } from 'gqty';
 import {
   generatedSchema,
-  scalarsEnumsHash,
   GeneratedSchema,
-  SchemaObjectTypes,
-  SchemaObjectTypesNames,
+  scalarsEnumsHash,
 } from './schema.generated';
 
-const queryFetcher: QueryFetcher = async function (query, variables) {
+const queryFetcher: QueryFetcher = async function ({
+  query,
+  variables,
+  operationName,
+}) {
   // Modify "https://examples-api.gqty.dev/graphql" if needed
   const response = await fetch('https://examples-api.gqty.dev/graphql', {
     method: 'POST',
@@ -23,6 +25,7 @@ const queryFetcher: QueryFetcher = async function (query, variables) {
     body: JSON.stringify({
       query,
       variables,
+      operationName,
     }),
     mode: 'cors',
   });
@@ -32,19 +35,31 @@ const queryFetcher: QueryFetcher = async function (query, variables) {
   return json;
 };
 
-export const client = createClient<
-  GeneratedSchema,
-  SchemaObjectTypesNames,
-  SchemaObjectTypes
->({
+export const client = createClient<GeneratedSchema>({
   schema: generatedSchema,
-  scalarsEnumsHash,
-  queryFetcher,
+  scalars: scalarsEnumsHash,
+  fetchOptions: {
+    fetcher: queryFetcher,
+  },
 });
 
 const { query, mutation, mutate, subscription, resolved, refetch } = client;
 
+export * from './schema.generated';
 export { query, mutation, mutate, subscription, resolved, refetch };
+export {
+  graphql,
+  useQuery,
+  usePaginatedQuery,
+  useTransactionQuery,
+  useLazyQuery,
+  useRefetch,
+  useMutation,
+  useMetaState,
+  prepareReactRender,
+  useHydrateCache,
+  prepareQuery,
+};
 
 const {
   graphql,
@@ -68,19 +83,3 @@ const {
     staleWhileRevalidate: false,
   },
 });
-
-export {
-  graphql,
-  useQuery,
-  usePaginatedQuery,
-  useTransactionQuery,
-  useLazyQuery,
-  useRefetch,
-  useMutation,
-  useMetaState,
-  prepareReactRender,
-  useHydrateCache,
-  prepareQuery,
-};
-
-export * from './schema.generated';

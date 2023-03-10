@@ -978,7 +978,8 @@ export const generatedSchema = {${generatedSchemaCodeString}};
   const subscriptionsClient =
   typeof window !== "undefined" ?
   createSubscriptionsClient({
-    wsEndpoint: () => {
+    lazy: true,
+    url: () => {
       // Modify if needed
       const url = new URL("${endpoint}", window.location.href);
       url.protocol = url.protocol.replace('http', 'ws');

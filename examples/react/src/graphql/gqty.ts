@@ -2,17 +2,19 @@
  * GQTY: You can safely modify this file and Query Fetcher based on your needs
  */
 
-import { createSubscriptionsClient } from '@gqty/subscriptions';
 import { createClient, QueryFetcher } from 'gqty';
+import { createClient as createSubscriptionsClient } from 'graphql-ws';
 import {
   generatedSchema,
   GeneratedSchema,
   scalarsEnumsHash,
-  SchemaObjectTypes,
-  SchemaObjectTypesNames,
 } from './schema.generated';
 
-const queryFetcher: QueryFetcher = async function (query, variables) {
+const queryFetcher: QueryFetcher = async function ({
+  query,
+  variables,
+  operationName,
+}) {
   const response = await fetch(
     typeof window === 'undefined'
       ? 'http://localhost:4141/api/graphql'
@@ -25,6 +27,7 @@ const queryFetcher: QueryFetcher = async function (query, variables) {
       body: JSON.stringify({
         query,
         variables,
+        operationName,
       }),
       mode: 'cors',
     }
@@ -38,7 +41,8 @@ const queryFetcher: QueryFetcher = async function (query, variables) {
 const subscriptionsClient =
   typeof window !== 'undefined'
     ? createSubscriptionsClient({
-        wsEndpoint: () => {
+        lazy: true,
+        url: () => {
           // Modify if needed
           const url = new URL('/api/graphql', window.location.href);
           url.protocol = url.protocol.replace('http', 'ws');
@@ -49,20 +53,17 @@ const subscriptionsClient =
       })
     : undefined;
 
-export const client = createClient<
-  GeneratedSchema,
-  SchemaObjectTypesNames,
-  SchemaObjectTypes
->({
+export const client = createClient<GeneratedSchema>({
   schema: generatedSchema,
-  scalarsEnumsHash,
-  queryFetcher,
-  subscriptionsClient,
+  scalars: scalarsEnumsHash,
+  fetchOptions: {
+    fetcher: queryFetcher,
+    subscriber: subscriptionsClient,
+  },
 });
 
 const { query, mutation, mutate, subscription, resolved, refetch, track } =
   client;
 
-export { query, mutation, mutate, subscription, resolved, refetch, track };
-
 export * from './schema.generated';
+export { query, mutation, mutate, subscription, resolved, refetch, track };

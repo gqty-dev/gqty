@@ -548,10 +548,10 @@ export const createTestClient = async (
 
   const subscriptionsClient = config?.subscriptions
     ? createWsClient({
-        url: client.endpoint.replace('http:', 'ws:'),
-        retryAttempts: 0,
-        webSocketImpl: WebSocket,
         lazy: true,
+        retryAttempts: 0,
+        url: client.endpoint.replace('http:', 'ws:'),
+        webSocketImpl: WebSocket,
       })
     : undefined;
 

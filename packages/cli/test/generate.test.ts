@@ -159,7 +159,8 @@ test('basic functionality works', async () => {
     const subscriptionsClient =
       typeof window !== 'undefined'
         ? createSubscriptionsClient({
-            wsEndpoint: () => {
+            lazy: true,
+            url: () => {
               // Modify if needed
               const url = new URL('/api/graphql', window.location.href);
               url.protocol = url.protocol.replace('http', 'ws');
@@ -1395,7 +1396,8 @@ test('javascript output works', async () => {
     const subscriptionsClient =
       typeof window !== 'undefined'
         ? createSubscriptionsClient({
-            wsEndpoint: () => {
+            lazy: true,
+            url: () => {
               // Modify if needed
               const url = new URL('/api/graphql', window.location.href);
               url.protocol = url.protocol.replace('http', 'ws');

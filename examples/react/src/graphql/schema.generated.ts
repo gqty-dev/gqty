@@ -237,24 +237,6 @@ export interface Subscription {
   newNotification: ScalarsEnums['String'];
 }
 
-export interface SchemaObjectTypes {
-  Dog: Dog;
-  Human: Human;
-  HumansConnection: HumansConnection;
-  Mutation: Mutation;
-  PageInfo: PageInfo;
-  Query: Query;
-  Subscription: Subscription;
-}
-export type SchemaObjectTypesNames =
-  | 'Dog'
-  | 'Human'
-  | 'HumansConnection'
-  | 'Mutation'
-  | 'PageInfo'
-  | 'Query'
-  | 'Subscription';
-
 export interface $Species {
   Dog?: Dog;
   Human?: Human;

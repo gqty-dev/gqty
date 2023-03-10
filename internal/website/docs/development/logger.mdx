@@ -20,14 +20,12 @@ You can improve the development experience using a `Logger` of your GQty usage, 
 
 // ...
 
-export const client = createClient<
-  GeneratedSchema,
-  SchemaObjectTypesNames,
-  SchemaObjectTypes
->({
+export const client = createClient<GeneratedSchema>({
   schema: generatedSchema,
-  scalarsEnumsHash,
-  queryFetcher,
+  scalars: scalarsEnumsHash,
+  fetchOptions: {
+    fetcher: queryFetcher,
+  },
 });
 
 if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {

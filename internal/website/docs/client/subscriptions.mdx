@@ -20,7 +20,8 @@ If you activated `subscriptions` in the [CLI Configuration](/docs/cli/config) yo
 const subscriptionsClient =
   typeof window !== 'undefined'
     ? createSubscriptionsClient({
-        wsEndpoint: () => {
+        lazy: true,
+        url: () => {
           // Modify if needed
           const url = new URL('${endpoint}', window.location.href);
           url.protocol = url.protocol.replace('http', 'ws');
@@ -31,60 +32,17 @@ const subscriptionsClient =
 
 //...
 
-export const client = createClient<
-  GeneratedSchema,
-  SchemaObjectTypesNames,
-  SchemaObjectTypes
->({
+export const client = createClient<GeneratedSchema>({
   // ...
-  subscriptionsClient,
+  fetchOptions: {
+    subscriber: subscriptionsClient,
+  },
 });
 ```
 
 It basically enables subscriptions only on client side, in case you are using [SSR](/docs/react/ssr).
 
-It's important to note that `wsEndpoint` can be a `string`, a `function` that returns a `string` or and an `async function` that returns a `string`.
-
-### setConnectionParams
-
-`subscriptionsClient` returns a helper in where you can set the connection parameters for the websocket connection, normally used for `authorization` purposes.
-
-The second parameter is an optional boolean flag that automatically will reset the websocket connection if it's already connected.
-
-```ts
-const subscriptionsClient =
-  typeof window !== 'undefined'
-    ? createSubscriptionsClient({
-        wsEndpoint: () => {
-          // Modify if needed
-          const url = new URL('${endpoint}', window.location.href);
-          url.protocol = url.protocol.replace('http', 'ws');
-          return url.href;
-        },
-      })
-    : undefined;
-
-const { setConnectionParams } = subscriptionsClient || {};
-
-export { setConnectionParams };
-
-// ...
-```
-
-```ts
-import { setConnectionParams } from '../gqty';
-
-// ...
-
-let resetWebsocketConnection = true;
-
-setConnectionParams(
-  {
-    token: 'zLjYkmrdX5...',
-  },
-  resetWebsocketConnection
-);
-```
+It's important to note that `url` can be a `string`, a `function` that returns a `string` or and an `async function` that returns a `string`.
 
 ### Lazy behavior
 
