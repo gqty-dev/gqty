@@ -890,6 +890,9 @@ importers:
       graphql:
         specifier: ^16.6.0
         version: 16.6.0
+      graphql-sse:
+        specifier: ^2.1.0
+        version: 2.1.0(graphql@16.6.0)
       graphql-ws:
         specifier: ^5.11.3
         version: 5.11.3(graphql@16.6.0)
@@ -10637,7 +10640,7 @@ packages:
     resolution: {integrity: sha512-fU8zwSgAX2noXAsuFiCZ8BtXeXZOzXyK5u1LloCdacsVth4skdBMPO74EG51lBoWSIZ8beUocdpV8+cQHBODnQ==}
     engines: {node: '>=10'}
     peerDependencies:
-      graphql: '*'
+      graphql: '>=0.11 <=16'
     dependencies:
       graphql: 16.6.0
 
@@ -17955,8 +17958,14 @@ packages:
     engines: {node: ^12.20.0 || >=14.13.0}
     peerDependencies:
       graphql: '*'
+      graphql-sse: ^2.1.0
+      graphql-ws: ^5.11.3
     peerDependenciesMeta:
       graphql:
+        optional: true
+      graphql-sse:
+        optional: true
+      graphql-ws:
         optional: true
     dependencies:
       '@gqty/utils': link:packages/utils/dist

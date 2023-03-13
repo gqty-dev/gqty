@@ -4,11 +4,11 @@ import type { Selection } from '../Selection';
 import type { FetchResult, QueryExtensions } from './resolveSelections';
 
 export type DebugEvent = {
-  cache?: Cache; // cacheSnapshot
-  label?: string; // label
-  request: QueryPayload<QueryExtensions>; // query, variables, operationName, type
-  result?: FetchResult; // executionResult, error(s)
-  selections: Set<Selection>; // selections
+  cache?: Cache;
+  label?: string;
+  request: QueryPayload<QueryExtensions>;
+  result?: FetchResult;
+  selections: Set<Selection>;
 };
 
 export type DebugEventListener = (event: DebugEvent) => void;

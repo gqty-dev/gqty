@@ -1,4 +1,4 @@
-import type { ExecutionResult } from 'graphql-ws';
+import type { ExecutionResult } from 'graphql';
 import type { Cache } from '.';
 
 /** Global query deduplication when cache instance is not provided. */
@@ -48,7 +48,9 @@ export const dedupePromise = <
 };
 
 /** Retrieve active promises associated provided cache, useful for SSR. */
-export const getActivePromises = (cache?: Cache) => [
+export const getActivePromises = (
+  cache?: Cache
+): Promise<ExecutionResult>[] => [
   ...(deduplicationCache.get(cache ?? nullObjectKey)?.values() ?? []),
 ];
 

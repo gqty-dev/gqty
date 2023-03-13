@@ -1,4 +1,10 @@
-import type { Client as SubscriptionsClient } from 'graphql-ws';
+import type { Client as SseClient } from 'graphql-sse';
+import type {
+  Client as WsClient,
+  ExecutionResult,
+  Sink,
+  SubscribePayload,
+} from 'graphql-ws';
 import { createSchemaAccessor } from '../Accessor';
 import { Cache } from '../Cache';
 import {
@@ -13,7 +19,11 @@ import type {
   ScalarsEnumsHash,
   Schema,
 } from '../Schema';
-import { createLegacyClient, LegacyClient } from './compat/client';
+import {
+  createLegacyClient,
+  LegacyClient,
+  LegacyFetchers,
+} from './compat/client';
 import { createContext, CreateContextOptions } from './context';
 import { createDebugger } from './debugger';
 import { createResolvers, Resolvers } from './resolvers';
@@ -23,6 +33,7 @@ export { getFields, prepass, selectFields } from '../Helpers';
 export * as useMetaStateHack from '../Helpers/useMetaStateHack';
 export { pick } from '../Utils';
 export type {
+  LegacyFetchers,
   LegacyHydrateCache,
   LegacyHydrateCacheOptions,
   LegacyInlineResolved,
@@ -58,6 +69,8 @@ export type SchemaObjects<TSchema extends BaseGeneratedSchema> = {
   [key in SchemaObjectKeys<TSchema>]: { __typename: key };
 };
 
+export type SubscriptionClient = SseClient | WsClient;
+
 export type FetchOptions = Omit<RequestInit, 'body' | 'mode'> & {
   fetcher: QueryFetcher;
 
@@ -87,7 +100,7 @@ export type FetchOptions = Omit<RequestInit, 'body' | 'mode'> & {
   retryPolicy?: RetryOptions;
 
   /** Client implementation for GraphQL Subscriptions. */
-  subscriber?: SubscriptionsClient;
+  subscriber?: SubscriptionClient;
 };
 
 export type ClientOptions = {
@@ -116,7 +129,13 @@ export type ClientOptions = {
   __depthLimit?: number;
 };
 
-export type Client<TSchema extends BaseGeneratedSchema> = Persistors &
+export type Client<
+  TSchema extends BaseGeneratedSchema,
+  // TODO: compat: remove in next major
+  _ObjectTypesNames extends string = never,
+  // TODO: compat: remove in next major
+  _ObjectTypes extends Record<string, unknown> = never
+> = Persistors &
   Resolvers<TSchema> &
   LegacyClient<TSchema> & {
     /** Global cache accessors. */
@@ -145,7 +164,63 @@ export const createClient = <TSchema extends BaseGeneratedSchema>({
   scalars,
   schema,
   __depthLimit = 15,
-}: ClientOptions): Client<TSchema> => {
+
+  queryFetcher,
+  subscriptionClient,
+}: ClientOptions & LegacyFetchers): Client<TSchema> => {
+  // TODO: compat: queryFetcher, remove in next major
+  fetcher ||= ({ query, variables }, fetchOptions) =>
+    queryFetcher!(query, variables ?? {}, fetchOptions);
+
+  // TODO: compat: subscriptionsClient, remove in next major
+  subscriber ||= {
+    subscribe<
+      TData = Record<string, unknown>,
+      TExtensions = Record<string, unknown>
+    >(
+      { query, variables }: SubscribePayload,
+      sink: Sink<ExecutionResult<TData, TExtensions>>
+    ) {
+      const maybePromise = subscriptionClient!.subscribe({
+        query,
+        variables: variables ?? {},
+        selections: [],
+        events: {
+          onComplete: () => {
+            sink.complete();
+          },
+          onData: (result) => {
+            sink.next(result);
+          },
+          onError({ data, error }) {
+            if ((error && !error.graphQLErrors?.length) || !data) {
+              sink.error(error);
+            } else {
+              sink.next({ data: data as TData, errors: error.graphQLErrors });
+            }
+          },
+        },
+      });
+
+      return () => {
+        if (maybePromise instanceof Promise) {
+          maybePromise.then(({ unsubscribe }) => {
+            unsubscribe();
+          });
+        } else {
+          (maybePromise as any).unsubscribe();
+        }
+      };
+    },
+    dispose: () => {
+      subscriptionClient?.close();
+    },
+    terminate: () => {
+      subscriptionClient?.close();
+    },
+    on: () => () => {},
+  };
+
   const normalizationOptions =
     normalization === true
       ? defaultNormalizationOptions
@@ -171,7 +246,7 @@ export const createClient = <TSchema extends BaseGeneratedSchema>({
     typeKeys: normalizationOptions?.schemaKeys,
   };
 
-  /** Global scope for accessing the cache via `schema` property. */
+  // Global scope for accessing the cache via `schema` property.
   const clientContext = createContext(defaultContextOptions);
 
   const resolvers = createResolvers<TSchema>({
@@ -217,5 +292,3 @@ export const createClient = <TSchema extends BaseGeneratedSchema>({
     }),
   };
 };
-
-// TODO: Update fetcher in cli codegen to accept QueryPayload

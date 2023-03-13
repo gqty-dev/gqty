@@ -15,8 +15,10 @@ import {
   createLegacyPrepareRender,
   LegacyPrepareRender,
 } from './prepareRender';
+import type { LegacyQueryFetcher } from './queryFetcher';
 import { createRefetch, LegacyRefetch } from './refetch';
 import { createLegacyResolved, LegacyResolved } from './resolved';
+import type { LegacySubscriptionClient } from './subscriptionsClient';
 import { createLegacyTrack, LegacyTrack } from './track';
 
 export type {
@@ -54,6 +56,11 @@ export type CreateLegacyClientOptions<TSchema extends BaseGeneratedSchema> = {
   scalars: ScalarsEnumsHash;
   schema: Readonly<Schema>;
   __depthLimit?: number;
+};
+
+export type LegacyFetchers = {
+  queryFetcher?: LegacyQueryFetcher;
+  subscriptionClient?: LegacySubscriptionClient;
 };
 
 /**

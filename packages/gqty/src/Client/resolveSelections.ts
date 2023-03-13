@@ -1,4 +1,6 @@
 import type { ExecutionResult } from 'graphql';
+import type { Client as SseClient } from 'graphql-sse';
+import type { Client as WsClient } from 'graphql-ws';
 import { MessageType, SubscribePayload } from 'graphql-ws';
 import { CloseEvent, WebSocket } from 'ws';
 import type { FetchOptions } from '.';
@@ -146,42 +148,52 @@ export const subscribeSelections = <
         extensions: { type, hash },
       };
 
-      {
-        const unsub = subscriber?.on('message', (message) => {
-          switch (message.type) {
-            case MessageType.ConnectionAck: {
-              unsub?.();
-              onSubscribe?.();
-              break;
-            }
-          }
-        });
-      }
-
       let subscriptionId: string | undefined;
-      {
-        const unsub = subscriber?.on('message', (message) => {
-          switch (message.type) {
-            case MessageType.ConnectionAck: {
-              break;
+
+      if (isWsClient(subscriber)) {
+        {
+          const unsub = subscriber?.on('message', (message) => {
+            switch (message.type) {
+              case MessageType.ConnectionAck: {
+                unsub?.();
+                onSubscribe?.();
+                break;
+              }
             }
-            case MessageType.Subscribe: {
-              if (message.payload.extensions?.hash !== hash) return;
+          });
+        }
 
-              subscriptionId = message.id;
+        {
+          const unsub = subscriber?.on('message', (message) => {
+            switch (message.type) {
+              case MessageType.ConnectionAck: {
+                break;
+              }
+              case MessageType.Subscribe: {
+                if (message.payload.extensions?.hash !== hash) return;
 
-              debug?.dispatch({
-                cache,
-                label: `[id=${subscriptionId}] [create]`,
-                request: queryPayload,
-                selections,
-              });
+                subscriptionId = message.id;
 
-              unsub?.();
-              break;
+                debug?.dispatch({
+                  cache,
+                  label: `[id=${subscriptionId}] [create]`,
+                  request: queryPayload,
+                  selections,
+                });
+
+                unsub?.();
+                break;
+              }
             }
-          }
-        });
+          });
+        }
+      } else if (isSseClient(subscriber)) {
+        // TODO: Get id via constructor#onMessage option, this requires
+        // modifications to the generated client.
+        subscriptionId = 'EventSource';
+        onSubscribe?.();
+      } else if (type === 'subscription') {
+        throw new GQtyError(`Please specify a subscriber for subscriptions.`);
       }
 
       const next = ({ data, errors, extensions }: ExecutionResult<TData>) => {
@@ -348,7 +360,7 @@ const doFetch = async <
 const doSubscribeOnce = async <
   TData extends Record<string, unknown> = Record<string, unknown>
 >(
-  payload: SubscribePayload,
+  { query, variables, operationName }: SubscribePayload,
   { subscriber }: FetchOptions
 ) => {
   if (!subscriber) {
@@ -359,28 +371,35 @@ const doSubscribeOnce = async <
     (resolve, reject) => {
       let result: any;
 
-      const unsubscribe = subscriber.subscribe(payload, {
-        next(data) {
-          result = data;
-          unsubscribe();
+      const unsubscribe = subscriber.subscribe(
+        {
+          query,
+          variables: variables ?? {},
+          operationName: operationName ?? undefined,
         },
-        error(error) {
-          if (isCloseEvent(error)) {
-            resolve(result);
-          } else if (Array.isArray(error)) {
-            reject(GQtyError.fromGraphQLErrors(error));
-          } else {
-            reject(error);
-          }
-        },
-        complete() {
-          if (!result) {
-            throw new GQtyError(`Subscription completed without data`);
-          }
+        {
+          next(data) {
+            result = data;
+            unsubscribe();
+          },
+          error(error) {
+            if (isCloseEvent(error)) {
+              resolve(result);
+            } else if (Array.isArray(error)) {
+              reject(GQtyError.fromGraphQLErrors(error));
+            } else {
+              reject(error);
+            }
+          },
+          complete() {
+            if (!result) {
+              throw new GQtyError(`Subscription completed without data`);
+            }
 
-          resolve(result);
-        },
-      });
+            resolve(result);
+          },
+        }
+      );
     }
   );
 };
@@ -396,5 +415,12 @@ export const isCloseEvent = (input: unknown): input is CloseEvent => {
       ].includes(error.code))
   );
 };
+
+const isWsClient = (client?: SseClient | WsClient): client is WsClient => {
+  return client !== undefined && typeof (client as WsClient).on === 'function';
+};
+
+const isSseClient = (client?: SseClient | WsClient): client is SseClient =>
+  client !== undefined && !isWsClient(client);
 
 // TODO: Test unsubscribe on both subscription and fetch with concurrent subscribers.
