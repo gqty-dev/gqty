@@ -1,91 +1,18 @@
 import {
-  useDeepCompareEffect,
   useDocumentVisibility,
   useIntervalEffect,
+  useUpdateEffect,
 } from '@react-hookz/web';
-import {
-  $meta,
-  BaseGeneratedSchema,
-  GQtyClient,
-  GQtyError,
-  RetryOptions,
-  Selection,
-} from 'gqty';
-import * as React from 'react';
-
-import {
-  LegacyFetchPolicy,
-  OnErrorHandler,
-  translateFetchPolicy,
-} from '../common';
+import type { BaseGeneratedSchema, GQtyError, RetryOptions } from 'gqty';
+import type { LegacyFetchPolicy, OnErrorHandler } from '../common';
 import type { ReactClientOptionsWithDefaults } from '../utils';
+import type { UseQuery } from './useQuery';
 
 export interface UseTransactionQueryState<TData> {
   data: TData | undefined;
   error?: GQtyError;
   isCalled: boolean;
   promise?: Promise<TData>;
-}
-
-type UseTransactionQueryReducerAction<TData> =
-  | { type: 'cache-found'; data: TData }
-  | { type: 'success'; data: TData }
-  | { type: 'failure'; error: GQtyError }
-  | { type: 'loading'; promise: Promise<TData> }
-  | { type: 'skipped' };
-
-function UseTransactionQueryReducer<TData>(
-  state: UseTransactionQueryState<TData>,
-  action: UseTransactionQueryReducerAction<TData>
-): UseTransactionQueryState<TData> {
-  switch (action.type) {
-    case 'loading': {
-      if (state.promise === action.promise) return state;
-
-      return {
-        data: state.data,
-        isCalled: true,
-        promise: action.promise,
-      };
-    }
-    case 'success': {
-      return {
-        data: action.data,
-        isCalled: true,
-      };
-    }
-    case 'cache-found': {
-      return {
-        data: action.data,
-        isCalled: true,
-        promise: state.promise,
-      };
-    }
-    case 'failure': {
-      return {
-        data: state.data,
-        error: action.error,
-        isCalled: true,
-      };
-    }
-    case 'skipped': {
-      if (!state.promise) return state;
-
-      return {
-        data: state.data,
-        isCalled: true,
-      };
-    }
-  }
-}
-
-function InitUseTransactionQueryReducer<
-  TData
->(): UseTransactionQueryState<TData> {
-  return {
-    data: undefined,
-    isCalled: false,
-  };
 }
 
 export type UseTransactionQueryOptions<TData, TVariables> = {
@@ -118,7 +45,7 @@ export interface UseTransactionQuery<TSchema extends BaseGeneratedSchema> {
 }
 
 export function createUseTransactionQuery<TSchema extends BaseGeneratedSchema>(
-  client: GQtyClient<TSchema>,
+  useQuery: UseQuery<TSchema>,
   {
     defaults: {
       transactionFetchPolicy: defaultFetchPolicy,
@@ -143,107 +70,39 @@ export function createUseTransactionQuery<TSchema extends BaseGeneratedSchema>(
       variables,
     } = {}
   ) => {
-    type TCallback = typeof fn;
-    type TData = ReturnType<TCallback>;
+    const query = useQuery({
+      fetchPolicy,
+      notifyOnNetworkStatusChange,
+      operationName,
+      prepare: ({ query }) => (skip ? undefined : fn(query, variables)),
+      retry,
+      suspense,
+    });
 
-    const [state, dispatch] = React.useReducer(
-      UseTransactionQueryReducer,
-      undefined,
-      InitUseTransactionQueryReducer
-    ) as [
-      UseTransactionQueryState<TData>,
-      React.Dispatch<UseTransactionQueryReducerAction<TData>>
-    ];
-
-    useDeepCompareEffect(async () => {
-      if (skip) {
-        return dispatch({ type: 'skipped' });
+    useUpdateEffect(() => {
+      if (!query.$state.isLoading) {
+        onCompleted?.(fn(query, variables));
       }
+    }, [query.$state.isLoading]);
 
-      const selections = new Set<Selection>();
-
-      let fetchPromise: Promise<TData> | undefined;
-
-      const promise = client.resolve(({ query }) => fn(query, variables), {
-        awaitsFetch: false,
-        fetchPolicy: translateFetchPolicy(fetchPolicy),
-        onFetch(promise) {
-          fetchPromise = promise as Promise<TData>;
-        },
-        onSelect(selection) {
-          selections.add(selection);
-        },
-        operationName,
-        retryPolicy: retry,
-      }) as Promise<TData>;
-
-      dispatch({ type: 'loading', promise });
-
-      try {
-        const cacheResult = await promise;
-
-        if (fetchPromise === undefined) {
-          dispatch({ type: 'success', data: cacheResult });
-        } else {
-          if (fetchPolicy === 'cache-and-network') {
-            dispatch({ type: 'cache-found', data: cacheResult });
-          }
-
-          const fetchResult = await fetchPromise;
-
-          onCompleted?.(fetchResult);
-          dispatch({ type: 'success', data: fetchResult });
-        }
-      } catch (error) {
-        const theError = GQtyError.create(error);
-
-        onError?.(theError);
-        dispatch({ type: 'failure', error: theError });
+    useUpdateEffect(() => {
+      if (query.$state.error) {
+        onError?.(query.$state.error);
       }
-
-      if (fetchPolicy !== 'no-cache') {
-        return $meta(client.schema.query)?.context.cache.subscribe(
-          [...selections].map((s) => s.cacheKeys.join('.')),
-          () => {
-            dispatch({
-              type: 'success',
-              data: fn(client.schema.query, variables),
-            });
-          }
-        );
-      }
-    }, [fn, skip, variables]);
-
-    if (suspense) {
-      if (state.promise) throw state.promise;
-      if (state.error) throw state.error;
-    }
+    }, [query.$state.error]);
 
     const visible = useDocumentVisibility();
 
-    // Polling won't fire onComplete and onError callbacks, it only updates
-    // the component state.
-    useIntervalEffect(async () => {
-      if (skip || state.promise || (!visible && !pollInBackground)) return;
+    useIntervalEffect(() => {
+      if (skip || query.$state.isLoading || (!visible && !pollInBackground))
+        return;
 
-      const promise = client.resolve(({ query }) => fn(query, variables), {
-        fetchPolicy: translateFetchPolicy(fetchPolicy),
-        operationName,
-        retryPolicy: retry,
-      }) as Promise<TData>;
-
-      if (notifyOnNetworkStatusChange) {
-        dispatch({ type: 'loading', promise });
-      }
-
-      try {
-        dispatch({ type: 'success', data: await promise });
-      } catch (error) {
-        dispatch({ type: 'failure', error: GQtyError.create(error) });
-      }
+      query.$refetch();
     }, pollInterval);
 
-    return state;
+    return skip
+      ? { data: undefined, isCalled: false }
+      : { data: fn(query, variables), isCalled: true };
   };
 
   return useTransactionQuery;

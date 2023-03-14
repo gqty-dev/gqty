@@ -221,11 +221,14 @@ export function createReactClient<TSchema extends BaseGeneratedSchema>(
     opts
   );
 
+  // useTransactionQuery needs this
+  const useQuery = createUseQuery<TSchema>(client, opts);
+
   return {
-    useQuery: createUseQuery<TSchema>(client, opts),
+    useQuery,
     useRefetch: createUseRefetch(client, opts),
     useLazyQuery: createUseLazyQuery<TSchema>(client, opts),
-    useTransactionQuery: createUseTransactionQuery<TSchema>(client, opts),
+    useTransactionQuery: createUseTransactionQuery<TSchema>(useQuery, opts),
     usePaginatedQuery: createUsePaginatedQuery<TSchema>(client, opts),
     useMutation: createUseMutation<TSchema>(client, opts),
     graphql: createGraphqlHOC(client, opts),

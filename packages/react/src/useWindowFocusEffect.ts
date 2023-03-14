@@ -16,11 +16,11 @@ export const useWindowFocusEffect = (
     };
 
     globalThis.addEventListener?.('visibilitychange', visibilityChangeFn);
-    globalThis.addEventListener?.('focus', fn);
+    globalThis.addEventListener?.('focus', visibilityChangeFn);
 
     return () => {
       globalThis.removeEventListener?.('visibilitychange', visibilityChangeFn);
-      globalThis.removeEventListener?.('focus', fn);
+      globalThis.removeEventListener?.('focus', visibilityChangeFn);
     };
   }, [enabled, fn]);
 };

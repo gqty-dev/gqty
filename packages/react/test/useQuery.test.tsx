@@ -2,7 +2,7 @@ import { act, renderHook } from '@testing-library/react-hooks';
 import { createReactTestClient } from './utils';
 
 describe('useQuery', () => {
-  it('should fetch without suspense', async () => {
+  test('should fetch without suspense', async () => {
     const { useQuery } = await createReactTestClient();
 
     const { result, waitFor } = renderHook(() => {
@@ -25,7 +25,7 @@ describe('useQuery', () => {
     expect(result.current.hello).toBe('hello world');
   });
 
-  it('should $refetch', async () => {
+  test('should $refetch', async () => {
     const { useQuery } = await createReactTestClient();
 
     const { result, waitFor } = renderHook(() => {

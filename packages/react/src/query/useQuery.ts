@@ -1,4 +1,4 @@
-import { useRerender } from '@react-hookz/web';
+import { usePrevious, useRerender, useUpdateEffect } from '@react-hookz/web';
 import {
   BaseGeneratedSchema,
   GQtyClient,
@@ -6,8 +6,13 @@ import {
   prepass,
   RetryOptions,
 } from 'gqty';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import type { OnErrorHandler } from '../common';
+import { useCallback, useEffect, useMemo } from 'react';
+import {
+  LegacyFetchPolicy,
+  OnErrorHandler,
+  translateFetchPolicy,
+} from '../common';
+import { useThrottledAsync } from '../useThrottledAsync';
 import { useWindowFocusEffect } from '../useWindowFocusEffect';
 import type { ReactClientOptionsWithDefaults } from '../utils';
 
@@ -20,6 +25,8 @@ export interface UseQueryPrepareHelpers<
   readonly query: GeneratedSchema['query'];
 }
 export interface UseQueryOptions<TSchema extends BaseGeneratedSchema> {
+  fetchPolicy?: LegacyFetchPolicy;
+  notifyOnNetworkStatusChange?: boolean;
   onError?: OnErrorHandler;
   operationName?: string;
   prepare?: (helpers: UseQueryPrepareHelpers<TSchema>) => void;
@@ -46,7 +53,7 @@ export type Writeable<T> = { -readonly [P in keyof T]: T[P] };
 export type UseQueryReturnValue<GeneratedSchema extends { query: object }> =
   GeneratedSchema['query'] & {
     $state: UseQueryState;
-    $refetch: () => Promise<unknown> | void;
+    $refetch: () => Promise<unknown>;
   };
 export interface UseQuery<GeneratedSchema extends { query: object }> {
   (
@@ -66,6 +73,8 @@ export const createUseQuery =
     }: ReactClientOptionsWithDefaults
   ): UseQuery<TSchema> =>
   ({
+    fetchPolicy = 'cache-first',
+    notifyOnNetworkStatusChange = true,
     onError,
     operationName,
     prepare,
@@ -80,21 +89,40 @@ export const createUseQuery =
       resolve,
       selections,
     } = useMemo(
-      () => client.createResolver({ operationName, retryPolicy: retry }),
-      [operationName, retry]
+      () =>
+        client.createResolver({
+          fetchPolicy: translateFetchPolicy(fetchPolicy),
+          operationName,
+          retryPolicy: retry,
+        }),
+      [fetchPolicy, operationName, retry]
     );
-    const [error, setError] = useState<GQtyError>();
-    const [fetchPromise, setFetchPromise] = useState<Promise<unknown>>();
+
+    const [{ status, error }, { execute }, { promise }] = useThrottledAsync(
+      async () => {
+        try {
+          return await resolve();
+        } catch (error) {
+          const theError = GQtyError.create(error);
+
+          onError?.(theError);
+
+          throw theError;
+        } finally {
+          // Reset these, or createResolver() each time and deal with the new resolve.
+          context.shouldFetch = false;
+          context.hasCacheHit = false;
+          context.hasCacheMiss = false;
+        }
+      }
+    );
 
     if (suspense) {
-      if (error) throw error;
-      if (fetchPromise) throw fetchPromise;
+      if (error) throw GQtyError.create(error);
+      if (promise && status === 'loading') {
+        throw promise;
+      }
     }
-
-    // Reset these, or createResolver() each time and deal with the new resolve.
-    context.shouldFetch = false;
-    context.hasCacheHit = false;
-    context.hasCacheMiss = false;
 
     if (prepare) {
       // TODO: See if `Error.captureStackTrace(error, useQuery);` is needed
@@ -107,43 +135,52 @@ export const createUseQuery =
       }
     }
 
-    const fetchQuery = useCallback(async () => {
-      setError(undefined);
+    const refetch = useCallback(
+      (force = false) => {
+        if (force) {
+          context.shouldFetch = true;
+        } else if (promise) {
+          return promise;
+        }
 
-      try {
-        const fetchPromise = resolve();
-        setFetchPromise(fetchPromise);
+        const refetchPromise = execute();
+        context.refechPromise = refetchPromise;
 
-        await fetchPromise;
-      } catch (error) {
-        const theError = GQtyError.create(error);
+        refetchPromise.catch(console.error).finally(() => {
+          context.refetchPromise = undefined;
+        });
 
-        onError?.(theError);
-
-        if (suspense) throw theError;
-
-        setError(theError);
-      } finally {
-        setFetchPromise(undefined);
-      }
-    }, [onError, resolve]);
+        return refetchPromise;
+      },
+      [execute, promise]
+    );
 
     // Invoke it on client side automatically.
     useEffect(() => {
-      fetchQuery();
-    }, [fetchQuery]);
+      if (context.shouldFetch) {
+        refetch();
+      }
+    });
 
     // staleWhileRevalidate
-    useEffect(() => {
-      $refetch();
-    }, [staleWhileRevalidate]);
+    const swrDiff = usePrevious(staleWhileRevalidate);
+    useUpdateEffect(() => {
+      if (staleWhileRevalidate && !Object.is(staleWhileRevalidate, swrDiff)) {
+        refetch(true);
+      }
+    }, [refetch, swrDiff]);
 
     {
       const render = useRerender();
 
       // A rerender should be enough to trigger a soft check, fetch will
       // happen if any of the accessed cache value is stale.
-      useWindowFocusEffect(render, { enabled: refetchOnWindowVisible });
+      useWindowFocusEffect(
+        () => {
+          refetch();
+        },
+        { enabled: refetchOnWindowVisible }
+      );
 
       // Rerenders on cache changes from others
       useEffect(() => {
@@ -156,27 +193,31 @@ export const createUseQuery =
       }, [selections, selections.size]);
     }
 
-    const $refetch = useCallback(() => {
-      const prevShouldFetch = context.shouldFetch;
-      context.shouldFetch = true;
-      const promise = fetchQuery();
-      context.shouldFetch = prevShouldFetch;
-
-      promise.catch(console.error);
-
-      return promise;
-    }, [fetchQuery]);
-
     return useMemo(() => {
       return new Proxy(
         Object.freeze({
-          $refetch,
-          $state: { isLoading: fetchPromise !== undefined, error },
+          $refetch: (force = true) => refetch(force),
+          $state: {
+            isLoading:
+              status === 'loading' &&
+              (context.refetchPromise !== promise ||
+                notifyOnNetworkStatusChange),
+            error: GQtyError.create(error),
+          },
         }),
         {
           get: (target, key, proxy) =>
-            Reflect.get(target, key, proxy) ?? Reflect.get(query, key),
+            Reflect.get(target, key, proxy) ??
+            Reflect.get(
+              prepare
+                ? // Using global schema accessor prevents the second pass fetch
+                  // essentially let `prepare` decides what data to fetch, data
+                  // placeholder will always render in case of a cache miss.
+                  client.schema.query
+                : query,
+              key
+            ),
         }
       );
-    }, [query, $refetch, fetchPromise, error]);
+    }, [query, refetch, status, error]);
   };

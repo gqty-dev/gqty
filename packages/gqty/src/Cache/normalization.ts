@@ -106,9 +106,10 @@ export const deepNormalizeObject = <TData extends CacheNode>(
     const id = options.identity(it);
 
     if (id && !seen.has(id)) {
-      // We always merge in normalizedObject(), replacement is done by replacing
-      // with an empty one beforehand.
-      options.store.get(id)?.$set({});
+      // normalizedObject() always merges, uncomment the following line to
+      // perform replacements across queries. But this easily leads to infinite
+      // renders between racing fetches.
+      //options.store.get(id)?.$set({});
 
       seen.add(id);
     }
