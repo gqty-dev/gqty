@@ -1,16 +1,6 @@
-import type { QueryPayload } from 'gqty/Schema';
-import type { GraphQLError } from 'graphql';
-import { MessageType } from 'graphql-ws';
-import type { CloseEvent } from 'ws';
 import type { BaseGeneratedSchema } from '..';
 import { GQtyError, RetryOptions } from '../../Error';
-import { buildQuery } from '../../QueryBuilder';
-import {
-  FetchResult,
-  fetchSelections,
-  isCloseEvent,
-  QueryExtensions,
-} from '../resolveSelections';
+import { fetchSelections, subscribeSelections } from '../resolveSelections';
 import { updateCaches } from '../updateCaches';
 import type { CreateLegacyMethodOptions } from './client';
 import { convertSelection, type LegacySelection } from './selection';
@@ -110,7 +100,8 @@ export const createLegacyResolved = <
   cache,
   context: globalContext,
   debugger: debug,
-  fetchOptions: { fetcher, subscriber, retryPolicy },
+  fetchOptions: { fetcher, retryPolicy },
+  fetchOptions: clientFetchOptions,
   resolvers: { createResolver },
   subscribeLegacySelections,
 }: CreateLegacyMethodOptions<TSchema>): LegacyResolved => {
@@ -180,133 +171,55 @@ export const createLegacyResolved = <
       onNoCacheFound?.();
     }
 
-    // Subscriptions
-    buildQuery(
-      new Set(
-        [...selections].filter(({ root: { key } }) => key === 'subscription')
-      ),
-      operationName
-    ).map(
-      ({
-        query,
-        variables,
-        operationName,
-        extensions: { type, hash } = {},
-      }) => {
-        if (!type) throw new GQtyError(`Invalid query type: ${type}`);
-        if (!hash) throw new GQtyError(`Expected query hash: ${hash}`);
+    {
+      // Subscriptions
+      const unsubscribe = subscribeSelections(
+        new Set([...selections].filter((s) => s.root.key === 'subscription')),
+        ({ data, error, extensions }) => {
+          if (data) {
+            // Skip the error here, resolved uses callbacks.
+            updateCaches([{ data, extensions }], targetCaches);
+          }
 
-        const payload: QueryPayload<QueryExtensions> = {
-          query,
-          variables,
+          if (error) {
+            onSubscription?.({
+              type: 'with-errors',
+              unsubscribe: async () => unsubscribe(),
+              data: dataFn() ?? (data as TData) ?? undefined,
+              error: GQtyError.create(error),
+            });
+          } else if (data) {
+            onSubscription?.({
+              type: 'data',
+              unsubscribe: async () => unsubscribe(),
+              data: dataFn() ?? (data as TData),
+            });
+          }
+        },
+        {
+          cache,
+          debugger: debug,
+          fetchOptions: clientFetchOptions,
           operationName,
-          extensions: { type, hash },
-        };
-
-        let subscriptionId: string | undefined;
-        subscriber?.on('message', (message) => {
-          switch (message.type) {
-            case MessageType.Subscribe: {
-              if (message.payload.extensions?.hash !== hash) break;
-
-              subscriptionId = message.id;
-
-              debug?.dispatch({
-                cache,
-                label: `[id=${subscriptionId}] [create]`,
-                request: payload,
-                selections,
-              });
-
-              break;
-            }
-          }
-        });
-
-        const _unsubscribe = subscriber?.subscribe<TData, QueryExtensions>(
-          { query, variables, operationName },
-          {
-            next(result) {
-              result.extensions = payload.extensions;
-
-              if (result.data != null) {
-                updateCaches([result as FetchResult], targetCaches);
-              }
-
-              debug?.dispatch({
-                cache,
-                label: subscriptionId
-                  ? `[id=${subscriptionId}] [data]`
-                  : undefined,
-                request: payload,
-                result: result as FetchResult,
-                selections,
-              });
-
-              onSubscription?.({
-                type: 'data',
-                data: dataFn() ?? (result as TData),
-                unsubscribe,
-              });
-            },
-            error(error: Error | readonly GraphQLError[] | CloseEvent) {
-              if (isCloseEvent(error)) {
-                unsubscribe();
-                return this.complete();
-              }
-
-              const theError = Array.isArray(error)
-                ? GQtyError.fromGraphQLErrors(error)
-                : GQtyError.create(error);
-
-              debug?.dispatch({
-                cache,
-                label: subscriptionId
-                  ? `[id=${subscriptionId}] [error]`
-                  : undefined,
-                request: payload,
-                result: { error: theError },
-                selections,
-              });
-
-              onSubscription?.({
-                type: 'with-errors',
-                error: theError,
-                unsubscribe,
-              });
-            },
-            complete() {
-              debug?.dispatch({
-                cache,
-                label: subscriptionId
-                  ? `[id=${subscriptionId}] [unsubscribe]`
-                  : undefined,
-                request: payload,
-                selections,
-              });
-
-              onSubscription?.({
-                type: 'complete',
-                unsubscribe,
-              });
-            },
-          }
-        );
-
-        const unsubscribe = async () => _unsubscribe?.();
-
-        onSubscription?.({
-          type: 'start',
-          unsubscribe,
-        });
-      }
-    );
+          onSubscribe() {
+            onSubscription?.({
+              type: 'start',
+              unsubscribe: async () => unsubscribe(),
+            });
+          },
+          onComplete() {
+            onSubscription?.({
+              type: 'complete',
+              unsubscribe: async () => unsubscribe(),
+            });
+          },
+        }
+      );
+    }
 
     // Queries and mutations
     await fetchSelections(
-      new Set(
-        [...selections].filter(({ root: { key } }) => key !== 'subscription')
-      ),
+      new Set([...selections].filter((s) => s.root.key !== 'subscription')),
       {
         debugger: debug,
         fetchOptions: { fetcher, retryPolicy: retry, ...fetchOptions },

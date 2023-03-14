@@ -18,7 +18,7 @@ import {
 import type { LegacyQueryFetcher } from './queryFetcher';
 import { createRefetch, LegacyRefetch } from './refetch';
 import { createLegacyResolved, LegacyResolved } from './resolved';
-import type { LegacySubscriptionClient } from './subscriptionsClient';
+import type { LegacySubscriptionsClient } from './subscriptionsClient';
 import { createLegacyTrack, LegacyTrack } from './track';
 
 export type {
@@ -31,8 +31,14 @@ export type {
 } from './inlineResolved';
 export type { LegacyMutate, LegacyMutateHelpers } from './mutate';
 export type { LegacyPrefetch } from './prefetch';
+export type { LegacyQueryFetcher } from './queryFetcher';
 export type { LegacyRefetch } from './refetch';
 export type { LegacyResolved, LegacyResolveOptions } from './resolved';
+export type { LegacySelection } from './selection';
+export type {
+  LegacySubscribeEvents,
+  LegacySubscriptionsClient,
+} from './subscriptionsClient';
 export type {
   LegacyTrack,
   LegacyTrackCallInfo,
@@ -58,9 +64,10 @@ export type CreateLegacyClientOptions<TSchema extends BaseGeneratedSchema> = {
   __depthLimit?: number;
 };
 
-export type LegacyFetchers = {
+export type LegacyClientOptions = {
   queryFetcher?: LegacyQueryFetcher;
-  subscriptionClient?: LegacySubscriptionClient;
+  scalarsEnumsHash: ScalarsEnumsHash;
+  subscriptionsClient?: LegacySubscriptionsClient;
 };
 
 /**

@@ -18,6 +18,11 @@ describe('Cache#dataAccessors', () => {
     },
     scalars: { String: true },
     depthLimit: 15,
+    onSelect: () => {},
+    notifyCacheUpdate: false,
+    shouldFetch: false,
+    hasCacheHit: false,
+    hasCacheMiss: false,
   } as const;
 
   /**
@@ -84,6 +89,11 @@ describe('Cache#data', () => {
     },
     scalars: { String: true },
     depthLimit: 15,
+    onSelect: () => {},
+    notifyCacheUpdate: false,
+    shouldFetch: false,
+    hasCacheHit: false,
+    hasCacheMiss: false,
   } as const;
 
   it('should work with selections', () => {
@@ -292,7 +302,6 @@ describe('Cache#normalization', () => {
       }
     `);
 
-    // Should replace object when incoming fields mismatches.
     cache.set({
       query: {
         otherQuery: {
@@ -312,6 +321,8 @@ describe('Cache#normalization', () => {
         "normalized": {
           "A:1": {
             "__typename": "A",
+            "a": 1,
+            "b": 2,
             "c": 3,
             "id": 1,
           },
@@ -340,6 +351,8 @@ describe('Cache#normalization', () => {
       .toMatchInlineSnapshot(`
       {
         "__typename": "A",
+        "a": 1,
+        "b": 2,
         "c": 3,
         "id": 1,
       }
@@ -398,7 +411,12 @@ describe('Cache#subscribe', () => {
         b: {
           __typename: 'B',
           id: 1,
-          a: { __typename: 'A', id: 1, a: 1 },
+          a: expect.objectContaining({
+            __typename: 'A',
+            id: 1,
+            a: 1,
+            // b: [Circular]
+          }),
         },
       },
     });

@@ -1,10 +1,5 @@
 import type { Client as SseClient } from 'graphql-sse';
-import type {
-  Client as WsClient,
-  ExecutionResult,
-  Sink,
-  SubscribePayload,
-} from 'graphql-ws';
+import type { Client as WsClient } from 'graphql-ws';
 import { createSchemaAccessor } from '../Accessor';
 import { Cache } from '../Cache';
 import {
@@ -22,8 +17,10 @@ import type {
 import {
   createLegacyClient,
   LegacyClient,
-  LegacyFetchers,
+  LegacyClientOptions,
 } from './compat/client';
+import { createLegacyQueryFetcher } from './compat/queryFetcher';
+import { createLegacySubscriptionsClient } from './compat/subscriptionsClient';
 import { createContext, CreateContextOptions } from './context';
 import { createDebugger } from './debugger';
 import { createResolvers, Resolvers } from './resolvers';
@@ -33,7 +30,7 @@ export { getFields, prepass, selectFields } from '../Helpers';
 export * as useMetaStateHack from '../Helpers/useMetaStateHack';
 export { pick } from '../Utils';
 export type {
-  LegacyFetchers,
+  LegacyClientOptions as LegacyFetchers,
   LegacyHydrateCache,
   LegacyHydrateCacheOptions,
   LegacyInlineResolved,
@@ -41,9 +38,13 @@ export type {
   LegacyMutate,
   LegacyMutateHelpers,
   LegacyPrefetch,
+  LegacyQueryFetcher,
   LegacyRefetch,
   LegacyResolved,
   LegacyResolveOptions,
+  LegacySelection,
+  LegacySubscribeEvents,
+  LegacySubscriptionsClient,
   LegacyTrack,
   LegacyTrackCallInfo,
   LegacyTrackCallType,
@@ -94,7 +95,7 @@ export type FetchOptions = Omit<RequestInit, 'body' | 'mode'> & {
    * frameworks, please consider sponsoring so we can dedicate even more time on
    * this._
    */
-  fetchPolicy?: Exclude<RequestCache, 'reload'> | 'cache-and-network';
+  fetchPolicy?: Exclude<RequestCache, 'reload'>;
 
   /** Default retry strategy upon fetch failure, configurable on query level. */
   retryPolicy?: RetryOptions;
@@ -129,13 +130,7 @@ export type ClientOptions = {
   __depthLimit?: number;
 };
 
-export type Client<
-  TSchema extends BaseGeneratedSchema,
-  // TODO: compat: remove in next major
-  _ObjectTypesNames extends string = never,
-  // TODO: compat: remove in next major
-  _ObjectTypes extends Record<string, unknown> = never
-> = Persistors &
+export type Client<TSchema extends BaseGeneratedSchema> = Persistors &
   Resolvers<TSchema> &
   LegacyClient<TSchema> & {
     /** Global cache accessors. */
@@ -145,7 +140,13 @@ export type Client<
     subscribeDebugEvents: ReturnType<typeof createDebugger>['subscribe'];
   };
 
-export const createClient = <TSchema extends BaseGeneratedSchema>({
+export const createClient = <
+  TSchema extends BaseGeneratedSchema,
+  // TODO: compat: remove in next major
+  _ObjectTypesNames extends string = never,
+  // TODO: compat: remove in next major
+  _ObjectTypes extends SchemaObjects<TSchema> = never
+>({
   cacheOptions: {
     maxAge = 100,
     normalization = true,
@@ -160,66 +161,28 @@ export const createClient = <TSchema extends BaseGeneratedSchema>({
     },
     subscriber,
     ...fetchOptions
-  },
+  } = {} as FetchOptions,
   scalars,
   schema,
   __depthLimit = 15,
+  ...legacyOptions
+}: ClientOptions & LegacyClientOptions): Client<TSchema> => {
+  // TODO: compat: remove in next major
+  {
+    if (legacyOptions.queryFetcher) {
+      fetcher ??= createLegacyQueryFetcher(legacyOptions.queryFetcher);
+    }
 
-  queryFetcher,
-  subscriptionClient,
-}: ClientOptions & LegacyFetchers): Client<TSchema> => {
-  // TODO: compat: queryFetcher, remove in next major
-  fetcher ||= ({ query, variables }, fetchOptions) =>
-    queryFetcher!(query, variables ?? {}, fetchOptions);
+    if (legacyOptions.subscriptionsClient) {
+      subscriber ??= createLegacySubscriptionsClient(
+        legacyOptions.subscriptionsClient
+      );
+    }
 
-  // TODO: compat: subscriptionsClient, remove in next major
-  subscriber ||= {
-    subscribe<
-      TData = Record<string, unknown>,
-      TExtensions = Record<string, unknown>
-    >(
-      { query, variables }: SubscribePayload,
-      sink: Sink<ExecutionResult<TData, TExtensions>>
-    ) {
-      const maybePromise = subscriptionClient!.subscribe({
-        query,
-        variables: variables ?? {},
-        selections: [],
-        events: {
-          onComplete: () => {
-            sink.complete();
-          },
-          onData: (result) => {
-            sink.next(result);
-          },
-          onError({ data, error }) {
-            if ((error && !error.graphQLErrors?.length) || !data) {
-              sink.error(error);
-            } else {
-              sink.next({ data: data as TData, errors: error.graphQLErrors });
-            }
-          },
-        },
-      });
-
-      return () => {
-        if (maybePromise instanceof Promise) {
-          maybePromise.then(({ unsubscribe }) => {
-            unsubscribe();
-          });
-        } else {
-          (maybePromise as any).unsubscribe();
-        }
-      };
-    },
-    dispose: () => {
-      subscriptionClient?.close();
-    },
-    terminate: () => {
-      subscriptionClient?.close();
-    },
-    on: () => () => {},
-  };
+    if (legacyOptions.scalarsEnumsHash) {
+      scalars ??= legacyOptions.scalarsEnumsHash;
+    }
+  }
 
   const normalizationOptions =
     normalization === true

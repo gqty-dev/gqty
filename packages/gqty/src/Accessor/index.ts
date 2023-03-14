@@ -24,12 +24,9 @@ export function createSchemaAccessor<TSchema extends BaseGeneratedSchema>(
           return () => context.cache.toJSON();
         }
 
-        if (!Reflect.has(target, key)) return;
-
-        const schemaKey = key as keyof TSchema;
-
         if (
-          !Reflect.get(target[schemaKey] as object, '__typename') ||
+          !Reflect.has(target, key) ||
+          !Reflect.get(target[key as keyof TSchema] as object, '__typename') ||
           !context.schema[key]
         )
           return;

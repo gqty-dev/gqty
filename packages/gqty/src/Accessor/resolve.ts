@@ -44,7 +44,7 @@ export const resolve = (
   }
 
   const cache =
-    selection.parent === selection.root
+    selection.parent === selection.root && key !== '__typename'
       ? // The way we structure the cache for SWR requires special treatment
         // for 2nd level selections, e.g. query.hello, mutation.update()... etc.
         context.cache.get(cacheKeys.join('.'), context.cacheOptions) ?? {
@@ -66,7 +66,7 @@ export const resolve = (
   if (
     !isUnion &&
     selection.root !== selection &&
-    selection.root !== selection.parent &&
+    (selection.root !== selection.parent || key === '__typename') &&
     data !== null
   ) {
     if (Array.isArray(data)) {
