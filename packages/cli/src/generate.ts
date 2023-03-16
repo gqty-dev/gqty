@@ -92,7 +92,12 @@ export interface GenerateOptions {
   ) => Promise<GraphQLSchema> | GraphQLSchema;
 
   /**
-   * Disable making all scalar fields undefined, only use with suspense
+   * Disable making all scalar fields undefined, only use when:
+   * 1. using `useQuery()` with `prepare` and `suspense` enabled.
+   * 2. `useTransactionQuery()` with suspense enabled.
+   * 3. `useLazyQuery()` and `useMutation()` after invoked.
+   * 
+   * Be sure to be using only of such combination when using this flag on true.
    */
   disableUndefinedScalar?: boolean;
 }
