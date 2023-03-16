@@ -90,6 +90,11 @@ export interface GenerateOptions {
     schema: GraphQLSchema,
     graphql_js: typeof graphql
   ) => Promise<GraphQLSchema> | GraphQLSchema;
+
+  /**
+   * Disable making all scalar fields undefined, only use with suspense
+   */
+  disableUndefinedScalar?: boolean;
 }
 
 export interface TransformSchemaOptions {
@@ -109,6 +114,7 @@ export async function generate(
     endpoint,
     enumsAsStrings,
     enumsAsConst,
+    disableUndefinedScalar,
     subscriptions,
     javascriptOutput,
     transformSchema,
@@ -149,6 +155,9 @@ export async function generate(
     enumsAsConst = false;
   }
   enumsAsConst ??= gqtyConfig.enumsAsConst ?? defaultConfig.enumsAsConst;
+
+  disableUndefinedScalar ??=
+    gqtyConfig.disableUndefinedScalar ?? defaultConfig.disableUndefinedScalar;
 
   scalarTypes ||= gqtyConfig.scalarTypes || defaultConfig.scalarTypes;
   endpoint ||=
@@ -782,7 +791,9 @@ export async function generate(
       [K in keyof T]: T[K] | undefined;
     };
   
-    export interface ScalarsEnums extends MakeNullable<Scalars> {
+    export interface ScalarsEnums extends ${
+      disableUndefinedScalar ? 'Scalars' : 'MakeNullable<Scalars>'
+    } {
       ${deps.sortBy(enumsNames).reduce((acum, enumName) => {
         acum += `${enumName}: ${enumName} | undefined;`;
         return acum;
