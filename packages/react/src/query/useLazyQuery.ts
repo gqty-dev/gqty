@@ -105,7 +105,7 @@ export interface UseLazyQuery<GeneratedSchema extends BaseGeneratedSchema> {
 }
 
 export function createUseLazyQuery<TSchema extends BaseGeneratedSchema>(
-  client: GQtyClient<TSchema>,
+  { resolve }: GQtyClient<TSchema>,
   {
     defaults: {
       retry: defaultRetry,
@@ -156,24 +156,25 @@ export function createUseLazyQuery<TSchema extends BaseGeneratedSchema>(
         let innerFetchPromise: Promise<TData> | undefined;
 
         try {
-          const fetchPromise = client
-            .resolve(({ query }) => resolveFn(query, args as TArgs), {
+          const fetchPromise = resolve(
+            ({ query }) => resolveFn(query, args as TArgs),
+            {
               awaitsFetch: false,
               fetchPolicy: translateFetchPolicy(fetchPolicy),
               onFetch(promise) {
                 innerFetchPromise = promise as Promise<TData>;
               },
               retryPolicy: retry,
-            })
-            .then((data) => {
-              const typedData = data as TData;
+            }
+          ).then((data) => {
+            const typedData = data as TData;
 
-              if (fetchPolicy === 'cache-and-network') {
-                dispatch({ type: 'cache-found', data: typedData });
-              }
+            if (fetchPolicy === 'cache-and-network') {
+              dispatch({ type: 'cache-found', data: typedData });
+            }
 
-              return innerFetchPromise ?? typedData;
-            });
+            return innerFetchPromise ?? typedData;
+          });
 
           dispatch({ type: 'loading', promise: fetchPromise });
 

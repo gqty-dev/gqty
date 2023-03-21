@@ -9,6 +9,8 @@ export const useWindowFocusEffect = (
   { enabled = true }: UseFocusChangeEffectOptions = {}
 ) => {
   useEffect(() => {
+    if (!enabled) return;
+
     const visibilityChangeFn = () => {
       if (globalThis.document?.visibilityState === 'visible') {
         fn();

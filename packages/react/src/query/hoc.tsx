@@ -43,10 +43,7 @@ export function createGraphqlHOC(
         accessor: { query, mutation, subscription },
         context,
         resolve,
-      } = createResolver({
-        operationName,
-        retryPolicy: retry,
-      });
+      } = createResolver({ operationName, retryPolicy: retry });
       const unsubscribe = subscribeLegacySelections((selection, cache) => {
         context.onSelect?.(selection, cache);
       });

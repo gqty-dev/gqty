@@ -1,3 +1,4 @@
+import { faker } from '@faker-js/faker';
 import { useGenerateGQty } from '@gqty/cli/envelop';
 import { CreateApp } from '@graphql-ez/fastify';
 import { ezAltairIDE } from '@graphql-ez/plugin-altair/static';
@@ -6,10 +7,8 @@ import { ezDataLoader, InferDataLoader } from '@graphql-ez/plugin-dataloader';
 import { ezSchema } from '@graphql-ez/plugin-schema';
 import { ezUpload } from '@graphql-ez/plugin-upload';
 import { ezWebSockets } from '@graphql-ez/plugin-websockets';
-import { faker } from '@faker-js/faker';
 import { StrictInMemoryPubSub } from 'graphql-ez/pubsub';
-import _ from 'lodash';
-import { JsonDB } from 'node-json-db';
+import { Config, JsonDB } from 'node-json-db';
 import type { Dog, Human } from './ez.generated';
 
 const pubsub = new StrictInMemoryPubSub<{
@@ -50,8 +49,13 @@ export const {
 
 const OwnerLoader = registerDataLoader('DogOwner', (DataLoader) => {
   return new DataLoader(async (keys: readonly string[]) => {
-    const dogOwners: Record<string, string> = db.getData('/dogOwners');
-    const humans = _.keyBy(db.getData('/humans') as Array<Human>, 'id');
+    const dogOwners: Record<string, string> = await db.getData('/dogOwners');
+    const humans = await db.getData('/humans').then((humans: Human[]) =>
+      humans.reduce((acum, human) => {
+        acum[human.id] = human;
+        return acum;
+      }, {} as Record<string, Human>)
+    );
     return keys.map((key) => {
       return humans[dogOwners[key]];
     });
@@ -60,15 +64,13 @@ const OwnerLoader = registerDataLoader('DogOwner', (DataLoader) => {
 
 const HumanDogsLoader = registerDataLoader('HumanDogs', (DataLoader) => {
   return new DataLoader(async (keys: readonly string[]) => {
-    const dogOwners: Record<number, number> = db.getData('/dogOwners');
+    const dogOwners: Record<number, number> = await db.getData('/dogOwners');
 
-    const dogs = db.getData('/dogs');
+    const dogs = await db.getData('/dogs');
 
     const humanDogs = Object.entries(dogOwners).reduce(
       (acum, [dogId, humanId]) => {
-        _.defaults(acum, {
-          [humanId]: [],
-        });
+        acum[humanId] ??= [];
 
         const dog = dogs.find((v: Dog) => v.id == dogId);
         if (dog) acum[humanId].push(dog);
@@ -93,7 +95,7 @@ declare module 'graphql-ez' {
 export const sleep = (amount: number) =>
   new Promise<void>((resolve) => setTimeout(resolve, amount));
 
-const db = new JsonDB('db.json', true, true, '/');
+const db = new JsonDB(new Config('db.json', true, true, '/'));
 
 // seed(2021);
 
@@ -110,34 +112,16 @@ const paginatedData: {
 db.push('/paginatedData', paginatedData, true);
 
 const initialDogs = [
-  {
-    id: 1,
-    name: 'a',
-  },
-  {
-    id: 2,
-    name: 'b',
-  },
-  {
-    id: 3,
-    name: 'c',
-  },
-  {
-    id: 4,
-    name: 'd',
-  },
+  { id: 1, name: 'a' },
+  { id: 2, name: 'b' },
+  { id: 3, name: 'c' },
+  { id: 4, name: 'd' },
 ];
 db.push('/dogs', initialDogs, true);
 
 const initialHumans = [
-  {
-    id: 1,
-    name: 'g',
-  },
-  {
-    id: 2,
-    name: 'h',
-  },
+  { id: 1, name: 'g' },
+  { id: 2, name: 'h' },
 ];
 
 db.push('/humans', initialHumans, true);
@@ -290,11 +274,13 @@ registerResolvers({
       }
       throw Error('nTries=' + nTries);
     },
-    human1() {
-      return db.getData('/humans')[0];
+    async human1() {
+      const humans = await db.getData('/humans');
+      return humans[0];
     },
-    human1Other() {
-      return db.getData('/humans')[0];
+    async human1Other() {
+      const humans = await db.getData('/humans');
+      return humans[0];
     },
     paginatedHumans(_root, { input: { after, first, last, before } }) {
       let nodes: { id: string; name: string }[];

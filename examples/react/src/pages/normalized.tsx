@@ -8,20 +8,20 @@ export default function NormalizedPage() {
     staleWhileRevalidate: true,
   });
 
-  const [renameDog] = useMutation((mutation) => {
+  const [renameDog] = useMutation((mutation, { name }: { name: string }) => {
     const dog = mutation.renameDog({
       id: '1',
-      name: 'z',
+      name,
     });
 
     dog?.id;
     dog?.name;
   });
 
-  const [renameHuman] = useMutation((mutation) => {
+  const [renameHuman] = useMutation((mutation, { name }: { name: string }) => {
     const human = mutation.renameHuman({
       id: '1',
-      name: 'x',
+      name,
     });
 
     human?.id;
@@ -30,11 +30,29 @@ export default function NormalizedPage() {
 
   return (
     <Stack>
+      <Button
+        onClick={() => {
+          renameDog({
+            args: { name: query.humans[0].dogs?.[0].name === 'a' ? 'z' : 'a' },
+          });
+        }}
+      >
+        rename dog
+      </Button>
+      <Button
+        onClick={() =>
+          renameHuman({
+            args: { name: query.humans[0].name === 'g' ? 'x' : 'g' },
+          })
+        }
+      >
+        rename human
+      </Button>
+
       <Text>{query.time}</Text>
-      <Button onClick={() => renameDog()}>rename dog</Button>
-      <Button onClick={() => renameHuman()}>rename human</Button>
+
       <Text whiteSpace="pre-wrap">
-        {JSON.stringify(selectFields(query.humans, '*', 2), null, 2)}
+        {JSON.stringify(selectFields(query.humans, '*', 3), null, 2)}
       </Text>
     </Stack>
   );

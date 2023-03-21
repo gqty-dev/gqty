@@ -1,25 +1,58 @@
 /**
- * GQTY: You can safely modify this file and Query Fetcher based on your needs
+ * This generated client is deliberately left untouched after new core to serve
+ * as a testing point for backwards compatibility.
  */
 
-import { createClient, QueryFetcher } from 'gqty';
-import { createClient as createSubscriptionsClient } from 'graphql-ws';
+import { createSubscriptionsClient } from '@gqty/subscriptions';
+import extractFiles from 'extract-files/extractFiles.mjs';
+import isExtractableFile from 'extract-files/isExtractableFile.mjs';
+import { Cache, createClient, LegacyQueryFetcher as QueryFetcher } from 'gqty';
 import {
   generatedSchema,
   GeneratedSchema,
   scalarsEnumsHash,
+  SchemaObjectTypes,
+  SchemaObjectTypesNames,
 } from './schema.generated';
 
-const queryFetcher: QueryFetcher = async function ({
-  query,
-  variables,
-  operationName,
-}) {
-  const response = await fetch(
+const queryFetcher: QueryFetcher = async function (query, variables) {
+  const endpoint =
     typeof window === 'undefined'
-      ? 'http://localhost:4141/api/graphql'
-      : '/api/graphql',
-    {
+      ? 'http://localhost:3000/api/graphql'
+      : '/api/graphql';
+  const { files, clone } = extractFiles(
+    { query, variables },
+    isExtractableFile
+  );
+
+  if (files.size > 0) {
+    const formData = new FormData();
+
+    formData.append('operations', JSON.stringify(clone));
+    formData.append(
+      'map',
+      JSON.stringify(
+        [...files.values()].reduce((prev, paths, i) => {
+          prev[i + 1] = paths;
+          return prev;
+        }, {} as Record<number, string[]>)
+      )
+    );
+
+    let i = 0;
+    for (const [file] of files) {
+      formData.append(`${++i}`, file as File);
+    }
+
+    const response = await fetch(endpoint, {
+      method: 'POST',
+      body: formData,
+      mode: 'cors',
+    });
+
+    return await response.json();
+  } else {
+    const response = await fetch(endpoint, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -27,22 +60,18 @@ const queryFetcher: QueryFetcher = async function ({
       body: JSON.stringify({
         query,
         variables,
-        operationName,
       }),
       mode: 'cors',
-    }
-  );
+    });
 
-  const json = await response.json();
-
-  return json;
+    return await response.json();
+  }
 };
 
 const subscriptionsClient =
   typeof window !== 'undefined'
     ? createSubscriptionsClient({
-        lazy: true,
-        url: () => {
+        wsEndpoint: () => {
           // Modify if needed
           const url = new URL('/api/graphql', window.location.href);
           url.protocol = url.protocol.replace('http', 'ws');
@@ -53,13 +82,22 @@ const subscriptionsClient =
       })
     : undefined;
 
-export const client = createClient<GeneratedSchema>({
+export const cache = new Cache(undefined, {
+  maxAge: Infinity,
+  // staleWhileRevalidate: 60 * 5000,
+  normalization: true,
+});
+
+export const client = createClient<
+  GeneratedSchema,
+  SchemaObjectTypesNames,
+  SchemaObjectTypes
+>({
+  cache,
   schema: generatedSchema,
-  scalars: scalarsEnumsHash,
-  fetchOptions: {
-    fetcher: queryFetcher,
-    subscriber: subscriptionsClient,
-  },
+  scalarsEnumsHash,
+  queryFetcher,
+  subscriptionsClient,
 });
 
 const { query, mutation, mutate, subscription, resolved, refetch, track } =

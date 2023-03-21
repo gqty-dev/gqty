@@ -1,5 +1,5 @@
 /**
- * GQTY: You can safely modify this file and Query Fetcher based on your needs
+ * GQty: You can safely modify this file based on your needs.
  */
 
 import type { QueryFetcher } from 'gqty';

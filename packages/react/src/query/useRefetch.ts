@@ -11,6 +11,8 @@ import type { ReactClientOptionsWithDefaults } from '../utils';
 interface UseRefetchState {
   isLoading: boolean;
   error?: GQtyError;
+  startWatching: () => void;
+  stopWatching: () => void;
 }
 
 export interface UseRefetchOptions {
@@ -35,18 +37,15 @@ export const createUseRefetch = <TSchema extends BaseGeneratedSchema>(
   const useRefetch: UseRefetch<TSchema> = ({
     notifyOnNetworkStatusChange = true,
     operationName,
-    // startWatching = true, // With scoped query, this is no longer necessary.
+    startWatching = true,
     retry = defaultRetry,
     suspense = false,
   } = {}) => {
-    const [fetchPromise, setFetchPromise] = React.useState<Promise<unknown>>();
-    const [error, setError] = React.useState<GQtyError>();
-
-    if (suspense) {
-      if (fetchPromise) throw fetchPromise;
-      if (error) throw error;
-    }
-
+    const [state, setState] = React.useState<{
+      error?: GQtyError;
+      promise?: Promise<unknown>;
+    }>();
+    const watchingRef = React.useRef(startWatching);
     const [selections] = React.useState(() => new Set<Selection>());
 
     // All selections from this component down the rendering tree, this almost
@@ -55,13 +54,19 @@ export const createUseRefetch = <TSchema extends BaseGeneratedSchema>(
     // parameters as one of the overloads. React provides no way to identify a
     // component and potentially gain access to the SchemaContext from other
     // query hooks.
-    React.useEffect(
-      () =>
-        client.subscribeLegacySelections((selection) => {
+    const [unsubscribeSelections] = React.useState(() =>
+      client.subscribeLegacySelections((selection) => {
+        if (watchingRef.current && selection.root.key === 'query') {
           selections.add(selection);
-        }),
-      []
+        }
+      })
     );
+    React.useEffect(() => unsubscribeSelections, [unsubscribeSelections]);
+
+    if (suspense) {
+      if (state?.promise) throw state?.promise;
+      if (state?.error) throw state?.error;
+    }
 
     const refetch = React.useCallback(
       async <T = void>(
@@ -82,13 +87,13 @@ export const createUseRefetch = <TSchema extends BaseGeneratedSchema>(
           return resolve() as Promise<T>;
         })();
 
-        setFetchPromise(promise);
+        setState({ promise });
 
         try {
           return (await promise) as T;
         } catch (error) {
           const theError = GQtyError.create(error);
-          setError(theError);
+          setState({ error: theError });
           throw theError;
         }
       },
@@ -98,8 +103,14 @@ export const createUseRefetch = <TSchema extends BaseGeneratedSchema>(
     return React.useMemo(
       () =>
         Object.assign(refetch, {
-          isLoading: fetchPromise !== undefined,
-          error,
+          isLoading: state?.promise !== undefined,
+          error: state?.error,
+          startWatching: () => {
+            watchingRef.current = true;
+          },
+          stopWatching: () => {
+            watchingRef.current = false;
+          },
         }),
       []
     );

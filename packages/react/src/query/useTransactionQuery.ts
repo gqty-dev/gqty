@@ -107,6 +107,3 @@ export function createUseTransactionQuery<TSchema extends BaseGeneratedSchema>(
 
   return useTransactionQuery;
 }
-
-// TODO: Test all use cases to make sure state changes are intact.
-// TODO: Test if it can pick up changes to scope variables here, test `skip` and `pollInBackground`.

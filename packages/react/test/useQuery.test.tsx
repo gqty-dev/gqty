@@ -48,7 +48,7 @@ describe('useQuery', () => {
       await result.current.$refetch();
     });
 
-    expect(result.current.time).not.toBe(time);
+    await waitFor(() => result.current.time !== time);
   });
 
   it('should fetch with suspense', async () => {

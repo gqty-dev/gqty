@@ -80,13 +80,15 @@ export const createUseMutation = <TSchema extends BaseGeneratedSchema>(
       ? undefined
       : Parameters<Exclude<TCallback, undefined>>[1];
 
-    const [data, setData] = React.useState<TData>();
-    const [error, setError] = React.useState<GQtyError>();
-    const [fetchPromise, setFetchPromise] = React.useState<Promise<TData>>();
+    const [state, setState] = React.useState<{
+      data?: TData;
+      error?: GQtyError;
+      promise?: Promise<TData>;
+    }>({});
 
     if (suspense) {
-      if (fetchPromise) throw fetchPromise;
-      if (error) throw error;
+      if (state.promise) throw state.promise;
+      if (state.error) throw state.error;
     }
 
     const mutate = React.useCallback(
@@ -98,60 +100,55 @@ export const createUseMutation = <TSchema extends BaseGeneratedSchema>(
           throw new GQtyError(`Please specify a mutation function.`);
         }
 
-        setError(undefined);
-
-        const promise = resolve(
-          ({ mutation }) => {
-            if (mutation === undefined) {
-              throw new GQtyError(`Mutation is not defined in the schema.`);
-            }
-
-            return fn(mutation, args as TArgs);
-          },
-          {
-            fetchPolicy: noCache ? 'no-store' : 'no-cache',
-            retryPolicy: retry,
-          }
-        ).then((data) => {
-          const refetchPromise = Promise.all(
-            refetchQueries.map((v) => refetch(v))
-          );
-
-          return awaitRefetchQueries ? refetchPromise.then(() => data) : data;
-        }) as Promise<TData>;
-
-        setFetchPromise(promise);
-
         try {
+          const promise = resolve(
+            ({ mutation }) => {
+              if (mutation === undefined) {
+                throw new GQtyError(`Mutation is not defined in the schema.`);
+              }
+
+              return fn(mutation, args as TArgs);
+            },
+            {
+              fetchPolicy: noCache ? 'no-store' : 'no-cache',
+              retryPolicy: retry,
+            }
+          ).then((data) => {
+            const refetchPromise = Promise.all(
+              refetchQueries.map((v) => refetch(v))
+            );
+
+            return awaitRefetchQueries ? refetchPromise.then(() => data) : data;
+          }) as Promise<TData>;
+
+          setState({ promise });
+
           const data = await promise;
 
-          const refetchPromise = Promise.all(
-            refetchQueries.map((v) => refetch(v))
-          );
-
-          if (awaitRefetchQueries) {
-            await refetchPromise;
-          }
-
           onCompleted?.(data);
-          setData(data);
+          setState({ data });
 
           return data;
         } catch (error) {
           const theError = GQtyError.create(error);
 
           onError?.(theError);
-          setError(theError);
+          setState({ error: theError });
 
           throw theError;
-        } finally {
-          setFetchPromise(undefined);
         }
       },
       [mutationFn, noCache, retry, refetchQueries, awaitRefetchQueries]
     );
 
-    return Object.freeze([mutate, { data, error, isLoading: !!fetchPromise }]);
+    return Object.freeze([
+      mutate,
+      Object.freeze({
+        data: state.data,
+        error: state.error,
+        isLoading: state.promise !== undefined,
+      }),
+    ]);
   };
 
   return useMutation;

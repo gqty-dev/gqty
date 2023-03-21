@@ -1,4 +1,10 @@
-import { usePrevious, useRerender, useUpdateEffect } from '@react-hookz/web';
+import {
+  useDebouncedCallback,
+  usePrevious,
+  useRerender,
+  useThrottledState,
+  useUpdateEffect,
+} from '@react-hookz/web';
 import {
   BaseGeneratedSchema,
   GQtyClient,
@@ -6,13 +12,13 @@ import {
   prepass,
   RetryOptions,
 } from 'gqty';
+import pDefer from 'p-defer';
 import { useCallback, useEffect, useMemo } from 'react';
 import {
   LegacyFetchPolicy,
   OnErrorHandler,
   translateFetchPolicy,
 } from '../common';
-import { useThrottledAsync } from '../useThrottledAsync';
 import { useWindowFocusEffect } from '../useWindowFocusEffect';
 import type { ReactClientOptionsWithDefaults } from '../utils';
 
@@ -83,84 +89,122 @@ export const createUseQuery =
     staleWhileRevalidate = defaultStaleWhileRevalidate,
     suspense = defaultSuspense,
   } = {}) => {
+    const render = useRerender();
+    const debouncedRender = useDebouncedCallback(render, [render], 50);
+    const cacheMode = useMemo(
+      () => translateFetchPolicy(fetchPolicy),
+      [fetchPolicy]
+    );
     const {
       accessor: { query },
       context,
       resolve,
+      subscribe,
       selections,
     } = useMemo(
       () =>
         client.createResolver({
-          fetchPolicy: translateFetchPolicy(fetchPolicy),
+          fetchPolicy: cacheMode,
           operationName,
           retryPolicy: retry,
         }),
       [fetchPolicy, operationName, retry]
     );
 
-    const [{ status, error }, { execute }, { promise }] = useThrottledAsync(
-      async () => {
-        try {
-          return await resolve();
-        } catch (error) {
+    const [state, setState] = useThrottledState<{
+      error?: GQtyError;
+      promise?: Promise<unknown>;
+    }>({}, 50);
+
+    // With `prepare`, selections are only collected within the provided
+    // function. Accessing other properties in the proxy should not trigger
+    // further fetches.
+    if (prepare) {
+      context.shouldFetch = false;
+
+      prepare({ prepass, query });
+
+      // When using prepare with suspense, the promise should be thrown
+      // immediately.
+      if (context.shouldFetch && suspense) {
+        throw client.resolve(({ query }) => prepare({ prepass, query }), {
+          fetchPolicy: cacheMode,
+          operationName,
+          retryPolicy: retry,
+        });
+      }
+    }
+
+    if (suspense) {
+      if (state.error) throw state.error;
+
+      // Prevents excessive suspense fallback, throws only on empty cache.
+      if (state.promise && !context.hasCacheHit) throw state.promise;
+    }
+
+    // Normal fetch
+    useEffect(() => {
+      if (state.promise !== undefined) return;
+
+      const { resolve, reject, promise } = pDefer();
+
+      if (context.shouldFetch && notifyOnNetworkStatusChange) {
+        setState({ promise });
+      }
+
+      return subscribe({
+        onNext: () => debouncedRender(),
+        onError(error) {
           const theError = GQtyError.create(error);
 
           onError?.(theError);
-
-          throw theError;
-        } finally {
-          // Reset these, or createResolver() each time and deal with the new resolve.
+          setState({ error: theError });
+          reject(theError);
+        },
+        onComplete() {
           context.shouldFetch = false;
           context.hasCacheHit = false;
           context.hasCacheMiss = false;
-        }
-      }
-    );
+          context.notifyCacheUpdate = cacheMode !== 'default';
 
-    if (suspense) {
-      if (error) throw GQtyError.create(error);
-      if (promise && status === 'loading') {
-        throw promise;
-      }
-    }
-
-    if (prepare) {
-      // TODO: See if `Error.captureStackTrace(error, useQuery);` is needed
-      prepare({ prepass, query });
-
-      // Assuming the fetch always fulfills selections in prepare(), otherwise
-      // this may cause an infinite render loop.
-      if (suspense && context.shouldFetch) {
-        throw resolve();
-      }
-    }
+          setState({});
+          resolve();
+        },
+      });
+    }, [context.shouldFetch]);
 
     const refetch = useCallback(
-      (force = false) => {
-        if (force) {
+      async (force = false) => {
+        if (!force && !context.shouldFetch) return;
+        if (state.promise !== undefined) return;
+
+        try {
+          context.notifyCacheUpdate = true;
           context.shouldFetch = true;
-        } else if (promise) {
-          return promise;
+
+          const promise = resolve();
+
+          if (notifyOnNetworkStatusChange) {
+            setState({ promise });
+          }
+
+          await promise;
+        } catch (e) {
+          const error = GQtyError.create(e);
+
+          onError?.(error);
+          setState({ error });
+        } finally {
+          context.shouldFetch = false;
+          context.hasCacheHit = false;
+          context.hasCacheMiss = false;
+          context.notifyCacheUpdate = cacheMode !== 'default';
+
+          setState({});
         }
-
-        const refetchPromise = execute();
-        context.refechPromise = refetchPromise;
-
-        refetchPromise.catch(console.error).finally(() => {
-          context.refetchPromise = undefined;
-        });
-
-        return refetchPromise;
       },
-      [execute, promise]
+      [context.shouldFetch, operationName, selections]
     );
-
-    // Invoke it on client side automatically.
-    useEffect(() => {
-      if (context.shouldFetch) {
-        refetch();
-      }
-    });
 
     // staleWhileRevalidate
     const swrDiff = usePrevious(staleWhileRevalidate);
@@ -171,39 +215,21 @@ export const createUseQuery =
     }, [refetch, swrDiff]);
 
     {
-      const render = useRerender();
-
       // A rerender should be enough to trigger a soft check, fetch will
       // happen if any of the accessed cache value is stale.
-      useWindowFocusEffect(
-        () => {
-          refetch();
-        },
-        { enabled: refetchOnWindowVisible }
-      );
-
-      // Rerenders on cache changes from others
-      useEffect(() => {
-        if (selections.size === 0) return;
-
-        return context.cache.subscribe(
-          [...selections].map(({ cacheKeys }) => cacheKeys.join('.')),
-          render
-        );
-      }, [selections, selections.size]);
+      useWindowFocusEffect(debouncedRender, {
+        enabled: refetchOnWindowVisible,
+      });
     }
 
     return useMemo(() => {
       return new Proxy(
         Object.freeze({
           $refetch: (force = true) => refetch(force),
-          $state: {
-            isLoading:
-              status === 'loading' &&
-              (context.refetchPromise !== promise ||
-                notifyOnNetworkStatusChange),
-            error: GQtyError.create(error),
-          },
+          $state: Object.freeze({
+            isLoading: state.promise !== undefined,
+            error: state.error,
+          }),
         }),
         {
           get: (target, key, proxy) =>
@@ -219,5 +245,5 @@ export const createUseQuery =
             ),
         }
       );
-    }, [query, refetch, status, error]);
+    }, [query, refetch, state]);
   };

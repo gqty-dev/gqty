@@ -112,7 +112,7 @@ export interface UsePaginatedQuery<TSchema extends BaseGeneratedSchema> {
 
 export const createUsePaginatedQuery =
   <TSchema extends BaseGeneratedSchema>(
-    { createResolver }: GQtyClient<TSchema>,
+    { createResolver, resolve }: GQtyClient<TSchema>,
     {
       defaults: {
         paginatedQueryFetchPolicy: defaultFetchPolicy,
@@ -139,7 +139,6 @@ export const createUsePaginatedQuery =
     const {
       accessor: { query },
       context,
-      resolve,
       selections,
     } = React.useMemo(
       () =>
@@ -151,103 +150,175 @@ export const createUsePaginatedQuery =
       [hookFetchPolicy, operationName, retry]
     );
 
-    const [fetchPromise, setFetchPromise] = React.useState<Promise<TData>>();
-    const [error, setError] = React.useState<GQtyError>();
-    const [data, setData] = React.useState<TData>();
-    const [args, setArgs] = React.useState(initialArgs);
+    // Debounce to skip one render on mount, when the cache is already fresh.
+    const [state, setState] = React.useState<{
+      data?: TData;
+      args: TArgs;
+      promise?: Promise<TData>;
+      error?: GQtyError;
+    }>({
+      args: initialArgs,
+    });
 
     if (suspense) {
-      if (fetchPromise) throw fetchPromise;
-      if (error) throw error;
+      if (state.promise) throw state.promise;
+      if (state.error) throw state.error;
     }
+
+    const mergeData = React.useCallback(
+      (incoming: TData) =>
+        merge?.({
+          data: {
+            existing: state.data,
+            incoming,
+          },
+          uniqBy,
+          sortBy,
+        }) ?? incoming,
+      [merge]
+    );
+
+    const fetchData = React.useCallback(
+      async (
+        args: TArgs,
+        fetchPolicy: PaginatedQueryFetchPolicy = hookFetchPolicy
+      ) => {
+        const promise = resolve(({ query }) => fn(query, args, coreHelpers), {
+          fetchPolicy: translateFetchPolicy(fetchPolicy),
+          operationName,
+          retryPolicy: retry,
+          onSelect(selection, cache) {
+            context.onSelect(selection, cache);
+          },
+        }) as Promise<TData>;
+
+        if (!context.shouldFetch) {
+          state.data = mergeData(fn(query, args, coreHelpers));
+
+          return state.data;
+        }
+
+        if (hookFetchPolicy === 'cache-and-network' && context.hasCacheHit) {
+          state.data = mergeData(fn(query, args, coreHelpers));
+        }
+
+        state.promise = promise;
+
+        promise.finally(() => {
+          if (state.promise === promise) {
+            state.promise = undefined;
+          }
+        });
+
+        return promise;
+      },
+      [
+        context,
+        coreHelpers,
+        fn, // fn almost guaranteed to change on every render
+        hookFetchPolicy,
+        mergeData,
+        operationName,
+        query,
+        retry,
+      ]
+    );
+
+    // Call it once on first render
+    React.useState(() => {
+      if (skip) return setState(({ args }) => ({ args }));
+
+      const promise = fetchData(initialArgs);
+
+      promise
+        .then(
+          (data) => {
+            setTimeout(() => {
+              setState(({ args }) => ({ args, data }));
+            }, 1000);
+          },
+          (error) => {
+            setState(({ args }) => ({
+              args,
+              error: GQtyError.create(error),
+            }));
+          }
+        )
+        .finally(() => {
+          context.shouldFetch = false;
+        });
+
+      if (context.shouldFetch) {
+        if (suspense) {
+          throw promise;
+        } else {
+          setState(({ args }) => ({ args, promise }));
+        }
+      }
+    });
+
+    // Re-render when normalized objects are updated, also resubscribe on
+    // selection change to pick up newly fetched normalized objects.
+    React.useEffect(() => {
+      if (skip || selections.size === 0) return;
+
+      return context.cache.subscribe(
+        [...selections].map((s) => s.cacheKeys.join('.')),
+        () => setState((state) => ({ ...state }))
+      );
+    }, [selections.size]);
 
     const fetchMore = React.useCallback(
       async (
         newArgs?:
           | ((data: FetchMoreCallbackArgs<TData, TArgs>) => TArgs)
           | TArgs,
-        fetchPolicy: PaginatedQueryFetchPolicy = hookFetchPolicy
+        fetchPolicy?: PaginatedQueryFetchPolicy
       ) => {
-        setError(undefined);
-        setFetchPromise(undefined);
-        selections.clear();
-
-        {
-          const data = dataFn();
-
-          if (!context.shouldFetch) {
-            const mergedData = mergeData(data);
-            setData(mergedData);
-            return mergedData;
-          }
-
-          if (fetchPolicy === 'cache-and-network' && context.hasCacheHit) {
-            setData(mergeData(data));
-          }
-        }
-
-        const promise = resolve().then(dataFn);
-
-        setFetchPromise(promise);
+        const currentArgs =
+          typeof newArgs === 'function'
+            ? newArgs({ existingData: state.data, existingArgs: state.args })
+            : newArgs ?? state.args;
 
         try {
-          const currentData = mergeData(await promise);
+          const promise = fetchData(currentArgs, fetchPolicy);
+          // setState((state) => ({ ...state, promise }));
 
-          setData(currentData);
+          const data = await promise.then(mergeData);
+          setState(({ args }) => ({ args, data }));
 
-          return currentData;
-        } catch (error) {
-          const theError = GQtyError.create(error);
+          return data;
+        } catch (e) {
+          const error = GQtyError.create(e);
+          setState(({ args }) => ({ args, error }));
 
-          setError(theError);
-
-          throw theError;
-        }
-
-        function dataFn() {
-          const newArgsValue =
-            typeof newArgs === 'function'
-              ? newArgs({ existingData: data, existingArgs: args })
-              : newArgs;
-
-          setArgs(newArgsValue);
-
-          return fn(query, newArgsValue, coreHelpers);
-        }
-
-        function mergeData(incomingData: TData) {
-          return (
-            merge?.({
-              data: {
-                incoming: incomingData,
-                existing: data,
-              },
-              uniqBy,
-              sortBy,
-            }) ?? incomingData
-          );
+          throw error;
         }
       },
-      [context, fn, hookFetchPolicy, data, args]
+      [fetchData]
     );
-
-    // Invoke fetchMore once with initialArgs
-    React.useEffect(() => {
-      if (!skip) fetchMore(initialArgs);
-    }, [skip, fetchMore, initialArgs]);
 
     // Subscribe to cache change
     React.useEffect(() => {
       return context.cache.subscribe(
         [...selections].map((s) => s.cacheKeys.join('.')),
         () => {
-          setData(fn(query, args, coreHelpers));
+          setState((state) => ({
+            ...state,
+            data: fn(query, state.args, coreHelpers),
+          }));
         }
       );
-    }, [fn, args, selections.size]);
+    }, [fn, state, selections.size]);
 
     return React.useMemo(
-      () => ({ data, args, fetchMore, isLoading: fetchPromise === undefined }),
-      [data, args, fetchMore, fetchPromise]
+      () =>
+        Object.freeze({
+          args: state.args,
+          data: state.data,
+          fetchMore,
+          isLoading: state.promise !== undefined,
+        }),
+      [state.args, state.data, fetchMore, state.promise]
     );
   };

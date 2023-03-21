@@ -12,7 +12,7 @@ export type UseSubscriptionOptions = {
 };
 
 export function createUseSubscription<TSchema extends BaseGeneratedSchema>({
-  createSubscriber,
+  createResolver,
 }: GQtyClient<TSchema>) {
   const useSubscription: UseSubscription<TSchema> = ({
     onError,
@@ -22,28 +22,26 @@ export function createUseSubscription<TSchema extends BaseGeneratedSchema>({
       accessor: { subscription },
       subscribe,
       selections,
-    } = useMemo(() => createSubscriber({ operationName }), [operationName]);
+    } = useMemo(() => createResolver({ operationName }), [operationName]);
 
     const render = useRerender();
     const [error, setError] = useState<GQtyError>();
     if (error) throw error;
 
-    useEffect(
-      () =>
-        subscribe({
-          onNext: render,
-          onError(error) {
-            const theError = GQtyError.create(error);
+    useEffect(() => {
+      return subscribe({
+        onNext: () => render(),
+        onError(error) {
+          const theError = GQtyError.create(error);
 
-            if (onError) {
-              onError(theError);
-            } else {
-              setError(theError);
-            }
-          },
-        }),
-      [onError, selections, selections.size]
-    );
+          if (onError) {
+            onError(theError);
+          } else {
+            setError(theError);
+          }
+        },
+      });
+    }, [onError, selections, selections.size]);
 
     if (!subscription) {
       throw new GQtyError(`Subscription is not defined in the schema.`);
