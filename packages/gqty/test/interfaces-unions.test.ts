@@ -1,9 +1,8 @@
+import { Cache } from 'gqty';
 import { createTestClient } from './utils';
 
 const testClientPromise = createTestClient(undefined, undefined, undefined, {
-  cacheOptions: {
-    normalization: true,
-  },
+  cache: new Cache(undefined, { normalization: true }),
 });
 
 let testClient: Awaited<typeof testClientPromise>;
@@ -154,7 +153,7 @@ describe('interfaces and unions', () => {
       undefined,
       undefined,
       undefined,
-      { cacheOptions: { normalization: false } }
+      { cache: new Cache(undefined, { normalization: true }) }
     );
 
     const nodeResult = await resolved(() => {

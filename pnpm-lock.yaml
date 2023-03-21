@@ -734,6 +734,9 @@ importers:
       gqty:
         specifier: workspace:^2.3.0
         version: link:../gqty/dist
+      p-lazy:
+        specifier: ^3.1.0
+        version: 3.1.0
       undici:
         specifier: 5.7.0
         version: 5.7.0
@@ -14230,6 +14233,10 @@ packages:
     engines: {node: '>=4'}
     dev: false
 
+  /p-lazy@3.1.0:
+    resolution: {integrity: sha512-sCJn0Cdahs6G6SX9+DUihVFUhrzDEduzE5xeViVBGtoqy5dBWko7W8T6Kk6TjR2uevRXJO7CShfWrqdH5s3w3g==}
+    engines: {node: '>=8'}
+
   /p-limit@2.3.0:
     resolution: {integrity: sha512-//88mFWSJx8lxCzwdAABTJL2MyWB12+eIY7MDL2SqLmAkeKU9qxRvWuSyTjm3FUmpBEMuFfckAIqEaVGUDxb6w==}
     engines: {node: '>=6'}
@@ -17947,6 +17954,7 @@ packages:
     dependencies:
       gqty: link:packages/gqty/dist
       graphql: 17.0.0-alpha.2
+      p-lazy: 3.1.0
       undici: 5.7.0
     dev: true
 

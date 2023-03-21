@@ -1,4 +1,5 @@
 import {
+  Cache,
   castNotSkeleton,
   castNotSkeletonDeep,
   getArrayFields,
@@ -1268,7 +1269,7 @@ describe('get fields', () => {
       undefined,
       undefined,
       undefined,
-      { cacheOptions: { normalization: false } }
+      { cache: new Cache(undefined, { normalization: false }) }
     );
 
     await resolved(() => {
@@ -1321,7 +1322,7 @@ describe('prefetch', () => {
       undefined,
       undefined,
       undefined,
-      { cacheOptions: { maxAge: 100 } }
+      { cache: new Cache(undefined, { maxAge: 100 }) }
     );
 
     const resultPromise = prefetch((query) => query.time);

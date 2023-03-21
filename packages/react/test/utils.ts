@@ -1,5 +1,6 @@
 import '@testing-library/jest-dom/extend-expect';
 import {
+  Cache,
   ClientOptions,
   createClient,
   QueryFetcher,
@@ -105,6 +106,7 @@ export const createReactTestClient = async (
         type Mutation {
           sendNotification(message: String!): Boolean!
           humanMutation(nameArg: String!): Human
+          renameHuman(name: String!, newName: String!): Human
         }
         type Subscription {
           newNotification: String!
@@ -153,10 +155,10 @@ export const createReactTestClient = async (
             return null;
           },
           async throw() {
-            throw Error('expected error');
+            throw new Error('expected error');
           },
           async throw2() {
-            throw Error('expected error 2');
+            throw new Error('expected error 2');
           },
           time() {
             return new Date().toISOString();
@@ -183,6 +185,19 @@ export const createReactTestClient = async (
           },
           humanMutation(_root, { nameArg }: { nameArg: string }) {
             return createHuman(nameArg);
+          },
+          renameHuman(
+            _root,
+            { name, newName }: { name: string; newName: string }
+          ) {
+            if (!humanIds[name]) {
+              throw new Error(`Human ${name} not found`);
+            }
+
+            humanIds[newName] = humanIds[name];
+            delete humanIds[name];
+
+            return createHuman(newName);
           },
         },
         Subscription: {
@@ -270,6 +285,7 @@ export const createReactTestClient = async (
     mutation: {
       sendNotification(args: { message: string }): boolean;
       humanMutation: (args?: { nameArg?: string }) => Human;
+      renameHuman: (args: { name: string; newName: string }) => Human;
     };
     subscription: {
       newNotification: string | null | undefined;
@@ -278,6 +294,11 @@ export const createReactTestClient = async (
 
   const core = Object.assign(
     createClient<GeneratedSchema>({
+      cache: new Cache(undefined, {
+        maxAge: 0,
+        staleWhileRevalidate: 5 * 60 * 1000,
+        normalization: true,
+      }),
       schema: merge(generatedSchema, [addedToGeneratedSchema]) as Schema,
       scalars: scalarsEnumsHash,
       fetchOptions: {

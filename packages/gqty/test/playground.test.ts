@@ -1,4 +1,4 @@
-import { selectFields } from '../src';
+import { Cache, selectFields } from '../src';
 import { assignSelections, setCache } from '../src/Accessor';
 import { createTestClient } from './utils';
 
@@ -13,7 +13,7 @@ describe('playground', () => {
       resolved,
       schema: cache,
     } = await createTestClient(undefined, undefined, undefined, {
-      cacheOptions: { normalization: false },
+      cache: new Cache(undefined, { normalization: true }),
     });
 
     await resolved(() => query.human().sons.map((v) => selectFields(v)));

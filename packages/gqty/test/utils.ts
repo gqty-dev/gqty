@@ -564,6 +564,7 @@ export const createTestClient = async (
 
   const testClient = Object.assign(
     createGQtyClient<GeneratedSchema>({
+      cache: new Cache(undefined, { normalization: true }),
       ...clientConfig,
       schema: deepAssign(generatedSchema, [addedToGeneratedSchema]) as Schema,
       fetchOptions: {

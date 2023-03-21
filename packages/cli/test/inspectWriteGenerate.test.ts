@@ -55,13 +55,13 @@ test('basic inspectWriteGenerate functionality', async () => {
       ).replace(new RegExp(endpoint, 'g'), '/graphql')
     ).toMatchInlineSnapshot(`
       "/**
-       * GQTY: You can safely modify this file and Query Fetcher based on your needs
+       * GQty: You can safely modify this file based on your needs.
        */
 
       import { createReactClient } from '@gqty/react';
 
       import type { QueryFetcher } from 'gqty';
-      import { createClient } from 'gqty';
+      import { createClient, Cache } from 'gqty';
       import type { GeneratedSchema } from './schema.generated';
       import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
@@ -89,18 +89,34 @@ test('basic inspectWriteGenerate functionality', async () => {
         return json;
       };
 
+      const cache = new Cache(
+        undefined,
+        /**
+         * Default cache options immediate expiry with a 5 minutes window of
+         * stale-while-revalidate.
+         */
+        {
+          maxAge: 0,
+          staleWhileRevalidate: 5 * 60 * 1000,
+          normalization: true,
+        }
+      );
+
       export const client = createClient<GeneratedSchema>({
         schema: generatedSchema,
         scalars: scalarsEnumsHash,
+        cache,
         fetchOptions: {
           fetcher: queryFetcher,
         },
       });
 
+      // Core functions
+      const { resolve, subscribe, schema } = client;
+
+      // Legacy functions
       const { query, mutation, mutate, subscription, resolved, refetch, track } =
         client;
-
-      export { query, mutation, mutate, subscription, resolved, refetch, track };
 
       const {
         graphql,
@@ -139,6 +155,18 @@ test('basic inspectWriteGenerate functionality', async () => {
         prepareQuery,
       };
 
+      export {
+        resolve,
+        subscribe,
+        schema,
+        query,
+        mutation,
+        mutate,
+        subscription,
+        resolved,
+        refetch,
+        track,
+      };
       export * from './schema.generated';
       "
     `);
@@ -149,7 +177,7 @@ test('basic inspectWriteGenerate functionality', async () => {
       })
     ).toMatchInlineSnapshot(`
       "/**
-       * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+       * GQty AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
        */
 
       export type Maybe<T> = T | null;
@@ -250,13 +278,13 @@ describe('from file', () => {
         )
       ).toMatchInlineSnapshot(`
         "/**
-         * GQTY: You can safely modify this file and Query Fetcher based on your needs
+         * GQty: You can safely modify this file based on your needs.
          */
 
         import { createReactClient } from '@gqty/react';
 
         import type { QueryFetcher } from 'gqty';
-        import { createClient } from 'gqty';
+        import { createClient, Cache } from 'gqty';
         import type { GeneratedSchema } from './schema.generated';
         import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
@@ -284,18 +312,34 @@ describe('from file', () => {
           return json;
         };
 
+        const cache = new Cache(
+          undefined,
+          /**
+           * Default cache options immediate expiry with a 5 minutes window of
+           * stale-while-revalidate.
+           */
+          {
+            maxAge: 0,
+            staleWhileRevalidate: 5 * 60 * 1000,
+            normalization: true,
+          }
+        );
+
         export const client = createClient<GeneratedSchema>({
           schema: generatedSchema,
           scalars: scalarsEnumsHash,
+          cache,
           fetchOptions: {
             fetcher: queryFetcher,
           },
         });
 
+        // Core functions
+        const { resolve, subscribe, schema } = client;
+
+        // Legacy functions
         const { query, mutation, mutate, subscription, resolved, refetch, track } =
           client;
-
-        export { query, mutation, mutate, subscription, resolved, refetch, track };
 
         const {
           graphql,
@@ -334,12 +378,24 @@ describe('from file', () => {
           prepareQuery,
         };
 
+        export {
+          resolve,
+          subscribe,
+          schema,
+          query,
+          mutation,
+          mutate,
+          subscription,
+          resolved,
+          refetch,
+          track,
+        };
         export * from './schema.generated';
         "
       `);
       expect(generatedFileContentSchema).toMatchInlineSnapshot(`
         "/**
-         * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+         * GQty AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
          */
 
         export type Maybe<T> = T | null;
@@ -443,13 +499,13 @@ describe('from file', () => {
         )
       ).toMatchInlineSnapshot(`
         "/**
-         * GQTY: You can safely modify this file and Query Fetcher based on your needs
+         * GQty: You can safely modify this file based on your needs.
          */
 
         import { createReactClient } from '@gqty/react';
 
         import type { QueryFetcher } from 'gqty';
-        import { createClient } from 'gqty';
+        import { createClient, Cache } from 'gqty';
         import type { GeneratedSchema } from './schema.generated';
         import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
@@ -477,18 +533,34 @@ describe('from file', () => {
           return json;
         };
 
+        const cache = new Cache(
+          undefined,
+          /**
+           * Default cache options immediate expiry with a 5 minutes window of
+           * stale-while-revalidate.
+           */
+          {
+            maxAge: 0,
+            staleWhileRevalidate: 5 * 60 * 1000,
+            normalization: true,
+          }
+        );
+
         export const client = createClient<GeneratedSchema>({
           schema: generatedSchema,
           scalars: scalarsEnumsHash,
+          cache,
           fetchOptions: {
             fetcher: queryFetcher,
           },
         });
 
+        // Core functions
+        const { resolve, subscribe, schema } = client;
+
+        // Legacy functions
         const { query, mutation, mutate, subscription, resolved, refetch, track } =
           client;
-
-        export { query, mutation, mutate, subscription, resolved, refetch, track };
 
         const {
           graphql,
@@ -527,12 +599,24 @@ describe('from file', () => {
           prepareQuery,
         };
 
+        export {
+          resolve,
+          subscribe,
+          schema,
+          query,
+          mutation,
+          mutate,
+          subscription,
+          resolved,
+          refetch,
+          track,
+        };
         export * from './schema.generated';
         "
       `);
       expect(generatedFileContentSchema).toMatchInlineSnapshot(`
         "/**
-         * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+         * GQty AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
          */
 
         export type Maybe<T> = T | null;
@@ -635,13 +719,13 @@ describe('from file', () => {
         )
       ).toMatchInlineSnapshot(`
         "/**
-         * GQTY: You can safely modify this file and Query Fetcher based on your needs
+         * GQty: You can safely modify this file based on your needs.
          */
 
         import { createReactClient } from '@gqty/react';
 
         import type { QueryFetcher } from 'gqty';
-        import { createClient } from 'gqty';
+        import { createClient, Cache } from 'gqty';
         import type { GeneratedSchema } from './schema.generated';
         import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
@@ -669,18 +753,34 @@ describe('from file', () => {
           return json;
         };
 
+        const cache = new Cache(
+          undefined,
+          /**
+           * Default cache options immediate expiry with a 5 minutes window of
+           * stale-while-revalidate.
+           */
+          {
+            maxAge: 0,
+            staleWhileRevalidate: 5 * 60 * 1000,
+            normalization: true,
+          }
+        );
+
         export const client = createClient<GeneratedSchema>({
           schema: generatedSchema,
           scalars: scalarsEnumsHash,
+          cache,
           fetchOptions: {
             fetcher: queryFetcher,
           },
         });
 
+        // Core functions
+        const { resolve, subscribe, schema } = client;
+
+        // Legacy functions
         const { query, mutation, mutate, subscription, resolved, refetch, track } =
           client;
-
-        export { query, mutation, mutate, subscription, resolved, refetch, track };
 
         const {
           graphql,
@@ -719,12 +819,24 @@ describe('from file', () => {
           prepareQuery,
         };
 
+        export {
+          resolve,
+          subscribe,
+          schema,
+          query,
+          mutation,
+          mutate,
+          subscription,
+          resolved,
+          refetch,
+          track,
+        };
         export * from './schema.generated';
         "
       `);
       expect(generatedFileContentSchema).toMatchInlineSnapshot(`
         "/**
-         * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+         * GQty AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
          */
 
         export type Maybe<T> = T | null;
@@ -871,13 +983,13 @@ describe('from multiple files', () => {
         )
       ).toMatchInlineSnapshot(`
         "/**
-         * GQTY: You can safely modify this file and Query Fetcher based on your needs
+         * GQty: You can safely modify this file based on your needs.
          */
 
         import { createReactClient } from '@gqty/react';
 
         import type { QueryFetcher } from 'gqty';
-        import { createClient } from 'gqty';
+        import { createClient, Cache } from 'gqty';
         import type { GeneratedSchema } from './schema.generated';
         import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
@@ -905,18 +1017,34 @@ describe('from multiple files', () => {
           return json;
         };
 
+        const cache = new Cache(
+          undefined,
+          /**
+           * Default cache options immediate expiry with a 5 minutes window of
+           * stale-while-revalidate.
+           */
+          {
+            maxAge: 0,
+            staleWhileRevalidate: 5 * 60 * 1000,
+            normalization: true,
+          }
+        );
+
         export const client = createClient<GeneratedSchema>({
           schema: generatedSchema,
           scalars: scalarsEnumsHash,
+          cache,
           fetchOptions: {
             fetcher: queryFetcher,
           },
         });
 
+        // Core functions
+        const { resolve, subscribe, schema } = client;
+
+        // Legacy functions
         const { query, mutation, mutate, subscription, resolved, refetch, track } =
           client;
-
-        export { query, mutation, mutate, subscription, resolved, refetch, track };
 
         const {
           graphql,
@@ -955,12 +1083,24 @@ describe('from multiple files', () => {
           prepareQuery,
         };
 
+        export {
+          resolve,
+          subscribe,
+          schema,
+          query,
+          mutation,
+          mutate,
+          subscription,
+          resolved,
+          refetch,
+          track,
+        };
         export * from './schema.generated';
         "
       `);
       expect(generatedFileContentSchema).toMatchInlineSnapshot(`
         "/**
-         * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+         * GQty AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
          */
 
         export type Maybe<T> = T | null;
@@ -1123,13 +1263,13 @@ test('specify generateOptions to inspectWriteGenerate', async () => {
       generatedFileContentClient.replace(new RegExp(endpoint, 'g'), '/graphql')
     ).toMatchInlineSnapshot(`
       "/**
-       * GQTY: You can safely modify this file and Query Fetcher based on your needs
+       * GQty: You can safely modify this file based on your needs.
        */
 
       import { createReactClient } from '@gqty/react';
 
       import type { QueryFetcher } from 'gqty';
-      import { createClient } from 'gqty';
+      import { createClient, Cache } from 'gqty';
       import type { GeneratedSchema } from './schema.generated';
       import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
@@ -1157,18 +1297,34 @@ test('specify generateOptions to inspectWriteGenerate', async () => {
         return json;
       };
 
+      const cache = new Cache(
+        undefined,
+        /**
+         * Default cache options immediate expiry with a 5 minutes window of
+         * stale-while-revalidate.
+         */
+        {
+          maxAge: 0,
+          staleWhileRevalidate: 5 * 60 * 1000,
+          normalization: true,
+        }
+      );
+
       export const client = createClient<GeneratedSchema>({
         schema: generatedSchema,
         scalars: scalarsEnumsHash,
+        cache,
         fetchOptions: {
           fetcher: queryFetcher,
         },
       });
 
+      // Core functions
+      const { resolve, subscribe, schema } = client;
+
+      // Legacy functions
       const { query, mutation, mutate, subscription, resolved, refetch, track } =
         client;
-
-      export { query, mutation, mutate, subscription, resolved, refetch, track };
 
       const {
         graphql,
@@ -1207,12 +1363,24 @@ test('specify generateOptions to inspectWriteGenerate', async () => {
         prepareQuery,
       };
 
+      export {
+        resolve,
+        subscribe,
+        schema,
+        query,
+        mutation,
+        mutate,
+        subscription,
+        resolved,
+        refetch,
+        track,
+      };
       export * from './schema.generated';
       "
     `);
     expect(generatedFileContentSchema).toMatchInlineSnapshot(`
       "/**
-       * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+       * GQty AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
        */
 
       // This should be included
@@ -1274,14 +1442,9 @@ test('specify generateOptions to inspectWriteGenerate', async () => {
       "
     `);
 
-    expect(
-      generatedFileContentSchema
-        .split('\n')
-        .slice(3)
-        .join('\n')
-        .trim()
-        .startsWith(shouldBeIncluded)
-    ).toBeTruthy();
+    expect(generatedFileContentSchema.split('\n')[4]).toStrictEqual(
+      shouldBeIncluded
+    );
   } finally {
     await tempDir.cleanup();
   }
@@ -1344,8 +1507,9 @@ describe('inspect headers', () => {
 
       expect(generatedFileContent).toMatchInlineSnapshot(`
         "/**
-         * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+         * GQty AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
          */
+
         // This should be included
 
         export type Maybe<T> = T | null;
@@ -1408,7 +1572,7 @@ describe('inspect headers', () => {
       expect(
         generatedFileContent
           .split('\n')
-          .slice(3)
+          .slice(4)
           .join('\n')
           .startsWith(shouldBeIncluded)
       ).toBeTruthy();
@@ -1469,13 +1633,13 @@ describe('CLI behavior', () => {
         ).replace(new RegExp(endpoint, 'g'), '/graphql')
       ).toMatchInlineSnapshot(`
         "/**
-         * GQTY: You can safely modify this file and Query Fetcher based on your needs
+         * GQty: You can safely modify this file based on your needs.
          */
 
         import { createReactClient } from '@gqty/react';
 
         import type { QueryFetcher } from 'gqty';
-        import { createClient } from 'gqty';
+        import { createClient, Cache } from 'gqty';
         import type { GeneratedSchema } from './schema.generated';
         import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
@@ -1503,18 +1667,34 @@ describe('CLI behavior', () => {
           return json;
         };
 
+        const cache = new Cache(
+          undefined,
+          /**
+           * Default cache options immediate expiry with a 5 minutes window of
+           * stale-while-revalidate.
+           */
+          {
+            maxAge: 0,
+            staleWhileRevalidate: 5 * 60 * 1000,
+            normalization: true,
+          }
+        );
+
         export const client = createClient<GeneratedSchema>({
           schema: generatedSchema,
           scalars: scalarsEnumsHash,
+          cache,
           fetchOptions: {
             fetcher: queryFetcher,
           },
         });
 
+        // Core functions
+        const { resolve, subscribe, schema } = client;
+
+        // Legacy functions
         const { query, mutation, mutate, subscription, resolved, refetch, track } =
           client;
-
-        export { query, mutation, mutate, subscription, resolved, refetch, track };
 
         const {
           graphql,
@@ -1553,6 +1733,18 @@ describe('CLI behavior', () => {
           prepareQuery,
         };
 
+        export {
+          resolve,
+          subscribe,
+          schema,
+          query,
+          mutation,
+          mutate,
+          subscription,
+          resolved,
+          refetch,
+          track,
+        };
         export * from './schema.generated';
         "
       `);
@@ -1563,7 +1755,7 @@ describe('CLI behavior', () => {
         })
       ).toMatchInlineSnapshot(`
         "/**
-         * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+         * GQty AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
          */
 
         export type Maybe<T> = T | null;

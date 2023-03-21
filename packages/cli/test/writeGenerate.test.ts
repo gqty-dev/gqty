@@ -64,18 +64,13 @@ test('generates code and writes existing file', async () => {
       encoding: 'utf-8',
     });
 
-    expect(
-      generatedContent
-        .split('\n')
-        .slice(3)
-        .join('\n')
-        .startsWith(shouldBeIncluded)
-    ).toBeTruthy();
+    expect(generatedContent.split('\n')[4]).toStrictEqual(shouldBeIncluded);
 
     expect(generatedContent).toMatchInlineSnapshot(`
       "/**
-       * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+       * GQty AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
        */
+
       // This should be included
 
       export type Maybe<T> = T | null;
@@ -165,18 +160,15 @@ test('creates dir, generates code and writes new file', async () => {
       }
     );
 
-    expect(
-      generatedContentSchema
-        .split('\n')
-        .slice(3)
-        .join('\n')
-        .startsWith(shouldBeIncluded)
-    ).toBeTruthy();
+    expect(generatedContentSchema.split('\n')[4]).toStrictEqual(
+      shouldBeIncluded
+    );
 
     expect(generatedContentSchema).toMatchInlineSnapshot(`
       "/**
-       * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+       * GQty AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
        */
+
       // This should be included
 
       export type Maybe<T> = T | null;
@@ -245,13 +237,13 @@ test('creates dir, generates code and writes new file', async () => {
 
     expect(generatedContentClient).toMatchInlineSnapshot(`
       "/**
-       * GQTY: You can safely modify this file and Query Fetcher based on your needs
+       * GQty: You can safely modify this file based on your needs.
        */
 
       import { createReactClient } from '@gqty/react';
 
       import type { QueryFetcher } from 'gqty';
-      import { createClient } from 'gqty';
+      import { createClient, Cache } from 'gqty';
       import type { GeneratedSchema } from './schema.generated';
       import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
@@ -279,18 +271,34 @@ test('creates dir, generates code and writes new file', async () => {
         return json;
       };
 
+      const cache = new Cache(
+        undefined,
+        /**
+         * Default cache options immediate expiry with a 5 minutes window of
+         * stale-while-revalidate.
+         */
+        {
+          maxAge: 0,
+          staleWhileRevalidate: 5 * 60 * 1000,
+          normalization: true,
+        }
+      );
+
       export const client = createClient<GeneratedSchema>({
         schema: generatedSchema,
         scalars: scalarsEnumsHash,
+        cache,
         fetchOptions: {
           fetcher: queryFetcher,
         },
       });
 
+      // Core functions
+      const { resolve, subscribe, schema } = client;
+
+      // Legacy functions
       const { query, mutation, mutate, subscription, resolved, refetch, track } =
         client;
-
-      export { query, mutation, mutate, subscription, resolved, refetch, track };
 
       const {
         graphql,
@@ -329,6 +337,18 @@ test('creates dir, generates code and writes new file', async () => {
         prepareQuery,
       };
 
+      export {
+        resolve,
+        subscribe,
+        schema,
+        query,
+        mutation,
+        mutate,
+        subscription,
+        resolved,
+        refetch,
+        track,
+      };
       export * from './schema.generated';
       "
     `);

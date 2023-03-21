@@ -1,7 +1,8 @@
-import { LazyPromise } from 'gqty/Utils/promise';
 import type { GraphQLSchema } from 'graphql';
+import PLazy from 'p-lazy';
+import type { defaultConfig, gqtyConfigPromise } from './config';
 import type { GenerateOptions, TransformSchemaOptions } from './generate';
-import type { OnExistingFileConflict } from './writeGenerate';
+import type { OnExistingFileConflict, writeGenerate } from './writeGenerate';
 
 export interface UseGenerateGQtyOptions extends GenerateOptions {
   /**
@@ -27,19 +28,24 @@ export interface UseGenerateGQtyOptions extends GenerateOptions {
 export function useGenerateGQty(config?: UseGenerateGQtyOptions): {
   onSchemaChange(options: { schema: GraphQLSchema }): void;
 } {
-  const pluginDeps = LazyPromise(async () => {
-    const [{ writeGenerate }, { config: gqtyConfig }, { defaultConfig }] =
-      await Promise.all([
-        import('./writeGenerate'),
-        import('./config').then((v) => v.gqtyConfigPromise),
-        import('./config'),
-      ]);
-
-    return {
-      writeGenerate,
-      gqtyConfig,
-      defaultConfig,
-    };
+  const pluginDeps = new PLazy<{
+    writeGenerate: typeof writeGenerate;
+    gqtyConfig: Awaited<typeof gqtyConfigPromise>['config'];
+    defaultConfig: typeof defaultConfig;
+  }>((resolve, reject) => {
+    return Promise.all([
+      import('./writeGenerate'),
+      import('./config').then((v) => v.gqtyConfigPromise),
+      import('./config'),
+    ])
+      .then(
+        ([{ writeGenerate }, { config: gqtyConfig }, { defaultConfig }]) => ({
+          writeGenerate,
+          gqtyConfig,
+          defaultConfig,
+        })
+      )
+      .then(resolve, reject);
   });
 
   return {

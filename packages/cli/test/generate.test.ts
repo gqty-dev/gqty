@@ -38,7 +38,7 @@ test('basic functionality works', async () => {
 
   expect(schemaCode).toMatchInlineSnapshot(`
     "/**
-     * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+     * GQty AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
      */
 
     // This should be included
@@ -122,13 +122,13 @@ test('basic functionality works', async () => {
 
   expect(clientCode).toMatchInlineSnapshot(`
     "/**
-     * GQTY: You can safely modify this file and Query Fetcher based on your needs
+     * GQty: You can safely modify this file based on your needs.
      */
 
     import { createReactClient } from '@gqty/react';
     import { createClient as createSubscriptionsClient } from 'graphql-ws';
     import type { QueryFetcher } from 'gqty';
-    import { createClient } from 'gqty';
+    import { createClient, Cache } from 'gqty';
     import type { GeneratedSchema } from './schema.generated';
     import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
@@ -169,19 +169,35 @@ test('basic functionality works', async () => {
           })
         : undefined;
 
+    const cache = new Cache(
+      undefined,
+      /**
+       * Default cache options immediate expiry with a 5 minutes window of
+       * stale-while-revalidate.
+       */
+      {
+        maxAge: 0,
+        staleWhileRevalidate: 5 * 60 * 1000,
+        normalization: true,
+      }
+    );
+
     export const client = createClient<GeneratedSchema>({
       schema: generatedSchema,
       scalars: scalarsEnumsHash,
+      cache,
       fetchOptions: {
         fetcher: queryFetcher,
         subscriber: subscriptionsClient,
       },
     });
 
+    // Core functions
+    const { resolve, subscribe, schema } = client;
+
+    // Legacy functions
     const { query, mutation, mutate, subscription, resolved, refetch, track } =
       client;
-
-    export { query, mutation, mutate, subscription, resolved, refetch, track };
 
     const {
       graphql,
@@ -222,6 +238,18 @@ test('basic functionality works', async () => {
       useSubscription,
     };
 
+    export {
+      resolve,
+      subscribe,
+      schema,
+      query,
+      mutation,
+      mutate,
+      subscription,
+      resolved,
+      refetch,
+      track,
+    };
     export * from './schema.generated';
     "
   `);
@@ -257,14 +285,7 @@ test('basic functionality works', async () => {
 
   expect(clientCode.includes('= createReactClient')).toBeTruthy();
 
-  expect(
-    schemaCode
-      .split('\n')
-      .slice(3)
-      .join('\n')
-      .trim()
-      .startsWith(shouldBeIncluded)
-  ).toBeTruthy();
+  expect(schemaCode.split('\n')[4]).toStrictEqual(shouldBeIncluded);
 });
 
 test('custom scalars works', async () => {
@@ -295,13 +316,13 @@ test('custom scalars works', async () => {
 
   expect(clientCode).toMatchInlineSnapshot(`
     "/**
-     * GQTY: You can safely modify this file and Query Fetcher based on your needs
+     * GQty: You can safely modify this file based on your needs.
      */
 
     import { createReactClient } from '@gqty/react';
 
     import type { QueryFetcher } from 'gqty';
-    import { createClient } from 'gqty';
+    import { createClient, Cache } from 'gqty';
     import type { GeneratedSchema } from './schema.generated';
     import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
@@ -329,18 +350,34 @@ test('custom scalars works', async () => {
       return json;
     };
 
+    const cache = new Cache(
+      undefined,
+      /**
+       * Default cache options immediate expiry with a 5 minutes window of
+       * stale-while-revalidate.
+       */
+      {
+        maxAge: 0,
+        staleWhileRevalidate: 5 * 60 * 1000,
+        normalization: true,
+      }
+    );
+
     export const client = createClient<GeneratedSchema>({
       schema: generatedSchema,
       scalars: scalarsEnumsHash,
+      cache,
       fetchOptions: {
         fetcher: queryFetcher,
       },
     });
 
+    // Core functions
+    const { resolve, subscribe, schema } = client;
+
+    // Legacy functions
     const { query, mutation, mutate, subscription, resolved, refetch, track } =
       client;
-
-    export { query, mutation, mutate, subscription, resolved, refetch, track };
 
     const {
       graphql,
@@ -379,13 +416,25 @@ test('custom scalars works', async () => {
       prepareQuery,
     };
 
+    export {
+      resolve,
+      subscribe,
+      schema,
+      query,
+      mutation,
+      mutate,
+      subscription,
+      resolved,
+      refetch,
+      track,
+    };
     export * from './schema.generated';
     "
   `);
 
   expect(schemaCode).toMatchInlineSnapshot(`
     "/**
-     * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+     * GQty AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
      */
 
     export type Maybe<T> = T | null;
@@ -575,7 +624,7 @@ describe('feature complete app', () => {
 
     expect(schemaCode).toMatchInlineSnapshot(`
       "/**
-       * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+       * GQty AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
        */
 
       import { SchemaUnionsKey } from 'gqty';
@@ -1054,7 +1103,7 @@ test('prettier detects invalid code', async () => {
         con a; // invalid code
         `,
     }).catch((err) => err.message.split('\n')[0])
-  ).resolves.toBe(`Unexpected keyword or identifier. (6:9)`);
+  ).resolves.toBe(`Unexpected keyword or identifier. (7:9)`);
 });
 
 describe('mutation', () => {
@@ -1090,7 +1139,7 @@ describe('mutation', () => {
 
     expect(schemaCode).toMatchInlineSnapshot(`
       "/**
-       * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+       * GQty AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
        */
 
       export type Maybe<T> = T | null;
@@ -1219,7 +1268,7 @@ describe('subscription', () => {
 
     expect(schemaCode).toMatchInlineSnapshot(`
       "/**
-       * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+       * GQty AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
        */
 
       export type Maybe<T> = T | null;
@@ -1356,13 +1405,13 @@ test('javascript output works', async () => {
 
   expect(clientCode).toMatchInlineSnapshot(`
     "/**
-     * GQTY: You can safely modify this file and Query Fetcher based on your needs
+     * GQty: You can safely modify this file based on your needs.
      */
 
     import { createReactClient } from '@gqty/react';
     import { createClient as createSubscriptionsClient } from 'graphql-ws';
 
-    import { createClient } from 'gqty';
+    import { createClient, Cache } from 'gqty';
 
     import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
@@ -1406,22 +1455,39 @@ test('javascript output works', async () => {
           })
         : undefined;
 
+    const cache = new Cache(
+      undefined,
+      /**
+       * Default cache options immediate expiry with a 5 minutes window of
+       * stale-while-revalidate.
+       */
+      {
+        maxAge: 0,
+        staleWhileRevalidate: 5 * 60 * 1000,
+        normalization: true,
+      }
+    );
+
     /**
      * @type {import("gqty").GQtyClient<import("./schema.generated").GeneratedSchema>}
      */
+
     export const client = createClient({
       schema: generatedSchema,
       scalars: scalarsEnumsHash,
+      cache,
       fetchOptions: {
         fetcher: queryFetcher,
         subscriber: subscriptionsClient,
       },
     });
 
+    // Core functions
+    const { resolve, subscribe, schema } = client;
+
+    // Legacy functions
     const { query, mutation, mutate, subscription, resolved, refetch, track } =
       client;
-
-    export { query, mutation, mutate, subscription, resolved, refetch, track };
 
     /**
      * @type {import("@gqty/react").ReactClient<import("./schema.generated").GeneratedSchema>}
@@ -1467,13 +1533,26 @@ test('javascript output works', async () => {
       useSubscription,
     };
 
+    export {
+      resolve,
+      subscribe,
+      schema,
+      query,
+      mutation,
+      mutate,
+      subscription,
+      resolved,
+      refetch,
+      track,
+    };
     export * from './schema.generated';
     "
   `);
   expect(javascriptSchemaCode).toMatchInlineSnapshot(`
     "/**
-     * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+     * GQty AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
      */
+
     import { SchemaUnionsKey } from 'gqty';
 
     /**
@@ -1548,7 +1627,7 @@ test('javascript output works', async () => {
   `);
   expect(schemaCode).toMatchInlineSnapshot(`
     "/**
-     * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+     * GQty AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
      */
 
     import { SchemaUnionsKey } from 'gqty';
@@ -1673,13 +1752,13 @@ test('ignoreArgs transform', async () => {
 
   expect(clientCode).toMatchInlineSnapshot(`
     "/**
-     * GQTY: You can safely modify this file and Query Fetcher based on your needs
+     * GQty: You can safely modify this file based on your needs.
      */
 
     import { createReactClient } from '@gqty/react';
 
     import type { QueryFetcher } from 'gqty';
-    import { createClient } from 'gqty';
+    import { createClient, Cache } from 'gqty';
     import type { GeneratedSchema } from './schema.generated';
     import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
@@ -1707,18 +1786,34 @@ test('ignoreArgs transform', async () => {
       return json;
     };
 
+    const cache = new Cache(
+      undefined,
+      /**
+       * Default cache options immediate expiry with a 5 minutes window of
+       * stale-while-revalidate.
+       */
+      {
+        maxAge: 0,
+        staleWhileRevalidate: 5 * 60 * 1000,
+        normalization: true,
+      }
+    );
+
     export const client = createClient<GeneratedSchema>({
       schema: generatedSchema,
       scalars: scalarsEnumsHash,
+      cache,
       fetchOptions: {
         fetcher: queryFetcher,
       },
     });
 
+    // Core functions
+    const { resolve, subscribe, schema } = client;
+
+    // Legacy functions
     const { query, mutation, mutate, subscription, resolved, refetch, track } =
       client;
-
-    export { query, mutation, mutate, subscription, resolved, refetch, track };
 
     const {
       graphql,
@@ -1757,6 +1852,18 @@ test('ignoreArgs transform', async () => {
       prepareQuery,
     };
 
+    export {
+      resolve,
+      subscribe,
+      schema,
+      query,
+      mutation,
+      mutate,
+      subscription,
+      resolved,
+      refetch,
+      track,
+    };
     export * from './schema.generated';
     "
   `);
@@ -1783,7 +1890,7 @@ test('ignoreArgs transform', async () => {
   `);
   expect(javascriptSchemaCode).toMatchInlineSnapshot(`
     "/**
-     * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+     * GQty AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
      */
 
     /**
@@ -1804,7 +1911,7 @@ test('ignoreArgs transform', async () => {
   `);
   expect(schemaCode).toMatchInlineSnapshot(`
     "/**
-     * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+     * GQty AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
      */
 
     export type Maybe<T> = T | null;
@@ -2020,7 +2127,7 @@ test('fields with default value works', async () => {
 
   expect(schemaCode).toMatchInlineSnapshot(`
     "/**
-     * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+     * GQty AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
      */
 
     // This should be included
@@ -2093,12 +2200,5 @@ test('fields with default value works', async () => {
     "
   `);
 
-  expect(
-    schemaCode
-      .split('\n')
-      .slice(3)
-      .join('\n')
-      .trim()
-      .startsWith(shouldBeIncluded)
-  ).toBeTruthy();
+  expect(schemaCode.split('\n')[4]).toStrictEqual(shouldBeIncluded);
 });

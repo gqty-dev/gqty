@@ -1,11 +1,7 @@
 import type { Client as SseClient } from 'graphql-sse';
 import type { Client as WsClient } from 'graphql-ws';
 import { createSchemaAccessor } from '../Accessor';
-import { Cache } from '../Cache';
-import {
-  CacheNormalizationHandler,
-  defaultNormalizationHandler as defaultNormalizationOptions,
-} from '../Cache/normalization';
+import type { Cache } from '../Cache';
 import { createPersistors, Persistors } from '../Cache/persistence';
 import type { RetryOptions } from '../Error';
 import type {
@@ -105,19 +101,7 @@ export type FetchOptions = Omit<RequestInit, 'body' | 'mode'> & {
 };
 
 export type ClientOptions = {
-  /**
-   * Default cache options is an immediate expiry with a 5 minutes window of
-   * stale-while-revalidate.
-   */
-  cacheOptions?: {
-    maxAge?: number;
-    staleWhileRevalidate?: number;
-    /**
-     * `false` to disable normalized cache, which usually means manual
-     * refetching after mutations.
-     */
-    normalization?: boolean | CacheNormalizationHandler;
-  };
+  cache: Cache;
   fetchOptions: FetchOptions;
   scalars: ScalarsEnumsHash;
   schema: Readonly<Schema>;
@@ -147,11 +131,7 @@ export const createClient = <
   // TODO: compat: remove in next major
   _ObjectTypes extends SchemaObjects<TSchema> = never
 >({
-  cacheOptions: {
-    maxAge = 100,
-    normalization = true,
-    staleWhileRevalidate = 5 * 60 * 1000,
-  } = {},
+  cache,
   fetchOptions: {
     fetcher,
     fetchPolicy = 'default',
@@ -184,29 +164,16 @@ export const createClient = <
     }
   }
 
-  const normalizationOptions =
-    normalization === true
-      ? defaultNormalizationOptions
-      : normalization === false
-      ? undefined
-      : normalization;
-
-  const clientCache = new Cache(undefined, {
-    maxAge,
-    normalization: normalizationOptions,
-    staleWhileRevalidate,
-  });
-
   // TODO: Defer creation until `@gqty/logger` is used.
   const debug = createDebugger();
 
   const defaultContextOptions: CreateContextOptions = {
-    cache: clientCache,
+    cache,
     depthLimit: __depthLimit,
     fetchPolicy,
     scalars,
     schema,
-    typeKeys: normalizationOptions?.schemaKeys,
+    typeKeys: cache.normalizationOptions?.schemaKeys,
   };
 
   // Global scope for accessing the cache via `schema` property.
@@ -215,7 +182,7 @@ export const createClient = <
   const resolvers = createResolvers<TSchema>({
     scalars,
     schema,
-    cache: clientCache,
+    cache,
     debugger: debug,
     fetchOptions: {
       fetcher,
@@ -234,11 +201,11 @@ export const createClient = <
     ...resolvers,
     schema: accessor,
     subscribeDebugEvents: debug.subscribe,
-    ...createPersistors(clientCache),
+    ...createPersistors(cache),
 
     ...createLegacyClient({
       accessor,
-      cache: clientCache,
+      cache,
       context: clientContext,
       debugger: debug,
       fetchOptions: {

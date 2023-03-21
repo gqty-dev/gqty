@@ -1,5 +1,5 @@
 import { $meta } from 'gqty/Accessor';
-import { GQtyError, prepass } from '../src';
+import { Cache, GQtyError, prepass } from '../src';
 import { fetchSelections } from '../src/Client/resolveSelections';
 import { updateCaches } from '../src/Client/updateCaches';
 import { Selection } from '../src/Selection';
@@ -12,7 +12,7 @@ describe('core#resolve', () => {
         resolve,
         schema: { query },
       } = await createTestClient(undefined, undefined, undefined, {
-        cacheOptions: { maxAge: 50 },
+        cache: new Cache(undefined, { maxAge: 50 }),
       });
 
       await expect(
@@ -43,10 +43,7 @@ describe('core#resolve', () => {
         resolve,
         schema: { query },
       } = await createTestClient(undefined, undefined, undefined, {
-        cacheOptions: {
-          maxAge: 50,
-          staleWhileRevalidate: 0,
-        },
+        cache: new Cache(undefined, { maxAge: 50, staleWhileRevalidate: 0 }),
       });
 
       await expect(
@@ -92,10 +89,10 @@ describe('core#resolve', () => {
         undefined,
         undefined,
         {
-          cacheOptions: {
+          cache: new Cache(undefined, {
             maxAge: Infinity,
             staleWhileRevalidate: 0,
-          },
+          }),
         }
       );
 
@@ -117,10 +114,10 @@ describe('core#resolve', () => {
         resolve,
         schema: { query },
       } = await createTestClient(undefined, undefined, undefined, {
-        cacheOptions: {
+        cache: new Cache(undefined, {
           maxAge: Infinity,
           staleWhileRevalidate: 0,
-        },
+        }),
       });
 
       await expect(
@@ -140,10 +137,10 @@ describe('core#resolve', () => {
         undefined,
         undefined,
         {
-          cacheOptions: {
+          cache: new Cache(undefined, {
             maxAge: 0,
             staleWhileRevalidate: 0,
-          },
+          }),
         }
       );
 
@@ -158,37 +155,6 @@ describe('core#resolve', () => {
       await expect(
         resolve(({ query }) => query.hello, { fetchPolicy: 'only-if-cached' })
       ).resolves.toBe('hello world');
-    });
-
-    it('cache-and-network', async () => {
-      const {
-        resolve,
-        schema: { query },
-      } = await createTestClient(undefined, undefined, undefined, {
-        cacheOptions: {
-          maxAge: 50,
-        },
-      });
-
-      await expect(
-        resolve(({ query }) => query.nFetchCalls, {
-          fetchPolicy: 'cache-and-network',
-        })
-      ).resolves.toBe(1);
-
-      await new Promise((resolve) => setTimeout(resolve, 100));
-
-      let promise: Promise<unknown> | undefined;
-      resolve(({ query }) => query.nFetchCalls, {
-        awaitsFetch: false,
-        fetchPolicy: 'cache-and-network',
-        onFetch(p) {
-          promise = p;
-        },
-      });
-      expect(query.nFetchCalls).toBe(1);
-      await promise;
-      expect(query.nFetchCalls).toBe(2);
     });
   });
 
@@ -366,7 +332,7 @@ describe('compat', () => {
         undefined,
         undefined,
         undefined,
-        { cacheOptions: { maxAge: Infinity } }
+        { cache: new Cache(undefined, { maxAge: Infinity }) }
       );
       const resolveFn = () => {
         const human = query.human({
@@ -405,7 +371,7 @@ describe('compat', () => {
         undefined,
         undefined,
         undefined,
-        { cacheOptions: { maxAge: Infinity } }
+        { cache: new Cache(undefined, { maxAge: Infinity }) }
       );
       const resolveFn = () => {
         const human = query.human({
