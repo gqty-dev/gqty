@@ -34,14 +34,14 @@ export const createLegacyTrack = <
 >({
   cache,
   context: globalContext,
-  resolvers: { createSubscriber },
+  resolvers: { createResolver },
   subscribeLegacySelections,
 }: CreateLegacyMethodOptions<TSchema>) => {
   const track: LegacyTrack = (
     fn,
     { onError, operationName, refetch = false } = {}
   ) => {
-    const { context, selections, subscribe } = createSubscriber({
+    const { context, selections, subscribe } = createResolver({
       fetchPolicy: refetch ? 'no-cache' : 'default',
       operationName,
     });

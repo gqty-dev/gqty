@@ -66,7 +66,7 @@ export type CreateLegacyClientOptions<TSchema extends BaseGeneratedSchema> = {
 
 export type LegacyClientOptions = {
   queryFetcher?: LegacyQueryFetcher;
-  scalarsEnumsHash: ScalarsEnumsHash;
+  scalarsEnumsHash?: ScalarsEnumsHash;
   subscriptionsClient?: LegacySubscriptionsClient;
 };
 

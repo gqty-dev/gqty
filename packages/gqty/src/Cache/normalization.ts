@@ -1,7 +1,6 @@
 import type { CacheNode, CacheObject } from '.';
 import { GQtyError } from '../Error';
 import { deepAssign } from '../Utils';
-import { crawl } from './crawl';
 import { isCacheObject } from './utils';
 
 const refKey = Symbol('__ref');
@@ -96,41 +95,34 @@ export const deepNormalizeObject = <TData extends CacheNode>(
   data: TData,
   options: NormalizatioOptions
 ): TData => {
-  const seen = new Set();
+  return walk(data);
 
-  return crawl(data, (it, key, obj) => {
-    if (!isCacheObject(it)) return;
+  function walk<T = unknown>(input: T, depth = 0): T {
+    if (depth < 15 && input && typeof input === 'object') {
+      for (const [key, value] of Object.entries(input)) {
+        (input as Record<string, any>)[key] = walk(value, depth + 1);
+      }
 
-    // Replace normalized objects across queries, but merge multiple occurrances
-    // of the same object within a query.
-    const id = options.identity(it);
-
-    if (id && !seen.has(id)) {
-      // normalizedObject() always merges, uncomment the following line to
-      // perform replacements across queries. But this easily leads to infinite
-      // renders between racing fetches.
-      //options.store.get(id)?.$set({});
-
-      seen.add(id);
+      if (!Array.isArray(input) && isCacheObject(input)) {
+        const id = options.identity(input);
+        if (id) {
+          const norbj = normalizeObject(input, options);
+          if (norbj) {
+            return norbj as T;
+          }
+        }
+      }
     }
 
-    const norbj = normalizeObject(it, options);
-    if (norbj === undefined) return;
-
-    (obj as any)[key] = norbj;
-
-    if (seen.has(norbj)) return;
-    seen.add(norbj);
-
-    return [norbj, 0, []];
-  });
+    return input;
+  }
 };
 
 export type CacheNormalizationHandler = {
   /**
    * To disable normalization for a particular object, return undefined.
    */
-  identity(value: CacheObject): string | undefined;
+  identity(value: CacheNode): string | undefined;
 
   onConflict?(
     /** Existing value */
@@ -142,49 +134,66 @@ export type CacheNormalizationHandler = {
   schemaKeys?: Record<string, string[]>;
 };
 
-export const defaultNormalizationHandler: CacheNormalizationHandler = {
-  identity(value) {
-    if (!value || typeof value !== 'object') return;
+export const defaultNormalizationHandler: CacheNormalizationHandler =
+  Object.freeze({
+    identity(value) {
+      if (!value || typeof value !== 'object' || Array.isArray(value)) return;
 
-    const identityFields = [value.__typename, value.id ?? value._id];
+      const identityFields = [value.__typename, value.id ?? value._id];
 
-    if (identityFields.some((field) => field === undefined)) return;
+      if (identityFields.some((field) => field === undefined)) return;
 
-    return identityFields.join(':');
-  },
-  onConflict(existing, incoming) {
-    if (Array.isArray(existing) && Array.isArray(incoming)) {
-      if (existing.length === incoming.length) {
-        for (const [k, a] of existing.entries()) {
-          const b = incoming[k];
-          if (isCacheObject(a) && isCacheObject(b)) {
-            Object.assign(a, b);
-          }
+      return identityFields.join(':');
+    },
+    onConflict(existing, incoming) {
+      const mergeObjects = (a: CacheObject, b: CacheObject) => {
+        const result = { ...a, ...b };
+
+        if (isNormalizedObjectShell(a)) {
+          a.$set(result);
+          return a;
+        } else if (isNormalizedObjectShell(b)) {
+          b.$set(result);
+          return b;
         }
-      } else {
-        // Replace the values, but keep the original array reference.
-        existing.splice(0, existing.length, ...incoming);
+
+        return result;
+      };
+
+      if (Array.isArray(existing) && Array.isArray(incoming)) {
+        if (existing.length === incoming.length) {
+          return;
+          // for (const [k, a] of existing.entries()) {
+          //   const b = incoming[k];
+          //   if (isCacheObject(a) && isCacheObject(b)) {
+          //     existing[k] = mergeObjects(a, b);
+          //   }
+          // }
+        } else {
+          // Replace the values, but keep the original array reference.
+          existing.splice(0, existing.length, ...incoming);
+        }
+        return existing;
+      } else if (isCacheObject(existing) && isCacheObject(incoming)) {
+        return mergeObjects(existing, incoming);
       }
+      //  else if (isCacheObject(existing) && isCacheObject(incoming)) {
+      //   /**
+      //    * Object subsets further closer to leaf nodes will replace objects closer
+      //    * to root, we should blindly merge them in the same fetch.
+      //    *
+      //    * Replacements via isSubsetOf() may happen between fetches, not within.
+      //    */
+      //   if (isSubsetOf(existing, incoming) || isSubsetOf(incoming, existing)) {
+      //     return { ...incoming, ...existing };
+      //   } else {
+      //     return incoming;
+      //   }
+      // }
 
-      return existing;
-    }
-    //  else if (isCacheObject(existing) && isCacheObject(incoming)) {
-    //   /**
-    //    * Object subsets further closer to leaf nodes will replace objects closer
-    //    * to root, we should blindly merge them in the same fetch.
-    //    *
-    //    * Replacements via isSubsetOf() may happen between fetches, not within.
-    //    */
-    //   if (isSubsetOf(existing, incoming) || isSubsetOf(incoming, existing)) {
-    //     return { ...incoming, ...existing };
-    //   } else {
-    //     return incoming;
-    //   }
-    // }
-
-    return;
-  },
-};
+      return;
+    },
+  });
 
 export const isSubsetOf = (a: CacheObject, b: CacheObject) => {
   for (const [key, value] of Object.entries(a)) {

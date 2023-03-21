@@ -74,6 +74,7 @@ export const fetchSelections = <
           result.error = GQtyError.fromGraphQLErrors(errors);
         }
 
+        // FIXME: Defer logging until after cache update
         debug?.dispatch({
           cache,
           request: queryPayload,
@@ -121,7 +122,7 @@ export const subscribeSelections = <
   {
     cache,
     debugger: debug,
-    fetchOptions: { subscriber, ...fetchOptions },
+    fetchOptions: { subscriber },
     operationName,
     onSubscribe,
     onComplete,
@@ -137,13 +138,8 @@ export const subscribeSelections = <
         operationName,
         extensions: { type, hash } = {},
       }) => {
-        if (!type) {
-          throw new GQtyError(`Invalid query type: ${type}`);
-        }
-
-        if (!hash) {
-          throw new GQtyError(`Expected query hash.`);
-        }
+        if (!type) throw new GQtyError(`Invalid query type: ${type}`);
+        if (!hash) throw new GQtyError(`Expected query hash.`);
 
         if (type === 'subscription' && !subscriber) {
           throw new GQtyError(`Missing subscriber for subscriptions.`);
@@ -241,64 +237,43 @@ export const subscribeSelections = <
             selections,
           });
 
-          fn({
-            error,
-            extensions: queryPayload.extensions,
-          });
+          fn({ error, extensions: queryPayload.extensions });
         };
 
         let dispose: (() => void) | undefined;
 
         // Dedupe
-        const promise = dedupePromise(
-          type === 'subscription' ? undefined : cache,
-          hash,
-          type === 'subscription'
-            ? () =>
-                new Promise<void>((complete) => {
-                  dispose = subscriber!.subscribe<TData>(queryPayload, {
-                    next,
-                    error(err) {
-                      if (Array.isArray(err)) {
-                        error(GQtyError.fromGraphQLErrors(err));
-                      } else if (!isCloseEvent(err)) {
-                        error(GQtyError.create(err));
-                      }
-
-                      this.complete();
-                    },
-                    complete() {
-                      debug?.dispatch({
-                        cache,
-                        label: subscriptionId
-                          ? `[id=${subscriptionId}] [unsubscribe]`
-                          : undefined,
-                        request: queryPayload,
-                        selections,
-                      });
-
-                      complete();
-                    },
-                  });
-                })
-            : () =>
-                new Promise<void>((complete) => {
-                  const options: Parameters<typeof doFetch>[1] = {
-                    ...fetchOptions,
-                    selections,
-                  };
-
-                  if (typeof AbortController !== 'undefined') {
-                    const aborter = new AbortController();
-                    dispose = () => aborter.abort();
-                    options.signal = aborter.signal;
+        const promise = dedupePromise(cache, hash, () => {
+          return new Promise<void>((complete) => {
+            dispose = subscriber!.subscribe<TData, Record<string, unknown>>(
+              queryPayload,
+              {
+                next,
+                error(err) {
+                  if (Array.isArray(err)) {
+                    error(GQtyError.fromGraphQLErrors(err));
+                  } else if (!isCloseEvent(err)) {
+                    error(GQtyError.create(err));
                   }
 
-                  doFetch<TData>(queryPayload, options)
-                    .then(next, error)
-                    .finally(complete);
-                })
-        );
+                  this.complete();
+                },
+                complete() {
+                  debug?.dispatch({
+                    cache,
+                    label: subscriptionId
+                      ? `[id=${subscriptionId}] [unsubscribe]`
+                      : undefined,
+                    request: queryPayload,
+                    selections,
+                  });
+
+                  complete();
+                },
+              }
+            );
+          });
+        });
 
         if (dispose) {
           subsRef.set(promise, { dispose, count: 1 });
@@ -309,9 +284,18 @@ export const subscribeSelections = <
         unsubscribers.add(() => {
           const ref = subsRef.get(promise);
           if (ref && --ref.count <= 0) {
-            ref.dispose();
+            // Put this in the back of event loop, after current active
+            // promises to prevent excessive re-subscriptions.
+            setTimeout(() => {
+              // Dispose only if no one else join the game till now.
+              if (ref.count <= 0) {
+                ref.dispose();
+              }
+            });
           }
         });
+
+        return promise;
       }
     )
   ).finally(() => onComplete?.());

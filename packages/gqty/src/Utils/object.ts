@@ -15,6 +15,9 @@ export const isObjectWithType = <T extends ObjectWithType>(
   v: unknown
 ): v is T => isPlainObject(v) && typeof v.__typename === 'string';
 
+/**
+ * Similar to `just-extend(true, ...)` but circular references aware.
+ */
 export function deepAssign<T extends object>(
   target: object,
   sources: (object | undefined | null)[],

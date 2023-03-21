@@ -1,4 +1,5 @@
 import set from 'just-safe-set';
+import { MultiDict } from 'multidict';
 import { isSkeleton } from '../Accessor/skeleton';
 import { deepCopy, FrailMap, select } from '../Helpers';
 import type { GeneratedSchemaObject } from '../Schema';
@@ -33,9 +34,15 @@ export type CacheObject = {
 export type CacheLeaf = string | number | boolean | null | undefined;
 
 export type CacheOptions = {
-  maxAge?: number;
-  normalization?: boolean | CacheNormalizationHandler;
-  staleWhileRevalidate?: number;
+  readonly maxAge?: number;
+
+  /**
+   * `false` to disable normalized cache, which usually means manual
+   * refetching after mutations.
+   */
+  readonly normalization?: boolean | CacheNormalizationHandler;
+
+  readonly staleWhileRevalidate?: number;
 };
 
 export type CacheDataContainer<TData extends CacheNode = CacheNode> = {
@@ -79,33 +86,47 @@ export type CacheSetOptions = {
 // TODO: Simple cache eviction: evict(type: string, field: string) {}
 export class Cache {
   #maxAge = Infinity;
+  get maxAge() {
+    return this.#maxAge;
+  }
 
-  #staleWhileRevalidate = 0;
+  #staleWhileRevalidate: number = 0;
+  get staleWhileRevalidate() {
+    return this.#staleWhileRevalidate;
+  }
 
+  #normalizationOptions?: CacheNormalizationHandler;
+  get normalizationOptions() {
+    return this.#normalizationOptions;
+  }
+
+  /**
+   * The actual data cache. Cache keys are formatted as the first 2 layer of
+   * the selection path, e.g. `['query', 'user']` for `query.user`.
+   *
+   * This enables a cache expiry/eviction strategy based on top-level queries.
+   */
   #data = new FrailMap<string, CacheDataContainer>();
 
-  #normalizationHandler?: CacheNormalizationHandler;
-
   /** Look up table for normalized objects. */
-  #normalizedObjects = new FrailMap<
-    string,
-    NormalizedObjectShell<CacheObject>
-  >();
+  #normalizedObjects = new Map<string, NormalizedObjectShell<CacheObject>>();
 
   constructor(
     data?: CacheSnapshot,
     {
       maxAge = Infinity,
-      staleWhileRevalidate = 3600,
+      staleWhileRevalidate = 5 * 30 * 1000,
       normalization,
     }: CacheOptions = {}
   ) {
-    this.#maxAge = maxAge;
-    this.#staleWhileRevalidate = staleWhileRevalidate;
+    this.#maxAge = Math.max(maxAge, 0);
+    this.#staleWhileRevalidate = Math.max(staleWhileRevalidate, 0);
 
     if (normalization) {
-      this.#normalizationHandler =
-        normalization === true ? defaultNormalizationHandler : normalization;
+      this.#normalizationOptions =
+        normalization === true
+          ? defaultNormalizationHandler
+          : Object.freeze({ ...normalization });
     }
 
     if (data) {
@@ -115,7 +136,7 @@ export class Cache {
 
   restore(data: CacheSnapshot) {
     const { query, mutation, subscription, normalizedObjects } =
-      importCacheSnapshot(data, this.#normalizationHandler) ?? {};
+      importCacheSnapshot(data, this.normalizationOptions) ?? {};
 
     this.#normalizedObjects = normalizedObjects ?? new FrailMap();
     this.#data = new FrailMap();
@@ -123,83 +144,79 @@ export class Cache {
     this.set({ query, mutation, subscription }, { skipNotify: true });
   }
 
+  /** Subscription paths and it's listener function. */
   #subscriptions = new Map<readonly string[], CacheListener>();
 
   /** Subscription paths that reached a normalized object. */
-  #normalizedSubscriptions = new WeakMap<
-    CacheObject,
-    Map<readonly string[], CacheListener>
-  >();
+  #normalizedSubscriptions = new MultiDict<CacheObject, CacheListener>();
 
   /** Subscribe to cache changes. */
   subscribe(paths: string[], fn: CacheListener) {
     const pathsSnapshot = Object.freeze([...paths]);
-    const unsubFns = new Set<() => void>();
 
     this.#subscriptions.set(pathsSnapshot, fn);
-    unsubFns.add(() => this.#subscriptions.delete(pathsSnapshot));
-
-    // Normalized
-    {
-      const store = this.#normalizedObjects;
-      const subs = this.#normalizedSubscriptions;
-      const getId = this.#normalizationHandler?.identity;
-      if (getId) {
-        const scanNorbjs = (node: CacheNode, path: string[] = []) => {
-          for (const item of Array.isArray(node) ? node : [node]) {
-            if (!isCacheObject(item)) break;
-
-            const id = getId(item);
-            if (id && store.has(id)) {
-              const sub = (
-                subs.get(item) ?? new Map<readonly string[], CacheListener>()
-              ).set(pathsSnapshot, fn);
-
-              subs.set(item, sub);
-
-              unsubFns.add(() => {
-                sub.delete(pathsSnapshot);
-              });
-            }
-
-            if (path.length > 0) {
-              scanNorbjs(item[path.shift()!], path);
-            }
-          }
-        };
-
-        for (const path of paths) {
-          const [type, field, ...parts] = path.split('.');
-
-          // Skip normalizations for out-of-spec paths to avoid pitfalls
-          if (!type || !field) continue;
-
-          scanNorbjs(this.get(`${type}.${field}`)?.data, parts);
-        }
-      }
-    }
+    this.#subscribeNormalized(paths, fn);
 
     return () => {
-      unsubFns.forEach((unsub) => unsub());
+      this.#subscriptions.delete(pathsSnapshot);
+      this.#normalizedSubscriptions.delete(fn);
     };
   }
 
+  #subscribeNormalized(paths: readonly string[], fn: CacheListener) {
+    const getId = this.normalizationOptions?.identity;
+    if (!getId) return;
+
+    const store = this.#normalizedObjects;
+    const nsubs = this.#normalizedSubscriptions;
+
+    nsubs.delete(fn);
+
+    for (const path of paths) {
+      const [type, field, ...parts] = path.split('.');
+      select(this.get(`${type}.${field}`)?.data, parts, (node) => {
+        const id = getId(node);
+        if (id && store.has(id) && isCacheObject(node)) {
+          nsubs.set(node, fn);
+        }
+
+        return node;
+      });
+    }
+  }
+
+  // FIXME
   // This is pretty inefficient, but maintaining an indexed tree is too much
   // effort right now. Accepting PRs.
   #notifySubscribers = (value: CacheRoot) => {
-    const ref = {
-      memo: undefined as any,
-      get current() {
-        return this.memo ?? (this.memo = deepCopy(value));
-      },
-    };
+    // Collect all relevant listeners from both path selections and
+    // normalized objects in a unique Set.
+    const listeners = new Set<CacheListener>();
+    const subs = this.#subscriptions;
+    const nsubs = this.#normalizedSubscriptions;
+    const getId = this.normalizationOptions?.identity;
 
     for (const [paths, notify] of this.#subscriptions) {
       for (const path of paths) {
         const parts = path.split('.');
-        const node = select(value, parts);
+        const node = select(value, parts, (node) => {
+          // Normalized subscriptions
+          if (getId?.(node) && isCacheObject(node)) {
+            // If already subscribed, notify it.
+            nsubs.get(node)?.forEach((notify) => {
+              listeners.add(notify);
+            });
 
-        // Notify and breaks when something is hit
+            // Otherwise, subscribe it for future cross-triggering. Current
+            // invocation can be skipped because normal path traversion goes
+            // down to single properties and is more accurate.
+            nsubs.set(node, notify);
+          }
+
+          return node;
+        });
+
+        // Notify and breaks when one of the path hits
         if (
           Array.isArray(node)
             ? (node as unknown[])
@@ -207,21 +224,54 @@ export class Cache {
                 .some((item) => item !== undefined)
             : node !== undefined
         ) {
-          notify(ref.current);
+          listeners.add(notify);
           break;
         }
       }
     }
 
-    // Normalized
-    if (this.#normalizationHandler) {
+    // Re-calculate normalized subscriptions of relevant objects when we have
+    // normalization enabled.
+    if (getId) {
+      // Normalized objects reachable by all subscribers, these subscribers
+      // should also subscribe to these objects. Since we have no idea what had
+      // been replaced by the current call to `cache.set()`, these subscription
+      // paths has to re-subscribe from scratch to remove those no longer
+      // relevant.
+      const norbjs = new Set<CacheObject>();
+
+      // Crawl value to find all normalized objects
       crawl(value, (node) => {
-        if (isCacheObject(node)) {
-          this.#normalizedSubscriptions
-            .get(node)
-            ?.forEach((notify) => notify(ref.current));
+        if (getId(node) && isCacheObject(node)) {
+          norbjs.add(node);
         }
       });
+
+      const resubscribingListeners = new Set<CacheListener>();
+
+      for (const norbj of norbjs) {
+        for (const listener of nsubs.get(norbj) ?? []) {
+          listeners.add(listener);
+          resubscribingListeners.add(listener);
+        }
+      }
+
+      // Resubscribe
+      for (const listener of resubscribingListeners) {
+        for (const [paths, _listener] of subs) {
+          if (listener === _listener) {
+            this.#subscribeNormalized(paths, listener);
+          }
+        }
+      }
+    }
+
+    // Invoke all reachable listeners with a snapshot of value.
+    if (listeners.size > 0) {
+      const valueSnapshot = deepCopy(value);
+      for (const notify of listeners) {
+        notify(valueSnapshot);
+      }
     }
   };
 
@@ -237,6 +287,9 @@ export class Cache {
    * Caching accessors by cache values is broken with normalization enabled.
    * Different selection paths leading to the same normalized object overwrites
    * each other, along with the selection inside.
+   *
+   * Current workaround is to cache selection children in parents, preventing
+   * excessive selection object creation.
    */
   #selectionAccessors = new WeakMap<Selection, GeneratedSchemaObject>();
 
@@ -299,14 +352,14 @@ export class Cache {
    * Example value: `{ query: { foo: "bar" } }`
    */
   set(values: CacheRoot, { skipNotify = false }: CacheSetOptions = {}) {
-    const age = this.#maxAge;
-    const swr = this.#staleWhileRevalidate;
+    const age = this.maxAge;
+    const swr = this.staleWhileRevalidate;
     const now = Date.now();
 
     // Normalize incoming data before merging.
-    if (this.#normalizationHandler) {
+    if (this.normalizationOptions) {
       values = deepNormalizeObject(values, {
-        ...this.#normalizationHandler,
+        ...this.normalizationOptions,
         store: this.#normalizedObjects,
       });
     }
@@ -317,11 +370,23 @@ export class Cache {
 
         clearTimeout(this.#data.get(cacheKey)?.timeout);
 
-        const dataContainer: CacheDataContainer = {
-          data,
-          expiresAt: age + now,
-          swrBefore: age + swr + now,
-        };
+        const dataContainer: CacheDataContainer =
+          // Mutation and subscription results should be returned right away for
+          // immediate use. Their responses are only meaningful to a cache with
+          // normalization enabled, where it updates subscribing clients.
+          // We force a short expiration to let it survives the next render,
+          // then leave it up for GC.
+          type === 'mutation' || type === 'subscription'
+            ? {
+                data,
+                expiresAt: now + 100,
+                swrBefore: now,
+              }
+            : {
+                data,
+                expiresAt: age + now,
+                swrBefore: age + swr + now,
+              };
 
         if (isFinite(age + swr)) {
           const timeout = setTimeout(
@@ -361,8 +426,8 @@ export class Cache {
         }
       );
 
-    if (this.#normalizationHandler) {
-      return exportCacheSnapshot(snapshot, this.#normalizationHandler);
+    if (this.normalizationOptions) {
+      return exportCacheSnapshot(snapshot, this.normalizationOptions);
     } else {
       return snapshot;
     }

@@ -61,10 +61,11 @@ export const createContext = ({
     const now = Date.now();
     const { data, expiresAt: age = Infinity } = cacheNode ?? {};
 
-    // Suggest a fetch on a stale or missing cache.
+    // Suggests a fetch on a stale or missing cache.
+    //
     // We add a minimum of 100 ms delay for caches with immedidate staleness,
     // this prevents components from infinite rendering loop.
-    this.shouldFetch ||= data === undefined || age < now;
+    this.shouldFetch ||= data === undefined || age < now - 100;
     this.hasCacheHit ||= data !== undefined;
 
     // Missing cache always notify on cache updates.

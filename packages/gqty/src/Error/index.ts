@@ -46,20 +46,13 @@ export class GQtyError extends Error {
   }
 
   static fromGraphQLErrors(errors: readonly GraphQLError[]) {
-    return errors.length > 1
-      ? new GQtyError(
-          `GraphQL Errors${
-            process.env.NODE_ENV === 'production'
-              ? ''
-              : ', please check .graphQLErrors property'
-          }`,
-          {
-            graphQLErrors: errors,
-          }
-        )
-      : new GQtyError(errors[0].message, {
-          graphQLErrors: errors,
-        });
+    return new GQtyError(
+      (errors.length === 1 && errors[0].message) ||
+        (process.env.NODE_ENV === 'production'
+          ? `GraphQL Errors`
+          : 'GraphQL Errors, please check .graphQLErrors property'),
+      { graphQLErrors: errors }
+    );
   }
 }
 

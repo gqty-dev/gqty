@@ -1,0 +1,63 @@
+{
+  "name": "@gqty/subscriptions",
+  "version": "2.0.1",
+  "homepage": "https://gqty.dev",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gqty-dev/gqty.git"
+  },
+  "author": "PabloSzx <pablosaez1995@gmail.com>",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs"
+    },
+    "./*": {
+      "require": "./dist/*.js",
+      "import": "./dist/*.mjs"
+    }
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "build": "bob-esbuild build",
+    "dev": "bob-esbuild watch",
+    "prepare": "bob-esbuild build",
+    "postpublish": "gh-release",
+    "start": "bob-esbuild watch",
+    "test": "jest"
+  },
+  "dependencies": {
+    "isomorphic-ws": "^5.0.0",
+    "ws": "^8.13.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.15.1",
+    "@types/ws": "^8.5.4",
+    "bob-esbuild-cli": "^4.0.0",
+    "esbuild": "^0.17.10",
+    "gqty": "workspace:^2.3.0",
+    "graphql": "^16.6.0",
+    "test-utils": "workspace:^0.1.0",
+    "tslib": "^2.5.0",
+    "typescript": "^4.9.5"
+  },
+  "peerDependencies": {
+    "gqty": "workspace:^2.0.0",
+    "graphql": "*"
+  },
+  "peerDependenciesMeta": {
+    "graphql": {
+      "optional": true
+    }
+  },
+  "publishConfig": {
+    "directory": "dist"
+  }
+}

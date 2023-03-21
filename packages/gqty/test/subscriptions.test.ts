@@ -1,4 +1,4 @@
-import { createDeferredPromise } from '../src/Utils';
+import createDeferredPromise from 'p-defer';
 import { createTestClient } from './utils';
 
 describe('core#resolve', () => {

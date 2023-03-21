@@ -11,7 +11,7 @@ import {
   Type,
 } from '../Schema';
 import type { Selection } from '../Selection';
-import { deepAssign, isObject } from '../Utils';
+import { isObject } from '../Utils';
 import type { Meta } from './meta';
 import { $meta, $setMeta } from './meta';
 import { createSkeleton, isSkeleton } from './skeleton';
@@ -115,7 +115,8 @@ export const resolve = (
   if (data === undefined) {
     data = createSkeleton(() => ({}));
 
-    // Getting an array of an object, not interacting with array items.
+    // User is currently getting the array itself, not array items. We wrap the
+    // skeleton object with a makeshift array.
     if (isArray && !isNumericSelection) {
       data = createSkeleton(() => [data]);
     }
@@ -141,9 +142,16 @@ export const resolve = (
   cache.data = data;
 
   // Subscribe to cache changes at root level, child accessors should have new
-  // values reflected after cache updates. Listeners created this way have no
-  // way to be garbage collected, but the number of accessed root keys are
-  // assumed to be manageable.
+  // values reflected after cache updates. Listeners created this way cannot be
+  // garbage collected along with the throwaway proxies, unsubscribing the last
+  // one each time we access this root key.
+  //
+  // This is only useful when users hold on to an accessor while being updated.
+  // If accessors are read from top-level, data is read again from the cache and
+  // new data is already reflected.
+  //
+  // Accessor objects may be cached in the future, then these subscriptions will
+  // become an essential part of the system.
   if (selection.parent === selection.root) {
     const listenerCacheKey = `__accessorCacheListeners.${cacheKeys.join('/')}`;
 
@@ -153,7 +161,8 @@ export const resolve = (
       [cacheKeys.join('.')],
       (cache) => {
         if (isObject(cache) && isObject(data)) {
-          deepAssign(data, [get(cache, cacheKeys.join('.'))]);
+          // FIXME: This deshells norbjs
+          // deepAssign(data, [get(cache, cacheKeys.join('.'))]);
         }
       }
     );
@@ -477,7 +486,7 @@ const arrayProxyHandler: ProxyHandler<CacheObject[]> = {
     return value;
   },
   set(_, key, value, proxy) {
-    if (typeof key === 'symbol' || +key !== +key) {
+    if (typeof key === 'symbol' || (key !== 'length' && +key !== +key)) {
       throw new GQtyError(`Invalid array assignment.`);
     }
 
@@ -501,6 +510,14 @@ export const createArrayAccessor = <
   meta: Meta
 ) => {
   if (!Array.isArray(meta.cache.data)) {
+    if (process.env.NODE_ENV !== 'production') {
+      console.warn(
+        'Received invalid cache data for array accessor.',
+        meta,
+        meta.context.cache.toJSON()
+      );
+    }
+
     throw new GQtyError(`Cache data must be an array.`);
   }
 

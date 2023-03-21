@@ -7,4 +7,3 @@ export function isEmptyObject(obj: object) {
 
 export * from './object';
 export * from './pick';
-export * from './promise';
