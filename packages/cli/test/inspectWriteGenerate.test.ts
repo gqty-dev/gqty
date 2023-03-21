@@ -118,6 +118,17 @@ test('basic inspectWriteGenerate functionality', async () => {
       const { query, mutation, mutate, subscription, resolved, refetch, track } =
         client;
 
+      const reactClient = createReactClient<GeneratedSchema>(client, {
+        defaults: {
+          // Set this flag as "true" if your usage involves React Suspense
+          // Keep in mind that you can overwrite it in a per-hook basis
+          suspense: false,
+
+          // Set this flag based on your needs
+          staleWhileRevalidate: false,
+        },
+      });
+
       const {
         graphql,
         useQuery,
@@ -130,16 +141,7 @@ test('basic inspectWriteGenerate functionality', async () => {
         prepareReactRender,
         useHydrateCache,
         prepareQuery,
-      } = createReactClient<GeneratedSchema>(client, {
-        defaults: {
-          // Set this flag as "true" if your usage involves React Suspense
-          // Keep in mind that you can overwrite it in a per-hook basis
-          suspense: false,
-
-          // Set this flag based on your needs
-          staleWhileRevalidate: false,
-        },
-      });
+      } = reactClient;
 
       export {
         graphql,
@@ -341,6 +343,17 @@ describe('from file', () => {
         const { query, mutation, mutate, subscription, resolved, refetch, track } =
           client;
 
+        const reactClient = createReactClient<GeneratedSchema>(client, {
+          defaults: {
+            // Set this flag as "true" if your usage involves React Suspense
+            // Keep in mind that you can overwrite it in a per-hook basis
+            suspense: false,
+
+            // Set this flag based on your needs
+            staleWhileRevalidate: false,
+          },
+        });
+
         const {
           graphql,
           useQuery,
@@ -353,16 +366,7 @@ describe('from file', () => {
           prepareReactRender,
           useHydrateCache,
           prepareQuery,
-        } = createReactClient<GeneratedSchema>(client, {
-          defaults: {
-            // Set this flag as "true" if your usage involves React Suspense
-            // Keep in mind that you can overwrite it in a per-hook basis
-            suspense: false,
-
-            // Set this flag based on your needs
-            staleWhileRevalidate: false,
-          },
-        });
+        } = reactClient;
 
         export {
           graphql,
@@ -393,6 +397,7 @@ describe('from file', () => {
         export * from './schema.generated';
         "
       `);
+
       expect(generatedFileContentSchema).toMatchInlineSnapshot(`
         "/**
          * GQty AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
@@ -562,6 +567,17 @@ describe('from file', () => {
         const { query, mutation, mutate, subscription, resolved, refetch, track } =
           client;
 
+        const reactClient = createReactClient<GeneratedSchema>(client, {
+          defaults: {
+            // Set this flag as "true" if your usage involves React Suspense
+            // Keep in mind that you can overwrite it in a per-hook basis
+            suspense: false,
+
+            // Set this flag based on your needs
+            staleWhileRevalidate: false,
+          },
+        });
+
         const {
           graphql,
           useQuery,
@@ -574,16 +590,7 @@ describe('from file', () => {
           prepareReactRender,
           useHydrateCache,
           prepareQuery,
-        } = createReactClient<GeneratedSchema>(client, {
-          defaults: {
-            // Set this flag as "true" if your usage involves React Suspense
-            // Keep in mind that you can overwrite it in a per-hook basis
-            suspense: false,
-
-            // Set this flag based on your needs
-            staleWhileRevalidate: false,
-          },
-        });
+        } = reactClient;
 
         export {
           graphql,
@@ -614,6 +621,7 @@ describe('from file', () => {
         export * from './schema.generated';
         "
       `);
+
       expect(generatedFileContentSchema).toMatchInlineSnapshot(`
         "/**
          * GQty AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
@@ -782,6 +790,17 @@ describe('from file', () => {
         const { query, mutation, mutate, subscription, resolved, refetch, track } =
           client;
 
+        const reactClient = createReactClient<GeneratedSchema>(client, {
+          defaults: {
+            // Set this flag as "true" if your usage involves React Suspense
+            // Keep in mind that you can overwrite it in a per-hook basis
+            suspense: false,
+
+            // Set this flag based on your needs
+            staleWhileRevalidate: false,
+          },
+        });
+
         const {
           graphql,
           useQuery,
@@ -794,16 +813,7 @@ describe('from file', () => {
           prepareReactRender,
           useHydrateCache,
           prepareQuery,
-        } = createReactClient<GeneratedSchema>(client, {
-          defaults: {
-            // Set this flag as "true" if your usage involves React Suspense
-            // Keep in mind that you can overwrite it in a per-hook basis
-            suspense: false,
-
-            // Set this flag based on your needs
-            staleWhileRevalidate: false,
-          },
-        });
+        } = reactClient;
 
         export {
           graphql,
@@ -834,6 +844,7 @@ describe('from file', () => {
         export * from './schema.generated';
         "
       `);
+
       expect(generatedFileContentSchema).toMatchInlineSnapshot(`
         "/**
          * GQty AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
@@ -1046,6 +1057,17 @@ describe('from multiple files', () => {
         const { query, mutation, mutate, subscription, resolved, refetch, track } =
           client;
 
+        const reactClient = createReactClient<GeneratedSchema>(client, {
+          defaults: {
+            // Set this flag as "true" if your usage involves React Suspense
+            // Keep in mind that you can overwrite it in a per-hook basis
+            suspense: false,
+
+            // Set this flag based on your needs
+            staleWhileRevalidate: false,
+          },
+        });
+
         const {
           graphql,
           useQuery,
@@ -1058,16 +1080,7 @@ describe('from multiple files', () => {
           prepareReactRender,
           useHydrateCache,
           prepareQuery,
-        } = createReactClient<GeneratedSchema>(client, {
-          defaults: {
-            // Set this flag as "true" if your usage involves React Suspense
-            // Keep in mind that you can overwrite it in a per-hook basis
-            suspense: false,
-
-            // Set this flag based on your needs
-            staleWhileRevalidate: false,
-          },
-        });
+        } = reactClient;
 
         export {
           graphql,
@@ -1098,6 +1111,7 @@ describe('from multiple files', () => {
         export * from './schema.generated';
         "
       `);
+
       expect(generatedFileContentSchema).toMatchInlineSnapshot(`
         "/**
          * GQty AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
@@ -1326,6 +1340,17 @@ test('specify generateOptions to inspectWriteGenerate', async () => {
       const { query, mutation, mutate, subscription, resolved, refetch, track } =
         client;
 
+      const reactClient = createReactClient<GeneratedSchema>(client, {
+        defaults: {
+          // Set this flag as "true" if your usage involves React Suspense
+          // Keep in mind that you can overwrite it in a per-hook basis
+          suspense: false,
+
+          // Set this flag based on your needs
+          staleWhileRevalidate: false,
+        },
+      });
+
       const {
         graphql,
         useQuery,
@@ -1338,16 +1363,7 @@ test('specify generateOptions to inspectWriteGenerate', async () => {
         prepareReactRender,
         useHydrateCache,
         prepareQuery,
-      } = createReactClient<GeneratedSchema>(client, {
-        defaults: {
-          // Set this flag as "true" if your usage involves React Suspense
-          // Keep in mind that you can overwrite it in a per-hook basis
-          suspense: false,
-
-          // Set this flag based on your needs
-          staleWhileRevalidate: false,
-        },
-      });
+      } = reactClient;
 
       export {
         graphql,
@@ -1696,6 +1712,17 @@ describe('CLI behavior', () => {
         const { query, mutation, mutate, subscription, resolved, refetch, track } =
           client;
 
+        const reactClient = createReactClient<GeneratedSchema>(client, {
+          defaults: {
+            // Set this flag as "true" if your usage involves React Suspense
+            // Keep in mind that you can overwrite it in a per-hook basis
+            suspense: false,
+
+            // Set this flag based on your needs
+            staleWhileRevalidate: false,
+          },
+        });
+
         const {
           graphql,
           useQuery,
@@ -1708,16 +1735,7 @@ describe('CLI behavior', () => {
           prepareReactRender,
           useHydrateCache,
           prepareQuery,
-        } = createReactClient<GeneratedSchema>(client, {
-          defaults: {
-            // Set this flag as "true" if your usage involves React Suspense
-            // Keep in mind that you can overwrite it in a per-hook basis
-            suspense: false,
-
-            // Set this flag based on your needs
-            staleWhileRevalidate: false,
-          },
-        });
+        } = reactClient;
 
         export {
           graphql,

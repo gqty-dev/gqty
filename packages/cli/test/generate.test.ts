@@ -199,6 +199,17 @@ test('basic functionality works', async () => {
     const { query, mutation, mutate, subscription, resolved, refetch, track } =
       client;
 
+    const reactClient = createReactClient<GeneratedSchema>(client, {
+      defaults: {
+        // Set this flag as "true" if your usage involves React Suspense
+        // Keep in mind that you can overwrite it in a per-hook basis
+        suspense: false,
+
+        // Set this flag based on your needs
+        staleWhileRevalidate: false,
+      },
+    });
+
     const {
       graphql,
       useQuery,
@@ -212,16 +223,7 @@ test('basic functionality works', async () => {
       useHydrateCache,
       prepareQuery,
       useSubscription,
-    } = createReactClient<GeneratedSchema>(client, {
-      defaults: {
-        // Set this flag as "true" if your usage involves React Suspense
-        // Keep in mind that you can overwrite it in a per-hook basis
-        suspense: false,
-
-        // Set this flag based on your needs
-        staleWhileRevalidate: false,
-      },
-    });
+    } = reactClient;
 
     export {
       graphql,
@@ -379,6 +381,17 @@ test('custom scalars works', async () => {
     const { query, mutation, mutate, subscription, resolved, refetch, track } =
       client;
 
+    const reactClient = createReactClient<GeneratedSchema>(client, {
+      defaults: {
+        // Set this flag as "true" if your usage involves React Suspense
+        // Keep in mind that you can overwrite it in a per-hook basis
+        suspense: false,
+
+        // Set this flag based on your needs
+        staleWhileRevalidate: false,
+      },
+    });
+
     const {
       graphql,
       useQuery,
@@ -391,16 +404,7 @@ test('custom scalars works', async () => {
       prepareReactRender,
       useHydrateCache,
       prepareQuery,
-    } = createReactClient<GeneratedSchema>(client, {
-      defaults: {
-        // Set this flag as "true" if your usage involves React Suspense
-        // Keep in mind that you can overwrite it in a per-hook basis
-        suspense: false,
-
-        // Set this flag based on your needs
-        staleWhileRevalidate: false,
-      },
-    });
+    } = reactClient;
 
     export {
       graphql,
@@ -1815,6 +1819,17 @@ test('ignoreArgs transform', async () => {
     const { query, mutation, mutate, subscription, resolved, refetch, track } =
       client;
 
+    const reactClient = createReactClient<GeneratedSchema>(client, {
+      defaults: {
+        // Set this flag as "true" if your usage involves React Suspense
+        // Keep in mind that you can overwrite it in a per-hook basis
+        suspense: false,
+
+        // Set this flag based on your needs
+        staleWhileRevalidate: false,
+      },
+    });
+
     const {
       graphql,
       useQuery,
@@ -1827,16 +1842,7 @@ test('ignoreArgs transform', async () => {
       prepareReactRender,
       useHydrateCache,
       prepareQuery,
-    } = createReactClient<GeneratedSchema>(client, {
-      defaults: {
-        // Set this flag as "true" if your usage involves React Suspense
-        // Keep in mind that you can overwrite it in a per-hook basis
-        suspense: false,
-
-        // Set this flag based on your needs
-        staleWhileRevalidate: false,
-      },
-    });
+    } = reactClient;
 
     export {
       graphql,
@@ -1867,6 +1873,7 @@ test('ignoreArgs transform', async () => {
     export * from './schema.generated';
     "
   `);
+
   expect(generatedSchema).toMatchInlineSnapshot(`
     {
       "mutation": {},

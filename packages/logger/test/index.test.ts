@@ -1,4 +1,4 @@
-import { createClient } from 'gqty';
+import { Cache, createClient } from 'gqty';
 import { createTestApp, gql } from 'test-utils';
 import { createLogger } from '../src';
 
@@ -31,6 +31,7 @@ describe('logger', () => {
     mutation: {};
     subscription: {};
   }>({
+    cache: new Cache(),
     schema: {
       mutation: {},
       query: {
