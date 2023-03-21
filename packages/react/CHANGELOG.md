@@ -1,5 +1,24 @@
 # @gqty/react
 
+## 3.0.0-alpha.0
+
+### Major Changes
+
+- Fetch errors now throws to boundaries in suspense mode.
+
+### Minor Changes
+
+- Added `operationName` in `useTransactionQuery()`
+- Upgraded to the new core
+- Added `ResolverContainer` to replace scheduler for legacy resolvers.
+- Added `retry` in `useQuery()`
+- 11604f54: Window focus refetching
+- 6626d802: Add `$refetch` in `useQuery()`
+
+### Patch Changes
+
+- Upgraded to gqty@3.0.0-alpha.0
+
 ## 2.1.1
 
 ### Patch Changes
@@ -73,7 +92,7 @@
 ### Patch Changes
 
 - 3f08372: publish fork
-- 184a074: fix update loop https://github.com/PabloSzx/gqty/pull/223
+- 184a074: fix update loop <https://github.com/PabloSzx/gqty/pull/223>
 - Updated dependencies [3f08372]
   - gqty@2.0.15
 

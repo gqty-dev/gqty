@@ -1,5 +1,16 @@
 # @gqty/cli
 
+## 4.0.0-alpha.0
+
+### Major Changes
+
+- dropped inferrable types from generated schema
+- generated query fetcher now takes a single QueryPayload parameter
+
+### Patch Changes
+
+- Upgraded to gqty@3.0.0-alpha.0
+
 ## 3.3.0
 
 ### Minor Changes
@@ -22,7 +33,7 @@
     Test: '_TEST',
     MyValue: 'My_Value',
   } as const;
-  export type EnumAsConst = typeof EnumAsConst[keyof typeof EnumAsConst];
+  export type EnumAsConst = (typeof EnumAsConst)[keyof typeof EnumAsConst];
 
   function useEnum(value: Enum) {}
   function useEnumAsConst(value: EnumAsConst) {}

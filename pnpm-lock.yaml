@@ -114,13 +114,13 @@ importers:
   examples/github:
     dependencies:
       '@gqty/cli':
-        specifier: workspace:^3.3.0
+        specifier: workspace:^4.0.0-alpha.0
         version: link:../../packages/cli/dist
       dotenv:
         specifier: ^16.0.3
         version: 16.0.3
       gqty:
-        specifier: workspace:^2.3.0
+        specifier: workspace:^3.0.0-alpha.0
         version: link:../../packages/gqty/dist
       test-utils:
         specifier: workspace:^0.1.0
@@ -160,16 +160,16 @@ importers:
         specifier: ^7.6.0
         version: 7.6.0
       '@gqty/cli':
-        specifier: workspace:^3.3.0
+        specifier: workspace:^4.0.0-alpha.0
         version: link:../../packages/cli/dist
       '@gqty/logger':
-        specifier: workspace:^2.0.2
+        specifier: workspace:^3.0.0-alpha.0
         version: link:../../packages/logger/dist
       '@gqty/react':
-        specifier: workspace:^2.1.1
+        specifier: workspace:^3.0.0-alpha.0
         version: link:../../packages/react/dist
       '@gqty/subscriptions':
-        specifier: workspace:^2.0.1
+        specifier: workspace:^3.0.0-alpha.0
         version: link:../../packages/subscriptions/dist
       '@graphql-ez/fastify':
         specifier: ^0.12.0
@@ -208,7 +208,7 @@ importers:
         specifier: ^6.5.1
         version: 6.5.1(react-dom@17.0.2)(react@17.0.2)
       gqty:
-        specifier: workspace:^2.3.0
+        specifier: workspace:^3.0.0-alpha.0
         version: link:../../packages/gqty/dist
       graphql:
         specifier: ^16.6.0
@@ -296,13 +296,13 @@ importers:
   examples/vite-example:
     dependencies:
       '@gqty/cli':
-        specifier: workspace:^3.3.0
+        specifier: workspace:^4.0.0-alpha.0
         version: link:../../packages/cli/dist
       '@gqty/react':
-        specifier: workspace:^2.1.1
+        specifier: workspace:^3.0.0-alpha.0
         version: link:../../packages/react/dist
       gqty:
-        specifier: workspace:^2.3.0
+        specifier: workspace:^3.0.0-alpha.0
         version: link:../../packages/gqty/dist
       react:
         specifier: ^17.0.2
@@ -361,7 +361,7 @@ importers:
         version: 2.0.3
     devDependencies:
       '@gqty/cli':
-        specifier: workspace:^3.3.0
+        specifier: workspace:^4.0.0-alpha.0
         version: file:packages/cli/dist(graphql@17.0.0-alpha.2)
       '@graphql-ez/fastify':
         specifier: ^0.12.0
@@ -391,7 +391,7 @@ importers:
         specifier: ^4.11.0
         version: 4.11.0
       gqty:
-        specifier: workspace:^2.3.0
+        specifier: workspace:^3.0.0-alpha.0
         version: file:packages/gqty/dist(graphql@17.0.0-alpha.2)
       graphql:
         specifier: 17.0.0-alpha.2
@@ -599,7 +599,7 @@ importers:
   packages/cli:
     dependencies:
       gqty:
-        specifier: workspace:^2.3.0
+        specifier: workspace:^3.0.0-alpha.0
         version: link:../gqty/dist
       p-lazy:
         specifier: ^3.1.0
@@ -841,7 +841,7 @@ importers:
         specifier: ^0.17.12
         version: 0.17.12
       gqty:
-        specifier: workspace:^2.3.0
+        specifier: workspace:^3.0.0-alpha.0
         version: link:../gqty/dist
       jest:
         specifier: ^29.5.0
@@ -927,7 +927,7 @@ importers:
         specifier: ^6.12.0
         version: 6.12.0
       gqty:
-        specifier: workspace:^2.3.0
+        specifier: workspace:^3.0.0-alpha.0
         version: link:../gqty/dist
       graphql:
         specifier: ^16.6.0
@@ -998,7 +998,7 @@ importers:
         specifier: ^0.17.10
         version: 0.17.12
       gqty:
-        specifier: workspace:^2.3.0
+        specifier: workspace:^3.0.0-alpha.0
         version: link:../gqty/dist
       graphql:
         specifier: ^16.6.0
@@ -16070,7 +16070,7 @@ packages:
     resolution: {directory: packages/cli/dist, type: directory}
     id: file:packages/cli/dist
     name: '@gqty/cli'
-    version: 3.3.0
+    version: 4.0.0-alpha.0
     engines: {node: ^12.20.0 || >=14.13.0}
     hasBin: true
     peerDependencies:
@@ -16089,7 +16089,7 @@ packages:
     resolution: {directory: packages/gqty/dist, type: directory}
     id: file:packages/gqty/dist
     name: gqty
-    version: 2.3.0
+    version: 3.0.0-alpha.0
     engines: {node: ^12.20.0 || >=14.13.0}
     peerDependencies:
       graphql: '*'
