@@ -111,140 +111,6 @@ importers:
         specifier: ^7.0.1
         version: 7.0.1
 
-  examples/ez:
-    dependencies:
-      '@gqty/cli':
-        specifier: workspace:^3.3.0
-        version: link:../../packages/cli/dist
-      '@graphql-ez/fastify':
-        specifier: ^0.12.0
-        version: 0.12.0(@types/node@18.15.5)(fastify@4.11.0)(graphql-ez@0.16.0)(graphql@16.6.0)
-      '@graphql-ez/fastify-testing':
-        specifier: ^0.4.0
-        version: 0.4.0(@graphql-ez/fastify@0.12.0)(@graphql-typed-document-node/core@3.2.0)(@types/node@18.15.5)(fastify@4.11.0)(graphql-ez@0.16.0)(graphql@16.6.0)
-      '@graphql-ez/plugin-altair':
-        specifier: ^0.11.0
-        version: 0.11.0(@types/node@18.15.5)(graphql-ez@0.16.0)(graphql@16.6.0)
-      '@graphql-ez/plugin-codegen':
-        specifier: ^0.8.0
-        version: 0.8.0(@types/node@18.15.5)(graphql-ez@0.16.0)(graphql@16.6.0)
-      '@graphql-ez/plugin-schema':
-        specifier: ^0.9.0
-        version: 0.9.0(@types/node@18.15.5)(graphql-ez@0.16.0)(graphql@16.6.0)
-      '@graphql-typed-document-node/core':
-        specifier: ^3.2.0
-        version: 3.2.0(graphql@16.6.0)
-      fastify:
-        specifier: ^4.11.0
-        version: 4.11.0
-      gqty:
-        specifier: workspace:^2.3.0
-        version: link:../../packages/gqty/dist
-      graphql:
-        specifier: ^16.6.0
-        version: 16.6.0
-      graphql-ez:
-        specifier: ^0.16.0
-        version: 0.16.0(@types/node@18.15.5)(graphql@16.6.0)
-      lodash-es:
-        specifier: ^4.17.21
-        version: 4.17.21
-      randomstring:
-        specifier: ^1.2.3
-        version: 1.2.3
-      test-utils:
-        specifier: workspace:^0.1.0
-        version: link:../../internal/test-utils
-    devDependencies:
-      '@types/lodash-es':
-        specifier: ^4.17.6
-        version: 4.17.7
-      '@types/node':
-        specifier: ^18.15.5
-        version: 18.15.5
-      '@types/randomstring':
-        specifier: ^1.1.8
-        version: 1.1.8
-      bob-tsm:
-        specifier: ^1.1.2
-        version: 1.1.2(esbuild@0.17.12)(typescript@4.9.5)
-      esbuild:
-        specifier: ^0.17.12
-        version: 0.17.12
-      jest:
-        specifier: ^29.5.0
-        version: 29.5.0(@types/node@18.15.5)(ts-node@10.9.1)
-      typescript:
-        specifier: ^4.9.5
-        version: 4.9.5
-
-  examples/ez-react-next:
-    dependencies:
-      '@gqty/logger':
-        specifier: workspace:^2.0.2
-        version: link:../../packages/logger/dist
-      '@gqty/react':
-        specifier: workspace:^2.1.1
-        version: link:../../packages/react/dist
-      '@graphql-ez/nextjs':
-        specifier: ^0.11.0
-        version: 0.11.0(@types/node@18.15.5)(graphql-ez@0.16.0)(graphql@16.6.0)(next@12.3.4)
-      '@graphql-ez/plugin-codegen':
-        specifier: ^0.8.0
-        version: 0.8.0(@types/node@18.15.5)(graphql-ez@0.16.0)(graphql@16.6.0)
-      '@graphql-ez/plugin-graphiql':
-        specifier: ^0.12.0
-        version: 0.12.0(@types/node@18.15.5)(graphql-ez@0.16.0)(graphql@16.6.0)
-      '@graphql-ez/plugin-schema':
-        specifier: ^0.9.0
-        version: 0.9.0(@types/node@18.15.5)(graphql-ez@0.16.0)(graphql@16.6.0)
-      gqty:
-        specifier: workspace:^2.3.0
-        version: link:../../packages/gqty/dist
-      graphql:
-        specifier: ^16.6.0
-        version: 16.6.0
-      graphql-ez:
-        specifier: ^0.16.0
-        version: 0.16.0(@types/node@18.15.5)(graphql@16.6.0)
-      next:
-        specifier: ^12.3.4
-        version: 12.3.4(@babel/core@7.21.0)(react-dom@17.0.2)(react@17.0.2)
-      react:
-        specifier: ^17.0.2
-        version: 17.0.2
-      react-dom:
-        specifier: ^17.0.2
-        version: 17.0.2(react@17.0.2)
-    devDependencies:
-      '@gqty/cli':
-        specifier: workspace:^3.3.0
-        version: link:../../packages/cli/dist
-      '@types/node':
-        specifier: ^18.15.5
-        version: 18.15.5
-      '@types/react':
-        specifier: ^17.0.53
-        version: 17.0.53
-      '@types/react-dom':
-        specifier: ^18.0.11
-        version: 18.0.11
-      concurrently:
-        specifier: ^7.6.0
-        version: 7.6.0
-      esbuild:
-        specifier: ^0.17.12
-        version: 0.17.12
-      open-cli:
-        specifier: ^7.2.0
-        version: 7.2.0
-      typescript:
-        specifier: ^4.9.5
-        version: 4.9.5
-      wait-on:
-        specifier: ^7.0.1
-        version: 7.0.1
-
   examples/github:
     dependencies:
       '@gqty/cli':
@@ -468,6 +334,31 @@ importers:
         version: 4.2.1(@types/node@18.15.5)
 
   integration/graphql-17:
+    dependencies:
+      '@algolia/client-search':
+        specifier: ^4.15
+        version: 4.15.0
+      '@babel/core':
+        specifier: ^7
+        version: 7.21.0
+      '@chakra-ui/system':
+        specifier: ^2.5.2
+        version: 2.5.2(@emotion/react@11.10.6)(@emotion/styled@11.10.6)(react@18.0.0)
+      '@emotion/react':
+        specifier: ^11.0.0
+        version: 11.10.6(@types/react@17.0.53)(react@17.0.2)
+      '@emotion/styled':
+        specifier: ^11.0.0
+        version: 11.10.6(@emotion/react@11.10.6)(@types/react@17.0.53)(react@17.0.2)
+      prop-types:
+        specifier: ^15.8.1
+        version: 15.8.1
+      react:
+        specifier: ^18
+        version: 18.0.0
+      unist-util-visit:
+        specifier: ^2.0.0
+        version: 2.0.3
     devDependencies:
       '@gqty/cli':
         specifier: workspace:^3.3.0
@@ -603,13 +494,13 @@ importers:
     dependencies:
       '@chakra-ui/icons':
         specifier: ^1.1.7
-        version: 1.1.7(@chakra-ui/system@1.12.1)(react@17.0.2)
+        version: 1.1.7(@chakra-ui/system@2.5.2)(react@17.0.2)
       '@chakra-ui/react':
         specifier: ^1.8.9
         version: 1.8.9(@emotion/react@11.10.6)(@emotion/styled@11.10.6)(@types/react@17.0.53)(framer-motion@6.5.1)(react-dom@17.0.2)(react@17.0.2)
       '@chakra-ui/theme-tools':
         specifier: ^1.3.6
-        version: 1.3.6(@chakra-ui/system@1.12.1)
+        version: 1.3.6(@chakra-ui/system@2.5.2)
       '@chakra-ui/utils':
         specifier: ^1.10.4
         version: 1.10.4
@@ -630,7 +521,7 @@ importers:
         version: 2.3.0(react@17.0.2)
       '@theguild/components':
         specifier: ^1.12.0
-        version: 1.12.0(@algolia/client-search@4.14.2)(@types/react@17.0.53)(prop-types@15.8.1)(react-dom@17.0.2)(react@17.0.2)(ts-node@10.9.1)
+        version: 1.12.0(@algolia/client-search@4.15.0)(@types/react@17.0.53)(prop-types@15.8.1)(react-dom@17.0.2)(react@17.0.2)(ts-node@10.9.1)
       csstype:
         specifier: ^3.1.1
         version: 3.1.1
@@ -1135,27 +1026,27 @@ packages:
       '@algolia/autocomplete-shared': 1.7.2
     dev: false
 
-  /@algolia/autocomplete-js@1.7.2(@algolia/client-search@4.14.2)(algoliasearch@4.14.2):
+  /@algolia/autocomplete-js@1.7.2(@algolia/client-search@4.15.0)(algoliasearch@4.14.2):
     resolution: {integrity: sha512-/x0r0510yEHtTt9+JIhWa9CIvS2s95n5eSyKrCXA6QF8DYKJV+LQpGCpHnO4gEHJFEe0itVdmws3DzOZrBGa9Q==}
     peerDependencies:
       '@algolia/client-search': '>= 4.5.1 < 6'
     dependencies:
       '@algolia/autocomplete-core': 1.7.2
-      '@algolia/autocomplete-preset-algolia': 1.7.2(@algolia/client-search@4.14.2)(algoliasearch@4.14.2)
+      '@algolia/autocomplete-preset-algolia': 1.7.2(@algolia/client-search@4.15.0)(algoliasearch@4.14.2)
       '@algolia/autocomplete-shared': 1.7.2
-      '@algolia/client-search': 4.14.2
+      '@algolia/client-search': 4.15.0
       htm: 3.1.1
       preact: 10.11.2
     transitivePeerDependencies:
       - algoliasearch
     dev: false
 
-  /@algolia/autocomplete-plugin-algolia-insights@1.7.2(@algolia/client-search@4.14.2)(algoliasearch@4.14.2)(search-insights@2.2.1):
+  /@algolia/autocomplete-plugin-algolia-insights@1.7.2(@algolia/client-search@4.15.0)(algoliasearch@4.14.2)(search-insights@2.2.1):
     resolution: {integrity: sha512-dyWJ3Hpn0vGy+Lxd6BZYUupIPB/j7ZA4uzmQ+ThRQF3fjQMpDk4/zNi8/hf0r0Ow9tXOQ7ALKJtHbxWIT/f/Uw==}
     peerDependencies:
       search-insights: '>= 1 < 3'
     dependencies:
-      '@algolia/autocomplete-js': 1.7.2(@algolia/client-search@4.14.2)(algoliasearch@4.14.2)
+      '@algolia/autocomplete-js': 1.7.2(@algolia/client-search@4.15.0)(algoliasearch@4.14.2)
       '@algolia/autocomplete-shared': 1.7.2
       search-insights: 2.2.1
     transitivePeerDependencies:
@@ -1163,28 +1054,28 @@ packages:
       - algoliasearch
     dev: false
 
-  /@algolia/autocomplete-plugin-query-suggestions@1.7.2(@algolia/client-search@4.14.2)(algoliasearch@4.14.2):
+  /@algolia/autocomplete-plugin-query-suggestions@1.7.2(@algolia/client-search@4.15.0)(algoliasearch@4.14.2):
     resolution: {integrity: sha512-lM1B4tsJP+5ePHqXl4kuanmclu8uppmknNTTzWfinjuNRY2WrypwfqrBaCIztbZZYAfs7s0qeC/XXhA4PPSqoA==}
     peerDependencies:
       '@algolia/client-search': '>= 4.5.1 < 6'
       algoliasearch: '>= 4.5.1 < 6'
     dependencies:
       '@algolia/autocomplete-core': 1.7.2
-      '@algolia/autocomplete-js': 1.7.2(@algolia/client-search@4.14.2)(algoliasearch@4.14.2)
-      '@algolia/autocomplete-preset-algolia': 1.7.2(@algolia/client-search@4.14.2)(algoliasearch@4.14.2)
+      '@algolia/autocomplete-js': 1.7.2(@algolia/client-search@4.15.0)(algoliasearch@4.14.2)
+      '@algolia/autocomplete-preset-algolia': 1.7.2(@algolia/client-search@4.15.0)(algoliasearch@4.14.2)
       '@algolia/autocomplete-shared': 1.7.2
-      '@algolia/client-search': 4.14.2
+      '@algolia/client-search': 4.15.0
       algoliasearch: 4.14.2
     dev: false
 
-  /@algolia/autocomplete-preset-algolia@1.7.2(@algolia/client-search@4.14.2)(algoliasearch@4.14.2):
+  /@algolia/autocomplete-preset-algolia@1.7.2(@algolia/client-search@4.15.0)(algoliasearch@4.14.2):
     resolution: {integrity: sha512-+RYEG6B0QiGGfRb2G3MtPfyrl0dALF3cQNTWBzBX6p5o01vCCGTTinAm2UKG3tfc2CnOMAtnPLkzNZyJUpnVJw==}
     peerDependencies:
       '@algolia/client-search': '>= 4.9.1 < 6'
       algoliasearch: '>= 4.9.1 < 6'
     dependencies:
       '@algolia/autocomplete-shared': 1.7.2
-      '@algolia/client-search': 4.14.2
+      '@algolia/client-search': 4.15.0
       algoliasearch: 4.14.2
     dev: false
 
@@ -1204,6 +1095,10 @@ packages:
 
   /@algolia/cache-common@4.14.2:
     resolution: {integrity: sha512-SbvAlG9VqNanCErr44q6lEKD2qoK4XtFNx9Qn8FK26ePCI8I9yU7pYB+eM/cZdS9SzQCRJBbHUumVr4bsQ4uxg==}
+    dev: false
+
+  /@algolia/cache-common@4.15.0:
+    resolution: {integrity: sha512-Me3PbI4QurAM+3D+htIE0l1xt6+bl/18SG6Wc7bPQEZAtN7DTGz22HqhKNyLF2lR/cOfpaH7umXZlZEhIHf7gQ==}
     dev: false
 
   /@algolia/cache-in-memory@4.14.2:
@@ -1236,6 +1131,13 @@ packages:
       '@algolia/transporter': 4.14.2
     dev: false
 
+  /@algolia/client-common@4.15.0:
+    resolution: {integrity: sha512-PlsJMObZuYw4JlG5EhYv1PHDOv7n5mD5PzqFyoNfSOYaEPRZepa3W579ya29yOu3FZ0VGMNJmB7Q5v/+/fwvIw==}
+    dependencies:
+      '@algolia/requester-common': 4.15.0
+      '@algolia/transporter': 4.15.0
+    dev: false
+
   /@algolia/client-personalization@4.14.2:
     resolution: {integrity: sha512-ACCoLi0cL8CBZ1W/2juehSltrw2iqsQBnfiu/Rbl9W2yE6o2ZUb97+sqN/jBqYNQBS+o0ekTMKNkQjHHAcEXNw==}
     dependencies:
@@ -1252,12 +1154,24 @@ packages:
       '@algolia/transporter': 4.14.2
     dev: false
 
+  /@algolia/client-search@4.15.0:
+    resolution: {integrity: sha512-dTwZD4u53WdmexnMcoO2Qd/+YCP3ESXKOtD2MryQ1a9dHwB2Y3Qob0kyS1PG82idwM3enbznvscI9Sf4o9PUWQ==}
+    dependencies:
+      '@algolia/client-common': 4.15.0
+      '@algolia/requester-common': 4.15.0
+      '@algolia/transporter': 4.15.0
+    dev: false
+
   /@algolia/events@4.0.1:
     resolution: {integrity: sha512-FQzvOCgoFXAbf5Y6mYozw2aj5KCJoA3m4heImceldzPSMbdyS4atVjJzXKMsfX3wnZTFYwkkt8/z8UesLHlSBQ==}
     dev: false
 
   /@algolia/logger-common@4.14.2:
     resolution: {integrity: sha512-/JGlYvdV++IcMHBnVFsqEisTiOeEr6cUJtpjz8zc0A9c31JrtLm318Njc72p14Pnkw3A/5lHHh+QxpJ6WFTmsA==}
+    dev: false
+
+  /@algolia/logger-common@4.15.0:
+    resolution: {integrity: sha512-D8OFwn/HpvQz66goIcjxOKsYBMuxiruxJ3cA/bnc0EiDvSA2P2z6bNQWgS5gbstuTZIJmbhr+53NyOxFkmMNAA==}
     dev: false
 
   /@algolia/logger-console@4.14.2:
@@ -1276,6 +1190,10 @@ packages:
     resolution: {integrity: sha512-73YQsBOKa5fvVV3My7iZHu1sUqmjjfs9TteFWwPwDmnad7T0VTCopttcsM3OjLxZFtBnX61Xxl2T2gmG2O4ehg==}
     dev: false
 
+  /@algolia/requester-common@4.15.0:
+    resolution: {integrity: sha512-w0UUzxElbo4hrKg4QP/jiXDNbIJuAthxdlkos9nS8KAPK2XI3R9BlUjLz/ZVs4F9TDGI0mhjrNHhZ12KXcoyhg==}
+    dev: false
+
   /@algolia/requester-node-http@4.14.2:
     resolution: {integrity: sha512-oDbb02kd1o5GTEld4pETlPZLY0e+gOSWjWMJHWTgDXbv9rm/o2cF7japO6Vj1ENnrqWvLBmW1OzV9g6FUFhFXg==}
     dependencies:
@@ -1288,6 +1206,14 @@ packages:
       '@algolia/cache-common': 4.14.2
       '@algolia/logger-common': 4.14.2
       '@algolia/requester-common': 4.14.2
+    dev: false
+
+  /@algolia/transporter@4.15.0:
+    resolution: {integrity: sha512-JoWR+ixG3EmA0UPntQFN/FV5TasYcYu93d5+oKzHFeZ6Z7rtW5Im9iy/Oh/ggk1AAN5fTdqKewtbBpdaYDbKsQ==}
+    dependencies:
+      '@algolia/cache-common': 4.15.0
+      '@algolia/logger-common': 4.15.0
+      '@algolia/requester-common': 4.15.0
     dev: false
 
   /@ampproject/remapping@2.2.0:
@@ -2584,6 +2510,10 @@ packages:
       '@chakra-ui/theme-tools': 1.3.6(@chakra-ui/system@1.12.1)
     dev: false
 
+  /@chakra-ui/anatomy@2.1.2:
+    resolution: {integrity: sha512-pKfOS/mztc4sUXHNc8ypJ1gPWSolWT770jrgVRfolVbYlki8y5Y+As996zMF6k5lewTu6j9DQequ7Cc9a69IVQ==}
+    dev: false
+
   /@chakra-ui/avatar@1.3.11(@chakra-ui/system@1.12.1)(react@17.0.2):
     resolution: {integrity: sha512-/eRRK48Er92/QWAfWhxsJIN0gZBBvk+ew4Hglo+pxt3/NDnfTF2yPE7ZN29Dl6daPNbyTOpoksMwaU2mZIqLgA==}
     peerDependencies:
@@ -2671,6 +2601,24 @@ packages:
       '@chakra-ui/react-env': 1.1.6(react@17.0.2)
       '@chakra-ui/utils': 1.10.4
       react: 17.0.2
+    dev: false
+
+  /@chakra-ui/color-mode@2.1.12(react@17.0.2):
+    resolution: {integrity: sha512-sYyfJGDoJSLYO+V2hxV9r033qhte5Nw/wAn5yRGGZnEEN1dKPEdWQ3XZvglWSDTNd0w9zkoH2w6vP4FBBYb/iw==}
+    peerDependencies:
+      react: '>=18'
+    dependencies:
+      '@chakra-ui/react-use-safe-layout-effect': 2.0.5(react@17.0.2)
+      react: 17.0.2
+    dev: false
+
+  /@chakra-ui/color-mode@2.1.12(react@18.0.0):
+    resolution: {integrity: sha512-sYyfJGDoJSLYO+V2hxV9r033qhte5Nw/wAn5yRGGZnEEN1dKPEdWQ3XZvglWSDTNd0w9zkoH2w6vP4FBBYb/iw==}
+    peerDependencies:
+      react: '>=18'
+    dependencies:
+      '@chakra-ui/react-use-safe-layout-effect': 2.0.5(react@18.0.0)
+      react: 18.0.0
     dev: false
 
   /@chakra-ui/control-box@1.1.6(@chakra-ui/system@1.12.1)(react@17.0.2):
@@ -2775,14 +2723,25 @@ packages:
       react: 17.0.2
     dev: false
 
-  /@chakra-ui/icons@1.1.7(@chakra-ui/system@1.12.1)(react@17.0.2):
+  /@chakra-ui/icon@2.0.5(@chakra-ui/system@2.5.2)(react@17.0.2):
+    resolution: {integrity: sha512-ZrqRvCCIxGr4qFd/r1pmtd9tobRmv8KAxV7ygFoc/t4vOSKTcVIjhE12gsI3FzgvXM15ZFVwsxa1zodwgo5neQ==}
+    peerDependencies:
+      '@chakra-ui/system': '>=1.0.0'
+      react: '>=16.8.6'
+    dependencies:
+      '@chakra-ui/system': 2.5.2(@emotion/react@11.10.6)(@emotion/styled@11.10.6)(react@17.0.2)
+      '@chakra-ui/utils': 1.10.4
+      react: 17.0.2
+    dev: false
+
+  /@chakra-ui/icons@1.1.7(@chakra-ui/system@2.5.2)(react@17.0.2):
     resolution: {integrity: sha512-YIHxey/B4M2PyFASlHXtAWFyW+tsAtGAChOJ8dsM2kpu1MbVUqm/6nMI1KIFd7Te5IWuNYA75rAHBdLI0Yu61A==}
     peerDependencies:
       '@chakra-ui/system': '>=1.0.0'
       react: '>=16.8.6'
     dependencies:
-      '@chakra-ui/icon': 2.0.5(@chakra-ui/system@1.12.1)(react@17.0.2)
-      '@chakra-ui/system': 1.12.1(@emotion/react@11.10.6)(@emotion/styled@11.10.6)(react@17.0.2)
+      '@chakra-ui/icon': 2.0.5(@chakra-ui/system@2.5.2)(react@17.0.2)
+      '@chakra-ui/system': 2.5.2(@emotion/react@11.10.6)(@emotion/styled@11.10.6)(react@17.0.2)
       '@types/react': 17.0.53
       react: 17.0.2
     dev: false
@@ -2908,6 +2867,10 @@ packages:
       react: 17.0.2
     dev: false
 
+  /@chakra-ui/object-utils@2.0.8:
+    resolution: {integrity: sha512-2upjT2JgRuiupdrtBWklKBS6tqeGMA77Nh6Q0JaoQuH/8yq+15CGckqn3IUWkWoGI0Fg3bK9LDlbbD+9DLw95Q==}
+    dev: false
+
   /@chakra-ui/pin-input@1.7.11(@chakra-ui/system@1.12.1)(react@17.0.2):
     resolution: {integrity: sha512-KEVUHHmf22tI4F7gzT9+pHi4E5cCyte6M8rPEwRyuc0kUBo48D8OW0BJwGdESWOKMkQXazDF6Zg4o32t45tbpg==}
     peerDependencies:
@@ -3018,6 +2981,22 @@ packages:
       react: 17.0.2
     dev: false
 
+  /@chakra-ui/react-use-safe-layout-effect@2.0.5(react@17.0.2):
+    resolution: {integrity: sha512-MwAQBz3VxoeFLaesaSEN87reVNVbjcQBDex2WGexAg6hUB6n4gc1OWYH/iXp4tzp4kuggBNhEHkk9BMYXWfhJQ==}
+    peerDependencies:
+      react: '>=18'
+    dependencies:
+      react: 17.0.2
+    dev: false
+
+  /@chakra-ui/react-use-safe-layout-effect@2.0.5(react@18.0.0):
+    resolution: {integrity: sha512-MwAQBz3VxoeFLaesaSEN87reVNVbjcQBDex2WGexAg6hUB6n4gc1OWYH/iXp4tzp4kuggBNhEHkk9BMYXWfhJQ==}
+    peerDependencies:
+      react: '>=18'
+    dependencies:
+      react: 18.0.0
+    dev: false
+
   /@chakra-ui/react-utils@1.2.3(react@17.0.2):
     resolution: {integrity: sha512-r8pUwCVVB7UPhb0AiRa9ZzSp4xkMz64yIeJ4O4aGy4WMw7TRH4j4QkbkE1YC9tQitrXrliOlvx4WWJR4VyiGpw==}
     peerDependencies:
@@ -3025,6 +3004,24 @@ packages:
     dependencies:
       '@chakra-ui/utils': 1.10.4
       react: 17.0.2
+    dev: false
+
+  /@chakra-ui/react-utils@2.0.12(react@17.0.2):
+    resolution: {integrity: sha512-GbSfVb283+YA3kA8w8xWmzbjNWk14uhNpntnipHCftBibl0lxtQ9YqMFQLwuFOO0U2gYVocszqqDWX+XNKq9hw==}
+    peerDependencies:
+      react: '>=18'
+    dependencies:
+      '@chakra-ui/utils': 2.0.15
+      react: 17.0.2
+    dev: false
+
+  /@chakra-ui/react-utils@2.0.12(react@18.0.0):
+    resolution: {integrity: sha512-GbSfVb283+YA3kA8w8xWmzbjNWk14uhNpntnipHCftBibl0lxtQ9YqMFQLwuFOO0U2gYVocszqqDWX+XNKq9hw==}
+    peerDependencies:
+      react: '>=18'
+    dependencies:
+      '@chakra-ui/utils': 2.0.15
+      react: 18.0.0
     dev: false
 
   /@chakra-ui/react@1.8.9(@emotion/react@11.10.6)(@emotion/styled@11.10.6)(@types/react@17.0.53)(framer-motion@6.5.1)(react-dom@17.0.2)(react@17.0.2):
@@ -3104,6 +3101,10 @@ packages:
       react: 17.0.2
     dev: false
 
+  /@chakra-ui/shared-utils@2.0.5:
+    resolution: {integrity: sha512-4/Wur0FqDov7Y0nCXl7HbHzCg4aq86h+SXdoUeuCMD3dSj7dpsVnStLYhng1vxvlbUnLpdF4oz5Myt3i/a7N3Q==}
+    dev: false
+
   /@chakra-ui/skeleton@1.2.14(@chakra-ui/theme@1.14.1)(@emotion/react@11.10.6)(@emotion/styled@11.10.6)(react@17.0.2):
     resolution: {integrity: sha512-R0v4DfQ2yjXCJf9SzhTmDb2PLx5//LxsRbjjgRa8qJCR4MZaGswPrekp4dP8YjY8aEYzuZbvHU12T3vqZBk2GA==}
     peerDependencies:
@@ -3167,6 +3168,14 @@ packages:
       csstype: 3.0.9
     dev: false
 
+  /@chakra-ui/styled-system@2.6.2:
+    resolution: {integrity: sha512-BRKL0KVkukyZmK61PTOnNS/2S+RPYEJHxumj/3HdniSWQlmymRB+8NALtXfrS1G10cbRBkIglPY7/0VLNNr3OA==}
+    dependencies:
+      '@chakra-ui/shared-utils': 2.0.5
+      csstype: 3.1.1
+      lodash.mergewith: 4.6.2
+    dev: false
+
   /@chakra-ui/switch@1.3.10(@chakra-ui/system@1.12.1)(framer-motion@6.5.1)(react@17.0.2):
     resolution: {integrity: sha512-V6qDLY6oECCbPyu7alWWOAhSBI4+SAuT6XW/zEQbelkwuUOiGO1ax67rTXOmZ59A2AaV1gqQFxDh8AcbvwO5XQ==}
     peerDependencies:
@@ -3195,6 +3204,44 @@ packages:
       '@emotion/react': 11.10.6(@types/react@17.0.53)(react@17.0.2)
       '@emotion/styled': 11.10.6(@emotion/react@11.10.6)(@types/react@17.0.53)(react@17.0.2)
       react: 17.0.2
+      react-fast-compare: 3.2.0
+    dev: false
+
+  /@chakra-ui/system@2.5.2(@emotion/react@11.10.6)(@emotion/styled@11.10.6)(react@17.0.2):
+    resolution: {integrity: sha512-nmQZi/YeI6u0UkUHIRcS/iJ71DZDjD3Yk90IGElkkQdGMR4dYKGV3RwBMNoIbpRUKZXDuqUGsXGSLERXwwiqzw==}
+    peerDependencies:
+      '@emotion/react': ^11.0.0
+      '@emotion/styled': ^11.0.0
+      react: '>=18'
+    dependencies:
+      '@chakra-ui/color-mode': 2.1.12(react@17.0.2)
+      '@chakra-ui/object-utils': 2.0.8
+      '@chakra-ui/react-utils': 2.0.12(react@17.0.2)
+      '@chakra-ui/styled-system': 2.6.2
+      '@chakra-ui/theme-utils': 2.0.12
+      '@chakra-ui/utils': 2.0.15
+      '@emotion/react': 11.10.6(@types/react@17.0.53)(react@17.0.2)
+      '@emotion/styled': 11.10.6(@emotion/react@11.10.6)(@types/react@17.0.53)(react@17.0.2)
+      react: 17.0.2
+      react-fast-compare: 3.2.0
+    dev: false
+
+  /@chakra-ui/system@2.5.2(@emotion/react@11.10.6)(@emotion/styled@11.10.6)(react@18.0.0):
+    resolution: {integrity: sha512-nmQZi/YeI6u0UkUHIRcS/iJ71DZDjD3Yk90IGElkkQdGMR4dYKGV3RwBMNoIbpRUKZXDuqUGsXGSLERXwwiqzw==}
+    peerDependencies:
+      '@emotion/react': ^11.0.0
+      '@emotion/styled': ^11.0.0
+      react: '>=18'
+    dependencies:
+      '@chakra-ui/color-mode': 2.1.12(react@18.0.0)
+      '@chakra-ui/object-utils': 2.0.8
+      '@chakra-ui/react-utils': 2.0.12(react@18.0.0)
+      '@chakra-ui/styled-system': 2.6.2
+      '@chakra-ui/theme-utils': 2.0.12
+      '@chakra-ui/utils': 2.0.15
+      '@emotion/react': 11.10.6(@types/react@17.0.53)(react@17.0.2)
+      '@emotion/styled': 11.10.6(@emotion/react@11.10.6)(@types/react@17.0.53)(react@17.0.2)
+      react: 18.0.0
       react-fast-compare: 3.2.0
     dev: false
 
@@ -3258,6 +3305,36 @@ packages:
       '@ctrl/tinycolor': 3.4.1
     dev: false
 
+  /@chakra-ui/theme-tools@1.3.6(@chakra-ui/system@2.5.2):
+    resolution: {integrity: sha512-Wxz3XSJhPCU6OwCHEyH44EegEDQHwvlsx+KDkUDGevOjUU88YuNqOVkKtgTpgMLNQcsrYZ93oPWZUJqqCVNRew==}
+    peerDependencies:
+      '@chakra-ui/system': '>=1.0.0'
+    dependencies:
+      '@chakra-ui/system': 2.5.2(@emotion/react@11.10.6)(@emotion/styled@11.10.6)(react@17.0.2)
+      '@chakra-ui/utils': 1.10.4
+      '@ctrl/tinycolor': 3.4.1
+    dev: false
+
+  /@chakra-ui/theme-tools@2.0.17(@chakra-ui/styled-system@2.6.2):
+    resolution: {integrity: sha512-Auu38hnihlJZQcPok6itRDBbwof3TpXGYtDPnOvrq4Xp7jnab36HLt7KEXSDPXbtOk3ZqU99pvI1en5LbDrdjg==}
+    peerDependencies:
+      '@chakra-ui/styled-system': '>=2.0.0'
+    dependencies:
+      '@chakra-ui/anatomy': 2.1.2
+      '@chakra-ui/shared-utils': 2.0.5
+      '@chakra-ui/styled-system': 2.6.2
+      color2k: 2.0.2
+    dev: false
+
+  /@chakra-ui/theme-utils@2.0.12:
+    resolution: {integrity: sha512-mxjeQRicCCj07RY2UXRRonlR4RETBsORlOD24mIip6GfrS1N0jx2FYUCTF8rMuVSjWrDvxeiyl+BVs6e8Fqv3w==}
+    dependencies:
+      '@chakra-ui/shared-utils': 2.0.5
+      '@chakra-ui/styled-system': 2.6.2
+      '@chakra-ui/theme': 2.2.5(@chakra-ui/styled-system@2.6.2)
+      lodash.mergewith: 4.6.2
+    dev: false
+
   /@chakra-ui/theme@1.14.1(@chakra-ui/system@1.12.1):
     resolution: {integrity: sha512-VeNZi+zD3yDwzvZm234Cy3vnalCzQ+dhAgpHdIYzGO1CYO8DPa+ROcQ70rUueL7dSvUz15KOiGTw6DAl7LXlGA==}
     peerDependencies:
@@ -3267,6 +3344,17 @@ packages:
       '@chakra-ui/system': 1.12.1(@emotion/react@11.10.6)(@emotion/styled@11.10.6)(react@17.0.2)
       '@chakra-ui/theme-tools': 1.3.6(@chakra-ui/system@1.12.1)
       '@chakra-ui/utils': 1.10.4
+    dev: false
+
+  /@chakra-ui/theme@2.2.5(@chakra-ui/styled-system@2.6.2):
+    resolution: {integrity: sha512-hYASZMwu0NqEv6PPydu+F3I+kMNd44yR4TwjR/lXBz/LEh64L6UPY6kQjebCfgdVtsGdl3HKg+eLlfa7SvfRgw==}
+    peerDependencies:
+      '@chakra-ui/styled-system': '>=2.0.0'
+    dependencies:
+      '@chakra-ui/anatomy': 2.1.2
+      '@chakra-ui/shared-utils': 2.0.5
+      '@chakra-ui/styled-system': 2.6.2
+      '@chakra-ui/theme-tools': 2.0.17(@chakra-ui/styled-system@2.6.2)
     dev: false
 
   /@chakra-ui/toast@1.5.9(@chakra-ui/system@1.12.1)(framer-motion@6.5.1)(react-dom@17.0.2)(react@17.0.2):
@@ -3327,6 +3415,15 @@ packages:
       '@types/lodash.mergewith': 4.6.6
       css-box-model: 1.2.1
       framesync: 5.3.0
+      lodash.mergewith: 4.6.2
+    dev: false
+
+  /@chakra-ui/utils@2.0.15:
+    resolution: {integrity: sha512-El4+jL0WSaYYs+rJbuYFDbjmfCcfGDmRY95GO4xwzit6YAPZBLcR65rOEwLps+XWluZTy1xdMrusg/hW0c1aAA==}
+    dependencies:
+      '@types/lodash.mergewith': 4.6.7
+      css-box-model: 1.2.1
+      framesync: 6.1.2
       lodash.mergewith: 4.6.2
     dev: false
 
@@ -3539,7 +3636,7 @@ packages:
   /@emotion/babel-plugin@11.10.6:
     resolution: {integrity: sha512-p2dAqtVrkhSa7xz1u/m9eHYdLi+en8NowrmXeF/dKtJpU8lCWli8RUAati7NcSl0afsBott48pdnANuD0wh9QQ==}
     dependencies:
-      '@babel/helper-module-imports': 7.18.6
+      '@babel/helper-module-imports': 7.21.4
       '@babel/runtime': 7.21.0
       '@emotion/hash': 0.9.0
       '@emotion/memoize': 0.8.0
@@ -3598,7 +3695,7 @@ packages:
       '@types/react':
         optional: true
     dependencies:
-      '@babel/runtime': 7.20.6
+      '@babel/runtime': 7.21.0
       '@emotion/babel-plugin': 11.10.6
       '@emotion/cache': 11.10.5
       '@emotion/serialize': 1.1.1
@@ -3634,7 +3731,7 @@ packages:
       '@types/react':
         optional: true
     dependencies:
-      '@babel/runtime': 7.20.6
+      '@babel/runtime': 7.21.0
       '@emotion/babel-plugin': 11.10.6
       '@emotion/is-prop-valid': 1.2.0
       '@emotion/react': 11.10.6(@types/react@17.0.53)(react@17.0.2)
@@ -4187,23 +4284,6 @@ packages:
       - supports-color
     dev: true
 
-  /@graphql-ez/client@0.6.1(@graphql-typed-document-node/core@3.2.0)(@types/node@18.15.5)(graphql@16.6.0):
-    resolution: {integrity: sha512-WdyK6Lqn7woRtZ6ccs+i8eLDKdFqwYpx4idsAk6hyXWrdR5SCVuuoziZZpFv+sQuIeR34SDpZGv3oxREaFWcag==}
-    peerDependencies:
-      '@graphql-typed-document-node/core': '*'
-      '@types/node': '*'
-      graphql: '*'
-    peerDependenciesMeta:
-      '@graphql-typed-document-node/core':
-        optional: true
-    dependencies:
-      '@graphql-ez/utils': 0.2.0(@types/node@18.15.5)(graphql@16.6.0)
-      '@graphql-typed-document-node/core': 3.2.0(graphql@16.6.0)
-      '@types/node': 18.15.5
-      graphql: 16.6.0
-      undici: 5.7.0
-    dev: false
-
   /@graphql-ez/client@0.6.1(@graphql-typed-document-node/core@3.2.0)(@types/node@18.15.5)(graphql@17.0.0-alpha.2):
     resolution: {integrity: sha512-WdyK6Lqn7woRtZ6ccs+i8eLDKdFqwYpx4idsAk6hyXWrdR5SCVuuoziZZpFv+sQuIeR34SDpZGv3oxREaFWcag==}
     peerDependencies:
@@ -4219,25 +4299,6 @@ packages:
       '@types/node': 18.15.5
       graphql: 17.0.0-alpha.2
       undici: 5.7.0
-
-  /@graphql-ez/fastify-testing@0.4.0(@graphql-ez/fastify@0.12.0)(@graphql-typed-document-node/core@3.2.0)(@types/node@18.15.5)(fastify@4.11.0)(graphql-ez@0.16.0)(graphql@16.6.0):
-    resolution: {integrity: sha512-ZnrrF9A5RY72XTDt5YFsJLYK3jyZpPXRhzRvHjItM26skGAyHrSE3azgHznIVCWxvrZZb4jtu0yQRcAwPd9nuA==}
-    peerDependencies:
-      '@graphql-ez/fastify': 0.12.0
-      fastify: ^4.7.0
-      graphql: '*'
-      graphql-ez: ^0.16.0
-    dependencies:
-      '@graphql-ez/client': 0.6.1(@graphql-typed-document-node/core@3.2.0)(@types/node@18.15.5)(graphql@16.6.0)
-      '@graphql-ez/fastify': 0.12.0(@types/node@18.15.5)(fastify@4.11.0)(graphql-ez@0.16.0)(graphql@16.6.0)
-      '@graphql-ez/utils': 0.2.0(@types/node@18.15.5)(graphql@16.6.0)
-      fastify: 4.11.0
-      graphql: 16.6.0
-      graphql-ez: 0.16.0(@types/node@18.15.5)(graphql@16.6.0)
-    transitivePeerDependencies:
-      - '@graphql-typed-document-node/core'
-      - '@types/node'
-    dev: false
 
   /@graphql-ez/fastify-testing@0.4.0(@graphql-ez/fastify@0.12.0)(@graphql-typed-document-node/core@3.2.0)(@types/node@18.15.5)(fastify@4.11.0)(graphql-ez@0.16.0)(graphql@17.0.0-alpha.2):
     resolution: {integrity: sha512-ZnrrF9A5RY72XTDt5YFsJLYK3jyZpPXRhzRvHjItM26skGAyHrSE3azgHznIVCWxvrZZb4jtu0yQRcAwPd9nuA==}
@@ -4322,28 +4383,6 @@ packages:
       graphql-ez: 0.16.0(@types/node@18.15.5)(graphql@16.6.0)
     dev: false
 
-  /@graphql-ez/nextjs@0.11.0(@types/node@18.15.5)(graphql-ez@0.16.0)(graphql@16.6.0)(next@12.3.4):
-    resolution: {integrity: sha512-oZNeAu8Kbi0QmGpyK17QIjS5Vxzn6smCjZ4qE5+OKmAeJ8iSlTJlZtUn+ALEG0DzEIFg2nPM5xTAMlKO47WdCg==}
-    engines: {node: '>=14.13.1'}
-    peerDependencies:
-      '@types/node': '*'
-      graphql: '*'
-      graphql-ez: ^0.16.0
-      next: ^12.3.4
-    peerDependenciesMeta:
-      graphql:
-        optional: true
-      next:
-        optional: true
-    dependencies:
-      '@types/cors': 2.8.13
-      '@types/node': 18.15.5
-      cors: 2.8.5
-      graphql: 16.6.0
-      graphql-ez: 0.16.0(@types/node@18.15.5)(graphql@16.6.0)
-      next: 12.3.4(@babel/core@7.21.0)(react-dom@17.0.2)(react@17.0.2)
-    dev: false
-
   /@graphql-ez/plugin-altair@0.11.0(@types/node@18.15.5)(graphql-ez@0.16.0)(graphql@16.6.0):
     resolution: {integrity: sha512-7z567qkqwjhfm7yppCrH68CuPf6/89VX7FH+OlmXcl/v0Tif97pwhcs6LUFTTvBuIYyFOKKSinUBEGTqFHZMwg==}
     engines: {node: '>=14.13.1'}
@@ -4404,20 +4443,6 @@ packages:
       graphql-ez: 0.16.0(@types/node@18.15.5)(graphql@16.6.0)
     transitivePeerDependencies:
       - '@envelop/core'
-      - graphql
-    dev: false
-
-  /@graphql-ez/plugin-graphiql@0.12.0(@types/node@18.15.5)(graphql-ez@0.16.0)(graphql@16.6.0):
-    resolution: {integrity: sha512-d2MPAi6MXaDzKPr/Ai2+GNn/6mQKoNfbeQLudIzNOr1/zc00tO5HAgDaO8WwhHTDfCX+GwFw2Bgr4ZOU3lv+Uw==}
-    engines: {node: '>=14.13.1'}
-    peerDependencies:
-      graphql-ez: ^0.16.0
-    dependencies:
-      '@graphql-ez/utils': 0.2.0(@types/node@18.15.5)(graphql@16.6.0)
-      '@pablosz/graphql-helix-graphiql': 4.2.2(@types/node@18.15.5)(graphql@16.6.0)
-      graphql-ez: 0.16.0(@types/node@18.15.5)(graphql@16.6.0)
-    transitivePeerDependencies:
-      - '@types/node'
       - graphql
     dev: false
 
@@ -4759,14 +4784,14 @@ packages:
       react-dom:
         optional: true
     dependencies:
-      '@chakra-ui/icons': 1.1.7(@chakra-ui/system@1.12.1)(react@17.0.2)
+      '@chakra-ui/icons': 1.1.7(@chakra-ui/system@2.5.2)(react@17.0.2)
       '@chakra-ui/react': 1.8.9(@emotion/react@11.10.6)(@emotion/styled@11.10.6)(@types/react@17.0.53)(framer-motion@6.5.1)(react-dom@17.0.2)(react@17.0.2)
       '@chakra-ui/utils': 1.10.4
       '@emotion/react': 11.10.6(@types/react@17.0.53)(react@17.0.2)
       '@guild-docs/mdx-remote': 2.0.2(@chakra-ui/react@1.8.9)(@mdx-js/react@2.3.0)(@types/react@17.0.53)(next-i18next@13.2.2)(react@17.0.2)(shiki@0.10.1)
       '@guild-docs/types': 2.0.0(@chakra-ui/react@1.8.9)(@types/react@17.0.53)(next-i18next@13.2.2)
       '@mdx-js/react': 2.3.0(react@17.0.2)
-      '@theguild/components': 1.12.0(@algolia/client-search@4.14.2)(@types/react@17.0.53)(prop-types@15.8.1)(react-dom@17.0.2)(react@17.0.2)(ts-node@10.9.1)
+      '@theguild/components': 1.12.0(@algolia/client-search@4.15.0)(@types/react@17.0.53)(prop-types@15.8.1)(react-dom@17.0.2)(react@17.0.2)(ts-node@10.9.1)
       framer-motion: 6.5.1(react-dom@17.0.2)(react@17.0.2)
       immer: 9.0.12
       mdx-mermaid: 1.3.2(mermaid@9.1.7)(react@17.0.2)(unist-util-visit@2.0.3)
@@ -5420,15 +5445,6 @@ packages:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.13.0
 
-  /@pablosz/graphql-helix-graphiql@4.2.2(@types/node@18.15.5)(graphql@16.6.0):
-    resolution: {integrity: sha512-KvSzKAM7amhSsr1D2ZeAynSXzkZfCWOrRPdawcCowKR2t7o8BkUQc91o0wcVgnqzf5YJLp1xYKhxUvzYsHxy1g==}
-    dependencies:
-      '@graphql-ez/utils': 0.2.0(@types/node@18.15.5)(graphql@16.6.0)
-    transitivePeerDependencies:
-      - '@types/node'
-      - graphql
-    dev: false
-
   /@pablosz/graphql-helix@2.0.3(graphql@16.6.0):
     resolution: {integrity: sha512-+uZMo0whkR0WbG3OJEgsrpgI8yH8iFhROysptXvxEOXUuptAcd3i0Dqi2fzcy32Qgg7WPS9G/yQkIsgMB6vFOQ==}
     peerDependencies:
@@ -5914,15 +5930,15 @@ packages:
       react-dom: 17.0.2(react@17.0.2)
     dev: true
 
-  /@theguild/components@1.12.0(@algolia/client-search@4.14.2)(@types/react@17.0.53)(prop-types@15.8.1)(react-dom@17.0.2)(react@17.0.2)(ts-node@10.9.1):
+  /@theguild/components@1.12.0(@algolia/client-search@4.15.0)(@types/react@17.0.53)(prop-types@15.8.1)(react-dom@17.0.2)(react@17.0.2)(ts-node@10.9.1):
     resolution: {integrity: sha512-OaFIIbZSRDVDi3Og/XCbFxbvquvOmA084JpptCIIk/urBvOrOw44h9/f70ATHrT5W0XctrKbXj9xbDmKS92cxg==}
     peerDependencies:
       react: ^17.0.2
       react-dom: ^17.0.2
     dependencies:
-      '@algolia/autocomplete-js': 1.7.2(@algolia/client-search@4.14.2)(algoliasearch@4.14.2)
-      '@algolia/autocomplete-plugin-algolia-insights': 1.7.2(@algolia/client-search@4.14.2)(algoliasearch@4.14.2)(search-insights@2.2.1)
-      '@algolia/autocomplete-plugin-query-suggestions': 1.7.2(@algolia/client-search@4.14.2)(algoliasearch@4.14.2)
+      '@algolia/autocomplete-js': 1.7.2(@algolia/client-search@4.15.0)(algoliasearch@4.14.2)
+      '@algolia/autocomplete-plugin-algolia-insights': 1.7.2(@algolia/client-search@4.15.0)(algoliasearch@4.14.2)(search-insights@2.2.1)
+      '@algolia/autocomplete-plugin-query-suggestions': 1.7.2(@algolia/client-search@4.15.0)(algoliasearch@4.14.2)
       '@algolia/autocomplete-theme-classic': 1.7.2
       '@emotion/react': 11.10.6(@types/react@17.0.53)(react@17.0.2)
       '@emotion/styled': 11.10.6(@emotion/react@11.10.6)(@types/react@17.0.53)(react@17.0.2)
@@ -6028,12 +6044,6 @@ packages:
       '@types/express': 4.17.14
       '@types/keygrip': 1.0.2
       '@types/node': 18.15.5
-
-  /@types/cors@2.8.13:
-    resolution: {integrity: sha512-RG8AStHlUiV5ysZQKq97copd2UmVYw3/pRMLefISZ3S1hK104Cwm7iLQ3fTKx+lsUH2CE8FlLaYeEA2LSeqYUA==}
-    dependencies:
-      '@types/node': 18.15.5
-    dev: false
 
   /@types/debug@4.1.7:
     resolution: {integrity: sha512-9AonUzyTjXXhEOa0DnqpzZi6VHlqKMswga9EXjpXnnqxwLtdvPPtlO8evrI5D9S6asFRCQ6v+wpiUKbw+vKqyg==}
@@ -6181,6 +6191,12 @@ packages:
 
   /@types/lodash.mergewith@4.6.6:
     resolution: {integrity: sha512-RY/8IaVENjG19rxTZu9Nukqh0W2UrYgmBj5sdns4hWRZaV8PqR7wIKHFKzvOTjo4zVRV7sVI+yFhAJql12Kfqg==}
+    dependencies:
+      '@types/lodash': 4.14.191
+    dev: false
+
+  /@types/lodash.mergewith@4.6.7:
+    resolution: {integrity: sha512-3m+lkO5CLRRYU0fhGRp7zbsGi6+BZj0uTVSwvcKU+nSlhjA9/QRNfuSGnD2mX6hQA7ZbmcCkzk5h4ZYGOtk14A==}
     dependencies:
       '@types/lodash': 4.14.191
     dev: false
@@ -7661,6 +7677,10 @@ packages:
       simple-swizzle: 0.2.2
     dev: false
 
+  /color2k@2.0.2:
+    resolution: {integrity: sha512-kJhwH5nAwb34tmyuqq/lgjEKzlFXn1U99NlnB6Ws4qVaERcRUYeYP1cBw6BJ4vxaWStAUEef4WMr7WjOCnBt8w==}
+    dev: false
+
   /color@3.2.1:
     resolution: {integrity: sha512-aBl7dZI9ENN6fUGC7mWpMTPNHmWUSNan9tuWN6ahh5ZLNk9baLJOnSMlrQkHcrfFgz2/RigjUVAjdx36VcemKA==}
     dependencies:
@@ -7851,14 +7871,6 @@ packages:
   /core-js@3.26.0:
     resolution: {integrity: sha512-+DkDrhoR4Y0PxDz6rurahuB+I45OsEUv8E1maPTB6OuHRohMMcznBq9TMpdpDMm/hUPob/mJJS3PqgbHpMTQgw==}
     requiresBuild: true
-    dev: false
-
-  /cors@2.8.5:
-    resolution: {integrity: sha512-KIHbLJqu73RGr/hnbrO9uBeixNGuvSQjul/jdFvS/KFSIH1hWVd1ng7zOHx+YrEfInLG7q4n6GHQ9cDtxv/P6g==}
-    engines: {node: '>= 0.10'}
-    dependencies:
-      object-assign: 4.1.1
-      vary: 1.1.2
     dev: false
 
   /cosmiconfig@6.0.0:
@@ -9721,6 +9733,12 @@ packages:
       tslib: 2.5.0
     dev: false
 
+  /framesync@6.1.2:
+    resolution: {integrity: sha512-jBTqhX6KaQVDyus8muwZbBeGGP0XgujBRbQ7gM7BRdS3CadCZIHiawyzYLnafYcvZIh5j8WE7cxZKFn7dXhu9g==}
+    dependencies:
+      tslib: 2.4.0
+    dev: false
+
   /fresh@0.5.2:
     resolution: {integrity: sha512-zJ2mQYM18rEFOudeV4GShTGIQ7RbzA7ozbU9I/XBpm7kqgMywgmylMwXHxZJmkVoYkna9d2pVXVXPdYTP9ej8Q==}
     engines: {node: '>= 0.6'}
@@ -11490,6 +11508,7 @@ packages:
 
   /lodash-es@4.17.21:
     resolution: {integrity: sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==}
+    dev: true
 
   /lodash.debounce@4.0.8:
     resolution: {integrity: sha512-FT1yDzDYEoYWhnSGnpE/4Kj1fLZkDFyqRb7fNt6FdYOSxlUWAtp42Eh6Wb0rGIv/m9Bgo7x4GhQbm5Ys4SG5ow==}
@@ -13712,6 +13731,13 @@ packages:
       loose-envify: 1.4.0
       object-assign: 4.1.1
 
+  /react@18.0.0:
+    resolution: {integrity: sha512-x+VL6wbT4JRVPm7EGxXhZ8w8LTROaxPXOqhlGyVSrv0sB1jkyFGgXxJ8LVoPRLvPR6/CIZGFmfzqUa2NYeMr2A==}
+    engines: {node: '>=0.10.0'}
+    dependencies:
+      loose-envify: 1.4.0
+    dev: false
+
   /read-pkg-up@7.0.1:
     resolution: {integrity: sha512-zK0TB7Xd6JpCLmlLmufqykGE+/TlOePD6qKClNW7hHDKFh/J7/7gCWGR7joEQEW1bKq3a3yUZSObOoWLFQ4ohg==}
     engines: {node: '>=8'}
@@ -15570,6 +15596,7 @@ packages:
   /vary@1.1.2:
     resolution: {integrity: sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==}
     engines: {node: '>= 0.8'}
+    dev: true
 
   /vfile-location@4.0.1:
     resolution: {integrity: sha512-JDxPlTbZrZCQXogGheBHjbRWjESSPEak770XwWPfw5mTc1v1nWGLB/apzZxsx8a0SJVfF8HK8ql8RD308vXRUw==}

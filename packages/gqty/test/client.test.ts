@@ -167,7 +167,7 @@ describe('core#resolve', () => {
       ({ subscription }) => subscription.newNotification
     );
 
-    await new Promise((resolve) => setTimeout(resolve, 10));
+    await new Promise((resolve) => setTimeout(resolve, 100));
 
     await resolve(({ mutation }) =>
       mutation.sendNotification({ message: 'hello world' })

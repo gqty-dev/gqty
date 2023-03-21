@@ -1,6 +1,5 @@
-import { query, resolved } from '../src/gqty';
-
 import test from 'ava';
+import { query, resolved } from '../src/gqty';
 
 test('Hello World', async (t) => {
   const result = await resolved(() => {

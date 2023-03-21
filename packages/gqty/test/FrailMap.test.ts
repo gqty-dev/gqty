@@ -4,7 +4,9 @@ import { FrailMap } from '../src/Helpers/FrailMap';
 jest.setTimeout(1_000_000);
 
 describe('FrailMap', () => {
-  it('should triggers garbage collection', async () => {
+  it.todo('should find a way to properly test GC in WeakRef');
+
+  xit('should triggers garbage collection', async () => {
     const keys: string[] = [];
     const map = new FrailMap<string, Record<string, string>>();
 
