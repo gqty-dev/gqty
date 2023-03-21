@@ -74,7 +74,7 @@ export const fetchSelections = <
           result.error = GQtyError.fromGraphQLErrors(errors);
         }
 
-        // FIXME: Defer logging until after cache update
+        // TODO: Defer logging until after cache update
         debug?.dispatch({
           cache,
           request: queryPayload,
@@ -417,5 +417,3 @@ const isWsClient = (client?: SseClient | WsClient): client is WsClient => {
 
 const isSseClient = (client?: SseClient | WsClient): client is SseClient =>
   client !== undefined && !isWsClient(client);
-
-// TODO: Test unsubscribe on both subscription and fetch with concurrent subscribers.

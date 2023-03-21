@@ -185,7 +185,7 @@ export class Cache {
     }
   }
 
-  // FIXME
+  // TODO: Optimization
   // This is pretty inefficient, but maintaining an indexed tree is too much
   // effort right now. Accepting PRs.
   #notifySubscribers = (value: CacheRoot) => {
@@ -275,7 +275,7 @@ export class Cache {
     }
   };
 
-  /* FIXME
+  /* TODO: Refactor
    *
    * Caching accessors by selections is a mean to retain sub-selections when
    * nullable arrays and objects has null cached, such accessors will return
