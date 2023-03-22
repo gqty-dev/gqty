@@ -56,6 +56,7 @@ export const defaultConfig: Omit<Required<GQtyConfig>, 'transformSchema'> &
   enumsAsStrings: false,
   enumsAsConst: false,
   preImport: '',
+  disableUndefinedScalar: false,
 };
 
 function warnConfig(
