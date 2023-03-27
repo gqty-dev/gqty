@@ -1,11 +1,11 @@
 import {
+  ArgsDescriptions,
+  FieldDescription,
   parseSchemaType,
   ScalarsEnumsHash,
   Schema,
   SchemaUnionsKey,
   Type,
-  FieldDescription,
-  ArgsDescriptions,
 } from 'gqty';
 import type {
   GraphQLEnumType,
@@ -152,7 +152,10 @@ export async function generate(
 
   scalarTypes ||= gqtyConfig.scalarTypes || defaultConfig.scalarTypes;
   endpoint ||=
-    gqtyConfig.introspection?.endpoint ?? defaultConfig.introspection.endpoint;
+    gqtyConfig.endpoint ||
+    gqtyConfig.introspection?.endpoint ||
+    defaultConfig.endpoint ||
+    defaultConfig.introspection.endpoint;
 
   react ??= gqtyConfig.react ?? defaultConfig.react;
   preImport ??= gqtyConfig.preImport ?? defaultConfig.preImport;
