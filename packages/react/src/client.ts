@@ -178,42 +178,40 @@ export interface ReactClient<TSchema extends BaseGeneratedSchema> {
 
 export function createReactClient<TSchema extends BaseGeneratedSchema>(
   client: GQtyClient<TSchema>,
-  optsCreate: CreateReactClientOptions = {}
+  {
+    defaults: {
+      suspense = false,
+      transactionFetchPolicy = 'cache-first',
+      lazyFetchPolicy = 'network-only',
+      staleWhileRevalidate = false,
+      retry = true,
+      lazyQuerySuspense = false,
+      transactionQuerySuspense = suspense,
+      mutationSuspense = false,
+      preparedSuspense = suspense,
+      refetchAfterHydrate = false,
+      paginatedQueryFetchPolicy = 'cache-first',
+      paginatedQuerySuspense = suspense,
+    } = {},
+    ...options
+  }: CreateReactClientOptions = {}
 ): ReactClient<TSchema> {
-  const { suspense = false } = (optsCreate.defaults ||= {});
-
-  const {
-    transactionFetchPolicy = 'cache-first',
-    lazyFetchPolicy = 'network-only',
-    staleWhileRevalidate = false,
-    retry = true,
-    lazyQuerySuspense = false,
-    transactionQuerySuspense = suspense,
-    mutationSuspense = false,
-    preparedSuspense = suspense,
-    refetchAfterHydrate = false,
-    paginatedQueryFetchPolicy = 'cache-first',
-    paginatedQuerySuspense = suspense,
-  } = optsCreate.defaults;
-
-  const defaults: ReactClientOptionsWithDefaults['defaults'] = {
-    transactionFetchPolicy,
-    lazyFetchPolicy,
-    staleWhileRevalidate,
-    suspense,
-    retry,
-    lazyQuerySuspense,
-    transactionQuerySuspense,
-    mutationSuspense,
-    preparedSuspense,
-    refetchAfterHydrate,
-    paginatedQueryFetchPolicy,
-    paginatedQuerySuspense,
-  };
-
   const opts: ReactClientOptionsWithDefaults = {
-    ...optsCreate,
-    defaults,
+    ...options,
+    defaults: {
+      transactionFetchPolicy,
+      lazyFetchPolicy,
+      staleWhileRevalidate,
+      suspense,
+      retry,
+      lazyQuerySuspense,
+      transactionQuerySuspense,
+      mutationSuspense,
+      preparedSuspense,
+      refetchAfterHydrate,
+      paginatedQueryFetchPolicy,
+      paginatedQuerySuspense,
+    },
   };
 
   const { prepareReactRender, useHydrateCache } = createSSRHelpers(

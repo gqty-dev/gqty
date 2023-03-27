@@ -5,13 +5,14 @@
 </p>
 
 <h2 align="center">
-  a GraphQL client built for rapid iteration.
+  A No-GraphQL Client for TypeScript
+
   <a href="https://gqty.dev">
     <img alt="Documentation" src="https://img.shields.io/badge/documentation-documentation?color=C00B84">
   </a>
     <a href="https://discord.gg/U967mp5qbQ">
     <img alt="Discord" src="https://img.shields.io/discord/874477141834739762?color=7289d9&label=discord">
-  </a>  
+  </a>
 </h2>
 
 <a href="https://gqty.dev">
@@ -20,7 +21,7 @@
 
 ---
 
-Head over to [gqty.dev](https://gqty.dev), to explore features and documentation.
+Head over to [gqty.dev](https://gqty.dev) to explore features and documentation.
 
 ---
 
