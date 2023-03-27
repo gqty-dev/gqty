@@ -10,7 +10,7 @@ import { formatPrettier } from './prettier';
 
 const cjsRequire = globalThis.require || createRequire(import.meta.url);
 
-export type GQtyConfig = Omit<GenerateOptions, 'endpoint'> & {
+export type GQtyConfig = GenerateOptions & {
   /**
    * Introspection options
    */
@@ -33,8 +33,11 @@ function isStringRecord(v: unknown): v is Record<string, string> {
 
 export const DUMMY_ENDPOINT = 'SPECIFY_ENDPOINT_OR_SCHEMA_FILE_PATH_HERE';
 
-export const defaultConfig: Omit<Required<GQtyConfig>, 'transformSchema'> &
-  Pick<GQtyConfig, 'transformSchema'> = {
+export const defaultConfig: Omit<
+  Required<GQtyConfig>,
+  'endpoint' | 'transformSchema'
+> &
+  Pick<GQtyConfig, 'endpoint' | 'transformSchema'> = {
   react: (() => {
     try {
       cjsRequire.resolve('react');
@@ -50,6 +53,7 @@ export const defaultConfig: Omit<Required<GQtyConfig>, 'transformSchema'> &
     endpoint: DUMMY_ENDPOINT,
     headers: {} as Record<string, string>,
   },
+  endpoint: '/api/graphql',
   destination: './src/gqty/index.ts',
   subscriptions: false,
   javascriptOutput: false,
@@ -119,6 +123,14 @@ export function getValidConfig(v: unknown): GQtyConfig {
             newConfig[key] = value;
           } else {
             warnConfig(key, value, '"object of strings"', defaultConfig[key]);
+          }
+          break;
+        }
+        case 'endpoint': {
+          if (value && typeof value === 'string') {
+            newConfig[key] = value;
+          } else {
+            warnConfig(key, value, 'string', defaultConfig[key]);
           }
           break;
         }
@@ -262,7 +274,7 @@ export const gqtyConfigPromise: Promise<{
                        * @type {import("@gqty/cli").GQtyConfig}
                        */
                       const config = ${JSON.stringify(config)};
-                      
+
                       module.exports = config;`)
         );
       }

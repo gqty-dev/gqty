@@ -154,13 +154,6 @@ export async function generate(
   endpoint ||=
     gqtyConfig.introspection?.endpoint ?? defaultConfig.introspection.endpoint;
 
-  if (
-    endpoint == null ||
-    !(endpoint.startsWith('http://') && endpoint.startsWith('https://'))
-  ) {
-    endpoint = '/api/graphql';
-  }
-
   react ??= gqtyConfig.react ?? defaultConfig.react;
   preImport ??= gqtyConfig.preImport ?? defaultConfig.preImport;
   subscriptions ??= gqtyConfig.subscriptions ?? defaultConfig.subscriptions;
@@ -263,7 +256,7 @@ export async function generate(
       }
 
       return comment
-        ? `/** ${comment} 
+        ? `/** ${comment}
       */\n`
         : '';
     } else {
@@ -662,7 +655,7 @@ export async function generate(
 
       acum += `
 
-      ${addDescription(typeName)}export interface ${typeName} { 
+      ${addDescription(typeName)}export interface ${typeName} {
         __typename?: ${
           interfaceOrUnionsObjectTypes
             ? interfaceOrUnionsObjectTypes.map((v) => `"${v}"`).join(' | ')
@@ -781,7 +774,7 @@ export async function generate(
     export type MakeNullable<T> = {
       [K in keyof T]: T[K] | undefined;
     };
-  
+
     export interface ScalarsEnums extends MakeNullable<Scalars> {
       ${deps.sortBy(enumsNames).reduce((acum, enumName) => {
         acum += `${enumName}: ${enumName} | undefined;`;
@@ -815,7 +808,7 @@ export async function generate(
         });
 
         const json = await response.json();
-      
+
         return json;
       };
     `;
@@ -888,7 +881,7 @@ export const generatedSchema = {${generatedSchemaCodeString}};
           // Set this flag as "true" if your usage involves React Suspense
           // Keep in mind that you can overwrite it in a per-hook basis
           suspense: false,
-    
+
           // Set this flag based on your needs
           staleWhileRevalidate: false
         }
@@ -909,7 +902,7 @@ export const generatedSchema = {${generatedSchemaCodeString}};
         ${subscriptions ? 'useSubscription,' : ''}
       } = reactClient;
 
-      export { 
+      export {
         graphql,
         useQuery,
         usePaginatedQuery,
@@ -944,13 +937,13 @@ export const generatedSchema = {${generatedSchemaCodeString}};
           // Set this flag as "true" if your usage involves React Suspense
           // Keep in mind that you can overwrite it in a per-hook basis
           suspense: false,
-    
+
           // Set this flag based on your needs
           staleWhileRevalidate: false
         }
       });
-      
-      export { 
+
+      export {
         graphql,
         useQuery,
         usePaginatedQuery,
@@ -981,7 +974,7 @@ export const generatedSchema = {${generatedSchemaCodeString}};
       : ''
   }
   ${isJavascriptOutput ? '' : 'import type { QueryFetcher } from "gqty";'}
-  import { createClient } from "gqty";
+  import { createClient } from 'gqty';
   ${
     isJavascriptOutput
       ? ''
@@ -995,7 +988,7 @@ export const generatedSchema = {${generatedSchemaCodeString}};
   ${
     subscriptions
       ? `
-  const subscriptionsClient = 
+  const subscriptionsClient =
   typeof window !== "undefined" ?
   createSubscriptionsClient({
     wsEndpoint: () => {
@@ -1015,18 +1008,18 @@ export const generatedSchema = {${generatedSchemaCodeString}};
           'import("gqty").GQtyClient<import("./schema.generated").GeneratedSchema>'
         )}export const client = createClient({
         schema: generatedSchema,
-        scalarsEnumsHash, 
+        scalarsEnumsHash,
         queryFetcher
         ${subscriptions ? ', subscriptionsClient' : ''}
       });`
-      : `export const client = createClient<GeneratedSchema, SchemaObjectTypesNames, SchemaObjectTypes>({ 
-    schema: generatedSchema, 
-    scalarsEnumsHash, 
+      : `export const client = createClient<GeneratedSchema, SchemaObjectTypesNames, SchemaObjectTypes>({
+    schema: generatedSchema,
+    scalarsEnumsHash,
     queryFetcher
     ${subscriptions ? ', subscriptionsClient' : ''}
   });`
   }
-  
+
 
   const { query, mutation, mutate, subscription, resolved, refetch, track } = client;
 
