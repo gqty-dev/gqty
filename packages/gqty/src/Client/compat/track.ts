@@ -42,7 +42,7 @@ export const createLegacyTrack = <
     { onError, operationName, refetch = false } = {}
   ) => {
     const { context, selections, subscribe } = createResolver({
-      fetchPolicy: refetch ? 'no-cache' : 'default',
+      cachePolicy: refetch ? 'no-cache' : 'default',
       operationName,
     });
     const resolutionCache = refetch ? context.cache : cache;

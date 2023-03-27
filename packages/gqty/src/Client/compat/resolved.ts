@@ -122,7 +122,7 @@ export const createLegacyResolved = <
     }: LegacyResolveOptions<TData> = {}
   ) => {
     const { context, selections } = createResolver({
-      fetchPolicy: noCache ? 'no-store' : refetch ? 'no-cache' : 'default',
+      cachePolicy: noCache ? 'no-store' : refetch ? 'no-cache' : 'default',
       operationName,
     });
     const unsubscribe = subscribeLegacySelections((selection, cache) => {

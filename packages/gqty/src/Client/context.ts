@@ -24,7 +24,7 @@ export type SchemaContext<
 export type CreateContextOptions = {
   cache: Cache;
   depthLimit: number;
-  fetchPolicy: ResolveOptions['fetchPolicy'];
+  cachePolicy: ResolveOptions['cachePolicy'];
   onSelect?: NonNullable<SchemaContext['onSelect']>;
   scalars: ScalarsEnumsHash;
   schema: Readonly<Schema>;
@@ -33,22 +33,22 @@ export type CreateContextOptions = {
 
 export const createContext = ({
   cache,
+  cachePolicy,
   depthLimit,
-  fetchPolicy,
   onSelect,
   scalars,
   schema,
   typeKeys,
 }: CreateContextOptions): SchemaContext => ({
   cache:
-    fetchPolicy === 'no-cache' || fetchPolicy === 'no-store'
-      ? new Cache()
+    cachePolicy === 'no-cache' || cachePolicy === 'no-store'
+      ? new Cache(undefined, { maxAge: 0, normalization: false })
       : cache,
   cacheOptions: {
     includeExpired:
-      fetchPolicy === 'default' ||
-      fetchPolicy === 'force-cache' ||
-      fetchPolicy === 'only-if-cached',
+      cachePolicy === 'default' ||
+      cachePolicy === 'force-cache' ||
+      cachePolicy === 'only-if-cached',
   },
   scalars,
   schema,
@@ -56,7 +56,7 @@ export const createContext = ({
   hasCacheHit: false,
   hasCacheMiss: false,
   shouldFetch: false,
-  notifyCacheUpdate: fetchPolicy !== 'default',
+  notifyCacheUpdate: cachePolicy !== 'default',
   onSelect(selection, cacheNode) {
     const now = Date.now();
     const { data, expiresAt: age = Infinity } = cacheNode ?? {};

@@ -43,7 +43,7 @@ export const createLegacyInlineResolved = <
     } = {}
   ) => {
     const { context, selections, resolve } = createResolver({
-      fetchPolicy: refetch ? 'no-cache' : 'default',
+      cachePolicy: refetch ? 'no-cache' : 'default',
       operationName,
     });
     const unsubscribe = subscribeLegacySelections((selection, cache) => {

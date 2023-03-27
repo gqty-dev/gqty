@@ -91,7 +91,7 @@ export type FetchOptions = Omit<RequestInit, 'body' | 'mode'> & {
    * frameworks, please consider sponsoring so we can dedicate even more time on
    * this._
    */
-  fetchPolicy?: Exclude<RequestCache, 'reload'>;
+  cachePolicy?: Exclude<RequestCache, 'reload'>;
 
   /** Default retry strategy upon fetch failure, configurable on query level. */
   retryPolicy?: RetryOptions;
@@ -134,7 +134,7 @@ export const createClient = <
   cache,
   fetchOptions: {
     fetcher,
-    fetchPolicy = 'default',
+    cachePolicy: fetchPolicy = 'default',
     retryPolicy: defaultRetryPolicy = {
       maxRetries: 3,
       retryDelay: 1000,
@@ -170,7 +170,7 @@ export const createClient = <
   const defaultContextOptions: CreateContextOptions = {
     cache,
     depthLimit: __depthLimit,
-    fetchPolicy,
+    cachePolicy: fetchPolicy,
     scalars,
     schema,
     typeKeys: cache.normalizationOptions?.schemaKeys,
@@ -186,7 +186,7 @@ export const createClient = <
     debugger: debug,
     fetchOptions: {
       fetcher,
-      fetchPolicy,
+      cachePolicy: fetchPolicy,
       retryPolicy: defaultRetryPolicy,
       subscriber,
       ...fetchOptions,
@@ -210,7 +210,7 @@ export const createClient = <
       debugger: debug,
       fetchOptions: {
         fetcher,
-        fetchPolicy,
+        cachePolicy: fetchPolicy,
         retryPolicy: defaultRetryPolicy,
         subscriber,
         ...fetchOptions,

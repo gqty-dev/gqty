@@ -104,7 +104,7 @@ export const createUseQuery =
     } = useMemo(
       () =>
         client.createResolver({
-          fetchPolicy: cacheMode,
+          cachePolicy: cacheMode,
           operationName,
           retryPolicy: retry,
         }),
@@ -128,7 +128,7 @@ export const createUseQuery =
       // immediately.
       if (context.shouldFetch && suspense) {
         throw client.resolve(({ query }) => prepare({ prepass, query }), {
-          fetchPolicy: cacheMode,
+          cachePolicy: cacheMode,
           operationName,
           retryPolicy: retry,
         });

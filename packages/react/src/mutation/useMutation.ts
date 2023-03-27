@@ -110,7 +110,7 @@ export const createUseMutation = <TSchema extends BaseGeneratedSchema>(
               return fn(mutation, args as TArgs);
             },
             {
-              fetchPolicy: noCache ? 'no-store' : 'no-cache',
+              cachePolicy: noCache ? 'no-store' : 'no-cache',
               retryPolicy: retry,
             }
           ).then((data) => {

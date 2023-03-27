@@ -143,7 +143,7 @@ export const createUsePaginatedQuery =
     } = React.useMemo(
       () =>
         createResolver({
-          fetchPolicy: translateFetchPolicy(hookFetchPolicy),
+          cachePolicy: translateFetchPolicy(hookFetchPolicy),
           operationName,
           retryPolicy: retry,
         }),
@@ -184,7 +184,7 @@ export const createUsePaginatedQuery =
         fetchPolicy: PaginatedQueryFetchPolicy = hookFetchPolicy
       ) => {
         const promise = resolve(({ query }) => fn(query, args, coreHelpers), {
-          fetchPolicy: translateFetchPolicy(fetchPolicy),
+          cachePolicy: translateFetchPolicy(fetchPolicy),
           operationName,
           retryPolicy: retry,
           onSelect(selection, cache) {

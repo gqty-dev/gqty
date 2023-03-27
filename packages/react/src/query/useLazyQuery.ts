@@ -160,7 +160,7 @@ export function createUseLazyQuery<TSchema extends BaseGeneratedSchema>(
             ({ query }) => resolveFn(query, args as TArgs),
             {
               awaitsFetch: false,
-              fetchPolicy: translateFetchPolicy(fetchPolicy),
+              cachePolicy: translateFetchPolicy(fetchPolicy),
               onFetch(promise) {
                 innerFetchPromise = promise as Promise<TData>;
               },

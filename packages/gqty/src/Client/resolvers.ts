@@ -125,7 +125,7 @@ export type ResolveOptions = {
    * frameworks, please consider sponsoring so we can dedicate even more time on
    * this._
    */
-  fetchPolicy?: FetchOptions['fetchPolicy'];
+  cachePolicy?: FetchOptions['cachePolicy'];
 
   retryPolicy?: FetchOptions['retryPolicy'];
 
@@ -157,7 +157,7 @@ export type SubscribeOptions = {
    * frameworks, please consider sponsoring so we can dedicate even more time on
    * this._
    */
-  fetchPolicy?: FetchOptions['fetchPolicy'];
+  fetchPolicy?: FetchOptions['cachePolicy'];
 
   retryPolicy?: FetchOptions['retryPolicy'];
 
@@ -189,7 +189,7 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
   depthLimit,
   fetchOptions,
   fetchOptions: {
-    fetchPolicy: defaultFetchPolicy = 'default',
+    cachePolicy: defaultFetchPolicy = 'default',
     retryPolicy: defaultRetryPoliy,
   },
   scalars,
@@ -207,7 +207,7 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
     const context = createContext({
       cache: clientCache,
       depthLimit,
-      fetchPolicy,
+      cachePolicy: fetchPolicy,
       onSelect(selection, cache) {
         // Prevents infinite loop created by legacy functions
         if (!selections.has(selection)) {
@@ -233,7 +233,11 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
       return fetchSelections(selections, {
         cache: context.cache,
         debugger: debug,
-        fetchOptions: { ...fetchOptions, fetchPolicy, retryPolicy },
+        fetchOptions: {
+          ...fetchOptions,
+          cachePolicy: fetchPolicy,
+          retryPolicy,
+        },
         operationName,
       }).then((results) => {
         updateCaches(
@@ -325,7 +329,11 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
             {
               cache: context.cache,
               debugger: debug,
-              fetchOptions: { ...fetchOptions, fetchPolicy, retryPolicy },
+              fetchOptions: {
+                ...fetchOptions,
+                cachePolicy: fetchPolicy,
+                retryPolicy,
+              },
               operationName,
               onSubscribe: () => onSubscribe?.(unsubscribe),
               onComplete: () => resolve(),

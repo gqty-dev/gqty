@@ -30,7 +30,7 @@ export const createLegacyMutate =
   async (fn, { onComplete, onError } = {}) => {
     try {
       const data = (await resolve(({ mutation }) => fn(mutation), {
-        fetchPolicy: 'no-cache',
+        cachePolicy: 'no-cache',
       })) as ReturnType<typeof fn>;
 
       onComplete?.(data, {

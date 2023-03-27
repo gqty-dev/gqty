@@ -26,7 +26,7 @@ export type LegacyFetchPolicy =
 
 export const legacyFetchPolicyMap: Record<
   LegacyFetchPolicy,
-  FetchOptions['fetchPolicy']
+  FetchOptions['cachePolicy']
 > = {
   'cache-and-network': 'default',
   'cache-first': 'default',
@@ -36,7 +36,7 @@ export const legacyFetchPolicyMap: Record<
 
 export const translateFetchPolicy = (
   fetchPolicy: LegacyFetchPolicy
-): FetchOptions['fetchPolicy'] =>
+): FetchOptions['cachePolicy'] =>
   legacyFetchPolicyMap[fetchPolicy] ?? 'default';
 
 export type SelectionsOrProxy<T> = (Selection | T)[];

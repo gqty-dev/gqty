@@ -58,7 +58,7 @@ export const createLegacyHydrateCache =
             cache,
             fetchOptions: {
               ...fetchOptions,
-              fetchPolicy: 'no-cache', // refetch
+              cachePolicy: 'no-cache', // refetch
             },
           }).then((results) => updateCaches(results, [cache]));
         },
