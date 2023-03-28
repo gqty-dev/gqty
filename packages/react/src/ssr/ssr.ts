@@ -1,10 +1,9 @@
-import { useMountEffect } from '@react-hookz/web';
 import type {
   BaseGeneratedSchema,
   GQtyClient,
   LegacyHydrateCacheOptions,
 } from 'gqty';
-import * as React from 'react';
+import { useEffect, type ReactNode } from 'react';
 import { getDefault, ReactClientOptionsWithDefaults } from '../utils';
 
 export interface UseHydrateCacheOptions
@@ -39,7 +38,7 @@ export interface UseHydrateCache {
 }
 
 export interface PrepareReactRender {
-  (element: React.ReactNode): Promise<{
+  (element: ReactNode): Promise<{
     cacheSnapshot: string;
   }>;
 }
@@ -49,7 +48,7 @@ export function createSSRHelpers<TSchema extends BaseGeneratedSchema>(
   { defaults: { refetchAfterHydrate } }: ReactClientOptionsWithDefaults
 ) {
   const prepareReactRender: PrepareReactRender =
-    async function prepareReactRender(element: React.ReactNode) {
+    async function prepareReactRender(element: ReactNode) {
       const ssrPrepass = getDefault(await import('react-ssr-prepass'));
 
       return prepareRender(() => ssrPrepass(element));
@@ -58,12 +57,12 @@ export function createSSRHelpers<TSchema extends BaseGeneratedSchema>(
     cacheSnapshot,
     shouldRefetch = refetchAfterHydrate,
   }: UseHydrateCacheOptions) {
-    useMountEffect(() => {
+    useEffect(() => {
       if (cacheSnapshot) {
         hydrateCache({ cacheSnapshot, shouldRefetch: false });
       }
-    });
-    React.useEffect(() => {
+    }, []);
+    useEffect(() => {
       if (shouldRefetch) {
         refetch(query).catch(console.error);
       }

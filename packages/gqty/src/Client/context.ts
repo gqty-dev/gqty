@@ -1,7 +1,6 @@
 import { Cache, CacheDataContainer, CacheGetOptions } from '../Cache';
 import type { ScalarsEnumsHash, Schema } from '../Schema';
 import type { Selection } from '../Selection';
-import type { ResolveOptions } from './resolvers';
 
 export type SchemaContext<
   T extends Record<string, unknown> = Record<string, unknown>
@@ -24,7 +23,7 @@ export type SchemaContext<
 export type CreateContextOptions = {
   cache: Cache;
   depthLimit: number;
-  cachePolicy: ResolveOptions['cachePolicy'];
+  cachePolicy: RequestCache;
   onSelect?: NonNullable<SchemaContext['onSelect']>;
   scalars: ScalarsEnumsHash;
   schema: Readonly<Schema>;
@@ -41,7 +40,9 @@ export const createContext = ({
   typeKeys,
 }: CreateContextOptions): SchemaContext => ({
   cache:
-    cachePolicy === 'no-cache' || cachePolicy === 'no-store'
+    cachePolicy === 'no-cache' ||
+    cachePolicy === 'no-store' ||
+    cachePolicy === 'reload'
       ? new Cache(undefined, { maxAge: 0, normalization: false })
       : cache,
   cacheOptions: {

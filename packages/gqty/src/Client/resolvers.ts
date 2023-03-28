@@ -1,7 +1,7 @@
 import type { BaseGeneratedSchema, FetchOptions } from '.';
 import { createSchemaAccessor } from '../Accessor';
 import type { Cache } from '../Cache';
-import type { GQtyError } from '../Error';
+import type { GQtyError, RetryOptions } from '../Error';
 import type { ScalarsEnumsHash, Schema } from '../Schema';
 import type { Selection } from '../Selection';
 import { pick } from '../Utils/pick';
@@ -115,7 +115,9 @@ export type ResolveOptions = {
    * served on next query.
    * - `no-store`: Always fetch and does not update on response.
    * GQty creates a temporary cache at query-level which immediately expires.
-   * - `no-cache`: Always fetch, updates on response.
+   * - `reload`: Always fetch, updates on response.
+   * - `no-cache`: Same as `reload`, for GraphQL does not support conditional
+   * requests.
    * - `force-cache`: Serves the cached contents regardless of staleness. It
    * fetches on cache miss or a stale cache, updates cache on response.
    * - `only-if-cached`: Serves the cached contents regardless of staleness,
@@ -125,9 +127,9 @@ export type ResolveOptions = {
    * frameworks, please consider sponsoring so we can dedicate even more time on
    * this._
    */
-  cachePolicy?: FetchOptions['cachePolicy'];
+  cachePolicy?: RequestCache;
 
-  retryPolicy?: FetchOptions['retryPolicy'];
+  retryPolicy?: RetryOptions;
 
   onFetch?: (fetchPromise: Promise<unknown>) => void;
 
@@ -157,9 +159,9 @@ export type SubscribeOptions = {
    * frameworks, please consider sponsoring so we can dedicate even more time on
    * this._
    */
-  fetchPolicy?: FetchOptions['cachePolicy'];
+  fetchPolicy?: RequestCache;
 
-  retryPolicy?: FetchOptions['retryPolicy'];
+  retryPolicy?: RetryOptions;
 
   /**
    * Intercept errors thrown from the underlying subscription client or query

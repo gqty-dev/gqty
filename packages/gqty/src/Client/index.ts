@@ -81,7 +81,9 @@ export type FetchOptions = Omit<RequestInit, 'body' | 'mode'> & {
    * served on next query.
    * - `no-store`: Always fetch and does not update on response.
    * GQty creates a temporary cache at query-level which immediately expires.
-   * - `no-cache`: Always fetch, updates on response.
+   * - `reload`: Always fetch, updates on response.
+   * - `no-cache`: Same as `reload`, for GraphQL does not support conditional
+   * requests.
    * - `force-cache`: Serves the cached contents regardless of staleness. It
    * fetches on cache miss or a stale cache, updates cache on response.
    * - `only-if-cached`: Serves the cached contents regardless of staleness,
@@ -91,7 +93,7 @@ export type FetchOptions = Omit<RequestInit, 'body' | 'mode'> & {
    * frameworks, please consider sponsoring so we can dedicate even more time on
    * this._
    */
-  cachePolicy?: Exclude<RequestCache, 'reload'>;
+  cachePolicy?: RequestCache;
 
   /** Default retry strategy upon fetch failure, configurable on query level. */
   retryPolicy?: RetryOptions;
