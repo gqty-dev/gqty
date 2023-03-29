@@ -91,7 +91,9 @@ export type SubscribeFn<TSchema extends BaseGeneratedSchema> = <
 >(
   fn: DataFn<TSchema>,
   options?: SubscribeOptions
-) => AsyncGenerator<TData, void, unknown>;
+) => AsyncGenerator<TData, void, unknown> & {
+  unsubscribe: Unsubscribe;
+};
 
 export type DataFn<TSchema> = (schema: TSchema) => void;
 
@@ -159,7 +161,7 @@ export type SubscribeOptions = {
    * frameworks, please consider sponsoring so we can dedicate even more time on
    * this._
    */
-  fetchPolicy?: RequestCache;
+  cachePolicy?: RequestCache;
 
   retryPolicy?: RetryOptions;
 
@@ -180,7 +182,7 @@ export type SubscribeOptions = {
    * function that immediately terminates the async generator and any pending
    * promise.
    */
-  onSubscribe?: (unsubscribe: () => void) => void;
+  onSubscribe?: (unsubscribe: Unsubscribe) => void;
 
   operationName?: string;
 };
@@ -191,7 +193,7 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
   depthLimit,
   fetchOptions,
   fetchOptions: {
-    cachePolicy: defaultFetchPolicy = 'default',
+    cachePolicy: defaultCachePolicy = 'default',
     retryPolicy: defaultRetryPoliy,
   },
   scalars,
@@ -199,7 +201,7 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
   parentContext,
 }: CreateResolversOptions): Resolvers<TSchema> => {
   const createResolver = ({
-    fetchPolicy = defaultFetchPolicy,
+    cachePolicy = defaultCachePolicy,
     onSelect,
     onSubscribe,
     operationName,
@@ -209,7 +211,7 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
     const context = createContext({
       cache: clientCache,
       depthLimit,
-      cachePolicy: fetchPolicy,
+      cachePolicy,
       onSelect(selection, cache) {
         // Prevents infinite loop created by legacy functions
         if (!selections.has(selection)) {
@@ -227,7 +229,7 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
     const resolve = async () => {
       if (!context.shouldFetch) return;
 
-      if (fetchPolicy === 'only-if-cached') {
+      if (cachePolicy === 'only-if-cached') {
         // Mimic fetch error in the Chromium/WebKit monopoly
         throw new TypeError('Failed to fetch');
       }
@@ -237,14 +239,14 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
         debugger: debug,
         fetchOptions: {
           ...fetchOptions,
-          cachePolicy: fetchPolicy,
+          cachePolicy,
           retryPolicy,
         },
         operationName,
       }).then((results) => {
         updateCaches(
           results,
-          fetchPolicy !== 'no-store' && context.cache !== clientCache
+          cachePolicy !== 'no-store' && context.cache !== clientCache
             ? [context.cache, clientCache]
             : [context.cache],
           { skipNotify: !context.notifyCacheUpdate }
@@ -318,7 +320,7 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
               } else if (data !== undefined) {
                 updateCaches(
                   [{ data, error, extensions }],
-                  fetchPolicy !== 'no-store' && context.cache !== clientCache
+                  cachePolicy !== 'no-store' && context.cache !== clientCache
                     ? [context.cache, clientCache]
                     : [context.cache],
                   { skipNotify: !context.notifyCacheUpdate }
@@ -333,7 +335,7 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
               debugger: debug,
               fetchOptions: {
                 ...fetchOptions,
-                cachePolicy: fetchPolicy,
+                cachePolicy,
                 retryPolicy,
               },
               operationName,
@@ -378,7 +380,10 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
       return dataFn();
     },
 
-    subscribe: (fn, { onSubscribe, ...options } = {}): AsyncGenerator<any> => {
+    subscribe: (
+      fn,
+      { onSubscribe, ...options } = {}
+    ): AsyncGenerator<any> & { unsubscribe: Unsubscribe } => {
       const { accessor, selections, subscribe } = createResolver({
         ...options,
         onSubscribe: (unsubscribe) => {
@@ -423,9 +428,6 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
       }
 
       return {
-        [Symbol.asyncIterator]() {
-          return this;
-        },
         async next() {
           if (rejected !== undefined) {
             throw rejected;
@@ -448,6 +450,10 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
           unsubscribe();
           return asyncItDoneMessage;
         },
+        [Symbol.asyncIterator]() {
+          return this;
+        },
+        unsubscribe,
       };
     },
   };
