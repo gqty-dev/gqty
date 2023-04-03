@@ -11,7 +11,7 @@ import {
   Type,
 } from '../Schema';
 import type { Selection } from '../Selection';
-import { isObject } from '../Utils';
+import { deepAssign, isObject } from '../Utils';
 import type { Meta } from './meta';
 import { $meta, $setMeta } from './meta';
 import { createSkeleton, isSkeleton } from './skeleton';
@@ -159,10 +159,13 @@ export const resolve = (
 
     const unsubscribe = context.cache.subscribe(
       [cacheKeys.join('.')],
-      (cache) => {
-        if (isObject(cache) && isObject(data)) {
-          // FIXME: This deshells norbjs
-          // deepAssign(data, [get(cache, cacheKeys.join('.'))]);
+      (incoming) => {
+        if (isObject(incoming) && isObject(data)) {
+          cache.data = deepAssign(
+            {},
+            [get(incoming, cacheKeys.join('.')), data],
+            context.cache.normalizationOptions?.onConflict
+          ) as CacheObject;
         }
       }
     );

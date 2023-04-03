@@ -16,6 +16,8 @@ import {
 } from './schema.generated';
 
 const queryFetcher: QueryFetcher = async function (query, variables) {
+  await new Promise((r) => setTimeout(r, 1000));
+
   const endpoint =
     typeof window === 'undefined'
       ? 'http://localhost:3000/api/graphql'

@@ -64,7 +64,7 @@ export const createContext = ({
 
     // Suggests a fetch on a stale or missing cache.
     //
-    // We add a minimum of 100 ms delay for caches with immedidate staleness,
+    // We add a minimum of 100 ms leeway for caches with immedidate staleness,
     // this prevents components from infinite rendering loop.
     this.shouldFetch ||= data === undefined || age < now - 100;
     this.hasCacheHit ||= data !== undefined;

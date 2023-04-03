@@ -27,7 +27,7 @@ export type ScalarsEnumsHash = Record<string, true>;
 export type QueryFetcher<TData = Record<string, unknown>> = (
   payload: QueryPayload,
   fetchOptions?: Omit<RequestInit, 'body' | 'mode'>
-) => Promise<ExecutionResult<TData>> | ExecutionResult;
+) => Promise<ExecutionResult<TData>> | ExecutionResult<TData>;
 
 export type QueryPayload<
   TExtension extends Record<string, unknown> = Record<string, unknown>
