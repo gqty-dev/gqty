@@ -139,7 +139,7 @@ export const createTestClient = async (
   addedToGeneratedSchema?: PartialDeep<Schema>,
   queryFetcher?: QueryFetcher,
   config?: TestClientConfig,
-  clientConfig: Partial<ClientOptions> = {}
+  { cache = new Cache(), ...clientConfig }: Partial<ClientOptions> = {}
 ) => {
   let dogId = 0;
   const dogs: { name: string; id: number }[] = [
@@ -565,7 +565,7 @@ export const createTestClient = async (
 
   const testClient = Object.assign(
     createGQtyClient<GeneratedSchema>({
-      cache: new Cache(undefined, { normalization: true }),
+      cache,
       ...clientConfig,
       schema: deepAssign(generatedSchema, [addedToGeneratedSchema]) as Schema,
       fetchOptions: {
@@ -576,6 +576,7 @@ export const createTestClient = async (
       scalars: scalarsEnumsHash,
     }),
     {
+      cache,
       client,
       queries,
     }

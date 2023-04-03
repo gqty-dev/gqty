@@ -62,7 +62,14 @@ describe('playground', () => {
   });
 
   test('assignSelections', async () => {
-    const { query, schema: cache, resolve, mutate } = await createTestClient();
+    const {
+      query,
+      schema: cache,
+      resolve,
+      mutate,
+    } = await createTestClient(undefined, undefined, undefined, {
+      cache: new Cache(undefined, { normalization: true }),
+    });
 
     await resolve(({ query }) => query.human({ name: 'asd' }).name);
 

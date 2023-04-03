@@ -170,7 +170,7 @@ describe('setCache', () => {
         ({ query }) => {
           query.human({ name: 'aaa' }).name;
         },
-        { fetchPolicy: 'no-cache' }
+        { cachePolicy: 'no-cache' }
       );
 
       const humanQuery = query.human({ name: 'aaa' });

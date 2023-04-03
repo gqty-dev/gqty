@@ -50,7 +50,7 @@ describe('core#subscribe', () => {
       if (!refetched) {
         refetched = true;
         await resolve(({ query }) => query.nFetchCalls, {
-          fetchPolicy: 'no-cache',
+          cachePolicy: 'no-cache',
         });
       } else {
         break;
@@ -81,11 +81,11 @@ describe('core#subscribe', () => {
         await new Promise((r) => setTimeout(r, 100));
         await resolve(
           ({ mutation }) => mutation.sendNotification({ message: 'aaa' }),
-          { fetchPolicy: 'no-cache' }
+          { cachePolicy: 'no-cache' }
         );
         await resolve(
           ({ mutation }) => mutation.sendNotification({ message: 'bbb' }),
-          { fetchPolicy: 'no-cache' }
+          { cachePolicy: 'no-cache' }
         );
       })(),
     ]);

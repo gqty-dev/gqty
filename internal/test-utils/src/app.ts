@@ -107,4 +107,3 @@ export async function createTestApp(
 }
 
 export * from '@graphql-ez/fastify';
-export * as fastify from 'fastify';

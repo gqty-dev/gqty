@@ -16,11 +16,11 @@ describe('core#resolve', () => {
       });
 
       await expect(
-        resolve(({ query }) => query.nFetchCalls, { fetchPolicy: 'default' })
+        resolve(({ query }) => query.nFetchCalls, { cachePolicy: 'default' })
       ).resolves.toBe(1);
 
       await expect(
-        resolve(({ query }) => query.nFetchCalls, { fetchPolicy: 'default' })
+        resolve(({ query }) => query.nFetchCalls, { cachePolicy: 'default' })
       ).resolves.toBe(1);
 
       await new Promise((resolve) => setTimeout(resolve, 150));
@@ -28,7 +28,7 @@ describe('core#resolve', () => {
       let promise: Promise<unknown> | undefined;
       resolve(({ query }) => query.nFetchCalls, {
         awaitsFetch: false,
-        fetchPolicy: 'default',
+        cachePolicy: 'default',
         onFetch(p) {
           promise = p;
         },
@@ -52,7 +52,7 @@ describe('core#resolve', () => {
             query.nFetchCalls;
             return query.hello;
           },
-          { fetchPolicy: 'default' }
+          { cachePolicy: 'default' }
         )
       ).resolves.toBe('hello world');
       expect(query.nFetchCalls).toBe(1);
@@ -63,7 +63,7 @@ describe('core#resolve', () => {
             query.nFetchCalls;
             return query.hello;
           },
-          { fetchPolicy: 'force-cache' }
+          { cachePolicy: 'force-cache' }
         )
       ).resolves.toBe('hello world');
       expect(query.nFetchCalls).toBe(1);
@@ -77,7 +77,7 @@ describe('core#resolve', () => {
             query.nFetchCalls;
             return query.hello;
           },
-          { fetchPolicy: 'force-cache' }
+          { cachePolicy: 'force-cache' }
         )
       ).resolves.toBe('hello world');
       expect(query.nFetchCalls).toBe(2);
@@ -97,15 +97,15 @@ describe('core#resolve', () => {
       );
 
       await expect(
-        resolve(({ query }) => query.nFetchCalls, { fetchPolicy: 'default' })
+        resolve(({ query }) => query.nFetchCalls, { cachePolicy: 'default' })
       ).resolves.toBe(1);
 
       await expect(
-        resolve(({ query }) => query.nFetchCalls, { fetchPolicy: 'no-cache' })
+        resolve(({ query }) => query.nFetchCalls, { cachePolicy: 'no-cache' })
       ).resolves.toBe(2);
 
       await expect(
-        resolve(({ query }) => query.nFetchCalls, { fetchPolicy: 'default' })
+        resolve(({ query }) => query.nFetchCalls, { cachePolicy: 'default' })
       ).resolves.toBe(2);
     });
 
@@ -121,7 +121,7 @@ describe('core#resolve', () => {
       });
 
       await expect(
-        resolve(({ query }) => query.hello, { fetchPolicy: 'no-store' })
+        resolve(({ query }) => query.hello, { cachePolicy: 'no-store' })
       ).resolves.toBe('hello world');
 
       expect(query.hello).toBeUndefined();
@@ -145,7 +145,7 @@ describe('core#resolve', () => {
       );
 
       await expect(() =>
-        resolve(({ query }) => query.hello, { fetchPolicy: 'only-if-cached' })
+        resolve(({ query }) => query.hello, { cachePolicy: 'only-if-cached' })
       ).rejects.toThrowError(new TypeError('Failed to fetch'));
 
       await expect(resolve(({ query }) => query.hello)).resolves.toBe(
@@ -153,7 +153,7 @@ describe('core#resolve', () => {
       );
 
       await expect(
-        resolve(({ query }) => query.hello, { fetchPolicy: 'only-if-cached' })
+        resolve(({ query }) => query.hello, { cachePolicy: 'only-if-cached' })
       ).resolves.toBe('hello world');
     });
   });
@@ -412,7 +412,7 @@ describe('compat', () => {
 
       const { resolved, query } = await createTestClient(
         undefined,
-        ({ query, variables }, fetchOptions) => {
+        async ({ query, variables }, fetchOptions) => {
           expect({ query, variables, fetchOptions }).toStrictEqual({
             fetchOptions: {
               mode: 'cors',
@@ -601,9 +601,7 @@ describe('compat', () => {
     test('empty data', async () => {
       const { query, resolved } = await createTestClient(
         undefined,
-        (_query, _variables) => {
-          return {};
-        }
+        async (_query, _variables) => ({})
       );
 
       const data = await resolved(() => {
@@ -626,7 +624,7 @@ describe('compat', () => {
         {
           cache,
           fetchOptions: {
-            fetcher: () => ({ data: { hello: 'hello world' } }),
+            fetcher: async () => ({ data: { hello: 'hello world' } }),
           },
         }
       ).then((results) => {

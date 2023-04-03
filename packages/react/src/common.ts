@@ -28,9 +28,9 @@ export const legacyFetchPolicyMap: Record<
   LegacyFetchPolicy,
   FetchOptions['cachePolicy']
 > = {
-  'cache-and-network': 'default',
-  'cache-first': 'default',
+  'cache-first': 'force-cache',
   'network-only': 'no-cache',
+  'cache-and-network': 'default',
   'no-cache': 'no-store',
 };
 

@@ -1,8 +1,9 @@
+import * as fastify from 'fastify';
 import * as randomstring from 'randomstring';
 
 export { default as waitForExpect } from 'wait-for-expect';
-
-export * as fastify from 'fastify';
+export * from './app';
+export { fastify, randomstring };
 
 export function assertIsDefined<T = unknown>(
   value: T,
@@ -15,7 +16,3 @@ export function assertIsDefined<T = unknown>(
     throw error;
   }
 }
-
-export { randomstring };
-
-export * from './app';

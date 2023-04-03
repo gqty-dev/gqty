@@ -41,6 +41,7 @@
   },
   "dependencies": {
     "gqty": "workspace:^3.0.0-alpha.0",
+    "graphql": "^16.0.0",
     "p-lazy": "^3.1.0",
     "undici": "^5.21.0"
   },
@@ -61,7 +62,6 @@
     "cosmiconfig": "^8.1.3",
     "esbuild": "^0.17.12",
     "fast-glob": "^3.2.12",
-    "graphql": "^16.6.0",
     "lodash-es": "^4.17.21",
     "mkdirp": "^2.1.5",
     "open-cli": "^7.2.0",
@@ -74,17 +74,6 @@
     "tslib": "^2.5.0",
     "typescript": "^4.9.5",
     "wait-on": "^7.0.1"
-  },
-  "peerDependencies": {
-    "graphql": "*"
-  },
-  "peerDependenciesMeta": {
-    "graphql": {
-      "optional": true
-    }
-  },
-  "engines": {
-    "node": "^12.20.0 || >=14.13.0"
   },
   "publishConfig": {
     "directory": "dist"
