@@ -35,15 +35,19 @@ export const resolve = (
   const { alias, key, isUnion, cacheKeys } = selection;
   const isNumericSelection = +key === +key;
 
-  if (verbose && cacheKeys.length >= context.depthLimit) {
-    throw new GQtyError(
-      `Depth limit reached at ${cacheKeys.join(
-        '.'
-      )}, ignoring futther selections.`
-    );
+  if (cacheKeys.length >= context.depthLimit) {
+    if (verbose) {
+      throw new GQtyError(
+        `Depth limit reached at ${cacheKeys.join(
+          '.'
+        )}, ignoring further selections.`
+      );
+    }
+
+    return;
   }
 
-  const cache =
+  const cache: CacheDataContainer<CacheNode> =
     selection.parent === selection.root && key !== '__typename'
       ? // The way we structure the cache for SWR requires special treatment
         // for 2nd level selections, e.g. query.hello, mutation.update()... etc.
@@ -513,7 +517,7 @@ export const createArrayAccessor = <
   meta: Meta
 ) => {
   if (!Array.isArray(meta.cache.data)) {
-    if (process.env.NODE_ENV !== 'production') {
+    if (verbose) {
       console.warn(
         'Received invalid cache data for array accessor.',
         meta,

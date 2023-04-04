@@ -1,7 +1,6 @@
 import { BaseGeneratedSchema, GQtyClient, GQtyError, RetryOptions } from 'gqty';
 import * as React from 'react';
 import type { OnErrorHandler } from '../common';
-import { useSafeRender } from '../useSafeRender';
 import type { ReactClientOptionsWithDefaults } from '../utils';
 
 export interface UseMutationOptions<TData> {
@@ -50,10 +49,6 @@ export type UseMutationState = {
 };
 
 export interface UseMutation<TSchema extends BaseGeneratedSchema> {
-  (options?: UseMutationOptions<unknown>): TSchema['mutation'] & {
-    $state: UseMutationState;
-  };
-
   <TData, TArgs = never>(
     fn?: (mutation: NonNullable<TSchema['mutation']>, args: TArgs) => TData,
     options?: UseMutationOptions<TData>
@@ -64,128 +59,12 @@ export interface UseMutation<TSchema extends BaseGeneratedSchema> {
 }
 
 export const createUseMutation = <TSchema extends BaseGeneratedSchema>(
-  { createResolver, resolve, refetch }: GQtyClient<TSchema>,
+  { resolve, refetch }: GQtyClient<TSchema>,
   {
     defaults: { mutationSuspense: defaultSuspense, retry: defaultRetry },
   }: ReactClientOptionsWithDefaults
 ) => {
-  const useMutation: UseMutation<TSchema> = (
-    fnOrOptions?:
-      | UseMutationOptions<unknown>
-      | ((mutation: NonNullable<TSchema['mutation']>, args: unknown) => any),
-    options?: UseMutationOptions<unknown>
-  ): any => {
-    if (typeof fnOrOptions === 'function') {
-      return useLazyMutation(fnOrOptions, options);
-    } else {
-      return useProxyMutation(fnOrOptions);
-    }
-  };
-
-  const useProxyMutation = ({
-    onCompleted,
-    onError,
-    operationName,
-    retry = defaultRetry,
-    refetchQueries = [],
-    awaitRefetchQueries,
-    suspense = defaultSuspense,
-    noCache = false,
-  }: UseMutationOptions<unknown> = {}): TSchema['mutation'] & {
-    $state: UseMutationState;
-  } => {
-    const { accessor, context, resolve, selections } = React.useMemo(() => {
-      return createResolver({
-        cachePolicy: noCache ? 'no-store' : 'no-cache',
-        operationName,
-        retryPolicy: retry,
-        onSelect: () => {
-          // Trigger re-render when selection happens after rendering, the
-          // next useEffect() will fetch the mutation. We should skip this
-          // during render to prevent infinite loop.
-          render();
-        },
-      });
-    }, [noCache, operationName, retry]);
-
-    const render = useSafeRender();
-    const [state, setState] = React.useState<{
-      error?: GQtyError;
-      promise?: Promise<unknown>;
-    }>({});
-
-    if (suspense) {
-      if (state.promise) throw state.promise;
-      if (state.error) throw state.error;
-    }
-
-    // useEffect() has to run every render because components after this one
-    // may also add selections, instead we block exccessive fetch and infinite
-    // loops inside the callback.
-    React.useEffect(() => {
-      if (selections.size === 0 || state.promise || !context.shouldFetch)
-        return;
-
-      const promise = resolve();
-
-      // Prevent infinite render loop
-      state.promise = promise;
-
-      // Trigger one render for suspense
-      setState({ promise });
-
-      promise
-        .then((data) => {
-          const refetches = refetchQueries.map((v) => refetch(v));
-
-          return awaitRefetchQueries
-            ? Promise.all(refetches).then(() => data)
-            : data;
-        })
-        .then(
-          (data) => {
-            onCompleted?.(data);
-            setState({});
-          },
-          (e) => {
-            const error = GQtyError.create(e);
-            onError?.(error);
-            setState({ error });
-          }
-        )
-        .finally(() => {
-          if (state.promise === promise) {
-            context.shouldFetch = false;
-            context.hasCacheHit = false;
-            context.hasCacheMiss = false;
-          }
-
-          selections.clear();
-        });
-    });
-
-    return React.useMemo(() => {
-      return new Proxy<TSchema['mutation'] & { $state: UseMutationState }>(
-        {
-          $state: {
-            get error() {
-              return state.error;
-            },
-            get isLoading() {
-              return state.promise !== undefined;
-            },
-          },
-        },
-        {
-          get: (target, key, receiver) =>
-            Reflect.get(target, key, receiver) ??
-            Reflect.get(accessor.mutation ?? {}, key),
-        }
-      );
-    }, [accessor, state]);
-  };
-
-  const useLazyMutation = <TData, TArgs = never>(
+  const useMutation = <TData, TArgs = never>(
     mutationFn: (
       mutation: NonNullable<TSchema['mutation']>,
       args: TArgs
