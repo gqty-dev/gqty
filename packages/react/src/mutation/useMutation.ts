@@ -4,7 +4,9 @@ import type { OnErrorHandler } from '../common';
 import type { ReactClientOptionsWithDefaults } from '../utils';
 
 export interface UseMutationOptions<TData> {
-  onCompleted?: (data: TData) => Promise<void> | void;
+  onComplete?: (data: TData) => Promise<void> | void;
+  /** @deprecated Use onComplete instead. */
+  onCompleted?: (data: TData) => void;
   onError?: OnErrorHandler;
   operationName?: string;
   /**
@@ -71,6 +73,7 @@ export const createUseMutation = <TSchema extends BaseGeneratedSchema>(
     ) => TData,
     {
       onCompleted,
+      onComplete = onCompleted,
       onError,
       retry = defaultRetry,
       refetchQueries = [],
@@ -124,7 +127,7 @@ export const createUseMutation = <TSchema extends BaseGeneratedSchema>(
 
           const data = await promise;
 
-          await onCompleted?.(data);
+          await onComplete?.(data);
           setState({ data });
 
           return data;
