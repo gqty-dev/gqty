@@ -2,4 +2,4 @@
 'gqty': major
 ---
 
-QueryFetcher now accepts QueryPayload instead of 3 parameters
+QueryFetcher now accepts QueryPayload as the first parameter

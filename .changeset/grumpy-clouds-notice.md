@@ -2,4 +2,4 @@
 '@gqty/react': minor
 ---
 
-Upgraded to the new core
+Upgrade to the new core
