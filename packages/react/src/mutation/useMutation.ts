@@ -4,7 +4,7 @@ import type { OnErrorHandler } from '../common';
 import type { ReactClientOptionsWithDefaults } from '../utils';
 
 export interface UseMutationOptions<TData> {
-  onCompleted?: (data: TData) => void;
+  onCompleted?: (data: TData) => Promise<void> | void;
   onError?: OnErrorHandler;
   operationName?: string;
   /**
@@ -50,11 +50,11 @@ export type UseMutationState = {
 
 export interface UseMutation<TSchema extends BaseGeneratedSchema> {
   <TData, TArgs = never>(
-    fn?: (mutation: NonNullable<TSchema['mutation']>, args: TArgs) => TData,
+    fn: (mutation: NonNullable<TSchema['mutation']>, args: TArgs) => TData,
     options?: UseMutationOptions<TData>
   ): readonly [
     (options?: { fn?: typeof fn; args: TArgs }) => Promise<TData>,
-    UseMutationState & { data?: TData extends void ? unknown : TData }
+    UseMutationState & { data?: TData }
   ];
 }
 
@@ -64,7 +64,7 @@ export const createUseMutation = <TSchema extends BaseGeneratedSchema>(
     defaults: { mutationSuspense: defaultSuspense, retry: defaultRetry },
   }: ReactClientOptionsWithDefaults
 ) => {
-  const useMutation = <TData, TArgs = never>(
+  const useMutation: UseMutation<TSchema> = <TData, TArgs = never>(
     mutationFn: (
       mutation: NonNullable<TSchema['mutation']>,
       args: TArgs
@@ -124,7 +124,7 @@ export const createUseMutation = <TSchema extends BaseGeneratedSchema>(
 
           const data = await promise;
 
-          onCompleted?.(data);
+          await onCompleted?.(data);
           setState({ data });
 
           return data;

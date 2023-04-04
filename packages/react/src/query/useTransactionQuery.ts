@@ -4,18 +4,23 @@ import {
   useUpdateEffect,
 } from '@react-hookz/web';
 import type { BaseGeneratedSchema, GQtyError, RetryOptions } from 'gqty';
-import type { LegacyFetchPolicy, OnErrorHandler } from '../common';
+import {
+  LegacyFetchPolicy,
+  OnErrorHandler,
+  translateFetchPolicy,
+} from '../common';
 import type { ReactClientOptionsWithDefaults } from '../utils';
 import type { UseQuery } from './useQuery';
 
 export interface UseTransactionQueryState<TData> {
-  data: TData | undefined;
+  data?: TData;
   error?: GQtyError;
+  isLoading: boolean;
   isCalled: boolean;
-  promise?: Promise<TData>;
 }
 
 export type UseTransactionQueryOptions<TData, TVariables> = {
+  cachePolicy?: RequestCache;
   fetchPolicy?: LegacyFetchPolicy;
   skip?: boolean;
   /**
@@ -40,7 +45,7 @@ export type UseTransactionQueryOptions<TData, TVariables> = {
 export interface UseTransactionQuery<TSchema extends BaseGeneratedSchema> {
   <TData, TVariables = undefined>(
     fn: (query: TSchema['query'], variables?: TVariables) => TData,
-    queryOptions?: UseTransactionQueryOptions<TData, TVariables>
+    options?: UseTransactionQueryOptions<TData, TVariables>
   ): UseTransactionQueryState<TData>;
 }
 
@@ -58,6 +63,7 @@ export function createUseTransactionQuery<TSchema extends BaseGeneratedSchema>(
     fn,
     {
       fetchPolicy = defaultFetchPolicy,
+      cachePolicy = translateFetchPolicy(fetchPolicy),
       notifyOnNetworkStatusChange = true,
       onCompleted,
       onError,
@@ -71,7 +77,7 @@ export function createUseTransactionQuery<TSchema extends BaseGeneratedSchema>(
     } = {}
   ) => {
     const query = useQuery({
-      fetchPolicy,
+      cachePolicy,
       notifyOnNetworkStatusChange,
       operationName,
       prepare: ({ query }) => (skip ? undefined : fn(query, variables)),
@@ -80,7 +86,11 @@ export function createUseTransactionQuery<TSchema extends BaseGeneratedSchema>(
     });
 
     useUpdateEffect(() => {
-      if (!query.$state.isLoading) {
+      const {
+        $state: { isLoading, error },
+      } = query;
+
+      if (!isLoading && !error) {
         onCompleted?.(fn(query, variables));
       }
     }, [query.$state.isLoading]);
@@ -101,8 +111,16 @@ export function createUseTransactionQuery<TSchema extends BaseGeneratedSchema>(
     }, pollInterval);
 
     return skip
-      ? { data: undefined, isCalled: false }
-      : { data: fn(query, variables), isCalled: true };
+      ? {
+          isCalled: false,
+          isLoading: false,
+        }
+      : {
+          data: fn(query, variables),
+          isCalled: true,
+          isLoading: query.$state.isLoading,
+          error: query.$state.error,
+        };
   };
 
   return useTransactionQuery;

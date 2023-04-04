@@ -24,7 +24,6 @@ const NavigationList = [
   '/uploadFile',
   '/transactionQuery1',
   '/transactionQuery2',
-  '/mutations',
 ];
 
 export const MetaClient = () => {

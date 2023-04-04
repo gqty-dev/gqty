@@ -1,4 +1,4 @@
-import { useRerender } from '@react-hookz/web';
+import { useRerender, useThrottledCallback } from '@react-hookz/web';
 import { BaseGeneratedSchema, GQtyClient, GQtyError } from 'gqty';
 import { useEffect, useMemo, useState } from 'react';
 
@@ -9,6 +9,11 @@ export type UseSubscription<TSchema extends BaseGeneratedSchema> = (
 export type UseSubscriptionOptions = {
   onError?: (error: GQtyError) => void;
   operationName?: string;
+  /**
+   * Throttle delay for each re-redner, prevents busy subscriptions from
+   * hanging the UI.
+   */
+  renderThrottleDelay?: number;
 };
 
 export function createUseSubscription<TSchema extends BaseGeneratedSchema>({
@@ -17,6 +22,7 @@ export function createUseSubscription<TSchema extends BaseGeneratedSchema>({
   const useSubscription: UseSubscription<TSchema> = ({
     onError,
     operationName,
+    renderThrottleDelay = 100,
   } = {}) => {
     const {
       accessor: { subscription },
@@ -25,12 +31,17 @@ export function createUseSubscription<TSchema extends BaseGeneratedSchema>({
     } = useMemo(() => createResolver({ operationName }), [operationName]);
 
     const render = useRerender();
+    const throttledRender = useThrottledCallback(
+      render,
+      [render],
+      renderThrottleDelay
+    );
     const [error, setError] = useState<GQtyError>();
     if (error) throw error;
 
     useEffect(() => {
       return subscribe({
-        onNext: () => render(),
+        onNext: () => throttledRender(),
         onError(error) {
           const theError = GQtyError.create(error);
 

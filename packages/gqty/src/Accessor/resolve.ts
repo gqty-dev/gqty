@@ -1,6 +1,4 @@
-import get from 'just-safe-get';
-import set from 'just-safe-set';
-import type { CacheObject } from '../Cache';
+import type { CacheDataContainer, CacheNode, CacheObject } from '../Cache';
 import { flattenObject } from '../Cache/crawl';
 import { isCacheObject } from '../Cache/utils';
 import { GQtyError } from '../Error';
@@ -11,7 +9,7 @@ import {
   Type,
 } from '../Schema';
 import type { Selection } from '../Selection';
-import { deepAssign, isObject } from '../Utils';
+import { isPlainObject } from '../Utils';
 import type { Meta } from './meta';
 import { $meta, $setMeta } from './meta';
 import { createSkeleton, isSkeleton } from './skeleton';
@@ -51,15 +49,11 @@ export const resolve = (
     selection.parent === selection.root && key !== '__typename'
       ? // The way we structure the cache for SWR requires special treatment
         // for 2nd level selections, e.g. query.hello, mutation.update()... etc.
-        context.cache.get(cacheKeys.join('.'), context.cacheOptions) ?? {
-          data: undefined,
-          expiresAt: Infinity,
-        }
-      : { ...meta.cache };
-
-  if (cache.data === undefined) {
-    cache.expiresAt = Infinity;
-  }
+        ensureCache(cacheKeys[0], cacheKeys[1], meta)
+      : Object.defineProperties(
+          { data: undefined, expiresAt: Infinity },
+          Object.getOwnPropertyDescriptors(meta.cache)
+        );
 
   let data = cache.data;
 
@@ -96,6 +90,13 @@ export const resolve = (
   if (!type) {
     // Scalar and scalar arrays
     if (context.scalars[pureType]) {
+      // Force expired caches, this happens when users keep intermediate
+      // accessors before a cache update. When properties of these stale
+      // accessors are accessed, they should read new data from the cache.
+      if (cache.expiresAt === -Infinity) {
+        data = context.cache.get(selection.cacheKeys.join('.'))?.data;
+      }
+
       context.onSelect?.(selection, { ...cache, data });
 
       return isArray ? (Array.isArray(data) ? data : [undefined]) : data;
@@ -144,38 +145,6 @@ export const resolve = (
   }
 
   cache.data = data;
-
-  // Subscribe to cache changes at root level, child accessors should have new
-  // values reflected after cache updates. Listeners created this way cannot be
-  // garbage collected along with the throwaway proxies, unsubscribing the last
-  // one each time we access this root key.
-  //
-  // This is only useful when users hold on to an accessor while being updated.
-  // If accessors are read from top-level, data is read again from the cache and
-  // new data is already reflected.
-  //
-  // Accessor objects may be cached in the future, then these subscriptions will
-  // become an essential part of the system.
-  if (selection.parent === selection.root) {
-    const listenerCacheKey = `__accessorCacheListeners.${cacheKeys.join('/')}`;
-
-    get(context, listenerCacheKey)?.();
-
-    const unsubscribe = context.cache.subscribe(
-      [cacheKeys.join('.')],
-      (incoming) => {
-        if (isObject(incoming) && isObject(data)) {
-          cache.data = deepAssign(
-            {},
-            [get(incoming, cacheKeys.join('.')), data],
-            context.cache.normalizationOptions?.onConflict
-          ) as CacheObject;
-        }
-      }
-    );
-
-    set(context, listenerCacheKey, unsubscribe);
-  }
 
   return isArray && !isNumericSelection
     ? createArrayAccessor({
@@ -293,11 +262,17 @@ const objectProxyHandler: ProxyHandler<GeneratedSchemaObject> = {
     // Extract proxy data, keep the object reference unless users deep clone it.
     value = deepMetadata(value) ?? value;
 
-    if (selection.cacheKeys.length <= 2) {
+    if (selection.ancestry.length <= 2) {
       const [type, field] = selection.cacheKeys;
 
       if (field) {
-        context.cache.set({ [type]: { [field]: { [key]: value } } });
+        const data = context.cache.get(`${type}.${field}`)?.data ?? {};
+
+        if (!isPlainObject(data)) return false;
+
+        data[key] = value;
+
+        context.cache.set({ [type]: { [field]: data } });
       } else {
         context.cache.set({ [type]: { [key]: value } });
       }
@@ -410,6 +385,22 @@ export const deepMetadata = (input: any) => {
   function isObject(it: any): it is Record<string, any> {
     return typeof it === 'object' && it !== null;
   }
+};
+
+/**
+ * Read data from cache, creates an empty data slot that never expires when
+ * target is not found.
+ */
+const ensureCache = (
+  type: string,
+  field: string,
+  { context: { cache, cacheOptions } }: Meta
+) => {
+  if (!cache.get(`${type}.${field}`, cacheOptions)) {
+    cache.set({ [type]: { [field]: undefined } });
+  }
+
+  return cache.get(`${type}.${field}`, cacheOptions)!;
 };
 
 /**

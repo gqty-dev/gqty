@@ -20,8 +20,9 @@ const queryFetcher: QueryFetcher = async function (query, variables) {
 
   const endpoint =
     typeof window === 'undefined'
-      ? 'http://localhost:3000/api/graphql'
+      ? `http://0.0.0.0:3000/api/graphql`
       : '/api/graphql';
+
   const { files, clone } = extractFiles(
     { query, variables },
     isExtractableFile

@@ -15,6 +15,7 @@ export interface UseLazyQueryOptions<TData> {
   fetchPolicy?: LazyFetchPolicy;
   retry?: RetryOptions;
   suspense?: boolean;
+  operationName?: string;
 }
 
 export interface UseLazyQueryState<TData> {
@@ -80,7 +81,7 @@ function InitUseLazyQueryReducer<TData>(): UseLazyQueryState<TData> {
 
 export interface UseLazyQuery<GeneratedSchema extends BaseGeneratedSchema> {
   <TData = unknown, TArgs = undefined>(
-    queryFn: (query: GeneratedSchema['query'], args: TArgs) => TData,
+    fn: (query: GeneratedSchema['query'], args: TArgs) => TData,
     options?: UseLazyQueryOptions<TData>
   ): readonly [
     (
@@ -90,6 +91,7 @@ export interface UseLazyQuery<GeneratedSchema extends BaseGeneratedSchema> {
               fn?: (query: GeneratedSchema['query'], args: TArgs) => TData;
               args?: TArgs;
               fetchPolicy?: LazyFetchPolicy;
+              operationName?: string;
             }?
           ]
         : [
@@ -97,6 +99,7 @@ export interface UseLazyQuery<GeneratedSchema extends BaseGeneratedSchema> {
               fn?: (query: GeneratedSchema['query'], args: TArgs) => TData;
               args: TArgs;
               fetchPolicy?: LazyFetchPolicy;
+              opertionName?: string;
             }
           ]
     ) => Promise<TData>,
@@ -122,6 +125,7 @@ export function createUseLazyQuery<TSchema extends BaseGeneratedSchema>(
       fetchPolicy: hookDefaultFetchPolicy = defaultFetchPolicy,
       retry = defaultRetry,
       suspense = defaultSuspense,
+      operationName: defaultOperationName,
     } = {}
   ) => {
     type TCallback = typeof fn;
@@ -131,6 +135,7 @@ export function createUseLazyQuery<TSchema extends BaseGeneratedSchema>(
       fn?: TCallback;
       args?: TArgs;
       fetchPolicy?: LazyFetchPolicy;
+      operationName?: string;
     };
 
     const [state, dispatch] = React.useReducer(
@@ -152,6 +157,7 @@ export function createUseLazyQuery<TSchema extends BaseGeneratedSchema>(
         fn: resolveFn = fn,
         args,
         fetchPolicy = hookDefaultFetchPolicy,
+        operationName = defaultOperationName,
       }: TCallbackArgs = {}) => {
         let innerFetchPromise: Promise<TData> | undefined;
 
@@ -165,6 +171,7 @@ export function createUseLazyQuery<TSchema extends BaseGeneratedSchema>(
                 innerFetchPromise = promise as Promise<TData>;
               },
               retryPolicy: retry,
+              operationName,
             }
           ).then((data) => {
             const typedData = data as TData;

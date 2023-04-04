@@ -1,5 +1,6 @@
 import {
   useDebouncedCallback,
+  useIntervalEffect,
   usePrevious,
   useRerender,
   useThrottledState,
@@ -19,6 +20,7 @@ import {
   OnErrorHandler,
   translateFetchPolicy,
 } from '../common';
+import { useOnlineEffect } from '../useOnlineEffect';
 import { useWindowFocusEffect } from '../useWindowFocusEffect';
 import type { ReactClientOptionsWithDefaults } from '../utils';
 
@@ -31,13 +33,18 @@ export interface UseQueryPrepareHelpers<
   readonly query: GeneratedSchema['query'];
 }
 export interface UseQueryOptions<TSchema extends BaseGeneratedSchema> {
+  cachePolicy?: RequestCache;
   fetchPolicy?: LegacyFetchPolicy;
   notifyOnNetworkStatusChange?: boolean;
   onError?: OnErrorHandler;
   operationName?: string;
   prepare?: (helpers: UseQueryPrepareHelpers<TSchema>) => void;
+  refetchInterval?: number;
+  refetchIntervalInBackground?: boolean;
+  refetchOnReconnect?: boolean;
   refetchOnWindowVisible?: boolean;
   retry?: RetryOptions;
+  retryPolicy?: RetryOptions;
   staleWhileRevalidate?: boolean | object | number | string | null;
   suspense?: boolean;
 }
@@ -80,21 +87,22 @@ export const createUseQuery =
   ): UseQuery<TSchema> =>
   ({
     fetchPolicy = 'cache-first',
+    cachePolicy = translateFetchPolicy(fetchPolicy),
     notifyOnNetworkStatusChange = true,
     onError,
     operationName,
     prepare,
-    refetchOnWindowVisible = false,
+    refetchInterval,
+    refetchIntervalInBackground,
+    refetchOnReconnect = true,
+    refetchOnWindowVisible = true,
     retry = defaultRetry,
+    retryPolicy = retry,
     staleWhileRevalidate = defaultStaleWhileRevalidate,
     suspense = defaultSuspense,
   } = {}) => {
     const render = useRerender();
     const debouncedRender = useDebouncedCallback(render, [render], 50);
-    const cacheMode = useMemo(
-      () => translateFetchPolicy(fetchPolicy),
-      [fetchPolicy]
-    );
     const {
       accessor: { query },
       context,
@@ -104,11 +112,11 @@ export const createUseQuery =
     } = useMemo(
       () =>
         client.createResolver({
-          cachePolicy: cacheMode,
+          cachePolicy,
           operationName,
-          retryPolicy: retry,
+          retryPolicy,
         }),
-      [fetchPolicy, operationName, retry]
+      [cachePolicy, operationName, retryPolicy]
     );
 
     const [state, setState] = useThrottledState<{
@@ -128,9 +136,9 @@ export const createUseQuery =
       // immediately.
       if (context.shouldFetch && suspense) {
         throw client.resolve(({ query }) => prepare({ prepass, query }), {
-          cachePolicy: cacheMode,
+          cachePolicy,
           operationName,
-          retryPolicy: retry,
+          retryPolicy,
         });
       }
     }
@@ -148,7 +156,7 @@ export const createUseQuery =
 
       const { resolve, reject, promise } = pDefer();
 
-      if (context.shouldFetch && notifyOnNetworkStatusChange) {
+      if (context.shouldFetch) {
         setState({ promise });
       }
 
@@ -165,13 +173,13 @@ export const createUseQuery =
           context.shouldFetch = false;
           context.hasCacheHit = false;
           context.hasCacheMiss = false;
-          context.notifyCacheUpdate = cacheMode !== 'default';
+          context.notifyCacheUpdate = cachePolicy !== 'default';
 
           setState({});
           resolve();
         },
       });
-    }, [context.shouldFetch]);
+    }, [cachePolicy, context.shouldFetch]);
 
     const refetch = useCallback(
       async (force = false) => {
@@ -198,15 +206,15 @@ export const createUseQuery =
           context.shouldFetch = false;
           context.hasCacheHit = false;
           context.hasCacheMiss = false;
-          context.notifyCacheUpdate = cacheMode !== 'default';
+          context.notifyCacheUpdate = cachePolicy !== 'default';
 
           setState({});
         }
       },
-      [context.shouldFetch, operationName, selections]
+      [cachePolicy, context.shouldFetch, operationName, selections]
     );
 
-    // staleWhileRevalidate
+    // Legacy staleWhileRevalidate
     const swrDiff = usePrevious(staleWhileRevalidate);
     useUpdateEffect(() => {
       if (staleWhileRevalidate && !Object.is(staleWhileRevalidate, swrDiff)) {
@@ -214,13 +222,27 @@ export const createUseQuery =
       }
     }, [refetch, swrDiff]);
 
-    {
-      // A rerender should be enough to trigger a soft check, fetch will
-      // happen if any of the accessed cache value is stale.
-      useWindowFocusEffect(debouncedRender, {
-        enabled: refetchOnWindowVisible,
-      });
-    }
+    // refetchInterval
+    useIntervalEffect(() => {
+      if (
+        !refetchIntervalInBackground &&
+        globalThis.document?.visibilityState !== 'visible'
+      )
+        return;
+
+      debouncedRender();
+    }, refetchInterval);
+
+    // refetchOnReconnect
+    useOnlineEffect(() => {
+      if (refetchOnReconnect) debouncedRender();
+    }, [debouncedRender, refetchOnReconnect]);
+
+    // A rerender should be enough to trigger a soft check, fetch will
+    // happen if any of the accessed cache value is stale.
+    useWindowFocusEffect(debouncedRender, {
+      enabled: refetchOnWindowVisible,
+    });
 
     return useMemo(() => {
       return new Proxy(
@@ -235,7 +257,7 @@ export const createUseQuery =
           get: (target, key, proxy) =>
             Reflect.get(target, key, proxy) ??
             Reflect.get(
-              prepare
+              prepare && cachePolicy !== 'no-store'
                 ? // Using global schema accessor prevents the second pass fetch
                   // essentially let `prepare` decides what data to fetch, data
                   // placeholder will always render in case of a cache miss.
