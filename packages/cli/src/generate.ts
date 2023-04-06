@@ -5,7 +5,7 @@ import {
   ScalarsEnumsHash,
   Schema,
   SchemaUnionsKey,
-  Type
+  Type,
 } from 'gqty';
 import type {
   GraphQLEnumType,
@@ -15,10 +15,10 @@ import type {
   GraphQLObjectType,
   GraphQLScalarType,
   GraphQLSchema,
-  GraphQLUnionType
+  GraphQLUnionType,
 } from 'graphql';
 import * as graphql from 'graphql';
-import { defaultConfig, gqtyConfigPromise } from './config';
+import { defaultConfig, type GQtyConfig } from './config';
 import * as deps from './deps.js';
 import { formatPrettier } from './prettier';
 
@@ -73,10 +73,10 @@ export interface GenerateOptions {
    */
   enumsAsConst?: boolean;
   /**
-   * Generate subscriptions client
+   * Generate subscriptions client with target package
    * @default false
    */
-  subscriptions?: boolean;
+  subscriptions?: boolean | string;
   /**
    * Generate Javascript code instead of TypeScript
    *
@@ -103,16 +103,17 @@ export interface TransformSchemaOptions {
 export async function generate(
   schema: GraphQLSchema,
   {
-    preImport,
-    scalarTypes,
-    react,
     endpoint,
-    enumsAsStrings,
     enumsAsConst,
-    subscriptions,
+    enumsAsStrings,
+    introspection,
     javascriptOutput,
+    preImport,
+    react,
+    scalarTypes,
+    subscriptions,
     transformSchema,
-  }: GenerateOptions = {},
+  }: GQtyConfig = {},
   { ignoreArgs }: TransformSchemaOptions = {}
 ): Promise<{
   clientCode: string;
@@ -122,45 +123,39 @@ export async function generate(
   scalarsEnumsHash: ScalarsEnumsHash;
   isJavascriptOutput: boolean;
 }> {
-  const gqtyConfig = (await gqtyConfigPromise).config;
-
-  const isJavascriptOutput =
-    javascriptOutput ??
-    gqtyConfig.javascriptOutput ??
-    defaultConfig.javascriptOutput;
+  const isJavascriptOutput = javascriptOutput ?? defaultConfig.javascriptOutput;
 
   if (isJavascriptOutput) {
-    if (gqtyConfig.enumsAsStrings) {
+    if (enumsAsStrings) {
       console.warn(
         `"enumsAsStrings" is automatically set as "true" with "javascriptOutput" enabled.`
       );
     }
     enumsAsStrings = true;
   } else {
-    enumsAsStrings ??= gqtyConfig.enumsAsStrings ?? false;
+    enumsAsStrings ??= false;
   }
 
   if (isJavascriptOutput) {
-    if (gqtyConfig.enumsAsConst) {
+    if (enumsAsConst) {
       console.warn(
         `"enumsAsConst" is automatically set as "false" with "javascriptOutput" enabled.`
       );
     }
     enumsAsConst = false;
   }
-  enumsAsConst ??= gqtyConfig.enumsAsConst ?? defaultConfig.enumsAsConst;
+  enumsAsConst ??= enumsAsConst ?? defaultConfig.enumsAsConst;
 
-  scalarTypes ||= gqtyConfig.scalarTypes || defaultConfig.scalarTypes;
+  scalarTypes ||= scalarTypes || defaultConfig.scalarTypes;
   endpoint ||=
-    gqtyConfig.endpoint ||
-    gqtyConfig.introspection?.endpoint ||
+    endpoint ||
+    introspection?.endpoint ||
     defaultConfig.endpoint ||
     defaultConfig.introspection.endpoint;
 
-  react ??= gqtyConfig.react ?? defaultConfig.react;
-  preImport ??= gqtyConfig.preImport ?? defaultConfig.preImport;
-  subscriptions ??= gqtyConfig.subscriptions ?? defaultConfig.subscriptions;
-  transformSchema ??= gqtyConfig.transformSchema;
+  react ??= defaultConfig.react;
+  preImport ??= defaultConfig.preImport;
+  subscriptions ??= defaultConfig.subscriptions;
 
   const { format } = formatPrettier({
     parser: 'typescript',
@@ -913,20 +908,22 @@ export async function generate(
      * GQty: You can safely modify this file based on your needs.
      */
 
-    ${react ? `import { createReactClient } from "@gqty/react"` : ''}
-    ${
+    ${[
+      react ? `import { createReactClient } from "@gqty/react";` : '',
       subscriptions
-        ? `import { createClient as createSubscriptionsClient } from "graphql-ws"`
-        : ''
-    }
-    ${isJavascriptOutput ? '' : 'import type { QueryFetcher } from "gqty";'}
-    import { createClient, Cache } from "gqty";
-    ${
+        ? `import { createClient as createSubscriptionsClient } from "${
+            subscriptions === true ? 'graphql-ws' : subscriptions
+          }";`
+        : '',
+      isJavascriptOutput ? '' : 'import type { QueryFetcher } from "gqty";',
+      'import { Cache, createClient } from "gqty";',
       isJavascriptOutput
         ? ''
-        : 'import type { GeneratedSchema } from "./schema.generated";'
-    }
-    import { generatedSchema, scalarsEnumsHash } from "./schema.generated";
+        : 'import type { GeneratedSchema } from "./schema.generated";',
+      'import { generatedSchema, scalarsEnumsHash } from "./schema.generated";',
+    ]
+      .filter(Boolean)
+      .join('\n')}
 
     ${queryFetcher}
 
@@ -963,8 +960,7 @@ export async function generate(
       isJavascriptOutput
         ? `${typeDoc(
             'import("gqty").GQtyClient<import("./schema.generated").GeneratedSchema>'
-          )}
-    export const client = createClient({
+          )}export const client = createClient({
       schema: generatedSchema,
       scalars: scalarsEnumsHash,
       cache,

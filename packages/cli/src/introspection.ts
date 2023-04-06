@@ -1,7 +1,7 @@
 import type { AsyncExecutor } from '@graphql-tools/utils';
 import type { GraphQLSchema } from 'graphql';
 import * as graphql from 'graphql';
-import { defaultConfig, gqtyConfigPromise } from './config';
+import { defaultConfig, loadOrGenerateConfig } from './config';
 import * as deps from './deps.js';
 
 export interface IntrospectionOptions {
@@ -27,7 +27,7 @@ export const getRemoteSchema = async (
 ): Promise<GraphQLSchema> => {
   const executor: AsyncExecutor = async ({ document, variables }) => {
     headers ||=
-      (await gqtyConfigPromise).config.introspection?.headers ||
+      (await loadOrGenerateConfig()).config.introspection?.headers ||
       defaultConfig.introspection.headers;
     const query = graphql.print(document);
     const { request } = await import('undici');

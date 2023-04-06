@@ -1,6 +1,6 @@
 import type { GraphQLSchema } from 'graphql';
 import PLazy from 'p-lazy';
-import type { defaultConfig, gqtyConfigPromise } from './config';
+import type { defaultConfig, loadOrGenerateConfig } from './config';
 import type { GenerateOptions, TransformSchemaOptions } from './generate';
 import type { OnExistingFileConflict, writeGenerate } from './writeGenerate';
 
@@ -30,12 +30,12 @@ export function useGenerateGQty(config?: UseGenerateGQtyOptions): {
 } {
   const pluginDeps = new PLazy<{
     writeGenerate: typeof writeGenerate;
-    gqtyConfig: Awaited<typeof gqtyConfigPromise>['config'];
+    gqtyConfig: Awaited<ReturnType<typeof loadOrGenerateConfig>>['config'];
     defaultConfig: typeof defaultConfig;
   }>((resolve, reject) => {
     return Promise.all([
       import('./writeGenerate'),
-      import('./config').then((v) => v.gqtyConfigPromise),
+      import('./config').then((v) => v.loadOrGenerateConfig()),
       import('./config'),
     ])
       .then(

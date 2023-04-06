@@ -2,7 +2,7 @@ import { existsSync, promises } from 'fs';
 import type { GraphQLSchema, IntrospectionQuery } from 'graphql';
 import * as graphql from 'graphql';
 import { extname, resolve } from 'path';
-import { defaultConfig, DUMMY_ENDPOINT, gqtyConfigPromise } from './config';
+import { defaultConfig, DUMMY_ENDPOINT, loadOrGenerateConfig } from './config';
 import * as deps from './deps.js';
 import type { GenerateOptions, TransformSchemaOptions } from './generate';
 import { getRemoteSchema } from './introspection';
@@ -51,14 +51,16 @@ export async function inspectWriteGenerate({
     defaultConfig.destination = destination;
   }
 
+  const { config, filepath } = await loadOrGenerateConfig({
+    writeConfigFile: true,
+  });
+
   if (endpoint) {
     defaultConfig.introspection.endpoint = endpoint;
   } else if (existsSync(resolve('./schema.gql'))) {
     endpoint = './schema.gql';
     defaultConfig.introspection.endpoint = endpoint;
   } else {
-    const { config, filepath } = await gqtyConfigPromise;
-
     const configIntrospectionEndpoint =
       config.introspection && config.introspection.endpoint;
 
@@ -80,14 +82,14 @@ export async function inspectWriteGenerate({
   }
 
   if (!destination) {
-    const configDestination = (await gqtyConfigPromise).config.destination;
+    const configDestination = config.destination;
 
     destination = configDestination || defaultConfig.destination;
   }
 
   destination = resolve(destination);
 
-  const genOptions = Object.assign({}, generateOptions);
+  const genOptions = Object.assign({}, config, generateOptions);
 
   let schema: GraphQLSchema;
 
@@ -175,10 +177,8 @@ export async function inspectWriteGenerate({
     destination,
     genOptions,
     async (existingFile) => {
-      const subscriptions =
-        genOptions.subscriptions ??
-        (await gqtyConfigPromise).config.subscriptions;
-      const react = genOptions.react ?? (await gqtyConfigPromise).config.react;
+      const subscriptions = genOptions.subscriptions ?? config.subscriptions;
+      const react = genOptions.react ?? config.react;
 
       const advice = `\nIf you meant to change this, please remove "${destination}" and re-run code generation.`;
 

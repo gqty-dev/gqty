@@ -3,14 +3,14 @@ import PLazy from 'p-lazy';
 import { createTestApp, gql, TestApp } from 'test-utils';
 import type { PartialDeep } from 'type-fest';
 import { WebSocket } from 'ws';
-import { gqtyConfigPromise } from '../../cli/src/config';
+import { loadOrGenerateConfig } from '../../cli/src/config';
 import { generate } from '../../cli/src/generate';
 import { Cache, QueryFetcher, Schema, SchemaUnionsKey } from '../src';
 import { ClientOptions, createClient as createGQtyClient } from '../src/Client';
 import { deepAssign } from '../src/Utils';
 
 afterAll(async () => {
-  await gqtyConfigPromise;
+  await loadOrGenerateConfig({ writeConfigFile: true });
 });
 
 export type Maybe<T> = T | null;

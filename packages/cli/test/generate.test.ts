@@ -128,7 +128,7 @@ test('basic functionality works', async () => {
     import { createReactClient } from '@gqty/react';
     import { createClient as createSubscriptionsClient } from 'graphql-ws';
     import type { QueryFetcher } from 'gqty';
-    import { createClient, Cache } from 'gqty';
+    import { Cache, createClient } from 'gqty';
     import type { GeneratedSchema } from './schema.generated';
     import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
@@ -322,9 +322,8 @@ test('custom scalars works', async () => {
      */
 
     import { createReactClient } from '@gqty/react';
-
     import type { QueryFetcher } from 'gqty';
-    import { createClient, Cache } from 'gqty';
+    import { Cache, createClient } from 'gqty';
     import type { GeneratedSchema } from './schema.generated';
     import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
@@ -1414,9 +1413,7 @@ test('javascript output works', async () => {
 
     import { createReactClient } from '@gqty/react';
     import { createClient as createSubscriptionsClient } from 'graphql-ws';
-
-    import { createClient, Cache } from 'gqty';
-
+    import { Cache, createClient } from 'gqty';
     import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
     /**
@@ -1475,7 +1472,6 @@ test('javascript output works', async () => {
     /**
      * @type {import("gqty").GQtyClient<import("./schema.generated").GeneratedSchema>}
      */
-
     export const client = createClient({
       schema: generatedSchema,
       scalars: scalarsEnumsHash,
@@ -1760,9 +1756,8 @@ test('ignoreArgs transform', async () => {
      */
 
     import { createReactClient } from '@gqty/react';
-
     import type { QueryFetcher } from 'gqty';
-    import { createClient, Cache } from 'gqty';
+    import { Cache, createClient } from 'gqty';
     import type { GeneratedSchema } from './schema.generated';
     import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 

@@ -1,11 +1,11 @@
-import { promises } from 'fs';
-import { createRequire } from 'module';
-import { resolve } from 'path';
-import type { Loader } from './deps';
+import { promises } from 'node:fs';
+import { createRequire } from 'node:module';
+import { resolve } from 'node:path';
+import { type RequestInit } from 'undici';
 import * as deps from './deps.js';
-import type { GenerateOptions } from './generate';
+import { type GenerateOptions } from './generate';
 import { __innerState } from './innerState';
-import type { IntrospectionOptions } from './introspection';
+import { type IntrospectionOptions } from './introspection';
 import { formatPrettier } from './prettier';
 
 const cjsRequire = globalThis.require || createRequire(import.meta.url);
@@ -13,8 +13,24 @@ const cjsRequire = globalThis.require || createRequire(import.meta.url);
 export type GQtyConfig = GenerateOptions & {
   /**
    * Introspection options
+   *
+   * @deprecated Use `introspectionOptions` instead
    */
   introspection?: IntrospectionOptions;
+  /**
+   * Introspection options for multple endpoints.
+   *
+   * ```json
+   * {
+   *   "https://example.com/graphql": {
+   *     "headers": {
+   *       "Authorization": "Bearer ..."
+   *     }
+   *   }
+   * }
+   * ```
+   */
+  introspectionOptions?: Record<string, Pick<RequestInit, 'headers'>>;
   /**
    * Client generation destination
    */
@@ -33,11 +49,13 @@ function isStringRecord(v: unknown): v is Record<string, string> {
 
 export const DUMMY_ENDPOINT = 'SPECIFY_ENDPOINT_OR_SCHEMA_FILE_PATH_HERE';
 
-export const defaultConfig: Omit<
-  Required<GQtyConfig>,
-  'endpoint' | 'transformSchema'
-> &
-  Pick<GQtyConfig, 'endpoint' | 'transformSchema'> = {
+export type SetRequired<T, K extends keyof T> = Omit<T, K> &
+  Required<Pick<T, K>>;
+
+export const defaultConfig: SetRequired<
+  GQtyConfig,
+  Exclude<keyof GQtyConfig, 'introspectionOptions' | 'transformSchema'>
+> = {
   react: (() => {
     try {
       cjsRequire.resolve('react');
@@ -184,6 +202,31 @@ export function getValidConfig(v: unknown): GQtyConfig {
           }
           break;
         }
+        case 'introspectionOptions': {
+          if (isPlainObject(value)) {
+            const introspectionOptions: GQtyConfig['introspectionOptions'] = {};
+
+            for (const [endpoint, httpExecutorOptions] of Object.entries(
+              value
+            )) {
+              if (isPlainObject(httpExecutorOptions)) {
+                introspectionOptions[endpoint] = httpExecutorOptions;
+              } else {
+                warnConfig(
+                  `${key}.${endpoint}`,
+                  httpExecutorOptions,
+                  '"object of strings"',
+                  {}
+                );
+              }
+            }
+
+            newConfig[key] = introspectionOptions;
+          } else {
+            warnConfig(key, value, 'object', defaultConfig[key]);
+          }
+          break;
+        }
         case 'transformSchema': {
           if (typeof value === 'function') {
             newConfig[key] = value as GQtyConfig['transformSchema'];
@@ -212,84 +255,88 @@ export function getValidConfig(v: unknown): GQtyConfig {
 
 const defaultFilePath = resolve(process.cwd(), 'gqty.config.cjs');
 
-type DeepReadonly<T> = T extends (infer R)[]
-  ? DeepReadonlyArray<R>
-  : T extends Function
-  ? T
-  : T extends object
-  ? DeepReadonlyObject<T>
-  : T;
-
-interface DeepReadonlyArray<T> extends ReadonlyArray<DeepReadonly<T>> {}
-
-type DeepReadonlyObject<T> = {
-  readonly [P in keyof T]: DeepReadonly<T[P]>;
-};
-
 const defaultGQtyConfig = {
   filepath: defaultFilePath,
   config: defaultConfig,
 };
 
-export const gqtyConfigPromise: Promise<{
+type GQtyConfigResult = {
+  config: GQtyConfig;
   filepath: string;
-  config: DeepReadonly<GQtyConfig>;
-}> = new Promise(async (resolve) => {
-  try {
-    const cjsLoader: Loader = (filePath) => {
-      return cjsRequire(filePath);
-    };
-    const config = await deps
-      .cosmiconfig('gqty', {
-        searchPlaces: ['gqty.config.cjs', 'gqty.config.js', 'package.json'],
-        loaders: {
-          '.cjs': cjsLoader,
-          '.js': cjsLoader,
-        },
-      })
-      .search();
+  isEmpty?: boolean;
+};
 
-    if (!config || config.isEmpty) {
-      const filepath = config?.filepath || defaultFilePath;
+let gqtyConfigPromise: Promise<GQtyConfigResult> | undefined = undefined;
 
-      const NODE_ENV = process.env['NODE_ENV'];
+export const loadOrGenerateConfig = async ({
+  writeConfigFile = false,
+}: {
+  writeConfigFile?: boolean;
+} = {}): Promise<GQtyConfigResult> => {
+  if (gqtyConfigPromise === undefined) {
+    gqtyConfigPromise = new Promise(async (resolve) => {
+      try {
+        const cjsLoader: deps.Loader = (filePath) => {
+          return cjsRequire(filePath);
+        };
+        const config = await deps
+          .cosmiconfig('gqty', {
+            searchPlaces: ['gqty.config.cjs', 'gqty.config.js', 'package.json'],
+            loaders: {
+              '.cjs': cjsLoader,
+              '.js': cjsLoader,
+            },
+          })
+          .search();
 
-      if (
-        NODE_ENV !== 'test' &&
-        NODE_ENV !== 'production' &&
-        __innerState.isCLI
-      ) {
-        const { format } = formatPrettier({
-          parser: 'typescript',
+        if (!config || config.isEmpty) {
+          const filepath = config?.filepath || defaultFilePath;
+
+          const NODE_ENV = process.env['NODE_ENV'];
+
+          if (
+            NODE_ENV !== 'test' &&
+            NODE_ENV !== 'production' &&
+            __innerState.isCLI
+          ) {
+            const { format } = formatPrettier({
+              parser: 'typescript',
+            });
+
+            const config: GQtyConfig = { ...defaultConfig };
+            delete config.preImport;
+            delete config.enumsAsStrings;
+
+            if (writeConfigFile) {
+              await promises.writeFile(
+                defaultFilePath,
+                await format(`
+                          /**
+                           * @type {import("@gqty/cli").GQtyConfig}
+                           */
+                          const config = ${JSON.stringify(config)};
+
+                          module.exports = config;`)
+              );
+            }
+          }
+
+          return resolve({
+            filepath,
+            config: defaultConfig,
+          });
+        }
+
+        resolve({
+          config: getValidConfig(config.config),
+          filepath: config.filepath,
         });
-
-        const config: GQtyConfig = { ...defaultConfig };
-        delete config.preImport;
-        delete config.enumsAsStrings;
-
-        await promises.writeFile(
-          defaultFilePath,
-          await format(`
-                      /**
-                       * @type {import("@gqty/cli").GQtyConfig}
-                       */
-                      const config = ${JSON.stringify(config)};
-
-                      module.exports = config;`)
-        );
+      } catch (err) {
+        console.error(err);
+        resolve(defaultGQtyConfig);
       }
-      return resolve({
-        filepath,
-        config: defaultConfig,
-      });
-    }
-
-    resolve({
-      config: getValidConfig(config.config),
-      filepath: config.filepath,
     });
-  } catch (err) {
-    console.error(err);
-    resolve(defaultGQtyConfig);
   }
-});
+
+  return gqtyConfigPromise;
+};

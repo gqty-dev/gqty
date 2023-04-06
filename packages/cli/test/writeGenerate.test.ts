@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { createTestApp, gql } from 'test-utils';
+import { loadOrGenerateConfig } from '../src/config';
 import { writeGenerate } from '../src/writeGenerate';
 import { getTempDir } from './utils';
 
@@ -241,9 +242,8 @@ test('creates dir, generates code and writes new file', async () => {
        */
 
       import { createReactClient } from '@gqty/react';
-
       import type { QueryFetcher } from 'gqty';
-      import { createClient, Cache } from 'gqty';
+      import { Cache, createClient } from 'gqty';
       import type { GeneratedSchema } from './schema.generated';
       import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
@@ -366,9 +366,11 @@ test('generates code and writes existing file', async () => {
 
   try {
     try {
+      const { config } = await loadOrGenerateConfig();
       await writeGenerate(
         (await testAppPromise).getEnveloped().schema,
-        tempDir.clientPath
+        tempDir.clientPath,
+        config
       );
 
       throw Error("shouldn't react");

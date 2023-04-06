@@ -59,9 +59,8 @@ test('basic inspectWriteGenerate functionality', async () => {
        */
 
       import { createReactClient } from '@gqty/react';
-
       import type { QueryFetcher } from 'gqty';
-      import { createClient, Cache } from 'gqty';
+      import { Cache, createClient } from 'gqty';
       import type { GeneratedSchema } from './schema.generated';
       import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
@@ -284,9 +283,8 @@ describe('from file', () => {
          */
 
         import { createReactClient } from '@gqty/react';
-
         import type { QueryFetcher } from 'gqty';
-        import { createClient, Cache } from 'gqty';
+        import { Cache, createClient } from 'gqty';
         import type { GeneratedSchema } from './schema.generated';
         import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
@@ -508,9 +506,8 @@ describe('from file', () => {
          */
 
         import { createReactClient } from '@gqty/react';
-
         import type { QueryFetcher } from 'gqty';
-        import { createClient, Cache } from 'gqty';
+        import { Cache, createClient } from 'gqty';
         import type { GeneratedSchema } from './schema.generated';
         import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
@@ -731,9 +728,8 @@ describe('from file', () => {
          */
 
         import { createReactClient } from '@gqty/react';
-
         import type { QueryFetcher } from 'gqty';
-        import { createClient, Cache } from 'gqty';
+        import { Cache, createClient } from 'gqty';
         import type { GeneratedSchema } from './schema.generated';
         import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
@@ -998,9 +994,8 @@ describe('from multiple files', () => {
          */
 
         import { createReactClient } from '@gqty/react';
-
         import type { QueryFetcher } from 'gqty';
-        import { createClient, Cache } from 'gqty';
+        import { Cache, createClient } from 'gqty';
         import type { GeneratedSchema } from './schema.generated';
         import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
@@ -1281,9 +1276,8 @@ test('specify generateOptions to inspectWriteGenerate', async () => {
        */
 
       import { createReactClient } from '@gqty/react';
-
       import type { QueryFetcher } from 'gqty';
-      import { createClient, Cache } from 'gqty';
+      import { Cache, createClient } from 'gqty';
       import type { GeneratedSchema } from './schema.generated';
       import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
@@ -1653,9 +1647,8 @@ describe('CLI behavior', () => {
          */
 
         import { createReactClient } from '@gqty/react';
-
         import type { QueryFetcher } from 'gqty';
-        import { createClient, Cache } from 'gqty';
+        import { Cache, createClient } from 'gqty';
         import type { GeneratedSchema } from './schema.generated';
         import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
