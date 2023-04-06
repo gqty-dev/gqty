@@ -118,6 +118,7 @@ test('completely invalid config', () => {
                 "endpoint": "SPECIFY_ENDPOINT_OR_SCHEMA_FILE_PATH_HERE",
                 "headers": {}
               },
+              "endpoint": "/api/graphql",
               "destination": "./src/gqty/index.ts",
               "subscriptions": false,
               "javascriptOutput": false,
