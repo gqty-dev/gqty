@@ -58,7 +58,7 @@ export interface PrepareQuery<TSchema extends BaseGeneratedSchema> {
 }
 
 export function createPrepareQuery<TSchema extends BaseGeneratedSchema>(
-  { prefetch, query, refetch: refetchClient }: GQtyClient<TSchema>,
+  { prefetch, query, refetch: clientRefetch }: GQtyClient<TSchema>,
   {
     defaults: { preparedSuspense: defaultSuspense },
   }: ReactClientOptionsWithDefaults
@@ -83,9 +83,13 @@ export function createPrepareQuery<TSchema extends BaseGeneratedSchema>(
         isRefetching: false,
       });
 
-      const promise = prefetch((query) => fn(query, args)) as Promise<TData>;
+      const promise = prefetch((query) => fn(query, args)) as
+        | Promise<TData>
+        | TData;
 
-      store.add({ promise });
+      if (promise instanceof Promise) {
+        store.add({ promise });
+      }
 
       try {
         const data = await promise;
@@ -118,7 +122,7 @@ export function createPrepareQuery<TSchema extends BaseGeneratedSchema>(
         isRefetching: true,
       });
 
-      const promise = refetchClient(() => fn(query, args)) as Promise<TData>;
+      const promise = clientRefetch(() => fn(query, args)) as Promise<TData>;
 
       store.add({ promise });
 
