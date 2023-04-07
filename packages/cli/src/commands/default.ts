@@ -67,16 +67,16 @@ export const addCommand = (command: Command) => {
       }
 
       // Make sure we have a object for `fetchSchemas` to fill in user headers.
-      if (!config.introspectionOptions) {
-        config.introspectionOptions = {};
+      if (!config.introspections) {
+        config.introspections = {};
       }
 
       const schema = await fetchSchemas(endpoints, {
         headers: convertHeadersInput(options.header),
-        headersByEndpoint: config.introspectionOptions,
+        headersByEndpoint: config.introspections,
       });
 
-      if (Object.keys(config.introspectionOptions ?? {}).length > 0) {
+      if (Object.keys(config.introspections ?? {}).length > 0) {
         // TODO: Save config to file.
       }
 
@@ -183,7 +183,7 @@ export const addCommand = (command: Command) => {
             try {
               const schema = await fetchSchemas(endpoints, {
                 headers: convertHeadersInput(options.header),
-                headersByEndpoint: config.introspectionOptions,
+                headersByEndpoint: config.introspections,
                 silent: true,
               });
 

@@ -29,7 +29,7 @@ export type GQtyConfig = GenerateOptions & {
    * }
    * ```
    */
-  introspectionOptions?: Record<string, Pick<RequestInit, 'headers'>>;
+  introspections?: Record<string, Pick<RequestInit, 'headers'>>;
   /**
    * Client generation destination
    */
@@ -53,7 +53,7 @@ export type SetRequired<T, K extends keyof T> = Omit<T, K> &
 
 export const defaultConfig: SetRequired<
   GQtyConfig,
-  Exclude<keyof GQtyConfig, 'introspectionOptions' | 'transformSchema'>
+  Exclude<keyof GQtyConfig, 'introspections' | 'transformSchema'>
 > = {
   react: (() => {
     try {
@@ -201,15 +201,15 @@ export function getValidConfig(v: unknown): GQtyConfig {
           }
           break;
         }
-        case 'introspectionOptions': {
+        case 'introspections': {
           if (isPlainObject(value)) {
-            const introspectionOptions: GQtyConfig['introspectionOptions'] = {};
+            const introspections: GQtyConfig['introspections'] = {};
 
             for (const [endpoint, httpExecutorOptions] of Object.entries(
               value
             )) {
               if (isPlainObject(httpExecutorOptions)) {
-                introspectionOptions[endpoint] = httpExecutorOptions;
+                introspections[endpoint] = httpExecutorOptions;
               } else {
                 warnConfig(
                   `${key}.${endpoint}`,
@@ -220,7 +220,7 @@ export function getValidConfig(v: unknown): GQtyConfig {
               }
             }
 
-            newConfig[key] = introspectionOptions;
+            newConfig[key] = introspections;
           } else {
             warnConfig(key, value, 'object', defaultConfig[key]);
           }

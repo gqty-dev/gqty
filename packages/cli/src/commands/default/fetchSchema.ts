@@ -21,7 +21,7 @@ export class FetchError extends Error {
 
 export type FetchSchemasOptions = {
   headers?: Record<string, string>;
-  headersByEndpoint?: GQtyConfig['introspectionOptions'];
+  headersByEndpoint?: GQtyConfig['introspections'];
   silent?: boolean;
 };
 
