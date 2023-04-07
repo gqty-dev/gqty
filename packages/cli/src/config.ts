@@ -1,7 +1,6 @@
 import { promises } from 'node:fs';
 import { createRequire } from 'node:module';
 import { resolve } from 'node:path';
-import { type RequestInit } from 'undici';
 import * as deps from './deps.js';
 import { type GenerateOptions } from './generate';
 import { __innerState } from './innerState';

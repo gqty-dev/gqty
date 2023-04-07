@@ -30,8 +30,7 @@ export const getRemoteSchema = async (
       (await loadOrGenerateConfig()).config.introspection?.headers ||
       defaultConfig.introspection.headers;
     const query = graphql.print(document);
-    const { request } = await import('undici');
-    const { body } = await request(endpoint, {
+    const response = await deps.fetch(endpoint, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -39,9 +38,8 @@ export const getRemoteSchema = async (
       },
       body: JSON.stringify({ query, variables }),
     });
-    const response = await body.json();
 
-    return response;
+    return await response.json();
   };
 
   const schema = deps.wrapSchema({

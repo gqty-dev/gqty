@@ -2,7 +2,6 @@ import { AsyncExecutor } from '@graphql-tools/utils';
 import { buildSchema, GraphQLSchema, type ExecutionResult } from 'graphql';
 import { readFile } from 'node:fs/promises';
 import { extname } from 'path';
-import { type RequestInit, type Response } from 'undici';
 import { type GQtyConfig } from '../../config';
 import * as deps from '../../deps';
 import { convertHeadersInput } from './convertHeadersInput';

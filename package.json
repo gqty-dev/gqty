@@ -66,14 +66,15 @@
   },
   "pnpm": {
     "overrides": {
-      "trim@<0.0.3": ">=0.0.3",
-      "glob-parent@<5.1.2": ">=5.1.2",
-      "mermaid@<8.13.8": ">=8.13.8",
       "@braintree/sanitize-url@<6.0.0": ">=6.0.0",
+      "d3-color@<3.1.0": ">=3.1.0",
       "dset@<3.1.2": ">=3.1.2",
-      "mermaid@>=8.0.0 <9.1.2": ">=9.1.2",
+      "glob-parent@<5.1.2": ">=5.1.2",
       "mdx-mermaid@<1.3.0": ">=1.3.0",
-      "d3-color@<3.1.0": ">=3.1.0"
+      "mermaid@<8.13.8": ">=8.13.8",
+      "mermaid@>=8.0.0 <9.1.2": ">=9.1.2",
+      "trim@<0.0.3": ">=0.0.3",
+      "undici": "5.7.0"
     },
     "patchedDependencies": {
       "use-sync-external-store@1.2.0": "patches/use-sync-external-store@1.2.0.patch"
