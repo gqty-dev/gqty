@@ -150,8 +150,8 @@ export const createUseQuery =
     }
 
     // Subscribe current selection to cache changes. Selection size changes
-    // after render, useEffect deps does not serve the purpose. We are using
-    // refs and checks for re-subscriptions.
+    // after render so it cannot be done via useEffect, instead refs has to be
+    // used.
     {
       const selectionSizeRef = useRef(0);
       const unsubscribeRef = useRef<() => void>();
@@ -201,6 +201,9 @@ export const createUseQuery =
       [cachePolicy, context.shouldFetch, operationName, selections]
     );
 
+    // context.shouldFetch only changes during component render, which happens
+    // after this hook is called. A useEffect hook that runs every render
+    // triggers a post-render check.
     useEffect(() => {
       refetch();
     });
