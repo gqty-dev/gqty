@@ -13,8 +13,7 @@ import {
   prepass,
   RetryOptions,
 } from 'gqty';
-import pDefer from 'p-defer';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 import {
   LegacyFetchPolicy,
   OnErrorHandler,
@@ -68,6 +67,7 @@ export type UseQueryReturnValue<GeneratedSchema extends { query: object }> =
     $state: UseQueryState;
     $refetch: () => Promise<unknown>;
   };
+
 export interface UseQuery<GeneratedSchema extends { query: object }> {
   (
     options?: UseQueryOptions<GeneratedSchema>
@@ -86,8 +86,8 @@ export const createUseQuery =
     }: ReactClientOptionsWithDefaults
   ): UseQuery<TSchema> =>
   ({
-    fetchPolicy = 'cache-first',
-    cachePolicy = translateFetchPolicy(fetchPolicy),
+    fetchPolicy,
+    cachePolicy = translateFetchPolicy(fetchPolicy ?? 'cache-first'),
     notifyOnNetworkStatusChange = true,
     onError,
     operationName,
@@ -107,7 +107,6 @@ export const createUseQuery =
       accessor: { query },
       context,
       resolve,
-      subscribe,
       selections,
     } = useMemo(
       () =>
@@ -150,36 +149,24 @@ export const createUseQuery =
       if (state.promise && !context.hasCacheHit) throw state.promise;
     }
 
-    // Normal fetch
-    useEffect(() => {
-      if (state.promise !== undefined) return;
+    // Subscribe current selection to cache changes. Selection size changes
+    // after render, useEffect deps does not serve the purpose. We are using
+    // refs and checks for re-subscriptions.
+    {
+      const selectionSizeRef = useRef(0);
+      const unsubscribeRef = useRef<() => void>();
 
-      const { resolve, reject, promise } = pDefer();
+      useEffect(() => {
+        if (selections.size === selectionSizeRef.current) return;
+        selectionSizeRef.current = selections.size;
 
-      if (context.shouldFetch) {
-        setState({ promise });
-      }
-
-      return subscribe({
-        onNext: () => debouncedRender(),
-        onError(error) {
-          const theError = GQtyError.create(error);
-
-          onError?.(theError);
-          setState({ error: theError });
-          reject(theError);
-        },
-        onComplete() {
-          context.shouldFetch = false;
-          context.hasCacheHit = false;
-          context.hasCacheMiss = false;
-          context.notifyCacheUpdate = cachePolicy !== 'default';
-
-          setState({});
-          resolve();
-        },
-      });
-    }, [cachePolicy, context.shouldFetch]);
+        unsubscribeRef.current?.();
+        unsubscribeRef.current = context.cache.subscribe(
+          [...selections].map((s) => s.cacheKeys.join('.')),
+          debouncedRender
+        );
+      }, [debouncedRender, selections.size]);
+    }
 
     const refetch = useCallback(
       async (force = false) => {
@@ -213,6 +200,10 @@ export const createUseQuery =
       },
       [cachePolicy, context.shouldFetch, operationName, selections]
     );
+
+    useEffect(() => {
+      refetch();
+    });
 
     // Legacy staleWhileRevalidate
     const swrDiff = usePrevious(staleWhileRevalidate);
