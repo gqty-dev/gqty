@@ -43,7 +43,7 @@ export const createContext = ({
     cachePolicy === 'no-cache' ||
     cachePolicy === 'no-store' ||
     cachePolicy === 'reload'
-      ? new Cache(undefined, { maxAge: 0, normalization: false })
+      ? new Cache(undefined, { maxAge: Infinity })
       : cache,
   cacheOptions: {
     includeExpired:
