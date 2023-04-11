@@ -114,16 +114,16 @@ importers:
   examples/github:
     dependencies:
       '@gqty/cli':
-        specifier: workspace:^4.0.0-alpha.0
+        specifier: workspace:^
         version: link:../../packages/cli/dist
       dotenv:
         specifier: ^16.0.3
         version: 16.0.3
       gqty:
-        specifier: workspace:^3.0.0-alpha.0
+        specifier: workspace:^
         version: link:../../packages/gqty/dist
       test-utils:
-        specifier: workspace:^0.1.0
+        specifier: workspace:^
         version: link:../../internal/test-utils
     devDependencies:
       '@types/node':
@@ -145,7 +145,7 @@ importers:
   examples/gnt:
     dependencies:
       '@gqty/react':
-        specifier: workspace:3.0.0-alpha.0
+        specifier: workspace:^
         version: link:../../packages/react/dist
       '@react-hookz/web':
         specifier: ^22.0.0
@@ -169,7 +169,7 @@ importers:
         specifier: 13.3.0
         version: 13.3.0(eslint@8.35.0)(typescript@4.9.5)
       gqty:
-        specifier: workspace:3.0.0-alpha.0
+        specifier: workspace:^
         version: link:../../packages/gqty/dist
       next:
         specifier: ^13.3.0
@@ -208,16 +208,16 @@ importers:
         specifier: ^7.6.0
         version: 7.6.0
       '@gqty/cli':
-        specifier: workspace:^4.0.0-alpha.0
+        specifier: workspace:^
         version: link:../../packages/cli/dist
       '@gqty/logger':
-        specifier: workspace:^3.0.0-alpha.0
+        specifier: workspace:^
         version: link:../../packages/logger/dist
       '@gqty/react':
-        specifier: workspace:^3.0.0-alpha.0
+        specifier: workspace:^
         version: link:../../packages/react/dist
       '@gqty/subscriptions':
-        specifier: workspace:^3.0.0-alpha.0
+        specifier: workspace:^
         version: link:../../packages/subscriptions/dist
       '@graphql-ez/fastify':
         specifier: ^0.12.0
@@ -256,7 +256,7 @@ importers:
         specifier: ^6.5.1
         version: 6.5.1(react-dom@17.0.2)(react@17.0.2)
       gqty:
-        specifier: workspace:^3.0.0-alpha.0
+        specifier: workspace:^
         version: link:../../packages/gqty/dist
       graphql:
         specifier: ^16.6.0
@@ -344,13 +344,13 @@ importers:
   examples/vite-example:
     dependencies:
       '@gqty/cli':
-        specifier: workspace:^4.0.0-alpha.0
+        specifier: workspace:^
         version: link:../../packages/cli/dist
       '@gqty/react':
-        specifier: workspace:^3.0.0-alpha.0
+        specifier: workspace:^
         version: link:../../packages/react/dist
       gqty:
-        specifier: workspace:^3.0.0-alpha.0
+        specifier: workspace:^
         version: link:../../packages/gqty/dist
       react:
         specifier: ^17.0.2
@@ -572,7 +572,7 @@ importers:
   packages/cli:
     dependencies:
       gqty:
-        specifier: workspace:^3.0.0-alpha.0
+        specifier: workspace:^
         version: link:../gqty/dist
     devDependencies:
       '@graphql-codegen/core':
@@ -678,7 +678,7 @@ importers:
         specifier: ^8.2.4
         version: 8.2.4
       test-utils:
-        specifier: workspace:^0.1.0
+        specifier: workspace:^
         version: link:../../internal/test-utils
       tmp-promise:
         specifier: ^3.0.3
@@ -841,7 +841,7 @@ importers:
         specifier: ^0.17.12
         version: 0.17.12
       gqty:
-        specifier: workspace:^3.0.0-alpha.0
+        specifier: workspace:^
         version: link:../gqty/dist
       jest:
         specifier: ^29.5.0
@@ -850,7 +850,7 @@ importers:
         specifier: ^8.2.4
         version: 8.2.4
       test-utils:
-        specifier: workspace:^0.1.0
+        specifier: workspace:^
         version: link:../../internal/test-utils
       tslib:
         specifier: ^2.5.0
@@ -927,7 +927,7 @@ importers:
         specifier: ^6.12.0
         version: 6.12.0
       gqty:
-        specifier: workspace:^3.0.0-alpha.0
+        specifier: workspace:^
         version: link:../gqty/dist
       graphql:
         specifier: ^16.6.0
@@ -963,7 +963,7 @@ importers:
         specifier: ^8.2.4
         version: 8.2.4
       test-utils:
-        specifier: workspace:^0.1.0
+        specifier: workspace:^
         version: link:../../internal/test-utils
       tslib:
         specifier: ^2.5.0
@@ -998,13 +998,13 @@ importers:
         specifier: ^0.17.10
         version: 0.17.12
       gqty:
-        specifier: workspace:^3.0.0-alpha.0
+        specifier: workspace:^
         version: link:../gqty/dist
       graphql:
         specifier: ^16.6.0
         version: 16.6.0
       test-utils:
-        specifier: workspace:^0.1.0
+        specifier: workspace:^
         version: link:../../internal/test-utils
       tslib:
         specifier: ^2.5.0

@@ -1,6 +1,6 @@
 {
   "name": "@gqty/cli",
-  "version": "4.0.0-alpha.0",
+  "version": "3.3.0",
   "homepage": "https://gqty.dev",
   "repository": {
     "type": "git",
@@ -8,6 +8,9 @@
   },
   "license": "MIT",
   "author": "PabloSzx <pablosaez1995@gmail.com>",
+  "maintainers": [
+    "Vicary Archangel <vicary.archangel@member.mensa.org>"
+  ],
   "sideEffects": false,
   "exports": {
     ".": {
@@ -40,7 +43,7 @@
     "test:watch-coverage": "rimraf coverage && mkdirp coverage/lcov-report && concurrently --raw \"jest --watchAll\" \"serve -l 8787 coverage/lcov-report\" \"wait-on tcp:8787 coverage/lcov-report/index.html && open-cli http://localhost:8787\""
   },
   "dependencies": {
-    "gqty": "workspace:^3.0.0-alpha.0"
+    "gqty": "workspace:^"
   },
   "devDependencies": {
     "@graphql-codegen/core": "^3.1.0",
@@ -77,7 +80,7 @@
     "rimraf": "^4.4.0",
     "serve": "^14.2.0",
     "size-limit": "^8.2.4",
-    "test-utils": "workspace:^0.1.0",
+    "test-utils": "workspace:^",
     "tmp-promise": "^3.0.3",
     "trading-signals": "^3.7.0",
     "tslib": "^2.5.0",

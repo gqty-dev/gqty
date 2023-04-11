@@ -1,16 +1,5 @@
 # @gqty/cli
 
-## 4.0.0-alpha.0
-
-### Major Changes
-
-- dropped inferrable types from generated schema
-- generated query fetcher now takes a single QueryPayload parameter
-
-### Patch Changes
-
-- Upgraded to gqty@3.0.0-alpha.0
-
 ## 3.3.0
 
 ### Minor Changes
