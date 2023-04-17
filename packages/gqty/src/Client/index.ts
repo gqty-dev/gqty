@@ -1,7 +1,7 @@
 import type { Client as SseClient } from 'graphql-sse';
 import type { Client as WsClient } from 'graphql-ws';
 import { createSchemaAccessor } from '../Accessor';
-import type { Cache } from '../Cache';
+import { Cache } from '../Cache';
 import { createPersistors, Persistors } from '../Cache/persistence';
 import type { RetryOptions } from '../Error';
 import type {
@@ -133,7 +133,8 @@ export const createClient = <
   // TODO: compat: remove in next major
   _ObjectTypes extends SchemaObjects<TSchema> = never
 >({
-  cache,
+  // Legacy clients don't have this.
+  cache = new Cache(),
   fetchOptions: {
     fetcher,
     cachePolicy: fetchPolicy = 'default',
