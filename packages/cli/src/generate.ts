@@ -1,12 +1,12 @@
 import {
-  ArgsDescriptions,
-  FieldDescription,
   parseSchemaType,
-  ScalarsEnumsHash,
-  Schema,
   SchemaUnionsKey,
-  Type,
-} from 'gqty';
+  type ArgsDescriptions,
+  type FieldDescription,
+  type ScalarsEnumsHash,
+  type Schema,
+  type Type,
+} from 'gqty/Schema/types';
 import type {
   GraphQLEnumType,
   GraphQLField,
@@ -553,12 +553,12 @@ export async function generate(
   const unionsMapObj = Array.from(
     unionsAndInterfacesObjectTypesMap.entries()
   ).reduce((acum, [key, value]) => {
-    generatedSchema[key]!['$on'] = {
-      __type: `$${key}!`,
-    };
+    generatedSchema[key]!.$on = { __type: `$${key}!` };
+
     acum[key] = value;
     return acum;
   }, {} as Record<string, string[]>);
+
   if (unionsAndInterfacesObjectTypesMap.size) {
     generatedSchema[SchemaUnionsKey] = unionsMapObj;
   }
