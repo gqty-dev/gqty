@@ -7,21 +7,23 @@ import {
   useUpdateEffect,
 } from '@react-hookz/web';
 import {
-  BaseGeneratedSchema,
-  GQtyClient,
   GQtyError,
   prepass,
-  RetryOptions,
+  type BaseGeneratedSchema,
+  type GQtyClient,
+  type RetryOptions,
 } from 'gqty';
+import { MultiDict } from 'multidict';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 import {
-  LegacyFetchPolicy,
-  OnErrorHandler,
   translateFetchPolicy,
+  type LegacyFetchPolicy,
+  type OnErrorHandler,
 } from '../common';
+import { useIsRendering } from '../useIsRendering';
 import { useOnlineEffect } from '../useOnlineEffect';
 import { useWindowFocusEffect } from '../useWindowFocusEffect';
-import type { ReactClientOptionsWithDefaults } from '../utils';
+import { type ReactClientOptionsWithDefaults } from '../utils';
 
 export interface UseQueryPrepareHelpers<
   GeneratedSchema extends {
@@ -33,14 +35,15 @@ export interface UseQueryPrepareHelpers<
 }
 export interface UseQueryOptions<TSchema extends BaseGeneratedSchema> {
   cachePolicy?: RequestCache;
+  fetchInBackground?: boolean;
   fetchPolicy?: LegacyFetchPolicy;
   notifyOnNetworkStatusChange?: boolean;
   onError?: OnErrorHandler;
   operationName?: string;
   prepare?: (helpers: UseQueryPrepareHelpers<TSchema>) => void;
   refetchInterval?: number;
-  refetchIntervalInBackground?: boolean;
   refetchOnReconnect?: boolean;
+  refetchOnRender?: boolean;
   refetchOnWindowVisible?: boolean;
   retry?: RetryOptions;
   retryPolicy?: RetryOptions;
@@ -65,7 +68,7 @@ export type Writeable<T> = { -readonly [P in keyof T]: T[P] };
 export type UseQueryReturnValue<GeneratedSchema extends { query: object }> =
   GeneratedSchema['query'] & {
     $state: UseQueryState;
-    $refetch: () => Promise<unknown>;
+    $refetch: (ignoreCache?: boolean) => Promise<unknown>;
   };
 
 export interface UseQuery<GeneratedSchema extends { query: object }> {
@@ -74,49 +77,72 @@ export interface UseQuery<GeneratedSchema extends { query: object }> {
   ): UseQueryReturnValue<GeneratedSchema>;
 }
 
-export const createUseQuery =
-  <TSchema extends BaseGeneratedSchema>(
-    client: GQtyClient<TSchema>,
-    {
-      defaults: {
-        suspense: defaultSuspense,
-        staleWhileRevalidate: defaultStaleWhileRevalidate,
-        retry: defaultRetry,
-      },
-    }: ReactClientOptionsWithDefaults
-  ): UseQuery<TSchema> =>
-  ({
+export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
+  client: GQtyClient<TSchema>,
+  {
+    defaults: {
+      suspense: defaultSuspense,
+      staleWhileRevalidate: defaultStaleWhileRevalidate,
+      retry: defaultRetry,
+    },
+  }: ReactClientOptionsWithDefaults
+): UseQuery<TSchema> => {
+  type ResolverParts = ReturnType<typeof client.createResolver>;
+
+  const cofetchingResolvers = new MultiDict<ResolverParts, ResolverParts>();
+
+  let currentResolver: ResolverParts | undefined = undefined;
+
+  return ({
+    fetchInBackground = false,
     fetchPolicy,
     cachePolicy = translateFetchPolicy(fetchPolicy ?? 'cache-first'),
-    notifyOnNetworkStatusChange = true,
+    suspense = defaultSuspense,
+    notifyOnNetworkStatusChange = !suspense,
     onError,
     operationName,
     prepare,
     refetchInterval,
-    refetchIntervalInBackground,
     refetchOnReconnect = true,
+    refetchOnRender = true,
     refetchOnWindowVisible = true,
     retry = defaultRetry,
     retryPolicy = retry,
     staleWhileRevalidate = defaultStaleWhileRevalidate,
-    suspense = defaultSuspense,
   } = {}) => {
-    const render = useRerender();
-    const debouncedRender = useDebouncedCallback(render, [render], 50);
+    const getIsRendering = useIsRendering();
+    const resolver = useMemo(() => {
+      const resolver = client.createResolver({
+        cachePolicy,
+        operationName,
+        retryPolicy,
+        onSelect() {
+          // Stick these resolvers together, their selections will be fetched
+          // when either one of them requires a fetch.
+          if (currentResolver && currentResolver !== resolver) {
+            cofetchingResolvers.set(currentResolver, resolver);
+          }
+
+          // Trigger a fetch when selections are made outside of the rendering
+          // phase, such as event listeners or polling.
+          if (!getIsRendering()) {
+            refetch({ skipPrepass: true });
+          }
+        },
+      });
+
+      currentResolver = resolver;
+
+      return resolver;
+    }, [cachePolicy, operationName, retryPolicy]);
+
     const {
       accessor: { query },
+      accessor,
       context,
       resolve,
       selections,
-    } = useMemo(
-      () =>
-        client.createResolver({
-          cachePolicy,
-          operationName,
-          retryPolicy,
-        }),
-      [cachePolicy, operationName, retryPolicy]
-    );
+    } = resolver;
 
     const [state, setState] = useThrottledState<{
       error?: GQtyError;
@@ -153,6 +179,8 @@ export const createUseQuery =
     // after render so it cannot be done via useEffect, instead refs has to be
     // used.
     {
+      const render = useRerender();
+      const debouncedRender = useDebouncedCallback(render, [render], 50);
       const selectionSizeRef = useRef(0);
       const unsubscribeRef = useRef<() => void>();
 
@@ -169,17 +197,45 @@ export const createUseQuery =
     }
 
     const refetch = useCallback(
-      async (force = false) => {
-        if (!force && !context.shouldFetch) return;
+      async (options?: { ignoreCache?: boolean; skipPrepass?: boolean }) => {
         if (state.promise !== undefined) return;
+
+        if (
+          !fetchInBackground &&
+          globalThis.document?.visibilityState !== 'visible'
+        ) {
+          return;
+        }
+
+        // Run the current selection again to make sure cache freshness.
+        if (!options?.skipPrepass) {
+          prepass(accessor, selections);
+        }
+
+        if (!options?.ignoreCache && !context.shouldFetch) return;
 
         try {
           context.notifyCacheUpdate = true;
           context.shouldFetch = true;
 
-          const promise = resolve();
+          // Sticky co-fetching selections is only needed when more than one
+          // active context are making selections in one component. This usually
+          // happens with mixed usage of useQuery and other query methods.
+          const pendingPromises = [...(cofetchingResolvers.get(resolver) ?? [])]
+            .map(async ({ context, resolve }) => {
+              context.shouldFetch = true;
 
-          if (notifyOnNetworkStatusChange) {
+              return resolve();
+            })
+            .concat(resolve());
+
+          const promise = Promise.all(pendingPromises);
+
+          // Mutex lock, prevents multiple refetches from happening at the
+          // same time, without triggering a render.
+          state.promise = promise;
+
+          if (!context.hasCacheHit && notifyOnNetworkStatusChange) {
             setState({ promise });
           }
 
@@ -194,54 +250,70 @@ export const createUseQuery =
           context.hasCacheHit = false;
           context.hasCacheMiss = false;
           context.notifyCacheUpdate = cachePolicy !== 'default';
+          state.promise = undefined;
 
           setState({});
         }
       },
-      [cachePolicy, context.shouldFetch, operationName, selections]
+      [
+        cachePolicy,
+        context.shouldFetch,
+        fetchInBackground,
+        operationName,
+        selections,
+      ]
+    );
+
+    // Release co-fetching context
+    useEffect(
+      () => () => {
+        cofetchingResolvers.delete(resolver);
+      },
+      []
     );
 
     // context.shouldFetch only changes during component render, which happens
     // after this hook is called. A useEffect hook that runs every render
     // triggers a post-render check.
     useEffect(() => {
+      if (!refetchOnRender) return;
+
+      refetch({ skipPrepass: true });
+    });
+
+    // refetchInterval
+    useIntervalEffect(() => {
+      refetch();
+    }, refetchInterval);
+
+    // refetchOnReconnect
+    useOnlineEffect(() => {
+      if (!refetchOnReconnect) return;
+
+      refetch();
+    }, [refetchOnReconnect]);
+
+    // A rerender should be enough to trigger a soft check, fetch will
+    // happen if any of the accessed cache value is stale.
+    useWindowFocusEffect(() => {
+      if (!refetchOnWindowVisible) return;
+
       refetch();
     });
 
     // Legacy staleWhileRevalidate
     const swrDiff = usePrevious(staleWhileRevalidate);
     useUpdateEffect(() => {
-      if (staleWhileRevalidate && !Object.is(staleWhileRevalidate, swrDiff)) {
-        refetch(true);
-      }
-    }, [refetch, swrDiff]);
-
-    // refetchInterval
-    useIntervalEffect(() => {
-      if (
-        !refetchIntervalInBackground &&
-        globalThis.document?.visibilityState !== 'visible'
-      )
+      if (!staleWhileRevalidate || Object.is(staleWhileRevalidate, swrDiff))
         return;
 
-      debouncedRender();
-    }, refetchInterval);
-
-    // refetchOnReconnect
-    useOnlineEffect(() => {
-      if (refetchOnReconnect) debouncedRender();
-    }, [debouncedRender, refetchOnReconnect]);
-
-    // A rerender should be enough to trigger a soft check, fetch will
-    // happen if any of the accessed cache value is stale.
-    useWindowFocusEffect(debouncedRender, {
-      enabled: refetchOnWindowVisible,
-    });
+      refetch({ ignoreCache: true });
+    }, [refetch, swrDiff]);
 
     return useMemo(() => {
       return new Proxy(
         Object.freeze({
-          $refetch: (force = true) => refetch(force),
+          $refetch: (ignoreCache = true) => refetch({ ignoreCache }),
           $state: Object.freeze({
             isLoading: state.promise !== undefined,
             error: state.error,
@@ -263,3 +335,4 @@ export const createUseQuery =
       );
     }, [query, refetch, state]);
   };
+};

@@ -126,7 +126,7 @@ export const createLegacyResolved = <
       operationName,
     });
     const unsubscribe = subscribeLegacySelections((selection, cache) => {
-      context.onSelect?.(selection, cache);
+      context.select(selection, cache);
       onSelection?.(convertSelection(selection));
     });
     const resolutionCache = refetch ? cache : context.cache;

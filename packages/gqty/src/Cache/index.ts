@@ -59,11 +59,7 @@ export type CacheDataContainer<TData extends CacheNode = CacheNode> = {
    */
   swrBefore?: number;
 
-  /**
-   * Internal reference of cache eviction timeout, subject to change in the
-   * future.
-   */
-  timeout?: ReturnType<typeof setTimeout>;
+  unref?: () => void;
 };
 
 export type CacheListener = <TData extends CacheNode = CacheNode>(
@@ -110,6 +106,9 @@ export class Cache {
 
   /** Look up table for normalized objects. */
   #normalizedObjects = new Map<string, NormalizedObjectShell<CacheObject>>();
+
+  /** Temporary strong references in parallel with the WeakRef in FrailMap. */
+  #dataRefs = new Map<symbol, CacheDataContainer>();
 
   constructor(
     data?: CacheSnapshot,
@@ -174,14 +173,18 @@ export class Cache {
 
     for (const path of paths) {
       const [type, field, ...parts] = path.split('.');
-      select(this.get(`${type}.${field}`)?.data, parts, (node) => {
-        const id = getId(node);
-        if (id && store.has(id) && isCacheObject(node)) {
-          nsubs.set(node, fn);
-        }
+      select(
+        this.get(`${type}.${field}`, { includeExpired: true })?.data,
+        parts,
+        (node) => {
+          const id = getId(node);
+          if (id && store.has(id) && isCacheObject(node)) {
+            nsubs.set(node, fn);
+          }
 
-        return node;
-      });
+          return node;
+        }
+      );
     }
   }
 
@@ -311,10 +314,7 @@ export class Cache {
    * Retrieve cache values by first 2 path segments, e.g. `query.todos` or
    * `mutation.createTodo`.
    */
-  get(
-    path: string,
-    { includeExpired }: CacheGetOptions = {}
-  ): CacheDataContainer | undefined {
+  get(path: string, options?: CacheGetOptions): CacheDataContainer | undefined {
     const [, type, key, subpath] =
       path.match(/^([a-z]+(?:\w*))\.(?:__)?([a-z]+(?:\w*))(.*[^\.])?$/i) ?? [];
     if (!type || !key) {
@@ -326,20 +326,19 @@ export class Cache {
     const cacheKey = `${type}.${key}`;
 
     let dataContainer = this.#data.get(cacheKey);
-    if (dataContainer === undefined) {
-      return;
-    }
+    if (dataContainer === undefined) return;
 
     const { expiresAt, swrBefore } = dataContainer;
     let { data } = dataContainer;
 
+    if (expiresAt < Date.now() && !options?.includeExpired) {
+      data = undefined;
+    } else if (subpath) {
+      data = select(data, subpath.slice(1).split('.'));
+    }
+
     return {
-      data:
-        expiresAt < Date.now() && !includeExpired
-          ? undefined
-          : subpath
-          ? select(data, subpath.slice(1).split('.'))
-          : data,
+      data,
       expiresAt,
       swrBefore,
     };
@@ -366,9 +365,13 @@ export class Cache {
 
     for (const [type, cacheObjects = {}] of Object.entries(values)) {
       for (const [field, data] of Object.entries(cacheObjects as CacheObject)) {
+        const __ref = Symbol();
+        let unrefTimer: ReturnType<typeof setTimeout> | undefined;
+        const unref = () => {
+          clearTimeout(unrefTimer);
+          this.#dataRefs.delete(__ref);
+        };
         const cacheKey = `${type}.${field}`;
-
-        clearTimeout(this.#data.get(cacheKey)?.timeout);
 
         const dataContainer: CacheDataContainer =
           // Mutation and subscription results should be returned right away for
@@ -381,25 +384,26 @@ export class Cache {
                 data,
                 expiresAt: now + 100,
                 swrBefore: now,
+                unref,
               }
             : {
                 data,
                 expiresAt: age + now,
                 swrBefore: age + swr + now,
+                unref,
               };
 
-        if (isFinite(age + swr)) {
-          const timeout = setTimeout(
-            // Hold on to lexical scope reference, preventing GC from WeakRef.
-            () => dataContainer,
-            age + swr
-          );
+        // Opens up previous cache value for GC.
+        this.#data.get(cacheKey)?.unref?.();
 
-          if (typeof timeout === 'object') {
-            timeout.unref();
+        if (isFinite(age + swr)) {
+          unrefTimer = setTimeout(unref, age + swr);
+
+          if (typeof unrefTimer === 'object') {
+            unrefTimer.unref();
           }
 
-          dataContainer.timeout = timeout;
+          this.#dataRefs.set(__ref, dataContainer);
         }
 
         this.#data.set(cacheKey, dataContainer, { strong: !isFinite(age) });

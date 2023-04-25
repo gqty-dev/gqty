@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { DependencyList, useEffect } from 'react';
 
 export type UseFocusChangeEffectOptions = {
   enabled?: boolean;
@@ -6,11 +6,9 @@ export type UseFocusChangeEffectOptions = {
 
 export const useWindowFocusEffect = (
   fn: (...args: unknown[]) => unknown,
-  { enabled = true }: UseFocusChangeEffectOptions = {}
+  deps: DependencyList = []
 ) => {
   useEffect(() => {
-    if (!enabled) return;
-
     const visibilityChangeFn = () => {
       if (globalThis.document?.visibilityState === 'visible') {
         fn();
@@ -24,5 +22,5 @@ export const useWindowFocusEffect = (
       globalThis.removeEventListener?.('visibilitychange', visibilityChangeFn);
       globalThis.removeEventListener?.('focus', visibilityChangeFn);
     };
-  }, [enabled, fn]);
+  }, deps.concat(fn));
 };

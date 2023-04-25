@@ -47,7 +47,7 @@ export const createLegacyInlineResolved = <
       operationName,
     });
     const unsubscribe = subscribeLegacySelections((selection, cache) => {
-      context.onSelect?.(selection, cache);
+      context.select(selection, cache);
       onSelection?.(convertSelection(selection));
     });
 

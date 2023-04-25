@@ -188,7 +188,7 @@ export const createUsePaginatedQuery =
           operationName,
           retryPolicy: retry,
           onSelect(selection, cache) {
-            context.onSelect(selection, cache);
+            context.select(selection, cache);
           },
         }) as Promise<TData>;
 

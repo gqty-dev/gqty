@@ -44,7 +44,7 @@ describe('buildQuery()', () => {
     );
 
     expect(query).toMatchInlineSnapshot(
-      `"query{a{b{c{d{...on val1{b a{f}}...on val2{a{f}}}}}}}"`
+      `"query{a{b{c{d{...on val1{a{f}b}...on val2{a{f}}}}}}}"`
     );
 
     expect(variables).toBe(undefined);
@@ -77,7 +77,7 @@ describe('buildQuery()', () => {
     );
 
     expect(query).toMatchInlineSnapshot(
-      `"query($v1:Int!$v2:String!){gqtyAlias_1:a(a:$v1 b:$v2){a_b a_c}d}"`
+      `"query($v1:Int!$v2:String!){d gqtyAlias_1:a(a:$v1 b:$v2){a_b a_c}}"`
     );
     expect(() => parse(query)).not.toThrow();
     expect(variables).toEqual({ v1: 1, v2: 1 });

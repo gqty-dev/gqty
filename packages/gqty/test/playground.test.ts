@@ -51,7 +51,7 @@ describe('playground', () => {
     expect(query.human().sons).toEqual([]);
 
     expect(JSON.stringify(cache)).toMatchInlineSnapshot(
-      `"{"query":{"human":{"__ref":"Human:1"},"hello":"XDXD"},"normalized":{"Human:1":{"__typename":"Human","id":"1","dogs":[{"__typename":"Dog"},{"__typename":"Dog"}],"father":{"__typename":"Human"},"name":"default","node":[{"__typename":"A"},{"__typename":"B"},{"__typename":"C"}],"nullFather":null,"sons":[],"union":[{"__typename":"A"},{"__typename":"B"},{"__typename":"C"}]}}}"`
+      `"{"query":{"human":{"__ref":"Human:1"},"hello":"XDXD"},"normalized":{"Human:1":{"__typename":"Human","dogs":[{"__typename":"Dog"},{"__typename":"Dog"}],"father":{"__typename":"Human"},"id":"1","name":"default","node":[{"__typename":"A"},{"__typename":"B"},{"__typename":"C"}],"nullFather":null,"sons":[],"union":[{"__typename":"A"},{"__typename":"B"},{"__typename":"C"}]}}}"`
     );
 
     setCache(query, {

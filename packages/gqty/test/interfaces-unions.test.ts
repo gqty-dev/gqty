@@ -124,7 +124,7 @@ describe('interfaces and unions', () => {
     expect(queries).toMatchInlineSnapshot(`
       [
         {
-          "query": "query($v1:NodeType!){b55fc:node(type:$v1){__typename id ...on A{a}...on B{b}}}",
+          "query": "query($v1:NodeType!){b55fc:node(type:$v1){__typename ...on A{a}...on B{b}id}}",
           "result": {
             "data": {
               "b55fc": {
@@ -187,7 +187,7 @@ describe('interfaces and unions', () => {
     expect(queries).toMatchInlineSnapshot(`
       [
         {
-          "query": "query($v1:NodeType!){b55fc:node(type:$v1){__typename id ...on A{a node{__typename id ...on A{id node{__typename id ...on C{node{__typename id ...on A{id}}}}}}}...on B{b}}}",
+          "query": "query($v1:NodeType!){b55fc:node(type:$v1){__typename ...on A{a node{__typename ...on A{id node{__typename ...on C{node{__typename ...on A{id}id}}id}}id}}...on B{b}id}}",
           "result": {
             "data": {
               "b55fc": {

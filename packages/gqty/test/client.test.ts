@@ -294,7 +294,7 @@ describe('compat', () => {
     expect(queries).toMatchObject(
       expect.arrayContaining([
         expect.objectContaining({
-          query: expect.stringContaining('...on A{id a}...on B{id b}'),
+          query: expect.stringContaining('...on A{a id}...on B{b id}'),
         }),
       ])
     );

@@ -128,13 +128,15 @@ export type Client<TSchema extends BaseGeneratedSchema> = Persistors &
 
 export const createClient = <
   TSchema extends BaseGeneratedSchema,
-  // TODO: compat: remove in next major
+  // TODO: compat: remove in v4
   _ObjectTypesNames extends string = never,
-  // TODO: compat: remove in next major
+  // TODO: compat: remove in v4
   _ObjectTypes extends SchemaObjects<TSchema> = never
 >({
-  // Legacy clients don't have this.
-  cache = new Cache(),
+  // This default cache on a required option is for legacy clients, which does
+  // not provide a `cache` option.
+  // TODO: compat: remove in v4
+  cache = new Cache(undefined, { normalization: true }),
   fetchOptions: {
     fetcher,
     cachePolicy: fetchPolicy = 'default',

@@ -56,7 +56,7 @@ export const createLegacyTrack = <
       }
     };
     const unsubscribe = subscribeLegacySelections((selection, cache) => {
-      context.onSelect?.(selection, cache);
+      context.select(selection, cache);
     });
     const data = { current: dataFn({ type: 'initial' }) };
 

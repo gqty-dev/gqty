@@ -16,8 +16,6 @@ import {
 } from './schema.generated';
 
 const queryFetcher: QueryFetcher = async function (query, variables) {
-  await new Promise((r) => setTimeout(r, 1000));
-
   const endpoint =
     typeof window === 'undefined'
       ? `http://0.0.0.0:3000/api/graphql`
@@ -86,8 +84,8 @@ const subscriptionsClient =
     : undefined;
 
 export const cache = new Cache(undefined, {
-  maxAge: Infinity,
-  // staleWhileRevalidate: 60 * 5000,
+  maxAge: 1000,
+  staleWhileRevalidate: 60 * 5000,
   normalization: true,
 });
 

@@ -82,10 +82,9 @@ export function createLogger(
     selections,
   }: DebugEvent) {
     const startTime = Date.now();
+    const fetchTime = startTime - startTime; // TODO: Implement an actual timer
 
     const queryId = (QueryIdMapper[query] ||= ++idMapper);
-
-    const fetchTime = Date.now() - startTime;
 
     console.groupCollapsed(
       ...format(
@@ -97,7 +96,12 @@ export function createLogger(
         ['ID ' + queryId + ' ', 'color: green'],
         ...(label ? [[label + ' ', 'color: green']] : []),
         [`(${fetchTime}ms)`, 'color: gray'],
-        [` ${selections.size} selections`, 'color: gray'],
+        [
+          ` ${
+            new Set([...selections].map((s) => s.root.getLeafNodes())).size
+          } selections`,
+          'color: gray',
+        ],
 
         error && [
           'FAILED',

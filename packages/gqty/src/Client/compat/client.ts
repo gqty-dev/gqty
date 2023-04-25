@@ -1,9 +1,14 @@
-import type { BaseGeneratedSchema, FetchOptions, SchemaContext } from '../..';
-import type { Cache } from '../../Cache';
-import type { ScalarsEnumsHash, Schema } from '../../Schema';
-import type { Selection } from '../../Selection';
-import type { createDebugger } from '../debugger';
-import type { Resolvers } from '../resolvers';
+import {
+  type BaseGeneratedSchema,
+  type FetchOptions,
+  type SchemaContext,
+} from '../..';
+import { type Cache } from '../../Cache';
+import { type ScalarsEnumsHash, type Schema } from '../../Schema';
+import { type Selectable } from '../../Selectable';
+import { type Selection } from '../../Selection';
+import { type createDebugger } from '../debugger';
+import { type Resolvers } from '../resolvers';
 import { createLegacyHydrateCache, LegacyHydrateCache } from './hydrateCache';
 import {
   createLegacyInlineResolved,
@@ -15,10 +20,10 @@ import {
   createLegacyPrepareRender,
   LegacyPrepareRender,
 } from './prepareRender';
-import type { LegacyQueryFetcher } from './queryFetcher';
+import { type LegacyQueryFetcher } from './queryFetcher';
 import { createRefetch, LegacyRefetch } from './refetch';
 import { createLegacyResolved, LegacyResolved } from './resolved';
-import type { LegacySubscriptionsClient } from './subscriptionsClient';
+import { type LegacySubscriptionsClient } from './subscriptionsClient';
 import { createLegacyTrack, LegacyTrack } from './track';
 
 export type {
@@ -46,12 +51,6 @@ export type {
   LegacyTrackOptions,
 } from './track';
 
-let deprecationWarningMessage: string | undefined =
-  !process.env.NODE_ENV || process.env.NODE_ENV === 'development'
-    ? '[GQty] global query, mutation and subscription is deprecated, use ' +
-      '`schema` instead.'
-    : undefined;
-
 export type CreateLegacyClientOptions<TSchema extends BaseGeneratedSchema> = {
   accessor: TSchema;
   cache: Cache;
@@ -74,9 +73,7 @@ export type LegacyClientOptions = {
  * Subscribing to selections made by global accessors, exposed for testing
  * purpose.
  */
-export type SelectionSubscriber = (
-  fn: NonNullable<SchemaContext['onSelect']>
-) => () => void;
+export type SelectionSubscriber = (fn: Selectable['select']) => () => void;
 
 export type LegacyClient<TSchema extends BaseGeneratedSchema> = {
   /**
@@ -104,8 +101,8 @@ export type LegacyClient<TSchema extends BaseGeneratedSchema> = {
    */
   refetch: LegacyRefetch<TSchema>;
   /**
-   * @deprecated It does not include selections from scoped queries such as
-   * `resolve()` and `subscribe()`, do not mix usage if you are using SSR.
+   * Captures selections made with a fake render, fetches them and returns the
+   * result.
    */
   prepareRender: LegacyPrepareRender;
   /**
@@ -113,6 +110,7 @@ export type LegacyClient<TSchema extends BaseGeneratedSchema> = {
    * always skip `no-cache` and `no-store` queries, and refetches according
    * to cache expiry.
    */
+  // TODO: Make sure caches do not trigger immediate refetches.
   hydrateCache: LegacyHydrateCache;
   /**
    * @deprecated Please migrate from global accessors to locally scoped
@@ -147,27 +145,21 @@ export const createLegacyClient = <TSchema extends BaseGeneratedSchema>(
   // Storing ALL scalar selections ever made, specifically made for refetch().
   const selectionHistory = new Set<Selection>();
 
-  /** compat: Selection callback for global accessors */
-  const selectionSubscriptions = new Set<
-    NonNullable<SchemaContext['onSelect']>
-  >();
-
-  const prevOnSelect = options.context.onSelect;
-  options.context.onSelect = (selection, cache) => {
-    if (selectionSubscriptions.size > 0) {
-      selectionHistory.add(selection);
-    }
-
-    selectionSubscriptions.forEach((fn) => fn(selection, cache));
-
-    prevOnSelect?.call(options.context, selection, cache);
-  };
+  options.context.subscribeSelect((select) => {
+    selectionHistory.add(select);
+  });
 
   const methodOptions: CreateLegacyMethodOptions<TSchema> = {
     ...options,
     subscribeLegacySelections(fn) {
-      selectionSubscriptions.add(fn);
-      return () => selectionSubscriptions.delete(fn);
+      const { context } = options;
+      const unsubscribeSelect = context.subscribeSelect(fn);
+      const unsubscribeDispose = context.subscribeDispose(unsubscribeSelect);
+
+      return () => {
+        unsubscribeDispose();
+        unsubscribeSelect();
+      };
     },
   };
 
@@ -175,25 +167,9 @@ export const createLegacyClient = <TSchema extends BaseGeneratedSchema>(
   const inlineResolved = createLegacyInlineResolved<TSchema>(methodOptions);
 
   return {
-    get query() {
-      deprecationWarningMessage && console.warn(deprecationWarningMessage);
-      deprecationWarningMessage = undefined;
-
-      return options.accessor.query;
-    },
-    get mutation() {
-      deprecationWarningMessage && console.warn(deprecationWarningMessage);
-      deprecationWarningMessage = undefined;
-
-      return options.accessor.mutation;
-    },
-    get subscription() {
-      deprecationWarningMessage && console.warn(deprecationWarningMessage);
-      deprecationWarningMessage = undefined;
-
-      return options.accessor.subscription;
-    },
-
+    query: options.accessor.query,
+    mutation: options.accessor.mutation,
+    subscription: options.accessor.subscription,
     resolved: createLegacyResolved<TSchema>(methodOptions),
     inlineResolved,
     mutate: createLegacyMutate<TSchema>(methodOptions),

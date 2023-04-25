@@ -1,5 +1,12 @@
 import { useRerender } from '@react-hookz/web';
 import type { GQtyClient } from 'gqty';
+// import {
+//   Suspense,
+//   useEffect,
+//   type FunctionComponent,
+//   type ReactElement,
+//   type SuspenseProps,
+// } from 'react';
 import * as React from 'react';
 import type { OnErrorHandler } from '../common';
 import type { ReactClientOptionsWithDefaults } from '../utils';
@@ -45,7 +52,7 @@ export function createGraphqlHOC(
         resolve,
       } = createResolver({ operationName, retryPolicy: retry });
       const unsubscribe = subscribeLegacySelections((selection, cache) => {
-        context.onSelect?.(selection, cache);
+        context.select(selection, cache);
       });
       const render = useRerender();
       React.useEffect(render, [staleWhileRevalidate]);
@@ -89,7 +96,7 @@ export function createGraphqlHOC(
 
     withGraphQL.displayName = `GraphQLComponent(${
       component?.displayName || component?.name || 'Anonymous'
-    })${Date.now}`;
+    })${Date.now()}`;
 
     return withGraphQL;
   };

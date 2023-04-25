@@ -81,7 +81,7 @@ export const createUseRefetch = <TSchema extends BaseGeneratedSchema>(
           });
 
           selections.forEach((selection) => {
-            context.onSelect?.(selection);
+            context.select(selection);
           });
 
           return resolve() as Promise<T>;

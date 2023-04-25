@@ -18,7 +18,10 @@ describe('Cache#dataAccessors', () => {
     },
     scalars: { String: true },
     depthLimit: 15,
-    onSelect: () => {},
+    select: () => {},
+    subscribeSelect: () => () => {},
+    dispose: () => {},
+    subscribeDispose: () => () => {},
     notifyCacheUpdate: false,
     shouldFetch: false,
     hasCacheHit: false,
@@ -67,7 +70,7 @@ describe('Cache#dataAccessors', () => {
     const schema = createSchemaAccessor<{ query: { b: { c: string } } }>({
       ...mockContext,
       cache,
-      onSelect(selection) {
+      select(selection) {
         selections.push(selection);
       },
     });
@@ -89,7 +92,10 @@ describe('Cache#data', () => {
     },
     scalars: { String: true },
     depthLimit: 15,
-    onSelect: () => {},
+    select: () => {},
+    subscribeSelect: () => () => {},
+    dispose: () => {},
+    subscribeDispose: () => () => {},
     notifyCacheUpdate: false,
     shouldFetch: false,
     hasCacheHit: false,

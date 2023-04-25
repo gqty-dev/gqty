@@ -27,20 +27,22 @@ type SelectionTreeRoot = Record<
 type SelectionBranchEntry = [keyof SelectionTreeRoot, SelectionTreeNode];
 
 const stringifySelectionTree = (tree: SelectionTreeNode): string =>
-  Object.entries(tree).reduce((prev, [key, value]) => {
-    const query =
-      typeof value === 'object'
-        ? `${key}{${stringifySelectionTree(value as SelectionTreeNode)}}`
-        : key;
+  Object.entries(tree)
+    .sort(([a], [b]) => a.localeCompare(b))
+    .reduce((prev, [key, value]) => {
+      const query =
+        typeof value === 'object'
+          ? `${key}{${stringifySelectionTree(value as SelectionTreeNode)}}`
+          : key;
 
-    // TODO: buildQuery.test.ts wants exact output of `graphql` parse,
-    // but this is not future proof and unnecessarily hits the performance.
-    if (!prev || prev.endsWith('}') || prev.endsWith('{')) {
-      return `${prev}${query}`;
-    } else {
-      return `${prev} ${query}`;
-    }
-  }, '');
+      // TODO: buildQuery.test.ts wants exact output of `graphql` parse,
+      // but this is not future proof and unnecessarily hits the performance.
+      if (!prev || prev.endsWith('}') || prev.endsWith('{')) {
+        return `${prev}${query}`;
+      } else {
+        return `${prev} ${query}`;
+      }
+    }, '');
 
 export const buildQuery = (
   selections: Set<Selection>,

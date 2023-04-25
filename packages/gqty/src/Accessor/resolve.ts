@@ -94,10 +94,13 @@ export const resolve = (
       // accessors before a cache update. When properties of these stale
       // accessors are accessed, they should read new data from the cache.
       if (cache.expiresAt === -Infinity) {
-        data = context.cache.get(selection.cacheKeys.join('.'))?.data;
+        data = context.cache.get(
+          selection.cacheKeys.join('.'),
+          context.cacheOptions
+        )?.data;
       }
 
-      context.onSelect?.(selection, { ...cache, data });
+      context.select(selection, { ...cache, data });
 
       return isArray ? (Array.isArray(data) ? data : [undefined]) : data;
     }
@@ -266,7 +269,9 @@ const objectProxyHandler: ProxyHandler<GeneratedSchemaObject> = {
       const [type, field] = selection.cacheKeys;
 
       if (field) {
-        const data = context.cache.get(`${type}.${field}`)?.data ?? {};
+        const data =
+          context.cache.get(`${type}.${field}`, context.cacheOptions)?.data ??
+          {};
 
         if (!isPlainObject(data)) return false;
 
@@ -300,7 +305,7 @@ const objectProxyHandler: ProxyHandler<GeneratedSchemaObject> = {
         currentSelection = currentSelection.getChild(key);
       }
 
-      context.onSelect?.(currentSelection, { ...cache, data: scalar });
+      context.select(currentSelection, { ...cache, data: scalar });
     }
 
     return result;
@@ -510,13 +515,13 @@ export const createArrayAccessor = <
   if (!Array.isArray(meta.cache.data)) {
     if (verbose) {
       console.warn(
-        'Received invalid cache data for array accessor.',
+        'Invalid cache for an array accessor, monkey-patch by wrapping it with an array.',
         meta,
         meta.context.cache.toJSON()
       );
     }
 
-    throw new GQtyError(`Cache data must be an array.`);
+    meta.cache.data = [meta.cache.data];
   }
 
   const proxy = new Proxy(meta.cache.data as TSchemaType, arrayProxyHandler);

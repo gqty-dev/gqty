@@ -17,7 +17,7 @@ export const createLegacyPrefetch =
       resolve,
     } = createResolver({ operationName });
     const unsubscribe = subscribeLegacySelections((selection, cache) => {
-      context.onSelect?.(selection, cache);
+      context.select(selection, cache);
     });
     const data = fn(query);
 
