@@ -198,12 +198,6 @@ export async function inspectWriteGenerate({
           );
         }
       }
-
-      if (existingFile.includes('export const {')) {
-        console.warn(
-          `[Warning] To prevent possible bundling issues, it's recommended to change the export syntax from "export const { query, ... } = client;" to "const { query, ... } = client; export { query, ... };"`
-        );
-      }
     },
     transformSchemaOptions
   );

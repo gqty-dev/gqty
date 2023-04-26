@@ -12,6 +12,8 @@ const queryFetcher: QueryFetcher = async function (
   { query, variables, operationName },
   fetchOptions
 ) {
+  console.debug({ query, variables });
+
   // Modify "https://rickandmortyapi.com/graphql" if needed
   const response = await fetch('https://rickandmortyapi.com/graphql', {
     method: 'POST',
@@ -55,13 +57,32 @@ export const client = createClient<GeneratedSchema>({
 });
 
 // Core functions
-const { resolve, subscribe, schema } = client;
+export const { resolve, subscribe, schema } = client;
 
 // Legacy functions
-const { query, mutation, mutate, subscription, resolved, refetch, track } =
-  client;
+export const {
+  query,
+  mutation,
+  mutate,
+  subscription,
+  resolved,
+  refetch,
+  track,
+} = client;
 
-const reactClient = createReactClient<GeneratedSchema>(client, {
+export const {
+  graphql,
+  useQuery,
+  usePaginatedQuery,
+  useTransactionQuery,
+  useLazyQuery,
+  useRefetch,
+  useMutation,
+  useMetaState,
+  prepareReactRender,
+  useHydrateCache,
+  prepareQuery,
+} = createReactClient<GeneratedSchema>(client, {
   defaults: {
     // Set this flag as "true" if your usage involves React Suspense
     // Keep in mind that you can overwrite it in a per-hook basis
@@ -72,44 +93,4 @@ const reactClient = createReactClient<GeneratedSchema>(client, {
   },
 });
 
-const {
-  graphql,
-  useQuery,
-  usePaginatedQuery,
-  useTransactionQuery,
-  useLazyQuery,
-  useRefetch,
-  useMutation,
-  useMetaState,
-  prepareReactRender,
-  useHydrateCache,
-  prepareQuery,
-} = reactClient;
-
-export {
-  graphql,
-  useQuery,
-  usePaginatedQuery,
-  useTransactionQuery,
-  useLazyQuery,
-  useRefetch,
-  useMutation,
-  useMetaState,
-  prepareReactRender,
-  useHydrateCache,
-  prepareQuery,
-};
-
-export {
-  resolve,
-  subscribe,
-  schema,
-  query,
-  mutation,
-  mutate,
-  subscription,
-  resolved,
-  refetch,
-  track,
-};
 export * from './schema.generated';

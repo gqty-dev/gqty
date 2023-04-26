@@ -193,57 +193,10 @@ test('basic functionality works', async () => {
     });
 
     // Core functions
-    const { resolve, subscribe, schema } = client;
+    export const { resolve, subscribe, schema } = client;
 
     // Legacy functions
-    const { query, mutation, mutate, subscription, resolved, refetch, track } =
-      client;
-
-    const reactClient = createReactClient<GeneratedSchema>(client, {
-      defaults: {
-        // Set this flag as "true" if your usage involves React Suspense
-        // Keep in mind that you can overwrite it in a per-hook basis
-        suspense: false,
-
-        // Set this flag based on your needs
-        staleWhileRevalidate: false,
-      },
-    });
-
-    const {
-      graphql,
-      useQuery,
-      usePaginatedQuery,
-      useTransactionQuery,
-      useLazyQuery,
-      useRefetch,
-      useMutation,
-      useMetaState,
-      prepareReactRender,
-      useHydrateCache,
-      prepareQuery,
-      useSubscription,
-    } = reactClient;
-
-    export {
-      graphql,
-      useQuery,
-      usePaginatedQuery,
-      useTransactionQuery,
-      useLazyQuery,
-      useRefetch,
-      useMutation,
-      useMetaState,
-      prepareReactRender,
-      useHydrateCache,
-      prepareQuery,
-      useSubscription,
-    };
-
-    export {
-      resolve,
-      subscribe,
-      schema,
+    export const {
       query,
       mutation,
       mutate,
@@ -251,7 +204,28 @@ test('basic functionality works', async () => {
       resolved,
       refetch,
       track,
-    };
+    } = client;
+
+    export const {
+      graphql,
+      useQuery,
+      usePaginatedQuery,
+      useTransactionQuery,
+      useLazyQuery,
+      useRefetch,
+      useMutation,
+      useMetaState,
+      prepareReactRender,
+      useHydrateCache,
+      prepareQuery,
+      useSubscription,
+    } = createReactClient<GeneratedSchema>(client, {
+      defaults: {
+        // Enable Suspense, you can override this option at hooks.
+        suspense: false,
+      },
+    });
+
     export * from './schema.generated';
     "
   `);
@@ -374,55 +348,10 @@ test('custom scalars works', async () => {
     });
 
     // Core functions
-    const { resolve, subscribe, schema } = client;
+    export const { resolve, subscribe, schema } = client;
 
     // Legacy functions
-    const { query, mutation, mutate, subscription, resolved, refetch, track } =
-      client;
-
-    const reactClient = createReactClient<GeneratedSchema>(client, {
-      defaults: {
-        // Set this flag as "true" if your usage involves React Suspense
-        // Keep in mind that you can overwrite it in a per-hook basis
-        suspense: false,
-
-        // Set this flag based on your needs
-        staleWhileRevalidate: false,
-      },
-    });
-
-    const {
-      graphql,
-      useQuery,
-      usePaginatedQuery,
-      useTransactionQuery,
-      useLazyQuery,
-      useRefetch,
-      useMutation,
-      useMetaState,
-      prepareReactRender,
-      useHydrateCache,
-      prepareQuery,
-    } = reactClient;
-
-    export {
-      graphql,
-      useQuery,
-      usePaginatedQuery,
-      useTransactionQuery,
-      useLazyQuery,
-      useRefetch,
-      useMutation,
-      useMetaState,
-      prepareReactRender,
-      useHydrateCache,
-      prepareQuery,
-    };
-
-    export {
-      resolve,
-      subscribe,
-      schema,
+    export const {
       query,
       mutation,
       mutate,
@@ -430,7 +359,27 @@ test('custom scalars works', async () => {
       resolved,
       refetch,
       track,
-    };
+    } = client;
+
+    export const {
+      graphql,
+      useQuery,
+      usePaginatedQuery,
+      useTransactionQuery,
+      useLazyQuery,
+      useRefetch,
+      useMutation,
+      useMetaState,
+      prepareReactRender,
+      useHydrateCache,
+      prepareQuery,
+    } = createReactClient<GeneratedSchema>(client, {
+      defaults: {
+        // Enable Suspense, you can override this option at hooks.
+        suspense: false,
+      },
+    });
+
     export * from './schema.generated';
     "
   `);
@@ -1483,60 +1432,10 @@ test('javascript output works', async () => {
     });
 
     // Core functions
-    const { resolve, subscribe, schema } = client;
+    export const { resolve, subscribe, schema } = client;
 
     // Legacy functions
-    const { query, mutation, mutate, subscription, resolved, refetch, track } =
-      client;
-
-    /**
-     * @type {import("@gqty/react").ReactClient<import("./schema.generated").GeneratedSchema>}
-     */
-    const reactClient = createReactClient(client, {
-      defaults: {
-        // Set this flag as "true" if your usage involves React Suspense
-        // Keep in mind that you can overwrite it in a per-hook basis
-        suspense: false,
-
-        // Set this flag based on your needs
-        staleWhileRevalidate: false,
-      },
-    });
-
-    const {
-      graphql,
-      useQuery,
-      usePaginatedQuery,
-      useTransactionQuery,
-      useLazyQuery,
-      useRefetch,
-      useMutation,
-      useMetaState,
-      prepareReactRender,
-      useHydrateCache,
-      prepareQuery,
-      useSubscription,
-    } = reactClient;
-
-    export {
-      graphql,
-      useQuery,
-      usePaginatedQuery,
-      useTransactionQuery,
-      useLazyQuery,
-      useRefetch,
-      useMutation,
-      useMetaState,
-      prepareReactRender,
-      useHydrateCache,
-      prepareQuery,
-      useSubscription,
-    };
-
-    export {
-      resolve,
-      subscribe,
-      schema,
+    export const {
       query,
       mutation,
       mutate,
@@ -1544,10 +1443,36 @@ test('javascript output works', async () => {
       resolved,
       refetch,
       track,
-    };
+    } = client;
+
+    export const {
+      graphql,
+      useQuery,
+      usePaginatedQuery,
+      useTransactionQuery,
+      useLazyQuery,
+      useRefetch,
+      useMutation,
+      useMetaState,
+      prepareReactRender,
+      useHydrateCache,
+      prepareQuery,
+      useSubscription,
+    } =
+      /**
+       * @type {import("@gqty/react").ReactClient<import("./schema.generated").GeneratedSchema>}
+       */
+      createReactClient(client, {
+        defaults: {
+          // Enable Suspense, you can override this option at hooks.
+          suspense: false,
+        },
+      });
+
     export * from './schema.generated';
     "
   `);
+
   expect(javascriptSchemaCode).toMatchInlineSnapshot(`
     "/**
      * GQty AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
@@ -1808,55 +1733,10 @@ test('ignoreArgs transform', async () => {
     });
 
     // Core functions
-    const { resolve, subscribe, schema } = client;
+    export const { resolve, subscribe, schema } = client;
 
     // Legacy functions
-    const { query, mutation, mutate, subscription, resolved, refetch, track } =
-      client;
-
-    const reactClient = createReactClient<GeneratedSchema>(client, {
-      defaults: {
-        // Set this flag as "true" if your usage involves React Suspense
-        // Keep in mind that you can overwrite it in a per-hook basis
-        suspense: false,
-
-        // Set this flag based on your needs
-        staleWhileRevalidate: false,
-      },
-    });
-
-    const {
-      graphql,
-      useQuery,
-      usePaginatedQuery,
-      useTransactionQuery,
-      useLazyQuery,
-      useRefetch,
-      useMutation,
-      useMetaState,
-      prepareReactRender,
-      useHydrateCache,
-      prepareQuery,
-    } = reactClient;
-
-    export {
-      graphql,
-      useQuery,
-      usePaginatedQuery,
-      useTransactionQuery,
-      useLazyQuery,
-      useRefetch,
-      useMutation,
-      useMetaState,
-      prepareReactRender,
-      useHydrateCache,
-      prepareQuery,
-    };
-
-    export {
-      resolve,
-      subscribe,
-      schema,
+    export const {
       query,
       mutation,
       mutate,
@@ -1864,7 +1744,27 @@ test('ignoreArgs transform', async () => {
       resolved,
       refetch,
       track,
-    };
+    } = client;
+
+    export const {
+      graphql,
+      useQuery,
+      usePaginatedQuery,
+      useTransactionQuery,
+      useLazyQuery,
+      useRefetch,
+      useMutation,
+      useMetaState,
+      prepareReactRender,
+      useHydrateCache,
+      prepareQuery,
+    } = createReactClient<GeneratedSchema>(client, {
+      defaults: {
+        // Enable Suspense, you can override this option at hooks.
+        suspense: false,
+      },
+    });
+
     export * from './schema.generated';
     "
   `);

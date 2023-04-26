@@ -749,9 +749,7 @@ export async function generate(
       mutation: Mutation
       subscription: Subscription
     }
-    `;
 
-  typescriptTypes += `
     export type MakeNullable<T> = {
       [K in keyof T]: T[K] | undefined;
     };
@@ -854,52 +852,31 @@ export async function generate(
 
   const reactClientCode = react
     ? `
-        ${
+        export const {
+          graphql,
+          useQuery,
+          usePaginatedQuery,
+          useTransactionQuery,
+          useLazyQuery,
+          useRefetch,
+          useMutation,
+          useMetaState,
+          prepareReactRender,
+          useHydrateCache,
+          prepareQuery,
+          ${subscriptions ? 'useSubscription,' : ''}
+        } = ${
           isJavascriptOutput
             ? `${typeDoc(
                 'import("@gqty/react").ReactClient<import("./schema.generated").GeneratedSchema>'
-              )}const reactClient = createReactClient(client, {`
-            : `const reactClient = createReactClient<GeneratedSchema>(client, {`
+              )}createReactClient(client, {`
+            : `createReactClient<GeneratedSchema>(client, {`
         }
           defaults: {
-            // Set this flag as "true" if your usage involves React Suspense
-            // Keep in mind that you can overwrite it in a per-hook basis
+            // Enable Suspense, you can override this option at hooks.
             suspense: false,
-
-            // Set this flag based on your needs
-            staleWhileRevalidate: false
           }
         });
-
-        const {
-          graphql,
-          useQuery,
-          usePaginatedQuery,
-          useTransactionQuery,
-          useLazyQuery,
-          useRefetch,
-          useMutation,
-          useMetaState,
-          prepareReactRender,
-          useHydrateCache,
-          prepareQuery,
-          ${subscriptions ? 'useSubscription,' : ''}
-        } = reactClient;
-
-        export {
-          graphql,
-          useQuery,
-          usePaginatedQuery,
-          useTransactionQuery,
-          useLazyQuery,
-          useRefetch,
-          useMutation,
-          useMetaState,
-          prepareReactRender,
-          useHydrateCache,
-          prepareQuery,
-          ${subscriptions ? 'useSubscription,' : ''}
-        }
       `.trim()
     : '';
 
@@ -984,14 +961,13 @@ export async function generate(
     }
 
     // Core functions
-    const { resolve, subscribe, schema } = client;
+    export const { resolve, subscribe, schema } = client;
 
     // Legacy functions
-    const { query, mutation, mutate, subscription, resolved, refetch, track } = client;
+    export const { query, mutation, mutate, subscription, resolved, refetch, track } = client;
 
     ${reactClientCode}
 
-    export { resolve, subscribe, schema, query, mutation, mutate, subscription, resolved, refetch, track };
     export * from "./schema.generated";
   `);
 

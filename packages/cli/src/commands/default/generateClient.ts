@@ -41,12 +41,6 @@ export const generateClient = async (
         await writeGenerate(schema, configuration.destination, configuration);
         return;
       }
-
-      if (existingFile.includes('export const {')) {
-        logger.warn(
-          `To prevent possible bundling issues, it's recommended to change the export syntax from "export const { query, ... } = client;" to "const { query, ... } = client; export { query, ... };"`
-        );
-      }
     }
   );
 
