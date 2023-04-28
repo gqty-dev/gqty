@@ -84,12 +84,8 @@ export const {
   prepareQuery,
 } = createReactClient<GeneratedSchema>(client, {
   defaults: {
-    // Set this flag as "true" if your usage involves React Suspense
-    // Keep in mind that you can overwrite it in a per-hook basis
+    // Enable Suspense, you can override this option at hooks.
     suspense: false,
-
-    // Set this flag based on your needs
-    staleWhileRevalidate: false,
   },
 });
 

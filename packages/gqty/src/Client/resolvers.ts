@@ -81,24 +81,30 @@ export type CreateResolverFn<TSchema extends BaseGeneratedSchema> = (
 ) => ResolverParts<TSchema>;
 
 export type ResolveFn<TSchema extends BaseGeneratedSchema> = <
-  TData extends Record<string, unknown> = Record<string, unknown>
+  TData extends unknown = unknown
 >(
-  fn: DataFn<TSchema>,
+  fn: DataFn<TSchema, TData>,
   options?: ResolveOptions
-) => Promise<TData>;
+) => Promise<DataResult<TData>>;
 
 const asyncItDoneMessage = { done: true } as IteratorResult<never>;
 
 export type SubscribeFn<TSchema extends BaseGeneratedSchema> = <
-  TData extends Record<string, unknown> = Record<string, unknown>
+  TData extends unknown = unknown
 >(
-  fn: DataFn<TSchema>,
+  fn: DataFn<TSchema, TData>,
   options?: SubscribeOptions
-) => AsyncGenerator<TData, void, unknown> & {
+) => AsyncGenerator<DataResult<TData>, void, unknown> & {
   unsubscribe: Unsubscribe;
 };
 
-export type DataFn<TSchema> = (schema: TSchema) => void;
+export type DataFn<TSchema, TResult = unknown> = (schema: TSchema) => TResult;
+
+export type DataResult<TData = unknown> = TData extends undefined
+  ? TData
+  : TData extends void
+  ? unknown
+  : TData;
 
 export type ResolveOptions = {
   /**

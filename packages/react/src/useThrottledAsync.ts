@@ -1,5 +1,5 @@
-import { useSafeState, useSyncedRef } from '@react-hookz/web';
-import { useMemo, useRef } from 'react';
+import { useSyncedRef } from '@react-hookz/web';
+import { useMemo, useRef, useState } from 'react';
 
 export type AsyncStatus = 'loading' | 'success' | 'error' | 'not-executed';
 
@@ -83,7 +83,7 @@ export function useThrottledAsync<Result, Args extends unknown[] = unknown[]>(
   UseAsyncActions<Result, Args>,
   UseAsyncMeta<Result, Args>
 ] {
-  const [state, setState] = useSafeState<AsyncState<Result | undefined>>({
+  const [state, setState] = useState<AsyncState<Result | undefined>>({
     status: 'not-executed',
     error: undefined,
     result: initialValue,
