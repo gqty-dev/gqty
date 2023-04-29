@@ -3,7 +3,6 @@ import {
   useIntervalEffect,
   usePrevious,
   useRerender,
-  useThrottledState,
   useUpdateEffect,
 } from '@react-hookz/web';
 import {
@@ -14,7 +13,7 @@ import {
   type RetryOptions,
 } from 'gqty';
 import { MultiDict } from 'multidict';
-import { useCallback, useEffect, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   translateFetchPolicy,
   type LegacyFetchPolicy,
@@ -110,6 +109,8 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
     retryPolicy = retry,
     staleWhileRevalidate = defaultStaleWhileRevalidate,
   } = {}) => {
+    const render = useRerender();
+    const debouncedRender = useDebouncedCallback(render, [render], 50);
     const getIsRendering = useIsRendering();
     const resolver = useMemo(() => {
       const resolver = client.createResolver({
@@ -126,7 +127,11 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
           // Trigger a fetch when selections are made outside of the rendering
           // phase, such as event listeners or polling.
           if (!getIsRendering()) {
-            refetch({ skipPrepass: true });
+            debouncedRender();
+
+            // TODO: Make a debounced refetch instead of re-rendering, should
+            // also prevents recursive refetching via prepass.
+            // refetch({ skipPrepass: true });
           }
         },
       });
@@ -144,10 +149,10 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
       selections,
     } = resolver;
 
-    const [state, setState] = useThrottledState<{
+    const [state, setState] = useState<{
       error?: GQtyError;
       promise?: Promise<unknown>;
-    }>({}, 50);
+    }>({});
 
     // With `prepare`, selections are only collected within the provided
     // function. Accessing other properties in the proxy should not trigger
@@ -179,8 +184,6 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
     // after render so it cannot be done via useEffect, instead refs has to be
     // used.
     {
-      const render = useRerender();
-      const debouncedRender = useDebouncedCallback(render, [render], 50);
       const selectionSizeRef = useRef(0);
       const unsubscribeRef = useRef<() => void>();
 
@@ -212,12 +215,13 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
           prepass(accessor, selections);
         }
 
-        if (!options?.ignoreCache && !context.shouldFetch) return;
+        if (options?.ignoreCache === true) {
+          context.shouldFetch = true;
+        }
+
+        if (!context.shouldFetch) return;
 
         try {
-          context.notifyCacheUpdate = true;
-          context.shouldFetch = true;
-
           // Sticky co-fetching selections is only needed when more than one
           // active context are making selections in one component. This usually
           // happens with mixed usage of useQuery and other query methods.
