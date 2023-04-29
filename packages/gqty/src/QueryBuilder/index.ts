@@ -51,6 +51,7 @@ export const buildQuery = (
   const root = {} as SelectionTreeRoot;
   const variables = new Map<string, { type: string; value: unknown }>();
   const inputDedupe = new Map<object, string>();
+
   for (const { ancestry } of selections) {
     set(
       root,

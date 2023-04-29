@@ -1,13 +1,13 @@
-import type { BaseGeneratedSchema, FetchOptions } from '.';
+import { type BaseGeneratedSchema, type FetchOptions } from '.';
 import { createSchemaAccessor } from '../Accessor';
-import type { Cache } from '../Cache';
-import type { GQtyError, RetryOptions } from '../Error';
-import type { ScalarsEnumsHash, Schema } from '../Schema';
-import type { Selection } from '../Selection';
+import { type Cache } from '../Cache';
+import { type GQtyError, type RetryOptions } from '../Error';
+import { type ScalarsEnumsHash, type Schema } from '../Schema';
+import { type Selection } from '../Selection';
 import { pick } from '../Utils/pick';
 import { addSelections, delSelectionsSet, getSelectionsSet } from './batching';
 import { createContext, SchemaContext } from './context';
-import type { Debugger } from './debugger';
+import { type Debugger } from './debugger';
 import {
   fetchSelections,
   subscribeSelections,
@@ -242,7 +242,18 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
 
     const accessor = createSchemaAccessor<TSchema>(context);
 
-    const resolve = async () => {
+    const resolve: ResolverParts<TSchema>['resolve'] = async () => {
+      if (selections.size === 0) {
+        if (process.env.NODE_ENV !== 'production') {
+          console.warn(
+            '[GQty] No selections found. If you are reading from the ' +
+              'global accessors, try using the first argument instead.'
+          );
+        }
+
+        return;
+      }
+
       if (!context.shouldFetch) return;
 
       if (cachePolicy === 'only-if-cached') {
@@ -304,13 +315,24 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
       return pendingQueries.get(pendingSelections)!;
     };
 
-    const subscribe = ({
+    const subscribe: ResolverParts<TSchema>['subscribe'] = ({
       onComplete,
       onError,
       onNext,
-    }: Parameters<
-      ReturnType<CreateResolverFn<TSchema>>['subscribe']
-    >[0] = {}) => {
+    } = {}) => {
+      if (selections.size === 0) {
+        if (process.env.NODE_ENV !== 'production') {
+          console.warn(
+            '[GQty] No selections found. If you are reading from the ' +
+              'global accessors, try using the first argument instead.'
+          );
+        }
+
+        return () => {
+          // noop
+        };
+      }
+
       const unsubscibers = new Set<() => void>();
       const unsubscribe = () => {
         for (const unsubscribe of unsubscibers) {
