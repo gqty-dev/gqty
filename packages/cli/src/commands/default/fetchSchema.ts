@@ -185,7 +185,7 @@ const promptHeaders = async (endpoint: string) => {
   const { headers } = await deps.inquirer.prompt<{ headers: string }>({
     name: 'headers',
     type: 'input',
-    message: `Any authorization headers when introspecting ${endpoint}? (comma separated)`,
+    message: `Any authorization headers for ${endpoint}? (comma separated)`,
   });
 
   return convertHeadersInput(headers.split(/,/));

@@ -31,7 +31,7 @@ export const addCommand = (command: Command) => {
       (value, previous: string[]) => [...previous, value],
       []
     )
-    .option('--react', 'Include React hooks in the genreated client.')
+    .option('--react', 'Include React hooks in the generated client.')
     .option(
       '--subscriptions <client>',
       'Includes specified package as subscription client, must be graphql-ws compatible.'
