@@ -1,5 +1,5 @@
 import type { ExecutionResult } from 'graphql';
-import {
+import type {
   Client,
   ConnectionAckMessage,
   Event,
@@ -81,7 +81,7 @@ export const createLegacySubscriptionsClient = (
         events: {
           onStart: () => {
             dispatchEvent('message', {
-              type: MessageType.ConnectionAck,
+              type: 'connection_ack' as MessageType.ConnectionAck,
             } satisfies ConnectionAckMessage);
           },
           onComplete: () => {
@@ -114,7 +114,7 @@ export const createLegacySubscriptionsClient = (
 
           dispatchEvent('message', {
             id: operationId,
-            type: MessageType.Subscribe,
+            type: 'subscribe' as MessageType.Subscribe,
             payload,
           } satisfies SubscribeMessage);
         });
@@ -125,7 +125,7 @@ export const createLegacySubscriptionsClient = (
 
         dispatchEvent('message', {
           id: sub.operationId,
-          type: MessageType.Subscribe,
+          type: 'subscribe' as MessageType.Subscribe,
           payload,
         } satisfies SubscribeMessage);
       }

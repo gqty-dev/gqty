@@ -1,5 +1,5 @@
-import type { Client as SseClient } from 'graphql-sse';
-import type { Client as WsClient } from 'graphql-ws';
+import { type Client as SseClient } from 'graphql-sse';
+import { type Client as WsClient } from 'graphql-ws';
 import { createSchemaAccessor } from '../Accessor';
 import { Cache } from '../Cache';
 import { createPersistors, Persistors } from '../Cache/persistence';
