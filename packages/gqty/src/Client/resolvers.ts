@@ -273,40 +273,36 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
       if (!pendingQueries.has(pendingSelections)) {
         pendingQueries.set(
           pendingSelections,
-          new Promise((resolve, reject) => {
-            queueMicrotask(() => {
-              const selections = new Set(
-                [
-                  ...(getSelectionsSet(clientCache, selectionsCacheKey) ?? []),
-                ].flatMap((selections) => [...selections])
+          Promise.resolve().then(() => {
+            const selections = new Set(
+              [
+                ...(getSelectionsSet(clientCache, selectionsCacheKey) ?? []),
+              ].flatMap((selections) => [...selections])
+            );
+
+            pendingQueries.delete(pendingSelections);
+
+            delSelectionsSet(clientCache, selectionsCacheKey);
+
+            return fetchSelections(selections, {
+              cache: context.cache,
+              debugger: debug,
+              fetchOptions: {
+                ...fetchOptions,
+                cachePolicy,
+                retryPolicy,
+              },
+              operationName,
+            }).then((results) => {
+              updateCaches(
+                results,
+                cachePolicy !== 'no-store' && context.cache !== clientCache
+                  ? [context.cache, clientCache]
+                  : [context.cache],
+                { skipNotify: !context.notifyCacheUpdate }
               );
 
-              pendingQueries.delete(pendingSelections);
-
-              delSelectionsSet(clientCache, selectionsCacheKey);
-
-              fetchSelections(selections, {
-                cache: context.cache,
-                debugger: debug,
-                fetchOptions: {
-                  ...fetchOptions,
-                  cachePolicy,
-                  retryPolicy,
-                },
-                operationName,
-              })
-                .then((results) => {
-                  updateCaches(
-                    results,
-                    cachePolicy !== 'no-store' && context.cache !== clientCache
-                      ? [context.cache, clientCache]
-                      : [context.cache],
-                    { skipNotify: !context.notifyCacheUpdate }
-                  );
-
-                  return results;
-                })
-                .then(resolve, reject);
+              return results;
             });
           })
         );
