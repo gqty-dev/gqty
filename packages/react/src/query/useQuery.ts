@@ -34,6 +34,7 @@ export interface UseQueryPrepareHelpers<
 }
 export interface UseQueryOptions<TSchema extends BaseGeneratedSchema> {
   cachePolicy?: RequestCache;
+  extensions?: Record<string, any>;
   fetchInBackground?: boolean;
   fetchPolicy?: LegacyFetchPolicy;
   notifyOnNetworkStatusChange?: boolean;
@@ -93,6 +94,7 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
   let currentResolver: ResolverParts | undefined = undefined;
 
   return ({
+    extensions,
     fetchInBackground = false,
     fetchPolicy,
     cachePolicy = translateFetchPolicy(fetchPolicy ?? 'cache-first'),
@@ -115,6 +117,7 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
     const resolver = useMemo(() => {
       const resolver = client.createResolver({
         cachePolicy,
+        extensions,
         operationName,
         retryPolicy,
         onSelect() {

@@ -6,12 +6,12 @@ import { type ScalarsEnumsHash, type Schema } from '../Schema';
 import { type Selection } from '../Selection';
 import { pick } from '../Utils/pick';
 import { addSelections, delSelectionsSet, getSelectionsSet } from './batching';
-import { createContext, SchemaContext } from './context';
+import { createContext, type SchemaContext } from './context';
 import { type Debugger } from './debugger';
 import {
   fetchSelections,
   subscribeSelections,
-  Unsubscribe,
+  type Unsubscribe,
 } from './resolveSelections';
 import { updateCaches } from './updateCaches';
 
@@ -106,50 +106,7 @@ export type DataResult<TData = unknown> = TData extends undefined
   ? unknown
   : TData;
 
-export type ResolveOptions = {
-  /**
-   * Awaits resolution it the query results in a fetch. Specify `false` to
-   * immediately return the current cache, placeholder data will be returned on
-   * a partial or complete cache miss.
-   *
-   * @default true
-   */
-  awaitsFetch?: boolean;
-
-  /**
-   * Defines how a query should fetch from the cache and network.
-   *
-   * - `default`: Serves the cached contents when it is fresh, and if they are
-   * stale within `staleWhileRevalidate` window, fetches in the background and
-   * updates the cache. Or simply fetches on cache stale or cache miss. During
-   * SWR, a successful fetch will not notify cache updates. New contents are
-   * served on next query.
-   * - `no-store`: Always fetch and does not update on response.
-   * GQty creates a temporary cache at query-level which immediately expires.
-   * - `reload`: Always fetch, updates on response.
-   * - `no-cache`: Same as `reload`, for GraphQL does not support conditional
-   * requests.
-   * - `force-cache`: Serves the cached contents regardless of staleness. It
-   * fetches on cache miss or a stale cache, updates cache on response.
-   * - `only-if-cached`: Serves the cached contents regardless of staleness,
-   * throws a network error on cache miss.
-   *
-   * _It takes effort to make sure the above stays true for all supported
-   * frameworks, please consider sponsoring so we can dedicate even more time on
-   * this._
-   */
-  cachePolicy?: RequestCache;
-
-  retryPolicy?: RetryOptions;
-
-  onFetch?: (fetchPromise: Promise<unknown>) => void;
-
-  onSelect?: SchemaContext['select'];
-
-  operationName?: string;
-};
-
-export type SubscribeOptions = {
+export type CreateResolverOptions = {
   /**
    * Defines how a query should fetch from the cache and network.
    *
@@ -172,8 +129,30 @@ export type SubscribeOptions = {
    */
   cachePolicy?: RequestCache;
 
+  /** Custom GraphQL extensions to be exposed to the query fetcher. */
+  extensions?: Record<string, unknown>;
+
   retryPolicy?: RetryOptions;
 
+  onSelect?: SchemaContext['select'];
+
+  operationName?: string;
+};
+
+export type ResolveOptions = CreateResolverOptions & {
+  /**
+   * Awaits resolution it the query results in a fetch. Specify `false` to
+   * immediately return the current cache, placeholder data will be returned on
+   * a partial or complete cache miss.
+   *
+   * @default true
+   */
+  awaitsFetch?: boolean;
+
+  onFetch?: (fetchPromise: Promise<unknown>) => void;
+};
+
+export type SubscribeOptions = CreateResolverOptions & {
   /**
    * Intercept errors thrown from the underlying subscription client or query
    * fetcher.
@@ -184,16 +163,12 @@ export type SubscribeOptions = {
    */
   onError?: (error: unknown) => void;
 
-  onSelect?: SchemaContext['select'];
-
   /**
    * Called when a subscription is established, receives an unsubscribe
    * function that immediately terminates the async generator and any pending
    * promise.
    */
   onSubscribe?: (unsubscribe: Unsubscribe) => void;
-
-  operationName?: string;
 };
 
 /**
@@ -216,6 +191,7 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
 }: CreateResolversOptions): Resolvers<TSchema> => {
   const createResolver = ({
     cachePolicy = defaultCachePolicy,
+    extensions,
     onSelect,
     onSubscribe,
     operationName,
@@ -287,6 +263,7 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
             return fetchSelections(selections, {
               cache: context.cache,
               debugger: debug,
+              extensions,
               fetchOptions: {
                 ...fetchOptions,
                 cachePolicy,
@@ -362,7 +339,9 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
           }
         }
 
-        promises.push(resolve());
+        if (selections.size > 0) {
+          promises.push(resolve());
+        }
       }
 
       // Add subscription selections back after resolve(), the subscribe()
@@ -401,6 +380,7 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
             {
               cache: context.cache,
               debugger: debug,
+              extensions,
               fetchOptions: {
                 ...fetchOptions,
                 cachePolicy,

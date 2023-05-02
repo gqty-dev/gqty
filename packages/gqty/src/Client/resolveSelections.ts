@@ -1,16 +1,16 @@
 import { type ExecutionResult } from 'graphql';
 import { type Client as SseClient } from 'graphql-sse';
 import {
-  type Client as WsClient,
   type MessageType,
   type SubscribePayload,
+  type Client as WsClient,
 } from 'graphql-ws';
-import { Constructor } from 'type-fest';
+import { type Constructor } from 'type-fest';
 import { type CloseEvent, type WebSocket } from 'ws';
 import { type FetchOptions } from '.';
 import { type Cache } from '../Cache';
 import { dedupePromise } from '../Cache/query';
-import { doRetry, GQtyError } from '../Error';
+import { GQtyError, doRetry } from '../Error';
 import { notifyFetch, notifyRetry } from '../Helpers/useMetaStateHack';
 import { buildQuery } from '../QueryBuilder';
 import { type QueryPayload } from '../Schema';
@@ -20,6 +20,7 @@ import { type Debugger } from './debugger';
 export type FetchSelectionsOptions = {
   cache?: Cache;
   debugger?: Debugger;
+  extensions?: Record<string, unknown>;
   fetchOptions: FetchOptions;
   operationName?: string;
 };
@@ -37,6 +38,7 @@ export const fetchSelections = <
   {
     cache,
     debugger: debug,
+    extensions: customExtensions,
     fetchOptions,
     operationName,
   }: FetchSelectionsOptions
@@ -56,7 +58,7 @@ export const fetchSelections = <
           query,
           variables,
           operationName,
-          extensions: { type, hash },
+          extensions: { ...customExtensions, type, hash },
         };
 
         // Dedupe
@@ -126,6 +128,7 @@ export const subscribeSelections = <
   {
     cache,
     debugger: debug,
+    extensions: customExtensions,
     fetchOptions: { subscriber },
     operationName,
     onSubscribe,
@@ -153,7 +156,7 @@ export const subscribeSelections = <
           query,
           variables,
           operationName,
-          extensions: { type, hash },
+          extensions: { ...customExtensions, type, hash },
         };
 
         let subscriptionId: string | undefined;

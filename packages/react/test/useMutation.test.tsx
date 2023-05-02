@@ -1,10 +1,10 @@
-import { act, renderHook } from '@testing-library/react-hooks';
+import { act, renderHook, waitFor } from '@testing-library/react';
 import { createReactTestClient } from './utils';
 
 describe('useMutation', () => {
   it('should mutate without suspense', async () => {
     const { useMutation } = await createReactTestClient();
-    const { result, waitFor } = renderHook(() => {
+    const { result } = renderHook(() => {
       return useMutation((mutation, { name }: { name: string }) => {
         const human = mutation.humanMutation({ nameArg: name });
 
@@ -15,7 +15,7 @@ describe('useMutation', () => {
 
     await act(() => result.current[0]({ args: { name: 'John Doe' } }));
 
-    await waitFor(() => result.current[1].data !== undefined);
+    await waitFor(() => expect(result.current[1].data).toBeDefined());
 
     expect(result.current[1]).toMatchInlineSnapshot(`
       {
@@ -36,7 +36,7 @@ describe('useMutation', () => {
 
   it('should mutate with suspense', async () => {
     const { useMutation } = await createReactTestClient();
-    const { result, waitFor } = renderHook(() => {
+    const { result } = renderHook(() => {
       return useMutation(
         (mutation, { name }: { name: string }) => {
           const human = mutation.humanMutation({ nameArg: name });
@@ -50,7 +50,7 @@ describe('useMutation', () => {
 
     await act(() => result.current[0]({ args: { name: 'Jane Doe' } }));
 
-    await waitFor(() => result.current[1].data !== undefined);
+    await waitFor(() => expect(result.current[1].data).toBeDefined());
 
     expect(result.current[1]).toMatchInlineSnapshot(`
       {
@@ -91,24 +91,24 @@ describe('useMutation', () => {
       );
     });
 
-    await q.waitFor(() => q.result.current.name === 'Uno');
+    await waitFor(() => expect(q.result.current.name).toStrictEqual('Uno'));
 
     await act(() =>
       m.result.current[0]({ args: { name: 'Uno', newName: 'Dos' } })
     );
 
-    await q.waitFor(() => q.result.current.name === 'Dos');
+    await waitFor(() => expect(q.result.current.name).toStrictEqual('Dos'));
 
     await act(() =>
       m.result.current[0]({ args: { name: 'Dos', newName: 'Tres' } })
     );
 
-    await q.waitFor(() => q.result.current.name === 'Tres');
+    await waitFor(() => expect(q.result.current.name).toStrictEqual('Tres'));
 
     await act(() =>
       m.result.current[0]({ args: { name: 'Tres', newName: 'Cuatro' } })
     );
 
-    await q.waitFor(() => q.result.current.name === 'Cuatro');
+    await waitFor(() => expect(q.result.current.name).toStrictEqual('Cuatro'));
   });
 });

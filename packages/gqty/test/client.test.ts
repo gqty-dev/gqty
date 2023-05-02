@@ -1,5 +1,5 @@
 import { $meta } from 'gqty/Accessor';
-import { Cache, GQtyError, prepass } from '../src';
+import { Cache, GQtyError, QueryPayload, prepass } from '../src';
 import { fetchSelections } from '../src/Client/resolveSelections';
 import { updateCaches } from '../src/Client/updateCaches';
 import { Selection } from '../src/Selection';
@@ -178,7 +178,7 @@ describe('core#resolve', () => {
     expect(data).toEqual('hello world');
   });
 
-  it('error handling', async () => {
+  it('handles errors', async () => {
     const { resolve } = await createTestClient();
 
     try {
@@ -207,6 +207,18 @@ describe('core#resolve', () => {
         )
       );
     }
+  });
+
+  it('passes on query extensions', async () => {
+    const fetchHistory: QueryPayload[] = [];
+    const { resolve } = await createTestClient(undefined, (payload) => {
+      fetchHistory.push(payload);
+      return {};
+    });
+
+    await resolve(({ query }) => query.hello, { extensions: { foo: 'bar' } });
+
+    expect(fetchHistory[0].extensions).toMatchObject({ foo: 'bar' });
   });
 });
 
