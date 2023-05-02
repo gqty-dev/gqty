@@ -320,7 +320,7 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
     return useMemo(() => {
       return new Proxy(
         Object.freeze({
-          $refetch: (ignoreCache = true) => refetch({ ignoreCache }),
+          $refetch: (ignoreCache = false) => refetch({ ignoreCache }),
           $state: Object.freeze({
             isLoading: state.promise !== undefined,
             error: state.error,
