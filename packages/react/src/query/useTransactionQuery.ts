@@ -1,8 +1,4 @@
-import {
-  useDocumentVisibility,
-  useIntervalEffect,
-  useUpdateEffect,
-} from '@react-hookz/web';
+import { useUpdateEffect } from '@react-hookz/web';
 import type { BaseGeneratedSchema, GQtyError, RetryOptions } from 'gqty';
 import {
   LegacyFetchPolicy,
@@ -78,9 +74,14 @@ export function createUseTransactionQuery<TSchema extends BaseGeneratedSchema>(
   ) => {
     const query = useQuery({
       cachePolicy,
+      fetchInBackground: pollInBackground,
       notifyOnNetworkStatusChange,
       operationName,
       prepare: ({ query }) => (skip ? undefined : fn(query, variables)),
+      refetchInterval: pollInterval,
+      refetchOnReconnect: false,
+      refetchOnRender: false,
+      refetchOnWindowVisible: false,
       retry,
       suspense,
     });
@@ -100,15 +101,6 @@ export function createUseTransactionQuery<TSchema extends BaseGeneratedSchema>(
         onError?.(query.$state.error);
       }
     }, [query.$state.error]);
-
-    const visible = useDocumentVisibility();
-
-    useIntervalEffect(() => {
-      if (skip || query.$state.isLoading || (!visible && !pollInBackground))
-        return;
-
-      query.$refetch();
-    }, pollInterval);
 
     return skip
       ? {
