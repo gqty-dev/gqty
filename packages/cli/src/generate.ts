@@ -1,6 +1,6 @@
 import {
-  parseSchemaType,
   SchemaUnionsKey,
+  parseSchemaType,
   type ArgsDescriptions,
   type FieldDescription,
   type ScalarsEnumsHash,
@@ -787,9 +787,23 @@ export async function generate(
           ...fetchOptions
         });
 
-        const json = await response.json();
+        if (response.status >= 400) {
+          throw new GQtyError(
+            \`GraphQL endpoint responded with HTTP \${response.status}: \${response.statusText}.\`
+          );
+        }
 
-        return json;
+        const text = await response.text();
+
+        try {
+          return JSON.parse(text);
+        } catch {
+          throw new GQtyError(
+            \`Malformed JSON response: \${
+              text.length > 50 ? text.slice(0, 50) + '...' : text
+            }\`
+          );
+        }
       };
     `;
 
@@ -893,7 +907,7 @@ export async function generate(
           }";`
         : '',
       isJavascriptOutput ? '' : 'import type { QueryFetcher } from "gqty";',
-      'import { Cache, createClient } from "gqty";',
+      'import { Cache, GQtyError, createClient } from "gqty";',
       isJavascriptOutput
         ? ''
         : 'import type { GeneratedSchema } from "./schema.generated";',

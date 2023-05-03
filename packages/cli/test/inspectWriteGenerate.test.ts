@@ -60,7 +60,7 @@ test('basic inspectWriteGenerate functionality', async () => {
 
       import { createReactClient } from '@gqty/react';
       import type { QueryFetcher } from 'gqty';
-      import { Cache, createClient } from 'gqty';
+      import { Cache, GQtyError, createClient } from 'gqty';
       import type { GeneratedSchema } from './schema.generated';
       import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
@@ -83,9 +83,23 @@ test('basic inspectWriteGenerate functionality', async () => {
           ...fetchOptions,
         });
 
-        const json = await response.json();
+        if (response.status >= 400) {
+          throw new GQtyError(
+            \`GraphQL endpoint responded with HTTP \${response.status}: \${response.statusText}.\`
+          );
+        }
 
-        return json;
+        const text = await response.text();
+
+        try {
+          return JSON.parse(text);
+        } catch {
+          throw new GQtyError(
+            \`Malformed JSON response: \${
+              text.length > 50 ? text.slice(0, 50) + '...' : text
+            }\`
+          );
+        }
       };
 
       const cache = new Cache(
@@ -259,7 +273,7 @@ describe('from file', () => {
 
         import { createReactClient } from '@gqty/react';
         import type { QueryFetcher } from 'gqty';
-        import { Cache, createClient } from 'gqty';
+        import { Cache, GQtyError, createClient } from 'gqty';
         import type { GeneratedSchema } from './schema.generated';
         import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
@@ -282,9 +296,23 @@ describe('from file', () => {
             ...fetchOptions,
           });
 
-          const json = await response.json();
+          if (response.status >= 400) {
+            throw new GQtyError(
+              \`GraphQL endpoint responded with HTTP \${response.status}: \${response.statusText}.\`
+            );
+          }
 
-          return json;
+          const text = await response.text();
+
+          try {
+            return JSON.parse(text);
+          } catch {
+            throw new GQtyError(
+              \`Malformed JSON response: \${
+                text.length > 50 ? text.slice(0, 50) + '...' : text
+              }\`
+            );
+          }
         };
 
         const cache = new Cache(
@@ -457,7 +485,7 @@ describe('from file', () => {
 
         import { createReactClient } from '@gqty/react';
         import type { QueryFetcher } from 'gqty';
-        import { Cache, createClient } from 'gqty';
+        import { Cache, GQtyError, createClient } from 'gqty';
         import type { GeneratedSchema } from './schema.generated';
         import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
@@ -480,9 +508,23 @@ describe('from file', () => {
             ...fetchOptions,
           });
 
-          const json = await response.json();
+          if (response.status >= 400) {
+            throw new GQtyError(
+              \`GraphQL endpoint responded with HTTP \${response.status}: \${response.statusText}.\`
+            );
+          }
 
-          return json;
+          const text = await response.text();
+
+          try {
+            return JSON.parse(text);
+          } catch {
+            throw new GQtyError(
+              \`Malformed JSON response: \${
+                text.length > 50 ? text.slice(0, 50) + '...' : text
+              }\`
+            );
+          }
         };
 
         const cache = new Cache(
@@ -654,7 +696,7 @@ describe('from file', () => {
 
         import { createReactClient } from '@gqty/react';
         import type { QueryFetcher } from 'gqty';
-        import { Cache, createClient } from 'gqty';
+        import { Cache, GQtyError, createClient } from 'gqty';
         import type { GeneratedSchema } from './schema.generated';
         import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
@@ -677,9 +719,23 @@ describe('from file', () => {
             ...fetchOptions,
           });
 
-          const json = await response.json();
+          if (response.status >= 400) {
+            throw new GQtyError(
+              \`GraphQL endpoint responded with HTTP \${response.status}: \${response.statusText}.\`
+            );
+          }
 
-          return json;
+          const text = await response.text();
+
+          try {
+            return JSON.parse(text);
+          } catch {
+            throw new GQtyError(
+              \`Malformed JSON response: \${
+                text.length > 50 ? text.slice(0, 50) + '...' : text
+              }\`
+            );
+          }
         };
 
         const cache = new Cache(
@@ -895,7 +951,7 @@ describe('from multiple files', () => {
 
         import { createReactClient } from '@gqty/react';
         import type { QueryFetcher } from 'gqty';
-        import { Cache, createClient } from 'gqty';
+        import { Cache, GQtyError, createClient } from 'gqty';
         import type { GeneratedSchema } from './schema.generated';
         import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
@@ -918,9 +974,23 @@ describe('from multiple files', () => {
             ...fetchOptions,
           });
 
-          const json = await response.json();
+          if (response.status >= 400) {
+            throw new GQtyError(
+              \`GraphQL endpoint responded with HTTP \${response.status}: \${response.statusText}.\`
+            );
+          }
 
-          return json;
+          const text = await response.text();
+
+          try {
+            return JSON.parse(text);
+          } catch {
+            throw new GQtyError(
+              \`Malformed JSON response: \${
+                text.length > 50 ? text.slice(0, 50) + '...' : text
+              }\`
+            );
+          }
         };
 
         const cache = new Cache(
@@ -1152,7 +1222,7 @@ test('specify generateOptions to inspectWriteGenerate', async () => {
 
       import { createReactClient } from '@gqty/react';
       import type { QueryFetcher } from 'gqty';
-      import { Cache, createClient } from 'gqty';
+      import { Cache, GQtyError, createClient } from 'gqty';
       import type { GeneratedSchema } from './schema.generated';
       import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
@@ -1175,9 +1245,23 @@ test('specify generateOptions to inspectWriteGenerate', async () => {
           ...fetchOptions,
         });
 
-        const json = await response.json();
+        if (response.status >= 400) {
+          throw new GQtyError(
+            \`GraphQL endpoint responded with HTTP \${response.status}: \${response.statusText}.\`
+          );
+        }
 
-        return json;
+        const text = await response.text();
+
+        try {
+          return JSON.parse(text);
+        } catch {
+          throw new GQtyError(
+            \`Malformed JSON response: \${
+              text.length > 50 ? text.slice(0, 50) + '...' : text
+            }\`
+          );
+        }
       };
 
       const cache = new Cache(
@@ -1499,7 +1583,7 @@ describe('CLI behavior', () => {
 
         import { createReactClient } from '@gqty/react';
         import type { QueryFetcher } from 'gqty';
-        import { Cache, createClient } from 'gqty';
+        import { Cache, GQtyError, createClient } from 'gqty';
         import type { GeneratedSchema } from './schema.generated';
         import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
@@ -1522,9 +1606,23 @@ describe('CLI behavior', () => {
             ...fetchOptions,
           });
 
-          const json = await response.json();
+          if (response.status >= 400) {
+            throw new GQtyError(
+              \`GraphQL endpoint responded with HTTP \${response.status}: \${response.statusText}.\`
+            );
+          }
 
-          return json;
+          const text = await response.text();
+
+          try {
+            return JSON.parse(text);
+          } catch {
+            throw new GQtyError(
+              \`Malformed JSON response: \${
+                text.length > 50 ? text.slice(0, 50) + '...' : text
+              }\`
+            );
+          }
         };
 
         const cache = new Cache(
