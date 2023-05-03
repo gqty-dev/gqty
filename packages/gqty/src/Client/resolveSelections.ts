@@ -5,7 +5,6 @@ import {
   type SubscribePayload,
   type Client as WsClient,
 } from 'graphql-ws';
-import { type Constructor } from 'type-fest';
 import { type CloseEvent, type WebSocket } from 'ws';
 import { type FetchOptions } from '.';
 import { type Cache } from '../Cache';
@@ -16,6 +15,8 @@ import { buildQuery } from '../QueryBuilder';
 import { type QueryPayload } from '../Schema';
 import { type Selection } from '../Selection';
 import { type Debugger } from './debugger';
+
+type Constructor<T> = { new (...args: any[]): T };
 
 export type FetchSelectionsOptions = {
   cache?: Cache;

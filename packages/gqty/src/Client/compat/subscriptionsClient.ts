@@ -9,9 +9,10 @@ import type {
   SubscribeMessage,
   SubscribePayload,
 } from 'graphql-ws';
-import type { Promisable } from 'type-fest';
 import { GQtyError } from '../../Error';
 import type { LegacySelection as Selection } from './selection';
+
+type Promisable<T> = T | Promise<T>;
 
 export type LegacySubscriptionsClient<
   TData extends Record<string, unknown> = Record<string, unknown>

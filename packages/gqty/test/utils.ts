@@ -1,7 +1,7 @@
 import { createClient as createWsClient } from 'graphql-ws';
 import PLazy from 'p-lazy';
 import { createTestApp, gql, TestApp } from 'test-utils';
-import type { PartialDeep } from 'type-fest';
+import { type PartialDeep } from 'type-fest';
 import { WebSocket } from 'ws';
 import { loadOrGenerateConfig } from '../../cli/src/config';
 import { generate } from '../../cli/src/generate';
