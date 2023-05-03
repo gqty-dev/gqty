@@ -41,6 +41,7 @@ describe('useQuery', () => {
 
     await act(async () => {
       await result.current.$refetch();
+      await new Promise((r) => setTimeout(r, 500));
     });
 
     await waitFor(() => expect(result.current.time).not.toBe(time));
