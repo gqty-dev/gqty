@@ -3,7 +3,7 @@ import type { Command } from 'commander';
 import { cosmiconfig } from 'cosmiconfig';
 import { readFile, watch } from 'node:fs/promises';
 import { type GQtyConfig } from '../config';
-import { inquirer, micromatch, SMA, throttle } from '../deps';
+import { inquirer } from '../deps';
 import { convertHeadersInput } from './default/convertHeadersInput';
 import { fetchSchemas, isURL } from './default/fetchSchema';
 import { generateClient } from './default/generateClient';
@@ -61,6 +61,8 @@ export const addCommand = (command: Command) => {
 
         endpoints = await promptEndpoints();
       }
+
+      endpoints = endpoints.map((endpoint) => endpoint.trim()).filter(Boolean);
 
       if (endpoints.length === 0) {
         return logger.error('Please provide your GraphQL endpoint(s).');
@@ -162,6 +164,10 @@ export const addCommand = (command: Command) => {
       // Watch mode
       if (options.watch) {
         const { printSchema } = await import('graphql');
+        const { FasterSMA: SMA } = await import('trading-signals');
+        const { default: throttle } = await import('lodash-es/throttle.js');
+        const micromatch = await import('micromatch');
+
         const sma = new SMA(3);
         const getMovingAverage = () => {
           try {

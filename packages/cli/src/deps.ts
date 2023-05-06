@@ -1,5 +1,3 @@
-import micromatch from 'micromatch';
-
 export { codegen } from '@graphql-codegen/core';
 export * as typescriptPlugin from '@graphql-codegen/typescript';
 export { mergeSchemas } from '@graphql-tools/schema';
@@ -11,8 +9,5 @@ export { fetch } from 'cross-fetch';
 export { default as fg } from 'fast-glob';
 export { default as inquirer } from 'inquirer';
 export { default as sortBy } from 'lodash-es/sortBy.js';
-export { default as throttle } from 'lodash-es/throttle.js';
 export { default as mkdirp } from 'mkdirp';
 export { default as prettier, type Options as PrettierOptions } from 'prettier';
-export { FasterSMA as SMA } from 'trading-signals';
-export { micromatch };
