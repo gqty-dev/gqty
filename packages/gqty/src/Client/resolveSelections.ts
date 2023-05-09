@@ -5,7 +5,7 @@ import {
   type SubscribePayload,
   type Client as WsClient,
 } from 'graphql-ws';
-import { type CloseEvent, type WebSocket } from 'ws';
+import { type CloseEvent } from 'ws';
 import { type FetchOptions } from '.';
 import { type Cache } from '../Cache';
 import { dedupePromise } from '../Cache/query';
@@ -15,8 +15,6 @@ import { buildQuery } from '../QueryBuilder';
 import { type QueryPayload } from '../Schema';
 import { type Selection } from '../Selection';
 import { type Debugger } from './debugger';
-
-type Constructor<T> = { new (...args: any[]): T };
 
 export type FetchSelectionsOptions = {
   cache?: Cache;
@@ -250,8 +248,6 @@ export const subscribeSelections = <
 
         let dispose: (() => void) | undefined;
 
-        const ws = await import('ws');
-
         // Dedupe
         const promise = dedupePromise(cache, hash, () => {
           return new Promise<void>((complete) => {
@@ -262,7 +258,7 @@ export const subscribeSelections = <
                 error(err) {
                   if (Array.isArray(err)) {
                     error(GQtyError.fromGraphQLErrors(err));
-                  } else if (!isCloseEvent(err, ws.WebSocket)) {
+                  } else if (!isCloseEvent(err)) {
                     error(GQtyError.create(err));
                   }
 
@@ -372,8 +368,6 @@ const doSubscribeOnce = async <
     throw new GQtyError(`Subscription client is required for subscritions.`);
   }
 
-  const ws = await import('ws');
-
   return new Promise<ExecutionResult<TData, Record<string, unknown>>>(
     (resolve, reject) => {
       let result: any;
@@ -390,7 +384,7 @@ const doSubscribeOnce = async <
             unsubscribe();
           },
           error(error) {
-            if (isCloseEvent(error, ws.WebSocket)) {
+            if (isCloseEvent(error)) {
               resolve(result);
             } else if (Array.isArray(error)) {
               reject(GQtyError.fromGraphQLErrors(error));
@@ -411,14 +405,14 @@ const doSubscribeOnce = async <
   );
 };
 
-export const isCloseEvent = (
-  input: unknown,
-  wsImpl: Constructor<WebSocket>
-): input is CloseEvent => {
+export const isCloseEvent = (input: unknown): input is CloseEvent => {
   const error = input as CloseEvent;
 
+  if (!error || typeof error !== 'object') return false;
+
   return (
-    (error.type === 'close' && error.target instanceof wsImpl) ||
+    (error.type === 'close' &&
+      error.target?.constructor?.name === 'WebSocket') ||
     (typeof error.code === 'number' &&
       [
         4004, 4005, 4400, 4401, 4403, 4406, 4408, 4409, 4429, 4499, 4500, 4504,
