@@ -1,5 +1,5 @@
-import { $meta } from 'gqty/Accessor';
 import { Cache, GQtyError, QueryPayload, prepass } from '../src';
+import { $meta } from '../src/Accessor';
 import { fetchSelections } from '../src/Client/resolveSelections';
 import { updateCaches } from '../src/Client/updateCaches';
 import { Selection } from '../src/Selection';

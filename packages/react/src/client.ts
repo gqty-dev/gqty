@@ -1,34 +1,39 @@
-import { $meta, BaseGeneratedSchema, GQtyClient, RetryOptions } from 'gqty';
+import {
+  $meta,
+  type BaseGeneratedSchema,
+  type GQtyClient,
+  type RetryOptions,
+} from 'gqty';
 import { getActivePromises } from 'gqty/Cache/query';
-import type { LegacyFetchPolicy } from './common';
-import { createUseMetaState, UseMetaState } from './meta/useMetaState';
-import { createUseMutation, UseMutation } from './mutation/useMutation';
-import { createGraphqlHOC, GraphQLHOC } from './query/hoc';
-import { createPrepareQuery, PrepareQuery } from './query/preparedQuery';
+import { type LegacyFetchPolicy } from './common';
+import { createUseMetaState, type UseMetaState } from './meta/useMetaState';
+import { createUseMutation, type UseMutation } from './mutation/useMutation';
+import { createGraphqlHOC, type GraphQLHOC } from './query/hoc';
+import { createPrepareQuery, type PrepareQuery } from './query/preparedQuery';
 import {
   createUseLazyQuery,
-  LazyFetchPolicy,
-  UseLazyQuery,
+  type LazyFetchPolicy,
+  type UseLazyQuery,
 } from './query/useLazyQuery';
 import {
   createUsePaginatedQuery,
-  PaginatedQueryFetchPolicy,
-  UsePaginatedQuery,
+  type PaginatedQueryFetchPolicy,
+  type UsePaginatedQuery,
 } from './query/usePaginatedQuery';
-import { createUseQuery, UseQuery } from './query/useQuery';
-import { createUseRefetch, UseRefetch } from './query/useRefetch';
+import { createUseQuery, type UseQuery } from './query/useQuery';
+import { createUseRefetch, type UseRefetch } from './query/useRefetch';
 import {
   createUseTransactionQuery,
-  UseTransactionQuery,
+  type UseTransactionQuery,
 } from './query/useTransactionQuery';
 import {
   createSSRHelpers,
-  PrepareReactRender,
-  UseHydrateCache,
+  type PrepareReactRender,
+  type UseHydrateCache,
 } from './ssr/ssr';
 import {
   createUseSubscription,
-  UseSubscription,
+  type UseSubscription,
 } from './subscription/useSubscription';
 import type { ReactClientOptionsWithDefaults } from './utils';
 

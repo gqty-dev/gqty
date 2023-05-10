@@ -130,11 +130,7 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
           // Trigger a fetch when selections are made outside of the rendering
           // phase, such as event listeners or polling.
           if (!getIsRendering()) {
-            debouncedRender();
-
-            // TODO: Make a debounced refetch instead of re-rendering, should
-            // also prevents recursive refetching via prepass.
-            // refetch({ skipPrepass: true });
+            refetch({ skipPrepass: true });
           }
         },
       });

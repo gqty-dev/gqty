@@ -1,12 +1,5 @@
 import { useRerender } from '@react-hookz/web';
 import type { GQtyClient } from 'gqty';
-// import {
-//   Suspense,
-//   useEffect,
-//   type FunctionComponent,
-//   type ReactElement,
-//   type SuspenseProps,
-// } from 'react';
 import * as React from 'react';
 import type { OnErrorHandler } from '../common';
 import type { ReactClientOptionsWithDefaults } from '../utils';

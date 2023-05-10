@@ -2,10 +2,10 @@ import { BaseGeneratedSchema, GQtyClient, GQtyError, RetryOptions } from 'gqty';
 import * as React from 'react';
 import {
   coreHelpers,
-  LegacyFetchPolicy,
   sortBy,
   translateFetchPolicy,
   uniqBy,
+  type LegacyFetchPolicy,
 } from '../common';
 import type { ReactClientOptionsWithDefaults } from '../utils';
 
