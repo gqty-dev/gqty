@@ -3,8 +3,8 @@ import type {
   GQtyClient,
   LegacyHydrateCacheOptions,
 } from 'gqty';
-import { useEffect, type ReactNode } from 'react';
-import { getDefault, ReactClientOptionsWithDefaults } from '../utils';
+import { useEffect, useMemo, type ReactNode } from 'react';
+import { ReactClientOptionsWithDefaults, getDefault } from '../utils';
 
 export interface UseHydrateCacheOptions
   extends Partial<LegacyHydrateCacheOptions> {
@@ -43,6 +43,8 @@ export interface PrepareReactRender {
   }>;
 }
 
+const IS_SERVER = typeof window === 'undefined';
+
 export function createSSRHelpers<TSchema extends BaseGeneratedSchema>(
   { hydrateCache, prepareRender, query, refetch }: GQtyClient<TSchema>,
   { defaults: { refetchAfterHydrate } }: ReactClientOptionsWithDefaults
@@ -57,13 +59,14 @@ export function createSSRHelpers<TSchema extends BaseGeneratedSchema>(
     cacheSnapshot,
     shouldRefetch = refetchAfterHydrate,
   }: UseHydrateCacheOptions) {
-    useEffect(() => {
-      if (cacheSnapshot) {
+    useMemo(() => {
+      if (!IS_SERVER && cacheSnapshot) {
         hydrateCache({ cacheSnapshot, shouldRefetch: false });
       }
-    }, []);
+    }, [cacheSnapshot]);
+
     useEffect(() => {
-      if (shouldRefetch) {
+      if (!IS_SERVER && shouldRefetch) {
         refetch(query).catch(console.error);
       }
     }, [shouldRefetch]);

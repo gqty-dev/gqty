@@ -51,7 +51,7 @@ export const isLegacyCacheSnapshot = (
               it[1] &&
               (!isPlainObject(it[1]) ||
                 !isPlainObject(it[1].input) ||
-                typeof it[1].isUnion !== 'boolean')
+                (it[1].isUnion !== undefined && it[1].isUnion !== true))
             )
               return false;
 
