@@ -124,10 +124,10 @@ describe('interfaces and unions', () => {
     expect(queries).toMatchInlineSnapshot(`
       [
         {
-          "query": "query($v1:NodeType!){b55fc:node(type:$v1){__typename ...on A{a}...on B{b}id}}",
+          "query": "query($a385fe:NodeType!){a0b55:node(type:$a385fe){__typename ...on A{a}...on B{b}id}}",
           "result": {
             "data": {
-              "b55fc": {
+              "a0b55": {
                 "__typename": "A",
                 "a": 1,
                 "id": "1",
@@ -135,7 +135,7 @@ describe('interfaces and unions', () => {
             },
           },
           "variables": {
-            "v1": "A",
+            "a385fe": "A",
           },
         },
       ]
@@ -187,10 +187,10 @@ describe('interfaces and unions', () => {
     expect(queries).toMatchInlineSnapshot(`
       [
         {
-          "query": "query($v1:NodeType!){b55fc:node(type:$v1){__typename ...on A{a node{__typename ...on A{id node{__typename ...on C{node{__typename ...on A{id}id}}id}}id}}...on B{b}id}}",
+          "query": "query($a385fe:NodeType!){a0b55:node(type:$a385fe){__typename ...on A{a node{__typename ...on A{id node{__typename ...on C{node{__typename ...on A{id}id}}id}}id}}...on B{b}id}}",
           "result": {
             "data": {
-              "b55fc": {
+              "a0b55": {
                 "__typename": "A",
                 "a": 1,
                 "id": "1",
@@ -206,7 +206,7 @@ describe('interfaces and unions', () => {
             },
           },
           "variables": {
-            "v1": "A",
+            "a385fe": "A",
           },
         },
       ]

@@ -1,10 +1,9 @@
-import { FunctionComponent } from 'react';
+import { type FunctionComponent, type PropsWithChildren } from 'react';
 import Skeleton from './Skeleton';
 
-const SmallText: FunctionComponent<{ textLength?: number }> = ({
-  textLength = 25,
-  children,
-}) => (
+const SmallText: FunctionComponent<
+  PropsWithChildren<{ textLength?: number }>
+> = ({ textLength = 25, children }) => (
   <p className="text-xs text-gray-500 dark:text-gray-400">
     <Skeleton
       fallback={

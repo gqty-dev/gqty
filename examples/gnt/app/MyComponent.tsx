@@ -1,7 +1,7 @@
 'use client';
 
-import { useQuery } from '@/gqty';
 import { type FunctionComponent } from 'react';
+import { useQuery } from '~/gqty';
 import Avatar from './Avatar';
 import Card from './Card';
 import SmallText from './SmallText';

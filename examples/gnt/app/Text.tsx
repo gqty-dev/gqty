@@ -1,7 +1,7 @@
-import { FunctionComponent } from 'react';
+import { type FunctionComponent, type PropsWithChildren } from 'react';
 import Skeleton from './Skeleton';
 
-const Text: FunctionComponent<{ textLength?: number }> = ({
+const Text: FunctionComponent<PropsWithChildren<{ textLength?: number }>> = ({
   textLength = 25,
   children,
 }) => (

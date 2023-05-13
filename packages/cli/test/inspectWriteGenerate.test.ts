@@ -105,8 +105,8 @@ test('basic inspectWriteGenerate functionality', async () => {
       const cache = new Cache(
         undefined,
         /**
-         * Default cache options immediate expiry with a 5 minutes window of
-         * stale-while-revalidate.
+         * Default option is immediate cache expiry but keep it for 5 minutes,
+         * allowing soft refetches in background.
          */
         {
           maxAge: 0,
@@ -318,8 +318,8 @@ describe('from file', () => {
         const cache = new Cache(
           undefined,
           /**
-           * Default cache options immediate expiry with a 5 minutes window of
-           * stale-while-revalidate.
+           * Default option is immediate cache expiry but keep it for 5 minutes,
+           * allowing soft refetches in background.
            */
           {
             maxAge: 0,
@@ -530,8 +530,8 @@ describe('from file', () => {
         const cache = new Cache(
           undefined,
           /**
-           * Default cache options immediate expiry with a 5 minutes window of
-           * stale-while-revalidate.
+           * Default option is immediate cache expiry but keep it for 5 minutes,
+           * allowing soft refetches in background.
            */
           {
             maxAge: 0,
@@ -741,8 +741,8 @@ describe('from file', () => {
         const cache = new Cache(
           undefined,
           /**
-           * Default cache options immediate expiry with a 5 minutes window of
-           * stale-while-revalidate.
+           * Default option is immediate cache expiry but keep it for 5 minutes,
+           * allowing soft refetches in background.
            */
           {
             maxAge: 0,
@@ -996,8 +996,8 @@ describe('from multiple files', () => {
         const cache = new Cache(
           undefined,
           /**
-           * Default cache options immediate expiry with a 5 minutes window of
-           * stale-while-revalidate.
+           * Default option is immediate cache expiry but keep it for 5 minutes,
+           * allowing soft refetches in background.
            */
           {
             maxAge: 0,
@@ -1267,8 +1267,8 @@ test('specify generateOptions to inspectWriteGenerate', async () => {
       const cache = new Cache(
         undefined,
         /**
-         * Default cache options immediate expiry with a 5 minutes window of
-         * stale-while-revalidate.
+         * Default option is immediate cache expiry but keep it for 5 minutes,
+         * allowing soft refetches in background.
          */
         {
           maxAge: 0,
@@ -1628,8 +1628,8 @@ describe('CLI behavior', () => {
         const cache = new Cache(
           undefined,
           /**
-           * Default cache options immediate expiry with a 5 minutes window of
-           * stale-while-revalidate.
+           * Default option is immediate cache expiry but keep it for 5 minutes,
+           * allowing soft refetches in background.
            */
           {
             maxAge: 0,

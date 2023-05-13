@@ -288,8 +288,8 @@ test('creates dir, generates code and writes new file', async () => {
       const cache = new Cache(
         undefined,
         /**
-         * Default cache options immediate expiry with a 5 minutes window of
-         * stale-while-revalidate.
+         * Default option is immediate cache expiry but keep it for 5 minutes,
+         * allowing soft refetches in background.
          */
         {
           maxAge: 0,

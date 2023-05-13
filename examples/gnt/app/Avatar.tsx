@@ -1,13 +1,13 @@
-import { Character, Maybe } from '@/gqty';
 import NextImage from 'next/image';
-import { type FunctionComponent } from 'react';
+import { type FunctionComponent, type PropsWithChildren } from 'react';
+import { type Character, type Maybe } from '~/gqty';
 import Skeleton from './Skeleton';
 
 const avatarStyle = `inline-block rounded-full mr-3`;
 
-const Avatar: FunctionComponent<{ character?: Maybe<Character> }> = ({
-  character,
-}) => (
+const Avatar: FunctionComponent<
+  PropsWithChildren<{ character?: Maybe<Character> }>
+> = ({ character }) => (
   <Skeleton
     fallback={
       <div

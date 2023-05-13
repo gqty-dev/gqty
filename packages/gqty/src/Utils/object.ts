@@ -6,6 +6,11 @@ export const isObject = (v: unknown): v is object =>
 export const isPlainObject = (v: unknown): v is PlainObject =>
   isObject(v) && !Array.isArray(v);
 
+export function isEmptyObject(obj: object) {
+  for (var _i in obj) return false;
+  return true;
+}
+
 export interface ObjectWithType<Typename extends string = string>
   extends Record<string, unknown> {
   __typename: Typename;

@@ -21,7 +21,7 @@ describe('useMutation', () => {
       {
         "data": {
           "mutation": {
-            "a236d": {
+            "a75a2": {
               "__typename": "Human",
               "id": "1",
               "name": "John Doe",

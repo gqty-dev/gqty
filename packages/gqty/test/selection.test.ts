@@ -40,9 +40,9 @@ describe('selection creation', () => {
       'a',
       'b',
       0,
-      'b424a',
+      'a07b4',
     ]);
-    expect(selectionD.alias).toBe('b424a');
+    expect(selectionD.alias).toBe('a07b4');
 
     const repeatSelectionD = selectionC.getChild('d', {
       input: {
@@ -56,9 +56,9 @@ describe('selection creation', () => {
       'a',
       'b',
       0,
-      'b424a',
+      'a07b4',
     ]);
-    expect(repeatSelectionD.alias).toBe('b424a');
+    expect(repeatSelectionD.alias).toBe('a07b4');
 
     const selectionE = selectionD.getChild('e');
 
@@ -67,7 +67,7 @@ describe('selection creation', () => {
       'a',
       'b',
       0,
-      'b424a',
+      'a07b4',
       'e',
     ]);
 

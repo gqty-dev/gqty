@@ -1,13 +1,12 @@
-import memoize from 'just-memoize';
-import hash from 'object-hash';
 import { GQtyError } from '../Error';
+import { hash } from '../Utils/hash';
 
 const createSymbol = Symbol();
 
 const aliasGenerator = {
   seq: 0,
   map: new WeakMap<object, number>(),
-  hash: memoize((...args: unknown[]) => hash(args).replace(/^\d+/, '')),
+  hash,
   get(key: string | number, input: Record<string, unknown>) {
     const hash = this.hash({ key, ...input });
     if (hash) return hash;

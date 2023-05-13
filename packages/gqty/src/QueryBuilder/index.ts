@@ -1,8 +1,8 @@
 import set from 'just-safe-set';
-import hash from 'object-hash';
 import type { Cache } from '../Cache';
 import type { QueryPayload } from '../Schema';
 import type { Selection } from '../Selection';
+import { hash } from '../Utils';
 
 export type QueryBuilderOptions = {
   batchWindow: number;
@@ -52,6 +52,8 @@ export const buildQuery = (
   const variables = new Map<string, { type: string; value: unknown }>();
   const inputDedupe = new Map<object, string>();
 
+  // TODO: Stablize variable names, maybe by sorting selections beforehand?
+
   for (const { ancestry } of selections) {
     set(
       root,
@@ -69,17 +71,23 @@ export const buildQuery = (
         }
 
         const key = s.alias ? `${s.alias}:${s.key}` : s.key;
-
         const input = s.input;
+
         if (input) {
           if (!inputDedupe.has(input)) {
             const queryInputs = Object.entries(input.values)
               .map(([key, value]) => {
-                const index = variables.size + 1;
+                const variableName = hash((s.alias ?? s.key) + '_' + key).slice(
+                  0,
+                  6
+                );
 
-                variables.set(`v${index}`, { value, type: input.types[key] });
+                variables.set(`${variableName}`, {
+                  value,
+                  type: input.types[key],
+                });
 
-                return `${key}:$v${index}`;
+                return `${key}:$${variableName}`;
               })
               .join(' ');
 
@@ -121,7 +129,8 @@ export const buildQuery = (
       query = query.replace(
         rootKey,
         `${rootKey}(${[...variables.entries()]
-          .map(([, { type }], index) => `$v${index + 1}:${type}`)
+          .sort(([a], [b]) => a.localeCompare(b))
+          .map(([name, { type }]) => `$${name}:${type}`)
           .join('')})`
       );
     }
