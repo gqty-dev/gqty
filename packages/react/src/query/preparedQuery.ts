@@ -1,4 +1,4 @@
-import { BaseGeneratedSchema, GQtyClient, GQtyError } from 'gqty';
+import { GQtyError, type BaseGeneratedSchema, type GQtyClient } from 'gqty';
 import { useSyncExternalStore } from 'use-sync-external-store/shim/index.js';
 
 import { createMemoryStore } from '../memoryStore';

@@ -1,5 +1,5 @@
-import { AsyncExecutor } from '@graphql-tools/utils';
-import { buildSchema, GraphQLSchema, type ExecutionResult } from 'graphql';
+import { type AsyncExecutor } from '@graphql-tools/utils';
+import { GraphQLSchema, buildSchema, type ExecutionResult } from 'graphql';
 import { readFile } from 'node:fs/promises';
 import { extname } from 'path';
 import { type GQtyConfig } from '../../config';

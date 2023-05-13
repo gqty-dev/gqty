@@ -3,10 +3,10 @@ import { flattenObject } from '../Cache/crawl';
 import { isCacheObject } from '../Cache/utils';
 import { GQtyError } from '../Error';
 import {
-  GeneratedSchemaObject,
-  parseSchemaType,
   SchemaUnionsKey,
-  Type,
+  parseSchemaType,
+  type GeneratedSchemaObject,
+  type Type,
 } from '../Schema';
 import type { Selection } from '../Selection';
 import { isPlainObject } from '../Utils';

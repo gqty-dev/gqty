@@ -1,12 +1,12 @@
 import {
-  BaseGeneratedSchema,
-  GQtyClient,
   GQtyError,
-  RetryOptions,
   Selection,
+  type BaseGeneratedSchema,
+  type GQtyClient,
+  type RetryOptions,
 } from 'gqty';
 import * as React from 'react';
-import type { ReactClientOptionsWithDefaults } from '../utils';
+import { type ReactClientOptionsWithDefaults } from '../utils';
 
 interface UseRefetchState {
   isLoading: boolean;

@@ -1,5 +1,5 @@
 import { useRerender, useThrottledCallback } from '@react-hookz/web';
-import { BaseGeneratedSchema, GQtyClient, GQtyError } from 'gqty';
+import { GQtyError, type BaseGeneratedSchema, type GQtyClient } from 'gqty';
 import { useEffect, useMemo, useState } from 'react';
 
 export type UseSubscription<TSchema extends BaseGeneratedSchema> = (

@@ -1,6 +1,6 @@
 import { type GraphQLSchema } from 'graphql';
 import { unlink } from 'node:fs/promises';
-import { SetRequired, type GQtyConfig } from '../../config';
+import { type GQtyConfig, type SetRequired } from '../../config';
 import { inquirer } from '../../deps';
 import { writeGenerate } from '../../writeGenerate';
 import { logger } from './logger';

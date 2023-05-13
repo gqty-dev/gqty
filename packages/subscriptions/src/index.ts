@@ -1,14 +1,13 @@
 import {
   GQtyError,
-  LegacySelection as Selection,
-  LegacySubscribeEvents as SubscribeEvents,
-  LegacySubscriptionsClient as SubscriptionsClient,
+  type LegacySelection as Selection,
+  type LegacySubscribeEvents as SubscribeEvents,
+  type LegacySubscriptionsClient as SubscriptionsClient,
 } from 'gqty';
-
 import {
   Client,
-  ClientOptions,
-  OperationCallback,
+  type ClientOptions,
+  type OperationCallback,
 } from './subscription/client';
 
 export interface SubscriptionsClientOptions extends ClientOptions {

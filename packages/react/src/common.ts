@@ -1,14 +1,14 @@
 import {
   $meta,
+  GQtyError,
+  Selection,
   castNotSkeleton,
   castNotSkeletonDeep,
-  FetchOptions,
   getArrayFields,
   getFields,
-  GQtyError,
   prepass,
   selectFields,
-  Selection,
+  type FetchOptions,
 } from 'gqty';
 import * as React from 'react';
 

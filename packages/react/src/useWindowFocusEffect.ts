@@ -1,4 +1,4 @@
-import { DependencyList, useEffect } from 'react';
+import { useEffect, type DependencyList } from 'react';
 
 export type UseFocusChangeEffectOptions = {
   enabled?: boolean;

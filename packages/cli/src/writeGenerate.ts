@@ -1,9 +1,9 @@
 import { existsSync, promises } from 'fs';
-import type { GraphQLSchema } from 'graphql';
+import { type GraphQLSchema } from 'graphql';
 import { dirname, resolve } from 'path';
-import { defaultConfig, GQtyConfig } from './config';
+import { defaultConfig, type GQtyConfig } from './config';
 import * as deps from './deps.js';
-import { generate, TransformSchemaOptions } from './generate';
+import { generate, type TransformSchemaOptions } from './generate';
 
 export type OnExistingFileConflict =
   | ((existingFile: string) => void | Promise<void>)

@@ -1,7 +1,7 @@
 import { useRerender } from '@react-hookz/web';
 import { GQtyError, Selection, useMetaStateHack } from 'gqty';
 import * as React from 'react';
-import { SelectionsOrProxy, useExtractedSelections } from '../common';
+import { useExtractedSelections, type SelectionsOrProxy } from '../common';
 
 export interface UseMetaStateOptions<T extends object> {
   onStartFetching?: () => void;

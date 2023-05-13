@@ -1,15 +1,15 @@
 import { fromJSON, toJSON } from 'flatted';
 import type { Cache, CacheLeaf, CacheNode, CacheObject, CacheRoot } from '.';
 import { GQtyError } from '../Error';
-import { deepCopy } from '../Helpers/deepCopy';
 import { FrailMap } from '../Helpers/FrailMap';
+import { deepCopy } from '../Helpers/deepCopy';
 import { isPlainObject } from '../Utils';
 import { crawl } from './crawl';
 import {
-  CacheNormalizationHandler,
   isNormalizedObjectShell,
-  NormalizedObjectShell,
   normalizeObject,
+  type CacheNormalizationHandler,
+  type NormalizedObjectShell,
 } from './normalization';
 
 export type Persistors = {

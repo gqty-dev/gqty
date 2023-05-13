@@ -9,46 +9,49 @@ import { type Selectable } from '../../Selectable';
 import { type Selection } from '../../Selection';
 import { type createDebugger } from '../debugger';
 import { type Resolvers } from '../resolvers';
-import { createLegacyHydrateCache, LegacyHydrateCache } from './hydrateCache';
+import {
+  createLegacyHydrateCache,
+  type LegacyHydrateCache,
+} from './hydrateCache';
 import {
   createLegacyInlineResolved,
-  LegacyInlineResolved,
+  type LegacyInlineResolved,
 } from './inlineResolved';
-import { createLegacyMutate, LegacyMutate } from './mutate';
-import { createLegacyPrefetch, LegacyPrefetch } from './prefetch';
+import { createLegacyMutate, type LegacyMutate } from './mutate';
+import { createLegacyPrefetch, type LegacyPrefetch } from './prefetch';
 import {
   createLegacyPrepareRender,
-  LegacyPrepareRender,
+  type LegacyPrepareRender,
 } from './prepareRender';
 import { type LegacyQueryFetcher } from './queryFetcher';
-import { createRefetch, LegacyRefetch } from './refetch';
-import { createLegacyResolved, LegacyResolved } from './resolved';
+import { createRefetch, type LegacyRefetch } from './refetch';
+import { createLegacyResolved, type LegacyResolved } from './resolved';
 import { type LegacySubscriptionsClient } from './subscriptionsClient';
-import { createLegacyTrack, LegacyTrack } from './track';
+import { createLegacyTrack, type LegacyTrack } from './track';
 
-export type {
-  LegacyHydrateCache,
-  LegacyHydrateCacheOptions,
+export {
+  type LegacyHydrateCache,
+  type LegacyHydrateCacheOptions,
 } from './hydrateCache';
-export type {
-  LegacyInlineResolved,
-  LegacyInlineResolveOptions,
+export {
+  type LegacyInlineResolveOptions,
+  type LegacyInlineResolved,
 } from './inlineResolved';
-export type { LegacyMutate, LegacyMutateHelpers } from './mutate';
-export type { LegacyPrefetch } from './prefetch';
-export type { LegacyQueryFetcher } from './queryFetcher';
-export type { LegacyRefetch } from './refetch';
-export type { LegacyResolved, LegacyResolveOptions } from './resolved';
-export type { LegacySelection } from './selection';
-export type {
-  LegacySubscribeEvents,
-  LegacySubscriptionsClient,
+export { type LegacyMutate, type LegacyMutateHelpers } from './mutate';
+export { type LegacyPrefetch } from './prefetch';
+export { type LegacyQueryFetcher } from './queryFetcher';
+export { type LegacyRefetch } from './refetch';
+export { type LegacyResolveOptions, type LegacyResolved } from './resolved';
+export { type LegacySelection } from './selection';
+export {
+  type LegacySubscribeEvents,
+  type LegacySubscriptionsClient,
 } from './subscriptionsClient';
-export type {
-  LegacyTrack,
-  LegacyTrackCallInfo,
-  LegacyTrackCallType,
-  LegacyTrackOptions,
+export {
+  type LegacyTrack,
+  type LegacyTrackCallInfo,
+  type LegacyTrackCallType,
+  type LegacyTrackOptions,
 } from './track';
 
 export type CreateLegacyClientOptions<TSchema extends BaseGeneratedSchema> = {

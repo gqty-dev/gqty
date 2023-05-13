@@ -1,10 +1,10 @@
-import type {
-  BaseGeneratedSchema,
-  GQtyClient,
-  LegacyHydrateCacheOptions,
+import {
+  type BaseGeneratedSchema,
+  type GQtyClient,
+  type LegacyHydrateCacheOptions,
 } from 'gqty';
 import { useEffect, useMemo, type ReactNode } from 'react';
-import { ReactClientOptionsWithDefaults, getDefault } from '../utils';
+import { getDefault, type ReactClientOptionsWithDefaults } from '../utils';
 
 export interface UseHydrateCacheOptions
   extends Partial<LegacyHydrateCacheOptions> {

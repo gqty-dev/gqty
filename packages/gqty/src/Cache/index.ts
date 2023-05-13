@@ -2,19 +2,19 @@ import set from 'just-safe-set';
 import { MultiDict } from 'multidict';
 import { isSkeleton } from '../Accessor/skeleton';
 import { deepCopy, FrailMap, select } from '../Helpers';
-import type { GeneratedSchemaObject } from '../Schema';
-import type { Selection } from '../Selection';
+import { type GeneratedSchemaObject } from '../Schema';
+import { type Selection } from '../Selection';
 import { crawl } from './crawl';
 import {
-  CacheNormalizationHandler,
   deepNormalizeObject,
   defaultNormalizationHandler,
-  NormalizedObjectShell,
+  type CacheNormalizationHandler,
+  type NormalizedObjectShell,
 } from './normalization';
 import {
-  CacheSnapshot,
   exportCacheSnapshot,
   importCacheSnapshot,
+  type CacheSnapshot,
 } from './persistence';
 import { isCacheObject } from './utils';
 

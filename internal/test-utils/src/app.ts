@@ -1,11 +1,11 @@
 import {
   createDeferredPromise,
-  FastifyAppOptions,
-  PromiseType,
+  type FastifyAppOptions,
+  type PromiseType,
 } from '@graphql-ez/fastify';
 import { CreateTestClient, GlobalTeardown } from '@graphql-ez/fastify-testing';
-import { CodegenOptions, ezCodegen } from '@graphql-ez/plugin-codegen';
-import { ezSchema, EZSchemaOptions } from '@graphql-ez/plugin-schema';
+import { ezCodegen, type CodegenOptions } from '@graphql-ez/plugin-codegen';
+import { ezSchema, type EZSchemaOptions } from '@graphql-ez/plugin-schema';
 import { ezWebSockets } from '@graphql-ez/plugin-websockets';
 import { InMemoryPubSub } from 'graphql-ez/pubsub';
 import { inspect } from 'util';

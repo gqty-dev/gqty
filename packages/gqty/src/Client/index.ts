@@ -2,7 +2,7 @@ import { type Client as SseClient } from 'graphql-sse';
 import { type Client as WsClient } from 'graphql-ws';
 import { createSchemaAccessor } from '../Accessor';
 import { Cache } from '../Cache';
-import { createPersistors, Persistors } from '../Cache/persistence';
+import { createPersistors, type Persistors } from '../Cache/persistence';
 import type { RetryOptions } from '../Error';
 import type {
   GeneratedSchemaObject,
@@ -12,14 +12,14 @@ import type {
 } from '../Schema';
 import {
   createLegacyClient,
-  LegacyClient,
-  LegacyClientOptions,
+  type LegacyClient,
+  type LegacyClientOptions,
 } from './compat/client';
 import { createLegacyQueryFetcher } from './compat/queryFetcher';
 import { createLegacySubscriptionsClient } from './compat/subscriptionsClient';
-import { createContext, CreateContextOptions } from './context';
+import { createContext, type CreateContextOptions } from './context';
 import { createDebugger } from './debugger';
-import { createResolvers, Resolvers } from './resolvers';
+import { createResolvers, type Resolvers } from './resolvers';
 
 export { $meta } from '../Accessor';
 export { getFields, prepass, selectFields } from '../Helpers';

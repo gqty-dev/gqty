@@ -1,6 +1,6 @@
-import { Cache, CacheGetOptions } from '../Cache';
+import { Cache, type CacheGetOptions } from '../Cache';
 import { type Disposable } from '../Disposable';
-import type { ScalarsEnumsHash, Schema } from '../Schema';
+import { type ScalarsEnumsHash, type Schema } from '../Schema';
 import { type Selectable } from '../Selectable';
 
 export type SchemaContext<

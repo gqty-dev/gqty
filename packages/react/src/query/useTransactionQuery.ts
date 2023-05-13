@@ -1,9 +1,13 @@
 import { useUpdateEffect } from '@react-hookz/web';
-import type { BaseGeneratedSchema, GQtyError, RetryOptions } from 'gqty';
 import {
-  LegacyFetchPolicy,
-  OnErrorHandler,
+  type BaseGeneratedSchema,
+  type GQtyError,
+  type RetryOptions,
+} from 'gqty';
+import {
   translateFetchPolicy,
+  type LegacyFetchPolicy,
+  type OnErrorHandler,
 } from '../common';
 import type { ReactClientOptionsWithDefaults } from '../utils';
 import type { UseQuery } from './useQuery';

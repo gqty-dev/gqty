@@ -1,4 +1,9 @@
-import { BaseGeneratedSchema, GQtyClient, GQtyError, RetryOptions } from 'gqty';
+import {
+  GQtyError,
+  type BaseGeneratedSchema,
+  type GQtyClient,
+  type RetryOptions,
+} from 'gqty';
 import * as React from 'react';
 import {
   coreHelpers,
@@ -7,7 +12,7 @@ import {
   uniqBy,
   type LegacyFetchPolicy,
 } from '../common';
-import type { ReactClientOptionsWithDefaults } from '../utils';
+import { type ReactClientOptionsWithDefaults } from '../utils';
 
 export type PaginatedQueryFetchPolicy = Extract<
   LegacyFetchPolicy,
