@@ -68,7 +68,14 @@ export type Writeable<T> = { -readonly [P in keyof T]: T[P] };
 export type UseQueryReturnValue<GeneratedSchema extends { query: object }> =
   GeneratedSchema['query'] & {
     $state: UseQueryState;
-    $refetch: (ignoreCache?: boolean) => Promise<unknown>;
+    $refetch: (
+      /**
+       * Hard refetch, ignoring current cache freshness.
+       *
+       * @default true
+       */
+      ignoreCache?: boolean
+    ) => Promise<unknown>;
   };
 
 export interface UseQuery<GeneratedSchema extends { query: object }> {
@@ -316,7 +323,7 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
     return useMemo(() => {
       return new Proxy(
         Object.freeze({
-          $refetch: (ignoreCache = false) => refetch({ ignoreCache }),
+          $refetch: (ignoreCache = true) => refetch({ ignoreCache }),
           $state: Object.freeze({
             isLoading: state.promise !== undefined,
             error: state.error,
