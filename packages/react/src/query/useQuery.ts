@@ -1,5 +1,4 @@
 import {
-  useDebouncedCallback,
   useIntervalEffect,
   usePrevious,
   useRerender,
@@ -13,7 +12,7 @@ import {
   type RetryOptions,
 } from 'gqty';
 import { MultiDict } from 'multidict';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import {
   translateFetchPolicy,
   type LegacyFetchPolicy,
@@ -119,7 +118,6 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
     staleWhileRevalidate = defaultStaleWhileRevalidate,
   } = {}) => {
     const render = useRerender();
-    const debouncedRender = useDebouncedCallback(render, [render], 50);
     const getIsRendering = useIsRendering();
     const resolver = useMemo(() => {
       const resolver = client.createResolver({
@@ -186,24 +184,14 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
       if (state.promise && !context.hasCacheHit) throw state.promise;
     }
 
-    // Subscribe current selection to cache changes. Selection size changes
-    // after render so it cannot be done via useEffect, instead refs has to be
-    // used.
-    {
-      const selectionSizeRef = useRef(0);
-      const unsubscribeRef = useRef<() => void>();
-
-      useEffect(() => {
-        if (selections.size === selectionSizeRef.current) return;
-        selectionSizeRef.current = selections.size;
-
-        unsubscribeRef.current?.();
-        unsubscribeRef.current = context.cache.subscribe(
+    useEffect(
+      () =>
+        context.cache.subscribe(
           [...selections].map((s) => s.cacheKeys.join('.')),
-          debouncedRender
-        );
-      }, [debouncedRender, selections.size]);
-    }
+          render
+        ),
+      [render, selections.size]
+    );
 
     const refetch = useCallback(
       async (options?: { ignoreCache?: boolean; skipPrepass?: boolean }) => {

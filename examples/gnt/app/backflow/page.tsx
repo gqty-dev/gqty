@@ -1,75 +1,80 @@
 'use client';
 
-import { DataTable, Grommet, Layer } from 'grommet';
-import { hpe } from 'grommet-theme-hpe';
 import { useState, type FunctionComponent } from 'react';
-import { useQuery, type Character, type Query } from '~/gqty';
-import ChildComponent from './ChildComponent';
+import Button from '~/components/tailwindui/Button';
+import { useQuery, type Query } from '~/gqty';
 
 const CharacterList: FunctionComponent<{
-  query: Query;
-  onClick?: (character: Character) => void;
-}> = ({ query, onClick }) => (
-  <DataTable
-    onClickRow={({ datum }) => onClick?.(datum!)}
-    data={query.characters({ filter: { name: 'Alien' } })?.results ?? []}
-    columns={[
-      {
-        property: 'id',
-        header: 'ID',
-        primary: true,
-      },
-      {
-        property: 'name',
-        header: 'Name',
-      },
-    ]}
-  />
-);
-
-const LocationList: FunctionComponent<{ query: Query }> = ({ query }) => (
-  <DataTable
-    onClickRow={() => {}}
-    data={query.locations()?.results ?? []}
-    columns={[
-      {
-        property: 'id',
-        header: 'ID',
-        primary: true,
-      },
-      {
-        property: 'name',
-        header: 'Name',
-      },
-    ]}
-  />
-);
-
-export default function Home() {
+  onClick?: (query: Query) => void;
+}> = ({ onClick }) => {
   const query = useQuery();
-  const [childQuery, setChildQuery] = useState<Query>();
+
+  console.debug('render chars');
 
   return (
-    <Grommet full theme={hpe}>
-      <main className="p-5 min-h-screen">
-        <div className="border rounded-xl p-2 m-2">
-          <h1 className="text-2xl">Parent</h1>
+    <>
+      {query
+        .characters({ filter: { name: 'Alien' } })
+        ?.results?.map((character) => (
+          <button
+            key={character?.id ?? '0'}
+            className="block text-blue-600 hover:text-blue-400 hover:underline cursor-pointer"
+            onClick={
+              character
+                ? () => {
+                    onClick?.(query);
+                  }
+                : undefined
+            }
+          >
+            {character?.id}. {character?.name} ({character?.location?.name})
+          </button>
+        ))}
+    </>
+  );
+};
 
-          <h2>Query using self scope</h2>
+const LocationList: FunctionComponent = () => {
+  const query = useQuery();
 
-          <CharacterList query={query} />
+  console.debug('render location');
 
-          {childQuery && (
-            <Layer position={'top'} onEsc={() => setChildQuery(undefined)}>
-              <h2>Query using child scope:</h2>
-
-              <LocationList query={childQuery} />
-            </Layer>
-          )}
+  return (
+    <>
+      {query.locations()?.results?.map((location) => (
+        <div key={location?.id ?? '0'}>
+          {location?.id}. {location?.name} (
+          {location?.residents.map((r) => r?.id).length})
         </div>
+      ))}
+    </>
+  );
+};
 
-        <ChildComponent onBackflow={(query) => setChildQuery(query)} />
-      </main>
-    </Grommet>
+export default function Home() {
+  const [childQuery, setChildQuery] = useState<Query>();
+
+  console.debug('render parent');
+
+  return (
+    <main className="p-5 min-h-screen">
+      {childQuery && (
+        <div className="border rounded-xl bg-white p-2">
+          <Button className="mb-2" onClick={() => setChildQuery(undefined)}>
+            Close
+          </Button>
+
+          <LocationList />
+        </div>
+      )}
+
+      <div className="border rounded-xl p-2 m-2">
+        <h1 className="text-2xl">Parent</h1>
+
+        <h2>Query using self scope</h2>
+
+        <CharacterList onClick={(query) => setChildQuery(query)} />
+      </div>
+    </main>
   );
 }
