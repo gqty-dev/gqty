@@ -140,6 +140,10 @@ export const addCommand = (command: Command) => {
         config.javascriptOutput = !(await promptTypescript(
           !config.javascriptOutput
         ));
+
+        config.destination ??= await promptTarget(
+          config.javascriptOutput ? 'gqty/index.js' : 'gqty/index.ts'
+        );
       }
 
       config.destination ??= config.javascriptOutput
@@ -259,6 +263,17 @@ const promptEndpoints = async () => {
     .split(/[,\s+]/)
     .map((s) => s.trim())
     .filter(Boolean);
+};
+
+const promptTarget = async (defaultTarget: string) => {
+  const { target } = await inquirer.prompt<{ target: string }>({
+    name: 'target',
+    type: 'input',
+    message: 'Where should the client be generated?',
+    default: defaultTarget,
+  });
+
+  return target;
 };
 
 const promptReact = async (defaultValue: boolean) => {
