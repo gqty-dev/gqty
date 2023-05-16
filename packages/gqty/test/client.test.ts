@@ -1,4 +1,4 @@
-import { Cache, GQtyError, QueryPayload, prepass } from '../src';
+import { Cache, GQtyError, prepass, type QueryPayload } from '../src';
 import { $meta } from '../src/Accessor';
 import { fetchSelections } from '../src/Client/resolveSelections';
 import { updateCaches } from '../src/Client/updateCaches';

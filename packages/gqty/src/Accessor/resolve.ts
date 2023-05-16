@@ -395,6 +395,9 @@ export const deepMetadata = (input: any) => {
 /**
  * Read data from cache, creates an empty data slot that never expires when
  * target is not found.
+ *
+ * `expiresAt` and `swrBefore` is read from cache real-time, allowing stale
+ * accessor references to keep working.
  */
 const ensureCache = (
   type: string,
@@ -405,7 +408,21 @@ const ensureCache = (
     cache.set({ [type]: { [field]: undefined } });
   }
 
-  return cache.get(`${type}.${field}`, cacheOptions)!;
+  const { data } = cache.get(`${type}.${field}`, cacheOptions)!;
+
+  return {
+    data,
+    get expiresAt() {
+      return (
+        cache.get(`${type}.${field}`, cacheOptions)?.expiresAt ?? -Infinity
+      );
+    },
+    get swrBefore() {
+      return (
+        cache.get(`${type}.${field}`, cacheOptions)?.swrBefore ?? -Infinity
+      );
+    },
+  };
 };
 
 /**

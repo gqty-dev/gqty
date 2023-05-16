@@ -1,5 +1,5 @@
-import { sep } from 'path';
 import { readFileSync } from 'fs';
+import { sep } from 'path';
 
 const isCLIPackage = process.cwd().endsWith(sep + 'cli');
 

@@ -59,6 +59,11 @@ export type CacheDataContainer<TData extends CacheNode = CacheNode> = {
    */
   swrBefore?: number;
 
+  /**
+   * Remove internal data reference, allowing WeakRefs to be garbase collected.
+   *
+   * For StrongRefs, calling this function has no effect.
+   */
   unref?: () => void;
 };
 
@@ -107,8 +112,8 @@ export class Cache {
   /** Look up table for normalized objects. */
   #normalizedObjects = new Map<string, NormalizedObjectShell<CacheObject>>();
 
-  /** Temporary strong references in parallel with the WeakRef in FrailMap. */
-  #dataRefs = new Map<symbol, CacheDataContainer>();
+  /** Temporary strong references for the WeakRefs in FrailMap. */
+  #dataRefs = new Set<CacheDataContainer>();
 
   constructor(
     data?: CacheSnapshot,
@@ -365,13 +370,16 @@ export class Cache {
 
     for (const [type, cacheObjects = {}] of Object.entries(values)) {
       for (const [field, data] of Object.entries(cacheObjects as CacheObject)) {
-        const __ref = Symbol();
+        // TODO: Cache should reuse existing data containers (if any) and
+        // update the data, age, swr, and unref timer via Object.assign().
+
+        const cacheKey = `${type}.${field}`;
+
         let unrefTimer: ReturnType<typeof setTimeout> | undefined;
         const unref = () => {
           clearTimeout(unrefTimer);
-          this.#dataRefs.delete(__ref);
+          this.#dataRefs.delete(dataContainer);
         };
-        const cacheKey = `${type}.${field}`;
 
         const dataContainer: CacheDataContainer =
           // Mutation and subscription results should be returned right away for
@@ -394,7 +402,14 @@ export class Cache {
               };
 
         // Opens up previous cache value for GC.
-        this.#data.get(cacheKey)?.unref?.();
+        const existing = this.#data.get(cacheKey);
+        if (existing) {
+          existing.unref?.();
+
+          Object.assign(existing, dataContainer);
+        } else {
+          this.#data.set(cacheKey, dataContainer, { strong: !isFinite(age) });
+        }
 
         if (isFinite(age + swr)) {
           unrefTimer = setTimeout(unref, age + swr);
@@ -403,10 +418,8 @@ export class Cache {
             unrefTimer.unref();
           }
 
-          this.#dataRefs.set(__ref, dataContainer);
+          this.#dataRefs.add(dataContainer);
         }
-
-        this.#data.set(cacheKey, dataContainer, { strong: !isFinite(age) });
       }
     }
 
