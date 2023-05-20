@@ -59,7 +59,11 @@ export const addCommand = (command: Command) => {
           process.exit(1);
         }
 
-        endpoints = await promptEndpoints();
+        endpoints = await promptEndpoints(
+          config.introspections
+            ? Object.keys(config.introspections).join(', ')
+            : config.introspection?.endpoint
+        );
       }
 
       endpoints = endpoints.map((endpoint) => endpoint.trim()).filter(Boolean);
@@ -74,7 +78,8 @@ export const addCommand = (command: Command) => {
       }
 
       const schema = await fetchSchemas(endpoints, {
-        headers: convertHeadersInput(options.header),
+        headers:
+          convertHeadersInput(options.header) ?? config.introspection?.headers,
         headersByEndpoint: config.introspections,
       });
 
@@ -252,11 +257,12 @@ export const addCommand = (command: Command) => {
     });
 };
 
-const promptEndpoints = async () => {
+const promptEndpoints = async (defaultEndpoint?: string) => {
   const { endpoints } = await inquirer.prompt<{ endpoints: string }>({
     name: 'endpoints',
     type: 'input',
     message: 'Where is your GraphQL endpoint or schema files?',
+    default: defaultEndpoint,
   });
 
   return endpoints
