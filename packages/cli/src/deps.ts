@@ -1,12 +1,12 @@
 export { codegen } from '@graphql-codegen/core';
 export * as typescriptPlugin from '@graphql-codegen/typescript';
-export { mergeSchemas } from '@graphql-tools/schema';
 export { printSchemaWithDirectives } from '@graphql-tools/utils';
 export { schemaFromExecutor, wrapSchema } from '@graphql-tools/wrap';
 export { program } from 'commander';
 export { cosmiconfig, type Loader } from 'cosmiconfig';
 export { fetch } from 'cross-fetch';
 export { default as fg } from 'fast-glob';
+export { buildSchema, printSchema } from 'graphql';
 export { default as inquirer } from 'inquirer';
 export { default as sortBy } from 'lodash-es/sortBy.js';
 export { default as mkdirp } from 'mkdirp';

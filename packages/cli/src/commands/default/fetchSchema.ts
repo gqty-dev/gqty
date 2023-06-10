@@ -1,5 +1,5 @@
 import { type AsyncExecutor } from '@graphql-tools/utils';
-import { GraphQLSchema, buildSchema, type ExecutionResult } from 'graphql';
+import { type ExecutionResult, type GraphQLSchema } from 'graphql';
 import { readFile } from 'node:fs/promises';
 import { extname } from 'path';
 import { type GQtyConfig } from '../../config';
@@ -28,8 +28,8 @@ export type FetchSchemasOptions = {
 export const fetchSchemas = async (
   endpoints: string[],
   options: FetchSchemasOptions
-) => {
-  const schemas: GraphQLSchema[] = [];
+): Promise<GraphQLSchema> => {
+  const schemas: string[] = [];
 
   if (!options.headersByEndpoint) {
     options.headersByEndpoint = {};
@@ -90,7 +90,7 @@ export const fetchSchemas = async (
     console.log('');
   }
 
-  return deps.mergeSchemas({ schemas });
+  return deps.buildSchema(schemas.join('\n'));
 };
 
 const terminateWithError = (e: unknown) => {
@@ -105,7 +105,7 @@ const terminateWithError = (e: unknown) => {
 const fetchSchema = async (
   endpoint: string,
   options?: Pick<RequestInit, 'headers'> & { silent?: boolean }
-): Promise<GraphQLSchema | undefined> => {
+): Promise<string | undefined> => {
   if (isURL(endpoint)) {
     if (!options?.silent) {
       logger.infoProgress(
@@ -155,7 +155,9 @@ const fetchSchema = async (
       }
     };
 
-    return await deps.schemaFromExecutor(executor);
+    const schema = await deps.schemaFromExecutor(executor);
+
+    return deps.printSchema(schema);
   } else {
     const files = await deps
       .fg(endpoint)
@@ -175,7 +177,7 @@ const fetchSchema = async (
       fileContents.push(await readFile(file, { encoding: 'utf-8' }));
     }
 
-    return buildSchema(fileContents.join('\n'));
+    return fileContents.join('\n');
   }
 };
 
