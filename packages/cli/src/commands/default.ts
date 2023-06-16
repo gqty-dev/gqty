@@ -117,8 +117,9 @@ export const addCommand = (command: Command) => {
           config.react = true;
         }
 
-        if (options.subscriptions) {
-          config.subscriptions = options.subscriptions;
+        // Explicitly allow empty string
+        if (options.subscriptions !== undefined) {
+          config.subscriptions = options.subscriptions || false;
         }
 
         if (options.typescript) {
