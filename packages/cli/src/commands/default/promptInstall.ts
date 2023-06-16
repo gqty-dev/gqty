@@ -64,7 +64,7 @@ const getInstallCommand = (packager: PackageManager) => {
 };
 
 const getInstallPackages = (configuration: GQtyConfig) => {
-  const packages = ['gqty'];
+  const packages = ['gqty', 'graphql'];
 
   if (configuration.react) {
     packages.push('@gqty/react');
