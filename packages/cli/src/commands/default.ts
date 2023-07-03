@@ -36,7 +36,7 @@ export const addCommand = (command: Command) => {
       '--subscriptions <client>',
       'Includes specified package as subscription client, must be graphql-ws compatible.'
     )
-    .option('--target', 'Destination path for the generated client.')
+    .option('--target <path>', 'Destination path for the generated client.')
     .option(
       '--typescript',
       'Generates a TypeScript client over a JavaScript one.'
