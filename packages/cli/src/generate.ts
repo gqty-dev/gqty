@@ -906,12 +906,12 @@ export async function generate(
             subscriptions === true ? 'graphql-ws' : subscriptions
           }";`
         : '',
-      isJavascriptOutput ? '' : 'import type { QueryFetcher } from "gqty";',
-      'import { Cache, GQtyError, createClient } from "gqty";',
       isJavascriptOutput
-        ? ''
-        : 'import type { GeneratedSchema } from "./schema.generated";',
-      'import { generatedSchema, scalarsEnumsHash } from "./schema.generated";',
+        ? 'import { Cache, GQtyError, createClient } from "gqty";'
+        : 'import { Cache, GQtyError, createClient, type QueryFetcher } from "gqty";',
+      isJavascriptOutput
+        ? 'import { generatedSchema, scalarsEnumsHash } from "./schema.generated";'
+        : 'import { generatedSchema, scalarsEnumsHash, type GeneratedSchema } from "./schema.generated";',
     ]
       .filter(Boolean)
       .join('\n')}

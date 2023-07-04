@@ -1,10 +1,10 @@
 import fs from 'fs';
 import path from 'path';
 import {
-  BuildContextArgs,
   createTestApp,
-  GetEnvelopedFn,
   gql,
+  type BuildContextArgs,
+  type GetEnvelopedFn,
 } from 'test-utils';
 import tmp from 'tmp-promise';
 import { inspectWriteGenerate } from '../src/inspectWriteGenerate';
@@ -59,10 +59,12 @@ test('basic inspectWriteGenerate functionality', async () => {
        */
 
       import { createReactClient } from '@gqty/react';
-      import type { QueryFetcher } from 'gqty';
-      import { Cache, GQtyError, createClient } from 'gqty';
-      import type { GeneratedSchema } from './schema.generated';
-      import { generatedSchema, scalarsEnumsHash } from './schema.generated';
+      import { Cache, GQtyError, createClient, type QueryFetcher } from 'gqty';
+      import {
+        generatedSchema,
+        scalarsEnumsHash,
+        type GeneratedSchema,
+      } from './schema.generated';
 
       const queryFetcher: QueryFetcher = async function (
         { query, variables, operationName },
@@ -272,10 +274,12 @@ describe('from file', () => {
          */
 
         import { createReactClient } from '@gqty/react';
-        import type { QueryFetcher } from 'gqty';
-        import { Cache, GQtyError, createClient } from 'gqty';
-        import type { GeneratedSchema } from './schema.generated';
-        import { generatedSchema, scalarsEnumsHash } from './schema.generated';
+        import { Cache, GQtyError, createClient, type QueryFetcher } from 'gqty';
+        import {
+          generatedSchema,
+          scalarsEnumsHash,
+          type GeneratedSchema,
+        } from './schema.generated';
 
         const queryFetcher: QueryFetcher = async function (
           { query, variables, operationName },
@@ -484,10 +488,12 @@ describe('from file', () => {
          */
 
         import { createReactClient } from '@gqty/react';
-        import type { QueryFetcher } from 'gqty';
-        import { Cache, GQtyError, createClient } from 'gqty';
-        import type { GeneratedSchema } from './schema.generated';
-        import { generatedSchema, scalarsEnumsHash } from './schema.generated';
+        import { Cache, GQtyError, createClient, type QueryFetcher } from 'gqty';
+        import {
+          generatedSchema,
+          scalarsEnumsHash,
+          type GeneratedSchema,
+        } from './schema.generated';
 
         const queryFetcher: QueryFetcher = async function (
           { query, variables, operationName },
@@ -695,10 +701,12 @@ describe('from file', () => {
          */
 
         import { createReactClient } from '@gqty/react';
-        import type { QueryFetcher } from 'gqty';
-        import { Cache, GQtyError, createClient } from 'gqty';
-        import type { GeneratedSchema } from './schema.generated';
-        import { generatedSchema, scalarsEnumsHash } from './schema.generated';
+        import { Cache, GQtyError, createClient, type QueryFetcher } from 'gqty';
+        import {
+          generatedSchema,
+          scalarsEnumsHash,
+          type GeneratedSchema,
+        } from './schema.generated';
 
         const queryFetcher: QueryFetcher = async function (
           { query, variables, operationName },
@@ -950,10 +958,12 @@ describe('from multiple files', () => {
          */
 
         import { createReactClient } from '@gqty/react';
-        import type { QueryFetcher } from 'gqty';
-        import { Cache, GQtyError, createClient } from 'gqty';
-        import type { GeneratedSchema } from './schema.generated';
-        import { generatedSchema, scalarsEnumsHash } from './schema.generated';
+        import { Cache, GQtyError, createClient, type QueryFetcher } from 'gqty';
+        import {
+          generatedSchema,
+          scalarsEnumsHash,
+          type GeneratedSchema,
+        } from './schema.generated';
 
         const queryFetcher: QueryFetcher = async function (
           { query, variables, operationName },
@@ -1221,10 +1231,12 @@ test('specify generateOptions to inspectWriteGenerate', async () => {
        */
 
       import { createReactClient } from '@gqty/react';
-      import type { QueryFetcher } from 'gqty';
-      import { Cache, GQtyError, createClient } from 'gqty';
-      import type { GeneratedSchema } from './schema.generated';
-      import { generatedSchema, scalarsEnumsHash } from './schema.generated';
+      import { Cache, GQtyError, createClient, type QueryFetcher } from 'gqty';
+      import {
+        generatedSchema,
+        scalarsEnumsHash,
+        type GeneratedSchema,
+      } from './schema.generated';
 
       const queryFetcher: QueryFetcher = async function (
         { query, variables, operationName },
@@ -1582,10 +1594,12 @@ describe('CLI behavior', () => {
          */
 
         import { createReactClient } from '@gqty/react';
-        import type { QueryFetcher } from 'gqty';
-        import { Cache, GQtyError, createClient } from 'gqty';
-        import type { GeneratedSchema } from './schema.generated';
-        import { generatedSchema, scalarsEnumsHash } from './schema.generated';
+        import { Cache, GQtyError, createClient, type QueryFetcher } from 'gqty';
+        import {
+          generatedSchema,
+          scalarsEnumsHash,
+          type GeneratedSchema,
+        } from './schema.generated';
 
         const queryFetcher: QueryFetcher = async function (
           { query, variables, operationName },

@@ -127,10 +127,12 @@ test('basic functionality works', async () => {
 
     import { createReactClient } from '@gqty/react';
     import { createClient as createSubscriptionsClient } from 'graphql-ws';
-    import type { QueryFetcher } from 'gqty';
-    import { Cache, GQtyError, createClient } from 'gqty';
-    import type { GeneratedSchema } from './schema.generated';
-    import { generatedSchema, scalarsEnumsHash } from './schema.generated';
+    import { Cache, GQtyError, createClient, type QueryFetcher } from 'gqty';
+    import {
+      generatedSchema,
+      scalarsEnumsHash,
+      type GeneratedSchema,
+    } from './schema.generated';
 
     const queryFetcher: QueryFetcher = async function (
       { query, variables, operationName },
@@ -310,10 +312,12 @@ test('custom scalars works', async () => {
      */
 
     import { createReactClient } from '@gqty/react';
-    import type { QueryFetcher } from 'gqty';
-    import { Cache, GQtyError, createClient } from 'gqty';
-    import type { GeneratedSchema } from './schema.generated';
-    import { generatedSchema, scalarsEnumsHash } from './schema.generated';
+    import { Cache, GQtyError, createClient, type QueryFetcher } from 'gqty';
+    import {
+      generatedSchema,
+      scalarsEnumsHash,
+      type GeneratedSchema,
+    } from './schema.generated';
 
     const queryFetcher: QueryFetcher = async function (
       { query, variables, operationName },
@@ -1723,10 +1727,12 @@ test('ignoreArgs transform', async () => {
      */
 
     import { createReactClient } from '@gqty/react';
-    import type { QueryFetcher } from 'gqty';
-    import { Cache, GQtyError, createClient } from 'gqty';
-    import type { GeneratedSchema } from './schema.generated';
-    import { generatedSchema, scalarsEnumsHash } from './schema.generated';
+    import { Cache, GQtyError, createClient, type QueryFetcher } from 'gqty';
+    import {
+      generatedSchema,
+      scalarsEnumsHash,
+      type GeneratedSchema,
+    } from './schema.generated';
 
     const queryFetcher: QueryFetcher = async function (
       { query, variables, operationName },

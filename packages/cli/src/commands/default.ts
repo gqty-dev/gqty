@@ -13,6 +13,7 @@ import { promptInstall, runInstall } from './default/promptInstall';
 
 export type CommandOptions = {
   header?: string[];
+  install?: boolean;
   react?: boolean;
   subscriptions?: string;
   target?: string;
@@ -33,14 +34,21 @@ export const addCommand = (command: Command) => {
     )
     .option('--react', 'Include React hooks in the generated client.')
     .option(
-      '--subscriptions <client>',
+      '--subscriptions [client]',
       'Includes specified package as subscription client, must be graphql-ws compatible.'
     )
+    .option('--no-subscriptions')
     .option('--target <path>', 'Destination path for the generated client.')
     .option(
       '--typescript',
       'Generates a TypeScript client over a JavaScript one.'
     )
+    .option('--no-typescript')
+    .option(
+      '--install',
+      'Automatically install dependencies with current package manager.'
+    )
+    .option('--no-install')
     .option(
       '-w, --watch',
       'Activate watch mode, regenerate on change changes.',
@@ -165,9 +173,9 @@ export const addCommand = (command: Command) => {
         ...config,
       });
 
-      if (argv.length === 0) {
+      if (argv.length === 0 && options.install === undefined) {
         await promptInstall(config);
-      } else if (manifest) {
+      } else if (manifest && options.install !== false) {
         await runInstall(manifest, config);
       }
 
@@ -298,11 +306,11 @@ const promptSubscriptions = async (defaultValue?: string) => {
   const { subscriptions } = await inquirer.prompt<{ subscriptions: string }>({
     name: 'subscriptions',
     type: 'input',
-    message: 'Do you need a subscription client? (leave empty to skip)',
+    message: 'Do you need a subscription client? (Enter "-" to skip)',
     default: defaultValue?.trim() || undefined,
   });
 
-  return subscriptions || false;
+  return subscriptions?.trim().replace(/^\-$/, '') || false;
 };
 
 const promptTypescript = async (defaultValue: boolean) => {
