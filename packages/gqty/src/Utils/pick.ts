@@ -11,6 +11,8 @@ export const pick = (
   for (const { ancestry } of selections) {
     let node = schema;
     for (const { key, input } of ancestry) {
+      if (node == null) break;
+
       if (input) {
         node = node[key](input.values);
       } else {

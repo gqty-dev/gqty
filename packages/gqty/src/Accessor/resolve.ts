@@ -443,6 +443,8 @@ const selectIdentityFields = (
   accessor: CacheObject,
   type: Record<string, Type | undefined>
 ) => {
+  if (accessor == null) return;
+
   const meta = $meta(accessor);
   if (!meta) return;
 
