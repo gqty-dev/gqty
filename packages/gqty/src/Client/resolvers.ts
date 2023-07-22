@@ -4,7 +4,6 @@ import { type Cache } from '../Cache';
 import { type GQtyError, type RetryOptions } from '../Error';
 import { type ScalarsEnumsHash, type Schema } from '../Schema';
 import { type Selection } from '../Selection';
-import { pick } from '../Utils/pick';
 import { addSelections, delSelectionsSet, getSelectionsSet } from './batching';
 import { createContext, type SchemaContext } from './context';
 import { type Debugger } from './debugger';
@@ -85,7 +84,7 @@ export type ResolveFn<TSchema extends BaseGeneratedSchema> = <
 >(
   fn: DataFn<TSchema, TData>,
   options?: ResolveOptions
-) => Promise<DataResult<TData>>;
+) => Promise<TData>;
 
 const asyncItDoneMessage = { done: true } as IteratorResult<never>;
 
@@ -94,17 +93,11 @@ export type SubscribeFn<TSchema extends BaseGeneratedSchema> = <
 >(
   fn: DataFn<TSchema, TData>,
   options?: SubscribeOptions
-) => AsyncGenerator<DataResult<TData>, void, unknown> & {
+) => AsyncGenerator<TData, void, unknown> & {
   unsubscribe: Unsubscribe;
 };
 
 export type DataFn<TSchema, TResult = unknown> = (schema: TSchema) => TResult;
-
-export type DataResult<TData = unknown> = TData extends undefined
-  ? TData
-  : TData extends void
-  ? unknown
-  : TData;
 
 export type CreateResolverOptions = {
   /**
@@ -410,12 +403,11 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
     createResolver,
 
     resolve: async (fn, options) => {
-      const { accessor, resolve, selections } = createResolver(options);
+      const { accessor, resolve } = createResolver(options);
+      const dataFn = () => fn(accessor);
 
-      fn(accessor) as unknown;
-
-      const dataFn = () =>
-        ((fn(accessor) as unknown) ?? pick(accessor, selections)) as any;
+      // Run once to trigger selections
+      dataFn();
 
       const fetchPromise = resolve().then(dataFn);
 
