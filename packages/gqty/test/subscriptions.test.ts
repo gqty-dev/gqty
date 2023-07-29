@@ -9,9 +9,7 @@ describe('core#resolve', () => {
 
     const [data] = await Promise.all([
       (async () => {
-        return resolve(({ subscription }) => {
-          subscription.newNotification;
-        });
+        return resolve(({ subscription }) => subscription.newNotification);
       })(),
       (async () => {
         await new Promise((r) => setTimeout(r, 1000));
@@ -23,13 +21,7 @@ describe('core#resolve', () => {
       })(),
     ]);
 
-    expect(data).toMatchInlineSnapshot(`
-      {
-        "subscription": {
-          "newNotification": "THIS_IS_A_MESSAGE",
-        },
-      }
-    `);
+    expect(data).toStrictEqual('THIS_IS_A_MESSAGE');
   });
 });
 

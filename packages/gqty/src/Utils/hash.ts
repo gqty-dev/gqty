@@ -5,5 +5,5 @@ import objectHash from 'object-hash';
  * Memoized hash function, with a prefix to avoid starting with a number.
  */
 export const hash = memoize((...args: unknown[]) =>
-  objectHash(args).replace(/^(\d)/, 'a$1')
+  objectHash(args, { unorderedObjects: false }).replace(/^(\d)/, 'a$1')
 );

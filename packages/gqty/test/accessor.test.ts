@@ -1,6 +1,6 @@
 import { getArrayFields, GQtyError } from '../src';
 import { $meta, assignSelections, setCache } from '../src/Accessor';
-import { createTestClient, Dog, expectConsoleWarn } from './utils';
+import { createTestClient, expectConsoleWarn, type Dog } from './utils';
 
 test('legacy warning', async () => {
   const { query } = await createTestClient();

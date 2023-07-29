@@ -250,6 +250,8 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
           context.notifyCacheUpdate = cachePolicy !== 'default';
           state.promise = undefined;
 
+          selections.clear();
+
           setState({});
         }
       },

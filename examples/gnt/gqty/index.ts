@@ -2,11 +2,12 @@
  * GQty: You can safely modify this file based on your needs.
  */
 
-import { createReactClient } from '@gqty/react';
-import type { QueryFetcher } from 'gqty';
-import { Cache, createClient } from 'gqty';
-import type { GeneratedSchema } from './schema.generated';
-import { generatedSchema, scalarsEnumsHash } from './schema.generated';
+import { Cache, GQtyError, createClient, type QueryFetcher } from 'gqty';
+import {
+  generatedSchema,
+  scalarsEnumsHash,
+  type GeneratedSchema,
+} from './schema.generated';
 
 const queryFetcher: QueryFetcher = async function (
   { query, variables, operationName },
@@ -29,16 +30,30 @@ const queryFetcher: QueryFetcher = async function (
     ...fetchOptions,
   });
 
-  const json = await response.json();
+  if (response.status >= 400) {
+    throw new GQtyError(
+      `GraphQL endpoint responded with HTTP ${response.status}: ${response.statusText}.`
+    );
+  }
 
-  return json;
+  const text = await response.text();
+
+  try {
+    return JSON.parse(text);
+  } catch {
+    throw new GQtyError(
+      `Malformed JSON response: ${
+        text.length > 50 ? text.slice(0, 50) + '...' : text
+      }`
+    );
+  }
 };
 
 const cache = new Cache(
   undefined,
   /**
-   * Default cache options immediate expiry with a 5 minutes window of
-   * stale-while-revalidate.
+   * Default option is immediate cache expiry but keep it for 5 minutes,
+   * allowing soft refetches in background.
    */
   {
     maxAge: 0,
@@ -69,24 +84,5 @@ export const {
   refetch,
   track,
 } = client;
-
-export const {
-  graphql,
-  useQuery,
-  usePaginatedQuery,
-  useTransactionQuery,
-  useLazyQuery,
-  useRefetch,
-  useMutation,
-  useMetaState,
-  prepareReactRender,
-  useHydrateCache,
-  prepareQuery,
-} = createReactClient<GeneratedSchema>(client, {
-  defaults: {
-    // Enable Suspense, you can override this option at hooks.
-    suspense: false,
-  },
-});
 
 export * from './schema.generated';

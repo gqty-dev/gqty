@@ -8,8 +8,10 @@ describe('useMutation', () => {
       return useMutation((mutation, { name }: { name: string }) => {
         const human = mutation.humanMutation({ nameArg: name });
 
-        human?.id;
-        human?.name;
+        return {
+          id: human.id,
+          name: human.name,
+        };
       });
     });
 
@@ -20,13 +22,8 @@ describe('useMutation', () => {
     expect(result.current[1]).toMatchInlineSnapshot(`
       {
         "data": {
-          "mutation": {
-            "a75a2": {
-              "__typename": "Human",
-              "id": "1",
-              "name": "John Doe",
-            },
-          },
+          "id": "1",
+          "name": "John Doe",
         },
         "error": undefined,
         "isLoading": false,
@@ -41,8 +38,10 @@ describe('useMutation', () => {
         (mutation, { name }: { name: string }) => {
           const human = mutation.humanMutation({ nameArg: name });
 
-          human?.id;
-          human?.name;
+          return {
+            id: human.id,
+            name: human.name,
+          };
         },
         { suspense: true }
       );
@@ -55,13 +54,8 @@ describe('useMutation', () => {
     expect(result.current[1]).toMatchInlineSnapshot(`
       {
         "data": {
-          "mutation": {
-            "ba497": {
-              "__typename": "Human",
-              "id": "1",
-              "name": "Jane Doe",
-            },
-          },
+          "id": "1",
+          "name": "Jane Doe",
         },
         "error": undefined,
         "isLoading": false,
@@ -74,10 +68,10 @@ describe('useMutation', () => {
     const q = renderHook(() => {
       const human = useQuery().human({ name: 'Uno' });
 
-      human.id;
-      human.name;
-
-      return human;
+      return {
+        id: human.id,
+        name: human.name,
+      };
     });
 
     const m = renderHook(() => {
@@ -85,8 +79,10 @@ describe('useMutation', () => {
         (mutation, args: { name: string; newName: string }) => {
           const human = mutation.renameHuman(args);
 
-          human?.id;
-          human?.name;
+          return {
+            id: human.id,
+            name: human.name,
+          };
         }
       );
     });
