@@ -31,7 +31,7 @@
     "prepare": "bob-esbuild build",
     "postpublish": "gh-release",
     "start": "bob-esbuild watch",
-    "test": "jest"
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest"
   },
   "dependencies": {
     "isomorphic-ws": "^5.0.0",

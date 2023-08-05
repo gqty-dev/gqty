@@ -37,16 +37,15 @@
     "postpublish": "gh-release",
     "size": "size-limit",
     "start": "bob-esbuild watch",
-    "test": "jest",
-    "test:watch": "jest --watch"
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "test:watch": "NODE_OPTIONS=--experimental-vm-modules jest --watch"
   },
   "dependencies": {
-    "prettier": "^2.8.6"
+    "prettier": "^3.0.1"
   },
   "devDependencies": {
     "@size-limit/preset-small-lib": "^8.2.4",
     "@types/node": "^18.15.5",
-    "@types/prettier": "^2.7.2",
     "bob-esbuild-cli": "^4.0.0",
     "esbuild": "^0.17.12",
     "gqty": "workspace:^",

@@ -1,13 +1,20 @@
 import type { DebugEvent, GQtyClient } from 'gqty';
-import parserJSON from 'prettier/parser-babel.js';
-import parserGraphQL from 'prettier/parser-graphql.js';
-import prettier from 'prettier/standalone.js';
+import prettierBabel from 'prettier/plugins/babel';
+import prettierGraphQL from 'prettier/plugins/graphql';
+import prettier from 'prettier/standalone';
 import { serializeError } from './serializeError';
 
-function parseGraphQL(query: string) {
-  return prettier.format(query, {
+async function parseGraphQL(query: string) {
+  return await prettier.format(query, {
     parser: 'graphql',
-    plugins: [parserGraphQL],
+    plugins: [prettierBabel, prettierGraphQL],
+  });
+}
+
+async function parseJSON(value: unknown) {
+  return await prettier.format(JSON.stringify(value), {
+    parser: 'json',
+    plugins: [prettierBabel],
   });
 }
 
@@ -60,12 +67,9 @@ export function createLogger(
   options.showSelections ??= true;
   options.stringifyJSON ??= false;
 
-  const stringifyJSONIfEnabled = <T extends object>(v: T) => {
+  const stringifyJSONIfEnabled = async <T extends object>(v: T) => {
     if (options.stringifyJSON && v) {
-      return prettier.format(JSON.stringify(v), {
-        parser: 'json',
-        plugins: [parserJSON],
-      });
+      return parseJSON(v);
     }
     return v;
   };
@@ -82,8 +86,7 @@ export function createLogger(
     selections,
   }: DebugEvent) {
     const startTime = Date.now();
-    const fetchTime = startTime - startTime; // TODO: Implement an actual timer
-
+    const fetchTime = startTime - startTime; // [ ] Implement an actual timer
     const queryId = (QueryIdMapper[query] ||= ++idMapper);
 
     console.groupCollapsed(
@@ -124,11 +127,11 @@ export function createLogger(
       if (variables) {
         console.log(
           ...format(['Variables', 'color: #25e1e1']),
-          stringifyJSONIfEnabled(variables)
+          await stringifyJSONIfEnabled(variables)
         );
       }
 
-      console.log(...format([parseGraphQL(query)]));
+      console.log(...format([await parseGraphQL(query)]));
 
       console.groupEnd();
     }
@@ -138,15 +141,15 @@ export function createLogger(
     } else if (result) {
       console.log(
         ...format(['Result', headerStyles]),
-        stringifyJSONIfEnabled(result)
+        await stringifyJSONIfEnabled(result)
       );
     }
 
     if (options.showSelections) {
       console.groupCollapsed(...format(['Selections', headerStyles]));
-      selections.forEach(({ key, cacheKeys, alias, input, isUnion }) => {
+      for (const { key, cacheKeys, alias, input, isUnion } of selections) {
         console.log(
-          stringifyJSONIfEnabled({
+          await stringifyJSONIfEnabled({
             key,
             cacheKeys: cacheKeys.join('.'),
             alias,
@@ -154,14 +157,14 @@ export function createLogger(
             isUnion,
           })
         );
-      });
+      }
       console.groupEnd();
     }
 
     if (options.showCache) {
       console.log(
         ...format(['Cache snapshot', headerStyles]),
-        stringifyJSONIfEnabled(cache?.toJSON())
+        await stringifyJSONIfEnabled(cache?.toJSON())
       );
       console.groupEnd();
     }

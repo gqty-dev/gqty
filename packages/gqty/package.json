@@ -34,14 +34,13 @@
     "analyze": "size-limit --why",
     "build": "bob-esbuild build",
     "dev": "bob-esbuild watch",
-    "playground": "jest test/playground.test.ts --watch --no-coverage",
     "prepare": "bob-esbuild build",
     "postpublish": "gh-release",
     "size": "size-limit",
     "start": "bob-esbuild watch",
-    "test": "jest",
-    "test:specific": "jest test/interfaces-unions.test.ts --watch --no-coverage -u",
-    "test:watch": "jest --watch",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
+    "test:specific": "NODE_OPTIONS=--experimental-vm-modules jest test/interfaces-unions.test.ts --watch --no-coverage -u",
+    "test:watch": "NODE_OPTIONS=--experimental-vm-modules jest --watch",
     "test:watch-coverage": "rimraf coverage && mkdirp coverage/lcov-report && concurrently --raw \"jest --watchAll\" \"serve -l 8787 coverage/lcov-report\" \"wait-on tcp:8787 coverage/lcov-report/index.html && open-cli http://localhost:8787\""
   },
   "dependencies": {
