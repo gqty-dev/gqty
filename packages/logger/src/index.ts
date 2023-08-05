@@ -1,20 +1,21 @@
 import type { DebugEvent, GQtyClient } from 'gqty';
-import prettierBabel from 'prettier/plugins/babel';
-import prettierGraphQL from 'prettier/plugins/graphql';
-import prettier from 'prettier/standalone';
+import * as prettierBabel from 'prettier/plugins/babel';
+import * as prettierEstree from 'prettier/plugins/estree';
+import * as prettierGraphQL from 'prettier/plugins/graphql';
+import { format as prettierFormat } from 'prettier/standalone';
 import { serializeError } from './serializeError';
 
 async function parseGraphQL(query: string) {
-  return await prettier.format(query, {
+  return await prettierFormat(query, {
     parser: 'graphql',
     plugins: [prettierBabel, prettierGraphQL],
   });
 }
 
 async function parseJSON(value: unknown) {
-  return await prettier.format(JSON.stringify(value), {
+  return await prettierFormat(JSON.stringify(value), {
     parser: 'json',
-    plugins: [prettierBabel],
+    plugins: [prettierBabel, prettierEstree],
   });
 }
 
@@ -166,8 +167,9 @@ export function createLogger(
         ...format(['Cache snapshot', headerStyles]),
         await stringifyJSONIfEnabled(cache?.toJSON())
       );
-      console.groupEnd();
     }
+
+    console.groupEnd();
   }
 
   /**

@@ -80,7 +80,7 @@ export const fetchSelections = <
         }
 
         // TODO: Defer logging until after cache update
-        debug?.dispatch({
+        await debug?.dispatch({
           cache,
           request: queryPayload,
           result,

@@ -184,6 +184,12 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
       if (state.promise && !context.hasCacheHit) throw state.promise;
     }
 
+    // Reset selections to prevent overfetching, but do it only when the
+    // previous render is not triggered by a successful fetch.
+    if (context.shouldFetch === false) {
+      selections.clear();
+    }
+
     useEffect(
       () =>
         context.cache.subscribe(
@@ -249,8 +255,6 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
           context.hasCacheMiss = false;
           context.notifyCacheUpdate = cachePolicy !== 'default';
           state.promise = undefined;
-
-          selections.clear();
 
           setState(({ error }) => ({ error }));
         }

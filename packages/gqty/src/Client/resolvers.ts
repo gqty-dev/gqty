@@ -4,7 +4,7 @@ import { type Cache } from '../Cache';
 import { type GQtyError, type RetryOptions } from '../Error';
 import { type ScalarsEnumsHash, type Schema } from '../Schema';
 import { type Selection } from '../Selection';
-import { addSelections, delSelectionsSet, getSelectionsSet } from './batching';
+import { addSelections, delSelectionSet, getSelectionsSet } from './batching';
 import { createContext, type SchemaContext } from './context';
 import { type Debugger } from './debugger';
 import {
@@ -251,17 +251,13 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
 
             pendingQueries.delete(pendingSelections);
 
-            delSelectionsSet(clientCache, selectionsCacheKey);
+            delSelectionSet(clientCache, selectionsCacheKey);
 
             return fetchSelections(selections, {
               cache: context.cache,
               debugger: debug,
               extensions,
-              fetchOptions: {
-                ...fetchOptions,
-                cachePolicy,
-                retryPolicy,
-              },
+              fetchOptions: { ...fetchOptions, cachePolicy, retryPolicy },
               operationName,
             }).then((results) => {
               updateCaches(

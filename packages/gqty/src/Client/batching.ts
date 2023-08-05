@@ -6,7 +6,7 @@ const pendingSelections = new Map<Cache, Map<string, Set<Set<Selection>>>>();
 export const addSelections = (
   cache: Cache,
   key: string,
-  value: Set<Selection>
+  selections: Set<Selection>
 ) => {
   if (!pendingSelections.has(cache)) {
     pendingSelections.set(cache, new Map());
@@ -18,19 +18,19 @@ export const addSelections = (
     selectionsByKey.set(key, new Set());
   }
 
-  return selectionsByKey.get(key)!.add(value);
+  return selectionsByKey.get(key)!.add(selections);
 };
 
 export const getSelectionsSet = (cache: Cache, key: string) =>
   pendingSelections.get(cache)?.get(key);
 
-export const delSelectionsSet = (cache: Cache, key: string) =>
+export const delSelectionSet = (cache: Cache, key: string) =>
   pendingSelections.get(cache)?.delete(key) ?? false;
 
 export const popSelectionsSet = (cache: Cache, key: string) => {
   const result = getSelectionsSet(cache, key);
 
-  delSelectionsSet(cache, key);
+  delSelectionSet(cache, key);
 
   return result;
 };

@@ -70,9 +70,9 @@ describe('logger', () => {
     const spyError = jest.spyOn(console, 'error').mockImplementation();
 
     try {
-      const dataPromise = gqtyClient.resolved(() => {
-        return gqtyClient.query.hello({ hello: 'hello' });
-      });
+      const dataPromise = gqtyClient.resolve(({ query }) =>
+        query.hello({ hello: 'hello' })
+      );
 
       const data = await dataPromise;
 
@@ -84,9 +84,7 @@ describe('logger', () => {
 
       expect(data).toBe('hello world');
 
-      const errorPromise = gqtyClient.resolved(() => {
-        return gqtyClient.query.throw;
-      });
+      const errorPromise = gqtyClient.resolve(({ query }) => query.throw);
 
       await errorPromise.catch(() => {});
 

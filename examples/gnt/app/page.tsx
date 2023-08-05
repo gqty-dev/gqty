@@ -1,6 +1,10 @@
 import { Suspense } from 'react';
-import Character from './Character';
-import MyComponent from './MyComponent';
+import CharacterSearch from './components/CscCharacterSearch';
+import CharactersSearch from './components/CscCharactersSearch';
+import Character from './components/RscCharacter';
+
+CharacterSearch;
+CharactersSearch;
 
 export default function Home() {
   return (
@@ -8,7 +12,7 @@ export default function Home() {
       {/* CSR test */}
 
       <Suspense fallback={<div>Loading...</div>}>
-        <MyComponent />
+        <CharactersSearch />
       </Suspense>
 
       {/* RSC test */}

@@ -38,8 +38,8 @@
     "build": "bob-tsm build.ts",
     "prepare": "bob-tsm build.ts",
     "postpublish": "gh-release",
-    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
-    "test:watch": "NODE_OPTIONS=--experimental-vm-modules jest --watch",
+    "test": "jest",
+    "test:watch": "jest --watch",
     "test:watch-coverage": "rimraf coverage && mkdirp coverage/lcov-report && concurrently --raw \"jest --watchAll\" \"serve -l 8787 coverage/lcov-report\" \"wait-on tcp:8787 coverage/lcov-report/index.html && open-cli http://localhost:8787\""
   },
   "dependencies": {

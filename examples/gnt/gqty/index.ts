@@ -2,6 +2,7 @@
  * GQty: You can safely modify this file based on your needs.
  */
 
+import { createLogger } from '@gqty/logger';
 import { Cache, GQtyError, createClient, type QueryFetcher } from 'gqty';
 import {
   generatedSchema,
@@ -13,8 +14,6 @@ const queryFetcher: QueryFetcher = async function (
   { query, variables, operationName, extensions },
   fetchOptions
 ) {
-  console.debug({ query, variables, operationName, ...extensions });
-
   // Modify "https://rickandmortyapi.com/graphql" if needed
   const response = await fetch('https://rickandmortyapi.com/graphql', {
     method: 'POST',
@@ -32,7 +31,7 @@ const queryFetcher: QueryFetcher = async function (
 
   if (response.status >= 400) {
     throw new GQtyError(
-      `GraphQL endpoint responded with HTTP ${response.status}: ${response.statusText}.`
+      `GraphQL endpoint responded with HTTP status ${response.status}.`
     );
   }
 
@@ -70,6 +69,8 @@ export const client = createClient<GeneratedSchema>({
     fetcher: queryFetcher,
   },
 });
+
+createLogger(client).start();
 
 // Core functions
 export const { resolve, subscribe, schema } = client;

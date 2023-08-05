@@ -1,7 +1,7 @@
-import { resolve, type Query } from '../gqty';
+import { resolve, type Query } from '~/gqty';
 
 /** RSC */
-export default async function Character({
+export default async function RscCharacter({
   id,
 }: Parameters<Query['character']>[0]) {
   const data = await resolve(({ query }) => {
