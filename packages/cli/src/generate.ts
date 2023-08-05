@@ -887,8 +887,8 @@ export async function generate(
             : `createReactClient<GeneratedSchema>(client, {`
         }
           defaults: {
-            // Enable Suspense, you can override this option at hooks.
-            suspense: false,
+            // Enable Suspense, you can override this option for each hook.
+            suspense: true,
           }
         });
       `.trim()

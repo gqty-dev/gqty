@@ -154,8 +154,8 @@ test('basic inspectWriteGenerate functionality', async () => {
         prepareQuery,
       } = createReactClient<GeneratedSchema>(client, {
         defaults: {
-          // Enable Suspense, you can override this option at hooks.
-          suspense: false,
+          // Enable Suspense, you can override this option for each hook.
+          suspense: true,
         },
       });
 
@@ -369,8 +369,8 @@ describe('from file', () => {
           prepareQuery,
         } = createReactClient<GeneratedSchema>(client, {
           defaults: {
-            // Enable Suspense, you can override this option at hooks.
-            suspense: false,
+            // Enable Suspense, you can override this option for each hook.
+            suspense: true,
           },
         });
 
@@ -583,8 +583,8 @@ describe('from file', () => {
           prepareQuery,
         } = createReactClient<GeneratedSchema>(client, {
           defaults: {
-            // Enable Suspense, you can override this option at hooks.
-            suspense: false,
+            // Enable Suspense, you can override this option for each hook.
+            suspense: true,
           },
         });
 
@@ -796,8 +796,8 @@ describe('from file', () => {
           prepareQuery,
         } = createReactClient<GeneratedSchema>(client, {
           defaults: {
-            // Enable Suspense, you can override this option at hooks.
-            suspense: false,
+            // Enable Suspense, you can override this option for each hook.
+            suspense: true,
           },
         });
 
@@ -1053,8 +1053,8 @@ describe('from multiple files', () => {
           prepareQuery,
         } = createReactClient<GeneratedSchema>(client, {
           defaults: {
-            // Enable Suspense, you can override this option at hooks.
-            suspense: false,
+            // Enable Suspense, you can override this option for each hook.
+            suspense: true,
           },
         });
 
@@ -1326,8 +1326,8 @@ test('specify generateOptions to inspectWriteGenerate', async () => {
         prepareQuery,
       } = createReactClient<GeneratedSchema>(client, {
         defaults: {
-          // Enable Suspense, you can override this option at hooks.
-          suspense: false,
+          // Enable Suspense, you can override this option for each hook.
+          suspense: true,
         },
       });
 
@@ -1689,8 +1689,8 @@ describe('CLI behavior', () => {
           prepareQuery,
         } = createReactClient<GeneratedSchema>(client, {
           defaults: {
-            // Enable Suspense, you can override this option at hooks.
-            suspense: false,
+            // Enable Suspense, you can override this option for each hook.
+            suspense: true,
           },
         });
 

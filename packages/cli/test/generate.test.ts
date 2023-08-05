@@ -237,8 +237,8 @@ test('basic functionality works', async () => {
       useSubscription,
     } = createReactClient<GeneratedSchema>(client, {
       defaults: {
-        // Enable Suspense, you can override this option at hooks.
-        suspense: false,
+        // Enable Suspense, you can override this option for each hook.
+        suspense: true,
       },
     });
 
@@ -407,8 +407,8 @@ test('custom scalars works', async () => {
       prepareQuery,
     } = createReactClient<GeneratedSchema>(client, {
       defaults: {
-        // Enable Suspense, you can override this option at hooks.
-        suspense: false,
+        // Enable Suspense, you can override this option for each hook.
+        suspense: true,
       },
     });
 
@@ -1510,8 +1510,8 @@ test('javascript output works', async () => {
        */
       createReactClient(client, {
         defaults: {
-          // Enable Suspense, you can override this option at hooks.
-          suspense: false,
+          // Enable Suspense, you can override this option for each hook.
+          suspense: true,
         },
       });
 
@@ -1822,8 +1822,8 @@ test('ignoreArgs transform', async () => {
       prepareQuery,
     } = createReactClient<GeneratedSchema>(client, {
       defaults: {
-        // Enable Suspense, you can override this option at hooks.
-        suspense: false,
+        // Enable Suspense, you can override this option for each hook.
+        suspense: true,
       },
     });
 

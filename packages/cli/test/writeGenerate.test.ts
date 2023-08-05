@@ -337,8 +337,8 @@ test('creates dir, generates code and writes new file', async () => {
         prepareQuery,
       } = createReactClient<GeneratedSchema>(client, {
         defaults: {
-          // Enable Suspense, you can override this option at hooks.
-          suspense: false,
+          // Enable Suspense, you can override this option for each hook.
+          suspense: true,
         },
       });
 
