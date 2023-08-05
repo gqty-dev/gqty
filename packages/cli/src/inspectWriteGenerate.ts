@@ -2,7 +2,7 @@ import { existsSync, promises } from 'fs';
 import type { GraphQLSchema, IntrospectionQuery } from 'graphql';
 import * as graphql from 'graphql';
 import { extname, resolve } from 'path';
-import { defaultConfig, DUMMY_ENDPOINT, loadOrGenerateConfig } from './config';
+import { DUMMY_ENDPOINT, defaultConfig, loadOrGenerateConfig } from './config';
 import * as deps from './deps.js';
 import type { GenerateOptions, TransformSchemaOptions } from './generate';
 import { getRemoteSchema } from './introspection';
