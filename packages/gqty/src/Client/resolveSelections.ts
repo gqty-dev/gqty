@@ -322,7 +322,7 @@ const doFetch = async <
     ...fetchOptions
   }: FetchOptions & { selections: Set<Selection> }
 ): Promise<ExecutionResult<TData>> => {
-  // lol
+  // lol, sorry for bad naming.
   const doDoFetch = () =>
     fetcher(payload, fetchOptions) as Promise<ExecutionResult<TData>>;
 
@@ -333,7 +333,18 @@ const doFetch = async <
 
     return await promise;
   } catch (error) {
-    if (!retryPolicy || !(error instanceof Error)) throw error;
+    if (
+      // User doesn't want reties
+      !retryPolicy ||
+      // Let everything unknown through
+      !(error instanceof Error) ||
+      // GQtyErrors are supposed to be terminating
+      error instanceof GQtyError
+      // [ ] Supersede the above with the callback ClientOption#onError:
+      // (error: unknown, { retryAttempt, retry }) => void
+    ) {
+      throw error;
+    }
 
     return new Promise((resolve, reject) => {
       // Selections are attached solely for useMetaState()

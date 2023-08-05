@@ -252,7 +252,7 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
 
           selections.clear();
 
-          setState({});
+          setState(({ error }) => ({ error }));
         }
       },
       [

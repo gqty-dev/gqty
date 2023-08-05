@@ -76,12 +76,11 @@ export class Selection {
 
   /** The selection path from root the leaf as an array. */
   get ancestry() {
-    const ancestry: Selection[] = [];
+    const ancestry: Selection[] = [this];
     let current: Selection | undefined = this;
 
-    while (current) {
-      ancestry.unshift(current);
-      current = current.parent;
+    while (current.parent) {
+      ancestry.unshift((current = current.parent));
     }
 
     return ancestry;

@@ -10,10 +10,10 @@ import {
 } from './schema.generated';
 
 const queryFetcher: QueryFetcher = async function (
-  { query, variables, operationName },
+  { query, variables, operationName, extensions },
   fetchOptions
 ) {
-  console.debug({ query, variables });
+  console.debug({ query, variables, operationName, ...extensions });
 
   // Modify "https://rickandmortyapi.com/graphql" if needed
   const response = await fetch('https://rickandmortyapi.com/graphql', {

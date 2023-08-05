@@ -155,7 +155,7 @@ test('basic functionality works', async () => {
 
       if (response.status >= 400) {
         throw new GQtyError(
-          \`GraphQL endpoint responded with HTTP \${response.status}: \${response.statusText}.\`
+          \`GraphQL endpoint responded with HTTP status \${response.status}.\`
         );
       }
 
@@ -340,7 +340,7 @@ test('custom scalars works', async () => {
 
       if (response.status >= 400) {
         throw new GQtyError(
-          \`GraphQL endpoint responded with HTTP \${response.status}: \${response.statusText}.\`
+          \`GraphQL endpoint responded with HTTP status \${response.status}.\`
         );
       }
 
@@ -1421,7 +1421,7 @@ test('javascript output works', async () => {
 
       if (response.status >= 400) {
         throw new GQtyError(
-          \`GraphQL endpoint responded with HTTP \${response.status}: \${response.statusText}.\`
+          \`GraphQL endpoint responded with HTTP status \${response.status}.\`
         );
       }
 
@@ -1755,7 +1755,7 @@ test('ignoreArgs transform', async () => {
 
       if (response.status >= 400) {
         throw new GQtyError(
-          \`GraphQL endpoint responded with HTTP \${response.status}: \${response.statusText}.\`
+          \`GraphQL endpoint responded with HTTP status \${response.status}.\`
         );
       }
 

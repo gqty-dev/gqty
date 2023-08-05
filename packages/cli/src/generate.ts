@@ -789,7 +789,7 @@ export async function generate(
 
         if (response.status >= 400) {
           throw new GQtyError(
-            \`GraphQL endpoint responded with HTTP \${response.status}: \${response.statusText}.\`
+            \`GraphQL endpoint responded with HTTP status \${response.status}.\`
           );
         }
 

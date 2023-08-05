@@ -270,7 +270,7 @@ test('creates dir, generates code and writes new file', async () => {
 
         if (response.status >= 400) {
           throw new GQtyError(
-            \`GraphQL endpoint responded with HTTP \${response.status}: \${response.statusText}.\`
+            \`GraphQL endpoint responded with HTTP status \${response.status}.\`
           );
         }
 

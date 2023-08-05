@@ -87,7 +87,7 @@ test('basic inspectWriteGenerate functionality', async () => {
 
         if (response.status >= 400) {
           throw new GQtyError(
-            \`GraphQL endpoint responded with HTTP \${response.status}: \${response.statusText}.\`
+            \`GraphQL endpoint responded with HTTP status \${response.status}.\`
           );
         }
 
@@ -302,7 +302,7 @@ describe('from file', () => {
 
           if (response.status >= 400) {
             throw new GQtyError(
-              \`GraphQL endpoint responded with HTTP \${response.status}: \${response.statusText}.\`
+              \`GraphQL endpoint responded with HTTP status \${response.status}.\`
             );
           }
 
@@ -516,7 +516,7 @@ describe('from file', () => {
 
           if (response.status >= 400) {
             throw new GQtyError(
-              \`GraphQL endpoint responded with HTTP \${response.status}: \${response.statusText}.\`
+              \`GraphQL endpoint responded with HTTP status \${response.status}.\`
             );
           }
 
@@ -729,7 +729,7 @@ describe('from file', () => {
 
           if (response.status >= 400) {
             throw new GQtyError(
-              \`GraphQL endpoint responded with HTTP \${response.status}: \${response.statusText}.\`
+              \`GraphQL endpoint responded with HTTP status \${response.status}.\`
             );
           }
 
@@ -986,7 +986,7 @@ describe('from multiple files', () => {
 
           if (response.status >= 400) {
             throw new GQtyError(
-              \`GraphQL endpoint responded with HTTP \${response.status}: \${response.statusText}.\`
+              \`GraphQL endpoint responded with HTTP status \${response.status}.\`
             );
           }
 
@@ -1259,7 +1259,7 @@ test('specify generateOptions to inspectWriteGenerate', async () => {
 
         if (response.status >= 400) {
           throw new GQtyError(
-            \`GraphQL endpoint responded with HTTP \${response.status}: \${response.statusText}.\`
+            \`GraphQL endpoint responded with HTTP status \${response.status}.\`
           );
         }
 
@@ -1622,7 +1622,7 @@ describe('CLI behavior', () => {
 
           if (response.status >= 400) {
             throw new GQtyError(
-              \`GraphQL endpoint responded with HTTP \${response.status}: \${response.statusText}.\`
+              \`GraphQL endpoint responded with HTTP status \${response.status}.\`
             );
           }
 
