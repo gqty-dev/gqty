@@ -124,6 +124,9 @@ export type Client<TSchema extends BaseGeneratedSchema> = Persistors &
 
     /** Subscribe to debug events, useful for logging. */
     subscribeDebugEvents: ReturnType<typeof createDebugger>['subscribe'];
+
+    /** Get the cache instance of this client. */
+    readonly cache: Cache;
   };
 
 export const createClient = <
@@ -207,7 +210,9 @@ export const createClient = <
     schema: accessor,
     subscribeDebugEvents: debug.subscribe,
     ...createPersistors(cache),
-
+    get cache() {
+      return cache;
+    },
     ...createLegacyClient({
       accessor,
       cache,

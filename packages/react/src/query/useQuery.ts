@@ -13,6 +13,7 @@ import {
 } from 'gqty';
 import { MultiDict } from 'multidict';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import ModifiedSet from '../ModifiedSet';
 import {
   translateFetchPolicy,
   type LegacyFetchPolicy,
@@ -97,7 +98,11 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
 
   const cofetchingResolvers = new MultiDict<ResolverParts, ResolverParts>();
 
-  let currentResolver: ResolverParts | undefined = undefined;
+  // We keep track of the whole stack of resolvers ever created before a fetch
+  // happens. When the current cache has normalization disabled, and a fetch
+  // affects an existing cache key at the same time, all selections made in
+  // other contexts will also be included.
+  const resolverStack = new ModifiedSet<ResolverParts>();
 
   return ({
     extensions,
@@ -128,9 +133,15 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
         onSelect() {
           // Stick these resolvers together, their selections will be fetched
           // when either one of them requires a fetch.
+          const currentResolver = resolverStack.lastInserted;
           if (currentResolver && currentResolver !== resolver) {
             cofetchingResolvers.set(currentResolver, resolver);
           }
+
+          // Any selections triggers this resolver to be stacked. When a fetch
+          // happens without cache normalization, all stacked resovlers that
+          // has selections sharing the same cache key will also be fetched.
+          resolverStack.add(resolver);
 
           // Trigger a fetch when selections are made outside of the rendering
           // phase, such as event listeners or polling.
@@ -139,8 +150,6 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
           }
         },
       });
-
-      currentResolver = resolver;
 
       return resolver;
     }, [cachePolicy, operationName, retryPolicy]);
@@ -222,6 +231,29 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
         if (!context.shouldFetch) return;
 
         try {
+          // Stitch stacked selections what shared the same cache key, even if
+          // those selections don't need fetching. Because without normalization
+          // they will be overwritten by this fetch.
+          // [ ] There is one overfetch triggered by parallel renders that I
+          // cannot eliminate right now. Deferring to future me.
+          if (!client.cache.normalizationOptions) {
+            selections.forEach(({ cacheKeys: [subType, subField] }) => {
+              resolverStack.forEach((stackResolver) => {
+                if (stackResolver === resolver) return;
+
+                for (const {
+                  cacheKeys: [objType, objField],
+                } of stackResolver.selections) {
+                  if (subType == objType && subField == objField) {
+                    cofetchingResolvers.set(resolver, stackResolver);
+
+                    return;
+                  }
+                }
+              });
+            });
+          }
+
           // Sticky co-fetching selections is only needed when more than one
           // active context are making selections in one component. This usually
           // happens with mixed usage of useQuery and other query methods.
@@ -256,6 +288,11 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
           context.notifyCacheUpdate = cachePolicy !== 'default';
           state.promise = undefined;
 
+          // Release co-fetching context, dropping reference to the last resolver
+          // created in current render to prevent it from affecting the next render.
+          resolverStack.clear();
+          cofetchingResolvers.delete(resolver);
+
           setState(({ error }) => ({ error }));
         }
       },
@@ -266,14 +303,6 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
         operationName,
         selections,
       ]
-    );
-
-    // Release co-fetching context
-    useEffect(
-      () => () => {
-        cofetchingResolvers.delete(resolver);
-      },
-      []
     );
 
     // context.shouldFetch only changes during component render, which happens

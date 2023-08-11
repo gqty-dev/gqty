@@ -2,7 +2,6 @@
  * GQty: You can safely modify this file based on your needs.
  */
 
-import { createLogger } from '@gqty/logger';
 import { createReactClient } from '@gqty/react';
 import { Cache, GQtyError, createClient, type QueryFetcher } from 'gqty';
 import {
@@ -56,7 +55,7 @@ const queryFetcher: QueryFetcher = async function (
 const cache = new Cache(undefined, {
   maxAge: Infinity,
   staleWhileRevalidate: 5 * 60 * 1000,
-  normalization: true,
+  normalization: false,
 });
 
 export const client = createClient<GeneratedSchema>({
@@ -67,8 +66,6 @@ export const client = createClient<GeneratedSchema>({
     fetcher: queryFetcher,
   },
 });
-
-createLogger(client).start();
 
 // Core functions
 export const { resolve, subscribe, schema } = client;
@@ -105,3 +102,10 @@ export const {
 });
 
 export * from './schema.generated';
+
+if (process.env.NODE_ENV === 'development' && typeof window !== 'undefined') {
+  import('@gqty/logger').then(({ createLogger }) => {
+    const logger = createLogger(client);
+    logger.start();
+  });
+}

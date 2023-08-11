@@ -77,7 +77,6 @@ export const createContext = ({
       // The only case we skip this is when fetching for SWR on 'default'.
       this.notifyCacheUpdate ||= data === undefined;
 
-      // onSelect?.(selection, cacheNode);
       selectSubscriptions.forEach((fn) => fn(selection, cacheNode));
     },
     subscribeSelect(callback) {

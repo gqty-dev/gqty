@@ -576,7 +576,6 @@ export const createTestClient = async (
       scalars: scalarsEnumsHash,
     }),
     {
-      cache,
       client,
       queries,
     }
