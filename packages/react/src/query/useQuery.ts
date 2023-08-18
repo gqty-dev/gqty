@@ -238,6 +238,8 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
           // cannot eliminate right now. Deferring to future me.
           if (!client.cache.normalizationOptions) {
             selections.forEach(({ cacheKeys: [subType, subField] }) => {
+              if (subType !== 'query') return;
+
               resolverStack.forEach((stackResolver) => {
                 if (stackResolver === resolver) return;
 
