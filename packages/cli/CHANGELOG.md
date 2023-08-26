@@ -1,5 +1,17 @@
 # @gqty/cli
 
+## 3.4.0
+
+### Minor Changes
+
+- f6d00c07: feat: Support "endpoint" in configuration
+
+### Patch Changes
+
+- Updated dependencies [f39bb450]
+- Updated dependencies [595ec843]
+  - gqty@2.4.0
+
 ## 3.3.0
 
 ### Minor Changes
@@ -22,7 +34,7 @@
     Test: '_TEST',
     MyValue: 'My_Value',
   } as const;
-  export type EnumAsConst = typeof EnumAsConst[keyof typeof EnumAsConst];
+  export type EnumAsConst = (typeof EnumAsConst)[keyof typeof EnumAsConst];
 
   function useEnum(value: Enum) {}
   function useEnumAsConst(value: EnumAsConst) {}

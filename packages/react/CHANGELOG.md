@@ -1,5 +1,18 @@
 # @gqty/react
 
+## 2.2.0
+
+### Minor Changes
+
+- 11604f54: Window focus refetching
+- 6626d802: Add `$refetch` in `useQuery()`
+
+### Patch Changes
+
+- Updated dependencies [f39bb450]
+- Updated dependencies [595ec843]
+  - gqty@2.4.0
+
 ## 2.1.1
 
 ### Patch Changes

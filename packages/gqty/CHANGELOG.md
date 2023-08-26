@@ -1,5 +1,15 @@
 # gqty
 
+## 2.4.0
+
+### Minor Changes
+
+- f39bb450: Add `operationName` option to `resolved()` and `inlineResolved()`.
+
+### Patch Changes
+
+- 595ec843: Remove alias without args
+
 ## 2.3.0
 
 ### Minor Changes
@@ -105,7 +115,7 @@
     return query.user(args).name;
   }
 
-  function getUserEmail(args: Args<typeof query['user']>) {
+  function getUserEmail(args: Args<(typeof query)['user']>) {
     return query.user(args).email;
   }
   ```
