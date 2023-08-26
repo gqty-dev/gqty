@@ -184,7 +184,9 @@ export const addCommand = (command: Command) => {
         const { printSchema } = await import('graphql');
         const { FasterSMA: SMA } = await import('trading-signals');
         const { default: throttle } = await import('lodash-es/throttle.js');
-        const micromatch = await import('micromatch');
+        const {
+          default: { isMatch },
+        } = await import('micromatch');
 
         const sma = new SMA(3);
         const getMovingAverage = () => {
@@ -255,7 +257,7 @@ export const addCommand = (command: Command) => {
         // Watch file changes
         (async () => {
           for await (const { filename } of watch('.', { recursive: true })) {
-            if (micromatch.isMatch(filename, endpoints)) {
+            if (isMatch(filename, endpoints)) {
               doGenerateSchema();
             }
           }
