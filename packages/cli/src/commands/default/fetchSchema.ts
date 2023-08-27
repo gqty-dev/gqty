@@ -65,7 +65,7 @@ export const fetchSchemas = async (
 
         // If still no headers provided, throw.
         if (inHeaders === undefined) {
-          terminateWithError(e);
+          throw e;
         }
 
         headersByEndpoint[endpoint] = { headers: inHeaders };
@@ -73,16 +73,16 @@ export const fetchSchemas = async (
         try {
           await doFetchSchema();
         } catch (e) {
-          terminateWithError(e);
+          throw e;
         }
       } else {
-        terminateWithError(e);
+        throw e;
       }
     }
   }
 
   if (schemas.length === 0) {
-    terminateWithError(new Error('No schemas found.'));
+    throw new Error('No schemas found.');
   }
 
   if (!options.silent) {
@@ -91,15 +91,6 @@ export const fetchSchemas = async (
   }
 
   return deps.buildSchema(schemas.join('\n'));
-};
-
-const terminateWithError = (e: unknown) => {
-  if (e instanceof Error) {
-    logger.error(e.message);
-    process.exit(1);
-  }
-
-  throw e;
 };
 
 const fetchSchema = async (

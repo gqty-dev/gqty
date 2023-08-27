@@ -45,7 +45,7 @@ export const generateClient = async (
   );
 
   logger.successProgress(`Code generation completed.`);
-  console.log('');
+  console.log();
 };
 
 const promptRegenerate = async (message: string): Promise<boolean> => {

@@ -1,32 +1,56 @@
 import chalk from 'chalk';
 
+/**
+ * When false, triggers a new line before the next non-progress log.
+ */
+let isNewline = true;
+let lastProgressLength = 0;
+
+const normalMessage = (message?: any, ...optionalParams: any[]): void => {
+  if (!isNewline) {
+    isNewline = true;
+    console.log('');
+  }
+
+  return console.log(message, ...optionalParams);
+};
+
+const progressMessage = (message: string) => {
+  isNewline = false;
+
+  const result = process.stdout.write(
+    `\r${message}`.padEnd(lastProgressLength, ' ')
+  );
+
+  lastProgressLength = message.length + 1;
+
+  return result;
+};
+
 export const logger = {
   error(...args: unknown[]) {
-    console.log(chalk.red('✗'), ...args);
+    return normalMessage(chalk.red('✗'), ...args);
   },
   warn(...args: unknown[]) {
-    console.log(chalk.yellow('!'), ...args);
+    return normalMessage(chalk.yellow('!'), ...args);
   },
   info(...args: unknown[]) {
-    console.log(chalk.cyan('i'), ...args);
+    return normalMessage(chalk.cyan('i'), ...args);
   },
   success(...args: unknown[]) {
-    console.log(chalk.green('✔'), ...args);
+    return normalMessage(chalk.green('✔'), ...args);
   },
 
   errorProgress(message: string) {
-    process.stdout.write(progressMessage(chalk.red('✗') + ' ' + message));
+    return progressMessage(chalk.red('✗') + ' ' + message);
   },
   warnProgress(message: string) {
-    process.stdout.write(progressMessage(chalk.yellow('!') + ' ' + message));
+    return progressMessage(chalk.yellow('!') + ' ' + message);
   },
   infoProgress(message: string) {
-    process.stdout.write(progressMessage(chalk.cyan('i') + ' ' + message));
+    return progressMessage(chalk.cyan('i') + ' ' + message);
   },
   successProgress(message: string) {
-    process.stdout.write(progressMessage(chalk.green('✔') + ' ' + message));
+    return progressMessage(chalk.green('✔') + ' ' + message);
   },
 };
-
-const progressMessage = (message: string) =>
-  `\r${message}`.padEnd((process.stdout.columns ?? 0) - 2, ' ');

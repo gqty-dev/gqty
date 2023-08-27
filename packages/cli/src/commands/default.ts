@@ -89,7 +89,7 @@ export const addCommand = (command: Command) => {
         headers:
           convertHeadersInput(options.header) ?? config.introspection?.headers,
         headersByEndpoint: config.introspections,
-      });
+      }).catch(terminateWithError);
 
       if (Object.keys(config.introspections ?? {}).length > 0) {
         // TODO: Save config to file.
@@ -211,20 +211,34 @@ export const addCommand = (command: Command) => {
                 headers: convertHeadersInput(options.header),
                 headersByEndpoint: config.introspections,
                 silent: true,
+              }).catch((e) => {
+                if (e instanceof Error) {
+                  logger.errorProgress(e.message);
+
+                  return Promise.resolve(undefined);
+                } else {
+                  return Promise.reject(e);
+                }
               });
+
+              if (!schema) return;
 
               const schemaText = printSchema(schema);
 
-              if (schemaText === lastSchema) return;
+              if (schemaText !== lastSchema) {
+                lastSchema = schemaText;
 
-              lastSchema = schemaText;
+                await generateClient(schema, {
+                  destination: '',
+                  ...config,
+                });
 
-              await generateClient(schema, {
-                destination: '',
-                ...config,
-              });
+                sma.update(Date.now() - start);
+              }
 
-              sma.update(Date.now() - start);
+              logger.infoProgress(
+                'Watching for schema changes... (Ctrl+C to exit)'
+              );
             } finally {
               mutexLock = false;
             }
@@ -234,9 +248,9 @@ export const addCommand = (command: Command) => {
         );
 
         let mutexLock = false;
-        let lastSchema: string = printSchema(schema);
+        let lastSchema = printSchema(schema);
 
-        logger.info('[GQty] Watching for schema changes... (Ctrl+C to exit)');
+        logger.infoProgress('Watching for schema changes... (Ctrl+C to exit)');
 
         // Polling loop, only happens with URL endpoints.
         if (endpoints.some((endpoint) => isURL(endpoint))) {
@@ -256,15 +270,25 @@ export const addCommand = (command: Command) => {
 
         // Watch file changes
         (async () => {
+          let shouldRun = false;
+
           for await (const { filename } of watch('.', { recursive: true })) {
             if (isMatch(filename, endpoints)) {
-              doGenerateSchema();
+              // Already queued
+              if (shouldRun) continue;
+              shouldRun = true;
+
+              process.nextTick(() => {
+                // Already executed
+                if (!shouldRun) return;
+                shouldRun = false;
+
+                doGenerateSchema();
+              });
             }
           }
         })();
       }
-
-      // TODO: Change all `import type` from generated.ts to `import { type ... }`
     });
 };
 
@@ -324,4 +348,13 @@ const promptTypescript = async (defaultValue: boolean) => {
   });
 
   return typescript;
+};
+
+const terminateWithError = (e: unknown) => {
+  if (e instanceof Error) {
+    logger.error(e.message);
+    process.exit(1);
+  }
+
+  throw e;
 };
