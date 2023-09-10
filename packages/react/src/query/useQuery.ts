@@ -52,13 +52,12 @@ export interface UseQueryOptions<TSchema extends BaseGeneratedSchema> {
 }
 
 export interface UseQueryState {
-  /**
-   * Useful for `Non-Suspense` usage.
-   */
+  /** Useful for `Non-Suspense` usage. */
   readonly isLoading: boolean;
 
   /**
-   * Latest scheduler Error, for more in-depth error management use `useMetaState` hook
+   * Latest scheduler Error, for more in-depth error management use
+   * `useMetaState` hook
    */
   error?: GQtyError;
 }
@@ -133,7 +132,7 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
         onSelect() {
           // Stick these resolvers together, their selections will be fetched
           // when either one of them requires a fetch.
-          const currentResolver = resolverStack.lastInserted;
+          const currentResolver = resolverStack.lastAdded;
           if (currentResolver && currentResolver !== resolver) {
             cofetchingResolvers.set(currentResolver, resolver);
           }
