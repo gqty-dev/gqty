@@ -64,16 +64,19 @@ export interface GenerateOptions {
   react?: boolean;
   /**
    * Define enums as string types instead of enums objects
+   *
    * @default false
    */
   enumsAsStrings?: boolean;
   /**
    * Define enums as const types instead of enums objects
+   *
    * @default false
    */
   enumsAsConst?: boolean;
   /**
    * Generate subscriptions client with target package
+   *
    * @default false
    */
   subscriptions?: boolean | string;
@@ -94,8 +97,9 @@ export interface GenerateOptions {
 
 export interface TransformSchemaOptions {
   /**
-   * Get a field in which every argument is optional, if this functions return "true", gqty will _always__ ignore it's arguments,
-   * and you won't be able to specify them
+   * Get a field in which every argument is optional, if this functions return
+   * "true", gqty will _always__ ignore it's arguments, and you won't be able to
+   * specify them
    */
   ignoreArgs?: (type: GraphQLField<unknown, unknown>) => boolean;
 }
