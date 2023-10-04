@@ -48,6 +48,10 @@ export interface UseMutationOptions<TData> {
    * Enable suspense behavior
    */
   suspense?: boolean;
+  /**
+   * extension object that allows user to pass custom data to the query fetcher.
+   */
+  extensions?: Record<string, any>;
 }
 
 export type UseMutationState = {
@@ -85,6 +89,7 @@ export const createUseMutation = <TSchema extends BaseGeneratedSchema>(
       awaitRefetchQueries,
       suspense = defaultSuspense,
       noCache = false,
+      extensions,
     }: UseMutationOptions<ReturnType<typeof mutationFn>> = {}
   ) => {
     const [state, setState] = React.useState<{
@@ -119,6 +124,7 @@ export const createUseMutation = <TSchema extends BaseGeneratedSchema>(
             {
               cachePolicy: noCache ? 'no-store' : 'no-cache',
               retryPolicy: retry,
+              extensions,
             }
           ).then((data) => {
             const refetches = refetchQueries.map((v) => refetch(v));
