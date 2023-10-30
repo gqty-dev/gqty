@@ -209,11 +209,13 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
 
     const refetch = useCallback(
       async (options?: { ignoreCache?: boolean; skipPrepass?: boolean }) => {
-        if (state.promise !== undefined) return;
+        if (state.promise !== undefined) {
+          return;
+        }
 
         if (
           !fetchInBackground &&
-          globalThis.document?.visibilityState !== 'visible'
+          globalThis.document?.visibilityState === 'hidden'
         ) {
           return;
         }
@@ -227,7 +229,9 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
           context.shouldFetch = true;
         }
 
-        if (!context.shouldFetch) return;
+        if (!context.shouldFetch) {
+          return;
+        }
 
         try {
           // Stitch stacked selections what shared the same cache key, even if
@@ -237,10 +241,14 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
           // cannot eliminate right now. Deferring to future me.
           if (!client.cache.normalizationOptions) {
             selections.forEach(({ cacheKeys: [subType, subField] }) => {
-              if (subType !== 'query') return;
+              if (subType !== 'query') {
+                return;
+              }
 
               resolverStack.forEach((stackResolver) => {
-                if (stackResolver === resolver) return;
+                if (stackResolver === resolver) {
+                  return;
+                }
 
                 for (const {
                   cacheKeys: [objType, objField],
@@ -310,7 +318,9 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
     // after this hook is called. A useEffect hook that runs every render
     // triggers a post-render check.
     useEffect(() => {
-      if (!refetchOnRender) return;
+      if (!refetchOnRender) {
+        return;
+      }
 
       refetch({ skipPrepass: true });
     });
@@ -322,7 +332,9 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
 
     // refetchOnReconnect
     useOnlineEffect(() => {
-      if (!refetchOnReconnect) return;
+      if (!refetchOnReconnect) {
+        return;
+      }
 
       refetch();
     }, [refetchOnReconnect]);
@@ -330,7 +342,9 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
     // A rerender should be enough to trigger a soft check, fetch will
     // happen if any of the accessed cache value is stale.
     useWindowFocusEffect(() => {
-      if (!refetchOnWindowVisible) return;
+      if (!refetchOnWindowVisible) {
+        return;
+      }
 
       refetch();
     });
@@ -338,8 +352,9 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
     // Legacy staleWhileRevalidate
     const swrDiff = usePrevious(staleWhileRevalidate);
     useUpdateEffect(() => {
-      if (!staleWhileRevalidate || Object.is(staleWhileRevalidate, swrDiff))
+      if (!staleWhileRevalidate || Object.is(staleWhileRevalidate, swrDiff)) {
         return;
+      }
 
       refetch({ ignoreCache: true });
     }, [refetch, swrDiff]);

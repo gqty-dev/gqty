@@ -49,7 +49,7 @@ export class FrailMap<K, V> extends Map<K, V> {
   set(key: K, value: V, options?: SetOptions) {
     return super.set(
       key,
-      (options?.strong
+      (options?.strong || typeof WeakRef === 'undefined'
         ? new StrongRef({ data: value })
         : new WeakRef({ data: value })) as V
     );
