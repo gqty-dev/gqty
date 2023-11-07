@@ -21,7 +21,6 @@
     "pretty": "pretty-quick",
     "pretty:all": "prettier --write \"**/*.{ts,tsx}\"",
     "publish:all": "changeset version && pnpm i && pnpm test && pnpm -r publish --access public",
-    "release:canary": "node scripts/canary-release.cjs",
     "test": "pnpm test -r --no-sort --no-bail --stream --",
     "test:ci": "pnpm test -r --workspace-concurrency=0 --no-sort --no-bail --stream --",
     "test:watch": "pnpm test:watch -r --no-bail --no-sort --stream",

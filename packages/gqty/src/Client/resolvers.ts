@@ -200,13 +200,13 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
     });
 
     context.subscribeSelect((selection, cache) => {
+      onSelect?.(selection, cache);
+
       // Prevents infinite loop created by legacy functions
       if (!selections.has(selection)) {
         selections.add(selection);
         parentContext?.select(selection, cache);
       }
-
-      onSelect?.(selection, cache);
     });
 
     const accessor = createSchemaAccessor<TSchema>(context);

@@ -19,8 +19,8 @@ import {
   type LegacyFetchPolicy,
   type OnErrorHandler,
 } from '../common';
-import { useIsRendering } from '../useIsRendering';
 import { useOnlineEffect } from '../useOnlineEffect';
+import { useRenderSession } from '../useRenderSession';
 import { useWindowFocusEffect } from '../useWindowFocusEffect';
 import { type ReactClientOptionsWithDefaults } from '../utils';
 
@@ -122,7 +122,10 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
     staleWhileRevalidate = defaultStaleWhileRevalidate,
   } = {}) => {
     const render = useRerender();
-    const getIsRendering = useIsRendering();
+    const renderSession = useRenderSession<string, boolean>();
+
+    renderSession.set('isRendering', true);
+
     const resolver = useMemo(() => {
       const resolver = client.createResolver({
         cachePolicy,
@@ -137,15 +140,27 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
             cofetchingResolvers.set(currentResolver, resolver);
           }
 
-          // Any selections triggers this resolver to be stacked. When a fetch
-          // happens without cache normalization, all stacked resovlers that
-          // has selections sharing the same cache key will also be fetched.
+          // Any selections happening will have this resolver stacked. When a
+          // fetch happens without cache normalization, all stacked resovlers
+          // with selections sharing common cache keys are also included.
           resolverStack.add(resolver);
 
           // Trigger a fetch when selections are made outside of the rendering
           // phase, such as event listeners or polling.
-          if (!getIsRendering()) {
+          if (!renderSession.get('isRendering')) {
             refetch({ skipPrepass: true });
+          }
+          // Clears previous selections if the current render is not triggered
+          // by a fetch, because it implies a user-triggered state change where
+          // old query inputs may be stale. Only clear selections once right
+          // when the first selection is made.
+          else if (
+            !renderSession.get('postFetch') &&
+            !renderSession.get('postFetchSelectionCleared')
+          ) {
+            renderSession.set('postFetchSelectionCleared', true);
+
+            selections.clear();
           }
         },
       });
@@ -190,12 +205,6 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
 
       // Prevents excessive suspense fallback, throws only on empty cache.
       if (state.promise && !context.hasCacheHit) throw state.promise;
-    }
-
-    // Reset selections to prevent overfetching, but do it only when the
-    // previous render is not triggered by a successful fetch.
-    if (context.shouldFetch === false) {
-      selections.clear();
     }
 
     useEffect(
@@ -284,6 +293,7 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
             setState({ promise });
           }
 
+          // Let the fetch happen.
           await promise;
         } catch (e) {
           const error = GQtyError.create(e);
@@ -297,11 +307,15 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
           context.notifyCacheUpdate = cachePolicy !== 'default';
           state.promise = undefined;
 
-          // Release co-fetching context, dropping reference to the last resolver
-          // created in current render to prevent it from affecting the next render.
+          // Release co-fetching context, dropping reference to the last
+          // resolver created in current render to prevent it from affecting the
+          // next render.
           resolverStack.clear();
           cofetchingResolvers.delete(resolver);
 
+          renderSession.set('postFetch', true);
+
+          // Trigger a post-fetch render, keeps the error if caught.
           setState(({ error }) => ({ error }));
         }
       },
