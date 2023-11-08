@@ -49,6 +49,7 @@ export interface UseQueryOptions<TSchema extends BaseGeneratedSchema> {
   retryPolicy?: RetryOptions;
   staleWhileRevalidate?: boolean | object | number | string | null;
   suspense?: boolean;
+  __experimentalGreedyFetch?: boolean;
 }
 
 export interface UseQueryState {
@@ -120,6 +121,7 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
     retry = defaultRetry,
     retryPolicy = retry,
     staleWhileRevalidate = defaultStaleWhileRevalidate,
+    __experimentalGreedyFetch,
   } = {}) => {
     const render = useRerender();
     const renderSession = useRenderSession<string, boolean>();
@@ -243,20 +245,30 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
         }
 
         try {
+          // Forcibly includes all resolvers in the same render when one of them
+          // requires a fetch.
+          if (__experimentalGreedyFetch) {
+            for (const stackResolver of resolverStack) {
+              cofetchingResolvers.set(resolver, stackResolver);
+            }
+          }
+
           // Stitch stacked selections what shared the same cache key, even if
           // those selections don't need fetching. Because without normalization
           // they will be overwritten by this fetch.
           // [ ] There is one overfetch triggered by parallel renders that I
           // cannot eliminate right now. Deferring to future me.
           if (!client.cache.normalizationOptions) {
-            selections.forEach(({ cacheKeys: [subType, subField] }) => {
+            for (const {
+              cacheKeys: [subType, subField],
+            } of selections) {
               if (subType !== 'query') {
-                return;
+                continue;
               }
 
-              resolverStack.forEach((stackResolver) => {
+              for (const stackResolver of resolverStack) {
                 if (stackResolver === resolver) {
-                  return;
+                  continue;
                 }
 
                 for (const {
@@ -265,11 +277,11 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
                   if (subType == objType && subField == objField) {
                     cofetchingResolvers.set(resolver, stackResolver);
 
-                    return;
+                    continue;
                   }
                 }
-              });
-            });
+              }
+            }
           }
 
           // Sticky co-fetching selections is only needed when more than one
