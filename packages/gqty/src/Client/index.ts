@@ -17,7 +17,7 @@ import {
 } from './compat/client';
 import { createLegacyQueryFetcher } from './compat/queryFetcher';
 import { createLegacySubscriptionsClient } from './compat/subscriptionsClient';
-import { createContext, type CreateContextOptions } from './context';
+import { createContext } from './context';
 import { createDebugger } from './debugger';
 import { createResolvers, type Resolvers } from './resolvers';
 
@@ -103,6 +103,14 @@ export type FetchOptions = Omit<RequestInit, 'body' | 'mode'> & {
 };
 
 export type ClientOptions = {
+  /**
+   * Maximum alias length, reducing overall query payload. You may increase this
+   * when collisions occur, specify Infinity here to use the full hash.
+   *
+   * @default 6
+   */
+  aliasLength?: number;
+
   cache: Cache;
   fetchOptions: FetchOptions;
   scalars: ScalarsEnumsHash;
@@ -136,6 +144,7 @@ export const createClient = <
   // TODO: compat: remove in v4
   _ObjectTypes extends SchemaObjects<TSchema> = never
 >({
+  aliasLength = 6,
   // This default cache on a required option is for legacy clients, which does
   // not provide a `cache` option.
   // TODO: compat: remove in v4
@@ -175,19 +184,19 @@ export const createClient = <
   // TODO: Defer creation until `@gqty/logger` is used.
   const debug = createDebugger();
 
-  const defaultContextOptions: CreateContextOptions = {
+  // Global scope for accessing the cache via `schema` property.
+  const clientContext = createContext({
+    aliasLength,
     cache,
     depthLimit: __depthLimit,
     cachePolicy: fetchPolicy,
     scalars,
     schema,
     typeKeys: cache.normalizationOptions?.schemaKeys,
-  };
-
-  // Global scope for accessing the cache via `schema` property.
-  const clientContext = createContext(defaultContextOptions);
+  });
 
   const resolvers = createResolvers<TSchema>({
+    aliasLength,
     scalars,
     schema,
     cache,

@@ -9,6 +9,7 @@ export type SchemaContext<
   Disposable &
   Selectable & {
     cache: Cache;
+    readonly aliasLength?: number;
     readonly cacheOptions?: CacheGetOptions;
     readonly depthLimit: number;
     readonly scalars: ScalarsEnumsHash;
@@ -23,6 +24,7 @@ export type SchemaContext<
   };
 
 export type CreateContextOptions = {
+  aliasLength?: number;
   cache: Cache;
   depthLimit: number;
   cachePolicy: RequestCache;
@@ -32,6 +34,7 @@ export type CreateContextOptions = {
 };
 
 export const createContext = ({
+  aliasLength,
   cache,
   cachePolicy,
   depthLimit,
@@ -43,6 +46,7 @@ export const createContext = ({
   const selectSubscriptions = new Set<Selectable['select']>();
 
   return {
+    aliasLength,
     cache:
       cachePolicy === 'no-cache' ||
       cachePolicy === 'no-store' ||

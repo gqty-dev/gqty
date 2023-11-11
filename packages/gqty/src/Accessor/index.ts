@@ -36,7 +36,9 @@ export function createSchemaAccessor<TSchema extends BaseGeneratedSchema>(
         //
         // TODO: This is a half-way done solution for nullable objects, which
         // returns early and removes the possibility to make child selections.
-        const selection = selectionCache.get(key) ?? Selection.createRoot(key);
+        const selection =
+          selectionCache.get(key) ??
+          Selection.createRoot(key, { aliasLength: context.aliasLength });
         selectionCache.set(key, selection);
 
         return createObjectAccessor({

@@ -93,4 +93,20 @@ describe('selection creation', () => {
       ).length
     ).toEqual(3);
   });
+
+  fit('should descend aliasLength from root', () => {
+    const selectionA = Selection.createRoot('a', { aliasLength: 2 }).getChild(
+      'b',
+      { input: { types: { a: 'Int!' }, values: { a: 1 } } }
+    );
+
+    expect(selectionA.alias?.length).toBe(2);
+
+    const selectionB = Selection.createRoot('a', {
+      aliasLength: Infinity,
+    }).getChild('b', { input: { types: { a: 'Int!' }, values: { a: 1 } } });
+
+    // Future proof: object-hash defaults to SHA1, check against that or above.
+    expect(selectionB.alias?.length).toBeGreaterThanOrEqual(40);
+  });
 });

@@ -331,8 +331,8 @@ describe('compat', () => {
 
     expect(queries.map(({ query }) => query)).toMatchInlineSnapshot(`
       [
-        "query TestQueryA($a41350:String){a5b43:human(name:$a41350){__typename}}",
-        "mutation TestMutation($dd4050:String!){a133f:humanMutation(nameArg:$dd4050){__typename}}",
+        "query TestQueryA($e8a374:String){a5b434:human(name:$e8a374){__typename}}",
+        "mutation TestMutation($ef3ee3:String!){a133ff:humanMutation(nameArg:$ef3ee3){__typename}}",
         "query TestQueryB{hello}",
       ]
     `);

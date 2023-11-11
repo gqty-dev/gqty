@@ -42,36 +42,55 @@ export type SelectionSnapshot = Array<
 >;
 
 export class Selection {
-  readonly alias?: string;
-  readonly cacheKeys: string[] = [];
   readonly children = new Map<string | number, Selection>();
-  readonly input?: SelectionInput;
-  readonly parent?: Selection;
-  readonly root: Selection;
-
-  /** Indicates current selection being a inteface/union key. */
-  readonly isUnion: boolean;
 
   constructor(
     readonly key: string | number,
-    { input, alias, isUnion = false, parent }: SelectionOptions = {},
+    readonly options: SelectionOptions = {},
     token?: symbol
   ) {
     if (token !== createSymbol) {
       throw new GQtyError(`Use Selection.createRoot() instead.`);
     }
+  }
 
-    this.alias = alias;
-    this.input = input;
-    this.isUnion = isUnion;
-    this.parent = parent;
-    this.root = parent?.root ?? this;
+  get alias() {
+    return this.options.alias;
+  }
 
-    if (typeof key === 'number' || key === '$on' || parent?.key === '$on') {
-      this.cacheKeys = parent?.cacheKeys ?? [];
-    } else {
-      this.cacheKeys = (parent?.cacheKeys ?? []).concat(this.alias || key);
+  get aliasLength(): number | undefined {
+    return this.options.aliasLength ?? this.parent?.aliasLength;
+  }
+
+  get input() {
+    return this.options.input;
+  }
+
+  /** Indicates current selection being a inteface/union key. */
+  get isUnion() {
+    return this.options.isUnion ?? false;
+  }
+
+  get parent() {
+    return this.options.parent;
+  }
+
+  get root(): Selection {
+    return this.options.parent?.root ?? this;
+  }
+
+  get cacheKeys(): string[] {
+    const keys = this.parent?.cacheKeys ?? [];
+
+    if (
+      typeof this.key === 'number' ||
+      this.key === '$on' ||
+      this.parent?.key === '$on'
+    ) {
+      return keys;
     }
+
+    return keys.concat(this.alias ?? this.key);
   }
 
   /** The selection path from root the leaf as an array. */
@@ -86,8 +105,8 @@ export class Selection {
     return ancestry;
   }
 
-  static createRoot(key: string) {
-    return new Selection(key, {}, createSymbol);
+  static createRoot(key: string, options?: SelectionOptions) {
+    return new Selection(key, options, createSymbol);
   }
 
   getChild(key: string | number, options?: SelectionOptions) {
@@ -96,7 +115,7 @@ export class Selection {
       (options?.input
         ? aliasGenerator
             .get(key, options.input)
-            .slice(0, options.aliasLength ?? 5)
+            .slice(0, options?.aliasLength ?? this.aliasLength)
         : undefined);
     const hashKey = alias ?? key.toString();
 
@@ -124,9 +143,9 @@ export class Selection {
   }
 
   toJSON(): SelectionSnapshot {
-    return this.ancestry.map(({ key, isUnion, input }) => {
+    return this.ancestry.map(({ key, isUnion, input, options }) => {
       if (isUnion) {
-        return [key, { isUnion }];
+        return [key, { isUnion, ...options }];
       } else if (input) {
         return [key, { input }];
       } else {

@@ -260,7 +260,7 @@ const objectProxyHandler: ProxyHandler<GeneratedSchemaObject> = {
     const meta = $meta(proxy);
     if (typeof key !== 'string' || !meta) return false;
 
-    const { context, cache, selection } = meta;
+    const { cache, context, selection } = meta;
 
     // Extract proxy data, keep the object reference unless users deep clone it.
     value = deepMetadata(value) ?? value;
@@ -486,6 +486,9 @@ const arrayProxyHandler: ProxyHandler<CacheObject[]> = {
       selection,
     } = meta;
     if (!Array.isArray(data)) return;
+
+    // [ ] Retain selections when an empty array is encountered.
+    // see Cache.#selectionAccessors() for more context.
 
     if (typeof key === 'string') {
       if (!Array.isArray(data)) {

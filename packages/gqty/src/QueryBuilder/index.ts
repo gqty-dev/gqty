@@ -79,7 +79,7 @@ export const buildQuery = (
               .map(([key, value]) => {
                 const variableName = hash((s.alias ?? s.key) + '_' + key).slice(
                   0,
-                  6
+                  s.aliasLength
                 );
 
                 variables.set(`${variableName}`, {

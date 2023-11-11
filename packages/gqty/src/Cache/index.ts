@@ -285,16 +285,16 @@ export class Cache {
 
   /* TODO: Refactor
    *
-   * Caching accessors by selections is a mean to retain sub-selections when
-   * nullable arrays and objects has null cached, such accessors will return
-   * null and no futher selections can be triggered on them.
+   * Caching accessors by selections is a mean to retain sub-selections for
+   * empty arrays and nullables in cache, such accessors returns null where no
+   * futher selections can be triggered on them.
    *
-   * Only when cache value is null, such a cache should be responsible for
+   * When cache value is null or empty array, this cache is responsible for
    * returning all child selections made last time in this scope.
    *
    * Caching accessors by cache values is broken with normalization enabled.
-   * Different selection paths leading to the same normalized object overwrites
-   * each other, along with the selection inside.
+   * Different selection paths leading to the same normalized object, where they
+   * overwrites each other along with the sub-selections inside.
    *
    * Current workaround is to cache selection children in parents, preventing
    * excessive selection object creation.

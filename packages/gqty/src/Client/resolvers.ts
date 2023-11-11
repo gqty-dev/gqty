@@ -15,6 +15,7 @@ import {
 import { updateCaches } from './updateCaches';
 
 export type CreateResolversOptions = {
+  aliasLength?: number;
   cache: Cache;
   debugger?: Debugger;
   depthLimit: number;
@@ -170,6 +171,7 @@ export type SubscribeOptions = CreateResolverOptions & {
 const pendingQueries = new WeakMap<Set<Set<Selection>>, Promise<unknown>>();
 
 export const createResolvers = <TSchema extends BaseGeneratedSchema>({
+  aliasLength,
   cache: clientCache,
   debugger: debug,
   depthLimit,
@@ -192,6 +194,7 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
   }: SubscribeOptions = {}) => {
     const selections = new Set<Selection>();
     const context = createContext({
+      aliasLength,
       cache: clientCache,
       depthLimit,
       cachePolicy,
