@@ -58,10 +58,12 @@ export const createLegacyInlineResolved = <
     unsubscribe();
 
     if (selections.size === 0) {
-      if (process.env.NODE_ENV !== 'production') {
+      if (onEmptyResolve) {
+        onEmptyResolve();
+      } else if (process.env.NODE_ENV !== 'production') {
         console.warn('[gqty] Warning! No data requested.');
       }
-      onEmptyResolve?.();
+
       return data;
     }
 
