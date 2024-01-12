@@ -273,7 +273,7 @@ export const addCommand = (command: Command) => {
           let shouldRun = false;
 
           for await (const { filename } of watch('.', { recursive: true })) {
-            if (isMatch(filename, endpoints)) {
+            if (filename && isMatch(filename, endpoints)) {
               // Already queued
               if (shouldRun) continue;
               shouldRun = true;
