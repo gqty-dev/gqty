@@ -10,10 +10,12 @@
   "sideEffects": false,
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "require": "./dist/index.js",
       "import": "./dist/index.mjs"
     },
     "./*": {
+      "types": "./dist/*.d.ts",
       "require": "./dist/*.js",
       "import": "./dist/*.mjs"
     }
@@ -40,7 +42,7 @@
   "devDependencies": {
     "@types/node": "^18.15.5",
     "@types/ws": "^8.5.4",
-    "bob-esbuild-cli": "^4.0.0",
+    "bob-esbuild-cli": "5.0.0-alpha-227aebc.0",
     "esbuild": "^0.17.12",
     "gqty": "workspace:^2.3.0",
     "graphql": "^16.6.0",

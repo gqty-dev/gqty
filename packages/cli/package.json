@@ -11,11 +11,13 @@
   "sideEffects": false,
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "require": "./dist/index.js",
       "import": "./dist/index.mjs"
     },
     "./deps": "./dist/deps.js",
     "./*": {
+      "types": "./dist/*.d.ts",
       "require": "./dist/*.js",
       "import": "./dist/*.mjs"
     }
@@ -54,8 +56,8 @@
     "@types/lodash.sortby": "^4.7.7",
     "@types/mkdirp": "^1.0.2",
     "@types/node": "^18.15.5",
-    "bob-ts": "^4.1.1",
-    "bob-tsm": "^1.1.2",
+    "bob-ts": "5.0.0-alpha-227aebc.0",
+    "bob-tsm": "2.0.0-alpha-227aebc.0",
     "changesets-github-release": "^0.1.0",
     "commander": "^10.0.0",
     "cosmiconfig": "^8.1.3",

@@ -25,14 +25,14 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        node-version: [14, 16, 18]
+        node-version: [18, 20.5.1]
         os: [ubuntu-latest]
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
       - uses: pnpm/action-setup@v2.2.4
         with:
-          version: ^7.1.1
+          version: ^8.14.0
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:

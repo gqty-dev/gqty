@@ -12,10 +12,12 @@
   "sideEffects": false,
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "require": "./dist/index.js",
       "import": "./dist/index.mjs"
     },
     "./*": {
+      "types": "./dist/*.d.ts",
       "require": "./dist/*.js",
       "import": "./dist/*.mjs"
     }
@@ -52,7 +54,7 @@
     "@types/react-dom": "^18.0.11",
     "@types/wait-on": "^5.3.1",
     "@types/ws": "^8.5.4",
-    "bob-esbuild-cli": "^4.0.0",
+    "bob-esbuild-cli": "5.0.0-alpha-227aebc.0",
     "concurrently": "^7.6.0",
     "cross-env": "^7.0.3",
     "esbuild": "^0.17.12",
