@@ -67,7 +67,8 @@ export const createLegacySubscriptionsClient = (
     }
   };
 
-  const client = {
+  // @ts-expect-error This type missing needs to be fixed
+  const client: Client = {
     subscribe: <
       TData = Record<string, unknown>,
       TExtensions = Record<string, unknown>
