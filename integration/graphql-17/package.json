@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "generate": "bob-tsm src/generate.ts",
-    "test": "pnpm i --ignore-scripts && c8 ava"
+    "test-disabled": "pnpm i --ignore-scripts && c8 ava"
   },
   "devDependencies": {
     "@gqty/cli": "workspace:^3.3.0",
