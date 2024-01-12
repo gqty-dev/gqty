@@ -6,12 +6,38 @@ on:
       - main
 
 jobs:
-  release-canary:
-    uses: the-guild-org/shared-config/.github/workflows/release-snapshot.yml@main
-    with:
-      packageManager: pnpm
-      nodeVersion: 16 # align with the-guild-org/changesets-snapshot-action
-      npmTag: canary
-    secrets:
-      githubToken: ${{ secrets.GITHUB_TOKEN }}
-      npmToken: ${{ secrets.NPM_TOKEN }}
+  publish-canary:
+    name: Publish Canary
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.head.repo.full_name == github.repository
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v3
+        with:
+          # This makes Actions fetch all Git history so that Changesets can generate changelogs with the correct commits
+          fetch-depth: 0
+
+      - uses: pnpm/action-setup@v2.2.4
+        with:
+          version: ^8.14.0
+      - name: Setup Node.js 18.x
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+          cache: 'pnpm'
+
+      - name: Setup NPM credentials
+        run: echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Install Dependencies
+        run: pnpm install
+
+      - name: Release Canary
+        id: canary
+        uses: 'kamilkisiela/release-canary@master'
+        with:
+          npm-token: ${{ secrets.NPM_TOKEN }}
+          npm-script: 'pnpm release:canary'
+          changesets: true
