@@ -486,7 +486,7 @@ importers:
     devDependencies:
       '@gqty/cli':
         specifier: workspace:^3.3.0
-        version: file:packages/cli/dist(graphql@17.0.0-alpha.2)
+        version: link:../../packages/cli/dist
       '@graphql-ez/fastify':
         specifier: ^0.12.0
         version: 0.12.0(@types/node@18.15.5)(fastify@4.11.0)(graphql-ez@0.16.0)(graphql@17.0.0-alpha.2)
@@ -516,7 +516,7 @@ importers:
         version: 4.11.0
       gqty:
         specifier: workspace:^2.3.0
-        version: file:packages/gqty/dist(graphql@17.0.0-alpha.2)
+        version: link:../../packages/gqty/dist
       graphql:
         specifier: 17.0.0-alpha.2
         version: 17.0.0-alpha.2
@@ -526,11 +526,6 @@ importers:
       typescript:
         specifier: ^4.9.5
         version: 4.9.5
-    dependenciesMeta:
-      '@gqty/cli':
-        injected: true
-      gqty:
-        injected: true
 
   internal/test-utils:
     dependencies:
@@ -8916,14 +8911,6 @@ packages:
   /fs.realpath@1.0.0:
     resolution: {integrity: sha512-OO0pH2lK6a0hZnAdau5ItzHPI6pUlvI7jMVnxUQRtw4owF2wk8lOSabtGDCTP4Ggrg2MbGnWO9X8K1t4+fGMDw==}
 
-  /fsevents@2.3.2:
-    resolution: {integrity: sha512-xiqMQR4xAeHTuB9uWm+fFRcIOgKBMiOBP+eXiyT7jsgVCq1bkVygt00oASowB7EdtpOHaaPgKt812P9ab+DDKA==}
-    engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
-    os: [darwin]
-    requiresBuild: true
-    dev: true
-    optional: true
-
   /fsevents@2.3.3:
     resolution: {integrity: sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==}
     engines: {node: ^8.16.0 || ^10.6.0 || >=11.0.0}
@@ -13075,7 +13062,7 @@ packages:
     engines: {node: '>=14.18.0', npm: '>=8.0.0'}
     hasBin: true
     optionalDependencies:
-      fsevents: 2.3.2
+      fsevents: 2.3.3
     dev: true
 
   /rtl-css-js@1.16.0:
@@ -14600,7 +14587,7 @@ packages:
       resolve: 1.22.1
       rollup: 3.19.1
     optionalDependencies:
-      fsevents: 2.3.2
+      fsevents: 2.3.3
     dev: true
 
   /void-elements@3.1.0:
@@ -14993,35 +14980,3 @@ packages:
   /zwitch@2.0.2:
     resolution: {integrity: sha512-JZxotl7SxAJH0j7dN4pxsTV6ZLXoLdGME+PsjkL/DaBrVryK9kTGq06GfKrwcSOqypP+fdXGoCHE36b99fWVoA==}
     dev: false
-
-  file:packages/cli/dist(graphql@17.0.0-alpha.2):
-    resolution: {directory: packages/cli/dist, type: directory}
-    id: file:packages/cli/dist
-    name: '@gqty/cli'
-    engines: {node: ^12.20.0 || >=14.13.0}
-    hasBin: true
-    peerDependencies:
-      graphql: '*'
-    peerDependenciesMeta:
-      graphql:
-        optional: true
-    dependencies:
-      gqty: link:packages/gqty/dist
-      graphql: 17.0.0-alpha.2
-      undici: 5.7.0
-    dev: true
-
-  file:packages/gqty/dist(graphql@17.0.0-alpha.2):
-    resolution: {directory: packages/gqty/dist, type: directory}
-    id: file:packages/gqty/dist
-    name: gqty
-    engines: {node: ^12.20.0 || >=14.13.0}
-    peerDependencies:
-      graphql: '*'
-    peerDependenciesMeta:
-      graphql:
-        optional: true
-    dependencies:
-      '@gqty/utils': link:packages/utils/dist
-      graphql: 17.0.0-alpha.2
-    dev: true
