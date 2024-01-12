@@ -8,7 +8,8 @@ import { __innerState } from './innerState';
 import type { IntrospectionOptions } from './introspection';
 import { formatPrettier } from './prettier';
 
-const cjsRequire = globalThis.require || createRequire(import.meta.url);
+const cjsRequire =
+  globalThis.require || createRequire(import.meta.url.toString());
 
 export type GQtyConfig = GenerateOptions & {
   /**
