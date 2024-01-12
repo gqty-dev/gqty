@@ -1,4 +1,4 @@
-import { Input, Stack, Text } from '@chakra-ui/react';
+import { Input, Stack } from '@chakra-ui/react';
 import { ChangeEvent, useState } from 'react';
 import { useMutation } from '../components/client';
 

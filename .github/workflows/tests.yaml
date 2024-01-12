@@ -20,7 +20,7 @@ env:
 
 jobs:
   build:
-    timeout-minutes: 10
+    timeout-minutes: 20
     name: Install, Build and Test
     runs-on: ${{ matrix.os }}
     strategy:

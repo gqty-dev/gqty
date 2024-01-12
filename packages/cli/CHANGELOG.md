@@ -22,7 +22,7 @@
     Test: '_TEST',
     MyValue: 'My_Value',
   } as const;
-  export type EnumAsConst = typeof EnumAsConst[keyof typeof EnumAsConst];
+  export type EnumAsConst = (typeof EnumAsConst)[keyof typeof EnumAsConst];
 
   function useEnum(value: Enum) {}
   function useEnumAsConst(value: EnumAsConst) {}
@@ -44,9 +44,14 @@
 
 ### Minor Changes
 
-- dd47986: New option `"fetchOptions"`, added to the [`resolved`](https://gqty.dev/docs/client/fetching-data#resolved) client function, that allows for giving extra configurations to the expected [fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) call.
+- dd47986: New option `"fetchOptions"`, added to the
+  [`resolved`](https://gqty.dev/docs/client/fetching-data#resolved) client
+  function, that allows for giving extra configurations to the expected
+  [fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) call.
 
-  This enables, for example, the customization of the headers sent for a specific query or to pass an [AbortSignal](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal).
+  This enables, for example, the customization of the headers sent for a
+  specific query or to pass an
+  [AbortSignal](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal).
 
   ```ts
   import { resolved, query } from '../gqty';
@@ -66,7 +71,8 @@
   });
   ```
 
-  For already generated clients to be able to use this new option, it is required manually modify the existing query fetcher, to do for example:
+  For already generated clients to be able to use this new option, it is
+  required manually modify the existing query fetcher, to do for example:
 
   ```ts
   const queryFetcher: QueryFetcher = async function (
@@ -92,7 +98,8 @@
   };
   ```
 
-- b7c8710: Fix generator: Argument is required only if it is non-null and does not have default value. Previously only checking if it is non-null.
+- b7c8710: Fix generator: Argument is required only if it is non-null and does
+  not have default value. Previously only checking if it is non-null.
 
 ### Patch Changes
 
@@ -124,13 +131,15 @@
 
 ### Minor Changes
 
-- f9fd0b9: Added the ability to use fast-glob patterns in the schema generate endpoint to be able to use and combine multiple gql/graphql schema files
+- f9fd0b9: Added the ability to use fast-glob patterns in the schema generate
+  endpoint to be able to use and combine multiple gql/graphql schema files
 
 ## 2.3.1
 
 ### Patch Changes
 
-- 96ab370: Change export syntax to fix bundling issues, show a warning on existent generated clients with `export const {` syntax.
+- 96ab370: Change export syntax to fix bundling issues, show a warning on
+  existent generated clients with `export const {` syntax.
 
   Closes #292
 
@@ -151,7 +160,9 @@
 ### Minor Changes
 
 - cba5c43: Don't skip config read on NODE_ENV === "test"
-- a4fc294: New [Envelop](https://www.envelop.dev/) / [graphql-ez](https://www.graphql-ez.com/) plugin that automatically generates gqty code based on schema and gqty.config.cjs
+- a4fc294: New [Envelop](https://www.envelop.dev/) /
+  [graphql-ez](https://www.graphql-ez.com/) plugin that automatically generates
+  gqty code based on schema and gqty.config.cjs
 
   ```ts
   // graphql-ez
@@ -207,7 +218,8 @@
 
 ### Patch Changes
 
-- f4ddac9: Enforce `"importsNotUsedAsValues"` & `"preserveValueImports"` using `import type`
+- f4ddac9: Enforce `"importsNotUsedAsValues"` & `"preserveValueImports"` using
+  `import type`
 - ff821ef: default config react enabled only if "react" dependency is found
 
 ## 2.1.0
@@ -224,7 +236,8 @@
 
 ### Patch Changes
 
-- 28e2c09: [Bug fixing breaking change] Fix types and retrieval of unions/interfaces of different object types
+- 28e2c09: [Bug fixing breaking change] Fix types and retrieval of
+  unions/interfaces of different object types
 - Updated dependencies [28e2c09]
   - gqty@2.0.1
 
@@ -232,7 +245,8 @@
 
 ### Major Changes
 
-- 3586c45: Change previous unstable `Unions` support with new `"$on"` property with support for both `Unions` & `Interfaces`
+- 3586c45: Change previous unstable `Unions` support with new `"$on"` property
+  with support for both `Unions` & `Interfaces`
 
 ### Patch Changes
 
@@ -331,10 +345,13 @@
 ### Patch Changes
 
 - 4a3d5ef: allow introspection json without "data" field
-- af6a437: - Rename `gqtyConfig` to `GQtyConfig` (so it's consistent with the new logo)
+- af6a437: - Rename `gqtyConfig` to `GQtyConfig` (so it's consistent with the
+  new logo)
   - Rename `gqtyError` to `GQtyError`
-  - Remove `endpoint` option from the configuration, and instead always defaults to introspection one
-    - It's confusing why theres two of them, and the user can change it later by modifying the file anyway
+  - Remove `endpoint` option from the configuration, and instead always defaults
+    to introspection one
+    - It's confusing why theres two of them, and the user can change it later by
+      modifying the file anyway
 - 4a3d5ef: disable config file write if no cli usage
 - Updated dependencies [4a3d5ef]
 - Updated dependencies [af6a437]

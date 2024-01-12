@@ -1,5 +1,11 @@
 # @gqty/logger
 
+## 3.0.0-alpha.0
+
+### Patch Changes
+
+- Upgraded to gqty@3.0.0-alpha.0
+
 ## 2.0.2
 
 ### Patch Changes
@@ -69,10 +75,13 @@
 
 ### Patch Changes
 
-- af6a437: - Rename `gqtyConfig` to `GQtyConfig` (so it's consistent with the new logo)
+- af6a437: - Rename `gqtyConfig` to `GQtyConfig` (so it's consistent with the
+  new logo)
   - Rename `gqtyError` to `GQtyError`
-  - Remove `endpoint` option from the configuration, and instead always defaults to introspection one
-    - It's confusing why theres two of them, and the user can change it later by modifying the file anyway
+  - Remove `endpoint` option from the configuration, and instead always defaults
+    to introspection one
+    - It's confusing why theres two of them, and the user can change it later by
+      modifying the file anyway
 - Updated dependencies [4a3d5ef]
 - Updated dependencies [af6a437]
   - gqty@2.0.13

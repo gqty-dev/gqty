@@ -1,11 +1,42 @@
 # gqty
 
+## 3.0.0-alpha.0
+
+### Major Changes
+
+- Added "Legacy" prefix to deprecated types
+- Added new logging interface for `@gqty/logger`
+- `backupPersistence()` and `restorePersistence()` is now replaced with
+  `persist()`, `restore()` and `restoreAsync()`.
+- QueryFetcher now accepts QueryPayload instead of 3 parameters
+- Remade `Cache` with expiry, normalization and persistence
+- Axed `Scheduler`, `Interceptor` and `EventHandler`
+- Reworked `Accessor` and added scoped context
+- Replaced `@gqty/subscriptions` with `graphql-ws` and `graphql-sse`
+- Rewritten `Selection` class
+- Introduced `resolve()` and `subscribe()` API
+- Replaced `lodash` with `just-*` and dropped `@gqty/utils`
+- Deprecated `resolved()`, `inlineResolved()`, `mutate()`, `track()`,
+  `prefetch()` and `refetch()`
+- Replace variable serializer with object-hash, now with shortened alias
+
+### Minor Changes
+
+- f39bb450: Add `operationName` option to `resolved()` and `inlineResolved()`.
+- Added `$meta` API
+- Added `name` in `GQtyError` for better logging
+
+### Patch Changes
+
+- 595ec843: Remove alias without args
+
 ## 2.3.0
 
 ### Minor Changes
 
 - 6ecd2b0: Use lodash mergeWith from "@gqty/utils" package
-- 59d38ad: Change variable aliasing to be deterministic with cached and sliced sha1 hashing
+- 59d38ad: Change variable aliasing to be deterministic with cached and sliced
+  sha1 hashing
 
 ### Patch Changes
 
@@ -17,9 +48,14 @@
 
 ### Minor Changes
 
-- dd47986: New option `"fetchOptions"`, added to the [`resolved`](https://gqty.dev/docs/client/fetching-data#resolved) client function, that allows for giving extra configurations to the expected [fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) call.
+- dd47986: New option `"fetchOptions"`, added to the
+  [`resolved`](https://gqty.dev/docs/client/fetching-data#resolved) client
+  function, that allows for giving extra configurations to the expected
+  [fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) call.
 
-  This enables, for example, the customization of the headers sent for a specific query or to pass an [AbortSignal](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal).
+  This enables, for example, the customization of the headers sent for a
+  specific query or to pass an
+  [AbortSignal](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal).
 
   ```ts
   import { resolved, query } from '../gqty';
@@ -39,7 +75,8 @@
   });
   ```
 
-  For already generated clients to be able to use this new option, it is required manually modify the existing query fetcher, to do for example:
+  For already generated clients to be able to use this new option, it is
+  required manually modify the existing query fetcher, to do for example:
 
   ```ts
   const queryFetcher: QueryFetcher = async function (
@@ -69,7 +106,9 @@
 
 ### Minor Changes
 
-- 6df0318: Add new Core configuration `"depthLimit"` (by default is `15`), needed to prevent possible infinite recursion, after the specified depth is reached, the proxy creation is stopped returning `null`.
+- 6df0318: Add new Core configuration `"depthLimit"` (by default is `15`),
+  needed to prevent possible infinite recursion, after the specified depth is
+  reached, the proxy creation is stopped returning `null`.
 
 ## 2.0.4
 
@@ -92,7 +131,8 @@
 - d014462: remove unused dependency
 - 6b60991: improve normalization key auto-fetch logic
 - 5cc001f: Fix: Prevent duplicated concurrent scheduler fetch
-- d6da2ae: `Variables`/`Args` utility type to re-use variables types from any field with arguments.
+- d6da2ae: `Variables`/`Args` utility type to re-use variables types from any
+  field with arguments.
 
   You can use either `Variables` or `Args`.
 
@@ -105,7 +145,7 @@
     return query.user(args).name;
   }
 
-  function getUserEmail(args: Args<typeof query['user']>) {
+  function getUserEmail(args: Args<(typeof query)['user']>) {
     return query.user(args).email;
   }
   ```
@@ -114,14 +154,16 @@
 
 ### Patch Changes
 
-- 28e2c09: [Bug fixing breaking change] Fix types and retrieval of unions/interfaces of different object types
+- 28e2c09: [Bug fixing breaking change] Fix types and retrieval of
+  unions/interfaces of different object types
 
 ## 2.0.0
 
 ### Major Changes
 
 - 3586c45: Remove undocumented "buildSelections"
-- 3586c45: Change previous unstable `Unions` support with new `"$on"` property with support for both `Unions` & `Interfaces`
+- 3586c45: Change previous unstable `Unions` support with new `"$on"` property
+  with support for both `Unions` & `Interfaces`
 
 ## 1.1.3
 
@@ -145,7 +187,8 @@
 
 ### Minor Changes
 
-- a216972: add "track" helper, specially useful subscriptions and tracking cache state
+- a216972: add "track" helper, specially useful subscriptions and tracking cache
+  state
 
 ## 1.0.3
 
@@ -184,10 +227,13 @@
 ### Patch Changes
 
 - 4a3d5ef: divide subscriptions with only one top level field
-- af6a437: - Rename `gqtyConfig` to `GQtyConfig` (so it's consistent with the new logo)
+- af6a437: - Rename `gqtyConfig` to `GQtyConfig` (so it's consistent with the
+  new logo)
   - Rename `gqtyError` to `GQtyError`
-  - Remove `endpoint` option from the configuration, and instead always defaults to introspection one
-    - It's confusing why theres two of them, and the user can change it later by modifying the file anyway
+  - Remove `endpoint` option from the configuration, and instead always defaults
+    to introspection one
+    - It's confusing why theres two of them, and the user can change it later by
+      modifying the file anyway
 
 ## 2.0.12
 
@@ -207,7 +253,8 @@
 
 ### Patch Changes
 
-- 65c4d32: add resolved "onEmptyResolve" callback and warn on empty "resolved" calls
+- 65c4d32: add resolved "onEmptyResolve" callback and warn on empty "resolved"
+  calls
 
 ## 2.0.9
 

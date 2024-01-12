@@ -1,4 +1,4 @@
-import { createClient } from 'gqty';
+import { Cache, createClient } from 'gqty';
 import { createTestApp, gql } from 'test-utils';
 import { createLogger } from '../src';
 
@@ -31,6 +31,7 @@ describe('logger', () => {
     mutation: {};
     subscription: {};
   }>({
+    cache: new Cache(),
     schema: {
       mutation: {},
       query: {
@@ -46,12 +47,14 @@ describe('logger', () => {
       },
       subscription: {},
     },
-    scalarsEnumsHash: {
+    scalars: {
       String: true,
       Boolean: true,
     },
-    queryFetcher: (query, variables) =>
-      testAppPromise.then((v) => v.query(query, { variables })),
+    fetchOptions: {
+      fetcher: ({ query, variables }) =>
+        testAppPromise.then((v) => v.query(query, { variables })),
+    },
   });
 
   test('default options', async () => {
@@ -67,9 +70,9 @@ describe('logger', () => {
     const spyError = jest.spyOn(console, 'error').mockImplementation();
 
     try {
-      const dataPromise = gqtyClient.resolved(() => {
-        return gqtyClient.query.hello({ hello: 'hello' });
-      });
+      const dataPromise = gqtyClient.resolve(({ query }) =>
+        query.hello({ hello: 'hello' })
+      );
 
       const data = await dataPromise;
 
@@ -81,9 +84,7 @@ describe('logger', () => {
 
       expect(data).toBe('hello world');
 
-      const errorPromise = gqtyClient.resolved(() => {
-        return gqtyClient.query.throw;
-      });
+      const errorPromise = gqtyClient.resolve(({ query }) => query.throw);
 
       await errorPromise.catch(() => {});
 

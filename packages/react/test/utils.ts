@@ -1,32 +1,18 @@
 import '@testing-library/jest-dom/extend-expect';
-import { merge } from 'lodash';
-import { createTestApp, gql } from 'test-utils';
-import { generate } from '../../cli/src/generate';
 import {
+  Cache,
   ClientOptions,
   createClient,
-  DeepPartial,
   QueryFetcher,
   Schema,
   SchemaUnionsKey,
-} from '../../gqty/src/index';
-import { createSubscriptionsClient } from '../../subscriptions/src/index';
+} from 'gqty';
+import { createClient as createSubscriptionsClient } from 'graphql-ws';
+import { merge } from 'lodash-es';
+import { createTestApp, gql } from 'test-utils';
+import { type PartialDeep } from 'type-fest';
+import { generate } from '../../cli/src/generate';
 import { createReactClient } from '../src';
-
-type ObjectTypesNames = 'Human' | 'Query' | 'Mutation' | 'Subscription';
-
-type ObjectTypes = {
-  Human: Human;
-  Query: {
-    __typename: 'Query';
-  };
-  Mutation: {
-    __typename: 'Mutation';
-  };
-  Subscription: {
-    __typename: 'Subscription';
-  };
-};
 
 export type Maybe<T> = T | null;
 export type Human = {
@@ -72,10 +58,10 @@ export interface TestClientConfig {
 }
 
 export const createReactTestClient = async (
-  addedToGeneratedSchema?: DeepPartial<Schema>,
+  addedToGeneratedSchema?: PartialDeep<Schema>,
   queryFetcher?: QueryFetcher,
   config?: TestClientConfig,
-  clientConfig: Partial<ClientOptions<ObjectTypesNames, ObjectTypes>> = {}
+  clientConfig: Partial<ClientOptions> = {}
 ) => {
   let dogId = 0;
   const dogs: { name: string; id: number }[] = [
@@ -90,7 +76,7 @@ export const createReactTestClient = async (
   ];
   let humanId = 0;
   const humanIds: Record<string, number> = {};
-  const createHuman = (name: string = 'default') => {
+  const createHuman = (name = 'default') => {
     return {
       id: (humanIds[name] ??= ++humanId),
       name,
@@ -120,6 +106,7 @@ export const createReactTestClient = async (
         type Mutation {
           sendNotification(message: String!): Boolean!
           humanMutation(nameArg: String!): Human
+          renameHuman(name: String!, newName: String!): Human
         }
         type Subscription {
           newNotification: String!
@@ -168,10 +155,10 @@ export const createReactTestClient = async (
             return null;
           },
           async throw() {
-            throw Error('expected error');
+            throw new Error('expected error');
           },
           async throw2() {
-            throw Error('expected error 2');
+            throw new Error('expected error 2');
           },
           time() {
             return new Date().toISOString();
@@ -198,6 +185,19 @@ export const createReactTestClient = async (
           },
           humanMutation(_root, { nameArg }: { nameArg: string }) {
             return createHuman(nameArg);
+          },
+          renameHuman(
+            _root,
+            { name, newName }: { name: string; newName: string }
+          ) {
+            if (!humanIds[name]) {
+              throw new Error(`Human ${name} not found`);
+            }
+
+            humanIds[newName] = humanIds[name];
+            delete humanIds[name];
+
+            return createHuman(newName);
           },
         },
         Subscription: {
@@ -252,17 +252,18 @@ export const createReactTestClient = async (
     );
 
   if (queryFetcher == null) {
-    queryFetcher = (query, variables) => {
+    queryFetcher = ({ query, variables, operationName }) => {
       return client.query(query, {
         variables,
+        operationName,
       });
     };
   }
 
   const subscriptionsClient = config?.subscriptions
     ? createSubscriptionsClient({
-        wsEndpoint: client.endpoint.replace('http:', 'ws:'),
-        reconnect: false,
+        url: client.endpoint.replace('http:', 'ws:'),
+        retryAttempts: 0,
       })
     : undefined;
 
@@ -284,6 +285,7 @@ export const createReactTestClient = async (
     mutation: {
       sendNotification(args: { message: string }): boolean;
       humanMutation: (args?: { nameArg?: string }) => Human;
+      renameHuman: (args: { name: string; newName: string }) => Human;
     };
     subscription: {
       newNotification: string | null | undefined;
@@ -291,16 +293,21 @@ export const createReactTestClient = async (
   };
 
   const core = Object.assign(
-    createClient<GeneratedSchema, ObjectTypesNames, ObjectTypes>({
+    createClient<GeneratedSchema>({
+      cache: new Cache(undefined, {
+        maxAge: 0,
+        staleWhileRevalidate: 5 * 60 * 1000,
+        normalization: true,
+      }),
       schema: merge(generatedSchema, [addedToGeneratedSchema]) as Schema,
-      scalarsEnumsHash,
-      queryFetcher,
-      subscriptionsClient,
+      scalars: scalarsEnumsHash,
+      fetchOptions: {
+        fetcher: queryFetcher,
+        subscriber: subscriptionsClient,
+      },
       ...clientConfig,
     }),
-    {
-      client,
-    }
+    { client }
   );
 
   const react = createReactClient<GeneratedSchema>(core, {

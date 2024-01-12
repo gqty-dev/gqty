@@ -2,4 +2,5 @@
 '@gqty/react': minor
 ---
 
-Window focus refetching
+Added `refetchInteraval`, `refetchIntervalInBackground`, `refetchOnReconnect`
+and `refetchOnWindowVisible` in `useQuery`.

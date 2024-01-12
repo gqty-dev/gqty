@@ -1,22 +1,21 @@
 import { createLogger } from '@gqty/logger';
-
 import { createReactClient } from '@gqty/react';
-import { client, GeneratedSchema } from '../graphql/gqty';
+import { cache, client, GeneratedSchema } from '../graphql/gqty';
 
 export const {
-  useTransactionQuery,
-  useQuery,
-  state,
   graphql,
-  useRefetch,
-  useLazyQuery,
-  prepareReactRender,
-  useHydrateCache,
-  useMutation,
-  useMetaState,
-  useSubscription,
   prepareQuery,
+  prepareReactRender,
+  state,
+  useHydrateCache,
+  useLazyQuery,
+  useMetaState,
+  useMutation,
   usePaginatedQuery,
+  useQuery,
+  useRefetch,
+  useSubscription,
+  useTransactionQuery,
 } = createReactClient<GeneratedSchema>(client, {
   defaults: {
     suspense: true,
@@ -30,4 +29,23 @@ if (typeof window !== 'undefined') {
   logger.start();
 }
 
-export const { refetch } = client;
+// Core functions
+const { resolve, subscribe, schema } = client;
+
+// Legacy functions
+const { query, mutation, mutate, subscription, resolved, refetch, track } =
+  client;
+
+export {
+  cache,
+  resolve,
+  subscribe,
+  schema,
+  query,
+  mutation,
+  mutate,
+  subscription,
+  resolved,
+  refetch,
+  track,
+};

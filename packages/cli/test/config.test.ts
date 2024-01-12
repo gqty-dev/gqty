@@ -1,6 +1,6 @@
 import './utils';
 
-import { getValidConfig, GQtyConfig } from '../src/config';
+import { getValidConfig, type GQtyConfig } from '../src/config';
 
 test('completely valid config', () => {
   const spy = jest.spyOn(console, 'warn').mockImplementation();

@@ -1,11 +1,12 @@
-import { renderHook } from '@testing-library/react-hooks';
+import { act, renderHook, waitFor } from '@testing-library/react';
+import { type QueryPayload } from 'gqty';
 import { createReactTestClient } from './utils';
 
 describe('useQuery', () => {
-  it('should fetch without suspense', async () => {
+  test('should fetch without suspense', async () => {
     const { useQuery } = await createReactTestClient();
 
-    const { result, waitFor } = renderHook(() => {
+    const { result } = renderHook(() => {
       const query = useQuery({ suspense: false });
 
       return {
@@ -16,52 +17,72 @@ describe('useQuery', () => {
 
     expect(result.current.hello).toBe(undefined);
 
-    await waitFor(() => result.current.$state.isLoading === true);
-
-    expect(result.current.hello).toBe(undefined);
-
-    await waitFor(() => result.current.$state.isLoading === false);
-
-    expect(result.current.hello).toBe('hello world');
+    await waitFor(() => expect(result.current.hello).toBe('hello world'));
   });
 
-  it('should $refetch', async () => {
+  test('should $refetch', async () => {
     const { useQuery } = await createReactTestClient();
 
-    const { result, waitFor } = renderHook(() => {
+    const { result } = renderHook(() => {
       const query = useQuery({ suspense: false });
 
       return {
-        hello: query.hello,
+        time: query.time,
         $state: query.$state,
         $refetch: query.$refetch,
       };
     });
 
-    await waitFor(() => result.current.$state.isLoading === true);
-    await waitFor(() => result.current.$state.isLoading === false);
+    expect(result.current.time).toBe(undefined);
 
-    result.current.$refetch();
+    await waitFor(() => expect(result.current.time).not.toBeUndefined());
 
-    await waitFor(() => result.current.$state.isLoading === true);
-    await waitFor(() => result.current.$state.isLoading === false);
+    const time = result.current.time;
 
-    expect(result.current.hello).toBe('hello world');
+    await act(async () => {
+      await result.current.$refetch();
+      await new Promise((r) => setTimeout(r, 500));
+    });
+
+    await waitFor(() => expect(result.current.time).not.toBe(time));
   });
 
   it('should fetch with suspense', async () => {
     const { useQuery } = await createReactTestClient();
 
-    const { result, waitForNextUpdate } = renderHook(() => {
-      const query = useQuery({ suspense: true });
+    const { result } = renderHook(() => useQuery({ suspense: true }).hello);
+
+    expect(result.current).toBe(undefined);
+
+    await waitFor(() => expect(result.current).toStrictEqual('hello world'));
+  });
+
+  it('should pass extentions to query fetcher', async () => {
+    const fetchHistory: QueryPayload[] = [];
+    const { useQuery } = await createReactTestClient(
+      undefined,
+      async (payload) => {
+        fetchHistory.push(payload);
+        return {};
+      }
+    );
+
+    renderHook(() => {
+      const query = useQuery({
+        extensions: { foo: 'bar' },
+      });
 
       return query.hello;
     });
 
-    expect(result.current).toBe(undefined);
-
-    await waitForNextUpdate();
-
-    expect(result.current).toBe('hello world');
+    await waitFor(() =>
+      expect(fetchHistory).toMatchObject(
+        expect.arrayContaining([
+          expect.objectContaining({
+            extensions: expect.objectContaining({ foo: 'bar' }),
+          }),
+        ])
+      )
+    );
   });
 });

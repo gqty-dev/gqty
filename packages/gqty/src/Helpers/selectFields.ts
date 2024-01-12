@@ -1,4 +1,6 @@
-import { get, isObject, set } from '../Utils';
+import get from 'just-safe-get';
+import set from 'just-safe-set';
+import { isObject } from '../Utils';
 
 export function selectFields<A extends object | null | undefined>(
   accessor: A,
@@ -11,9 +13,11 @@ export function selectFields<A extends object | null | undefined>(
     return accessor.map((value) =>
       selectFields(value, fields, recursionDepth)
     ) as A;
+  } else if (!isObject(accessor)) {
+    return accessor;
+  } else {
+    Reflect.get(accessor, '__typename');
   }
-
-  if (!isObject(accessor)) return accessor;
 
   if (fields.length === 0) {
     return {} as A;
@@ -50,6 +54,10 @@ export function selectFields<A extends object | null | undefined>(
   }
 
   return fields.reduce((acum, fieldName) => {
+    if (typeof fieldName === 'number') {
+      fieldName = fieldName.toString();
+    }
+
     const fieldValue = get(accessor, fieldName);
 
     if (fieldValue === undefined) return acum;

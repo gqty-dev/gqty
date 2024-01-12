@@ -1,172 +1,120 @@
 import {
-  doRetry,
-  GQtyClient,
   GQtyError,
-  RetryOptions,
-  SelectionType,
+  Selection,
+  type BaseGeneratedSchema,
+  type GQtyClient,
+  type RetryOptions,
 } from 'gqty';
 import * as React from 'react';
-import { useIsomorphicLayoutEffect, useSelectionsState } from '../common';
-import type { ReactClientOptionsWithDefaults } from '../utils';
+import { type ReactClientOptionsWithDefaults } from '../utils';
 
 interface UseRefetchState {
   isLoading: boolean;
   error?: GQtyError;
-}
-
-type UseRefetchReducerAction =
-  | { type: 'loading' }
-  | { type: 'done' }
-  | { type: 'error'; error: GQtyError };
-
-function UseRefetchReducer(
-  state: UseRefetchState,
-  action: UseRefetchReducerAction
-): UseRefetchState {
-  switch (action.type) {
-    case 'loading': {
-      if (state.isLoading) return state;
-
-      return { isLoading: true };
-    }
-    case 'done': {
-      return { isLoading: false };
-    }
-    case 'error': {
-      return { isLoading: false, error: action.error };
-    }
-  }
+  startWatching: () => void;
+  stopWatching: () => void;
 }
 
 export interface UseRefetchOptions {
   notifyOnNetworkStatusChange?: boolean;
-  startWatching?: boolean;
+  operationName?: string;
   retry?: RetryOptions;
+  startWatching?: boolean;
+  suspense?: boolean;
 }
 
-export interface UseRefetch {
+export interface UseRefetch<TSchema extends BaseGeneratedSchema> {
   (refetchOptions?: UseRefetchOptions): (<T = void>(
-    refetchArg?: T | (() => T)
+    refetchArg?: T | ((query: TSchema['query']) => T)
   ) => Promise<T | undefined>) &
     UseRefetchState;
 }
 
-export function createUseRefetch(
-  client: GQtyClient<any>,
+export const createUseRefetch = <TSchema extends BaseGeneratedSchema>(
+  client: GQtyClient<TSchema>,
   { defaults: { retry: defaultRetry } }: ReactClientOptionsWithDefaults
-) {
-  const { interceptorManager, buildAndFetchSelections, refetch } = client;
+) => {
+  const useRefetch: UseRefetch<TSchema> = ({
+    notifyOnNetworkStatusChange = true,
+    operationName,
+    startWatching = true,
+    retry = defaultRetry,
+    suspense = false,
+  } = {}) => {
+    const [state, setState] = React.useState<{
+      error?: GQtyError;
+      promise?: Promise<unknown>;
+    }>();
+    const watchingRef = React.useRef(startWatching);
+    const [selections] = React.useState(() => new Set<Selection>());
 
-  const useRefetch: UseRefetch = function useRefetch(
-    refetchOptions
-  ): (<T = undefined>(refetchArg?: T | (() => T)) => Promise<T | undefined>) &
-    UseRefetchState {
-    const [options] = React.useState(() => ({
-      notifyOnNetworkStatusChange: true,
-      startWatching: true,
-      retry: defaultRetry,
-      ...refetchOptions,
-    }));
-
-    const [innerState] = React.useState(() => ({
-      watching: options.startWatching,
-      startWatching() {
-        this.watching = true;
-      },
-      stopWatching() {
-        this.watching = false;
-      },
-    }));
-
-    const selections = useSelectionsState();
-    const [state, dispatch] = React.useReducer(
-      UseRefetchReducer,
-      undefined,
-      () => ({ isLoading: false })
-    );
-
-    const interceptor = interceptorManager.createInterceptor();
-
-    setTimeout(() => {
-      interceptorManager.removeInterceptor(interceptor);
-    }, 0);
-
-    useIsomorphicLayoutEffect(() => {
-      interceptorManager.removeInterceptor(interceptor);
-    });
-
-    interceptor.selectionAddListeners.add((selection) => {
-      if (!innerState.watching) return;
-
-      selections.add(selection);
-    });
-
-    interceptor.selectionCacheListeners.add((selection) => {
-      if (!innerState.watching) return;
-
-      selections.add(selection);
-    });
-
-    const refetchCallback = React.useCallback(
-      async <T = undefined>(
-        proxyOrFn?: T | (() => T)
-      ): Promise<T | undefined> => {
-        if (options.notifyOnNetworkStatusChange) {
-          dispatch({ type: 'loading' });
+    // All selections from this component down the rendering tree, this almost
+    // 100% guaranteed to be more than necessary as a refetch. This is necessary
+    // as long as useRefetch() exists as a separate hook, and accepts no
+    // parameters as one of the overloads. React provides no way to identify a
+    // component and potentially gain access to the SchemaContext from other
+    // query hooks.
+    const [unsubscribeSelections] = React.useState(() =>
+      client.subscribeLegacySelections((selection) => {
+        if (watchingRef.current && selection.root.key === 'query') {
+          selections.add(selection);
         }
+      })
+    );
+    React.useEffect(() => unsubscribeSelections, [unsubscribeSelections]);
+
+    if (suspense) {
+      if (state?.promise) throw state?.promise;
+      if (state?.error) throw state?.error;
+    }
+
+    const refetch = React.useCallback(
+      async <T = void>(
+        fnArg?: T | ((query: TSchema['query']) => T)
+      ): Promise<T | undefined> => {
+        const promise = (() => {
+          if (fnArg) return client.refetch(fnArg);
+
+          const { context, resolve } = client.createResolver({
+            retryPolicy: retry,
+            operationName,
+          });
+
+          selections.forEach((selection) => {
+            context.select(selection);
+          });
+
+          return resolve() as Promise<T>;
+        })();
+
+        setState({ promise });
 
         try {
-          const refetchData = proxyOrFn
-            ? await refetch(proxyOrFn)
-            : await (async () => {
-                const selectionsToRefetch = Array.from(selections).filter(
-                  (v) => v.type === SelectionType.Query
-                );
-                if (
-                  process.env.NODE_ENV !== 'production' &&
-                  selectionsToRefetch.length === 0
-                ) {
-                  console.warn('Warning! No selections available to refetch!');
-                }
-
-                return buildAndFetchSelections<T>(selectionsToRefetch, 'query');
-              })();
-
-          dispatch({ type: 'done' });
-
-          return refetchData;
-        } catch (err) {
-          const error = GQtyError.create(err, useRefetch);
-
-          dispatch({ type: 'error', error });
-
-          throw error;
+          return (await promise) as T;
+        } catch (error) {
+          const theError = GQtyError.create(error);
+          setState({ error: theError });
+          throw theError;
         }
       },
-      [selections, dispatch, options]
+      [notifyOnNetworkStatusChange, operationName, retry]
     );
 
-    const { retry } = options;
-
-    return React.useMemo(() => {
-      const fn = refetchCallback.bind(undefined);
-      const returnValue: ReturnType<UseRefetch> = Object.assign(
-        retry
-          ? async (...args: any[]): Promise<any> => {
-              try {
-                return await fn(...args);
-              } catch (err) {
-                doRetry(retry, { onRetry: () => fn(...args) });
-                throw err;
-              }
-            }
-          : fn,
-        state
-      );
-
-      return returnValue;
-    }, [refetchCallback, state, retry]);
+    return React.useMemo(
+      () =>
+        Object.assign(refetch, {
+          isLoading: state?.promise !== undefined,
+          error: state?.error,
+          startWatching: () => {
+            watchingRef.current = true;
+          },
+          stopWatching: () => {
+            watchingRef.current = false;
+          },
+        }),
+      []
+    );
   };
 
   return useRefetch;
-}
+};

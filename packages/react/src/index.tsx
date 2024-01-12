@@ -1,6 +1,6 @@
 export * from './client';
 export { coreHelpers, sortBy, uniqBy } from './common';
-export type { CoreHelpers, FetchPolicy, OnErrorHandler } from './common';
+export type { LegacyFetchPolicy, OnErrorHandler } from './common';
 export type {
   MetaState,
   UseMetaState,
@@ -13,8 +13,8 @@ export type {
 } from './mutation/useMutation';
 export type { GraphQLHOC, GraphQLHOCOptions } from './query/hoc';
 export type {
-  PreparedQuery,
   PrepareQuery,
+  PreparedQuery,
   UsePreparedQueryOptions,
 } from './query/preparedQuery';
 export type {
