@@ -445,6 +445,10 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
           pending.push((fn(accessor) as any) ?? (value as any));
           deferred?.resolve();
         },
+        onComplete() {
+          done = true;
+          deferred?.resolve();
+        },
       });
 
       // Assuming child selections are cached and reused in subsequent
