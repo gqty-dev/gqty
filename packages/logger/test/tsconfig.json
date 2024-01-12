@@ -1,14 +1,12 @@
 {
   "extends": "../tsconfig.json",
   "compilerOptions": {
-    "target": "es2019",
-    "module": "commonjs",
-    "strict": true,
+    "declaration": false,
     "esModuleInterop": true,
     "jsx": "react",
-    "declaration": false,
-    "noEmit": true
+    "noEmit": true,
+    "strict": true
   },
-  "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": []
+  "exclude": [],
+  "include": ["**/*.ts", "**/*.tsx"]
 }

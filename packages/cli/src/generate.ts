@@ -1,12 +1,12 @@
 import {
-  ArgsDescriptions,
-  FieldDescription,
-  parseSchemaType,
-  ScalarsEnumsHash,
-  Schema,
   SchemaUnionsKey,
-  Type,
-} from 'gqty';
+  parseSchemaType,
+  type ArgsDescriptions,
+  type FieldDescription,
+  type ScalarsEnumsHash,
+  type Schema,
+  type Type,
+} from 'gqty/Schema/types';
 import type {
   GraphQLEnumType,
   GraphQLField,
@@ -18,7 +18,7 @@ import type {
   GraphQLUnionType,
 } from 'graphql';
 import * as graphql from 'graphql';
-import { defaultConfig, gqtyConfigPromise } from './config';
+import { defaultConfig, type GQtyConfig } from './config';
 import * as deps from './deps.js';
 import { formatPrettier } from './prettier';
 
@@ -64,19 +64,22 @@ export interface GenerateOptions {
   react?: boolean;
   /**
    * Define enums as string types instead of enums objects
+   *
    * @default false
    */
   enumsAsStrings?: boolean;
   /**
    * Define enums as const types instead of enums objects
+   *
    * @default false
    */
   enumsAsConst?: boolean;
   /**
-   * Generate subscriptions client
+   * Generate subscriptions client with target package
+   *
    * @default false
    */
-  subscriptions?: boolean;
+  subscriptions?: boolean | string;
   /**
    * Generate Javascript code instead of TypeScript
    *
@@ -94,8 +97,9 @@ export interface GenerateOptions {
 
 export interface TransformSchemaOptions {
   /**
-   * Get a field in which every argument is optional, if this functions return "true", gqty will _always__ ignore it's arguments,
-   * and you won't be able to specify them
+   * Get a field in which every argument is optional, if this functions return
+   * "true", gqty will _always__ ignore it's arguments, and you won't be able to
+   * specify them
    */
   ignoreArgs?: (type: GraphQLField<unknown, unknown>) => boolean;
 }
@@ -103,16 +107,17 @@ export interface TransformSchemaOptions {
 export async function generate(
   schema: GraphQLSchema,
   {
-    preImport,
-    scalarTypes,
-    react,
     endpoint,
-    enumsAsStrings,
     enumsAsConst,
-    subscriptions,
+    enumsAsStrings,
+    introspection,
     javascriptOutput,
+    preImport,
+    react,
+    scalarTypes,
+    subscriptions,
     transformSchema,
-  }: GenerateOptions = {},
+  }: GQtyConfig = {},
   { ignoreArgs }: TransformSchemaOptions = {}
 ): Promise<{
   clientCode: string;
@@ -122,45 +127,39 @@ export async function generate(
   scalarsEnumsHash: ScalarsEnumsHash;
   isJavascriptOutput: boolean;
 }> {
-  const gqtyConfig = (await gqtyConfigPromise).config;
-
-  const isJavascriptOutput =
-    javascriptOutput ??
-    gqtyConfig.javascriptOutput ??
-    defaultConfig.javascriptOutput;
+  const isJavascriptOutput = javascriptOutput ?? defaultConfig.javascriptOutput;
 
   if (isJavascriptOutput) {
-    if (gqtyConfig.enumsAsStrings) {
+    if (enumsAsStrings) {
       console.warn(
         `"enumsAsStrings" is automatically set as "true" with "javascriptOutput" enabled.`
       );
     }
     enumsAsStrings = true;
   } else {
-    enumsAsStrings ??= gqtyConfig.enumsAsStrings ?? false;
+    enumsAsStrings ??= false;
   }
 
   if (isJavascriptOutput) {
-    if (gqtyConfig.enumsAsConst) {
+    if (enumsAsConst) {
       console.warn(
         `"enumsAsConst" is automatically set as "false" with "javascriptOutput" enabled.`
       );
     }
     enumsAsConst = false;
   }
-  enumsAsConst ??= gqtyConfig.enumsAsConst ?? defaultConfig.enumsAsConst;
+  enumsAsConst ??= enumsAsConst ?? defaultConfig.enumsAsConst;
 
-  scalarTypes ||= gqtyConfig.scalarTypes || defaultConfig.scalarTypes;
+  scalarTypes ||= scalarTypes || defaultConfig.scalarTypes;
   endpoint ||=
-    gqtyConfig.endpoint ||
-    gqtyConfig.introspection?.endpoint ||
+    endpoint ||
+    introspection?.endpoint ||
     defaultConfig.endpoint ||
     defaultConfig.introspection.endpoint;
 
-  react ??= gqtyConfig.react ?? defaultConfig.react;
-  preImport ??= gqtyConfig.preImport ?? defaultConfig.preImport;
-  subscriptions ??= gqtyConfig.subscriptions ?? defaultConfig.subscriptions;
-  transformSchema ??= gqtyConfig.transformSchema;
+  react ??= defaultConfig.react;
+  preImport ??= defaultConfig.preImport;
+  subscriptions ??= defaultConfig.subscriptions;
 
   const { format } = formatPrettier({
     parser: 'typescript',
@@ -558,12 +557,12 @@ export async function generate(
   const unionsMapObj = Array.from(
     unionsAndInterfacesObjectTypesMap.entries()
   ).reduce((acum, [key, value]) => {
-    generatedSchema[key]['$on'] = {
-      __type: `$${key}!`,
-    };
+    generatedSchema[key]!.$on = { __type: `$${key}!` };
+
     acum[key] = value;
     return acum;
   }, {} as Record<string, string[]>);
+
   if (unionsAndInterfacesObjectTypesMap.size) {
     generatedSchema[SchemaUnionsKey] = unionsMapObj;
   }
@@ -663,7 +662,7 @@ export async function generate(
           interfaceOrUnionsObjectTypes
             ? interfaceOrUnionsObjectTypes.map((v) => `"${v}"`).join(' | ')
             : `"${typeName}"`
-        }; ${Object.entries(typeValue).reduce(
+        }; ${Object.entries(typeValue!).reduce(
         (acum, [fieldKey, fieldValue]) => {
           if (fieldKey === '__typename') {
             objectTypeMap.set(fieldKey, `?: "${typeName}"`);
@@ -729,23 +728,6 @@ export async function generate(
       return acum;
     }, '');
 
-  const objectTypesEntries = deps.sortBy(
-    Array.from(objectTypeTSTypes.entries()),
-    (v) => v[0]
-  );
-
-  typescriptTypes += `
-  export interface SchemaObjectTypes {
-    ${objectTypesEntries.reduce((acum, [typeName]) => {
-      acum += `${typeName}:${typeName};`;
-      return acum;
-    }, '')}
-  }
-  export type SchemaObjectTypesNames = ${objectTypesEntries
-    .map(([key]) => `"${key}"`)
-    .join(' | ')};
-  `;
-
   if (unionsAndInterfacesObjectTypesMap.size) {
     typescriptTypes += `
     ${deps
@@ -771,9 +753,7 @@ export async function generate(
       mutation: Mutation
       subscription: Subscription
     }
-    `;
 
-  typescriptTypes += `
     export type MakeNullable<T> = {
       [K in keyof T]: T[K] | undefined;
     };
@@ -794,8 +774,8 @@ export async function generate(
     ${
       isJavascriptOutput
         ? typeDoc('import("gqty").QueryFetcher') + 'const queryFetcher'
-        : 'const queryFetcher : QueryFetcher'
-    } = async function (query, variables, fetchOptions) {
+        : 'const queryFetcher: QueryFetcher'
+    } = async function ({ query, variables, operationName }, fetchOptions) {
         // Modify "${endpoint}" if needed
         const response = await fetch("${endpoint}", {
           method: "POST",
@@ -805,14 +785,29 @@ export async function generate(
           body: JSON.stringify({
             query,
             variables,
+            operationName,
           }),
           mode: "cors",
           ...fetchOptions
         });
 
-        const json = await response.json();
+        if (response.status >= 400) {
+          throw new GQtyError(
+            \`GraphQL endpoint responded with HTTP status \${response.status}.\`
+          );
+        }
 
-        return json;
+        const text = await response.text();
+
+        try {
+          return JSON.parse(text);
+        } catch {
+          throw new GQtyError(
+            \`Malformed JSON response: \${
+              text.length > 50 ? text.slice(0, 50) + '...' : text
+            }\`
+          );
+        }
       };
     `;
 
@@ -837,208 +832,169 @@ export async function generate(
     );
 
   const javascriptSchemaCode = await format(`
-/**
- * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
- */
-${hasUnions ? 'import { SchemaUnionsKey } from "gqty";' : ''}
+    /**
+     * GQty AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+     */
 
-${typeDoc(
-  'import("gqty").ScalarsEnumsHash'
-)}export const scalarsEnumsHash = ${scalarsEnumsHashString};
+    ${hasUnions ? 'import { SchemaUnionsKey } from "gqty";' : ''}
 
-export const generatedSchema = {${generatedSchemaCodeString}};
+    ${typeDoc(
+      'import("gqty").ScalarsEnumsHash'
+    )}export const scalarsEnumsHash = ${scalarsEnumsHashString};
+
+    export const generatedSchema = {${generatedSchemaCodeString}};
   `);
 
-  const schemaCode = await format(
-    `
-/**
- * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
- */
-  ${preImport}
+  const schemaCode = await format(`
+    /**
+     * GQty AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+     */
 
-  ${hasUnions ? 'import { SchemaUnionsKey } from "gqty";' : ''}
+    ${preImport}
 
-  ${await codegenResultPromise}
+    ${hasUnions ? 'import { SchemaUnionsKey } from "gqty";' : ''}
 
-  export${
-    isJavascriptOutput ? ' declare' : ''
-  } const scalarsEnumsHash: import("gqty").ScalarsEnumsHash${
-      isJavascriptOutput ? ';' : ` = ${scalarsEnumsHashString};`
-    }
-  export${isJavascriptOutput ? ' declare' : ''} const generatedSchema ${
-      isJavascriptOutput ? ':' : '='
-    } {${generatedSchemaCodeString}}${isJavascriptOutput ? '' : ' as const'};
+    ${await codegenResultPromise}
 
-  ${typescriptTypes}
-    `
-  );
+    export${
+      isJavascriptOutput ? ' declare' : ''
+    } const scalarsEnumsHash: import("gqty").ScalarsEnumsHash${
+    isJavascriptOutput ? ';' : ` = ${scalarsEnumsHashString};`
+  }
+    export${isJavascriptOutput ? ' declare' : ''} const generatedSchema ${
+    isJavascriptOutput ? ':' : '='
+  } {${generatedSchemaCodeString}}${isJavascriptOutput ? '' : ' as const'};
 
-  let reactClientCode = '';
-  if (react) {
-    if (isJavascriptOutput) {
-      reactClientCode = `
-      ${typeDoc(
-        'import("@gqty/react").ReactClient<import("./schema.generated").GeneratedSchema>'
-      )}const reactClient = createReactClient(client, {
-        defaults: {
-          // Set this flag as "true" if your usage involves React Suspense
-          // Keep in mind that you can overwrite it in a per-hook basis
-          suspense: false,
+    ${typescriptTypes}
+  `);
 
-          // Set this flag based on your needs
-          staleWhileRevalidate: false
+  const reactClientCode = react
+    ? `
+        export const {
+          graphql,
+          useQuery,
+          usePaginatedQuery,
+          useTransactionQuery,
+          useLazyQuery,
+          useRefetch,
+          useMutation,
+          useMetaState,
+          prepareReactRender,
+          useHydrateCache,
+          prepareQuery,
+          ${subscriptions ? 'useSubscription,' : ''}
+        } = ${
+          isJavascriptOutput
+            ? `${typeDoc(
+                'import("@gqty/react").ReactClient<import("./schema.generated").GeneratedSchema>'
+              )}createReactClient(client, {`
+            : `createReactClient<GeneratedSchema>(client, {`
         }
-      });
+          defaults: {
+            // Enable Suspense, you can override this option for each hook.
+            suspense: true,
+          }
+        });
+      `.trim()
+    : '';
 
-      const {
-        graphql,
-        useQuery,
-        usePaginatedQuery,
-        useTransactionQuery,
-        useLazyQuery,
-        useRefetch,
-        useMutation,
-        useMetaState,
-        prepareReactRender,
-        useHydrateCache,
-        prepareQuery,
-        ${subscriptions ? 'useSubscription,' : ''}
-      } = reactClient;
+  const clientCode = await format(`
+    /**
+     * GQty: You can safely modify this file based on your needs.
+     */
 
-      export {
-        graphql,
-        useQuery,
-        usePaginatedQuery,
-        useTransactionQuery,
-        useLazyQuery,
-        useRefetch,
-        useMutation,
-        useMetaState,
-        prepareReactRender,
-        useHydrateCache,
-        prepareQuery,
-        ${subscriptions ? 'useSubscription,' : ''}
-       }
-      `.trim();
-    } else {
-      reactClientCode = `
-      const {
-        graphql,
-        useQuery,
-        usePaginatedQuery,
-        useTransactionQuery,
-        useLazyQuery,
-        useRefetch,
-        useMutation,
-        useMetaState,
-        prepareReactRender,
-        useHydrateCache,
-        prepareQuery,
-        ${subscriptions ? 'useSubscription,' : ''}
-      } = createReactClient<GeneratedSchema>(client, {
-        defaults: {
-          // Set this flag as "true" if your usage involves React Suspense
-          // Keep in mind that you can overwrite it in a per-hook basis
-          suspense: false,
+    ${[
+      react ? `import { createReactClient } from "@gqty/react";` : '',
+      subscriptions
+        ? `import { createClient as createSubscriptionsClient } from "${
+            subscriptions === true ? 'graphql-ws' : subscriptions
+          }";`
+        : '',
+      isJavascriptOutput
+        ? 'import { Cache, GQtyError, createClient } from "gqty";'
+        : 'import { Cache, GQtyError, createClient, type QueryFetcher } from "gqty";',
+      isJavascriptOutput
+        ? 'import { generatedSchema, scalarsEnumsHash } from "./schema.generated";'
+        : 'import { generatedSchema, scalarsEnumsHash, type GeneratedSchema } from "./schema.generated";',
+    ]
+      .filter(Boolean)
+      .join('\n')}
 
-          // Set this flag based on your needs
-          staleWhileRevalidate: false
-        }
-      });
+    ${queryFetcher}
 
-      export {
-        graphql,
-        useQuery,
-        usePaginatedQuery,
-        useTransactionQuery,
-        useLazyQuery,
-        useRefetch,
-        useMutation,
-        useMetaState,
-        prepareReactRender,
-        useHydrateCache,
-        prepareQuery,
-        ${subscriptions ? 'useSubscription,' : ''}
-       }
-      `;
+    ${
+      subscriptions
+        ? `const subscriptionsClient =
+      typeof window !== "undefined" ?
+        createSubscriptionsClient({
+          lazy: true,
+          url: () => {
+            // Modify if needed
+            const url = new URL("${endpoint}", window.location.href);
+            url.protocol = url.protocol.replace('http', 'ws');
+            return url.href;
+          }
+        }) : undefined;`
+        : ''
     }
-  }
 
-  const clientCode = await format(
+    const cache = new Cache(
+      undefined,
+      /**
+       * Default option is immediate cache expiry but keep it for 5 minutes,
+       * allowing soft refetches in background.
+       */
+      {
+        maxAge: 0,
+        staleWhileRevalidate: 5 * 60 * 1000,
+        normalization: true,
+      }
+    );
+
+    ${
+      isJavascriptOutput
+        ? `${typeDoc(
+            'import("gqty").GQtyClient<import("./schema.generated").GeneratedSchema>'
+          )}export const client = createClient({
+      schema: generatedSchema,
+      scalars: scalarsEnumsHash,
+      cache,
+      fetchOptions: {
+        fetcher: queryFetcher,
+        ${subscriptions ? 'subscriber: subscriptionsClient' : ''}
+      },
+    });
     `
-/**
- * GQTY: You can safely modify this file and Query Fetcher based on your needs
- */
-
-  ${react ? `import { createReactClient } from "@gqty/react"` : ''}
-  ${
-    subscriptions
-      ? `import { createSubscriptionsClient } from "@gqty/subscriptions"`
-      : ''
-  }
-  ${isJavascriptOutput ? '' : 'import type { QueryFetcher } from "gqty";'}
-  import { createClient } from 'gqty';
-  ${
-    isJavascriptOutput
-      ? ''
-      : 'import type { GeneratedSchema, SchemaObjectTypes, SchemaObjectTypesNames } from "./schema.generated";'
-  }
-  import { generatedSchema, scalarsEnumsHash } from "./schema.generated";
-
-
-  ${queryFetcher}
-
-  ${
-    subscriptions
-      ? `
-  const subscriptionsClient =
-  typeof window !== "undefined" ?
-  createSubscriptionsClient({
-    wsEndpoint: () => {
-      // Modify if needed
-      const url = new URL("${endpoint}", window.location.href);
-      url.protocol = url.protocol.replace('http', 'ws');
-      return url.href;
+        : `
+    export const client = createClient<GeneratedSchema>({
+      schema: generatedSchema,
+      scalars: scalarsEnumsHash,
+      cache,
+      fetchOptions:{
+        fetcher: queryFetcher,
+        ${subscriptions ? 'subscriber: subscriptionsClient' : ''}
+      },
+    });
+    `
     }
-  }) : undefined;
-  `
-      : ''
-  }
 
-  ${
-    isJavascriptOutput
-      ? `${typeDoc(
-          'import("gqty").GQtyClient<import("./schema.generated").GeneratedSchema>'
-        )}export const client = createClient({
-        schema: generatedSchema,
-        scalarsEnumsHash,
-        queryFetcher
-        ${subscriptions ? ', subscriptionsClient' : ''}
-      });`
-      : `export const client = createClient<GeneratedSchema, SchemaObjectTypesNames, SchemaObjectTypes>({
-    schema: generatedSchema,
-    scalarsEnumsHash,
-    queryFetcher
-    ${subscriptions ? ', subscriptionsClient' : ''}
-  });`
-  }
+    // Core functions
+    export const { resolve, subscribe, schema } = client;
 
+    // Legacy functions
+    export const { query, mutation, mutate, subscription, resolved, refetch, track } = client;
 
-  const { query, mutation, mutate, subscription, resolved, refetch, track } = client;
+    ${reactClientCode}
 
-  export { query, mutation, mutate, subscription, resolved, refetch, track };
+    export * from "./schema.generated";
+  `);
 
-  ${reactClientCode}
-
-  export * from "./schema.generated";
-  `
-  );
   return {
     clientCode,
-    schemaCode,
-    javascriptSchemaCode,
     generatedSchema,
-    scalarsEnumsHash,
     isJavascriptOutput,
+    javascriptSchemaCode,
+    scalarsEnumsHash,
+    schemaCode,
   };
 }

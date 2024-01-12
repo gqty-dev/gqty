@@ -1,7 +1,7 @@
-import { gqtyConfigPromise } from '../src/config';
 import fs from 'fs';
 import { resolve } from 'path';
 import tmp from 'tmp-promise';
+import { loadOrGenerateConfig } from '../src/config';
 
 export async function getTempDir({
   initClientFile,
@@ -33,5 +33,5 @@ export async function getTempDir({
 }
 
 afterAll(async () => {
-  await gqtyConfigPromise;
+  await loadOrGenerateConfig({ writeConfigFile: true });
 });

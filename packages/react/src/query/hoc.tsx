@@ -1,16 +1,14 @@
+import { useRerender } from '@react-hookz/web';
 import type { GQtyClient } from 'gqty';
 import * as React from 'react';
-import { OnErrorHandler, useInterceptSelections } from '../common';
+import type { OnErrorHandler } from '../common';
 import type { ReactClientOptionsWithDefaults } from '../utils';
 
 export interface GraphQLHOCOptions {
-  suspense?:
-    | boolean
-    | {
-        fallback: React.SuspenseProps['fallback'];
-      };
-  staleWhileRevalidate?: boolean;
   onError?: OnErrorHandler;
+  operationName?: string;
+  staleWhileRevalidate?: boolean;
+  suspense?: boolean | { fallback: React.SuspenseProps['fallback'] };
 }
 
 export interface GraphQLHOC {
@@ -21,12 +19,9 @@ export interface GraphQLHOC {
 }
 
 export function createGraphqlHOC(
-  { scheduler, eventHandler, interceptorManager }: GQtyClient<any>,
+  { createResolver, subscribeLegacySelections }: GQtyClient<any>,
   {
-    defaults: {
-      suspense: defaultSuspense,
-      staleWhileRevalidate: defaultStaleWhileRevalidate,
-    },
+    defaults: { suspense: defaultSuspense, retry },
   }: ReactClientOptionsWithDefaults
 ) {
   const graphql: GraphQLHOC = function graphql<P>(
@@ -34,55 +29,67 @@ export function createGraphqlHOC(
       displayName?: string;
     },
     {
-      suspense = defaultSuspense,
-      staleWhileRevalidate = defaultStaleWhileRevalidate,
       onError,
+      operationName,
+      staleWhileRevalidate,
+      suspense = defaultSuspense,
     }: GraphQLHOCOptions = {}
   ) {
     const withGraphQL: {
       (props: P): React.ReactElement | null;
       displayName: string;
     } = function WithGraphQL(props): React.ReactElement | null {
-      const { fetchingPromise, unsubscribe } = useInterceptSelections({
-        interceptorManager,
-        eventHandler,
-        scheduler,
-        staleWhileRevalidate,
-        onError,
+      const {
+        accessor: { query, mutation, subscription },
+        context,
+        resolve,
+      } = createResolver({ operationName, retryPolicy: retry });
+      const unsubscribe = subscribeLegacySelections((selection, cache) => {
+        context.select(selection, cache);
       });
+      const render = useRerender();
+      React.useEffect(render, [staleWhileRevalidate]);
 
-      let returnValue: React.ReactElement | null = null;
+      let elm: React.ReactElement | null = null;
       try {
-        returnValue = component(props) ?? null;
+        elm = component({ ...props, query, mutation, subscription });
       } finally {
         unsubscribe();
       }
 
-      if (suspense && fetchingPromise.current) {
-        function Suspend() {
-          if (!fetchingPromise.current) return null;
-
-          throw fetchingPromise.current;
-        }
-        const value = (
-          <>
-            {returnValue}
-            <Suspend />
-          </>
-        );
-        if (typeof suspense === 'object') {
-          return React.createElement(React.Suspense, {
-            fallback: suspense.fallback,
-            children: value,
-          });
-        }
-        return value;
+      if (!context.shouldFetch) {
+        return elm;
       }
-      return returnValue;
+
+      const promise = resolve().finally(render);
+
+      if (onError) {
+        promise.catch(onError);
+      }
+
+      if (suspense === true) {
+        throw promise;
+      } else if (typeof suspense === 'object') {
+        const Suspender: React.FunctionComponent = () => {
+          if (!promise) return null;
+
+          throw promise;
+        };
+
+        return (
+          <React.Suspense fallback={suspense.fallback}>
+            <Suspender />
+            {elm}
+          </React.Suspense>
+        );
+      }
+
+      return elm;
     };
+
     withGraphQL.displayName = `GraphQLComponent(${
       component?.displayName || component?.name || 'Anonymous'
-    })${Date.now}`;
+    })${Date.now()}`;
 
     return withGraphQL;
   };

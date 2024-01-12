@@ -1,14 +1,13 @@
 import React from 'react';
 import { renderToString } from 'react-dom/server';
-import semver from 'semver';
 import { waitForExpect } from 'test-utils';
-
+import { $meta } from '../src/Accessor';
+import { GQtyError } from '../src/Error';
 import { createTestClient } from './utils';
 
 describe('server side rendering', () => {
   test('expected usage works', async () => {
-    const { hydrateCache, prepareRender, query, setCache, scheduler } =
-      await createTestClient();
+    const { hydrateCache, prepareRender, query } = await createTestClient();
 
     const TestComponent = () => {
       return (
@@ -23,15 +22,12 @@ describe('server side rendering', () => {
       renderToString(<TestComponent />);
     });
 
-    expect(scheduler.resolving).toBe(null);
-
     const time0 = query.time;
 
-    expect(scheduler.resolving).toBe(null);
     expect(time0).toBeTruthy();
 
-    // We simulate the difference in server-client resetting the cache
-    setCache(query, null);
+    // We simulate the difference in server-client by resetting the cache
+    $meta(query)!.cache.data = {};
 
     hydrateCache({
       cacheSnapshot,
@@ -50,8 +46,6 @@ describe('server side rendering', () => {
     expect(time1).toBeTruthy();
 
     expect(page).toContain(time1);
-
-    expect(scheduler.resolving).toBe(null);
 
     await waitForExpect(
       () => {
@@ -108,35 +102,19 @@ describe('server side rendering', () => {
   test('invalid cache snapshot', async () => {
     const { hydrateCache } = await createTestClient();
 
-    const errorSpy = jest
-      .spyOn(console, 'error')
-      .mockImplementation((message) => {
-        expect(message).toEqual(
-          SyntaxError(
-            semver.gt(process.version, '19.0.0')
-              ? `Unexpected token 'i', "invalid" is not valid JSON`
-              : `Unexpected token i in JSON at position 0`
-          )
-        );
-      });
-
-    hydrateCache({
-      cacheSnapshot: 'invalid',
-    });
-
-    expect(errorSpy).toBeCalledTimes(1);
-
-    errorSpy.mockRestore();
+    expect(() => hydrateCache({ cacheSnapshot: 'invalid' })).toThrow(
+      new GQtyError('Unrecognized snapshot format.')
+    );
   });
 
   test('empty cache snapshot', async () => {
-    const { hydrateCache, cache } = await createTestClient();
+    const { hydrateCache, schema: cache } = await createTestClient();
 
     const cacheSnapshot1 = JSON.stringify(cache);
 
-    hydrateCache({
-      cacheSnapshot: JSON.stringify({}),
-    });
+    expect(() => hydrateCache({ cacheSnapshot: JSON.stringify({}) })).toThrow(
+      new GQtyError('Unrecognized snapshot format.')
+    );
 
     const cacheSnapshot2 = JSON.stringify(cache);
 
@@ -148,6 +126,6 @@ describe('server side rendering', () => {
 
     const { cacheSnapshot } = await prepareRender(() => {});
 
-    expect(cacheSnapshot).toBe(JSON.stringify({}));
+    expect(cacheSnapshot).toStrictEqual([{}]);
   });
 });

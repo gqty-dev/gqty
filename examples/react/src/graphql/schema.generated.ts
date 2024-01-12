@@ -1,5 +1,5 @@
 /**
- * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+ * GQty AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
  */
 
 import { SchemaUnionsKey } from 'gqty';
@@ -31,6 +31,7 @@ export interface ConnectionArgs {
   after?: InputMaybe<Scalars['String']>;
   before?: InputMaybe<Scalars['String']>;
   first?: InputMaybe<Scalars['Int']>;
+  /** @deprecated asd */
   last?: InputMaybe<Scalars['Int']>;
 }
 
@@ -236,24 +237,6 @@ export interface Subscription {
   __typename?: 'Subscription';
   newNotification: ScalarsEnums['String'];
 }
-
-export interface SchemaObjectTypes {
-  Dog: Dog;
-  Human: Human;
-  HumansConnection: HumansConnection;
-  Mutation: Mutation;
-  PageInfo: PageInfo;
-  Query: Query;
-  Subscription: Subscription;
-}
-export type SchemaObjectTypesNames =
-  | 'Dog'
-  | 'Human'
-  | 'HumansConnection'
-  | 'Mutation'
-  | 'PageInfo'
-  | 'Query'
-  | 'Subscription';
 
 export interface $Species {
   Dog?: Dog;

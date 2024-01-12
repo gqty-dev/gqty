@@ -10,7 +10,9 @@
 
 ### Minor Changes
 
-- 6ced359: New "$state.error" property in "useQuery" which gives the last scheduler Error, for more in-depth error management it's still recommended to use `useMetaState` hook
+- 6ced359: New "$state.error" property in "useQuery" which gives the last
+  scheduler Error, for more in-depth error management it's still recommended to
+  use `useMetaState` hook
 
   Closes [#111](https://github.com/gqty-dev/gqty/issues/111)
 
@@ -31,7 +33,8 @@
 ### Major Changes
 
 - 3586c45: Remove undocumented "buildSelections"
-- 3586c45: Change previous unstable `Unions` support with new `"$on"` property with support for both `Unions` & `Interfaces`
+- 3586c45: Change previous unstable `Unions` support with new `"$on"` property
+  with support for both `Unions` & `Interfaces`
 
 ### Patch Changes
 
@@ -51,7 +54,8 @@
 
 ### Minor Changes
 
-- d3d0d38: [useTransactionQuery] add "pollInBackground" and default-disable background polling
+- d3d0d38: [useTransactionQuery] add "pollInBackground" and default-disable
+  background polling
 
 ### Patch Changes
 
@@ -73,7 +77,7 @@
 ### Patch Changes
 
 - 3f08372: publish fork
-- 184a074: fix update loop https://github.com/PabloSzx/gqty/pull/223
+- 184a074: fix update loop <https://github.com/PabloSzx/gqty/pull/223>
 - Updated dependencies [3f08372]
   - gqty@2.0.15
 
@@ -82,10 +86,13 @@
 ### Patch Changes
 
 - 4a3d5ef: fix useQuery's prepare update
-- af6a437: - Rename `gqtyConfig` to `GQtyConfig` (so it's consistent with the new logo)
+- af6a437: - Rename `gqtyConfig` to `GQtyConfig` (so it's consistent with the
+  new logo)
   - Rename `gqtyError` to `GQtyError`
-  - Remove `endpoint` option from the configuration, and instead always defaults to introspection one
-    - It's confusing why theres two of them, and the user can change it later by modifying the file anyway
+  - Remove `endpoint` option from the configuration, and instead always defaults
+    to introspection one
+    - It's confusing why theres two of them, and the user can change it later by
+      modifying the file anyway
 - 4a3d5ef: fix args state usePaginatedQuery
 - 4a3d5ef: detach react default retry in useMutation
 - Updated dependencies [4a3d5ef]

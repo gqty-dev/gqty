@@ -1,14 +1,13 @@
 import {
   GQtyError,
-  Selection,
-  SubscribeEvents,
-  SubscriptionsClient,
+  type LegacySelection as Selection,
+  type LegacySubscribeEvents as SubscribeEvents,
+  type LegacySubscriptionsClient as SubscriptionsClient,
 } from 'gqty';
-
 import {
   Client,
-  ClientOptions,
-  OperationCallback,
+  type ClientOptions,
+  type OperationCallback,
 } from './subscription/client';
 
 export interface SubscriptionsClientOptions extends ClientOptions {
@@ -26,27 +25,16 @@ type SubContext = {
 
 export function createSubscriptionsClient({
   wsEndpoint,
-  ...opts
+  ...options
 }: SubscriptionsClientOptions): SubscriptionsClient {
-  const urlPromise = Promise.resolve(
-    typeof wsEndpoint === 'string' ? wsEndpoint : wsEndpoint()
-  );
+  const wsClient =
+    typeof wsEndpoint === 'string'
+      ? new Client(wsEndpoint, options)
+      : Promise.resolve()
+          .then(wsEndpoint)
+          .then((wsEndpoint) => new Client(wsEndpoint, options));
 
-  let wsClientValue: Client | undefined;
-
-  const wsClientPromise: Promise<Client> = new Promise((resolve, reject) => {
-    urlPromise
-      .then((url) => {
-        const client = new Client(url, {
-          ...opts,
-        });
-        wsClientValue = client;
-        resolve(client);
-      })
-      .catch(reject);
-  });
-
-  const SubscriptionsSelections: Map<string, Set<Selection>> = new Map();
+  const subscriptionsSelections: Map<string, Set<Selection>> = new Map();
 
   const eventsReference = new WeakMap<
     ((ctx: SubContext) => SubscribeEvents) | SubscribeEvents,
@@ -62,13 +50,14 @@ export function createSubscriptionsClient({
         operationId,
         selections,
       };
-      if (wsClientValue) {
-        return execSubscribe(wsClientValue);
-      } else {
-        return wsClientPromise.then((wsSubClient) =>
-          execSubscribe(wsSubClient)
-        );
-      }
+
+      wsClient;
+
+      return wsClient instanceof Promise
+        ? Promise.resolve()
+            .then(() => wsClient)
+            .then(execSubscribe)
+        : execSubscribe(wsClient);
 
       function execSubscribe(
         wsSubClient: Client
@@ -86,7 +75,7 @@ export function createSubscriptionsClient({
                 onStart?.();
                 break;
               case 'complete':
-                SubscriptionsSelections.delete(operationId);
+                subscriptionsSelections.delete(operationId);
                 onComplete?.();
                 break;
               default:
@@ -124,9 +113,9 @@ export function createSubscriptionsClient({
         function returnSub(operationId: string) {
           const unsubscribe = async () => {
             await wsSubClient.unsubscribe(operationId);
-            SubscriptionsSelections.delete(operationId);
+            subscriptionsSelections.delete(operationId);
           };
-          SubscriptionsSelections.set(operationId, new Set(selections));
+          subscriptionsSelections.set(operationId, new Set(selections));
 
           return {
             unsubscribe,
@@ -136,20 +125,19 @@ export function createSubscriptionsClient({
       }
     },
     async unsubscribe(selections) {
-      const wsClient = wsClientValue || (await wsClientPromise);
-
+      const client = await wsClient;
       let promises: Promise<void>[] = [];
       const operationIds: string[] = [];
 
       checkOperations: for (const [
         operationId,
         operationSelections,
-      ] of SubscriptionsSelections.entries()) {
+      ] of subscriptionsSelections.entries()) {
         for (const selection of selections) {
           if (operationSelections.has(selection)) {
             operationIds.push(operationId);
-            promises.push(wsClient.unsubscribe(operationId));
-            SubscriptionsSelections.delete(operationId);
+            promises.push(client.unsubscribe(operationId));
+            subscriptionsSelections.delete(operationId);
             continue checkOperations;
           }
         }
@@ -160,25 +148,19 @@ export function createSubscriptionsClient({
       return operationIds;
     },
     async close() {
-      const wsClient = wsClientValue || (await wsClientPromise);
-
-      wsClient.close();
+      const client = await wsClient;
+      client.close();
     },
-    setConnectionParams(connectionParams, restartClient) {
-      if (wsClientValue) {
-        wsClientValue.connectionInitPayload = connectionParams;
-        if (restartClient && wsClientValue.socket) {
-          wsClientValue.close(true);
-        }
-      } else {
-        wsClientPromise
-          .then((wsClient) => {
-            wsClient.connectionInitPayload = connectionParams;
-            if (restartClient && wsClient.socket) {
-              wsClient.close(true);
-            }
-          })
-          .catch(console.error);
+    async setConnectionParams(connectionParams, restartClient) {
+      const client = await wsClient;
+
+      client.connectionInitPayload =
+        typeof connectionParams === 'function'
+          ? await connectionParams()
+          : connectionParams;
+
+      if (restartClient && client.socket) {
+        client.close(true);
       }
     },
   };
