@@ -59,7 +59,7 @@ export class Selection {
   }
 
   get aliasLength(): number | undefined {
-    return this.options.aliasLength ?? this.parent?.aliasLength;
+    return this.options.aliasLength ?? this.parent?.aliasLength ?? 6;
   }
 
   get input() {

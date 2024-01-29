@@ -51,7 +51,7 @@ export interface UseMutationOptions<TData> {
   /**
    * extension object that allows user to pass custom data to the query fetcher.
    */
-  extensions?: Record<string, any>;
+  extensions?: Record<string, unknown>;
 }
 
 export type UseMutationState = {

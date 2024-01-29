@@ -1,6 +1,6 @@
 import {
-  parse,
   stripIgnoredCharacters as officialStripIgnoredCharacters,
+  parse,
 } from 'graphql';
 import { buildQuery } from '../src/QueryBuilder';
 import { Selection } from '../src/Selection';

@@ -34,7 +34,7 @@ export interface UseQueryPrepareHelpers<
 }
 export interface UseQueryOptions<TSchema extends BaseGeneratedSchema> {
   cachePolicy?: RequestCache;
-  extensions?: Record<string, any>;
+  extensions?: Record<string, unknown>;
   fetchInBackground?: boolean;
   fetchPolicy?: LegacyFetchPolicy;
   notifyOnNetworkStatusChange?: boolean;
