@@ -14,6 +14,15 @@ class StrongRef<T extends object> {
   deref() {
     return this.#data;
   }
+  get [Symbol.toStringTag]() {
+    return 'StrongRef';
+  }
+}
+
+if (typeof WeakRef === 'undefined') {
+  console.warn(
+    `WeakRef is not available at this environment, falling back to simple object references.`
+  );
 }
 
 /**
