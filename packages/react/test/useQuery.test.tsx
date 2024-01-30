@@ -85,4 +85,55 @@ describe('useQuery', () => {
       )
     );
   });
+
+  it('should not retain previous query inputs on state change #1594', async () => {
+    const fetches: QueryPayload[] = [];
+    const reactClient = await createReactTestClient(
+      undefined,
+      ({ query, variables, operationName }) => {
+        // Keep fetch logs for result matching
+        fetches.push({ query, variables, operationName });
+
+        return reactClient.client.query(query, { variables, operationName });
+      }
+    );
+
+    const { result, rerender } = renderHook(
+      ({ name }) => {
+        const query = reactClient.useQuery({ suspense: false });
+
+        return query.human({ name }).name;
+      },
+      { initialProps: { name: '1' } }
+    );
+
+    await waitFor(() => {
+      expect(result.current).toBe('1');
+    });
+
+    rerender({ name: '2' });
+
+    await waitFor(() => {
+      expect(result.current).toBe('2');
+    });
+
+    expect(fetches).toMatchInlineSnapshot(`
+      [
+        {
+          "operationName": undefined,
+          "query": "query($a00425:String){a2c936:human(name:$a00425){__typename id name}}",
+          "variables": {
+            "a00425": "1",
+          },
+        },
+        {
+          "operationName": undefined,
+          "query": "query($dd0895:String){a657eb:human(name:$dd0895){__typename id name}}",
+          "variables": {
+            "dd0895": "2",
+          },
+        },
+      ]
+    `);
+  });
 });
