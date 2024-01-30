@@ -18,7 +18,7 @@ import {
 import { createLegacyQueryFetcher } from './compat/queryFetcher';
 import { createLegacySubscriptionsClient } from './compat/subscriptionsClient';
 import { createContext } from './context';
-import { createDebugger } from './debugger';
+import { createDebugger, type Debugger } from './debugger';
 import { createResolvers, type Resolvers } from './resolvers';
 
 export { $meta } from '../Accessor';
@@ -131,7 +131,7 @@ export type Client<TSchema extends BaseGeneratedSchema> = Persistors &
     schema: TSchema;
 
     /** Subscribe to debug events, useful for logging. */
-    subscribeDebugEvents: ReturnType<typeof createDebugger>['subscribe'];
+    subscribeDebugEvents: Debugger['subscribe'];
 
     /** Get the cache instance of this client. */
     readonly cache: Cache;

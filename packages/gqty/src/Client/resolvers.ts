@@ -203,7 +203,9 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
     });
 
     context.subscribeSelect((selection, cache) => {
-      onSelect?.(selection, cache);
+      if (false === onSelect?.(selection, cache)) {
+        return;
+      }
 
       // Prevents infinite loop created by legacy functions
       if (!selections.has(selection)) {
@@ -245,35 +247,39 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
       if (!pendingQueries.has(pendingSelections)) {
         pendingQueries.set(
           pendingSelections,
-          Promise.resolve().then(() => {
-            const selections = new Set(
-              [
-                ...(getSelectionsSet(clientCache, selectionsCacheKey) ?? []),
-              ].flatMap((selections) => [...selections])
+          (async () => {
+            const uniqueSelections = new Set<Selection>();
+
+            getSelectionsSet(clientCache, selectionsCacheKey)?.forEach(
+              (selections) => {
+                selections.forEach((selection) => {
+                  uniqueSelections.add(selection);
+                });
+              }
             );
 
             pendingQueries.delete(pendingSelections);
 
             delSelectionSet(clientCache, selectionsCacheKey);
 
-            return fetchSelections(selections, {
+            const results = await fetchSelections(uniqueSelections, {
               cache: context.cache,
               debugger: debug,
               extensions,
               fetchOptions: { ...fetchOptions, cachePolicy, retryPolicy },
               operationName,
-            }).then((results) => {
-              updateCaches(
-                results,
-                cachePolicy !== 'no-store' && context.cache !== clientCache
-                  ? [context.cache, clientCache]
-                  : [context.cache],
-                { skipNotify: !context.notifyCacheUpdate }
-              );
-
-              return results;
             });
-          })
+
+            updateCaches(
+              results,
+              cachePolicy !== 'no-store' && context.cache !== clientCache
+                ? [context.cache, clientCache]
+                : [context.cache],
+              { skipNotify: !context.notifyCacheUpdate }
+            );
+
+            return results;
+          })()
         );
       }
 

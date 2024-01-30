@@ -1,4 +1,4 @@
-import type { DebugEvent, GQtyClient } from 'gqty';
+import type { DebugEvent, GQtyClient, Selection } from 'gqty';
 import * as prettierBabel from 'prettier/plugins/babel';
 import * as prettierEstree from 'prettier/plugins/estree';
 import * as prettierGraphQL from 'prettier/plugins/graphql';
@@ -68,46 +68,55 @@ export function createLogger(
   options.showSelections ??= true;
   options.stringifyJSON ??= false;
 
-  const stringifyJSONIfEnabled = async <T extends object>(v: T) => {
+  const stringifyJSONIfEnabled = <T extends object>(v: T) => {
     if (options.stringifyJSON && v) {
       return parseJSON(v);
     }
     return v;
   };
 
-  let idMapper = 0;
-  const QueryIdMapper: Record<string, number> = {};
+  const queryIdMap = new Map<string, number>();
+  const pendingQueries = new Set<Promise<unknown>>();
 
   async function onFetch({
     cache,
     label,
     request: { query, variables, operationName, extensions },
-    result,
-    result: { error } = {},
+    promise,
     selections,
   }: DebugEvent) {
+    if (!promise) return;
+
+    pendingQueries.add(promise);
+
+    if (!queryIdMap.has(query)) {
+      queryIdMap.set(query, queryIdMap.size);
+    }
+
     const startTime = Date.now();
-    const fetchTime = startTime - startTime; // [ ] Implement an actual timer
-    const queryId = (QueryIdMapper[query] ||= ++idMapper);
+    const result = await promise;
+    const fetchTime = Date.now() - startTime;
+
+    pendingQueries.delete(promise);
+
+    const uniqueSelections = [...selections].reduce(
+      (map, s) => map.set(s.cacheKeys.join('.'), s),
+      new Map<string, Selection>()
+    );
 
     console.groupCollapsed(
       ...format(
         ['GraphQL ', 'color: gray'],
         [
           extensions?.type + (operationName ? ` (${operationName})` : ' '),
-          `color: ${error ? 'red' : '#03A9F4'}; font-weight: bold`,
+          `color: ${result?.error ? 'red' : '#03A9F4'}; font-weight: bold`,
         ],
-        ['ID ' + queryId + ' ', 'color: green'],
+        [`ID ${queryIdMap.get(query)} `, 'color: green'],
         ...(label ? [[label + ' ', 'color: green']] : []),
         [`(${fetchTime}ms)`, 'color: gray'],
-        [
-          ` ${
-            new Set([...selections].map((s) => s.root.getLeafNodes())).size
-          } selections`,
-          'color: gray',
-        ],
+        [` ${uniqueSelections.size} selections`, 'color: gray'],
 
-        error && [
+        result?.error && [
           'FAILED',
           'margin-left: 10px; border-radius: 2px; padding: 2px 6px; background: #e84343; color: white',
         ]
@@ -128,7 +137,7 @@ export function createLogger(
       if (variables) {
         console.log(
           ...format(['Variables', 'color: #25e1e1']),
-          await stringifyJSONIfEnabled(variables)
+          stringifyJSONIfEnabled(variables)
         );
       }
 
@@ -137,20 +146,26 @@ export function createLogger(
       console.groupEnd();
     }
 
-    if (error) {
-      console.error(...format(['Error', headerStyles]), serializeError(error));
+    if (result?.error) {
+      console.error(
+        ...format(['Error', headerStyles]),
+        serializeError(result.error)
+      );
     } else if (result) {
       console.log(
         ...format(['Result', headerStyles]),
-        await stringifyJSONIfEnabled(result)
+        stringifyJSONIfEnabled(result)
       );
     }
 
     if (options.showSelections) {
       console.groupCollapsed(...format(['Selections', headerStyles]));
-      for (const { key, cacheKeys, alias, input, isUnion } of selections) {
+      for (const [
+        ,
+        { key, cacheKeys, alias, input, isUnion },
+      ] of uniqueSelections) {
         console.log(
-          await stringifyJSONIfEnabled({
+          stringifyJSONIfEnabled({
             key,
             cacheKeys: cacheKeys.join('.'),
             alias,
@@ -165,24 +180,16 @@ export function createLogger(
     if (options.showCache) {
       console.log(
         ...format(['Cache snapshot', headerStyles]),
-        await stringifyJSONIfEnabled(cache?.toJSON())
+        stringifyJSONIfEnabled(cache?.toJSON())
       );
     }
 
     console.groupEnd();
   }
 
-  /**
-   * Start logging, it returns the "stop" function
-   */
-  function start() {
-    const unsubscribe = client.subscribeDebugEvents(onFetch);
-
-    return unsubscribe;
-  }
-
   return {
-    start,
+    /** Start logging and returns the "stop" function. */
+    start: () => client.subscribeDebugEvents(onFetch),
     options,
   };
 }

@@ -32,6 +32,7 @@ export interface UseQueryPrepareHelpers<
   readonly prepass: typeof prepass;
   readonly query: GeneratedSchema['query'];
 }
+
 export interface UseQueryOptions<TSchema extends BaseGeneratedSchema> {
   cachePolicy?: RequestCache;
   extensions?: Record<string, unknown>;

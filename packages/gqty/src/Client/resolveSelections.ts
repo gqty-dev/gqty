@@ -61,33 +61,34 @@ export const fetchSelections = <
         };
 
         // Dedupe
-        const { data, errors, extensions } = await dedupePromise(
+        const promise = dedupePromise(
           cache,
           hash,
           type === 'subscription'
             ? () => doSubscribeOnce<TData>(queryPayload, fetchOptions)
             : () =>
                 doFetch<TData>(queryPayload, { ...fetchOptions, selections })
-        );
+        ).then(({ data, errors, extensions }) => {
+          const result: FetchResult<TData> = {
+            data,
+            extensions: { ...extensions, ...queryPayload.extensions },
+          };
 
-        const result: FetchResult<TData> = {
-          data,
-          extensions: { ...extensions, ...queryPayload.extensions },
-        };
+          if (errors?.length) {
+            result.error = GQtyError.fromGraphQLErrors(errors);
+          }
 
-        if (errors?.length) {
-          result.error = GQtyError.fromGraphQLErrors(errors);
-        }
+          return result;
+        });
 
-        // TODO: Defer logging until after cache update
         await debug?.dispatch({
           cache,
           request: queryPayload,
-          result,
+          promise,
           selections,
         });
 
-        return result;
+        return await promise;
       }
     )
   );
@@ -105,7 +106,7 @@ export type Unsubscribe = () => void;
 
 /**
  * Reference count when there are more than one listeners, unsubscription
- * happens when all listeners are unsubscribed.
+ * happens after no subscribers left after current loop.
  */
 const subsRef = new WeakMap<
   Promise<unknown>,
@@ -161,20 +162,20 @@ export const subscribeSelections = <
         let subscriptionId: string | undefined;
 
         if (isWsClient(subscriber)) {
-          {
-            const unsub = subscriber?.on('message', (message) => {
+          if (onSubscribe) {
+            const unsub = subscriber.on('message', (message) => {
               switch (message.type) {
                 case 'connection_ack' as MessageType.ConnectionAck: {
-                  unsub?.();
-                  onSubscribe?.();
+                  unsub();
+                  onSubscribe();
                   break;
                 }
               }
             });
           }
 
-          {
-            const unsub = subscriber?.on('message', (message) => {
+          if (debug) {
+            const unsub = subscriber.on('message', (message) => {
               switch (message.type) {
                 case 'connection_ack' as MessageType.ConnectionAck: {
                   break;
@@ -184,21 +185,21 @@ export const subscribeSelections = <
 
                   subscriptionId = message.id;
 
-                  debug?.dispatch({
+                  debug.dispatch({
                     cache,
                     label: `[id=${subscriptionId}] [create]`,
                     request: queryPayload,
                     selections,
                   });
 
-                  unsub?.();
+                  unsub();
                   break;
                 }
               }
             });
           }
         } else if (isSseClient(subscriber)) {
-          // TODO: Get id via constructor#onMessage option, this requires
+          // [ ] Get id via constructor#onMessage option, this requires
           // modifications to the generated client.
           subscriptionId = 'EventSource';
           onSubscribe?.();
@@ -222,7 +223,9 @@ export const subscribeSelections = <
             cache,
             label: subscriptionId ? `[id=${subscriptionId}] [data]` : undefined,
             request: queryPayload,
-            result,
+            promise: result.error
+              ? Promise.reject(result)
+              : Promise.resolve(result),
             selections,
           });
 
@@ -251,7 +254,7 @@ export const subscribeSelections = <
         // Dedupe
         const promise = dedupePromise(cache, hash, () => {
           return new Promise<void>((complete) => {
-            dispose = subscriber!.subscribe<TData, Record<string, unknown>>(
+            dispose = subscriber?.subscribe<TData, Record<string, unknown>>(
               queryPayload,
               {
                 next,
@@ -290,10 +293,10 @@ export const subscribeSelections = <
         unsubscribers.add(() => {
           const ref = subsRef.get(promise);
           if (ref && --ref.count <= 0) {
-            // Put this in the back of event loop, after current active
+            // Put this in the back of the event loop after current active
             // promises to prevent excessive re-subscriptions.
             setTimeout(() => {
-              // Dispose only if no one else join the game till now.
+              // Unsubscribe when nobody else joins till this line.
               if (ref.count <= 0) {
                 ref.dispose();
               }

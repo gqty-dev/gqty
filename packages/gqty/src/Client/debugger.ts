@@ -7,7 +7,7 @@ export type DebugEvent = {
   cache?: Cache;
   label?: string;
   request: QueryPayload<QueryExtensions>;
-  result?: FetchResult;
+  promise?: Promise<FetchResult>;
   selections: Set<Selection>;
 };
 
