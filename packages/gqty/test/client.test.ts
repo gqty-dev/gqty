@@ -158,6 +158,20 @@ describe('core#resolve', () => {
     });
   });
 
+  it('mutations', async () => {
+    const { resolve } = await createTestClient();
+
+    const name = `John Doe ${Date.now()}`;
+
+    const data = await resolve(({ mutation }) => {
+      const human = mutation.humanMutation({ nameArg: name });
+
+      return human.name;
+    });
+
+    expect(data).toBe(name);
+  });
+
   it('subscriptions', async () => {
     const { resolve } = await createTestClient(undefined, undefined, {
       subscriptions: true,
