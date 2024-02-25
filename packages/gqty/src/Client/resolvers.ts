@@ -247,7 +247,8 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
       if (!pendingQueries.has(pendingSelections)) {
         pendingQueries.set(
           pendingSelections,
-          (async () => {
+          // Batching happens at the end of microtask queue
+          Promise.resolve().then(async () => {
             const uniqueSelections = new Set<Selection>();
 
             getSelectionsSet(clientCache, selectionsCacheKey)?.forEach(
@@ -279,7 +280,7 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
             );
 
             return results;
-          })()
+          })
         );
       }
 
