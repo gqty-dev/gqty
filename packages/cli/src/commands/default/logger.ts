@@ -35,7 +35,7 @@ export const logger = {
     return normalMessage(chalk.yellow('!'), ...args);
   },
   info(...args: unknown[]) {
-    return normalMessage(chalk.cyan('i'), ...args);
+    return normalMessage(chalk.cyan('ℹ'), ...args);
   },
   success(...args: unknown[]) {
     return normalMessage(chalk.green('✔'), ...args);
@@ -48,7 +48,7 @@ export const logger = {
     return progressMessage(chalk.yellow('!') + ' ' + message);
   },
   infoProgress(message: string) {
-    return progressMessage(chalk.cyan('i') + ' ' + message);
+    return progressMessage(chalk.cyan('ℹ') + ' ' + message);
   },
   successProgress(message: string) {
     return progressMessage(chalk.green('✔') + ' ' + message);

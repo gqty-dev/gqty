@@ -1,5 +1,5 @@
 import { type FunctionComponent } from 'react';
-import { Character, Maybe } from '../gqty';
+import { type Character, type Maybe } from '../gqty';
 import Skeleton from './Skeleton';
 
 const avatarStyle = `inline-block rounded-full mr-3`;
