@@ -33,6 +33,7 @@ export const addCommand = (command: Command) => {
       []
     )
     .option('--react', 'Include React hooks in the generated client.')
+    .option('--no-react')
     .option(
       '--subscriptions [client]',
       'Includes specified package as subscription client, must be graphql-ws compatible.'
@@ -122,7 +123,7 @@ export const addCommand = (command: Command) => {
       // CLI options
       {
         if (options.react) {
-          config.react = true;
+          config.react ??= true;
         }
 
         // Explicitly allow empty string
