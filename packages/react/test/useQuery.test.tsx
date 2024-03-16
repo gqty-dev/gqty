@@ -3,6 +3,32 @@ import { type QueryPayload } from 'gqty';
 import { createReactTestClient } from './utils';
 
 describe('useQuery', () => {
+  describe('isLoading', () => {
+    it('should be false by default', async () => {
+      const { useQuery } = await createReactTestClient();
+
+      const results: boolean[] = [];
+
+      renderHook(() => {
+        const query = useQuery({ initialLoadingState: false });
+
+        results.push(query.$state.isLoading);
+
+        return query.hello;
+      });
+
+      renderHook(() => {
+        const query = useQuery({ initialLoadingState: true });
+
+        results.push(query.$state.isLoading);
+
+        return query.hello;
+      });
+
+      expect(results).toMatchObject([false, true, true, true]);
+    });
+  });
+
   test('should fetch without suspense', async () => {
     const { useQuery } = await createReactTestClient();
 

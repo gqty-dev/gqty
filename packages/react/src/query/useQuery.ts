@@ -12,7 +12,7 @@ import {
   type RetryOptions,
 } from 'gqty';
 import { MultiDict } from 'multidict';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import ModifiedSet from '../ModifiedSet';
 import {
   translateFetchPolicy,
@@ -38,6 +38,7 @@ export interface UseQueryOptions<TSchema extends BaseGeneratedSchema> {
   extensions?: Record<string, unknown>;
   fetchInBackground?: boolean;
   fetchPolicy?: LegacyFetchPolicy;
+  initialLoadingState?: boolean;
   notifyOnNetworkStatusChange?: boolean;
   onError?: OnErrorHandler;
   operationName?: string;
@@ -110,6 +111,7 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
     fetchInBackground = false,
     fetchPolicy,
     cachePolicy = translateFetchPolicy(fetchPolicy ?? 'cache-first'),
+    initialLoadingState = false,
     suspense = defaultSuspense,
     notifyOnNetworkStatusChange = !suspense,
     onError,
@@ -124,6 +126,9 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
     staleWhileRevalidate = defaultStaleWhileRevalidate,
     __experimentalGreedyFetch,
   } = {}) => {
+    /** Identify the initial state before the first fetch. */
+    const initialStateRef = useRef(initialLoadingState);
+
     const render = useRerender();
     const renderSession = useRenderSession<string, boolean>();
 
@@ -244,6 +249,8 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
         if (!context.shouldFetch) {
           return;
         }
+
+        initialStateRef.current = true;
 
         try {
           // Forcibly includes all resolvers in the same render when one of them
@@ -391,7 +398,7 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
         Object.freeze({
           $refetch: (ignoreCache = true) => refetch({ ignoreCache }),
           $state: Object.freeze({
-            isLoading: state.promise !== undefined,
+            isLoading: state.promise !== undefined || initialStateRef.current,
             error: state.error,
           }),
         }),
