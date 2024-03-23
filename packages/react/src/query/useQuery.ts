@@ -299,9 +299,15 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
             .map(({ context, resolve }) => {
               context.shouldFetch = true;
 
-              return resolve();
+              const ret = resolve();
+
+              context.shouldFetch = false;
+
+              return ret;
             })
             .concat(resolve());
+
+          context.shouldFetch = false;
 
           const promise = Promise.all(pendingPromises);
 
