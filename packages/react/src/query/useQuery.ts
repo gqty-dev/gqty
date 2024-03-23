@@ -296,7 +296,7 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
           // active context are making selections in one component. This usually
           // happens with mixed usage of useQuery and other query methods.
           const pendingPromises = [...(cofetchingResolvers.get(resolver) ?? [])]
-            .map(async ({ context, resolve }) => {
+            .map(({ context, resolve }) => {
               context.shouldFetch = true;
 
               return resolve();

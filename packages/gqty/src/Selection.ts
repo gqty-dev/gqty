@@ -1,5 +1,5 @@
-import { GQtyError } from '../Error';
-import { hash } from '../Utils/hash';
+import { GQtyError } from './Error';
+import { hash } from './Utils/hash';
 
 const createSymbol = Symbol();
 
@@ -161,5 +161,15 @@ export class Selection {
     }
 
     return node;
+  }
+
+  get [Symbol.toStringTag]() {
+    return 'Selection';
+  }
+
+  toString() {
+    return `Selection(${this.cacheKeys.join('.')}) ${JSON.stringify(
+      this.input?.values ?? {}
+    )}`;
   }
 }

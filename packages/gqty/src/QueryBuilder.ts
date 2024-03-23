@@ -1,8 +1,8 @@
 import set from 'just-safe-set';
-import type { Cache } from '../Cache';
-import type { QueryPayload } from '../Schema';
-import type { Selection } from '../Selection';
-import { hash } from '../Utils';
+import type { Cache } from './Cache';
+import type { QueryPayload } from './Schema';
+import type { Selection } from './Selection';
+import { hash } from './Utils';
 
 export type QueryBuilderOptions = {
   batchWindow: number;

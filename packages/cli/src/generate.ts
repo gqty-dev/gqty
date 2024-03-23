@@ -6,7 +6,7 @@ import {
   type ScalarsEnumsHash,
   type Schema,
   type Type,
-} from 'gqty/Schema/types';
+} from 'gqty/Schema';
 import type {
   GraphQLEnumType,
   GraphQLField,
