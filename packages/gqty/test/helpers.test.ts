@@ -1,4 +1,5 @@
 import {
+  Cache,
   castNotSkeleton,
   castNotSkeletonDeep,
   getArrayFields,
@@ -6,10 +7,11 @@ import {
   prepass,
   selectFields,
 } from '../src';
+import { $meta } from '../src/Accessor';
 import { createTestClient, expectConsoleWarn } from './utils';
 
 describe('selectFields', () => {
-  test('recursive *, depth 1', async () => {
+  it('recursive *, depth 1', async () => {
     const { query, resolved } = await createTestClient();
 
     const data = await resolved(() => {
@@ -49,7 +51,7 @@ describe('selectFields', () => {
     `);
   });
 
-  test('recursive *, depth 2', async () => {
+  it('recursive *, depth 2', async () => {
     const { query, resolved } = await createTestClient();
 
     const data = await resolved(() => {
@@ -86,7 +88,7 @@ describe('selectFields', () => {
             null,
           ],
           "father": null,
-          "id": "2",
+          "id": "4",
           "name": "default",
           "node": [
             null,
@@ -135,7 +137,7 @@ describe('selectFields', () => {
               null,
             ],
             "father": null,
-            "id": "2",
+            "id": "4",
             "name": "default",
             "node": [
               null,
@@ -160,7 +162,7 @@ describe('selectFields', () => {
               null,
             ],
             "father": null,
-            "id": "2",
+            "id": "4",
             "name": "default",
             "node": [
               null,
@@ -1119,27 +1121,21 @@ describe('selectFields', () => {
 
 describe('refetch function', () => {
   test('refetch works', async () => {
-    const { query, refetch, scheduler } = await createTestClient();
+    const { query, refetch, resolved } = await createTestClient();
 
     const a = query.hello;
 
     expect(a).toBe(undefined);
 
-    expect(scheduler.resolving).toBeTruthy();
-
-    await scheduler.resolving!.promise;
+    await resolved(() => query.hello);
 
     const a2 = query.hello;
 
-    expect(scheduler.resolving).toBe(null);
-
     expect(a2).toBe('hello world');
 
-    const a3Promise = refetch(() => query.hello);
+    await expect(refetch(() => query.hello)).resolves.toBe('hello world');
 
-    expect(scheduler.resolving).toBeTruthy();
-
-    const a3 = await a3Promise;
+    const a3 = query.hello;
 
     expect(a3).toBe(a2);
   });
@@ -1177,7 +1173,12 @@ describe('refetch function', () => {
   });
 
   test('refetch proxy selections', async () => {
-    const { query, resolved, refetch, cache } = await createTestClient();
+    const {
+      query,
+      resolved,
+      refetch,
+      schema: cache,
+    } = await createTestClient();
 
     const time1 = await resolved(() => query.time);
 
@@ -1236,7 +1237,7 @@ describe('refetch function', () => {
 
   test('refetch proxy selections with invalid proxy', async () => {
     const spy = jest.spyOn(console, 'warn').mockImplementation((message) => {
-      expect(message).toBe('gqty: Invalid proxy to refetch!');
+      expect(message).toBe('[gqty] Invalid proxy to refetch!');
     });
 
     const prevNODE_ENV = process.env.NODE_ENV;
@@ -1264,25 +1265,27 @@ describe('refetch function', () => {
 
 describe('get fields', () => {
   test('getFields works', async () => {
-    const { query, scheduler, accessorCache } = await createTestClient();
+    const { resolved, query } = await createTestClient(
+      undefined,
+      undefined,
+      undefined,
+      { cache: new Cache(undefined, { normalization: false }) }
+    );
 
-    const humanProxy = getFields(query.human(), 'name');
+    await resolved(() => {
+      const humanProxy = getFields(query.human(), 'name', 'id');
 
-    expect(accessorCache.isProxy(humanProxy)).toBe(true);
-
-    await scheduler.resolving!.promise;
-
-    expect(humanProxy.id).toBe('1');
-
-    expect(humanProxy.name).toBe('default');
-
-    const human2 = query.human({
-      name: 'other',
+      expect($meta(humanProxy)).toBeDefined();
     });
 
-    getFields(human2);
+    const humanProxy = query.human();
 
-    await scheduler.resolving!.promise;
+    expect(humanProxy.id).toBe('1');
+    expect(humanProxy.name).toBe('default');
+
+    await resolved(() => getFields(query.human({ name: 'other' })));
+
+    const human2 = query.human({ name: 'other' });
 
     expect(JSON.stringify(human2)).toMatchInlineSnapshot(
       `"{"__typename":"Human","id":"2","name":"other"}"`
@@ -1292,15 +1295,15 @@ describe('get fields', () => {
   });
 
   test('getArrayFields works', async () => {
-    const { query, scheduler, accessorCache } = await createTestClient();
+    const { resolved, query } = await createTestClient();
 
     const dogsArrayProxy = getArrayFields(query.dogs, 'name');
 
-    expect(accessorCache.isProxy(dogsArrayProxy)).toBe(true);
+    expect($meta(dogsArrayProxy)).toBeDefined();
 
-    await scheduler.resolving!.promise;
-
-    expect(query.dogs.map((v) => v.name).join(',')).toBe('a,b');
+    await expect(
+      resolved(() => query.dogs.map((v) => v.name).join(','))
+    ).resolves.toBe('a,b');
 
     expect(getArrayFields(null)).toBe(null);
 
@@ -1315,13 +1318,16 @@ describe('get fields', () => {
 
 describe('prefetch', () => {
   test('returns promise only data not found', async () => {
-    const { prefetch } = await createTestClient();
+    const { prefetch } = await createTestClient(
+      undefined,
+      undefined,
+      undefined,
+      { cache: new Cache(undefined, { maxAge: 100 }) }
+    );
 
-    const resultPromise = prefetch((query) => {
-      return query.time;
-    });
+    const resultPromise = prefetch((query) => query.time);
 
-    expect(resultPromise instanceof Promise).toBeTruthy();
+    expect(resultPromise).toBeInstanceOf(Promise);
 
     const result = await resultPromise;
     expect(typeof result).toBe('string');

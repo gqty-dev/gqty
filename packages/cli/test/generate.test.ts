@@ -38,7 +38,7 @@ test('basic functionality works', async () => {
 
   expect(schemaCode).toMatchInlineSnapshot(`
     "/**
-     * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+     * GQty AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
      */
 
     // This should be included
@@ -106,13 +106,6 @@ test('basic functionality works', async () => {
       __typename?: 'Subscription';
     }
 
-    export interface SchemaObjectTypes {
-      Mutation: Mutation;
-      Query: Query;
-      Subscription: Subscription;
-    }
-    export type SchemaObjectTypesNames = 'Mutation' | 'Query' | 'Subscription';
-
     export interface GeneratedSchema {
       query: Query;
       mutation: Mutation;
@@ -129,23 +122,20 @@ test('basic functionality works', async () => {
 
   expect(clientCode).toMatchInlineSnapshot(`
     "/**
-     * GQTY: You can safely modify this file and Query Fetcher based on your needs
+     * GQty: You can safely modify this file based on your needs.
      */
 
     import { createReactClient } from '@gqty/react';
-    import { createSubscriptionsClient } from '@gqty/subscriptions';
-    import type { QueryFetcher } from 'gqty';
-    import { createClient } from 'gqty';
-    import type {
-      GeneratedSchema,
-      SchemaObjectTypes,
-      SchemaObjectTypesNames,
+    import { createClient as createSubscriptionsClient } from 'graphql-ws';
+    import { Cache, GQtyError, createClient, type QueryFetcher } from 'gqty';
+    import {
+      generatedSchema,
+      scalarsEnumsHash,
+      type GeneratedSchema,
     } from './schema.generated';
-    import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
     const queryFetcher: QueryFetcher = async function (
-      query,
-      variables,
+      { query, variables, operationName },
       fetchOptions
     ) {
       // Modify "/api/graphql" if needed
@@ -157,20 +147,36 @@ test('basic functionality works', async () => {
         body: JSON.stringify({
           query,
           variables,
+          operationName,
         }),
         mode: 'cors',
         ...fetchOptions,
       });
 
-      const json = await response.json();
+      if (response.status >= 400) {
+        throw new GQtyError(
+          \`GraphQL endpoint responded with HTTP status \${response.status}.\`
+        );
+      }
 
-      return json;
+      const text = await response.text();
+
+      try {
+        return JSON.parse(text);
+      } catch {
+        throw new GQtyError(
+          \`Malformed JSON response: \${
+            text.length > 50 ? text.slice(0, 50) + '...' : text
+          }\`
+        );
+      }
     };
 
     const subscriptionsClient =
       typeof window !== 'undefined'
         ? createSubscriptionsClient({
-            wsEndpoint: () => {
+            lazy: true,
+            url: () => {
               // Modify if needed
               const url = new URL('/api/graphql', window.location.href);
               url.protocol = url.protocol.replace('http', 'ws');
@@ -179,23 +185,44 @@ test('basic functionality works', async () => {
           })
         : undefined;
 
-    export const client = createClient<
-      GeneratedSchema,
-      SchemaObjectTypesNames,
-      SchemaObjectTypes
-    >({
+    const cache = new Cache(
+      undefined,
+      /**
+       * Default option is immediate cache expiry but keep it for 5 minutes,
+       * allowing soft refetches in background.
+       */
+      {
+        maxAge: 0,
+        staleWhileRevalidate: 5 * 60 * 1000,
+        normalization: true,
+      }
+    );
+
+    export const client = createClient<GeneratedSchema>({
       schema: generatedSchema,
-      scalarsEnumsHash,
-      queryFetcher,
-      subscriptionsClient,
+      scalars: scalarsEnumsHash,
+      cache,
+      fetchOptions: {
+        fetcher: queryFetcher,
+        subscriber: subscriptionsClient,
+      },
     });
 
-    const { query, mutation, mutate, subscription, resolved, refetch, track } =
-      client;
+    // Core functions
+    export const { resolve, subscribe, schema } = client;
 
-    export { query, mutation, mutate, subscription, resolved, refetch, track };
+    // Legacy functions
+    export const {
+      query,
+      mutation,
+      mutate,
+      subscription,
+      resolved,
+      refetch,
+      track,
+    } = client;
 
-    const {
+    export const {
       graphql,
       useQuery,
       usePaginatedQuery,
@@ -210,29 +237,10 @@ test('basic functionality works', async () => {
       useSubscription,
     } = createReactClient<GeneratedSchema>(client, {
       defaults: {
-        // Set this flag as "true" if your usage involves React Suspense
-        // Keep in mind that you can overwrite it in a per-hook basis
-        suspense: false,
-
-        // Set this flag based on your needs
-        staleWhileRevalidate: false,
+        // Enable Suspense, you can override this option for each hook.
+        suspense: true,
       },
     });
-
-    export {
-      graphql,
-      useQuery,
-      usePaginatedQuery,
-      useTransactionQuery,
-      useLazyQuery,
-      useRefetch,
-      useMutation,
-      useMetaState,
-      prepareReactRender,
-      useHydrateCache,
-      prepareQuery,
-      useSubscription,
-    };
 
     export * from './schema.generated';
     "
@@ -269,14 +277,7 @@ test('basic functionality works', async () => {
 
   expect(clientCode.includes('= createReactClient')).toBeTruthy();
 
-  expect(
-    schemaCode
-      .split('\n')
-      .slice(3)
-      .join('\n')
-      .trim()
-      .startsWith(shouldBeIncluded)
-  ).toBeTruthy();
+  expect(schemaCode.split('\n')[4]).toStrictEqual(shouldBeIncluded);
 });
 
 test('custom scalars works', async () => {
@@ -307,23 +308,19 @@ test('custom scalars works', async () => {
 
   expect(clientCode).toMatchInlineSnapshot(`
     "/**
-     * GQTY: You can safely modify this file and Query Fetcher based on your needs
+     * GQty: You can safely modify this file based on your needs.
      */
 
     import { createReactClient } from '@gqty/react';
-
-    import type { QueryFetcher } from 'gqty';
-    import { createClient } from 'gqty';
-    import type {
-      GeneratedSchema,
-      SchemaObjectTypes,
-      SchemaObjectTypesNames,
+    import { Cache, GQtyError, createClient, type QueryFetcher } from 'gqty';
+    import {
+      generatedSchema,
+      scalarsEnumsHash,
+      type GeneratedSchema,
     } from './schema.generated';
-    import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
     const queryFetcher: QueryFetcher = async function (
-      query,
-      variables,
+      { query, variables, operationName },
       fetchOptions
     ) {
       // Modify "/api/graphql" if needed
@@ -335,32 +332,68 @@ test('custom scalars works', async () => {
         body: JSON.stringify({
           query,
           variables,
+          operationName,
         }),
         mode: 'cors',
         ...fetchOptions,
       });
 
-      const json = await response.json();
+      if (response.status >= 400) {
+        throw new GQtyError(
+          \`GraphQL endpoint responded with HTTP status \${response.status}.\`
+        );
+      }
 
-      return json;
+      const text = await response.text();
+
+      try {
+        return JSON.parse(text);
+      } catch {
+        throw new GQtyError(
+          \`Malformed JSON response: \${
+            text.length > 50 ? text.slice(0, 50) + '...' : text
+          }\`
+        );
+      }
     };
 
-    export const client = createClient<
-      GeneratedSchema,
-      SchemaObjectTypesNames,
-      SchemaObjectTypes
-    >({
+    const cache = new Cache(
+      undefined,
+      /**
+       * Default option is immediate cache expiry but keep it for 5 minutes,
+       * allowing soft refetches in background.
+       */
+      {
+        maxAge: 0,
+        staleWhileRevalidate: 5 * 60 * 1000,
+        normalization: true,
+      }
+    );
+
+    export const client = createClient<GeneratedSchema>({
       schema: generatedSchema,
-      scalarsEnumsHash,
-      queryFetcher,
+      scalars: scalarsEnumsHash,
+      cache,
+      fetchOptions: {
+        fetcher: queryFetcher,
+      },
     });
 
-    const { query, mutation, mutate, subscription, resolved, refetch, track } =
-      client;
+    // Core functions
+    export const { resolve, subscribe, schema } = client;
 
-    export { query, mutation, mutate, subscription, resolved, refetch, track };
+    // Legacy functions
+    export const {
+      query,
+      mutation,
+      mutate,
+      subscription,
+      resolved,
+      refetch,
+      track,
+    } = client;
 
-    const {
+    export const {
       graphql,
       useQuery,
       usePaginatedQuery,
@@ -374,28 +407,10 @@ test('custom scalars works', async () => {
       prepareQuery,
     } = createReactClient<GeneratedSchema>(client, {
       defaults: {
-        // Set this flag as "true" if your usage involves React Suspense
-        // Keep in mind that you can overwrite it in a per-hook basis
-        suspense: false,
-
-        // Set this flag based on your needs
-        staleWhileRevalidate: false,
+        // Enable Suspense, you can override this option for each hook.
+        suspense: true,
       },
     });
-
-    export {
-      graphql,
-      useQuery,
-      usePaginatedQuery,
-      useTransactionQuery,
-      useLazyQuery,
-      useRefetch,
-      useMutation,
-      useMetaState,
-      prepareReactRender,
-      useHydrateCache,
-      prepareQuery,
-    };
 
     export * from './schema.generated';
     "
@@ -403,7 +418,7 @@ test('custom scalars works', async () => {
 
   expect(schemaCode).toMatchInlineSnapshot(`
     "/**
-     * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+     * GQty AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
      */
 
     export type Maybe<T> = T | null;
@@ -450,13 +465,6 @@ test('custom scalars works', async () => {
     export interface Subscription {
       __typename?: 'Subscription';
     }
-
-    export interface SchemaObjectTypes {
-      Mutation: Mutation;
-      Query: Query;
-      Subscription: Subscription;
-    }
-    export type SchemaObjectTypesNames = 'Mutation' | 'Query' | 'Subscription';
 
     export interface GeneratedSchema {
       query: Query;
@@ -600,7 +608,7 @@ describe('feature complete app', () => {
 
     expect(schemaCode).toMatchInlineSnapshot(`
       "/**
-       * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+       * GQty AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
        */
 
       import { SchemaUnionsKey } from 'gqty';
@@ -832,20 +840,6 @@ describe('feature complete app', () => {
       export interface Subscription {
         __typename?: 'Subscription';
       }
-
-      export interface SchemaObjectTypes {
-        Human: Human;
-        Mutation: Mutation;
-        OtherHuman: OtherHuman;
-        Query: Query;
-        Subscription: Subscription;
-      }
-      export type SchemaObjectTypesNames =
-        | 'Human'
-        | 'Mutation'
-        | 'OtherHuman'
-        | 'Query'
-        | 'Subscription';
 
       export interface $HumanType {
         Human?: Human;
@@ -1093,7 +1087,7 @@ test('prettier detects invalid code', async () => {
         con a; // invalid code
         `,
     }).catch((err) => err.message.split('\n')[0])
-  ).resolves.toBe(`Unexpected keyword or identifier. (6:9)`);
+  ).resolves.toBe(`Unexpected keyword or identifier. (7:9)`);
 });
 
 describe('mutation', () => {
@@ -1129,7 +1123,7 @@ describe('mutation', () => {
 
     expect(schemaCode).toMatchInlineSnapshot(`
       "/**
-       * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+       * GQty AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
        */
 
       export type Maybe<T> = T | null;
@@ -1178,13 +1172,6 @@ describe('mutation', () => {
       export interface Subscription {
         __typename?: 'Subscription';
       }
-
-      export interface SchemaObjectTypes {
-        Mutation: Mutation;
-        Query: Query;
-        Subscription: Subscription;
-      }
-      export type SchemaObjectTypesNames = 'Mutation' | 'Query' | 'Subscription';
 
       export interface GeneratedSchema {
         query: Query;
@@ -1265,7 +1252,7 @@ describe('subscription', () => {
 
     expect(schemaCode).toMatchInlineSnapshot(`
       "/**
-       * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+       * GQty AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
        */
 
       export type Maybe<T> = T | null;
@@ -1314,13 +1301,6 @@ describe('subscription', () => {
         __typename?: 'Subscription';
         newNotification: ScalarsEnums['String'];
       }
-
-      export interface SchemaObjectTypes {
-        Mutation: Mutation;
-        Query: Query;
-        Subscription: Subscription;
-      }
-      export type SchemaObjectTypesNames = 'Mutation' | 'Query' | 'Subscription';
 
       export interface GeneratedSchema {
         query: Query;
@@ -1409,20 +1389,21 @@ test('javascript output works', async () => {
 
   expect(clientCode).toMatchInlineSnapshot(`
     "/**
-     * GQTY: You can safely modify this file and Query Fetcher based on your needs
+     * GQty: You can safely modify this file based on your needs.
      */
 
     import { createReactClient } from '@gqty/react';
-    import { createSubscriptionsClient } from '@gqty/subscriptions';
-
-    import { createClient } from 'gqty';
-
+    import { createClient as createSubscriptionsClient } from 'graphql-ws';
+    import { Cache, GQtyError, createClient } from 'gqty';
     import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
     /**
      * @type {import("gqty").QueryFetcher}
      */
-    const queryFetcher = async function (query, variables, fetchOptions) {
+    const queryFetcher = async function (
+      { query, variables, operationName },
+      fetchOptions
+    ) {
       // Modify "/api/graphql" if needed
       const response = await fetch('/api/graphql', {
         method: 'POST',
@@ -1432,20 +1413,36 @@ test('javascript output works', async () => {
         body: JSON.stringify({
           query,
           variables,
+          operationName,
         }),
         mode: 'cors',
         ...fetchOptions,
       });
 
-      const json = await response.json();
+      if (response.status >= 400) {
+        throw new GQtyError(
+          \`GraphQL endpoint responded with HTTP status \${response.status}.\`
+        );
+      }
 
-      return json;
+      const text = await response.text();
+
+      try {
+        return JSON.parse(text);
+      } catch {
+        throw new GQtyError(
+          \`Malformed JSON response: \${
+            text.length > 50 ? text.slice(0, 50) + '...' : text
+          }\`
+        );
+      }
     };
 
     const subscriptionsClient =
       typeof window !== 'undefined'
         ? createSubscriptionsClient({
-            wsEndpoint: () => {
+            lazy: true,
+            url: () => {
               // Modify if needed
               const url = new URL('/api/graphql', window.location.href);
               url.protocol = url.protocol.replace('http', 'ws');
@@ -1454,51 +1451,47 @@ test('javascript output works', async () => {
           })
         : undefined;
 
+    const cache = new Cache(
+      undefined,
+      /**
+       * Default option is immediate cache expiry but keep it for 5 minutes,
+       * allowing soft refetches in background.
+       */
+      {
+        maxAge: 0,
+        staleWhileRevalidate: 5 * 60 * 1000,
+        normalization: true,
+      }
+    );
+
     /**
      * @type {import("gqty").GQtyClient<import("./schema.generated").GeneratedSchema>}
      */
     export const client = createClient({
       schema: generatedSchema,
-      scalarsEnumsHash,
-      queryFetcher,
-      subscriptionsClient,
-    });
-
-    const { query, mutation, mutate, subscription, resolved, refetch, track } =
-      client;
-
-    export { query, mutation, mutate, subscription, resolved, refetch, track };
-
-    /**
-     * @type {import("@gqty/react").ReactClient<import("./schema.generated").GeneratedSchema>}
-     */
-    const reactClient = createReactClient(client, {
-      defaults: {
-        // Set this flag as "true" if your usage involves React Suspense
-        // Keep in mind that you can overwrite it in a per-hook basis
-        suspense: false,
-
-        // Set this flag based on your needs
-        staleWhileRevalidate: false,
+      scalars: scalarsEnumsHash,
+      cache,
+      fetchOptions: {
+        fetcher: queryFetcher,
+        subscriber: subscriptionsClient,
       },
     });
 
-    const {
-      graphql,
-      useQuery,
-      usePaginatedQuery,
-      useTransactionQuery,
-      useLazyQuery,
-      useRefetch,
-      useMutation,
-      useMetaState,
-      prepareReactRender,
-      useHydrateCache,
-      prepareQuery,
-      useSubscription,
-    } = reactClient;
+    // Core functions
+    export const { resolve, subscribe, schema } = client;
 
-    export {
+    // Legacy functions
+    export const {
+      query,
+      mutation,
+      mutate,
+      subscription,
+      resolved,
+      refetch,
+      track,
+    } = client;
+
+    export const {
       graphql,
       useQuery,
       usePaginatedQuery,
@@ -1511,15 +1504,26 @@ test('javascript output works', async () => {
       useHydrateCache,
       prepareQuery,
       useSubscription,
-    };
+    } =
+      /**
+       * @type {import("@gqty/react").ReactClient<import("./schema.generated").GeneratedSchema>}
+       */
+      createReactClient(client, {
+        defaults: {
+          // Enable Suspense, you can override this option for each hook.
+          suspense: true,
+        },
+      });
 
     export * from './schema.generated';
     "
   `);
+
   expect(javascriptSchemaCode).toMatchInlineSnapshot(`
     "/**
-     * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+     * GQty AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
      */
+
     import { SchemaUnionsKey } from 'gqty';
 
     /**
@@ -1594,7 +1598,7 @@ test('javascript output works', async () => {
   `);
   expect(schemaCode).toMatchInlineSnapshot(`
     "/**
-     * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+     * GQty AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
      */
 
     import { SchemaUnionsKey } from 'gqty';
@@ -1662,20 +1666,6 @@ test('javascript output works', async () => {
       newNotification: ScalarsEnums['String'];
     }
 
-    export interface SchemaObjectTypes {
-      A: A;
-      B: B;
-      Mutation: Mutation;
-      Query: Query;
-      Subscription: Subscription;
-    }
-    export type SchemaObjectTypesNames =
-      | 'A'
-      | 'B'
-      | 'Mutation'
-      | 'Query'
-      | 'Subscription';
-
     export interface $C {
       A?: A;
       B?: B;
@@ -1733,23 +1723,19 @@ test('ignoreArgs transform', async () => {
 
   expect(clientCode).toMatchInlineSnapshot(`
     "/**
-     * GQTY: You can safely modify this file and Query Fetcher based on your needs
+     * GQty: You can safely modify this file based on your needs.
      */
 
     import { createReactClient } from '@gqty/react';
-
-    import type { QueryFetcher } from 'gqty';
-    import { createClient } from 'gqty';
-    import type {
-      GeneratedSchema,
-      SchemaObjectTypes,
-      SchemaObjectTypesNames,
+    import { Cache, GQtyError, createClient, type QueryFetcher } from 'gqty';
+    import {
+      generatedSchema,
+      scalarsEnumsHash,
+      type GeneratedSchema,
     } from './schema.generated';
-    import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
     const queryFetcher: QueryFetcher = async function (
-      query,
-      variables,
+      { query, variables, operationName },
       fetchOptions
     ) {
       // Modify "/api/graphql" if needed
@@ -1761,32 +1747,68 @@ test('ignoreArgs transform', async () => {
         body: JSON.stringify({
           query,
           variables,
+          operationName,
         }),
         mode: 'cors',
         ...fetchOptions,
       });
 
-      const json = await response.json();
+      if (response.status >= 400) {
+        throw new GQtyError(
+          \`GraphQL endpoint responded with HTTP status \${response.status}.\`
+        );
+      }
 
-      return json;
+      const text = await response.text();
+
+      try {
+        return JSON.parse(text);
+      } catch {
+        throw new GQtyError(
+          \`Malformed JSON response: \${
+            text.length > 50 ? text.slice(0, 50) + '...' : text
+          }\`
+        );
+      }
     };
 
-    export const client = createClient<
-      GeneratedSchema,
-      SchemaObjectTypesNames,
-      SchemaObjectTypes
-    >({
+    const cache = new Cache(
+      undefined,
+      /**
+       * Default option is immediate cache expiry but keep it for 5 minutes,
+       * allowing soft refetches in background.
+       */
+      {
+        maxAge: 0,
+        staleWhileRevalidate: 5 * 60 * 1000,
+        normalization: true,
+      }
+    );
+
+    export const client = createClient<GeneratedSchema>({
       schema: generatedSchema,
-      scalarsEnumsHash,
-      queryFetcher,
+      scalars: scalarsEnumsHash,
+      cache,
+      fetchOptions: {
+        fetcher: queryFetcher,
+      },
     });
 
-    const { query, mutation, mutate, subscription, resolved, refetch, track } =
-      client;
+    // Core functions
+    export const { resolve, subscribe, schema } = client;
 
-    export { query, mutation, mutate, subscription, resolved, refetch, track };
+    // Legacy functions
+    export const {
+      query,
+      mutation,
+      mutate,
+      subscription,
+      resolved,
+      refetch,
+      track,
+    } = client;
 
-    const {
+    export const {
       graphql,
       useQuery,
       usePaginatedQuery,
@@ -1800,32 +1822,15 @@ test('ignoreArgs transform', async () => {
       prepareQuery,
     } = createReactClient<GeneratedSchema>(client, {
       defaults: {
-        // Set this flag as "true" if your usage involves React Suspense
-        // Keep in mind that you can overwrite it in a per-hook basis
-        suspense: false,
-
-        // Set this flag based on your needs
-        staleWhileRevalidate: false,
+        // Enable Suspense, you can override this option for each hook.
+        suspense: true,
       },
     });
-
-    export {
-      graphql,
-      useQuery,
-      usePaginatedQuery,
-      useTransactionQuery,
-      useLazyQuery,
-      useRefetch,
-      useMutation,
-      useMetaState,
-      prepareReactRender,
-      useHydrateCache,
-      prepareQuery,
-    };
 
     export * from './schema.generated';
     "
   `);
+
   expect(generatedSchema).toMatchInlineSnapshot(`
     {
       "mutation": {},
@@ -1849,7 +1854,7 @@ test('ignoreArgs transform', async () => {
   `);
   expect(javascriptSchemaCode).toMatchInlineSnapshot(`
     "/**
-     * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+     * GQty AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
      */
 
     /**
@@ -1870,7 +1875,7 @@ test('ignoreArgs transform', async () => {
   `);
   expect(schemaCode).toMatchInlineSnapshot(`
     "/**
-     * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+     * GQty AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
      */
 
     export type Maybe<T> = T | null;
@@ -1924,13 +1929,6 @@ test('ignoreArgs transform', async () => {
     export interface Subscription {
       __typename?: 'Subscription';
     }
-
-    export interface SchemaObjectTypes {
-      Mutation: Mutation;
-      Query: Query;
-      Subscription: Subscription;
-    }
-    export type SchemaObjectTypesNames = 'Mutation' | 'Query' | 'Subscription';
 
     export interface GeneratedSchema {
       query: Query;
@@ -2093,7 +2091,7 @@ test('fields with default value works', async () => {
 
   expect(schemaCode).toMatchInlineSnapshot(`
     "/**
-     * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+     * GQty AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
      */
 
     // This should be included
@@ -2152,13 +2150,6 @@ test('fields with default value works', async () => {
       __typename?: 'Subscription';
     }
 
-    export interface SchemaObjectTypes {
-      Mutation: Mutation;
-      Query: Query;
-      Subscription: Subscription;
-    }
-    export type SchemaObjectTypesNames = 'Mutation' | 'Query' | 'Subscription';
-
     export interface GeneratedSchema {
       query: Query;
       mutation: Mutation;
@@ -2173,12 +2164,5 @@ test('fields with default value works', async () => {
     "
   `);
 
-  expect(
-    schemaCode
-      .split('\n')
-      .slice(3)
-      .join('\n')
-      .trim()
-      .startsWith(shouldBeIncluded)
-  ).toBeTruthy();
+  expect(schemaCode.split('\n')[4]).toStrictEqual(shouldBeIncluded);
 });

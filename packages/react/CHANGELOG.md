@@ -73,7 +73,7 @@
 ### Patch Changes
 
 - 3f08372: publish fork
-- 184a074: fix update loop https://github.com/PabloSzx/gqty/pull/223
+- 184a074: fix update loop <https://github.com/PabloSzx/gqty/pull/223>
 - Updated dependencies [3f08372]
   - gqty@2.0.15
 

@@ -1,251 +1,129 @@
 import {
-  parse,
   stripIgnoredCharacters as officialStripIgnoredCharacters,
+  parse,
 } from 'graphql';
-
-import { createQueryBuilder } from '../src/QueryBuilder';
-import { Selection, SelectionType } from '../src/Selection';
-
-const buildQuery = createQueryBuilder();
+import { buildQuery } from '../src/QueryBuilder';
+import { Selection } from '../src/Selection';
 
 describe('buildQuery()', () => {
   it('should builds basic query', () => {
-    const baseSelection = new Selection({
-      key: 'query',
-      type: SelectionType.Query,
-      id: 0,
-    });
+    const baseSelection = Selection.createRoot('query');
+    const selectionA = baseSelection.getChild('a');
+    const selectionB = baseSelection.getChild('b');
 
-    const selectionA = new Selection({
-      key: 'a',
-      prevSelection: baseSelection,
-      id: 1,
-    });
-
-    const selectionB = new Selection({
-      key: 'b',
-      prevSelection: baseSelection,
-      id: 2,
-    });
-
-    const { query, variables } = buildQuery([selectionA, selectionB], {
-      type: 'query',
-    });
+    const [{ query, variables }] = buildQuery(
+      new Set([selectionA, selectionB])
+    );
 
     expect(query).toMatchInlineSnapshot(`"query{a b}"`);
 
     expect(variables).toBe(undefined);
-
-    expect(() => {
-      parse(query);
-    }).not.toThrow();
-
+    expect(() => parse(query)).not.toThrow();
     expect(officialStripIgnoredCharacters(query)).toBe(query);
   });
 
   it('should builds deep query with unions', () => {
-    const baseSelection = new Selection({
-      key: 'query',
-      type: SelectionType.Query,
-      id: 0,
-    });
+    const baseSelection = Selection.createRoot('query');
+    const selectionD = baseSelection
+      .getChild('a')
+      .getChild('b')
+      .getChild('c')
+      .getChild('d');
 
-    const selectionA = new Selection({
-      key: 'a',
-      prevSelection: baseSelection,
-      id: 1,
-    });
+    const selectionD1 = selectionD.getChild('val1', { isUnion: true });
+    const selectionD1B = selectionD1.getChild('b');
+    const selectionD1A = selectionD1.getChild('a');
+    const selectionD1AF = selectionD1A.getChild('f');
 
-    const selectionB = new Selection({
-      key: 'b',
-      prevSelection: selectionA,
-      id: 2,
-    });
+    const selectionD2 = selectionD.getChild('val2', { isUnion: true });
+    const selectionD2A = selectionD2.getChild('a');
+    const selectionD2AF = selectionD2A.getChild('f');
 
-    const selectionC = new Selection({
-      key: 'c',
-      prevSelection: selectionB,
-      id: 3,
-    });
-
-    const selectionD = new Selection({
-      key: 'd',
-      prevSelection: selectionC,
-      id: 4,
-    });
-
-    const selectionE1 = new Selection({
-      key: 'a',
-      prevSelection: selectionD,
-      unions: ['val1', 'val2'],
-      id: 4,
-    });
-
-    const selectionE2 = new Selection({
-      key: 'b',
-      prevSelection: selectionD,
-      unions: ['val1'],
-      id: 5,
-    });
-
-    const selectionF = new Selection({
-      key: 'f',
-      prevSelection: selectionE1,
-      id: 6,
-    });
-
-    const { query, variables } = buildQuery([selectionE2, selectionF], {
-      type: 'query',
-    });
+    const [{ query, variables }] = buildQuery(
+      new Set([selectionD1B, selectionD1AF, selectionD2AF])
+    );
 
     expect(query).toMatchInlineSnapshot(
-      `"query{a{b{c{d{...on val1{b a{f}}...on val2{a{f}}}}}}}"`
+      `"query{a{b{c{d{...on val1{a{f}b}...on val2{a{f}}}}}}}"`
     );
 
     expect(variables).toBe(undefined);
-
-    expect(() => {
-      parse(query);
-    }).not.toThrow();
-
+    expect(() => parse(query)).not.toThrow();
     expect(officialStripIgnoredCharacters(query)).toBe(query);
   });
 
   it('should queries with arguments', () => {
-    const baseSelection = new Selection({
-      key: 'query',
-      type: SelectionType.Query,
-      id: 0,
-    });
-
-    const selectionA = new Selection({
-      key: 'a',
-      prevSelection: baseSelection,
-      args: {
-        a: 1,
-        b: 1,
-      },
-      argTypes: {
-        a: 'Int!',
-        b: 'String!',
-      },
+    const baseSelection = Selection.createRoot('query');
+    const selectionA = baseSelection.getChild('a', {
       alias: 'gqtyAlias_1',
-      id: 1,
+      parent: baseSelection,
+      input: {
+        types: {
+          a: 'Int!',
+          b: 'String!',
+        },
+        values: {
+          a: 1,
+          b: 1,
+        },
+      },
     });
+    const selectionB = selectionA.getChild('a_b');
+    const selectionC = selectionA.getChild('a_c');
+    const selectionD = baseSelection.getChild('d');
 
-    const selectionB = new Selection({
-      key: 'a_b',
-      prevSelection: selectionA,
-      id: 2,
-    });
-
-    const selectionC = new Selection({
-      key: 'a_c',
-      prevSelection: selectionA,
-      id: 3,
-    });
-
-    const selectionD = new Selection({
-      key: 'd',
-      prevSelection: baseSelection,
-      id: 4,
-    });
-
-    const { query, variables } = buildQuery(
-      [selectionB, selectionC, selectionD],
-      {
-        type: 'query',
-      }
+    const [{ query, variables }] = buildQuery(
+      new Set([selectionB, selectionC, selectionD])
     );
 
     expect(query).toMatchInlineSnapshot(
-      `"query($a1:Int!$b2:String!){gqtyAlias_1:a(a:$a1 b:$b2){a_b a_c}d}"`
+      `"query($a03b9b:Int!$ad2f8d:String!){d gqtyAlias_1:a(a:$a03b9b b:$ad2f8d){a_b a_c}}"`
     );
-
-    expect(() => {
-      parse(query);
-    }).not.toThrow();
-
-    expect(variables).toEqual({ a1: 1, b2: 1 });
-
+    expect(() => parse(query)).not.toThrow();
+    expect(variables).toEqual({ a03b9b: 1, ad2f8d: 1 });
     expect(officialStripIgnoredCharacters(query)).toBe(query);
   });
 
   it('should build mutation with arguments', () => {
-    const baseSelection = new Selection({
-      key: 'mutation',
-      type: SelectionType.Mutation,
-      id: 1,
-    });
-
-    const selectionA = new Selection({
-      key: 'a',
-      prevSelection: baseSelection,
-      args: {
-        a: 1,
-        b: 1,
-      },
-      argTypes: {
-        a: 'Int!',
-        b: 'String!',
-      },
+    const baseSelection = Selection.createRoot('mutation');
+    const selectionA = baseSelection.getChild('a', {
       alias: 'gqtyAlias_1',
-      id: 2,
+      parent: baseSelection,
+      input: {
+        values: {
+          a: 1,
+          b: 1,
+        },
+        types: {
+          a: 'Int!',
+          b: 'String!',
+        },
+      },
     });
 
-    const { query, variables } = buildQuery([selectionA], {
-      type: 'mutation',
-    });
+    const [{ query, variables }] = buildQuery(new Set([selectionA]));
 
     expect(query).toMatchInlineSnapshot(
-      `"mutation($a1:Int!$b2:String!){gqtyAlias_1:a(a:$a1 b:$b2)}"`
+      `"mutation($a03b9b:Int!$ad2f8d:String!){gqtyAlias_1:a(a:$a03b9b b:$ad2f8d)}"`
     );
 
     expect(() => {
       parse(query);
     }).not.toThrow();
 
-    expect(variables).toEqual({ a1: 1, b2: 1 });
+    expect(variables).toEqual({ a03b9b: 1, ad2f8d: 1 });
 
     expect(officialStripIgnoredCharacters(query)).toBe(query);
   });
 
-  it('should fails on mismatched selection type', () => {
-    const baseSelection = new Selection({
-      key: 'mutation',
-      type: SelectionType.Query,
-      id: 0,
-    });
-
-    expect(() => {
-      buildQuery([baseSelection], { type: 'query' });
-    }).toThrow('Expected root selection of type "query", found "mutation".');
-  });
-
   it('should query with operation name', () => {
-    const baseSelection = new Selection({
-      key: 'query',
-      type: SelectionType.Query,
-      id: 0,
-    });
+    const baseSelection = Selection.createRoot('query');
+    const selectionA = baseSelection.getChild('a');
 
-    const selectionA = new Selection({
-      key: 'a',
-      prevSelection: baseSelection,
-      id: 1,
-      operationName: 'TestQuery',
-    });
-
-    const { query } = buildQuery([selectionA], {
-      type: 'query',
-    });
+    const [{ query }] = buildQuery(new Set([selectionA]), 'TestQuery');
 
     expect(query).toMatchInlineSnapshot(`"query TestQuery{a}"`);
-
-    expect(() => {
-      parse(query);
-    }).not.toThrow();
-
+    expect(() => parse(query)).not.toThrow();
     expect(officialStripIgnoredCharacters(query)).toBe(query);
   });
 });

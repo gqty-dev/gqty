@@ -28,7 +28,7 @@ export default graphql(
   },
   {
     suspense: {
-      fallback: 'Loadingasd...',
+      fallback: 'Loading...',
     },
   }
 );

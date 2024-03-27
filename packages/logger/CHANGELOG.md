@@ -1,5 +1,11 @@
 # @gqty/logger
 
+## 3.0.0-alpha.0
+
+### Patch Changes
+
+- Upgraded to gqty@3.0.0-alpha.0
+
 ## 2.0.2
 
 ### Patch Changes

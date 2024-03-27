@@ -1,10 +1,11 @@
-import { createTestClient, TestClient } from './utils';
+import { Cache } from 'gqty';
+import { createTestClient } from './utils';
 
 const testClientPromise = createTestClient(undefined, undefined, undefined, {
-  normalization: true,
+  cache: new Cache(undefined, { normalization: true }),
 });
 
-let testClient: TestClient;
+let testClient: Awaited<typeof testClientPromise>;
 beforeAll(async () => {
   testClient = await testClientPromise;
 });
@@ -123,10 +124,10 @@ describe('interfaces and unions', () => {
     expect(queries).toMatchInlineSnapshot(`
       [
         {
-          "query": "query($type1:NodeType!){node_6c4a1_78028:node(type:$type1){__typename id ...on A{id a}...on B{id b}}}",
+          "query": "query($a18aa4:NodeType!){a0b55f:node(type:$a18aa4){__typename ...on A{a}...on B{b}id}}",
           "result": {
             "data": {
-              "node_6c4a1_78028": {
+              "a0b55f": {
                 "__typename": "A",
                 "a": 1,
                 "id": "1",
@@ -134,7 +135,7 @@ describe('interfaces and unions', () => {
             },
           },
           "variables": {
-            "type1": "A",
+            "a18aa4": "A",
           },
         },
       ]
@@ -148,7 +149,12 @@ describe('interfaces and unions', () => {
   });
 
   test('deep', async () => {
-    const { resolved, query, queries } = await createTestClient();
+    const { resolved, query, queries } = await createTestClient(
+      undefined,
+      undefined,
+      undefined,
+      { cache: new Cache(undefined, { normalization: true }) }
+    );
 
     const nodeResult = await resolved(() => {
       const nodeA = query.node({
@@ -181,10 +187,10 @@ describe('interfaces and unions', () => {
     expect(queries).toMatchInlineSnapshot(`
       [
         {
-          "query": "query($type1:NodeType!){node_6c4a1_78028:node(type:$type1){__typename id ...on A{id a node{__typename id ...on A{id node{__typename id ...on C{id node{__typename id ...on A{id}}}}}}}...on B{id b}}}",
+          "query": "query($a18aa4:NodeType!){a0b55f:node(type:$a18aa4){__typename ...on A{a node{__typename ...on A{id node{__typename ...on C{node{__typename ...on A{id}id}}id}}id}}...on B{b}id}}",
           "result": {
             "data": {
-              "node_6c4a1_78028": {
+              "a0b55f": {
                 "__typename": "A",
                 "a": 1,
                 "id": "1",
@@ -200,7 +206,7 @@ describe('interfaces and unions', () => {
             },
           },
           "variables": {
-            "type1": "A",
+            "a18aa4": "A",
           },
         },
       ]

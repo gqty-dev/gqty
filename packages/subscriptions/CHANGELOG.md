@@ -1,5 +1,11 @@
 # @gqty/subscriptions
 
+## 3.0.0-alpha.0
+
+### Patch Changes
+
+- Upgraded to gqty@3.0.0-alpha.0
+
 ## 2.0.1
 
 ### Patch Changes

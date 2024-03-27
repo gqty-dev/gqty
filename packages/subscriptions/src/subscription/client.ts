@@ -2,8 +2,11 @@
 
 import type { GraphQLError } from 'graphql';
 import WebSocket from 'isomorphic-ws';
-
-import { createDeferredPromise, DeferredPromise, GQLResponse } from '../utils';
+import {
+  createDeferredPromise,
+  type DeferredPromise,
+  type GQLResponse,
+} from '../utils';
 import {
   GQL_COMPLETE,
   GQL_CONNECTION_ACK,

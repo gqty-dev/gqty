@@ -1,20 +1,21 @@
-import type { GQtyClient } from 'gqty';
+import {
+  GQtyError,
+  type BaseGeneratedSchema,
+  type GQtyClient,
+  type RetryOptions,
+} from 'gqty';
 import * as React from 'react';
-
 import {
   coreHelpers,
-  CoreHelpers,
-  FetchPolicy,
   sortBy,
+  translateFetchPolicy,
   uniqBy,
-  useSelectionsState,
-  useSubscribeCacheChanges,
-  useSuspensePromise,
+  type LegacyFetchPolicy,
 } from '../common';
-import type { ReactClientOptionsWithDefaults } from '../utils';
+import { type ReactClientOptionsWithDefaults } from '../utils';
 
 export type PaginatedQueryFetchPolicy = Extract<
-  FetchPolicy,
+  LegacyFetchPolicy,
   'cache-first' | 'cache-and-network' | 'network-only'
 >;
 
@@ -41,9 +42,12 @@ export interface UsePaginatedQueryOptions<TData, TArgs> {
   /**
    * Fetch Policy behavior
    *
-   * If using `cache-and-network` and `merge`, we recomend using the `uniqBy` helper included inside the `merge` parameters.
+   * If using `cache-and-network` and `merge`, we recomend using the `uniqBy`
+   * helper included inside the `merge` parameters.
    */
   fetchPolicy?: PaginatedQueryFetchPolicy;
+  operationName?: string;
+  retry?: RetryOptions;
   /**
    * Skip initial query call
    *
@@ -74,11 +78,13 @@ export interface UsePaginatedQueryData<TData, TArgs> {
    *
    * If new args are not specified, the previous or initial args are used
    *
-   * In the second parameter you can override the `"fetchPolicy"`, for example you can set it to `"network-only"` to do a refetch.
+   * In the second parameter you can override the `"fetchPolicy"`, for example
+   * you can set it to `"network-only"` to do a refetch.
    */
   fetchMore: (
     /**
-     * Optional new args. It can receive a function that receives the previous data/args and returns the new args, or the new args directly
+     * Optional new args. It can receive a function that receives the previous
+     * data/args and returns the new args, or the new args directly
      *
      * If not specified or `undefined`, the previous or initial args are used.
      */
@@ -91,75 +97,6 @@ export interface UsePaginatedQueryData<TData, TArgs> {
      */
     fetchPolicy?: PaginatedQueryFetchPolicy
   ) => Promise<TData> | TData;
-  /**
-   * Has the function been called
-   */
-  called: boolean;
-}
-
-interface UsePaginatedQueryState<TData, TArgs> {
-  data: TData | undefined;
-  args: TArgs;
-  isLoading: boolean;
-  called: boolean;
-}
-
-type UsePaginatedQueryReducerAction<TData> =
-  | {
-      type: 'loading';
-    }
-  | {
-      type: 'cache_found';
-      payload: TData;
-    }
-  | {
-      type: 'data';
-      payload: TData;
-    };
-
-function UsePaginatedQueryReducer<TData, TArgs>(
-  state: UsePaginatedQueryState<TData, TArgs>,
-  action: UsePaginatedQueryReducerAction<TData>
-): UsePaginatedQueryState<TData, TArgs> {
-  switch (action.type) {
-    case 'loading': {
-      if (state.isLoading) return state;
-      return {
-        ...state,
-        isLoading: true,
-        called: true,
-      };
-    }
-    case 'cache_found': {
-      return {
-        data: action.payload,
-        args: state.args,
-        isLoading: true,
-        called: true,
-      };
-    }
-    case 'data': {
-      return {
-        data: action.payload,
-        args: state.args,
-        isLoading: false,
-        called: true,
-      };
-    }
-    default:
-      return state;
-  }
-}
-
-function InitUsePaginatedQueryReducer<TData, TArgs>(
-  opts: UsePaginatedQueryOptions<TData, TArgs>
-): UsePaginatedQueryState<TData, TArgs> {
-  return {
-    data: undefined,
-    args: opts.initialArgs,
-    isLoading: !opts.skip,
-    called: false,
-  };
 }
 
 export interface FetchMoreCallbackArgs<TData, TArgs> {
@@ -167,202 +104,226 @@ export interface FetchMoreCallbackArgs<TData, TArgs> {
   existingArgs: TArgs;
 }
 
-export interface UsePaginatedQuery<
-  GeneratedSchema extends {
-    query: object;
-    mutation: object;
-    subscription: object;
-  }
-> {
+export interface UsePaginatedQuery<TSchema extends BaseGeneratedSchema> {
   <TData, TArgs extends Record<string, any> | string | number | null>(
     fn: (
-      query: GeneratedSchema['query'],
+      query: TSchema['query'],
       args: TArgs,
-      helpers: CoreHelpers
+      helpers: typeof coreHelpers
     ) => TData,
     options: UsePaginatedQueryOptions<TData, TArgs>
   ): UsePaginatedQueryData<TData, TArgs>;
 }
 
-export function createUsePaginatedQuery<
-  GeneratedSchema extends {
-    query: object;
-    mutation: object;
-    subscription: object;
-  }
->(
-  {
-    query: clientQuery,
-    inlineResolved,
-    eventHandler,
-  }: GQtyClient<GeneratedSchema>,
-  {
-    defaults: {
-      paginatedQueryFetchPolicy: defaultFetchPolicy,
-      paginatedQuerySuspense: defaultSuspense,
-    },
-  }: ReactClientOptionsWithDefaults
-): UsePaginatedQuery<GeneratedSchema> {
-  function usePaginatedQuery<
-    TData,
-    TArgs extends Record<string, any> | string | number | null
-  >(
-    fn: (query: typeof clientQuery, args: TArgs, helpers: CoreHelpers) => TData,
-    opts: UsePaginatedQueryOptions<TData, TArgs>
-  ): UsePaginatedQueryData<TData, TArgs> {
-    const fnRef = React.useRef(fn);
-    fnRef.current = fn;
+export const createUsePaginatedQuery =
+  <TSchema extends BaseGeneratedSchema>(
+    { createResolver, resolve }: GQtyClient<TSchema>,
+    {
+      defaults: {
+        paginatedQueryFetchPolicy: defaultFetchPolicy,
+        paginatedQuerySuspense: defaultSuspense,
+      },
+    }: ReactClientOptionsWithDefaults
+  ): UsePaginatedQuery<TSchema> =>
+  (
+    fn,
+    {
+      initialArgs,
+      fetchPolicy: hookFetchPolicy = defaultFetchPolicy,
+      merge,
+      retry,
+      skip = false,
+      suspense = defaultSuspense,
+      operationName,
+    }
+  ) => {
+    type TCallback = typeof fn;
+    type TArgs = Parameters<TCallback>[1];
+    type TData = ReturnType<TCallback>;
 
-    const optsRef = React.useRef(opts);
-    optsRef.current = Object.assign({}, opts);
+    const {
+      accessor: { query },
+      context,
+      selections,
+    } = React.useMemo(
+      () =>
+        createResolver({
+          cachePolicy: translateFetchPolicy(hookFetchPolicy),
+          operationName,
+          retryPolicy: retry,
+        }),
+      [hookFetchPolicy, operationName, retry]
+    );
 
-    optsRef.current.fetchPolicy ??= defaultFetchPolicy;
-    optsRef.current.suspense ??= defaultSuspense;
+    // Debounce to skip one render on mount, when the cache is already fresh.
+    const [state, setState] = React.useState<{
+      data?: TData;
+      args: TArgs;
+      promise?: Promise<TData>;
+      error?: GQtyError;
+    }>({
+      args: initialArgs,
+    });
 
-    const [state, dispatch] = React.useReducer(
-      UsePaginatedQueryReducer,
-      opts,
-      InitUsePaginatedQueryReducer
-    ) as [
-      UsePaginatedQueryState<TData, TArgs>,
-      React.Dispatch<UsePaginatedQueryReducerAction<TData>>
-    ];
+    if (suspense) {
+      if (state.promise) throw state.promise;
+      if (state.error) throw state.error;
+    }
 
-    const selections = useSelectionsState();
+    const mergeData = React.useCallback(
+      (incoming: TData) =>
+        merge?.({
+          data: {
+            existing: state.data,
+            incoming,
+          },
+          uniqBy,
+          sortBy,
+        }) ?? incoming,
+      [merge]
+    );
 
-    const stateRef = React.useRef(state);
-    stateRef.current = state;
+    const fetchData = React.useCallback(
+      async (
+        args: TArgs,
+        fetchPolicy: PaginatedQueryFetchPolicy = hookFetchPolicy
+      ) => {
+        const promise = resolve(({ query }) => fn(query, args, coreHelpers), {
+          cachePolicy: translateFetchPolicy(fetchPolicy),
+          operationName,
+          retryPolicy: retry,
+          onSelect(selection, cache) {
+            context.select(selection, cache);
+          },
+        }) as Promise<TData>;
 
-    const setSuspensePromise = useSuspensePromise(optsRef);
+        if (!context.shouldFetch) {
+          state.data = mergeData(fn(query, args, coreHelpers));
 
-    const isMerging = React.useRef(0);
+          return state.data;
+        }
+
+        if (hookFetchPolicy === 'cache-and-network' && context.hasCacheHit) {
+          state.data = mergeData(fn(query, args, coreHelpers));
+        }
+
+        state.promise = promise;
+
+        promise.finally(() => {
+          if (state.promise === promise) {
+            state.promise = undefined;
+          }
+        });
+
+        return promise;
+      },
+      [
+        context,
+        coreHelpers,
+        fn, // fn almost guaranteed to change on every render
+        hookFetchPolicy,
+        mergeData,
+        operationName,
+        query,
+        retry,
+      ]
+    );
+
+    // Call it once on first render
+    React.useState(() => {
+      if (skip) return setState(({ args }) => ({ args }));
+
+      const promise = fetchData(initialArgs);
+
+      promise
+        .then(
+          (data) => {
+            setTimeout(() => {
+              setState(({ args }) => ({ args, data }));
+            }, 1000);
+          },
+          (error) => {
+            setState(({ args }) => ({
+              args,
+              error: GQtyError.create(error),
+            }));
+          }
+        )
+        .finally(() => {
+          context.shouldFetch = false;
+        });
+
+      if (context.shouldFetch) {
+        if (suspense) {
+          throw promise;
+        } else {
+          setState(({ args }) => ({ args, promise }));
+        }
+      }
+    });
+
+    // Re-render when normalized objects are updated, also resubscribe on
+    // selection change to pick up newly fetched normalized objects.
+    React.useEffect(() => {
+      if (skip || selections.size === 0) return;
+
+      return context.cache.subscribe(
+        [...selections].map((s) => s.cacheKeys.join('.')),
+        () => setState((state) => ({ ...state }))
+      );
+    }, [selections.size]);
 
     const fetchMore = React.useCallback(
-      (
+      async (
         newArgs?:
           | ((data: FetchMoreCallbackArgs<TData, TArgs>) => TArgs)
           | TArgs,
-        fetchPolicy: PaginatedQueryFetchPolicy = optsRef.current.fetchPolicy ||
-          defaultFetchPolicy
+        fetchPolicy?: PaginatedQueryFetchPolicy
       ) => {
-        function mergeData(incomingData: TData) {
-          let mergeResult: TData | void | undefined;
+        const currentArgs =
+          typeof newArgs === 'function'
+            ? newArgs({ existingData: state.data, existingArgs: state.args })
+            : newArgs ?? state.args;
 
-          if (optsRef.current.merge) {
-            const params: UsePaginatedQueryMergeParams<TData> = {
-              data: {
-                incoming: incomingData,
-                existing: stateRef.current.data,
-              },
-              uniqBy,
-              sortBy,
-            };
-            try {
-              ++isMerging.current;
-              mergeResult = optsRef.current.merge(params);
-            } finally {
-              Promise.resolve().then(() => --isMerging.current);
-            }
-          }
+        try {
+          const promise = fetchData(currentArgs, fetchPolicy);
+          // setState((state) => ({ ...state, promise }));
 
-          return mergeResult === undefined ? incomingData : mergeResult;
+          const data = await promise.then(mergeData);
+          setState(({ args }) => ({ args, data }));
+
+          return data;
+        } catch (e) {
+          const error = GQtyError.create(e);
+          setState(({ args }) => ({ args, error }));
+
+          throw error;
         }
-
-        let args: TArgs =
-          newArgs !== undefined
-            ? typeof newArgs === 'function'
-              ? (stateRef.current.args = (
-                  newArgs as (
-                    data: FetchMoreCallbackArgs<TData, TArgs>
-                  ) => TArgs
-                )({
-                  existingData: stateRef.current.data,
-                  existingArgs: stateRef.current.args,
-                }))
-              : (stateRef.current.args = newArgs)
-            : stateRef.current.args;
-
-        const resolvedFn = () => fnRef.current(clientQuery, args, coreHelpers);
-
-        const refetch = fetchPolicy !== 'cache-first';
-
-        let incomingData = inlineResolved(resolvedFn, {
-          onSelection(selection) {
-            selections.add(selection);
-          },
-          refetch,
-          onCacheData(data) {
-            if (fetchPolicy === 'cache-and-network') {
-              const payload = mergeData(data);
-
-              stateRef.current.data = payload;
-              dispatch({
-                type: 'cache_found',
-                payload,
-              });
-            }
-          },
-        });
-
-        if (incomingData instanceof Promise) {
-          dispatch({
-            type: 'loading',
-          });
-
-          return incomingData.then((incomingData) => {
-            const payload = mergeData(incomingData);
-            stateRef.current.data = payload;
-
-            dispatch({
-              type: 'data',
-              payload,
-            });
-            return payload;
-          });
-        }
-
-        const payload = mergeData(incomingData);
-        stateRef.current.data = payload;
-
-        dispatch({
-          type: 'data',
-          payload,
-        });
-        return payload;
       },
-      [stateRef, fnRef, dispatch, optsRef, setSuspensePromise]
+      [fetchData]
     );
 
-    useSubscribeCacheChanges({
-      selections,
-      eventHandler,
-      onChange() {
-        if (isMerging.current) return;
-
-        fetchMore(undefined, 'cache-first');
-      },
-    });
-
-    if (!state.called && !opts.skip) {
-      state.called = true;
-      const result = fetchMore();
-
-      if (result instanceof Promise) {
-        const catchedPromise = result.catch(console.error);
-        if (state.data === undefined) {
-          Promise.resolve().then(() => {
-            setSuspensePromise(catchedPromise);
-          });
+    // Subscribe to cache change
+    React.useEffect(() => {
+      return context.cache.subscribe(
+        [...selections].map((s) => s.cacheKeys.join('.')),
+        () => {
+          setState((state) => ({
+            ...state,
+            data: fn(query, state.args, coreHelpers),
+          }));
         }
-      }
-    }
+      );
+    }, [fn, state, selections.size]);
 
-    return React.useMemo(() => {
-      return Object.assign(state, {
-        fetchMore,
-      });
-    }, [state, fetchMore]);
-  }
-
-  return usePaginatedQuery;
-}
+    return React.useMemo(
+      () =>
+        Object.freeze({
+          args: state.args,
+          data: state.data,
+          fetchMore,
+          isLoading: state.promise !== undefined,
+        }),
+      [state.args, state.data, fetchMore, state.promise]
+    );
+  };

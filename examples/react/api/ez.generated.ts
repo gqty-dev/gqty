@@ -159,6 +159,7 @@ export type PageInfo = {
 export type ConnectionArgs = {
   first?: InputMaybe<Scalars['Int']>;
   after?: InputMaybe<Scalars['String']>;
+  /** @deprecated asd */
   last?: InputMaybe<Scalars['Int']>;
   before?: InputMaybe<Scalars['String']>;
 };

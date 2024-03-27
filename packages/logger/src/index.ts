@@ -1,15 +1,21 @@
-import parserJSON from 'prettier/parser-babel.js';
-import parserGraphQL from 'prettier/parser-graphql.js';
-import prettier from 'prettier/standalone.js';
+import type { DebugEvent, GQtyClient, Selection } from 'gqty';
+import * as prettierBabel from 'prettier/plugins/babel';
+import * as prettierEstree from 'prettier/plugins/estree';
+import * as prettierGraphQL from 'prettier/plugins/graphql';
+import { format as prettierFormat } from 'prettier/standalone';
 import { serializeError } from './serializeError';
 
-import type { GQtyClient } from 'gqty';
-import type { FetchEventData } from 'gqty/Events';
-
-function parseGraphQL(query: string) {
-  return prettier.format(query, {
+async function parseGraphQL(query: string) {
+  return await prettierFormat(query, {
     parser: 'graphql',
-    plugins: [parserGraphQL],
+    plugins: [prettierBabel, prettierGraphQL],
+  });
+}
+
+async function parseJSON(value: unknown) {
+  return await prettierFormat(JSON.stringify(value), {
+    parser: 'json',
+    plugins: [prettierBabel, prettierEstree],
   });
 }
 
@@ -63,48 +69,54 @@ export function createLogger(
   options.stringifyJSON ??= false;
 
   const stringifyJSONIfEnabled = <T extends object>(v: T) => {
-    if (options.stringifyJSON) {
-      return prettier.format(JSON.stringify(v), {
-        parser: 'json',
-        plugins: [parserJSON],
-      });
+    if (options.stringifyJSON && v) {
+      return parseJSON(v);
     }
     return v;
   };
 
-  const eventHandler = client.eventHandler;
+  const queryIdMap = new Map<string, number>();
+  const pendingQueries = new Set<Promise<unknown>>();
 
-  let idMapper = 0;
-  const QueryIdMapper: Record<string, number> = {};
+  async function onFetch({
+    cache,
+    label,
+    request: { query, variables, operationName, extensions },
+    promise,
+    selections,
+  }: DebugEvent) {
+    if (!promise) return;
 
-  async function onFetch(dataPromise: Promise<FetchEventData>) {
+    pendingQueries.add(promise);
+
+    if (!queryIdMap.has(query)) {
+      queryIdMap.set(query, queryIdMap.size);
+    }
+
     const startTime = Date.now();
-
-    const {
-      query,
-      variables,
-      error,
-      selections,
-      executionResult,
-      cacheSnapshot,
-      type,
-      label,
-    } = await dataPromise;
-
-    const queryId = (QueryIdMapper[query] ||= ++idMapper);
-
+    const result = await promise;
     const fetchTime = Date.now() - startTime;
+
+    pendingQueries.delete(promise);
+
+    const uniqueSelections = [...selections].reduce(
+      (map, s) => map.set(s.cacheKeys.join('.'), s),
+      new Map<string, Selection>()
+    );
 
     console.groupCollapsed(
       ...format(
         ['GraphQL ', 'color: gray'],
-        [type + ' ', `color: ${error ? 'red' : '#03A9F4'}; font-weight: bold`],
-        ['ID ' + queryId + ' ', 'color: green'],
+        [
+          extensions?.type + (operationName ? ` (${operationName})` : ' '),
+          `color: ${result?.error ? 'red' : '#03A9F4'}; font-weight: bold`,
+        ],
+        [`ID ${queryIdMap.get(query)} `, 'color: green'],
         ...(label ? [[label + ' ', 'color: green']] : []),
         [`(${fetchTime}ms)`, 'color: gray'],
-        [` ${selections.length} selections`, 'color: gray'],
+        [` ${uniqueSelections.size} selections`, 'color: gray'],
 
-        error && [
+        result?.error && [
           'FAILED',
           'margin-left: 10px; border-radius: 2px; padding: 2px 6px; background: #e84343; color: white',
         ]
@@ -129,61 +141,55 @@ export function createLogger(
         );
       }
 
-      console.log(...format([parseGraphQL(query)]));
+      console.log(...format([await parseGraphQL(query)]));
 
       console.groupEnd();
     }
 
-    if (error) {
-      console.error(...format(['Error', headerStyles]), serializeError(error));
-    } else if (executionResult) {
+    if (result?.error) {
+      console.error(
+        ...format(['Error', headerStyles]),
+        serializeError(result.error)
+      );
+    } else if (result) {
       console.log(
         ...format(['Result', headerStyles]),
-        stringifyJSONIfEnabled(executionResult)
+        stringifyJSONIfEnabled(result)
       );
     }
 
     if (options.showSelections) {
       console.groupCollapsed(...format(['Selections', headerStyles]));
-      selections.forEach(
-        ({ id, cachePath, key, pathString, alias, argTypes, args, unions }) => {
-          console.log(
-            stringifyJSONIfEnabled({
-              id,
-              cachePath,
-              key,
-              pathString,
-              alias,
-              argTypes,
-              args,
-              unions,
-            })
-          );
-        }
-      );
+      for (const [
+        ,
+        { key, cacheKeys, alias, input, isUnion },
+      ] of uniqueSelections) {
+        console.log(
+          stringifyJSONIfEnabled({
+            key,
+            cacheKeys: cacheKeys.join('.'),
+            alias,
+            input,
+            isUnion,
+          })
+        );
+      }
       console.groupEnd();
     }
 
     if (options.showCache) {
       console.log(
         ...format(['Cache snapshot', headerStyles]),
-        stringifyJSONIfEnabled(cacheSnapshot)
+        stringifyJSONIfEnabled(cache?.toJSON())
       );
-      console.groupEnd();
     }
-  }
 
-  /**
-   * Start logging, it returns the "stop" function
-   */
-  function start() {
-    const unsubscribe = eventHandler.onFetchSubscribe(onFetch);
-
-    return unsubscribe;
+    console.groupEnd();
   }
 
   return {
-    start,
+    /** Start logging and returns the "stop" function. */
+    start: () => client.subscribeDebugEvents(onFetch),
     options,
   };
 }

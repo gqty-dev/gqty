@@ -1,5 +1,33 @@
 # gqty
 
+## 3.0.0-alpha.0
+
+### Major Changes
+
+- Added "Legacy" prefix to deprecated types
+- Added new logging interface for `@gqty/logger`
+- `backupPersistence()` and `restorePersistence()` is now replaced with `persist()`, `restore()` and `restoreAsync()`.
+- QueryFetcher now accepts QueryPayload instead of 3 parameters
+- Remade `Cache` with expiry, normalization and persistence
+- Axed `Scheduler`, `Interceptor` and `EventHandler`
+- Reworked `Accessor` and added scoped context
+- Replaced `@gqty/subscriptions` with `graphql-ws` and `graphql-sse`
+- Rewritten `Selection` class
+- Introduced `resolve()` and `subscribe()` API
+- Replaced `lodash` with `just-*` and dropped `@gqty/utils`
+- Deprecated `resolved()`, `inlineResolved()`, `mutate()`, `track()`, `prefetch()` and `refetch()`
+- Replace variable serializer with object-hash, now with shortened alias
+
+### Minor Changes
+
+- f39bb450: Add `operationName` option to `resolved()` and `inlineResolved()`.
+- Added `$meta` API
+- Added `name` in `GQtyError` for better logging
+
+### Patch Changes
+
+- 595ec843: Remove alias without args
+
 ## 2.3.0
 
 ### Minor Changes
@@ -105,7 +133,7 @@
     return query.user(args).name;
   }
 
-  function getUserEmail(args: Args<typeof query['user']>) {
+  function getUserEmail(args: Args<(typeof query)['user']>) {
     return query.user(args).email;
   }
   ```

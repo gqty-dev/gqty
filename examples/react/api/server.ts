@@ -1,5 +1,5 @@
-import Fastify from 'fastify';
 import FastifyNext from '@fastify/nextjs';
+import Fastify from 'fastify';
 import ms from 'ms';
 import { dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
@@ -31,6 +31,6 @@ app
     }
   });
 
-app.listen(4141, '0.0.0.0', (err) => {
+app.listen({ host: '0.0.0.0', port: 3000 }, (err) => {
   if (err) throw err;
 });
