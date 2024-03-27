@@ -39,6 +39,11 @@ import type { ReactClientOptionsWithDefaults } from './utils';
 
 export interface ReactClientDefaults {
   /**
+   * The value of $state.isLoading before the first fetch happens, useful
+   * for skipping SSR and hydrations.
+   */
+  initialLoadingState?: boolean;
+  /**
    * Enable/Disable by default 'React Suspense' behavior
    *
    * > _Valid for __graphql HOC__ & __useQuery___
@@ -185,6 +190,7 @@ export function createReactClient<TSchema extends BaseGeneratedSchema>(
   client: GQtyClient<TSchema>,
   {
     defaults: {
+      initialLoadingState = false,
       suspense = false,
       transactionFetchPolicy = 'cache-first',
       lazyFetchPolicy = 'network-only',
@@ -204,18 +210,19 @@ export function createReactClient<TSchema extends BaseGeneratedSchema>(
   const opts: ReactClientOptionsWithDefaults = {
     ...options,
     defaults: {
-      transactionFetchPolicy,
+      initialLoadingState,
       lazyFetchPolicy,
-      staleWhileRevalidate,
-      suspense,
-      retry,
       lazyQuerySuspense,
-      transactionQuerySuspense,
       mutationSuspense,
-      preparedSuspense,
-      refetchAfterHydrate,
       paginatedQueryFetchPolicy,
       paginatedQuerySuspense,
+      preparedSuspense,
+      refetchAfterHydrate,
+      retry,
+      staleWhileRevalidate,
+      suspense,
+      transactionFetchPolicy,
+      transactionQuerySuspense,
     },
   };
 

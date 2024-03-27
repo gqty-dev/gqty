@@ -90,6 +90,7 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
   client: GQtyClient<TSchema>,
   {
     defaults: {
+      initialLoadingState: defaultInitialLoadingState,
       suspense: defaultSuspense,
       staleWhileRevalidate: defaultStaleWhileRevalidate,
       retry: defaultRetry,
@@ -111,7 +112,7 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
     fetchInBackground = false,
     fetchPolicy,
     cachePolicy = translateFetchPolicy(fetchPolicy ?? 'cache-first'),
-    initialLoadingState = false,
+    initialLoadingState = defaultInitialLoadingState,
     suspense = defaultSuspense,
     notifyOnNetworkStatusChange = !suspense,
     onError,
@@ -332,6 +333,8 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
           context.hasCacheHit = false;
           context.hasCacheMiss = false;
           context.notifyCacheUpdate = cachePolicy !== 'default';
+
+          // Synchronous mutex release, just to be safe.
           state.promise = undefined;
 
           // Release co-fetching context, dropping reference to the last
@@ -343,7 +346,10 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
           renderSession.set('postFetch', true);
 
           // Trigger a post-fetch render, keeps the error if caught.
-          setState(({ error }) => ({ error }));
+          setState(({ error }) => ({
+            error,
+            promise: undefined,
+          }));
         }
       },
       [
