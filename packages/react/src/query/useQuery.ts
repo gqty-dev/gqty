@@ -250,7 +250,8 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
           return;
         }
 
-        initialStateRef.current = true;
+        // Cancel initial loading state
+        initialStateRef.current = false;
 
         try {
           // Forcibly includes all resolvers in the same render when one of them

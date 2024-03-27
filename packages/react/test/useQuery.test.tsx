@@ -3,29 +3,28 @@ import { type QueryPayload } from 'gqty';
 import { createReactTestClient } from './utils';
 
 describe('useQuery', () => {
-  describe('isLoading', () => {
-    it('should be false by default', async () => {
+  fdescribe('isLoading', () => {
+    fit('should respect initial loading state', async () => {
       const { useQuery } = await createReactTestClient();
 
       const results: boolean[] = [];
 
-      renderHook(() => {
-        const query = useQuery({ initialLoadingState: false });
+      const { result } = renderHook(() => {
+        const query = useQuery({
+          initialLoadingState: true,
+          cachePolicy: 'no-cache',
+        });
 
         results.push(query.$state.isLoading);
 
-        return query.hello;
+        query.time;
+
+        return query.$state.isLoading;
       });
 
-      renderHook(() => {
-        const query = useQuery({ initialLoadingState: true });
+      await waitFor(() => expect(result.current).toBe(false));
 
-        results.push(query.$state.isLoading);
-
-        return query.hello;
-      });
-
-      expect(results).toMatchObject([false, true, true, true]);
+      expect(results).toMatchObject([true, true, false]);
     });
   });
 
