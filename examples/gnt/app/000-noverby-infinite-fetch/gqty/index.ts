@@ -1,55 +1,54 @@
-/**
- * GQty: You can safely modify this file based on your needs.
- */
-
 import { createReactClient } from '@gqty/react';
-import { Cache, GQtyError, createClient, type QueryFetcher } from 'gqty';
-import {
-  generatedSchema,
-  scalarsEnumsHash,
-  type GeneratedSchema,
-} from './schema.generated';
+import { NhostClient } from '@nhost/nextjs';
+import type { QueryFetcher } from 'gqty';
+import { Cache, createClient } from 'gqty';
+import { createClient as createSubscriptionsClient } from 'graphql-ws';
+import type { GeneratedSchema } from './schema.generated';
+import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
-const queryFetcher: QueryFetcher = async function (
-  { query, variables, operationName },
-  fetchOptions
-) {
-  // Modify "https://pgvhpsenoifywhuxnybq.nhost.run/v1/graphql" if needed
-  const response = await fetch(
-    'https://pgvhpsenoifywhuxnybq.nhost.run/v1/graphql',
-    {
-      method: 'POST',
-      headers: {
+const nhost = new NhostClient({
+  subdomain: process.env.NEXT_PUBLIC_NHOST_SUBDOMAIN,
+  region: process.env.NEXT_PUBLIC_NHOST_REGION,
+});
+
+const getHeaders = (): Record<string, string> =>
+  process.env.HASURA_GRAPHQL_ADMIN_SECRET
+    ? {
+        'Content-Type': 'application/json',
+        'x-hasura-admin-secret': process.env.HASURA_GRAPHQL_ADMIN_SECRET,
+      }
+    : nhost.auth.isAuthenticated()
+    ? {
+        'Content-Type': 'application/json',
+        authorization: `Bearer ${nhost.auth.getAccessToken()}`,
+      }
+    : {
         'Content-Type': 'application/json',
         'x-hasura-role': 'public',
-      },
-      body: JSON.stringify({
-        query,
-        variables,
-        operationName,
-      }),
-      mode: 'cors',
-      ...fetchOptions,
-    }
-  );
+      };
 
-  if (response.status >= 400) {
-    throw new GQtyError(
-      `GraphQL endpoint responded with HTTP status ${response.status}.`
-    );
-  }
+const url = `https://${process.env.NEXT_PUBLIC_NHOST_SUBDOMAIN}.hasura.${process.env.NEXT_PUBLIC_NHOST_REGION}.nhost.run/v1/graphql`;
 
-  const text = await response.text();
+const queryFetcher: QueryFetcher = async (
+  { query, variables, operationName },
+  fetchOptions
+) => {
+  const headers = getHeaders();
+  const response = await fetch(url, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({
+      query,
+      variables,
+      operationName,
+    }),
+    mode: 'cors',
+    ...fetchOptions,
+  });
 
-  try {
-    return JSON.parse(text);
-  } catch {
-    throw new GQtyError(
-      `Malformed JSON response: ${
-        text.length > 50 ? text.slice(0, 50) + '...' : text
-      }`
-    );
-  }
+  const json = await response.json();
+
+  return json;
 };
 
 const cache = new Cache(undefined, {
@@ -58,28 +57,30 @@ const cache = new Cache(undefined, {
   normalization: false,
 });
 
+const subscriptionsClient = createSubscriptionsClient({
+  connectionParams: () => ({
+    headers: getHeaders(),
+  }),
+  url: () => {
+    const urlClass = new URL(url);
+    // eslint-disable-next-line functional/immutable-data
+    urlClass.protocol = urlClass.protocol.replace('http', 'ws');
+    return urlClass.href;
+  },
+});
+
 export const client = createClient<GeneratedSchema>({
   schema: generatedSchema,
   scalars: scalarsEnumsHash,
   cache,
   fetchOptions: {
     fetcher: queryFetcher,
+    subscriber: subscriptionsClient,
   },
 });
 
 // Core functions
 export const { resolve, subscribe, schema } = client;
-
-// Legacy functions
-export const {
-  query,
-  mutation,
-  mutate,
-  subscription,
-  resolved,
-  refetch,
-  track,
-} = client;
 
 export const {
   graphql,
@@ -96,8 +97,10 @@ export const {
   useSubscription,
 } = createReactClient<GeneratedSchema>(client, {
   defaults: {
-    // Enable Suspense, you can override this option at hooks.
     suspense: true,
+    mutationSuspense: true,
+    transactionQuerySuspense: true,
+    staleWhileRevalidate: true,
   },
 });
 
