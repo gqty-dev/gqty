@@ -96,6 +96,24 @@ export const addCommand = (command: Command) => {
         // TODO: Save config to file.
       }
 
+      // CLI options
+      {
+        config.react ??= options.react;
+
+        // Explicitly allow empty string
+        if (options.subscriptions !== undefined) {
+          config.subscriptions = options.subscriptions || false;
+        }
+
+        if (options.typescript) {
+          config.javascriptOutput = false;
+        }
+
+        if (options.target) {
+          config.destination = options.target;
+        }
+      }
+
       const manifest = await (async () => {
         try {
           return JSON.parse(
@@ -118,26 +136,6 @@ export const addCommand = (command: Command) => {
       // Detect Subscriptions from schema.
       if (schema.getSubscriptionType()) {
         config.subscriptions ??= 'graphql-ws';
-      }
-
-      // CLI options
-      {
-        if (options.react) {
-          config.react ??= true;
-        }
-
-        // Explicitly allow empty string
-        if (options.subscriptions !== undefined) {
-          config.subscriptions = options.subscriptions || false;
-        }
-
-        if (options.typescript) {
-          config.javascriptOutput = false;
-        }
-
-        if (options.target) {
-          config.destination = options.target;
-        }
       }
 
       // Enter interactive mode if user did not provide arguments.

@@ -60,15 +60,14 @@ export const fetchSchemas = async (
       ) {
         process.stdout.write('\r');
 
-        const endpoint = e.response.url;
-        const inHeaders = await promptHeaders(endpoint);
+        const inHeaders = await promptHeaders();
 
         // If still no headers provided, throw.
         if (inHeaders === undefined) {
           throw e;
         }
 
-        headersByEndpoint[endpoint] = { headers: inHeaders };
+        headersByEndpoint[e.response.url] = { headers: inHeaders };
 
         try {
           await doFetchSchema();
@@ -172,13 +171,13 @@ const fetchSchema = async (
   }
 };
 
-const promptHeaders = async (endpoint: string) => {
+const promptHeaders = async () => {
   if (!process.stdin.isTTY) return;
 
   const { headers } = await deps.inquirer.prompt<{ headers: string }>({
     name: 'headers',
     type: 'input',
-    message: `Any authorization headers for ${endpoint}? (comma separated)`,
+    message: `Any request headers? (Authorization: Bearer <token>, X-Foo: <bar>)`,
   });
 
   return convertHeadersInput(headers.split(/,/));

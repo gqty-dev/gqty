@@ -60,7 +60,7 @@ export type CacheDataContainer<TData extends CacheNode = CacheNode> = {
   swrBefore?: number;
 
   /**
-   * Remove internal data reference, allowing WeakRefs to be garbase collected.
+   * Remove internal data reference, allowing WeakRefs to be garbage collected.
    *
    * For StrongRefs, calling this function has no effect.
    */

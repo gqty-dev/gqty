@@ -1,11 +1,11 @@
 import '@testing-library/jest-dom/extend-expect';
 import {
   Cache,
-  ClientOptions,
-  createClient,
-  QueryFetcher,
-  Schema,
   SchemaUnionsKey,
+  createClient,
+  type ClientOptions,
+  type QueryFetcher,
+  type Schema,
 } from 'gqty';
 import { createClient as createSubscriptionsClient } from 'graphql-ws';
 import { merge } from 'lodash-es';
