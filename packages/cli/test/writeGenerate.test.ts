@@ -74,6 +74,8 @@ test('generates code and writes existing file', async () => {
 
       // This should be included
 
+      import { type ScalarsEnumsHash } from 'gqty';
+
       export type Maybe<T> = T | null;
       export type InputMaybe<T> = Maybe<T>;
       export type Exact<T extends { [key: string]: unknown }> = {
@@ -94,7 +96,7 @@ test('generates code and writes existing file', async () => {
         Float: number;
       }
 
-      export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
+      export const scalarsEnumsHash: ScalarsEnumsHash = {
         Boolean: true,
         String: true,
       };
@@ -172,6 +174,8 @@ test('creates dir, generates code and writes new file', async () => {
 
       // This should be included
 
+      import { type ScalarsEnumsHash } from 'gqty';
+
       export type Maybe<T> = T | null;
       export type InputMaybe<T> = Maybe<T>;
       export type Exact<T extends { [key: string]: unknown }> = {
@@ -192,7 +196,7 @@ test('creates dir, generates code and writes new file', async () => {
         Float: number;
       }
 
-      export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
+      export const scalarsEnumsHash: ScalarsEnumsHash = {
         Boolean: true,
         String: true,
       };

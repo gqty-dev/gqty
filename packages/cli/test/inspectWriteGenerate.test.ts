@@ -172,6 +172,8 @@ test('basic inspectWriteGenerate functionality', async () => {
        * GQty AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
        */
 
+      import { type ScalarsEnumsHash } from 'gqty';
+
       export type Maybe<T> = T | null;
       export type InputMaybe<T> = Maybe<T>;
       export type Exact<T extends { [key: string]: unknown }> = {
@@ -192,7 +194,7 @@ test('basic inspectWriteGenerate functionality', async () => {
         Float: number;
       }
 
-      export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
+      export const scalarsEnumsHash: ScalarsEnumsHash = {
         Boolean: true,
         String: true,
       };
@@ -383,6 +385,8 @@ describe('from file', () => {
          * GQty AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
          */
 
+        import { type ScalarsEnumsHash } from 'gqty';
+
         export type Maybe<T> = T | null;
         export type InputMaybe<T> = Maybe<T>;
         export type Exact<T extends { [key: string]: unknown }> = {
@@ -403,7 +407,7 @@ describe('from file', () => {
           Float: number;
         }
 
-        export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
+        export const scalarsEnumsHash: ScalarsEnumsHash = {
           Boolean: true,
           Int: true,
           String: true,
@@ -597,6 +601,8 @@ describe('from file', () => {
          * GQty AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
          */
 
+        import { type ScalarsEnumsHash } from 'gqty';
+
         export type Maybe<T> = T | null;
         export type InputMaybe<T> = Maybe<T>;
         export type Exact<T extends { [key: string]: unknown }> = {
@@ -617,7 +623,7 @@ describe('from file', () => {
           Float: number;
         }
 
-        export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
+        export const scalarsEnumsHash: ScalarsEnumsHash = {
           Boolean: true,
           String: true,
         };
@@ -810,6 +816,8 @@ describe('from file', () => {
          * GQty AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
          */
 
+        import { type ScalarsEnumsHash } from 'gqty';
+
         export type Maybe<T> = T | null;
         export type InputMaybe<T> = Maybe<T>;
         export type Exact<T extends { [key: string]: unknown }> = {
@@ -830,7 +838,7 @@ describe('from file', () => {
           Float: number;
         }
 
-        export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
+        export const scalarsEnumsHash: ScalarsEnumsHash = {
           Boolean: true,
           String: true,
         };
@@ -1067,6 +1075,8 @@ describe('from multiple files', () => {
          * GQty AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
          */
 
+        import { type ScalarsEnumsHash } from 'gqty';
+
         export type Maybe<T> = T | null;
         export type InputMaybe<T> = Maybe<T>;
         export type Exact<T extends { [key: string]: unknown }> = {
@@ -1087,7 +1097,7 @@ describe('from multiple files', () => {
           Float: number;
         }
 
-        export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
+        export const scalarsEnumsHash: ScalarsEnumsHash = {
           Boolean: true,
           Int: true,
           String: true,
@@ -1342,6 +1352,8 @@ test('specify generateOptions to inspectWriteGenerate', async () => {
 
       // This should be included
 
+      import { type ScalarsEnumsHash } from 'gqty';
+
       export type Maybe<T> = T | null;
       export type InputMaybe<T> = Maybe<T>;
       export type Exact<T extends { [key: string]: unknown }> = {
@@ -1362,7 +1374,7 @@ test('specify generateOptions to inspectWriteGenerate', async () => {
         Float: number;
       }
 
-      export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
+      export const scalarsEnumsHash: ScalarsEnumsHash = {
         Boolean: true,
         String: true,
       };
@@ -1469,6 +1481,8 @@ describe('inspect headers', () => {
 
         // This should be included
 
+        import { type ScalarsEnumsHash } from 'gqty';
+
         export type Maybe<T> = T | null;
         export type InputMaybe<T> = Maybe<T>;
         export type Exact<T extends { [key: string]: unknown }> = {
@@ -1489,7 +1503,7 @@ describe('inspect headers', () => {
           Float: number;
         }
 
-        export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
+        export const scalarsEnumsHash: ScalarsEnumsHash = {
           Boolean: true,
           String: true,
         };
@@ -1707,6 +1721,8 @@ describe('CLI behavior', () => {
          * GQty AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
          */
 
+        import { type ScalarsEnumsHash } from 'gqty';
+
         export type Maybe<T> = T | null;
         export type InputMaybe<T> = Maybe<T>;
         export type Exact<T extends { [key: string]: unknown }> = {
@@ -1727,7 +1743,7 @@ describe('CLI behavior', () => {
           Float: number;
         }
 
-        export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
+        export const scalarsEnumsHash: ScalarsEnumsHash = {
           Boolean: true,
           String: true,
         };

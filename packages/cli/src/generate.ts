@@ -845,6 +845,11 @@ export async function generate(
     export const generatedSchema = {${generatedSchemaCodeString}};
   `);
 
+  const imports = [
+    hasUnions && 'SchemaUnionsKey',
+    !isJavascriptOutput && 'type ScalarsEnumsHash',
+  ].filter((v): v is string => Boolean(v));
+
   const schemaCode = await format(`
     /**
      * GQty AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
@@ -852,13 +857,13 @@ export async function generate(
 
     ${preImport}
 
-    ${hasUnions ? 'import { SchemaUnionsKey } from "gqty";' : ''}
+    ${imports.length ? `import { ${imports.join(', ')} } from "gqty";` : ''}
 
     ${await codegenResultPromise}
 
     export${
       isJavascriptOutput ? ' declare' : ''
-    } const scalarsEnumsHash: import("gqty").ScalarsEnumsHash${
+    } const scalarsEnumsHash: ScalarsEnumsHash${
     isJavascriptOutput ? ';' : ` = ${scalarsEnumsHashString};`
   }
     export${isJavascriptOutput ? ' declare' : ''} const generatedSchema ${
