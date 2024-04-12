@@ -104,7 +104,7 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
   // We keep track of the whole stack of resolvers ever created before a fetch
   // happens. When the current cache has normalization disabled, and a fetch
   // affects an existing cache key at the same time, all selections made in
-  // other contexts will also be included.
+  // other contexts should also be included.
   const resolverStack = new ModifiedSet<ResolverParts>();
 
   return ({
@@ -269,14 +269,21 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
           // [ ] There is one overfetch triggered by parallel renders that I
           // cannot eliminate right now. Deferring to future me.
           if (!client.cache.normalizationOptions) {
-            for (const {
-              cacheKeys: [subType, subField],
-            } of selections) {
-              if (subType !== 'query') {
+            const seen = new Set<string>();
+
+            for (const { cacheKeys: [type, field] = [] } of selections) {
+              if (type !== 'query') {
                 continue;
               }
 
-              for (const stackResolver of resolverStack) {
+              // Skip iterations with duplicate top level cache keys
+              if (seen.has(field)) {
+                continue;
+              } else {
+                seen.add(field);
+              }
+
+              resolversLoop: for (const stackResolver of resolverStack) {
                 if (stackResolver === resolver) {
                   continue;
                 }
@@ -284,10 +291,10 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
                 for (const {
                   cacheKeys: [objType, objField],
                 } of stackResolver.selections) {
-                  if (subType == objType && subField == objField) {
+                  if (type === objType && field === objField) {
                     cofetchingResolvers.set(resolver, stackResolver);
 
-                    continue;
+                    continue resolversLoop;
                   }
                 }
               }
