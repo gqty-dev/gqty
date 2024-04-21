@@ -11,9 +11,7 @@ export const promptInstall = async (configuration: GQtyConfig) => {
   const command = getUserPackageManager() ?? 'npm';
   const args = getInstallCommand(command).concat(packages);
 
-  const { install } = await inquirer.prompt<{ install: boolean }>({
-    type: 'confirm',
-    name: 'install',
+  const install = await inquirer.confirm({
     message: `Do you want us to run "${command} ${args[0]}" for you?`,
     default: true,
   });

@@ -49,9 +49,7 @@ export const generateClient = async (
 };
 
 const promptRegenerate = async (message: string): Promise<boolean> => {
-  const { regenerate } = await inquirer.prompt<{ regenerate: boolean }>({
-    type: 'confirm',
-    name: 'regenerate',
+  const regenerate = await inquirer.confirm({
     message,
     default: false,
   });

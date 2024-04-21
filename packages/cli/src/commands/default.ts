@@ -181,7 +181,7 @@ export const addCommand = (command: Command) => {
       // Watch mode
       if (options.watch) {
         const { printSchema } = await import('graphql');
-        const { FasterSMA: SMA } = await import('trading-signals');
+        const { FasterSMA: SMA } = await import('trading-signals/dist/SMA/SMA');
         const { default: throttle } = await import('lodash-es/throttle.js');
         const {
           default: { isMatch },
@@ -292,9 +292,7 @@ export const addCommand = (command: Command) => {
 };
 
 const promptEndpoints = async (defaultEndpoint?: string) => {
-  const { endpoints } = await inquirer.prompt<{ endpoints: string }>({
-    name: 'endpoints',
-    type: 'input',
+  const endpoints = await inquirer.input({
     message: 'Where is your GraphQL endpoint or schema files?',
     default: defaultEndpoint,
   });
@@ -306,9 +304,7 @@ const promptEndpoints = async (defaultEndpoint?: string) => {
 };
 
 const promptTarget = async (defaultTarget: string) => {
-  const { target } = await inquirer.prompt<{ target: string }>({
-    name: 'target',
-    type: 'input',
+  const target = await inquirer.input({
     message: 'Where should the client be generated?',
     default: defaultTarget,
   });
@@ -317,9 +313,7 @@ const promptTarget = async (defaultTarget: string) => {
 };
 
 const promptReact = async (defaultValue: boolean) => {
-  const { react } = await inquirer.prompt<{ react: boolean }>({
-    name: 'react',
-    type: 'confirm',
+  const react = await inquirer.confirm({
     message: 'Are you using React with GQty?',
     default: defaultValue,
   });
@@ -328,9 +322,7 @@ const promptReact = async (defaultValue: boolean) => {
 };
 
 const promptSubscriptions = async (defaultValue?: string) => {
-  const { subscriptions } = await inquirer.prompt<{ subscriptions: string }>({
-    name: 'subscriptions',
-    type: 'input',
+  const subscriptions = await inquirer.input({
     message: 'Do you need a subscription client? (Enter "-" to skip)',
     default: defaultValue?.trim() || undefined,
   });
@@ -339,9 +331,7 @@ const promptSubscriptions = async (defaultValue?: string) => {
 };
 
 const promptTypescript = async (defaultValue: boolean) => {
-  const { typescript } = await inquirer.prompt<{ typescript: boolean }>({
-    name: 'typescript',
-    type: 'confirm',
+  const typescript = await inquirer.confirm({
     message: 'Do you want a TypeScript client over vanilla.js?',
     default: defaultValue,
   });

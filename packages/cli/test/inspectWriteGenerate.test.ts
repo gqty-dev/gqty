@@ -185,13 +185,22 @@ test('basic inspectWriteGenerate functionality', async () => {
       export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
         [SubKey in K]: Maybe<T[SubKey]>;
       };
+      export type MakeEmpty<
+        T extends { [key: string]: unknown },
+        K extends keyof T
+      > = { [_ in K]?: never };
+      export type Incremental<T> =
+        | T
+        | {
+            [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never;
+          };
       /** All built-in and custom scalars, mapped to their actual values */
       export interface Scalars {
-        ID: string;
-        String: string;
-        Boolean: boolean;
-        Int: number;
-        Float: number;
+        ID: { input: string; output: string };
+        String: { input: string; output: string };
+        Boolean: { input: boolean; output: boolean };
+        Int: { input: number; output: number };
+        Float: { input: number; output: number };
       }
 
       export const scalarsEnumsHash: ScalarsEnumsHash = {
@@ -223,11 +232,11 @@ test('basic inspectWriteGenerate functionality', async () => {
         subscription: Subscription;
       }
 
-      export type MakeNullable<T> = {
-        [K in keyof T]: T[K] | undefined;
-      };
-
-      export interface ScalarsEnums extends MakeNullable<Scalars> {}
+      export type ScalarsEnums = {
+        [Key in keyof Scalars]: Scalars[Key] extends { output: unknown }
+          ? Scalars[Key]['output']
+          : never;
+      } & {};
       "
     `);
   } finally {
@@ -398,13 +407,22 @@ describe('from file', () => {
         export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
           [SubKey in K]: Maybe<T[SubKey]>;
         };
+        export type MakeEmpty<
+          T extends { [key: string]: unknown },
+          K extends keyof T
+        > = { [_ in K]?: never };
+        export type Incremental<T> =
+          | T
+          | {
+              [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never;
+            };
         /** All built-in and custom scalars, mapped to their actual values */
         export interface Scalars {
-          ID: string;
-          String: string;
-          Boolean: boolean;
-          Int: number;
-          Float: number;
+          ID: { input: string; output: string };
+          String: { input: string; output: string };
+          Boolean: { input: boolean; output: boolean };
+          Int: { input: number; output: number };
+          Float: { input: number; output: number };
         }
 
         export const scalarsEnumsHash: ScalarsEnumsHash = {
@@ -437,11 +455,11 @@ describe('from file', () => {
           subscription: Subscription;
         }
 
-        export type MakeNullable<T> = {
-          [K in keyof T]: T[K] | undefined;
-        };
-
-        export interface ScalarsEnums extends MakeNullable<Scalars> {}
+        export type ScalarsEnums = {
+          [Key in keyof Scalars]: Scalars[Key] extends { output: unknown }
+            ? Scalars[Key]['output']
+            : never;
+        } & {};
         "
       `);
     } finally {
@@ -614,13 +632,22 @@ describe('from file', () => {
         export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
           [SubKey in K]: Maybe<T[SubKey]>;
         };
+        export type MakeEmpty<
+          T extends { [key: string]: unknown },
+          K extends keyof T
+        > = { [_ in K]?: never };
+        export type Incremental<T> =
+          | T
+          | {
+              [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never;
+            };
         /** All built-in and custom scalars, mapped to their actual values */
         export interface Scalars {
-          ID: string;
-          String: string;
-          Boolean: boolean;
-          Int: number;
-          Float: number;
+          ID: { input: string; output: string };
+          String: { input: string; output: string };
+          Boolean: { input: boolean; output: boolean };
+          Int: { input: number; output: number };
+          Float: { input: number; output: number };
         }
 
         export const scalarsEnumsHash: ScalarsEnumsHash = {
@@ -652,11 +679,11 @@ describe('from file', () => {
           subscription: Subscription;
         }
 
-        export type MakeNullable<T> = {
-          [K in keyof T]: T[K] | undefined;
-        };
-
-        export interface ScalarsEnums extends MakeNullable<Scalars> {}
+        export type ScalarsEnums = {
+          [Key in keyof Scalars]: Scalars[Key] extends { output: unknown }
+            ? Scalars[Key]['output']
+            : never;
+        } & {};
         "
       `);
     } finally {
@@ -829,13 +856,22 @@ describe('from file', () => {
         export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
           [SubKey in K]: Maybe<T[SubKey]>;
         };
+        export type MakeEmpty<
+          T extends { [key: string]: unknown },
+          K extends keyof T
+        > = { [_ in K]?: never };
+        export type Incremental<T> =
+          | T
+          | {
+              [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never;
+            };
         /** All built-in and custom scalars, mapped to their actual values */
         export interface Scalars {
-          ID: string;
-          String: string;
-          Boolean: boolean;
-          Int: number;
-          Float: number;
+          ID: { input: string; output: string };
+          String: { input: string; output: string };
+          Boolean: { input: boolean; output: boolean };
+          Int: { input: number; output: number };
+          Float: { input: number; output: number };
         }
 
         export const scalarsEnumsHash: ScalarsEnumsHash = {
@@ -867,11 +903,11 @@ describe('from file', () => {
           subscription: Subscription;
         }
 
-        export type MakeNullable<T> = {
-          [K in keyof T]: T[K] | undefined;
-        };
-
-        export interface ScalarsEnums extends MakeNullable<Scalars> {}
+        export type ScalarsEnums = {
+          [Key in keyof Scalars]: Scalars[Key] extends { output: unknown }
+            ? Scalars[Key]['output']
+            : never;
+        } & {};
         "
       `);
     } finally {
@@ -1088,13 +1124,22 @@ describe('from multiple files', () => {
         export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
           [SubKey in K]: Maybe<T[SubKey]>;
         };
+        export type MakeEmpty<
+          T extends { [key: string]: unknown },
+          K extends keyof T
+        > = { [_ in K]?: never };
+        export type Incremental<T> =
+          | T
+          | {
+              [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never;
+            };
         /** All built-in and custom scalars, mapped to their actual values */
         export interface Scalars {
-          ID: string;
-          String: string;
-          Boolean: boolean;
-          Int: number;
-          Float: number;
+          ID: { input: string; output: string };
+          String: { input: string; output: string };
+          Boolean: { input: boolean; output: boolean };
+          Int: { input: number; output: number };
+          Float: { input: number; output: number };
         }
 
         export const scalarsEnumsHash: ScalarsEnumsHash = {
@@ -1132,11 +1177,11 @@ describe('from multiple files', () => {
           subscription: Subscription;
         }
 
-        export type MakeNullable<T> = {
-          [K in keyof T]: T[K] | undefined;
-        };
-
-        export interface ScalarsEnums extends MakeNullable<Scalars> {}
+        export type ScalarsEnums = {
+          [Key in keyof Scalars]: Scalars[Key] extends { output: unknown }
+            ? Scalars[Key]['output']
+            : never;
+        } & {};
         "
       `);
     } finally {
@@ -1365,13 +1410,22 @@ test('specify generateOptions to inspectWriteGenerate', async () => {
       export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
         [SubKey in K]: Maybe<T[SubKey]>;
       };
+      export type MakeEmpty<
+        T extends { [key: string]: unknown },
+        K extends keyof T
+      > = { [_ in K]?: never };
+      export type Incremental<T> =
+        | T
+        | {
+            [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never;
+          };
       /** All built-in and custom scalars, mapped to their actual values */
       export interface Scalars {
-        ID: string;
-        String: string;
-        Boolean: boolean;
-        Int: number;
-        Float: number;
+        ID: { input: string; output: string };
+        String: { input: string; output: string };
+        Boolean: { input: boolean; output: boolean };
+        Int: { input: number; output: number };
+        Float: { input: number; output: number };
       }
 
       export const scalarsEnumsHash: ScalarsEnumsHash = {
@@ -1403,11 +1457,11 @@ test('specify generateOptions to inspectWriteGenerate', async () => {
         subscription: Subscription;
       }
 
-      export type MakeNullable<T> = {
-        [K in keyof T]: T[K] | undefined;
-      };
-
-      export interface ScalarsEnums extends MakeNullable<Scalars> {}
+      export type ScalarsEnums = {
+        [Key in keyof Scalars]: Scalars[Key] extends { output: unknown }
+          ? Scalars[Key]['output']
+          : never;
+      } & {};
       "
     `);
 
@@ -1494,13 +1548,22 @@ describe('inspect headers', () => {
         export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
           [SubKey in K]: Maybe<T[SubKey]>;
         };
+        export type MakeEmpty<
+          T extends { [key: string]: unknown },
+          K extends keyof T
+        > = { [_ in K]?: never };
+        export type Incremental<T> =
+          | T
+          | {
+              [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never;
+            };
         /** All built-in and custom scalars, mapped to their actual values */
         export interface Scalars {
-          ID: string;
-          String: string;
-          Boolean: boolean;
-          Int: number;
-          Float: number;
+          ID: { input: string; output: string };
+          String: { input: string; output: string };
+          Boolean: { input: boolean; output: boolean };
+          Int: { input: number; output: number };
+          Float: { input: number; output: number };
         }
 
         export const scalarsEnumsHash: ScalarsEnumsHash = {
@@ -1532,11 +1595,11 @@ describe('inspect headers', () => {
           subscription: Subscription;
         }
 
-        export type MakeNullable<T> = {
-          [K in keyof T]: T[K] | undefined;
-        };
-
-        export interface ScalarsEnums extends MakeNullable<Scalars> {}
+        export type ScalarsEnums = {
+          [Key in keyof Scalars]: Scalars[Key] extends { output: unknown }
+            ? Scalars[Key]['output']
+            : never;
+        } & {};
         "
       `);
 
@@ -1734,13 +1797,22 @@ describe('CLI behavior', () => {
         export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
           [SubKey in K]: Maybe<T[SubKey]>;
         };
+        export type MakeEmpty<
+          T extends { [key: string]: unknown },
+          K extends keyof T
+        > = { [_ in K]?: never };
+        export type Incremental<T> =
+          | T
+          | {
+              [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never;
+            };
         /** All built-in and custom scalars, mapped to their actual values */
         export interface Scalars {
-          ID: string;
-          String: string;
-          Boolean: boolean;
-          Int: number;
-          Float: number;
+          ID: { input: string; output: string };
+          String: { input: string; output: string };
+          Boolean: { input: boolean; output: boolean };
+          Int: { input: number; output: number };
+          Float: { input: number; output: number };
         }
 
         export const scalarsEnumsHash: ScalarsEnumsHash = {
@@ -1772,11 +1844,11 @@ describe('CLI behavior', () => {
           subscription: Subscription;
         }
 
-        export type MakeNullable<T> = {
-          [K in keyof T]: T[K] | undefined;
-        };
-
-        export interface ScalarsEnums extends MakeNullable<Scalars> {}
+        export type ScalarsEnums = {
+          [Key in keyof Scalars]: Scalars[Key] extends { output: unknown }
+            ? Scalars[Key]['output']
+            : never;
+        } & {};
         "
       `);
     } finally {
