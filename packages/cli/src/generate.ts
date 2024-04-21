@@ -53,7 +53,10 @@ export interface GenerateOptions {
    * }
    * ```
    */
-  scalarTypes?: Record<string, string>;
+  scalarTypes?: Exclude<
+    deps.typescriptPlugin.TypeScriptPluginConfig['scalars'],
+    string
+  >;
   /**
    * Prepend code to the schema file, useful with the `scalarTypes` option.
    */
@@ -177,7 +180,7 @@ export async function generate(
 
   const codegenResultPromise = deps.codegen({
     schema: parse(deps.printSchemaWithDirectives(schema)),
-    config: {} as deps.typescriptPlugin.TypeScriptPluginConfig,
+    config: {} satisfies deps.typescriptPlugin.TypeScriptPluginConfig,
     documents: [],
     filename: 'gqty.generated.ts',
     pluginMap: {
@@ -186,6 +189,7 @@ export async function generate(
     plugins: [
       {
         typescript: {
+          constEnums: true,
           onlyOperationTypes: true,
           declarationKind: 'interface',
           addUnderscoreToArgsType: true,
@@ -193,7 +197,7 @@ export async function generate(
           namingConvention: 'keep',
           enumsAsTypes: enumsAsStrings,
           enumsAsConst: enumsAsConst,
-        } as deps.typescriptPlugin.TypeScriptPluginConfig,
+        } satisfies deps.typescriptPlugin.TypeScriptPluginConfig,
       },
     ],
   });
@@ -578,7 +582,7 @@ export async function generate(
       scalarsEnumsHash[pureType]
         ? enumsNames.includes(pureType)
           ? pureType
-          : `Scalars["${pureType}"]`
+          : `ScalarsEnums["${pureType}"]`
         : pureType,
     ];
 
@@ -754,13 +758,13 @@ export async function generate(
       subscription: Subscription
     }
 
-    export type MakeNullable<T> = {
-      [K in keyof T]: T[K] | undefined;
-    };
-
-    export interface ScalarsEnums extends MakeNullable<Scalars> {
+    export type ScalarsEnums = {
+      [Key in keyof Scalars]: Scalars[Key] extends { output: unknown }
+        ? Scalars[Key]['output']
+        : never;
+    } & {
       ${deps.sortBy(enumsNames).reduce((acum, enumName) => {
-        acum += `${enumName}: ${enumName} | undefined;`;
+        acum += `${enumName}: ${enumName};`;
         return acum;
       }, '')}
     }

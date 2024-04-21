@@ -2,7 +2,6 @@ import { existsSync, promises } from 'fs';
 import { type GraphQLSchema } from 'graphql';
 import { dirname, resolve } from 'path';
 import { defaultConfig, type GQtyConfig } from './config';
-import * as deps from './deps.js';
 import { generate, type TransformSchemaOptions } from './generate';
 
 export type OnExistingFileConflict =
@@ -128,7 +127,7 @@ export async function writeGenerate(
 
   const [{ clientCode, schemaCode, javascriptSchemaCode }] = await Promise.all([
     generate(schema, configuration, transformsGenerate),
-    deps.mkdirp(dirname(destinationPath)),
+    promises.mkdir(dirname(destinationPath), { recursive: true }),
   ]);
 
   await Promise.all([

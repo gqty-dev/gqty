@@ -174,9 +174,7 @@ const fetchSchema = async (
 const promptHeaders = async () => {
   if (!process.stdin.isTTY) return;
 
-  const { headers } = await deps.inquirer.prompt<{ headers: string }>({
-    name: 'headers',
-    type: 'input',
+  const headers = await deps.inquirer.input({
     message: `Any request headers? (Authorization: Bearer <token>, X-Foo: <bar>)`,
   });
 
