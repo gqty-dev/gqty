@@ -51,7 +51,6 @@ export interface UseQueryOptions<TSchema extends BaseGeneratedSchema> {
   retryPolicy?: RetryOptions;
   staleWhileRevalidate?: boolean | object | number | string | null;
   suspense?: boolean;
-  __experimentalGreedyFetch?: boolean;
 }
 
 export interface UseQueryState {
@@ -125,7 +124,6 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
     retry = defaultRetry,
     retryPolicy = retry,
     staleWhileRevalidate = defaultStaleWhileRevalidate,
-    __experimentalGreedyFetch,
   } = {}) => {
     /** Identify the initial state before the first fetch. */
     const initialStateRef = useRef(initialLoadingState);
@@ -158,8 +156,7 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
           // phase, such as event listeners or polling.
           if (!renderSession.get('isRendering')) {
             refetch({ skipPrepass: true });
-          }
-          // Clears previous selections if the current render is not triggered
+          } // Clears previous selections if the current render is not triggered
           // by a fetch, because it implies a user-triggered state change where
           // old query inputs may be stale. Only clear selections once right
           // when the first selection is made.
@@ -255,15 +252,7 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
         initialStateRef.current = false;
 
         try {
-          // Forcibly includes all resolvers in the same render when one of them
-          // requires a fetch.
-          if (__experimentalGreedyFetch) {
-            for (const stackResolver of resolverStack) {
-              cofetchingResolvers.set(resolver, stackResolver);
-            }
-          }
-
-          // Stitch stacked selections what shared the same cache key, even if
+          // Stitch stacked selections which shared the same cache key, even if
           // those selections don't need fetching. Because without normalization
           // they will be overwritten by this fetch.
           // [ ] There is one overfetch triggered by parallel renders that I
