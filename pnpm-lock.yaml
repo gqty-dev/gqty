@@ -236,8 +236,8 @@ importers:
         specifier: ^0.8.0
         version: 0.8.0(@types/graphql-upload@16.0.0)(@types/node@18.16.3)(graphql-ez@0.16.0)(graphql-upload@13.0.0)(graphql@16.7.1)
       '@graphql-ez/plugin-websockets':
-        specifier: ^0.11.0
-        version: 0.11.0(@types/node@18.16.3)(bufferutil@4.0.8)(graphql-ez@0.16.0)(graphql@16.7.1)(utf-8-validate@6.0.3)
+        specifier: ^0.11.3
+        version: 0.11.3(@types/node@18.16.3)(bufferutil@4.0.8)(graphql-ez@0.16.0)(graphql@16.7.1)(utf-8-validate@6.0.3)
       '@react-hookz/web':
         specifier: ^22.0.0
         version: 22.0.0(react-dom@17.0.2)(react@17.0.2)
@@ -416,8 +416,8 @@ importers:
         version: 3.0.2
     devDependencies:
       '@graphql-ez/plugin-websockets':
-        specifier: ^0.11.0
-        version: 0.11.0(@types/node@18.16.3)(bufferutil@4.0.8)(graphql-ez@0.16.0)(graphql@16.7.1)(utf-8-validate@6.0.3)
+        specifier: ^0.11.3
+        version: 0.11.3(@types/node@18.16.3)(bufferutil@4.0.8)(graphql-ez@0.16.0)(graphql@16.7.1)(utf-8-validate@6.0.3)
       '@jest/types':
         specifier: ^29.5.0
         version: 29.5.0
@@ -4968,17 +4968,17 @@ packages:
       - '@types/node'
     dev: false
 
-  /@graphql-ez/plugin-websockets@0.11.0(@types/node@18.16.3)(bufferutil@4.0.8)(graphql-ez@0.16.0)(graphql@16.7.1)(utf-8-validate@6.0.3):
-    resolution: {integrity: sha512-jtvw5o3rw3Y6JNFfl+CoybQWdzqy0ml+eHNelHEd1Jd1b/Jbsc9RsIyOHE6uRqOxQhsBi6/1HL+nJCUuW+/n9A==}
+  /@graphql-ez/plugin-websockets@0.11.3(@types/node@18.16.3)(bufferutil@4.0.8)(graphql-ez@0.16.0)(graphql@16.7.1)(utf-8-validate@6.0.3):
+    resolution: {integrity: sha512-BVMWG5zdVdyVs9B0V+jCO9qnIEJqCN7JeMPP9dGh44fz68N0LZHA6MHzT1fwLWlN0QjtLeSL55nQkIbQqRqhYA==}
     engines: {node: '>=14.13.1'}
     peerDependencies:
       graphql: '*'
-      graphql-ez: ^0.16.0
+      graphql-ez: ^0.16.1
     peerDependenciesMeta:
       graphql:
         optional: true
     dependencies:
-      '@graphql-ez/utils': 0.2.0(@types/node@18.16.3)(graphql@16.7.1)
+      '@graphql-ez/utils': 0.2.1(@types/node@18.16.3)(graphql@16.7.1)
       '@types/ws': 8.5.4
       graphql: 16.7.1
       graphql-ez: 0.16.0(@types/node@18.16.3)(graphql@16.7.1)
@@ -4992,6 +4992,15 @@ packages:
 
   /@graphql-ez/utils@0.2.0(@types/node@18.16.3)(graphql@16.7.1):
     resolution: {integrity: sha512-oYsmJPG6Ru1ODKni5QvtbBh6OhofIm+jRMTaGL2lZo9ZXqj2WFm4lI4heKTiJQv/VOqKpXOVFS38FvnJzW15Aw==}
+    peerDependencies:
+      '@types/node': '*'
+      graphql: '*'
+    dependencies:
+      '@types/node': 18.16.3
+      graphql: 16.7.1
+
+  /@graphql-ez/utils@0.2.1(@types/node@18.16.3)(graphql@16.7.1):
+    resolution: {integrity: sha512-1KC8/KgPRvq18le+o4C3lkTSsdPfFK5Sot1wCnFVX+6EHv433FMzJzjn3ItgkEnR9f43cA/yD1rgmHR/8ehPXg==}
     peerDependencies:
       '@types/node': '*'
       graphql: '*'
