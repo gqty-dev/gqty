@@ -59,7 +59,7 @@ jobs:
             ${{ runner.os }}-pnpm-store-
 
       - name: Install dependencies and build
-        run: pnpm install
+        run: pnpm i --frozen-lockfile
 
       - name: Test ESM
         run: node scripts/test-esm.mjs
