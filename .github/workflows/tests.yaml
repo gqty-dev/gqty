@@ -28,17 +28,41 @@ jobs:
         node-version: [16, 18, 20]
         os: [ubuntu-latest]
     steps:
-      - name: Checkout code
+      - name: Checkout
         uses: actions/checkout@v3
-      - uses: pnpm/action-setup@v2.4.0
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        with:
+          # This makes Actions fetch all Git history so that Changesets can generate changelogs with the correct commits
+          fetch-depth: 0
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3.0.0
+        with:
+          version: 8
+          run_install: false
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'pnpm'
+
+      - name: Setup pnpm store
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+
       - name: Install dependencies and build
-        run: pnpm install
+        run: pnpm i --frozen-lockfile
+
       - name: Test ESM
         run: node scripts/test-esm.mjs
+
       - name: Test everything
         run: pnpm test:ci
