@@ -14,20 +14,35 @@ jobs:
     name: Release
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repo
+      - name: Checkout
         uses: actions/checkout@v3
         with:
           # This makes Actions fetch all Git history so that Changesets can generate changelogs with the correct commits
           fetch-depth: 0
 
-      - uses: pnpm/action-setup@v2.2.4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3.0.0
         with:
-          version: ^7.1.1
-      - name: Setup Node.js 16.x
-        uses: actions/setup-node@v3
+          version: 8
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          node-version: 16.x
+          node-version: 20
           cache: 'pnpm'
+
+      - name: Setup pnpm store
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
 
       - name: Install Dependencies
         run: pnpm install

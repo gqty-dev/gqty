@@ -10,7 +10,6 @@ jobs:
     uses: the-guild-org/shared-config/.github/workflows/release-snapshot.yml@main
     with:
       packageManager: pnpm
-      nodeVersion: 16 # align with the-guild-org/changesets-snapshot-action
       npmTag: canary
     secrets:
       githubToken: ${{ secrets.GITHUB_TOKEN }}
