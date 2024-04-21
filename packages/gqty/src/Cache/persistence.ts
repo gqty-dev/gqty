@@ -1,7 +1,7 @@
 import { fromJSON, toJSON } from 'flatted';
+import { FrailMap } from 'frail-map';
 import type { Cache, CacheLeaf, CacheNode, CacheObject, CacheRoot } from '.';
 import { GQtyError } from '../Error';
-import { FrailMap } from '../Helpers/FrailMap';
 import { deepCopy } from '../Helpers/deepCopy';
 import { isPlainObject } from '../Utils';
 import { crawl } from './crawl';

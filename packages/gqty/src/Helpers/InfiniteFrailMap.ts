@@ -1,4 +1,4 @@
-import { FrailMap } from './FrailMap';
+import { FrailMap } from 'frail-map';
 
 export class InfiniteFrailMap<K extends object, V> extends FrailMap<
   K,
