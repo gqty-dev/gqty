@@ -8,7 +8,7 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "build": "pnpm build -r --stream",
+    "build": "pnpm -r --filter=!example-* build",
     "build:docs": "pnpm build:website",
     "build:website": "pnpm -r --filter website build:docs",
     "changeset": "changeset --",
@@ -21,7 +21,6 @@
     "pretty": "pretty-quick",
     "pretty:all": "prettier --write \"**/*.{ts,tsx}\"",
     "publish:all": "changeset version && pnpm i && pnpm test && pnpm -r publish --access public",
-    "release:canary": "node scripts/canary-release.cjs",
     "test": "pnpm test -r --no-sort --no-bail --stream --",
     "test:ci": "pnpm test -r --workspace-concurrency=0 --no-sort --no-bail --stream --",
     "test:watch": "pnpm test:watch -r --no-bail --no-sort --stream",
@@ -30,68 +29,55 @@
     "website:build": "pnpm -r --filter website docs:build && pretty-quick"
   },
   "devDependencies": {
-    "@changesets/apply-release-plan": "^6.1.3",
-    "@changesets/assemble-release-plan": "^5.2.3",
-    "@changesets/cli": "^2.26.0",
-    "@changesets/config": "^2.3.0",
+    "@changesets/apply-release-plan": "^6.1.4",
+    "@changesets/assemble-release-plan": "^5.2.4",
+    "@changesets/changelog-github": "^0.4.8",
+    "@changesets/cli": "^2.27.1",
+    "@changesets/config": "^2.3.1",
     "@changesets/read": "^0.5.9",
-    "@manypkg/get-packages": "^1.1.3",
-    "@types/node": "^18.15.5",
+    "@types/node": "^20.11.10",
     "bob-esbuild": "^4.0.3",
     "bob-esbuild-cli": "^4.0.0",
     "bob-ts": "^4.1.1",
     "bob-tsm": "^1.1.2",
-    "bufferutil": "^4.0.7",
-    "chalk": "^5.2.0",
+    "bufferutil": "^4.0.8",
+    "chalk": "^5.3.0",
     "changesets-github-release": "^0.1.0",
     "concurrently": "^7.6.0",
-    "esbuild": "^0.17.12",
-    "globby": "^13.1.3",
-    "graphql": "^16.6.0",
+    "esbuild": "^0.20.0",
+    "globby": "^13.2.2",
     "husky": "^8.0.3",
-    "jest": "^29.5.0",
+    "jest": "^29.7.0",
     "open": "^8.4.2",
-    "prettier": "^2.8.6",
-    "pretty-quick": "^3.1.3",
-    "rimraf": "^4.4.0",
-    "semver": "^7.3.8",
-    "ts-jest": "^29.0.5",
-    "ts-node": "^10.9.1",
-    "tslib": "^2.5.0",
-    "typescript": "^4.9.5",
+    "prettier": "^2.8.8",
+    "pretty-quick": "^3.3.1",
+    "rimraf": "^4.4.1",
+    "semver": "^7.5.4",
+    "ts-jest": "^29.1.2",
+    "ts-node": "^10.9.2",
+    "tslib": "^2.6.2",
+    "typescript": "^5.3.3",
     "utf-8-validate": "^6.0.3",
-    "wait-on": "^7.0.1"
+    "wait-on": "^7.2.0"
   },
   "engines": {
-    "pnpm": ">=7.1.1"
+    "pnpm": "^8.10.0"
   },
+  "packageManager": "pnpm@8.15.6+sha256.01c01eeb990e379b31ef19c03e9d06a14afa5250b82e81303f88721c99ff2e6f",
   "pnpm": {
     "overrides": {
-      "trim@<0.0.3": ">=0.0.3",
-      "glob-parent@<5.1.2": ">=5.1.2",
-      "undici": "5.7.0",
-      "mermaid@<8.13.8": ">=8.13.8",
       "@braintree/sanitize-url@<6.0.0": ">=6.0.0",
+      "d3-color@<3.1.0": ">=3.1.0",
       "dset@<3.1.2": ">=3.1.2",
-      "mermaid@>=8.0.0 <9.1.2": ">=9.1.2",
+      "glob-parent@<5.1.2": ">=5.1.2",
       "mdx-mermaid@<1.3.0": ">=1.3.0",
-      "d3-color@<3.1.0": ">=3.1.0"
+      "mermaid@<8.13.8": ">=8.13.8",
+      "mermaid@>=8.0.0 <9.1.2": ">=9.1.2",
+      "trim@<0.0.3": ">=0.0.3",
+      "undici": "5.7.0"
     },
-    "peerDependencyRules": {
-      "allowedVersions": {
-        "graphql": "*"
-      },
-      "ignoreMissing": [
-        "@babel/preset-env",
-        "@babel/core",
-        "@algolia/client-search",
-        "@chakra-ui/system",
-        "unist-util-visit",
-        "prop-types",
-        "@envelop/core",
-        "rollup",
-        "react-native"
-      ]
+    "patchedDependencies": {
+      "use-sync-external-store@1.2.0": "patches/use-sync-external-store@1.2.0.patch"
     }
   }
 }

@@ -1,33 +1,31 @@
 {
   "compilerOptions": {
-    "rootDir": ".",
-    "outDir": "dist",
-    "declaration": true,
-    "target": "esnext",
-    "module": "esnext",
-    "strict": true,
-    "esModuleInterop": true,
     "allowJs": false,
-    "jsx": "preserve",
-    "resolveJsonModule": true,
-    "skipLibCheck": true,
-    "noUnusedLocals": true,
-    "moduleResolution": "node",
-    "noUnusedParameters": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
     "baseUrl": ".",
+    "declaration": true,
+    "esModuleInterop": true,
+    "jsx": "preserve",
+    "module": "esnext",
+    "moduleResolution": "node",
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitReturns": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "outDir": "dist",
     "paths": {
-      "gqty": ["packages/gqty/src/index.ts"],
-      "gqty/*": ["packages/gqty/src/*"],
       "@gqty/cli": ["packages/cli/src/index.ts"],
       "@gqty/cli/*": ["packages/cli/src/*"],
-      "@gqty/utils/sha1": ["packages/utils/lib/sha1.ts"],
-      "@gqty/utils/mergeWith": ["packages/utils/lib/mergeWith.ts"],
+      "gqty": ["packages/gqty/src/index.ts"],
+      "gqty/*": ["packages/gqty/src/*"],
       "test-utils": ["internal/test-utils/src/index.ts"]
     },
-    "importsNotUsedAsValues": "error"
+    "resolveJsonModule": true,
+    "rootDir": ".",
+    "skipLibCheck": true,
+    "strict": true,
+    "target": "esnext",
+    "verbatimModuleSyntax": true
   },
-  "include": ["packages", "internal"],
-  "exclude": ["**/dist", "**/test", "**/website", "**/docs-website"]
+  "exclude": ["**/dist", "**/test", "**/website", "**/docs-website"],
+  "include": ["packages", "internal"]
 }

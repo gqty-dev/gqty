@@ -1,0 +1,50 @@
+{
+  "name": "example-gnt",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "codegen": "dotenv -c local -- bash -c 'pnpm exec gqty --no-react -H apiKey:$NEXT_PUBLIC_SUPABASE_API_KEY $NEXT_PUBLIC_SUPABASE_ENDPOINT'",
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "gqty": {
+    "scalarTypes": {
+      "BigFloat": "string",
+      "BigInt": "string",
+      "Cursor": "string",
+      "Date": "string",
+      "Datetime": "string",
+      "Time": "string",
+      "UUID": "string"
+    }
+  },
+  "dependencies": {
+    "@gqty/logger": "workspace:^",
+    "@gqty/react": "workspace:^",
+    "@nhost/nextjs": "^2.1.8",
+    "gqty": "workspace:^",
+    "graphql": "^16.7.1",
+    "graphql-ws": "^5.15.0",
+    "next": "14.1.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "@gqty/cli": "workspace:^",
+    "@next/bundle-analyzer": "^13.4.12",
+    "@tailwindcss/typography": "^0.5.12",
+    "@types/node": "20.4.5",
+    "@types/react": "18.2.17",
+    "@types/react-dom": "18.2.7",
+    "autoprefixer": "^10.4.19",
+    "dotenv-cli": "^7.4.1",
+    "eslint": "8.46.0",
+    "eslint-config-next": "14.1.4",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.3.3",
+    "typescript": "^5.0.4",
+    "utf-8-validate": "^5.0.2"
+  }
+}

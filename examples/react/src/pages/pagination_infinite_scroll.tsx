@@ -1,8 +1,6 @@
-import { useInView } from 'react-intersection-observer';
-import { useDebounce } from 'react-use';
-
 import { Stack, Text } from '@chakra-ui/react';
-
+import { useDebouncedEffect } from '@react-hookz/web';
+import { useInView } from 'react-intersection-observer';
 import { usePaginatedQuery } from '../components/client';
 import { ConnectionArgs } from '../graphql/gqty';
 
@@ -46,7 +44,7 @@ export default function Page() {
     threshold: 0,
   });
 
-  useDebounce(
+  useDebouncedEffect(
     () => {
       if (!isLoading && inView && data?.hasNextPage && data.endCursor) {
         fetchMore({
@@ -55,8 +53,8 @@ export default function Page() {
         });
       }
     },
-    100,
-    [inView, data, fetchMore]
+    [inView, data, fetchMore],
+    100
   );
 
   return (

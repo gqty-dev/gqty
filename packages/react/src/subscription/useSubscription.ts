@@ -1,112 +1,65 @@
-import type { GQtyClient } from 'gqty';
+import { useRerender, useThrottledCallback } from '@react-hookz/web';
+import { GQtyError, type BaseGeneratedSchema, type GQtyClient } from 'gqty';
+import { useEffect, useMemo, useState } from 'react';
 
-import {
-  isAnySelectionIncluded,
-  useForceUpdate,
-  useIsomorphicLayoutEffect,
-  useSelectionsState,
-} from '../common';
-import type { ReactClientOptionsWithDefaults } from '../utils';
+export type UseSubscription<TSchema extends BaseGeneratedSchema> = (
+  options?: UseSubscriptionOptions
+) => NonNullable<TSchema['subscription']>;
 
-export interface UseSubscription<
-  GeneratedSchema extends {
-    subscription: object;
-  }
-> {
-  (): GeneratedSchema['subscription'];
-}
+export type UseSubscriptionOptions = {
+  onError?: (error: GQtyError) => void;
+  operationName?: string;
+  /**
+   * Throttle delay for each re-redner, prevents busy subscriptions from
+   * hanging the UI.
+   */
+  renderThrottleDelay?: number;
+};
 
-export function createUseSubscription<
-  GeneratedSchema extends {
-    query: object;
-    mutation: object;
-    subscription: object;
-  }
->(
-  client: GQtyClient<GeneratedSchema>,
-  _opts: ReactClientOptionsWithDefaults
-): UseSubscription<GeneratedSchema> {
-  const {
-    interceptorManager: { createInterceptor, removeInterceptor },
-    subscriptionsClient,
-    eventHandler,
-    scheduler,
-  } = client;
-  const clientSubscription: GeneratedSchema['subscription'] =
-    client.subscription;
+export function createUseSubscription<TSchema extends BaseGeneratedSchema>({
+  createResolver,
+}: GQtyClient<TSchema>) {
+  const useSubscription: UseSubscription<TSchema> = ({
+    onError,
+    operationName,
+    renderThrottleDelay = 100,
+  } = {}) => {
+    const {
+      accessor: { subscription },
+      subscribe,
+      selections,
+    } = useMemo(() => createResolver({ operationName }), [operationName]);
 
-  const useSubscription: UseSubscription<GeneratedSchema> =
-    function useSubscription() {
-      const forceUpdate = useForceUpdate({
-        doTimeout: true,
-      });
-      const hookSelections = useSelectionsState();
+    const render = useRerender();
+    const throttledRender = useThrottledCallback(
+      render,
+      [render],
+      renderThrottleDelay
+    );
+    const [error, setError] = useState<GQtyError>();
+    if (error) throw error;
 
-      const interceptor = createInterceptor();
+    useEffect(() => {
+      return subscribe({
+        onNext: () => throttledRender(),
+        onError(error) {
+          const theError = GQtyError.create(error);
 
-      Promise.resolve(interceptor).then(removeInterceptor);
-
-      interceptor.selectionAddListeners.add((selection) => {
-        if (selection.type === 2) hookSelections.add(selection);
-      });
-
-      useIsomorphicLayoutEffect(() => {
-        removeInterceptor(interceptor);
-      });
-
-      useIsomorphicLayoutEffect(() => {
-        if (!subscriptionsClient) return;
-
-        let isMounted = true;
-
-        const unsubscribeCache = eventHandler.onCacheChangeSubscribe(
-          ({ selection }) => {
-            if (!isMounted || forceUpdate.wasCalled.current) return;
-
-            if (hookSelections.has(selection)) forceUpdate();
+          if (onError) {
+            onError(theError);
+          } else {
+            setError(theError);
           }
-        );
+        },
+      });
+    }, [onError, selections, selections.size]);
 
-        const unsubErrors = scheduler.errors.subscribeErrors((data) => {
-          if (
-            isMounted &&
-            data.type === 'new_error' &&
-            !forceUpdate.wasCalled.current &&
-            isAnySelectionIncluded(data.selections, hookSelections)
-          ) {
-            forceUpdate();
-          }
-        });
+    if (!subscription) {
+      throw new GQtyError(`Subscription is not defined in the schema.`);
+    }
 
-        return () => {
-          isMounted = false;
-          unsubErrors();
-          unsubscribeCache();
-          subscriptionsClient
-            .unsubscribe(hookSelections)
-            .then((operationsIds) => {
-              if (eventHandler.hasFetchSubscribers && operationsIds.length) {
-                const arraySelections = Array.from(hookSelections);
-                for (const id of operationsIds) {
-                  eventHandler.sendFetchPromise(
-                    Promise.resolve({
-                      query: '',
-                      variables: undefined,
-                      cacheSnapshot: client.cache,
-                      selections: arraySelections,
-                      type: 'subscription',
-                      label: `[id=${id}] [unsubscribe]`,
-                    }),
-                    arraySelections
-                  );
-                }
-              }
-            });
-        };
-      }, [hookSelections, forceUpdate]);
-
-      return clientSubscription;
-    };
+    return subscription;
+  };
 
   return useSubscription;
 }

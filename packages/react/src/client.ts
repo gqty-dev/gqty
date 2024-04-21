@@ -1,38 +1,48 @@
-import { createUseMetaState, UseMetaState } from './meta/useMetaState';
-import { createUseMutation, UseMutation } from './mutation/useMutation';
-import { createGraphqlHOC, GraphQLHOC } from './query/hoc';
-import { createPrepareQuery, PrepareQuery } from './query/preparedQuery';
+import {
+  $meta,
+  type BaseGeneratedSchema,
+  type GQtyClient,
+  type RetryOptions,
+} from 'gqty';
+import { getActivePromises } from 'gqty/Cache/query';
+import { type LegacyFetchPolicy } from './common';
+import { createUseMetaState, type UseMetaState } from './meta/useMetaState';
+import { createUseMutation, type UseMutation } from './mutation/useMutation';
+import { createGraphqlHOC, type GraphQLHOC } from './query/hoc';
+import { createPrepareQuery, type PrepareQuery } from './query/preparedQuery';
 import {
   createUseLazyQuery,
-  LazyFetchPolicy,
-  UseLazyQuery,
+  type LazyFetchPolicy,
+  type UseLazyQuery,
 } from './query/useLazyQuery';
-import { createUseQuery, UseQuery } from './query/useQuery';
-import { createUseRefetch, UseRefetch } from './query/useRefetch';
+import {
+  createUsePaginatedQuery,
+  type PaginatedQueryFetchPolicy,
+  type UsePaginatedQuery,
+} from './query/usePaginatedQuery';
+import { createUseQuery, type UseQuery } from './query/useQuery';
+import { createUseRefetch, type UseRefetch } from './query/useRefetch';
 import {
   createUseTransactionQuery,
-  UseTransactionQuery,
+  type UseTransactionQuery,
 } from './query/useTransactionQuery';
 import {
   createSSRHelpers,
-  PrepareReactRender,
-  UseHydrateCache,
+  type PrepareReactRender,
+  type UseHydrateCache,
 } from './ssr/ssr';
 import {
   createUseSubscription,
-  UseSubscription,
+  type UseSubscription,
 } from './subscription/useSubscription';
-
-import type { GQtyClient, RetryOptions } from 'gqty';
-import type { FetchPolicy } from './common';
-import {
-  createUsePaginatedQuery,
-  PaginatedQueryFetchPolicy,
-  UsePaginatedQuery,
-} from './query/usePaginatedQuery';
 import type { ReactClientOptionsWithDefaults } from './utils';
 
 export interface ReactClientDefaults {
+  /**
+   * The value of $state.isLoading before the first fetch happens, useful
+   * for skipping SSR and hydrations.
+   */
+  initialLoadingState?: boolean;
   /**
    * Enable/Disable by default 'React Suspense' behavior
    *
@@ -102,7 +112,7 @@ export interface ReactClientDefaults {
    *
    * @default "cache-first"
    */
-  transactionFetchPolicy?: FetchPolicy;
+  transactionFetchPolicy?: LegacyFetchPolicy;
   /**
    * Define default 'fetchPolicy' hooks behaviour
    *
@@ -160,98 +170,90 @@ export interface CreateReactClientOptions {
   defaults?: ReactClientDefaults;
 }
 
-export interface ReactClient<
-  GeneratedSchema extends {
-    query: object;
-    mutation: object;
-    subscription: object;
-  }
-> {
-  useQuery: UseQuery<GeneratedSchema>;
-  useRefetch: UseRefetch;
-  useLazyQuery: UseLazyQuery<GeneratedSchema>;
-  useTransactionQuery: UseTransactionQuery<GeneratedSchema>;
-  usePaginatedQuery: UsePaginatedQuery<GeneratedSchema>;
-  useMutation: UseMutation<GeneratedSchema>;
+export interface ReactClient<TSchema extends BaseGeneratedSchema> {
+  useQuery: UseQuery<TSchema>;
+  useRefetch: UseRefetch<TSchema>;
+  useLazyQuery: UseLazyQuery<TSchema>;
+  useTransactionQuery: UseTransactionQuery<TSchema>;
+  usePaginatedQuery: UsePaginatedQuery<TSchema>;
+  useMutation: UseMutation<TSchema>;
   graphql: GraphQLHOC;
   state: { isLoading: boolean };
   prepareReactRender: PrepareReactRender;
   useHydrateCache: UseHydrateCache;
   useMetaState: UseMetaState;
-  useSubscription: UseSubscription<GeneratedSchema>;
-  prepareQuery: PrepareQuery<GeneratedSchema>;
+  useSubscription: UseSubscription<TSchema>;
+  prepareQuery: PrepareQuery<TSchema>;
 }
 
-export function createReactClient<
-  GeneratedSchema extends {
-    query: object;
-    mutation: object;
-    subscription: object;
-  }
->(
-  client: GQtyClient<GeneratedSchema>,
-  optsCreate: CreateReactClientOptions = {}
-): ReactClient<GeneratedSchema> {
-  const { suspense = false } = (optsCreate.defaults ||= {});
-
-  const {
-    transactionFetchPolicy = 'cache-first',
-    lazyFetchPolicy = 'network-only',
-    staleWhileRevalidate = false,
-    retry = true,
-    lazyQuerySuspense = false,
-    transactionQuerySuspense = suspense,
-    mutationSuspense = false,
-    preparedSuspense = suspense,
-    refetchAfterHydrate = false,
-    paginatedQueryFetchPolicy = 'cache-first',
-    paginatedQuerySuspense = suspense,
-  } = optsCreate.defaults;
-
-  const defaults: ReactClientOptionsWithDefaults['defaults'] = {
-    transactionFetchPolicy,
-    lazyFetchPolicy,
-    staleWhileRevalidate,
-    suspense,
-    retry,
-    lazyQuerySuspense,
-    transactionQuerySuspense,
-    mutationSuspense,
-    preparedSuspense,
-    refetchAfterHydrate,
-    paginatedQueryFetchPolicy,
-    paginatedQuerySuspense,
+export function createReactClient<TSchema extends BaseGeneratedSchema>(
+  client: GQtyClient<TSchema>,
+  {
+    defaults: {
+      initialLoadingState = false,
+      suspense = false,
+      transactionFetchPolicy = 'cache-first',
+      lazyFetchPolicy = 'network-only',
+      staleWhileRevalidate = false,
+      retry = true,
+      lazyQuerySuspense = false,
+      transactionQuerySuspense = suspense,
+      mutationSuspense = false,
+      preparedSuspense = suspense,
+      refetchAfterHydrate = false,
+      paginatedQueryFetchPolicy = 'cache-first',
+      paginatedQuerySuspense = suspense,
+    } = {},
+    ...options
+  }: CreateReactClientOptions = {}
+): ReactClient<TSchema> {
+  const opts: ReactClientOptionsWithDefaults = {
+    ...options,
+    defaults: {
+      initialLoadingState,
+      lazyFetchPolicy,
+      lazyQuerySuspense,
+      mutationSuspense,
+      paginatedQueryFetchPolicy,
+      paginatedQuerySuspense,
+      preparedSuspense,
+      refetchAfterHydrate,
+      retry,
+      staleWhileRevalidate,
+      suspense,
+      transactionFetchPolicy,
+      transactionQuerySuspense,
+    },
   };
-
-  const opts: ReactClientOptionsWithDefaults = Object.assign({}, optsCreate, {
-    defaults,
-  });
 
   const { prepareReactRender, useHydrateCache } = createSSRHelpers(
     client,
     opts
   );
 
+  // useTransactionQuery needs this
+  const useQuery = createUseQuery<TSchema>(client, opts);
+
   return {
-    useQuery: createUseQuery<GeneratedSchema>(client, opts),
+    useQuery,
     useRefetch: createUseRefetch(client, opts),
-    useLazyQuery: createUseLazyQuery<GeneratedSchema>(client, opts),
-    useTransactionQuery: createUseTransactionQuery<GeneratedSchema>(
-      client,
-      opts
-    ),
-    usePaginatedQuery: createUsePaginatedQuery<GeneratedSchema>(client, opts),
-    useMutation: createUseMutation<GeneratedSchema>(client, opts),
+    useLazyQuery: createUseLazyQuery<TSchema>(client, opts),
+    useTransactionQuery: createUseTransactionQuery<TSchema>(useQuery, opts),
+    usePaginatedQuery: createUsePaginatedQuery<TSchema>(client, opts),
+    useMutation: createUseMutation<TSchema>(client, opts),
     graphql: createGraphqlHOC(client, opts),
     state: {
       get isLoading() {
-        return client.scheduler.resolving !== null;
+        const cache = $meta(client.schema.query)?.context.cache;
+        const promises = cache && getActivePromises(cache);
+
+        return (promises?.length ?? 0) > 0;
       },
     },
     prepareReactRender,
     useHydrateCache,
-    useMetaState: createUseMetaState(client),
-    useSubscription: createUseSubscription<GeneratedSchema>(client, opts),
-    prepareQuery: createPrepareQuery<GeneratedSchema>(client, opts),
+    useMetaState: createUseMetaState(),
+    useSubscription: createUseSubscription<TSchema>(client),
+    prepareQuery: createPrepareQuery<TSchema>(client, opts),
   };
 }

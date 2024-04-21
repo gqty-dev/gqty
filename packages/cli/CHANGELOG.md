@@ -22,7 +22,7 @@
     Test: '_TEST',
     MyValue: 'My_Value',
   } as const;
-  export type EnumAsConst = typeof EnumAsConst[keyof typeof EnumAsConst];
+  export type EnumAsConst = (typeof EnumAsConst)[keyof typeof EnumAsConst];
 
   function useEnum(value: Enum) {}
   function useEnumAsConst(value: EnumAsConst) {}

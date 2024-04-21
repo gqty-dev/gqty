@@ -1,12 +1,12 @@
 import { existsSync, promises } from 'fs';
-import type { GraphQLSchema } from 'graphql';
+import { type GraphQLSchema } from 'graphql';
 import { dirname, resolve } from 'path';
-import { defaultConfig, gqtyConfigPromise } from './config';
+import { defaultConfig, type GQtyConfig } from './config';
 import * as deps from './deps.js';
-import { generate, GenerateOptions, TransformSchemaOptions } from './generate';
+import { generate, type TransformSchemaOptions } from './generate';
 
 export type OnExistingFileConflict =
-  | ((existingFile: string) => void)
+  | ((existingFile: string) => void | Promise<void>)
   | undefined;
 
 async function writeClientCode({
@@ -23,7 +23,7 @@ async function writeClientCode({
       const existingFile = await promises.readFile(destinationPath, {
         encoding: 'utf-8',
       });
-      onExistingFileConflict(existingFile);
+      await onExistingFileConflict(existingFile);
     }
     return;
   }
@@ -93,14 +93,12 @@ async function writeSchemaCode({
 export async function writeGenerate(
   schema: GraphQLSchema,
   destinationPath: string,
-  generateOptions: GenerateOptions = {},
+  configuration: GQtyConfig,
   onExistingFileConflict?: OnExistingFileConflict,
   transformsGenerate?: TransformSchemaOptions
 ) {
   const isJavascriptOutput =
-    generateOptions.javascriptOutput ??
-    (await gqtyConfigPromise).config.javascriptOutput ??
-    defaultConfig.javascriptOutput;
+    configuration.javascriptOutput ?? defaultConfig.javascriptOutput;
 
   if (isJavascriptOutput) {
     if (!destinationPath.endsWith('.js')) {
@@ -129,7 +127,7 @@ export async function writeGenerate(
   destinationPath = resolve(destinationPath);
 
   const [{ clientCode, schemaCode, javascriptSchemaCode }] = await Promise.all([
-    generate(schema, generateOptions, transformsGenerate),
+    generate(schema, configuration, transformsGenerate),
     deps.mkdirp(dirname(destinationPath)),
   ]);
 

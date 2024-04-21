@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { createTestApp, gql } from 'test-utils';
+import { loadOrGenerateConfig } from '../src/config';
 import { writeGenerate } from '../src/writeGenerate';
 import { getTempDir } from './utils';
 
@@ -64,19 +65,16 @@ test('generates code and writes existing file', async () => {
       encoding: 'utf-8',
     });
 
-    expect(
-      generatedContent
-        .split('\n')
-        .slice(3)
-        .join('\n')
-        .startsWith(shouldBeIncluded)
-    ).toBeTruthy();
+    expect(generatedContent.split('\n')[4]).toStrictEqual(shouldBeIncluded);
 
     expect(generatedContent).toMatchInlineSnapshot(`
       "/**
-       * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+       * GQty AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
        */
+
       // This should be included
+
+      import { type ScalarsEnumsHash } from 'gqty';
 
       export type Maybe<T> = T | null;
       export type InputMaybe<T> = Maybe<T>;
@@ -98,7 +96,7 @@ test('generates code and writes existing file', async () => {
         Float: number;
       }
 
-      export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
+      export const scalarsEnumsHash: ScalarsEnumsHash = {
         Boolean: true,
         String: true,
       };
@@ -120,13 +118,6 @@ test('generates code and writes existing file', async () => {
       export interface Subscription {
         __typename?: 'Subscription';
       }
-
-      export interface SchemaObjectTypes {
-        Mutation: Mutation;
-        Query: Query;
-        Subscription: Subscription;
-      }
-      export type SchemaObjectTypesNames = 'Mutation' | 'Query' | 'Subscription';
 
       export interface GeneratedSchema {
         query: Query;
@@ -172,19 +163,18 @@ test('creates dir, generates code and writes new file', async () => {
       }
     );
 
-    expect(
-      generatedContentSchema
-        .split('\n')
-        .slice(3)
-        .join('\n')
-        .startsWith(shouldBeIncluded)
-    ).toBeTruthy();
+    expect(generatedContentSchema.split('\n')[4]).toStrictEqual(
+      shouldBeIncluded
+    );
 
     expect(generatedContentSchema).toMatchInlineSnapshot(`
       "/**
-       * GQTY AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
+       * GQty AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
        */
+
       // This should be included
+
+      import { type ScalarsEnumsHash } from 'gqty';
 
       export type Maybe<T> = T | null;
       export type InputMaybe<T> = Maybe<T>;
@@ -206,7 +196,7 @@ test('creates dir, generates code and writes new file', async () => {
         Float: number;
       }
 
-      export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
+      export const scalarsEnumsHash: ScalarsEnumsHash = {
         Boolean: true,
         String: true,
       };
@@ -228,13 +218,6 @@ test('creates dir, generates code and writes new file', async () => {
       export interface Subscription {
         __typename?: 'Subscription';
       }
-
-      export interface SchemaObjectTypes {
-        Mutation: Mutation;
-        Query: Query;
-        Subscription: Subscription;
-      }
-      export type SchemaObjectTypesNames = 'Mutation' | 'Query' | 'Subscription';
 
       export interface GeneratedSchema {
         query: Query;
@@ -259,23 +242,19 @@ test('creates dir, generates code and writes new file', async () => {
 
     expect(generatedContentClient).toMatchInlineSnapshot(`
       "/**
-       * GQTY: You can safely modify this file and Query Fetcher based on your needs
+       * GQty: You can safely modify this file based on your needs.
        */
 
       import { createReactClient } from '@gqty/react';
-
-      import type { QueryFetcher } from 'gqty';
-      import { createClient } from 'gqty';
-      import type {
-        GeneratedSchema,
-        SchemaObjectTypes,
-        SchemaObjectTypesNames,
+      import { Cache, GQtyError, createClient, type QueryFetcher } from 'gqty';
+      import {
+        generatedSchema,
+        scalarsEnumsHash,
+        type GeneratedSchema,
       } from './schema.generated';
-      import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
       const queryFetcher: QueryFetcher = async function (
-        query,
-        variables,
+        { query, variables, operationName },
         fetchOptions
       ) {
         // Modify "/api/graphql" if needed
@@ -287,32 +266,68 @@ test('creates dir, generates code and writes new file', async () => {
           body: JSON.stringify({
             query,
             variables,
+            operationName,
           }),
           mode: 'cors',
           ...fetchOptions,
         });
 
-        const json = await response.json();
+        if (response.status >= 400) {
+          throw new GQtyError(
+            \`GraphQL endpoint responded with HTTP status \${response.status}.\`
+          );
+        }
 
-        return json;
+        const text = await response.text();
+
+        try {
+          return JSON.parse(text);
+        } catch {
+          throw new GQtyError(
+            \`Malformed JSON response: \${
+              text.length > 50 ? text.slice(0, 50) + '...' : text
+            }\`
+          );
+        }
       };
 
-      export const client = createClient<
-        GeneratedSchema,
-        SchemaObjectTypesNames,
-        SchemaObjectTypes
-      >({
+      const cache = new Cache(
+        undefined,
+        /**
+         * Default option is immediate cache expiry but keep it for 5 minutes,
+         * allowing soft refetches in background.
+         */
+        {
+          maxAge: 0,
+          staleWhileRevalidate: 5 * 60 * 1000,
+          normalization: true,
+        }
+      );
+
+      export const client = createClient<GeneratedSchema>({
         schema: generatedSchema,
-        scalarsEnumsHash,
-        queryFetcher,
+        scalars: scalarsEnumsHash,
+        cache,
+        fetchOptions: {
+          fetcher: queryFetcher,
+        },
       });
 
-      const { query, mutation, mutate, subscription, resolved, refetch, track } =
-        client;
+      // Core functions
+      export const { resolve, subscribe, schema } = client;
 
-      export { query, mutation, mutate, subscription, resolved, refetch, track };
+      // Legacy functions
+      export const {
+        query,
+        mutation,
+        mutate,
+        subscription,
+        resolved,
+        refetch,
+        track,
+      } = client;
 
-      const {
+      export const {
         graphql,
         useQuery,
         usePaginatedQuery,
@@ -326,28 +341,10 @@ test('creates dir, generates code and writes new file', async () => {
         prepareQuery,
       } = createReactClient<GeneratedSchema>(client, {
         defaults: {
-          // Set this flag as "true" if your usage involves React Suspense
-          // Keep in mind that you can overwrite it in a per-hook basis
-          suspense: false,
-
-          // Set this flag based on your needs
-          staleWhileRevalidate: false,
+          // Enable Suspense, you can override this option for each hook.
+          suspense: true,
         },
       });
-
-      export {
-        graphql,
-        useQuery,
-        usePaginatedQuery,
-        useTransactionQuery,
-        useLazyQuery,
-        useRefetch,
-        useMutation,
-        useMetaState,
-        prepareReactRender,
-        useHydrateCache,
-        prepareQuery,
-      };
 
       export * from './schema.generated';
       "
@@ -364,9 +361,11 @@ test('generates code and writes existing file', async () => {
 
   try {
     try {
+      const { config } = await loadOrGenerateConfig();
       await writeGenerate(
         (await testAppPromise).getEnveloped().schema,
-        tempDir.clientPath
+        tempDir.clientPath,
+        config
       );
 
       throw Error("shouldn't react");

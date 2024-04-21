@@ -64,6 +64,7 @@ export default function Page() {
             endCursor,
             hasNextPage,
             hasPreviousPage,
+            isLoading,
           },
           null,
           2

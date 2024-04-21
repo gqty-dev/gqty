@@ -1,5 +1,5 @@
 import { PropsWithServerCache } from '@gqty/react';
-
+import type { GetServerSideProps } from 'next';
 import {
   graphql,
   prepareReactRender,
@@ -7,22 +7,23 @@ import {
 } from '../components/client';
 import { default as RefetchPage } from './refetch';
 
-import type { GetServerSideProps } from 'next';
+// FIXME: Time component should not re-render on hydration
 
-export const getServerSideProps: GetServerSideProps<PropsWithServerCache> =
-  async ({}) => {
-    const { cacheSnapshot } = await prepareReactRender(
-      <>
-        <RefetchPage />
-      </>
-    );
+export const getServerSideProps: GetServerSideProps<
+  PropsWithServerCache
+> = async () => {
+  const { cacheSnapshot } = await prepareReactRender(
+    <>
+      <RefetchPage />
+    </>
+  );
 
-    return {
-      props: {
-        cacheSnapshot,
-      },
-    };
+  return {
+    props: {
+      cacheSnapshot,
+    },
   };
+};
 
 export default graphql(
   function SSRPage({ cacheSnapshot }: PropsWithServerCache) {

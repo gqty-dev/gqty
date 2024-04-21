@@ -1,39 +1,17 @@
+import { createClient as createWsClient } from 'graphql-ws';
+import PLazy from 'p-lazy';
 import { createTestApp, gql, TestApp } from 'test-utils';
-
+import { type PartialDeep } from 'type-fest';
+import { WebSocket } from 'ws';
+import { loadOrGenerateConfig } from '../../cli/src/config';
 import { generate } from '../../cli/src/generate';
-import { createSubscriptionsClient } from '../../subscriptions/src/index';
-import {
-  ClientOptions,
-  createClient,
-  DeepPartial,
-  QueryFetcher,
-  Schema,
-  SchemaUnionsKey,
-  SubscriptionsClient,
-  GQtyClient,
-} from '../src';
+import { Cache, QueryFetcher, Schema, SchemaUnionsKey } from '../src';
+import { ClientOptions, createClient as createGQtyClient } from '../src/Client';
 import { deepAssign } from '../src/Utils';
 
-import { gqtyConfigPromise } from '../../cli/src/config';
-
 afterAll(async () => {
-  await gqtyConfigPromise;
+  await loadOrGenerateConfig({ writeConfigFile: true });
 });
-
-type ObjectTypesNames = 'Human' | 'Query' | 'Mutation' | 'Subscription';
-
-type ObjectTypes = {
-  Human: Human;
-  Query: {
-    __typename: 'Query';
-  };
-  Mutation: {
-    __typename: 'Mutation';
-  };
-  Subscription: {
-    __typename: 'Subscription';
-  };
-};
 
 export type Maybe<T> = T | null;
 export type Human = {
@@ -149,7 +127,7 @@ export interface TestClientConfig {
   subscriptions?: boolean;
 }
 
-export type TestClient = GQtyClient<GeneratedSchema> & {
+export type TestClient = ReturnType<typeof createGQtyClient> & {
   client: TestApp;
   queries: {
     query: string;
@@ -158,11 +136,11 @@ export type TestClient = GQtyClient<GeneratedSchema> & {
 };
 
 export const createTestClient = async (
-  addedToGeneratedSchema?: DeepPartial<Schema>,
+  addedToGeneratedSchema?: PartialDeep<Schema>,
   queryFetcher?: QueryFetcher,
   config?: TestClientConfig,
-  clientConfig: Partial<ClientOptions<ObjectTypesNames, ObjectTypes>> = {}
-): Promise<TestClient> => {
+  { cache = new Cache(), ...clientConfig }: Partial<ClientOptions> = {}
+) => {
   let dogId = 0;
   const dogs: { name: string; id: number }[] = [
     {
@@ -552,7 +530,7 @@ export const createTestClient = async (
     );
 
   if (queryFetcher == null) {
-    queryFetcher = async (query, variables) => {
+    queryFetcher = async ({ query, variables }) => {
       const index =
         queries.push({
           query,
@@ -569,29 +547,33 @@ export const createTestClient = async (
     };
   }
 
-  let subscriptionsClient: SubscriptionsClient | undefined;
-
-  subscriptionsClient = config?.subscriptions
-    ? createSubscriptionsClient({
-        wsEndpoint: client.endpoint.replace('http:', 'ws:'),
-        reconnect: false,
+  const subscriptionsClient = config?.subscriptions
+    ? createWsClient({
+        lazy: true,
+        retryAttempts: 0,
+        url: client.endpoint.replace('http:', 'ws:'),
+        webSocketImpl: WebSocket,
       })
     : undefined;
 
   subscriptionsClient &&
     TeardownPromises.push(
-      LazyPromise(() => {
-        subscriptionsClient!.close();
+      new PLazy((resolve) => {
+        resolve(subscriptionsClient.terminate());
       })
     );
 
   const testClient = Object.assign(
-    createClient<GeneratedSchema, ObjectTypesNames, ObjectTypes>({
-      schema: deepAssign(generatedSchema, [addedToGeneratedSchema]) as Schema,
-      scalarsEnumsHash,
-      queryFetcher,
-      subscriptionsClient,
+    createGQtyClient<GeneratedSchema>({
+      cache,
       ...clientConfig,
+      schema: deepAssign(generatedSchema, [addedToGeneratedSchema]) as Schema,
+      fetchOptions: {
+        ...clientConfig.fetchOptions,
+        fetcher: queryFetcher,
+        subscriber: subscriptionsClient,
+      },
+      scalars: scalarsEnumsHash,
     }),
     {
       client,
@@ -617,47 +599,4 @@ export function expectConsoleWarn(
   });
 
   return { spy, consoleWarn };
-}
-
-export class PLazy<ValueType> extends Promise<ValueType> {
-  private _promise?: Promise<ValueType>;
-
-  constructor(
-    private _executor: (
-      resolve: (value: ValueType) => void,
-      reject: (err: unknown) => void
-    ) => void
-  ) {
-    super((resolve: (v?: any) => void) => resolve());
-  }
-
-  then: Promise<ValueType>['then'] = (onFulfilled, onRejected) =>
-    (this._promise ||= new Promise(this._executor)).then(
-      onFulfilled,
-      onRejected
-    );
-
-  catch: Promise<ValueType>['catch'] = (onRejected) =>
-    (this._promise ||= new Promise(this._executor)).catch(onRejected);
-
-  finally: Promise<ValueType>['finally'] = (onFinally) =>
-    (this._promise ||= new Promise(this._executor)).finally(onFinally);
-}
-
-export function LazyPromise<Value>(
-  fn: () => Value | Promise<Value>
-): Promise<Value> {
-  return new PLazy((resolve, reject) => {
-    try {
-      Promise.resolve(fn()).then(resolve, (err) => {
-        if (err instanceof Error) Error.captureStackTrace(err, LazyPromise);
-
-        reject(err);
-      });
-    } catch (err) {
-      if (err instanceof Error) Error.captureStackTrace(err, LazyPromise);
-
-      reject(err);
-    }
-  });
 }

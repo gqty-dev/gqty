@@ -1,6 +1,7 @@
+export * from './Cache';
 export * from './Client';
-export * from './Selection';
-export * from './Schema';
+export type { Client as GQtyClient } from './Client';
 export * from './Error';
 export * from './Helpers';
-export { debounce } from './Utils/debounce';
+export * from './Schema';
+export * from './Selection';

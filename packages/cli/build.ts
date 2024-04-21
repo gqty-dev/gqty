@@ -26,7 +26,7 @@ async function main() {
         define: {
           __VERSION__: JSON.stringify(pkg.version),
         },
-        minify: false,
+        minify: true,
       },
       sourcemap: false,
       external: ['./deps.js'],
@@ -35,11 +35,11 @@ async function main() {
       },
     }),
     build({
+      entryPoints: ['./src/deps.ts'],
       bundle: true,
       format: 'cjs',
-      target: 'node12.20',
-      entryPoints: ['./src/deps.ts'],
       outfile: 'dist/deps.js',
+      target: 'node12.20',
       platform: 'node',
       minify: true,
       external: ['graphql'],
@@ -69,7 +69,7 @@ async function main() {
       outDir: 'dist',
       target: 'node12.20',
       esbuild: {
-        minify: false,
+        minify: true,
       },
       sourcemap: false,
       external: ['./deps.js'],

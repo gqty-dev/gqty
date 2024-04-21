@@ -1,15 +1,15 @@
 {
   "compilerOptions": {
-    "target": "es2019",
-    "module": "commonjs",
-    "strict": true,
+    "baseUrl": ".",
     "esModuleInterop": true,
     "jsx": "react",
-    "baseUrl": ".",
+    "module": "commonjs",
     "paths": {
       "gqty": ["../../gqty/src/index.ts"],
       "gqty/*": ["../../gqty/src/*"]
-    }
+    },
+    "strict": true,
+    "target": "es2019"
   },
   "include": ["**/*.ts", "**/*.tsx"]
 }

@@ -1,27 +1,242 @@
-import '../src/Client';
-
-import { waitForExpect } from 'test-utils';
-
-import { GQtyError, prepass, Selection } from '../src';
+import { Cache, GQtyError, prepass, type QueryPayload } from '../src';
+import { $meta } from '../src/Accessor';
+import { fetchSelections } from '../src/Client/resolveSelections';
+import { updateCaches } from '../src/Client/updateCaches';
+import { Selection } from '../src/Selection';
 import { createTestClient } from './utils';
 
-describe('core', () => {
-  test('scheduler', async () => {
-    const { query } = await createTestClient();
+describe('core#resolve', () => {
+  describe('fetchPolicy', () => {
+    it('default', async () => {
+      const {
+        resolve,
+        schema: { query },
+      } = await createTestClient(undefined, undefined, undefined, {
+        cache: new Cache(undefined, { maxAge: 50 }),
+      });
 
-    expect(typeof query).toBe('object');
+      await expect(
+        resolve(({ query }) => query.nFetchCalls, { cachePolicy: 'default' })
+      ).resolves.toBe(1);
 
-    expect(query.hello).toBe(undefined);
+      await expect(
+        resolve(({ query }) => query.nFetchCalls, { cachePolicy: 'default' })
+      ).resolves.toBe(1);
 
-    waitForExpect(
-      () => {
-        expect(query.hello).toBe('hello world');
-      },
-      100,
-      10
-    );
+      await new Promise((resolve) => setTimeout(resolve, 150));
+
+      let promise: Promise<unknown> | undefined;
+      resolve(({ query }) => query.nFetchCalls, {
+        awaitsFetch: false,
+        cachePolicy: 'default',
+        onFetch(p) {
+          promise = p;
+        },
+      });
+      expect(query.nFetchCalls).toBe(1);
+      await promise;
+      expect(query.nFetchCalls).toBe(2);
+    });
+
+    it('force-cache', async () => {
+      const {
+        resolve,
+        schema: { query },
+      } = await createTestClient(undefined, undefined, undefined, {
+        cache: new Cache(undefined, { maxAge: 50, staleWhileRevalidate: 0 }),
+      });
+
+      await expect(
+        resolve(
+          ({ query }) => {
+            query.nFetchCalls;
+            return query.hello;
+          },
+          { cachePolicy: 'default' }
+        )
+      ).resolves.toBe('hello world');
+      expect(query.nFetchCalls).toBe(1);
+
+      await expect(
+        resolve(
+          ({ query }) => {
+            query.nFetchCalls;
+            return query.hello;
+          },
+          { cachePolicy: 'force-cache' }
+        )
+      ).resolves.toBe('hello world');
+      expect(query.nFetchCalls).toBe(1);
+
+      await new Promise((resolve) => setTimeout(resolve, 150));
+
+      expect(query.hello).toBe('hello world');
+      await expect(
+        resolve(
+          ({ query }) => {
+            query.nFetchCalls;
+            return query.hello;
+          },
+          { cachePolicy: 'force-cache' }
+        )
+      ).resolves.toBe('hello world');
+      expect(query.nFetchCalls).toBe(2);
+    });
+
+    it('no-cache', async () => {
+      const { resolve } = await createTestClient(
+        undefined,
+        undefined,
+        undefined,
+        {
+          cache: new Cache(undefined, {
+            maxAge: Infinity,
+            staleWhileRevalidate: 0,
+          }),
+        }
+      );
+
+      await expect(
+        resolve(({ query }) => query.nFetchCalls, { cachePolicy: 'default' })
+      ).resolves.toBe(1);
+
+      await expect(
+        resolve(({ query }) => query.nFetchCalls, { cachePolicy: 'no-cache' })
+      ).resolves.toBe(2);
+
+      await expect(
+        resolve(({ query }) => query.nFetchCalls, { cachePolicy: 'default' })
+      ).resolves.toBe(2);
+    });
+
+    it('no-store', async () => {
+      const {
+        resolve,
+        schema: { query },
+      } = await createTestClient(undefined, undefined, undefined, {
+        cache: new Cache(undefined, {
+          maxAge: Infinity,
+          staleWhileRevalidate: 0,
+        }),
+      });
+
+      await expect(
+        resolve(({ query }) => query.hello, { cachePolicy: 'no-store' })
+      ).resolves.toBe('hello world');
+
+      expect(query.hello).toBeUndefined();
+    });
+
+    /**
+     * When multiple tests are running, GC gets triggered more often and this
+     * randomly fails. Should work when run individually.
+     */
+    xit('only-if-cached', async () => {
+      const { resolve } = await createTestClient(
+        undefined,
+        undefined,
+        undefined,
+        {
+          cache: new Cache(undefined, {
+            maxAge: 0,
+            staleWhileRevalidate: 0,
+          }),
+        }
+      );
+
+      await expect(() =>
+        resolve(({ query }) => query.hello, { cachePolicy: 'only-if-cached' })
+      ).rejects.toThrowError(new TypeError('Failed to fetch'));
+
+      await expect(resolve(({ query }) => query.hello)).resolves.toBe(
+        'hello world'
+      );
+
+      await expect(
+        resolve(({ query }) => query.hello, { cachePolicy: 'only-if-cached' })
+      ).resolves.toBe('hello world');
+    });
   });
 
+  it('mutations', async () => {
+    const { resolve } = await createTestClient();
+
+    const name = `John Doe ${Date.now()}`;
+
+    const data = await resolve(({ mutation }) => {
+      const human = mutation.humanMutation({ nameArg: name });
+
+      return human.name;
+    });
+
+    expect(data).toBe(name);
+  });
+
+  it('subscriptions', async () => {
+    const { resolve } = await createTestClient(undefined, undefined, {
+      subscriptions: true,
+    });
+
+    const subPromise = resolve(
+      ({ subscription }) => subscription.newNotification
+    );
+
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
+    await resolve(({ mutation }) =>
+      mutation.sendNotification({ message: 'hello world' })
+    );
+
+    const data = await subPromise;
+
+    expect(data).toEqual('hello world');
+  });
+
+  it('handles errors', async () => {
+    const { resolve } = await createTestClient();
+
+    try {
+      await resolve(({ query }) => {
+        query.throw;
+        query.throw2;
+      });
+    } catch (error) {
+      expect(error).toEqual(
+        Object.assign(
+          Error('GraphQL Errors, please check .graphQLErrors property'),
+          {
+            errors: [
+              {
+                message: 'expected error',
+                locations: [{ line: 1, column: 7 }],
+                path: ['throw'],
+              },
+              {
+                message: 'expected error 2',
+                locations: [{ line: 1, column: 13 }],
+                path: ['throw2'],
+              },
+            ],
+          }
+        )
+      );
+    }
+  });
+
+  it('passes on query extensions', async () => {
+    const fetchHistory: QueryPayload[] = [];
+    const { resolve } = await createTestClient(undefined, (payload) => {
+      fetchHistory.push(payload);
+      return {};
+    });
+
+    await resolve(({ query }) => query.hello, { extensions: { foo: 'bar' } });
+
+    expect(fetchHistory[0].extensions).toMatchObject({ foo: 'bar' });
+  });
+});
+
+describe('compat', () => {
   test('resolved', async () => {
     const { query, resolved } = await createTestClient();
 
@@ -39,11 +254,7 @@ describe('core', () => {
 
     expect(typeof query).toBe('object');
 
-    await resolved(() => {
-      return query.hello;
-    }).then((value) => {
-      expect(value).toBe('hello world');
-    });
+    await expect(resolved(() => query.hello)).resolves.toBe('hello world');
 
     const onCacheData = jest
       .fn()
@@ -52,17 +263,10 @@ describe('core', () => {
 
         return true;
       });
-    await resolved(
-      () => {
-        return query.hello;
-      },
-      {
-        refetch: true,
-        onCacheData,
-      }
-    ).then((value) => {
-      expect(value).toBe('hello world');
-    });
+
+    await expect(
+      resolved(() => query.hello, { refetch: true, onCacheData })
+    ).resolves.toBe('hello world');
 
     expect(onCacheData).toBeCalledTimes(1);
 
@@ -73,17 +277,10 @@ describe('core', () => {
 
         return false;
       });
-    await resolved(
-      () => {
-        return query.hello;
-      },
-      {
-        refetch: true,
-        onCacheData: onCacheData2,
-      }
-    ).then((value) => {
-      expect(value).toBe('hello world');
-    });
+
+    await expect(
+      resolved(() => query.hello, { refetch: true, onCacheData: onCacheData2 })
+    ).resolves.toBe('hello world');
 
     expect(onCacheData2).toBeCalledTimes(1);
   });
@@ -92,7 +289,7 @@ describe('core', () => {
     const fetchHistory: string[] = [];
     const { query, resolved } = await createTestClient(
       undefined,
-      async (query) => {
+      async ({ query }) => {
         fetchHistory.push(query);
         return {};
       }
@@ -112,14 +309,7 @@ describe('core', () => {
   });
 
   test('resolved with unions', async () => {
-    const fetchHistory: string[] = [];
-    const { query, resolved } = await createTestClient(
-      undefined,
-      async (query) => {
-        fetchHistory.push(query);
-        return {};
-      }
-    );
+    const { query, resolved, queries } = await createTestClient();
 
     await Promise.all([
       resolved(() => {
@@ -127,23 +317,18 @@ describe('core', () => {
       }),
     ]);
 
-    expect(fetchHistory).toEqual(
+    expect(queries).toMatchObject(
       expect.arrayContaining([
-        expect.stringContaining('...on A{id a}...on B{id b}'),
+        expect.objectContaining({
+          query: expect.stringContaining('...on A{a id}...on B{b id}'),
+        }),
       ])
     );
   });
 
   test('inlineResolved with operationName', async () => {
-    const fetchHistory: string[] = [];
-    const { query, mutation, inlineResolved } = await createTestClient(
-      undefined,
-      async (query) => {
-        fetchHistory.push(query);
-        await new Promise((resolve) => setTimeout(resolve, 5));
-        return { data: { query: 'hello' } };
-      }
-    );
+    const { query, mutation, inlineResolved, queries } =
+      await createTestClient();
 
     await Promise.all([
       inlineResolved(() => query.human({ name: 'John' }).__typename, {
@@ -158,154 +343,141 @@ describe('core', () => {
       }),
     ]);
 
-    expect(fetchHistory).toEqual(
-      expect.arrayContaining([
-        'mutation TestMutation($nameArg1:String!){humanMutation_70c5e_90943:humanMutation(nameArg:$nameArg1){__typename id}}',
-        'query TestQueryA($name1:String){human_b8c92_7a4a6:human(name:$name1){__typename id}}',
-        'query TestQueryB{hello}',
-      ])
-    );
-  });
-});
-
-describe('resolved cache options', () => {
-  test('refetch', async () => {
-    const { query, resolved } = await createTestClient();
-
-    const resolveFn = () => {
-      const human = query.human({
-        name: 'a',
-      });
-      return {
-        name: human.name,
-        nFetchCalls: query.nFetchCalls,
-      };
-    };
-
-    const data = await resolved(resolveFn);
-
-    expect(data.name).toBe('a');
-    expect(data.nFetchCalls).toBe(1);
-
-    const cachedData = await resolved(resolveFn);
-
-    expect(cachedData.name).toBe('a');
-    expect(cachedData.nFetchCalls).toBe(1);
-
-    const refetchedData = await resolved(resolveFn, {
-      refetch: true,
-    });
-    expect(refetchedData.name).toBe('a');
-    expect(refetchedData.nFetchCalls).toBe(2);
+    expect(queries.map(({ query }) => query)).toMatchInlineSnapshot(`
+      [
+        "query TestQueryA($e8a374:String){a5b434:human(name:$e8a374){__typename}}",
+        "mutation TestMutation($ef3ee3:String!){a133ff:humanMutation(nameArg:$ef3ee3){__typename}}",
+        "query TestQueryB{hello}",
+      ]
+    `);
   });
 
-  test('noCache', async () => {
-    const { query, resolved } = await createTestClient();
-
-    const resolveFn = () => {
-      const human = query.human({
-        name: 'a',
-      });
-      return {
-        name: human.name,
-        nFetchCalls: query.nFetchCalls,
-      };
-    };
-
-    const data = await resolved(resolveFn);
-
-    expect(data.name).toBe('a');
-    expect(data.nFetchCalls).toBe(1);
-
-    const nonCachedData = await resolved(resolveFn, {
-      noCache: true,
-    });
-    expect(nonCachedData.name).toBe('a');
-    expect(nonCachedData.nFetchCalls).toBe(2);
-
-    const cachedData = await resolved(resolveFn);
-
-    expect(cachedData.name).toBe('a');
-    expect(cachedData.nFetchCalls).toBe(1);
-  });
-});
-
-describe('resolved fetch options', () => {
-  test('fetch options are passed to query fetcher', async () => {
-    expect.assertions(2);
-
-    const { resolved, query } = await createTestClient(
-      undefined,
-      (query, variables, fetchOptions) => {
-        expect({ query, variables, fetchOptions }).toStrictEqual({
-          fetchOptions: {
-            mode: 'cors',
-            credentials: 'include',
-          },
-          query: 'query{hello}',
-          variables: undefined,
+  describe('resolved cache options', () => {
+    test('refetch', async () => {
+      const { query, resolved } = await createTestClient(
+        undefined,
+        undefined,
+        undefined,
+        { cache: new Cache(undefined, { maxAge: Infinity }) }
+      );
+      const resolveFn = () => {
+        const human = query.human({
+          name: 'a',
         });
         return {
-          data: {
-            hello: 'Hello World',
-          },
+          name: human.name,
+          nFetchCalls: query.nFetchCalls,
         };
-      }
-    );
+      };
 
-    expect(
-      await resolved(
-        () => {
-          return query.hello;
-        },
-        {
-          fetchOptions: {
-            mode: 'cors',
-            credentials: 'include',
-          },
-        }
-      )
-    ).toBe('Hello World');
-  });
-});
-
-describe('error handling', () => {
-  test('resolved single throws', async () => {
-    const { query, resolved } = await createTestClient();
-
-    await resolved(
-      () => {
-        query.throw;
-      },
       {
-        retry: false,
-      }
-    )
-      .then(() => {
-        throw Error("Shouldn't reach here");
-      })
-      .catch((err) => {
-        if (!(err instanceof Error)) throw Error('Incompatible error type');
+        const data = await resolved(resolveFn);
 
-        expect(err).toEqual(
-          Object.assign(Error('expected error'), {
-            locations: [{ line: 1, column: 7 }],
-            path: ['throw'],
-          })
-        );
-      });
+        expect(data.name).toBe('a');
+        expect(data.nFetchCalls).toBe(1);
+      }
+
+      {
+        const data = await resolved(resolveFn);
+
+        expect(data.name).toBe('a');
+        expect(data.nFetchCalls).toBe(1);
+      }
+
+      {
+        const data = await resolved(resolveFn, { refetch: true });
+
+        expect(data.name).toBe('a');
+        expect(data.nFetchCalls).toBe(2);
+      }
+    });
+
+    test('noCache', async () => {
+      const { query, resolved } = await createTestClient(
+        undefined,
+        undefined,
+        undefined,
+        { cache: new Cache(undefined, { maxAge: Infinity }) }
+      );
+      const resolveFn = () => {
+        const human = query.human({
+          name: 'a',
+        });
+        return {
+          name: human.name,
+          nFetchCalls: query.nFetchCalls,
+        };
+      };
+
+      {
+        const data = await resolved(resolveFn);
+
+        expect(data.name).toBe('a');
+        expect(data.nFetchCalls).toBe(1);
+      }
+
+      {
+        const data = await resolved(resolveFn, { noCache: true });
+
+        expect(data.name).toBe('a');
+        expect(data.nFetchCalls).toBe(2);
+      }
+
+      {
+        const data = await resolved(resolveFn);
+
+        expect(data.name).toBe('a');
+        expect(data.nFetchCalls).toBe(1);
+      }
+    });
   });
 
-  test('resolved multiple throws, with shorter error for production', async () => {
-    const { query, resolved } = await createTestClient();
+  describe('resolved fetch options', () => {
+    test('fetch options are passed to query fetcher', async () => {
+      expect.assertions(2);
 
-    const prevProcessEnv = process.env.NODE_ENV;
+      const { resolved, query } = await createTestClient(
+        undefined,
+        async ({ query, variables }, fetchOptions) => {
+          expect({ query, variables, fetchOptions }).toStrictEqual({
+            fetchOptions: {
+              mode: 'cors',
+              credentials: 'include',
+            },
+            query: 'query{hello}',
+            variables: undefined,
+          });
+          return {
+            data: {
+              hello: 'Hello World',
+            },
+          };
+        }
+      );
 
-    try {
+      expect(
+        await resolved(
+          () => {
+            return query.hello;
+          },
+          {
+            fetchOptions: {
+              mode: 'cors',
+              credentials: 'include',
+            },
+          }
+        )
+      ).toBe('Hello World');
+    });
+  });
+
+  describe('error handling', () => {
+    test('resolved single throws', async () => {
+      const { query, resolved } = await createTestClient();
+
       await resolved(
         () => {
           query.throw;
-          query.throw2;
         },
         {
           retry: false,
@@ -318,9 +490,76 @@ describe('error handling', () => {
           if (!(err instanceof Error)) throw Error('Incompatible error type');
 
           expect(err).toEqual(
-            Object.assign(
-              Error('GraphQL Errors, please check .graphQLErrors property'),
-              {
+            Object.assign(Error('expected error'), {
+              locations: [{ line: 1, column: 7 }],
+              path: ['throw'],
+            })
+          );
+        });
+    });
+
+    test('resolved multiple throws, with shorter error for production', async () => {
+      const { query, resolved } = await createTestClient();
+
+      const prevProcessEnv = process.env.NODE_ENV;
+
+      try {
+        await resolved(
+          () => {
+            query.throw;
+            query.throw2;
+          },
+          {
+            retry: false,
+          }
+        )
+          .then(() => {
+            throw Error("Shouldn't reach here");
+          })
+          .catch((err) => {
+            if (!(err instanceof Error)) throw Error('Incompatible error type');
+
+            expect(err).toEqual(
+              Object.assign(
+                Error('GraphQL Errors, please check .graphQLErrors property'),
+                {
+                  errors: [
+                    {
+                      message: 'expected error',
+                      locations: [{ line: 1, column: 7 }],
+                      path: ['throw'],
+                    },
+                    {
+                      message: 'expected error 2',
+                      locations: [{ line: 1, column: 13 }],
+                      path: ['throw2'],
+                    },
+                  ],
+                }
+              )
+            );
+          });
+
+        process.env.NODE_ENV = 'production';
+
+        await resolved(
+          () => {
+            query.throw;
+            query.throw2;
+          },
+          {
+            noCache: true,
+            retry: false,
+          }
+        )
+          .then(() => {
+            throw Error("Shouldn't reach here");
+          })
+          .catch((err) => {
+            if (!(err instanceof Error)) throw Error('Incompatible error type');
+
+            expect(err).toEqual(
+              Object.assign(Error('GraphQL Errors'), {
                 errors: [
                   {
                     message: 'expected error',
@@ -333,162 +572,96 @@ describe('error handling', () => {
                     path: ['throw2'],
                   },
                 ],
-              }
-            )
-          );
-        });
-
-      process.env.NODE_ENV = 'production';
-
-      await resolved(
-        () => {
-          query.throw;
-          query.throw2;
-        },
-        {
-          noCache: true,
-          retry: false,
-        }
-      )
-        .then(() => {
-          throw Error("Shouldn't reach here");
-        })
-        .catch((err) => {
-          if (!(err instanceof Error)) throw Error('Incompatible error type');
-
-          expect(err).toEqual(
-            Object.assign(Error('GraphQL Errors'), {
-              errors: [
-                {
-                  message: 'expected error',
-                  locations: [{ line: 1, column: 7 }],
-                  path: ['throw'],
-                },
-                {
-                  message: 'expected error 2',
-                  locations: [{ line: 1, column: 13 }],
-                  path: ['throw2'],
-                },
-              ],
-            })
-          );
-        });
-    } finally {
-      process.env.NODE_ENV = prevProcessEnv;
-    }
-  });
-
-  test('scheduler logs to console', async () => {
-    const { query } = await createTestClient(undefined, undefined, undefined, {
-      retry: false,
-    });
-
-    const logErrorSpy = jest
-      .spyOn(global.console, 'error')
-      .mockImplementation((message) => {
-        expect(message).toEqual(
-          Object.assign(Error('expected error'), {
-            locations: [{ line: 1, column: 7 }],
-            path: ['throw'],
-          })
-        );
-      });
-
-    try {
-      query.throw;
-
-      await waitForExpect(
-        () => {
-          expect(logErrorSpy).toBeCalledTimes(1);
-        },
-        100,
-        5
-      );
-    } finally {
-      logErrorSpy.mockRestore();
-    }
-  });
-
-  test('network error', async () => {
-    const { query, resolved } = await createTestClient(undefined, () => {
-      throw Error('expected network error');
-    });
-
-    try {
-      await resolved(() => query.hello);
-
-      throw Error("shouldn't reach here");
-    } catch (err: any) {
-      expect(err.message).toBe('expected network error');
-    }
-  });
-
-  test('not expect network error type', async () => {
-    const { query, resolved } = await createTestClient(undefined, () => {
-      throw 12345;
-    });
-
-    try {
-      await resolved(() => query.hello);
-
-      throw Error("shouldn't reach here");
-    } catch (err) {
-      expect(err).toStrictEqual(GQtyError.create(12345));
-    }
-  });
-});
-
-describe('mutation', () => {
-  test('mutation usage', async () => {
-    const { mutation, resolved } = await createTestClient();
-
-    const data = await resolved(() => {
-      return mutation.sendNotification({
-        message: 'hello world',
-      });
-    });
-
-    expect(data).toBe(true);
-  });
-});
-
-describe('custom query fetcher', () => {
-  test('empty data', async () => {
-    const { query, resolved } = await createTestClient(
-      undefined,
-      (_query, _variables) => {
-        return {};
+              })
+            );
+          });
+      } finally {
+        process.env.NODE_ENV = prevProcessEnv;
       }
-    );
-
-    const data = await resolved(() => {
-      return query.hello;
     });
-    expect(data).toBe(undefined);
+
+    test('network error', async () => {
+      const { query, resolved } = await createTestClient(undefined, () => {
+        throw Error('expected network error');
+      });
+
+      try {
+        await resolved(() => query.hello);
+
+        throw Error("shouldn't reach here");
+      } catch (err: any) {
+        expect(err.message).toBe('expected network error');
+      }
+    });
+
+    test('unexpected network error type', async () => {
+      const { query, resolved } = await createTestClient(undefined, () => {
+        throw 12345;
+      });
+
+      try {
+        await resolved(() => query.hello);
+
+        throw Error("shouldn't reach here");
+      } catch (err) {
+        expect(err).toStrictEqual(GQtyError.create(12345));
+      }
+    });
   });
-});
 
-describe('buildAndFetchSelections', () => {
-  test('works with included cache', async () => {
-    const { buildAndFetchSelections, cache } = await createTestClient();
+  describe('mutation', () => {
+    test('mutation usage', async () => {
+      const { mutation, resolved } = await createTestClient();
 
-    const QuerySelection = new Selection({
-      key: 'query',
-      id: 0,
+      const data = await resolved(() => {
+        return mutation.sendNotification({
+          message: 'hello world',
+        });
+      });
+
+      expect(data).toBe(true);
     });
+  });
 
-    const HelloSelection = new Selection({
-      key: 'hello',
-      prevSelection: QuerySelection,
-      id: 1,
+  describe('custom query fetcher', () => {
+    test('empty data', async () => {
+      const { query, resolved } = await createTestClient(
+        undefined,
+        async (_query, _variables) => ({})
+      );
+
+      const data = await resolved(() => {
+        return query.hello;
+      });
+      expect(data).toBe(undefined);
     });
+  });
 
-    await buildAndFetchSelections([HelloSelection], 'query');
+  describe('fetchSelections', () => {
+    test('works with included cache', async () => {
+      const {
+        schema: { query },
+      } = await createTestClient();
 
-    expect(cache).toStrictEqual({
-      query: {
-        hello: 'hello world',
-      },
+      const cache = $meta(query)?.context.cache!;
+
+      await fetchSelections(
+        new Set([Selection.createRoot('query').getChild('hello')]),
+        {
+          cache,
+          fetchOptions: {
+            fetcher: async () => ({ data: { hello: 'hello world' } }),
+          },
+        }
+      ).then((results) => {
+        updateCaches(results, [cache], { skipNotify: false });
+      });
+
+      expect(cache.toJSON()).toMatchObject({
+        query: {
+          hello: 'hello world',
+        },
+      });
     });
   });
 });
