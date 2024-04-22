@@ -28,7 +28,7 @@
     "build": "bob-ts -i src -f interop",
     "prepare": "pnpm build",
     "start": "nodemon --exec \"concurrently pnpm:build tsc\" -w src/index.ts",
-    "test": "jest --config local.jest.config.js"
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config local.jest.config.js"
   },
   "dependencies": {
     "@graphql-ez/fastify": "^0.12.1",
