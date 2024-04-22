@@ -226,8 +226,8 @@ importers:
         specifier: ^0.8.0
         version: 0.8.0(@types/node@18.16.3)(graphql-ez@0.16.1)(graphql@16.8.1)
       '@graphql-ez/plugin-dataloader':
-        specifier: ^0.8.0
-        version: 0.8.0(@envelop/core@3.0.6)(graphql-ez@0.16.1)(graphql@16.8.1)
+        specifier: ^0.8.1
+        version: 0.8.1(@envelop/core@3.0.6)(graphql-ez@0.16.1)(graphql@16.8.1)
       '@graphql-ez/plugin-schema':
         specifier: ^0.9.1
         version: 0.9.1(@types/node@18.16.3)(graphql-ez@0.16.1)(graphql@16.8.1)
@@ -5330,11 +5330,11 @@ packages:
       - supports-color
     dev: false
 
-  /@graphql-ez/plugin-dataloader@0.8.0(@envelop/core@3.0.6)(graphql-ez@0.16.1)(graphql@16.8.1):
-    resolution: {integrity: sha512-tg+y2qvNgiXXVd9/nPLh0900LG3rr2Zetmf1MmVo/lpEslt3LvnxOoZ+os41IkaugUAoWE5SqeVsZWryFNQKaw==}
+  /@graphql-ez/plugin-dataloader@0.8.1(@envelop/core@3.0.6)(graphql-ez@0.16.1)(graphql@16.8.1):
+    resolution: {integrity: sha512-dRqK3k/fAWjEzvYQlO3/AGykdIpsPh4OoAxIuvcHaHcd9K03j5J9ejYvHBKhxukOx4qstMTiY6/bVQEWQ9P13Q==}
     engines: {node: '>=14.13.1'}
     peerDependencies:
-      graphql-ez: ^0.16.0
+      graphql-ez: ^0.16.1
     dependencies:
       '@envelop/dataloader': 4.0.4(@envelop/core@3.0.6)(dataloader@2.2.2)
       '@envelop/execute-subscription-event': 3.0.4(@envelop/core@3.0.6)(graphql@16.8.1)
