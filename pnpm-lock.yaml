@@ -232,8 +232,8 @@ importers:
         specifier: ^0.9.1
         version: 0.9.1(@types/node@18.16.3)(graphql-ez@0.16.1)(graphql@16.8.1)
       '@graphql-ez/plugin-upload':
-        specifier: ^0.8.0
-        version: 0.8.0(@types/graphql-upload@16.0.0)(@types/node@18.16.3)(graphql-ez@0.16.1)(graphql-upload@13.0.0)(graphql@16.8.1)
+        specifier: ^0.8.1
+        version: 0.8.1(@types/graphql-upload@16.0.0)(@types/node@18.16.3)(graphql-ez@0.16.1)(graphql-upload@13.0.0)(graphql@16.8.1)
       '@graphql-ez/plugin-websockets':
         specifier: ^0.11.3
         version: 0.11.3(@types/node@18.16.3)(bufferutil@4.0.8)(graphql-ez@0.16.1)(graphql@16.8.1)(utf-8-validate@6.0.3)
@@ -5364,13 +5364,13 @@ packages:
       - '@types/node'
     dev: false
 
-  /@graphql-ez/plugin-upload@0.8.0(@types/graphql-upload@16.0.0)(@types/node@18.16.3)(graphql-ez@0.16.1)(graphql-upload@13.0.0)(graphql@16.8.1):
-    resolution: {integrity: sha512-R/cE1vT5kZxWe4EpuwV15znWU+GSu4KsUIgdCUYcE897XO1O9+Iadn4K/RyPuRY3tv//6+7Bj5gKruJaFgmsbg==}
+  /@graphql-ez/plugin-upload@0.8.1(@types/graphql-upload@16.0.0)(@types/node@18.16.3)(graphql-ez@0.16.1)(graphql-upload@13.0.0)(graphql@16.8.1):
+    resolution: {integrity: sha512-t7MA7c6kpnN9rPVEpgGraMk+edlchQ+S+z+sFgXHCvFi5kmHAThwsYYwFyfl4f9RU47W89/KYwJLXOk5jFujOw==}
     engines: {node: '>=14.13.1'}
     peerDependencies:
       '@types/graphql-upload': '*'
       graphql: '*'
-      graphql-ez: ^0.16.0
+      graphql-ez: ^0.16.1
       graphql-upload: ^13.0.0
     peerDependenciesMeta:
       graphql:
@@ -5378,7 +5378,7 @@ packages:
       graphql-upload:
         optional: true
     dependencies:
-      '@graphql-ez/utils': 0.2.0(@types/node@18.16.3)(graphql@16.8.1)
+      '@graphql-ez/utils': 0.2.1(@types/node@18.16.3)(graphql@16.8.1)
       '@types/graphql-upload': 16.0.0
       graphql: 16.8.1
       graphql-ez: 0.16.1(@types/node@18.16.3)(graphql@16.8.1)
