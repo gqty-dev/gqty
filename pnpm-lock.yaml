@@ -217,8 +217,8 @@ importers:
         specifier: workspace:^
         version: link:../../packages/subscriptions/dist
       '@graphql-ez/fastify':
-        specifier: ^0.12.0
-        version: 0.12.0(@types/node@18.16.3)(fastify@4.26.2)(graphql-ez@0.16.1)(graphql@16.8.1)
+        specifier: ^0.12.1
+        version: 0.12.1(@types/node@18.16.3)(fastify@4.26.2)(graphql-ez@0.16.1)(graphql@16.8.1)
       '@graphql-ez/plugin-altair':
         specifier: ^0.11.0
         version: 0.11.0(@types/node@18.16.3)(graphql-ez@0.16.1)(graphql@16.8.1)
@@ -372,11 +372,11 @@ importers:
   internal/test-utils:
     dependencies:
       '@graphql-ez/fastify':
-        specifier: ^0.12.0
-        version: 0.12.0(@types/node@18.16.3)(fastify@4.26.2)(graphql-ez@0.16.1)(graphql@16.8.1)
+        specifier: ^0.12.1
+        version: 0.12.1(@types/node@18.16.3)(fastify@4.26.2)(graphql-ez@0.16.1)(graphql@16.8.1)
       '@graphql-ez/fastify-testing':
         specifier: ^0.4.1
-        version: 0.4.1(@graphql-ez/fastify@0.12.0)(@types/node@18.16.3)(fastify@4.26.2)(graphql-ez@0.16.1)(graphql@16.8.1)
+        version: 0.4.1(@graphql-ez/fastify@0.12.1)(@types/node@18.16.3)(fastify@4.26.2)(graphql-ez@0.16.1)(graphql@16.8.1)
       '@graphql-ez/plugin-codegen':
         specifier: ^0.8.0
         version: 0.8.0(@types/node@18.16.3)(graphql-ez@0.16.1)(graphql@16.8.1)
@@ -5241,7 +5241,7 @@ packages:
       undici: 5.28.4
     dev: false
 
-  /@graphql-ez/fastify-testing@0.4.1(@graphql-ez/fastify@0.12.0)(@types/node@18.16.3)(fastify@4.26.2)(graphql-ez@0.16.1)(graphql@16.8.1):
+  /@graphql-ez/fastify-testing@0.4.1(@graphql-ez/fastify@0.12.1)(@types/node@18.16.3)(fastify@4.26.2)(graphql-ez@0.16.1)(graphql@16.8.1):
     resolution: {integrity: sha512-NsJZU73240sEGiBV6uGZlYqzCoqoTsmJieOuUup3zYWTkm4BhZzcekOIVvi4GjtnZahjGERCv/AJplPqfjVmUw==}
     peerDependencies:
       '@graphql-ez/fastify': 0.12.1
@@ -5250,7 +5250,7 @@ packages:
       graphql-ez: ^0.16.1
     dependencies:
       '@graphql-ez/client': 0.6.2(@types/node@18.16.3)(graphql@16.8.1)
-      '@graphql-ez/fastify': 0.12.0(@types/node@18.16.3)(fastify@4.26.2)(graphql-ez@0.16.1)(graphql@16.8.1)
+      '@graphql-ez/fastify': 0.12.1(@types/node@18.16.3)(fastify@4.26.2)(graphql-ez@0.16.1)(graphql@16.8.1)
       '@graphql-ez/utils': 0.2.1(@types/node@18.16.3)(graphql@16.8.1)
       fastify: 4.26.2
       graphql: 16.8.1
@@ -5260,14 +5260,14 @@ packages:
       - '@types/node'
     dev: false
 
-  /@graphql-ez/fastify@0.12.0(@types/node@18.16.3)(fastify@4.26.2)(graphql-ez@0.16.1)(graphql@16.8.1):
-    resolution: {integrity: sha512-U4o9qwkvnOrwf6H9Z5CUtJZAslFNy1EqYBghKAtM5111pXRyIAD3Hgy/M3GrH9EeyCiY0v8y+N2u9dtOppMyng==}
+  /@graphql-ez/fastify@0.12.1(@types/node@18.16.3)(fastify@4.26.2)(graphql-ez@0.16.1)(graphql@16.8.1):
+    resolution: {integrity: sha512-du4gJHDWtQP0FbdpQ5ErxwCU+Nc4R1bj+QpfzIdNw8nbxL3jNnbVQ4z6MldlbxJYG7DXsawn5BjgTKJWXw6log==}
     engines: {node: '>=14.13.1'}
     peerDependencies:
       '@types/node': '*'
       fastify: ^4.7.0
       graphql: '*'
-      graphql-ez: ^0.16.0
+      graphql-ez: ^0.16.1
     peerDependenciesMeta:
       fastify:
         optional: true
@@ -5275,7 +5275,7 @@ packages:
         optional: true
     dependencies:
       '@fastify/cors': 8.2.0
-      '@graphql-ez/utils': 0.2.0(@types/node@18.16.3)(graphql@16.8.1)
+      '@graphql-ez/utils': 0.2.1(@types/node@18.16.3)(graphql@16.8.1)
       '@types/node': 18.16.3
       fastify: 4.26.2
       graphql: 16.8.1
