@@ -1,4 +1,4 @@
-import fs from 'fs';
+import * as fs from 'fs';
 import { resolve } from 'path';
 
 import { assertIsDefined, createTestApp, gql, waitForExpect } from '../src';
@@ -97,7 +97,7 @@ test('create test app with codegen', async () => {
       TKey extends string,
       TParent,
       TContext,
-      TArgs
+      TArgs,
     > {
       subscribe: SubscriptionSubscribeFn<
         { [key in TKey]: TResult },
@@ -123,7 +123,7 @@ test('create test app with codegen', async () => {
       TKey extends string,
       TParent,
       TContext,
-      TArgs
+      TArgs,
     > =
       | SubscriptionSubscriberObject<TResult, TKey, TParent, TContext, TArgs>
       | SubscriptionResolverObject<TResult, TParent, TContext, TArgs>;
@@ -133,7 +133,7 @@ test('create test app with codegen', async () => {
       TKey extends string,
       TParent = {},
       TContext = {},
-      TArgs = {}
+      TArgs = {},
     > =
       | ((
           ...args: any[]
@@ -158,7 +158,7 @@ test('create test app with codegen', async () => {
       TResult = {},
       TParent = {},
       TContext = {},
-      TArgs = {}
+      TArgs = {},
     > = (
       next: NextResolverFn<TResult>,
       parent: TParent,
@@ -183,7 +183,8 @@ test('create test app with codegen', async () => {
 
     export type QueryResolvers<
       ContextType = EZContext,
-      ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']
+      ParentType extends
+        ResolversParentTypes['Query'] = ResolversParentTypes['Query'],
     > = {
       hello?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
     };
