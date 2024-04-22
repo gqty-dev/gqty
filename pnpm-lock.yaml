@@ -220,8 +220,8 @@ importers:
         specifier: ^0.12.1
         version: 0.12.1(@types/node@18.16.3)(fastify@4.26.2)(graphql-ez@0.16.1)(graphql@16.8.1)
       '@graphql-ez/plugin-altair':
-        specifier: ^0.11.0
-        version: 0.11.0(@types/node@18.16.3)(graphql-ez@0.16.1)(graphql@16.8.1)
+        specifier: ^0.11.3
+        version: 0.11.3(@types/node@18.16.3)(graphql-ez@0.16.1)(graphql@16.8.1)
       '@graphql-ez/plugin-codegen':
         specifier: ^0.8.0
         version: 0.8.0(@types/node@18.16.3)(graphql-ez@0.16.1)(graphql@16.8.1)
@@ -5282,16 +5282,16 @@ packages:
       graphql-ez: 0.16.1(@types/node@18.16.3)(graphql@16.8.1)
     dev: false
 
-  /@graphql-ez/plugin-altair@0.11.0(@types/node@18.16.3)(graphql-ez@0.16.1)(graphql@16.8.1):
-    resolution: {integrity: sha512-7z567qkqwjhfm7yppCrH68CuPf6/89VX7FH+OlmXcl/v0Tif97pwhcs6LUFTTvBuIYyFOKKSinUBEGTqFHZMwg==}
+  /@graphql-ez/plugin-altair@0.11.3(@types/node@18.16.3)(graphql-ez@0.16.1)(graphql@16.8.1):
+    resolution: {integrity: sha512-DRXTpnYVHifSBLX4tYmEt6Uo/mLTsqFgdirKFbfO5euJwCfOVa8ZIra1ySpZQiMmb3L0hcLPDMDjO42S/fvomA==}
     engines: {node: '>=14.13.1'}
     peerDependencies:
       '@types/node': '*'
-      graphql-ez: ^0.16.0
+      graphql-ez: ^0.16.1
     dependencies:
-      '@graphql-ez/utils': 0.2.0(@types/node@18.16.3)(graphql@16.8.1)
+      '@graphql-ez/utils': 0.2.1(@types/node@18.16.3)(graphql@16.8.1)
       '@types/node': 18.16.3
-      altair-static-slim: 5.0.9
+      altair-static: 6.4.2
       cross-undici-fetch: 0.4.14
       graphql-ez: 0.16.1(@types/node@18.16.3)(graphql@16.8.1)
       mime-types: 2.1.35
@@ -7784,8 +7784,9 @@ packages:
       uri-js: 4.4.1
     dev: true
 
-  /altair-static-slim@5.0.9:
-    resolution: {integrity: sha512-PlG7yCBfV+dvBWRJBFb/v9m8N7lZcBTFdYNV1WIQfHW7w/sU8yat35uxGoAQ9K7XkOHNpRF0wdyRqmGwtro0bg==}
+  /altair-static@6.4.2:
+    resolution: {integrity: sha512-JSSUU0gH9/je0z8yVTGFKepDQc3dQBYHw/mSufa6oFM43C7lG4p3Dd4KuA/KjcIpa7vV+TXSHS8G7fOIpO7HRg==}
+    engines: {node: '>= 6.9.1'}
     dev: false
 
   /ansi-align@3.0.1:
