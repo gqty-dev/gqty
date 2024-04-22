@@ -8,6 +8,9 @@ on:
 jobs:
   release-canary:
     uses: the-guild-org/shared-config/.github/workflows/release-snapshot.yml@main
+    if:
+      ${{ github.actor != 'dependabot[bot]' && github.actor !=
+      'dependabot-preview[bot]' && github.actor != 'renovate[bot]' }}
     with:
       packageManager: pnpm
       npmTag: canary
