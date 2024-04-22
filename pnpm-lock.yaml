@@ -229,8 +229,8 @@ importers:
         specifier: ^0.8.0
         version: 0.8.0(@envelop/core@3.0.6)(graphql-ez@0.16.1)(graphql@16.8.1)
       '@graphql-ez/plugin-schema':
-        specifier: ^0.9.0
-        version: 0.9.0(@types/node@18.16.3)(graphql-ez@0.16.1)(graphql@16.8.1)
+        specifier: ^0.9.1
+        version: 0.9.1(@types/node@18.16.3)(graphql-ez@0.16.1)(graphql@16.8.1)
       '@graphql-ez/plugin-upload':
         specifier: ^0.8.0
         version: 0.8.0(@types/graphql-upload@16.0.0)(@types/node@18.16.3)(graphql-ez@0.16.1)(graphql-upload@13.0.0)(graphql@16.8.1)
@@ -381,8 +381,8 @@ importers:
         specifier: ^0.8.0
         version: 0.8.0(@types/node@18.16.3)(graphql-ez@0.16.1)(graphql@16.8.1)
       '@graphql-ez/plugin-schema':
-        specifier: ^0.9.0
-        version: 0.9.0(@types/node@18.16.3)(graphql-ez@0.16.1)(graphql@16.8.1)
+        specifier: ^0.9.1
+        version: 0.9.1(@types/node@18.16.3)(graphql-ez@0.16.1)(graphql@16.8.1)
       '@rollup/plugin-babel':
         specifier: ^6.0.3
         version: 6.0.3(@babel/core@7.24.4)
@@ -5345,17 +5345,17 @@ packages:
       - graphql
     dev: false
 
-  /@graphql-ez/plugin-schema@0.9.0(@types/node@18.16.3)(graphql-ez@0.16.1)(graphql@16.8.1):
-    resolution: {integrity: sha512-53qxFKiZcDQyyu25mkCIicy1pAfSPca2hgTHWYsS1SRkrIiGMK3tQ/WRkFE6FTOfgnrh6Inx4PA0YEVDWqZCow==}
+  /@graphql-ez/plugin-schema@0.9.1(@types/node@18.16.3)(graphql-ez@0.16.1)(graphql@16.8.1):
+    resolution: {integrity: sha512-cm90oxAkDmBeo9Tlyun+O9PsZpHWUOVLAM648wD6WIzd7m7NZobtbcfxj3lzFDkDa40nqRU4+70AQ0ew13VjhA==}
     engines: {node: '>=14.13.1'}
     peerDependencies:
       graphql: '*'
-      graphql-ez: ^0.16.0
+      graphql-ez: ^0.16.1
     peerDependenciesMeta:
       graphql:
         optional: true
     dependencies:
-      '@graphql-ez/utils': 0.2.0(@types/node@18.16.3)(graphql@16.8.1)
+      '@graphql-ez/utils': 0.2.1(@types/node@18.16.3)(graphql@16.8.1)
       '@graphql-tools/schema': 9.0.17(graphql@16.8.1)
       '@graphql-tools/utils': 9.2.1(graphql@16.8.1)
       graphql: 16.8.1
