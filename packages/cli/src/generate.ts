@@ -66,12 +66,27 @@ export interface GenerateOptions {
    */
   react?: boolean;
   /**
+   * Generated enum styles.
+   *
+   * 1. assertion: Enums will be generated as `const assertion` style objects.
+   * 2. const: Enums will be prefixed with the `const` keyword.
+   * 3. enum: Enums will be generated as TypeScript enums.
+   * 4. string: Enums will be generated as string unions.
+   *
+   * @default "enum"
+   */
+  enumStyle?: 'assertion' | 'const' | 'enum' | 'string';
+  /**
+   * @deprecated Use `enumStyle` instead.
+   *
    * Define enums as string types instead of enums objects
    *
    * @default false
    */
   enumsAsStrings?: boolean;
   /**
+   * @deprecated Use `enumStyle` instead.
+   *
    * Define enums as const types instead of enums objects
    *
    * @default false
@@ -110,16 +125,21 @@ export interface TransformSchemaOptions {
 export async function generate(
   schema: GraphQLSchema,
   {
-    endpoint,
     enumsAsConst,
     enumsAsStrings,
-    introspection,
-    javascriptOutput,
-    preImport,
-    react,
-    scalarTypes,
-    subscriptions,
-    transformSchema,
+    enumStyle = enumsAsConst
+      ? 'assertion'
+      : enumsAsStrings
+      ? 'string'
+      : defaultConfig.enumStyle,
+    introspection = defaultConfig.introspections,
+    endpoint = introspection?.endpoint ?? defaultConfig.endpoint,
+    javascriptOutput: isJavascriptOutput = defaultConfig.javascriptOutput,
+    preImport = defaultConfig.preImport,
+    react = defaultConfig.react,
+    scalarTypes = defaultConfig.scalarTypes,
+    subscriptions = defaultConfig.subscriptions,
+    transformSchema = defaultConfig.transformSchema,
   }: GQtyConfig = {},
   { ignoreArgs }: TransformSchemaOptions = {}
 ): Promise<{
@@ -130,39 +150,15 @@ export async function generate(
   scalarsEnumsHash: ScalarsEnumsHash;
   isJavascriptOutput: boolean;
 }> {
-  const isJavascriptOutput = javascriptOutput ?? defaultConfig.javascriptOutput;
-
   if (isJavascriptOutput) {
-    if (enumsAsStrings) {
+    if (enumStyle !== 'string' && enumStyle !== defaultConfig.enumStyle) {
       console.warn(
-        `"enumsAsStrings" is automatically set as "true" with "javascriptOutput" enabled.`
+        `"enumStyle" must be string unions with "javascriptOutput" enabled.`
       );
     }
-    enumsAsStrings = true;
-  } else {
-    enumsAsStrings ??= false;
+
+    enumStyle = 'string';
   }
-
-  if (isJavascriptOutput) {
-    if (enumsAsConst) {
-      console.warn(
-        `"enumsAsConst" is automatically set as "false" with "javascriptOutput" enabled.`
-      );
-    }
-    enumsAsConst = false;
-  }
-  enumsAsConst ??= enumsAsConst ?? defaultConfig.enumsAsConst;
-
-  scalarTypes ||= scalarTypes || defaultConfig.scalarTypes;
-  endpoint ||=
-    endpoint ||
-    introspection?.endpoint ||
-    defaultConfig.endpoint ||
-    defaultConfig.introspection.endpoint;
-
-  react ??= defaultConfig.react;
-  preImport ??= defaultConfig.preImport;
-  subscriptions ??= defaultConfig.subscriptions;
 
   const { format } = formatPrettier({
     parser: 'typescript',
@@ -189,13 +185,14 @@ export async function generate(
     plugins: [
       {
         typescript: {
+          constEnums: enumStyle === 'const',
           onlyOperationTypes: true,
           declarationKind: 'interface',
           addUnderscoreToArgsType: true,
           scalars: scalarTypes,
           namingConvention: 'keep',
-          enumsAsTypes: enumsAsStrings,
-          enumsAsConst: enumsAsConst,
+          enumsAsTypes: enumStyle === 'string',
+          enumsAsConst: enumStyle === 'assertion',
         } satisfies deps.typescriptPlugin.TypeScriptPluginConfig,
       },
     ],

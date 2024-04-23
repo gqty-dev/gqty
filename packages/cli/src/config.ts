@@ -75,6 +75,7 @@ export const defaultConfig: SetRequired<
   destination: './src/gqty/index.ts',
   subscriptions: false,
   javascriptOutput: false,
+  enumStyle: 'enum',
   enumsAsStrings: false,
   enumsAsConst: false,
   preImport: '',
