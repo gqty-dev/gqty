@@ -651,7 +651,7 @@ describe('feature complete app', () => {
       }
 
       /** Greetings Enum */
-      export const enum GreetingsEnum {
+      export enum GreetingsEnum {
         /** @deprecated Field no longer supported */
         Bye = 'Bye',
         /** Hello */
@@ -670,7 +670,7 @@ describe('feature complete app', () => {
         value?: InputMaybe<Scalars['String']['input']>;
       }
 
-      export const enum OtherEnum {
+      export enum OtherEnum {
         Other = 'Other',
       }
 

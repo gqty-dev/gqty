@@ -189,7 +189,6 @@ export async function generate(
     plugins: [
       {
         typescript: {
-          constEnums: true,
           onlyOperationTypes: true,
           declarationKind: 'interface',
           addUnderscoreToArgsType: true,
