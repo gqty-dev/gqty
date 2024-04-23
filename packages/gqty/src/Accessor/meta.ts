@@ -14,8 +14,8 @@ export type Meta = {
 /** Pun-intended, a universe of metadata. */
 const metaverse = new WeakMap<object, Meta>();
 
-export const $setMeta = (accessor: object, meta: Meta) => {
+export const $meta = <T extends object>(accessor: T) => metaverse.get(accessor);
+
+$meta.set = (accessor: object, meta: Meta) => {
   metaverse.set(accessor, meta);
 };
-
-export const $meta = <T extends object>(accessor: T) => metaverse.get(accessor);

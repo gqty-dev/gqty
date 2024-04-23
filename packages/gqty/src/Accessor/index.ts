@@ -139,4 +139,6 @@ export const assignSelections = <TData extends GeneratedSchemaObject>(
  *
  * Replace `assignSelection` with `Selection.use(Selection)`,
  * `Selection.getLeafNodes()` should comes in handy.
+ *
+ * This should also be the mechanism of cached selections for empty arrays.
  */

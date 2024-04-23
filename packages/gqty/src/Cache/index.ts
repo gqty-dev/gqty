@@ -345,8 +345,12 @@ export class Cache {
 
     return {
       data,
-      expiresAt,
-      swrBefore,
+      get expiresAt() {
+        return expiresAt;
+      },
+      get swrBefore() {
+        return swrBefore;
+      },
     };
   }
 
@@ -371,9 +375,6 @@ export class Cache {
 
     for (const [type, cacheObjects = {}] of Object.entries(values)) {
       for (const [field, data] of Object.entries(cacheObjects as CacheObject)) {
-        // TODO: Cache should reuse existing data containers (if any) and
-        // update the data, age, swr, and unref timer via Object.assign().
-
         const cacheKey = `${type}.${field}`;
 
         let unrefTimer: ReturnType<typeof setTimeout> | undefined;

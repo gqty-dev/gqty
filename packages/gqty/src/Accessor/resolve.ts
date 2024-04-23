@@ -11,7 +11,7 @@ import {
 import type { Selection } from '../Selection';
 import { isPlainObject } from '../Utils';
 import type { Meta } from './meta';
-import { $meta, $setMeta } from './meta';
+import { $meta } from './meta';
 import { createSkeleton, isSkeleton } from './skeleton';
 
 const verbose = process.env.NODE_ENV !== 'production';
@@ -348,7 +348,7 @@ export const createObjectAccessor = <TSchemaType extends GeneratedSchemaObject>(
         : objectProxyHandler
     );
 
-    $setMeta(proxy, meta);
+    $meta.set(proxy, meta);
 
     return proxy;
   };
@@ -548,7 +548,7 @@ export const createArrayAccessor = <
 
   const proxy = new Proxy(meta.cache.data as TSchemaType, arrayProxyHandler);
 
-  $setMeta(proxy, meta);
+  $meta.set(proxy, meta);
 
   return proxy;
 };
