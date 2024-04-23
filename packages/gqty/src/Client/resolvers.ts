@@ -4,6 +4,7 @@ import { type Cache } from '../Cache';
 import { type GQtyError, type RetryOptions } from '../Error';
 import { type ScalarsEnumsHash, type Schema } from '../Schema';
 import { type Selection } from '../Selection';
+import { createDeferredIterator } from '../Utils/deferred';
 import { addSelections, delSelectionSet, getSelectionsSet } from './batching';
 import { createContext, type SchemaContext } from './context';
 import { type Debugger } from './debugger';
@@ -87,14 +88,12 @@ export type ResolveFn<TSchema extends BaseGeneratedSchema> = <
   options?: ResolveOptions
 ) => Promise<TData>;
 
-const asyncItDoneMessage = { done: true } as IteratorResult<never>;
-
 export type SubscribeFn<TSchema extends BaseGeneratedSchema> = <
   TData extends unknown = unknown
 >(
   fn: DataFn<TSchema, TData>,
   options?: SubscribeOptions
-) => AsyncGenerator<TData, void, unknown> & {
+) => AsyncIterableIterator<TData> & {
   unsubscribe: Unsubscribe;
 };
 
@@ -429,14 +428,13 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
     subscribe: (
       fn,
       { onSubscribe, ...options } = {}
-    ): AsyncGenerator<any> & { unsubscribe: Unsubscribe } => {
+    ): AsyncIterableIterator<any> & { unsubscribe: Unsubscribe } => {
       const { accessor, selections, subscribe } = createResolver({
         ...options,
         onSubscribe: (unsubscribe) => {
           onSubscribe?.(() => {
             unsubscribe();
-            done = true;
-            deferred?.resolve();
+            observable.complete();
           });
         },
       });
@@ -445,12 +443,14 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
 
       const unsubscribe = subscribe({
         onError: (error) => {
-          rejected = error;
-          deferred?.reject(error);
+          if (observable.throw === undefined) {
+            throw error;
+          }
+
+          observable.throw(error);
         },
         onNext(value) {
-          pending.push((fn(accessor) as any) ?? (value as any));
-          deferred?.resolve();
+          observable.send((fn(accessor) as any) ?? (value as any));
         },
       });
 
@@ -459,48 +459,13 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
       // excessive duplicated selections.
       //context.onSelect = undefined;
 
-      let deferred:
-        | {
-            resolve: () => void;
-            reject: (err: unknown) => void;
-          }
-        | undefined;
-      let rejected: unknown;
-      let done = false;
-      const pending = [] as unknown[];
+      const observable = createDeferredIterator();
 
       if (selections.size === 0) {
-        done = true;
+        observable.complete();
       }
 
-      return {
-        async next() {
-          if (rejected !== undefined) {
-            throw rejected;
-          } else if (done) {
-            return asyncItDoneMessage;
-          } else if (pending.length > 0) {
-            return { value: pending.shift()! };
-          } else {
-            await new Promise<void>((resolve, reject) => {
-              deferred = { resolve, reject };
-            });
-
-            return this.next();
-          }
-        },
-        async throw(error) {
-          throw error;
-        },
-        async return() {
-          unsubscribe();
-          return asyncItDoneMessage;
-        },
-        [Symbol.asyncIterator]() {
-          return this;
-        },
-        unsubscribe,
-      };
+      return { ...observable, unsubscribe };
     },
   };
 };

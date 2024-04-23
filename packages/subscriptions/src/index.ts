@@ -51,8 +51,6 @@ export function createSubscriptionsClient({
         selections,
       };
 
-      wsClient;
-
       return wsClient instanceof Promise
         ? Promise.resolve()
             .then(() => wsClient)

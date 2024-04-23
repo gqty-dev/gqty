@@ -1,3 +1,4 @@
+import { createDeferredIterator } from 'gqty/Utils/deferred';
 import type { ExecutionResult } from 'graphql';
 import type {
   Client,
@@ -138,6 +139,36 @@ export const createLegacySubscriptionsClient = (
 
         unsubscribe();
         sink.complete();
+      };
+    },
+    iterate<
+      TData = Record<string, unknown>,
+      TExtensions = Record<string, unknown>
+    >(
+      payload: SubscribePayload
+    ): AsyncIterableIterator<ExecutionResult<TData, TExtensions>> {
+      const observable =
+        createDeferredIterator<ExecutionResult<TData, TExtensions>>();
+
+      const unsub = this.subscribe<TData, TExtensions>(payload, {
+        next: observable.send,
+        error: observable.throw,
+        complete: observable.complete,
+      });
+
+      return {
+        next: observable.next,
+        return: () => {
+          unsub();
+          return observable.return();
+        },
+        throw: (error: Error) => {
+          unsub();
+          return observable.throw(error);
+        },
+        [Symbol.asyncIterator]() {
+          return this;
+        },
       };
     },
     dispose: () => {
