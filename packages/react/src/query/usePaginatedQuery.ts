@@ -105,7 +105,7 @@ export interface FetchMoreCallbackArgs<TData, TArgs> {
 }
 
 export interface UsePaginatedQuery<TSchema extends BaseGeneratedSchema> {
-  <TData, TArgs extends Record<string, any> | string | number | null>(
+  <TData, TArgs extends Record<string, unknown> | string | number | null>(
     fn: (
       query: TSchema['query'],
       args: TArgs,

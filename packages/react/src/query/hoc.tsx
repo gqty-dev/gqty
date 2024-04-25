@@ -1,5 +1,5 @@
 import { useRerender } from '@react-hookz/web';
-import type { GQtyClient } from 'gqty';
+import type { BaseGeneratedSchema, GQtyClient } from 'gqty';
 import * as React from 'react';
 import type { OnErrorHandler } from '../common';
 import type { ReactClientOptionsWithDefaults } from '../utils';
@@ -18,8 +18,8 @@ export interface GraphQLHOC {
   ): (props: P) => React.ReactElement | null;
 }
 
-export function createGraphqlHOC(
-  { createResolver, subscribeLegacySelections }: GQtyClient<any>,
+export function createGraphqlHOC<TSchema extends BaseGeneratedSchema>(
+  { createResolver, subscribeLegacySelections }: GQtyClient<TSchema>,
   {
     defaults: { suspense: defaultSuspense, retry },
   }: ReactClientOptionsWithDefaults

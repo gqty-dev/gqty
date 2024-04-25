@@ -9,7 +9,7 @@ export interface UsePreparedQueryOptions {
 
 export type TQueryFunction<
   TSchema extends BaseGeneratedSchema,
-  TArgs = Record<string, any> | undefined,
+  TArgs = Record<string, unknown> | undefined,
   TData = unknown
 > = (query: TSchema['query'], args: TArgs) => TData;
 
