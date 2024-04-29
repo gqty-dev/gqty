@@ -20,9 +20,3 @@ export type ReactClientOptionsWithDefaults = Omit<
 > & {
   defaults: Required<ReactClientDefaults>;
 };
-
-export function getDefault<T extends Record<string, any>>(
-  v: T | { default: T }
-) {
-  return (('default' in v ? v.default : v) || v) as T;
-}

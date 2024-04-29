@@ -4,7 +4,7 @@ import {
   type LegacyHydrateCacheOptions,
 } from 'gqty';
 import { useEffect, useMemo, type ReactNode } from 'react';
-import { getDefault, type ReactClientOptionsWithDefaults } from '../utils';
+import { type ReactClientOptionsWithDefaults } from '../utils';
 
 export interface UseHydrateCacheOptions
   extends Partial<LegacyHydrateCacheOptions> {
@@ -51,7 +51,7 @@ export function createSSRHelpers<TSchema extends BaseGeneratedSchema>(
 ) {
   const prepareReactRender: PrepareReactRender =
     async function prepareReactRender(element: ReactNode) {
-      const ssrPrepass = getDefault(await import('react-ssr-prepass'));
+      const { default: ssrPrepass } = await import('react-ssr-prepass');
 
       return prepareRender(() => ssrPrepass(element));
     };

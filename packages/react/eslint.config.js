@@ -11,4 +11,5 @@ module.exports = [
   typescript.configs.eslintRecommended,
   ...typescript.configs.recommended,
   ...noLodashConfig,
+  { ignores: ['dist/', 'coverage/', '*.config.js'] },
 ];
