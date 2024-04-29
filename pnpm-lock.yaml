@@ -628,8 +628,8 @@ importers:
         specifier: ^7.2.0
         version: 7.2.0
       ws:
-        specifier: ^8.16.0
-        version: 8.16.0(bufferutil@4.0.8)(utf-8-validate@6.0.3)
+        specifier: ^8.17.0
+        version: 8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.3)
     publishDirectory: dist
 
   packages/logger:
@@ -802,10 +802,10 @@ importers:
     dependencies:
       isomorphic-ws:
         specifier: ^5.0.0
-        version: 5.0.0(ws@8.16.0)
+        version: 5.0.0(ws@8.17.0)
       ws:
-        specifier: ^8.16.0
-        version: 8.16.0(bufferutil@4.0.8)(utf-8-validate@6.0.3)
+        specifier: ^8.17.0
+        version: 8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.3)
     devDependencies:
       '@types/node':
         specifier: ^20.12.7
@@ -9909,12 +9909,12 @@ packages:
     dependencies:
       ws: 8.16.0(bufferutil@4.0.8)(utf-8-validate@6.0.3)
 
-  /isomorphic-ws@5.0.0(ws@8.16.0):
+  /isomorphic-ws@5.0.0(ws@8.17.0):
     resolution: {integrity: sha512-muId7Zzn9ywDsyXgTIafTry2sV3nySZeUDe6YedVd1Hvuuep5AsIlqK+XefWpYTyJG5e503F2xIuT2lcU6rCSw==}
     peerDependencies:
       ws: '*'
     dependencies:
-      ws: 8.16.0(bufferutil@4.0.8)(utf-8-validate@6.0.3)
+      ws: 8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.3)
     dev: false
 
   /istanbul-lib-coverage@3.2.2:
@@ -10809,7 +10809,7 @@ packages:
       whatwg-encoding: 2.0.0
       whatwg-mimetype: 3.0.0
       whatwg-url: 11.0.0
-      ws: 8.16.0(bufferutil@4.0.8)(utf-8-validate@6.0.3)
+      ws: 8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.3)
       xml-name-validator: 4.0.0
     transitivePeerDependencies:
       - bufferutil
@@ -14208,6 +14208,21 @@ packages:
 
   /ws@8.16.0(bufferutil@4.0.8)(utf-8-validate@6.0.3):
     resolution: {integrity: sha512-HS0c//TP7Ina87TfiPUz1rQzMhHrl/SG2guqRcTOIUYD2q8uhUdNHZYJUaQ8aTGPzCh+c6oawMKW35nFl1dxyQ==}
+    engines: {node: '>=10.0.0'}
+    peerDependencies:
+      bufferutil: ^4.0.1
+      utf-8-validate: '>=5.0.2'
+    peerDependenciesMeta:
+      bufferutil:
+        optional: true
+      utf-8-validate:
+        optional: true
+    dependencies:
+      bufferutil: 4.0.8
+      utf-8-validate: 6.0.3
+
+  /ws@8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.3):
+    resolution: {integrity: sha512-uJq6108EgZMAl20KagGkzCKfMEjxmKvZHG7Tlq0Z6nOky7YF7aq4mOx6xK8TJ/i1LeK4Qus7INktacctDgY8Ow==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
       bufferutil: ^4.0.1
