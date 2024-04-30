@@ -155,18 +155,26 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
           // Trigger a fetch when selections are made outside of the rendering
           // phase, such as event listeners or polling.
           if (!renderSession.get('isRendering')) {
-            refetch({ skipPrepass: true });
+            refetch({ skipPrepass: true, skipOnError: true });
           } // Clears previous selections if the current render is not triggered
           // by a fetch, because it implies a user-triggered state change where
           // old query inputs may be stale. Only clear selections once right
           // when the first selection is made.
-          else if (
-            !renderSession.get('postFetch') &&
-            !renderSession.get('postFetchSelectionCleared')
-          ) {
-            renderSession.set('postFetchSelectionCleared', true);
+          else if (!renderSession.get('postFetch')) {
+            // Force refetch on re-renders not triggered by a fetch response.
+            if (
+              cachePolicy === 'reload' ||
+              cachePolicy === 'no-cache' ||
+              cachePolicy === 'no-store'
+            ) {
+              resolver.context.shouldFetch = true;
+            }
 
-            selections.clear();
+            if (!renderSession.get('postFetchSelectionCleared')) {
+              renderSession.set('postFetchSelectionCleared', true);
+
+              selections.clear();
+            }
           }
         },
       });
@@ -223,8 +231,16 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
     );
 
     const refetch = useCallback(
-      async (options?: { ignoreCache?: boolean; skipPrepass?: boolean }) => {
+      async (options?: {
+        ignoreCache?: boolean;
+        skipPrepass?: boolean;
+        skipOnError?: boolean;
+      }) => {
         if (state.promise !== undefined) {
+          return;
+        }
+
+        if (state.error && (options?.skipOnError ?? !suspense)) {
           return;
         }
 
@@ -405,7 +421,8 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
     return useMemo(() => {
       return new Proxy(
         Object.freeze({
-          $refetch: (ignoreCache = true) => refetch({ ignoreCache }),
+          $refetch: (ignoreCache = true) =>
+            refetch({ ignoreCache, skipOnError: false }),
           $state: Object.freeze({
             isLoading: state.promise !== undefined || initialStateRef.current,
             error: state.error,
