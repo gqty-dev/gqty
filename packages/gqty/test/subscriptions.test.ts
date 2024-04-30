@@ -1,4 +1,4 @@
-import createDeferredPromise from 'p-defer';
+import createDeferred from 'p-defer';
 import { createTestClient } from './utils';
 
 describe('core#resolve', () => {
@@ -111,8 +111,8 @@ describe('legacy subscriptions', () => {
       { subscriptions: true }
     );
 
-    const unsubscribePromise = createDeferredPromise<() => Promise<void>>();
-    const dataPromise = createDeferredPromise<string>();
+    const unsubscribePromise = createDeferred<() => Promise<void>>();
+    const dataPromise = createDeferred<string>();
     let unsubscribe: (() => Promise<void>) | undefined;
 
     try {
@@ -168,11 +168,11 @@ describe('legacy subscriptions', () => {
       { subscriptions: true }
     );
 
-    const unsubscribePromise = createDeferredPromise();
+    const unsubscribePromise = createDeferred();
 
-    const dataPromise = createDeferredPromise<[string, string]>();
+    const dataPromise = createDeferred<[string, string]>();
     let data1Done = false;
-    const data2Promise = createDeferredPromise<[string, string]>();
+    const data2Promise = createDeferred<[string, string]>();
 
     const unsubscribers = new Set<() => Promise<void>>();
 
