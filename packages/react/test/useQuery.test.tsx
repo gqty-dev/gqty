@@ -1,5 +1,6 @@
-import { act, renderHook, waitFor } from '@testing-library/react';
+import { renderHook, waitFor } from '@testing-library/react';
 import { Cache, type QueryPayload } from 'gqty';
+import { act } from 'react';
 import { createReactTestClient } from './utils';
 
 describe('useQuery', () => {
@@ -172,7 +173,7 @@ describe('useQuery', () => {
     );
     const onError = jest.fn();
 
-    const { result } = renderHook(() => {
+    const { result, rerender } = renderHook(() => {
       const query = useQuery({
         retry: {
           maxRetries: 2,
@@ -184,6 +185,14 @@ describe('useQuery', () => {
       query.hello;
 
       return query;
+    });
+
+    await waitFor(() => {
+      expect(result.current.$state.error).not.toBeUndefined();
+    });
+
+    act(() => {
+      rerender();
     });
 
     await waitFor(() => {

@@ -235,7 +235,7 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
       }
 
       // Batch selections up at client level, fetch all of them "next tick".
-      const selectionsCacheKey = `${cachePolicy}/${operationName ?? ''}`;
+      const selectionsCacheKey = operationName ?? '';
 
       const pendingSelections = addSelections(
         clientCache,
