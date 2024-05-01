@@ -1,7 +1,7 @@
 import { assertIsDefined } from 'test-utils';
 import { $meta, createSchemaAccessor } from '../src/Accessor';
 import { createObjectAccessor } from '../src/Accessor/resolve';
-import { Cache, CacheRoot } from '../src/Cache';
+import { Cache, type CacheRoot } from '../src/Cache';
 import { Selection } from '../src/Selection';
 
 describe('Cache#dataAccessors', () => {
