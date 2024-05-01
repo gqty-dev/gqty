@@ -3,4 +3,4 @@
 'gqty': minor
 ---
 
-feat: added extensions option
+Added `extensions` option for passing arbitraty data to the query fetcher.

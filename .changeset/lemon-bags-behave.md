@@ -2,4 +2,4 @@
 '@gqty/cli': minor
 ---
 
-feat: interactive mode
+Interactive mode for generating queries and mutations
