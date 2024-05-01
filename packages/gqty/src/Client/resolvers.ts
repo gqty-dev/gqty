@@ -1,4 +1,4 @@
-import { type BaseGeneratedSchema, type FetchOptions } from '.';
+import { pick, type BaseGeneratedSchema, type FetchOptions } from '.';
 import { createSchemaAccessor } from '../Accessor';
 import { type Cache } from '../Cache';
 import { type GQtyError, type RetryOptions } from '../Error';
@@ -408,7 +408,7 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
     createResolver,
 
     resolve: async (fn, options) => {
-      const { accessor, resolve } = createResolver(options);
+      const { accessor, resolve, selections } = createResolver(options);
       const dataFn = () => fn(accessor);
 
       // Run once to trigger selections
@@ -417,12 +417,12 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
       const fetchPromise = resolve().then(dataFn);
 
       if (options?.awaitsFetch ?? true) {
-        return fetchPromise;
+        await fetchPromise;
       }
 
       options?.onFetch?.(fetchPromise);
 
-      return dataFn();
+      return dataFn() ?? (pick(accessor, selections) as any);
     },
 
     subscribe: (

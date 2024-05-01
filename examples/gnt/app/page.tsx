@@ -17,11 +17,8 @@ export default function Home() {
 
       {/* RSC test */}
 
-      {/* @ts-expect-error */}
       <Character id="1" />
-      {/* @ts-expect-error */}
       <Character id="2" />
-      {/* @ts-expect-error */}
       <Character id="3" />
     </main>
   );
