@@ -2,4 +2,4 @@
 '@gqty/cli': minor
 ---
 
-feat: Support "endpoint" in configuration
+Support "endpoint" in configuration

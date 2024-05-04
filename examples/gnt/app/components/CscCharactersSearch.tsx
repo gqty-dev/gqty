@@ -1,9 +1,8 @@
 'use client';
 
-import type { Variables } from 'gqty';
 import { useState, type FunctionComponent } from 'react';
 import Button from '~/components/tailwindui/Button';
-import type { Query } from '~/gqty';
+import type { Character, Characters, Maybe } from '~/gqty';
 import { useQuery } from '~/gqty/react';
 import Avatar from './Avatar';
 import Card from './Card';
@@ -15,10 +14,36 @@ export type Props = {};
 const Component: FunctionComponent<Props> = () => {
   const [searchValue, setSearchValue] = useState<string>();
 
+  const query = useQuery({
+    // cachePolicy: 'no-cache',
+  });
+
+  const error = query.$state.error;
+
   return (
     <>
-      <SearchBox onChange={setSearchValue} />
-      <Characters filter={{ name: searchValue }} />
+      <SearchBox
+        onChange={(v) => {
+          setSearchValue(v);
+          query.$refetch(false);
+        }}
+      />
+
+      {error && (
+        <Card>
+          {error.name ?? 'Error'}: {error.message}
+        </Card>
+      )}
+
+      {!error && (
+        <Characters
+          characters={
+            query.characters(
+              searchValue ? { filter: { name: searchValue } } : undefined
+            )?.results ?? undefined
+          }
+        />
+      )}
     </>
   );
 };
@@ -41,14 +66,12 @@ const SearchBox: FunctionComponent<{
   );
 };
 
-const Characters: FunctionComponent<Variables<Query['characters']>> = (
-  props
-) => {
-  const query = useQuery();
-
+const Characters: FunctionComponent<{ characters?: Maybe<Character>[] }> = ({
+  characters,
+}) => {
   return (
     <>
-      {query.characters(props)?.results?.map((character) => (
+      {characters?.map((character) => (
         <Card key={character?.id ?? '0'}>
           <Avatar character={character} />
 

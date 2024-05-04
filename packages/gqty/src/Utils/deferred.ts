@@ -1,34 +1,4 @@
-export type DeferredState = 'pending' | 'resolved' | 'rejected';
-
-export type Deferred<T> = {
-  promise: Promise<T>;
-  resolve: (value: T) => void;
-  reject: (error: unknown) => void;
-  state: DeferredState;
-};
-
-export const createDeferred = <T>(): Deferred<T> => {
-  let resolve!: (value: T) => void;
-  let reject!: (error: unknown) => void;
-  let state: DeferredState = 'pending';
-  const promise = new Promise<T>((res, rej) => {
-    resolve = (value: T) => {
-      state = 'resolved';
-      res(value);
-    };
-    reject = (error: unknown) => {
-      state = 'rejected';
-      rej(error);
-    };
-  });
-
-  return {
-    promise,
-    resolve,
-    reject,
-    state,
-  };
-};
+import createDeferred, { type DeferredPromise } from 'p-defer';
 
 const asyncItDoneMessage = { done: true } as IteratorResult<never>;
 
@@ -38,7 +8,7 @@ export type DeferredIterator<T> = AsyncGenerator<T, void, unknown> & {
 };
 
 export const createDeferredIterator = <T>(): DeferredIterator<T> => {
-  let deferred: Deferred<void> | undefined = createDeferred<void>();
+  let deferred: DeferredPromise<void> | undefined = createDeferred<void>();
   const events: T[] = [];
 
   const next = async (): Promise<IteratorResult<T>> => {

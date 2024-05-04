@@ -1,10 +1,11 @@
-import { act, renderHook, waitFor } from '@testing-library/react';
-import { type QueryPayload } from 'gqty';
+import { renderHook, waitFor } from '@testing-library/react';
+import { Cache, type QueryPayload } from 'gqty';
+import { act } from 'react';
 import { createReactTestClient } from './utils';
 
 describe('useQuery', () => {
-  fdescribe('isLoading', () => {
-    fit('should respect initial loading state', async () => {
+  describe('isLoading', () => {
+    it('should respect initial loading state', async () => {
       const { useQuery } = await createReactTestClient();
 
       const results: boolean[] = [];
@@ -12,7 +13,6 @@ describe('useQuery', () => {
       const { result } = renderHook(() => {
         const query = useQuery({
           initialLoadingState: true,
-          cachePolicy: 'no-cache',
         });
 
         results.push(query.$state.isLoading);
@@ -160,5 +160,104 @@ describe('useQuery', () => {
         },
       ]
     `);
+  });
+
+  it('should stop retrying when maxReties are reached.', async () => {
+    const fetchHistory: QueryPayload[] = [];
+    const { useQuery } = await createReactTestClient(
+      undefined,
+      async (payload) => {
+        fetchHistory.push(payload);
+        throw new Error('Network error');
+      }
+    );
+    const onError = jest.fn();
+
+    const { result, rerender } = renderHook(() => {
+      const query = useQuery({
+        retry: {
+          maxRetries: 2,
+          retryDelay: 0,
+        },
+        onError,
+      });
+
+      query.hello;
+
+      return query;
+    });
+
+    await waitFor(() => {
+      expect(result.current.$state.error).not.toBeUndefined();
+    });
+
+    act(() => {
+      rerender();
+    });
+
+    await waitFor(() => {
+      expect(result.current.$state.error).not.toBeUndefined();
+    });
+
+    expect(result.current.$state.error).toMatchInlineSnapshot(
+      `[GQtyError: Network error]`
+    );
+
+    expect(fetchHistory.length).toBe(3);
+    expect(onError).toHaveBeenCalled();
+  });
+
+  it('should respect cachePolicy', async () => {
+    const fetches: QueryPayload[] = [];
+    const reactClient = await createReactTestClient(
+      undefined,
+      ({ query, variables, operationName }) => {
+        // Keep fetch logs for result matching
+        fetches.push({ query, variables, operationName });
+
+        return reactClient.client.query(query, { variables, operationName });
+      },
+      undefined,
+      {
+        cache: new Cache(undefined, {
+          maxAge: Infinity,
+          staleWhileRevalidate: Infinity,
+        }),
+      }
+    );
+
+    const { result, rerender } = renderHook(() => {
+      const queryWithCache = reactClient.useQuery();
+      const queryWithoutCache = reactClient.useQuery({
+        cachePolicy: 'no-cache',
+      });
+
+      queryWithCache.hello;
+      queryWithoutCache.hello;
+
+      return {
+        queryWithCache,
+        queryWithoutCache,
+      };
+    });
+
+    await waitFor(() => {
+      expect(result.current.queryWithCache.hello).toBe('hello world');
+      expect(result.current.queryWithoutCache.hello).toBe('hello world');
+    });
+
+    expect(fetches.length).toBe(1);
+
+    act(rerender);
+
+    await waitFor(() => {
+      expect(fetches.length).toBe(2);
+    });
+
+    act(rerender);
+
+    await waitFor(() => {
+      expect(fetches.length).toBe(3);
+    });
   });
 });

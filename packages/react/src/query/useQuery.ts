@@ -34,23 +34,88 @@ export interface UseQueryPrepareHelpers<
 }
 
 export interface UseQueryOptions<TSchema extends BaseGeneratedSchema> {
+  /**
+   * Defines how a query should fetch from the cache and network.
+   *
+   * - `default`: Serves the cached contents when it is fresh, and if they are
+   * stale within `staleWhileRevalidate` window, fetches in the background and
+   * updates the cache. Or simply fetches on stale cache or cache miss. During
+   * SWR, a successful fetch will not notify cache updates. New contents are
+   * served on next query.
+   * - `no-store`: Always fetch and does not update on response.
+   * GQty creates a temporary cache at query-level which immediately expires.
+   * - `reload`: Always fetch, updates on response.
+   * - `no-cache`: Same as `reload`, for GraphQL does not support conditional
+   * requests.
+   * - `force-cache`: Serves the cached contents regardless of staleness. It
+   * fetches on cache miss or a stale cache, updates cache on response.
+   * - `only-if-cached`: Serves the cached contents regardless of staleness,
+   * throws a network error on cache miss.
+   *
+   * _It takes effort to make sure the above stays true for all supported
+   * frameworks, please consider sponsoring so we can dedicate even more time on
+   * this._
+   */
   cachePolicy?: RequestCache;
   extensions?: Record<string, unknown>;
+  /**
+   * Allow fetches when the browser is minified or hidden. When disabled, use
+   * the `refetchOnWindowVisible` option or call `$refetch()` to fetch.
+   */
   fetchInBackground?: boolean;
-  fetchPolicy?: LegacyFetchPolicy;
+  /** Specify the value of $state.isLoading before the first fetch. */
   initialLoadingState?: boolean;
   notifyOnNetworkStatusChange?: boolean;
+  /**
+   * A callback function that is called when an error occurs in the query
+   * fetcher, and `maxRetries` is reached.
+   */
   onError?: OnErrorHandler;
+  /**
+   * Specify a custom GraphQL operation name in the query. This separates the
+   * query from the internal query batcher, resulting a standalone fetch for
+   * easier debugging.
+   */
   operationName?: string;
   prepare?: (helpers: UseQueryPrepareHelpers<TSchema>) => void;
+  /**
+   * Soft refetches on the specified interval, skip this option to disable.
+   */
   refetchInterval?: number;
+  /**
+   * Soft refetches when the browser regains connectivity.
+   *
+   * @default true
+   */
   refetchOnReconnect?: boolean;
+  /**
+   * Soft refetches on render.
+   *
+   * @default true
+   */
   refetchOnRender?: boolean;
+  /**
+   * Soft refetches when user comes back to the browser tab.
+   *
+   * @default true
+   */
   refetchOnWindowVisible?: boolean;
-  retry?: RetryOptions;
   retryPolicy?: RetryOptions;
-  staleWhileRevalidate?: boolean | object | number | string | null;
+  /**
+   * Changes rendering in the following ways,
+   * 1. Suspenses the component during query fetch.
+   * 2. Throws the latest fetch error for error boundaries.
+   *
+   * @default false
+   */
   suspense?: boolean;
+
+  /** @deprecated Use `retryPolicy` instead. */
+  retry?: RetryOptions;
+  /** @deprecated Use `cachePolicy` instead. */
+  fetchPolicy?: LegacyFetchPolicy;
+  /** @deprecated Use `staleWhileRevalidate` in the Cache options. */
+  staleWhileRevalidate?: boolean | object | number | string | null;
 }
 
 export interface UseQueryState {
@@ -155,18 +220,26 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
           // Trigger a fetch when selections are made outside of the rendering
           // phase, such as event listeners or polling.
           if (!renderSession.get('isRendering')) {
-            refetch({ skipPrepass: true });
+            refetch({ skipPrepass: true, skipOnError: true });
           } // Clears previous selections if the current render is not triggered
           // by a fetch, because it implies a user-triggered state change where
           // old query inputs may be stale. Only clear selections once right
           // when the first selection is made.
-          else if (
-            !renderSession.get('postFetch') &&
-            !renderSession.get('postFetchSelectionCleared')
-          ) {
-            renderSession.set('postFetchSelectionCleared', true);
+          else if (!renderSession.get('postFetch')) {
+            // Force refetch on re-renders not triggered by a fetch response.
+            if (
+              cachePolicy === 'reload' ||
+              cachePolicy === 'no-cache' ||
+              cachePolicy === 'no-store'
+            ) {
+              resolver.context.shouldFetch = true;
+            }
 
-            selections.clear();
+            if (!renderSession.get('postFetchSelectionCleared')) {
+              renderSession.set('postFetchSelectionCleared', true);
+
+              selections.clear();
+            }
           }
         },
       });
@@ -223,8 +296,16 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
     );
 
     const refetch = useCallback(
-      async (options?: { ignoreCache?: boolean; skipPrepass?: boolean }) => {
+      async (options?: {
+        ignoreCache?: boolean;
+        skipPrepass?: boolean;
+        skipOnError?: boolean;
+      }) => {
         if (state.promise !== undefined) {
+          return;
+        }
+
+        if (state.error && (options?.skipOnError ?? !suspense)) {
           return;
         }
 
@@ -405,7 +486,8 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
     return useMemo(() => {
       return new Proxy(
         Object.freeze({
-          $refetch: (ignoreCache = true) => refetch({ ignoreCache }),
+          $refetch: (ignoreCache = true) =>
+            refetch({ ignoreCache, skipOnError: false }),
           $state: Object.freeze({
             isLoading: state.promise !== undefined || initialStateRef.current,
             error: state.error,

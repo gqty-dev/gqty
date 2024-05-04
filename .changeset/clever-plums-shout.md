@@ -2,4 +2,4 @@
 'gqty': minor
 ---
 
-feat: batching by microtask
+Batching by microtask

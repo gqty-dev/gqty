@@ -17,6 +17,7 @@ import { updateCaches } from './updateCaches';
 
 export type CreateResolversOptions = {
   aliasLength?: number;
+  batchWindow?: number;
   cache: Cache;
   debugger?: Debugger;
   depthLimit: number;
@@ -99,7 +100,7 @@ export type SubscribeFn<TSchema extends BaseGeneratedSchema> = <
 
 export type DataFn<TSchema, TResult = unknown> = (schema: TSchema) => TResult;
 
-export type CreateResolverOptions = {
+export type ResolverOptions = {
   /**
    * Defines how a query should fetch from the cache and network.
    *
@@ -132,7 +133,7 @@ export type CreateResolverOptions = {
   operationName?: string;
 };
 
-export type ResolveOptions = CreateResolverOptions & {
+export type ResolveOptions = ResolverOptions & {
   /**
    * Awaits resolution it the query results in a fetch. Specify `false` to
    * immediately return the current cache, placeholder data will be returned on
@@ -145,7 +146,7 @@ export type ResolveOptions = CreateResolverOptions & {
   onFetch?: (fetchPromise: Promise<unknown>) => void;
 };
 
-export type SubscribeOptions = CreateResolverOptions & {
+export type SubscribeOptions = ResolverOptions & {
   /**
    * Intercept errors thrown from the underlying subscription client or query
    * fetcher.
@@ -171,6 +172,7 @@ const pendingQueries = new WeakMap<Set<Set<Selection>>, Promise<unknown>>();
 
 export const createResolvers = <TSchema extends BaseGeneratedSchema>({
   aliasLength,
+  batchWindow,
   cache: clientCache,
   debugger: debug,
   depthLimit,
@@ -235,7 +237,7 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
       }
 
       // Batch selections up at client level, fetch all of them "next tick".
-      const selectionsCacheKey = `${cachePolicy}/${operationName ?? ''}`;
+      const selectionsCacheKey = operationName ?? '';
 
       const pendingSelections = addSelections(
         clientCache,
@@ -248,6 +250,13 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
           pendingSelections,
           // Batching happens at the end of microtask queue
           Promise.resolve().then(async () => {
+            // Have to skip this because a 0 timeout still pushes it at least
+            // one more mictotask to the future. Also setTimeout() has no real
+            // time guarantee.
+            if (batchWindow) {
+              await new Promise((resolve) => setTimeout(resolve, batchWindow));
+            }
+
             const uniqueSelections = new Set<Selection>();
 
             getSelectionsSet(clientCache, selectionsCacheKey)?.forEach(

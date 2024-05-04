@@ -2,4 +2,4 @@
 'gqty': patch
 ---
 
-fix(packages/gqty): default return type for `resolve`
+Added default return type for `resolve`

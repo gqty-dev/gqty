@@ -111,13 +111,31 @@ export type ClientOptions = {
    */
   aliasLength?: number;
 
+  /**
+   * Milliseconds to wait before pending queries are batched up for fetching.
+   */
+  batchWindow?: number;
+
+  /**
+   * The cache to be used by the accessors and fetches.
+   */
   cache: Cache;
+
+  /**
+   * Options related to fetching.
+   */
   fetchOptions: FetchOptions;
+
   scalars: ScalarsEnumsHash;
+
+  /**
+   * The generated schema object.
+   */
   schema: Readonly<Schema>;
 
   /**
-   * Maximum accessor depth, prevents infinite recursions.
+   * Maximum accessor depth before an error is thrown, prevents infinite
+   * recursions.
    *
    * @default 15
    */
@@ -145,6 +163,7 @@ export const createClient = <
   _ObjectTypes extends SchemaObjects<TSchema> = never
 >({
   aliasLength = 6,
+  batchWindow,
   // This default cache on a required option is for legacy clients, which does
   // not provide a `cache` option.
   // TODO: compat: remove in v4
@@ -197,6 +216,7 @@ export const createClient = <
 
   const resolvers = createResolvers<TSchema>({
     aliasLength,
+    batchWindow,
     scalars,
     schema,
     cache,
