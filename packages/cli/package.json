@@ -1,5 +1,7 @@
 {
   "name": "@gqty/cli",
+  "private": false,
+  "sideEffects": false,
   "version": "3.3.0",
   "homepage": "https://gqty.dev",
   "repository": {
@@ -11,29 +13,23 @@
   "maintainers": [
     "Vicary Archangel <vicary.archangel@member.mensa.org>"
   ],
-  "sideEffects": false,
-  "exports": {
-    ".": {
-      "require": "./dist/index.js",
-      "import": "./dist/index.mjs",
-      "types": "./dist/index.d.ts"
-    },
-    "./deps": "./dist/deps.js",
-    "./*": {
-      "require": "./dist/*.js",
-      "import": "./dist/*.mjs",
-      "types": "./dist/*.d.ts"
-    }
-  },
-  "main": "dist/index.js",
-  "module": "dist/index.mjs",
-  "typings": "dist/index.d.ts",
   "bin": {
     "gqty": "bin/gqty.mjs"
   },
   "files": [
     "dist",
     "src"
+  ],
+  "publishConfig": {
+    "directory": "dist"
+  },
+  "keywords": [
+    "client",
+    "codegen",
+    "gqty",
+    "graphql",
+    "interactive",
+    "reactive"
   ],
   "scripts": {
     "analyze": "size-limit --why",
@@ -79,19 +75,5 @@
     "test-utils": "workspace:^",
     "tmp-promise": "^3.0.3",
     "wait-on": "^7.2.0"
-  },
-  "publishConfig": {
-    "directory": "dist"
-  },
-  "typesVersions": {
-    "*": {
-      "dist/index.d.ts": [
-        "dist/index.d.ts"
-      ],
-      "*": [
-        "dist/*",
-        "dist/*/index.d.ts"
-      ]
-    }
   }
 }

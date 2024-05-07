@@ -16,7 +16,7 @@
     "prepare": "husky install",
     "publish:all": "changeset version && pnpm i && pnpm test && pnpm -r publish --access public",
     "test": "pnpm test -r --no-sort --no-bail --stream --",
-    "test:ci": "pnpm test -r --workspace-concurrency=0 --no-sort --no-bail --stream --"
+    "test:ci": "CI=1 pnpm test -r --workspace-concurrency=0 --no-sort --no-bail --stream --"
   },
   "devDependencies": {
     "@changesets/apply-release-plan": "^7.0.0",

@@ -83,14 +83,14 @@ export type CreateResolverFn<TSchema extends BaseGeneratedSchema> = (
 ) => ResolverParts<TSchema>;
 
 export type ResolveFn<TSchema extends BaseGeneratedSchema> = <
-  TData extends unknown = unknown
+  TData extends unknown = unknown,
 >(
   fn: DataFn<TSchema, TData>,
   options?: ResolveOptions
 ) => Promise<TData>;
 
 export type SubscribeFn<TSchema extends BaseGeneratedSchema> = <
-  TData extends unknown = unknown
+  TData extends unknown = unknown,
 >(
   fn: DataFn<TSchema, TData>,
   options?: SubscribeOptions
@@ -126,6 +126,7 @@ export type ResolverOptions = {
   /** Custom GraphQL extensions to be exposed to the query fetcher. */
   extensions?: Record<string, unknown>;
 
+  /** Retry strategy upon fetch failure. */
   retryPolicy?: RetryOptions;
 
   onSelect?: SchemaContext['select'];

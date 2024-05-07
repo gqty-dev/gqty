@@ -1,4 +1,4 @@
-import { createDeferredIterator } from 'gqty/Utils/deferred';
+import { createDeferredIterator } from '../../Utils/deferred';
 import type { ExecutionResult } from 'graphql';
 import type {
   Client,
@@ -16,7 +16,7 @@ import type { LegacySelection as Selection } from './selection';
 type Promisable<T> = T | Promise<T>;
 
 export type LegacySubscriptionsClient<
-  TData extends Record<string, unknown> = Record<string, unknown>
+  TData extends Record<string, unknown> = Record<string, unknown>,
 > = {
   subscribe(opts: {
     query: string;
@@ -46,7 +46,7 @@ export type LegacySubscriptionsClient<
 };
 
 export interface LegacySubscribeEvents<
-  TData extends Record<string, unknown> = Record<string, unknown>
+  TData extends Record<string, unknown> = Record<string, unknown>,
 > {
   onData: (data: TData) => void;
   onError: (payload: { error: GQtyError; data: TData | null }) => void;
@@ -71,7 +71,7 @@ export const createLegacySubscriptionsClient = (
   const client = {
     subscribe: <
       TData = Record<string, unknown>,
-      TExtensions = Record<string, unknown>
+      TExtensions = Record<string, unknown>,
     >(
       payload: SubscribePayload,
       sink: Sink<ExecutionResult<TData, TExtensions>>
@@ -143,7 +143,7 @@ export const createLegacySubscriptionsClient = (
     },
     iterate<
       TData = Record<string, unknown>,
-      TExtensions = Record<string, unknown>
+      TExtensions = Record<string, unknown>,
     >(
       payload: SubscribePayload
     ): AsyncIterableIterator<ExecutionResult<TData, TExtensions>> {

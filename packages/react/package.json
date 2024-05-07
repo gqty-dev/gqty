@@ -1,6 +1,8 @@
 {
   "name": "@gqty/react",
   "version": "2.1.1",
+  "private": false,
+  "sideEffects": false,
   "homepage": "https://gqty.dev",
   "repository": {
     "type": "git",
@@ -11,7 +13,6 @@
   "maintainers": [
     "Vicary Archangel <vicary.archangel@member.mensa.org>"
   ],
-  "sideEffects": false,
   "exports": {
     ".": {
       "import": "./dist/index.mjs",
@@ -30,6 +31,16 @@
   "files": [
     "dist",
     "src"
+  ],
+  "keywords": [
+    "cache",
+    "client",
+    "gqty",
+    "graphql",
+    "reactive",
+    "hooks",
+    "react",
+    "state"
   ],
   "scripts": {
     "analyze": "size-limit --why",

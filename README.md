@@ -14,15 +14,17 @@
 
 [![GQty Hero Section](internal/images/hero.png)](https://gqty.dev)
 
----
+Data requirements within your application are picked up automatically, freeing
+you from having to maintain GraphQL queries by-hand. It offers a first-class
+TypeScript experience. See API documentation at all times within autocomplete.
 
-Head over to [gqty.dev](https://gqty.dev) to explore features and documentation.
+Make breaking changes to your API, and see type-errors exactly where things are
+breaking, in realtime. No more running a separate validation step.
 
----
+**Head over to [gqty.dev](https://gqty.dev) to explore features and
+documentations!**
 
 ## Get involved
 
-Documentation, bug reports, pull requests, and all other contributions are
-welcome! See [`CONTRIBUTING.md`](CONTRIBUTING.md).
-
-Docs powered by [Vercel](https://vercel.com/?utm_source=gqty&utm_campaign=oss)
+Documentation, bug reports, pull requests, and other contributions are welcomed!
+See [`CONTRIBUTING.md`](CONTRIBUTING.md) for more information.

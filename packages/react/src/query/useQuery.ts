@@ -27,7 +27,7 @@ import { type ReactClientOptionsWithDefaults } from '../utils';
 export interface UseQueryPrepareHelpers<
   GeneratedSchema extends {
     query: object;
-  }
+  },
 > {
   readonly prepass: typeof prepass;
   readonly query: GeneratedSchema['query'];
@@ -57,6 +57,7 @@ export interface UseQueryOptions<TSchema extends BaseGeneratedSchema> {
    * this._
    */
   cachePolicy?: RequestCache;
+  /** Custom GraphQL extensions to be exposed to the query fetcher. */
   extensions?: Record<string, unknown>;
   /**
    * Allow fetches when the browser is minified or hidden. When disabled, use
@@ -65,6 +66,7 @@ export interface UseQueryOptions<TSchema extends BaseGeneratedSchema> {
   fetchInBackground?: boolean;
   /** Specify the value of $state.isLoading before the first fetch. */
   initialLoadingState?: boolean;
+  /** Enable this to update $state.isLoading or suspense during refetches. */
   notifyOnNetworkStatusChange?: boolean;
   /**
    * A callback function that is called when an error occurs in the query
@@ -77,6 +79,10 @@ export interface UseQueryOptions<TSchema extends BaseGeneratedSchema> {
    * easier debugging.
    */
   operationName?: string;
+  /**
+   * Making selections before the component is rendered, allowing Suspense
+   * to happen during first render.
+   */
   prepare?: (helpers: UseQueryPrepareHelpers<TSchema>) => void;
   /**
    * Soft refetches on the specified interval, skip this option to disable.
@@ -100,6 +106,7 @@ export interface UseQueryOptions<TSchema extends BaseGeneratedSchema> {
    * @default true
    */
   refetchOnWindowVisible?: boolean;
+  /** Retry strategy upon fetch failure. */
   retryPolicy?: RetryOptions;
   /**
    * Changes rendering in the following ways,
@@ -280,10 +287,17 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
     }
 
     if (suspense) {
-      if (state.error) throw state.error;
+      if (state.error) {
+        throw state.error;
+      }
 
       // Prevents excessive suspense fallback, throws only on empty cache.
-      if (state.promise && !context.hasCacheHit) throw state.promise;
+      if (
+        state.promise &&
+        (!context.hasCacheHit || notifyOnNetworkStatusChange)
+      ) {
+        throw state.promise;
+      }
     }
 
     useEffect(
@@ -316,8 +330,11 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
           return;
         }
 
-        // Run the current selection again to make sure cache freshness.
-        if (!options?.skipPrepass) {
+        // Soft-refetches here may not know if the WeakRefs in the cache is
+        // already garbage collected. Running this again to update context with
+        // the latest cache freshness, this inevitably affects the timing of
+        // garbage collection if the specific implementation has LRU components.
+        if (!options?.skipPrepass && isFinite(client.cache.maxAge)) {
           prepass(accessor, selections);
         }
 
@@ -394,7 +411,7 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
           // same time, without triggering a render.
           state.promise = promise;
 
-          if (!context.hasCacheHit && notifyOnNetworkStatusChange) {
+          if (!context.hasCacheHit || notifyOnNetworkStatusChange) {
             setState({ promise });
           }
 
