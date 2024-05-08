@@ -53,7 +53,7 @@ tsc
 // Copy project files
 for (const file of ['../../LICENSE', '../../README.md', 'package.json']) {
   fs.copyFileSync(
-    path.normalize(path.join(import.meta.dirname, file)),
+    path.normalize(path.join(import.meta.dirname ?? '.', file)),
     path.join('dist', path.basename(file))
   );
 }
