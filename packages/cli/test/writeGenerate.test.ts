@@ -264,6 +264,7 @@ test('creates dir, generates code and writes new file', async () => {
        */
 
       import { createReactClient } from '@gqty/react';
+      import { createSolidClient } from '@gqty/solid';
       import {
         Cache,
         createClient,
@@ -352,6 +353,8 @@ test('creates dir, generates code and writes new file', async () => {
           suspense: true,
         },
       });
+
+      export const { createQuery } = createSolidClient(client);
 
       export * from './schema.generated';
       "

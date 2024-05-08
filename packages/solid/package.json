@@ -1,0 +1,66 @@
+{
+  "name": "@gqty/solid",
+  "version": "0.1.0",
+  "type": "module",
+  "private": false,
+  "sideEffects": false,
+  "license": "MIT",
+  "homepage": "https://gqty.dev",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gqty-dev/gqty.git"
+  },
+  "author": "Vicary Archangel <vicary.archangel@member.mensa.org>",
+  "exports": {
+    ".": {
+      "import": "./index.mjs",
+      "require": "./index.cjs",
+      "types": "./index.d.ts"
+    }
+  },
+  "keywords": [
+    "cache",
+    "client",
+    "gqty",
+    "graphql",
+    "reactive",
+    "solid",
+    "state"
+  ],
+  "scripts": {
+    "prepare": "pnpm build",
+    "build": "tsx build.ts",
+    "test": "vitest"
+  },
+  "engines": {
+    "node": ">=16 <=22"
+  },
+  "publishConfig": {
+    "directory": "dist"
+  },
+  "devDependencies": {
+    "@solidjs/testing-library": "^0.8.7",
+    "@testing-library/jest-dom": "^6.4.5",
+    "esbuild": "^0.20.2",
+    "gqty": "workspace:^",
+    "jsdom": "^24.0.0",
+    "tsx": "^4.9.3",
+    "typescript": "^5.4.5",
+    "vitest": "^1.6.0"
+  },
+  "peerDependencies": {
+    "gqty": "^3.0.0",
+    "solid-js": "^1.6.0"
+  },
+  "peerDependenciesMeta": {
+    "graphql-sse": {
+      "optional": true
+    },
+    "graphql-ws": {
+      "optional": true
+    }
+  },
+  "dependencies": {
+    "debounce-microtasks": "^0.1.3"
+  }
+}

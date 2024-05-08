@@ -148,6 +148,8 @@ test('basic inspectWriteGenerate functionality', async () => {
         },
       });
 
+      export const { createQuery } = createSolidClient(client);
+
       export * from './schema.generated';
       "
     `);
@@ -274,6 +276,7 @@ describe('from file', () => {
          */
 
         import { createReactClient } from '@gqty/react';
+        import { createSolidClient } from '@gqty/solid';
         import {
           Cache,
           createClient,
@@ -362,6 +365,8 @@ describe('from file', () => {
             suspense: true,
           },
         });
+
+        export const { createQuery } = createSolidClient(client);
 
         export * from './schema.generated';
         "
@@ -488,6 +493,7 @@ describe('from file', () => {
          */
 
         import { createReactClient } from '@gqty/react';
+        import { createSolidClient } from '@gqty/solid';
         import {
           Cache,
           createClient,
@@ -576,6 +582,8 @@ describe('from file', () => {
             suspense: true,
           },
         });
+
+        export const { createQuery } = createSolidClient(client);
 
         export * from './schema.generated';
         "
@@ -701,6 +709,7 @@ describe('from file', () => {
          */
 
         import { createReactClient } from '@gqty/react';
+        import { createSolidClient } from '@gqty/solid';
         import {
           Cache,
           createClient,
@@ -789,6 +798,8 @@ describe('from file', () => {
             suspense: true,
           },
         });
+
+        export const { createQuery } = createSolidClient(client);
 
         export * from './schema.generated';
         "
@@ -958,6 +969,7 @@ describe('from multiple files', () => {
          */
 
         import { createReactClient } from '@gqty/react';
+        import { createSolidClient } from '@gqty/solid';
         import {
           Cache,
           createClient,
@@ -1046,6 +1058,8 @@ describe('from multiple files', () => {
             suspense: true,
           },
         });
+
+        export const { createQuery } = createSolidClient(client);
 
         export * from './schema.generated';
         "
@@ -1231,6 +1245,7 @@ test('specify generateOptions to inspectWriteGenerate', async () => {
        */
 
       import { createReactClient } from '@gqty/react';
+      import { createSolidClient } from '@gqty/solid';
       import {
         Cache,
         createClient,
@@ -1319,6 +1334,8 @@ test('specify generateOptions to inspectWriteGenerate', async () => {
           suspense: true,
         },
       });
+
+      export const { createQuery } = createSolidClient(client);
 
       export * from './schema.generated';
       "
@@ -1605,6 +1622,7 @@ describe('CLI behavior', () => {
          */
 
         import { createReactClient } from '@gqty/react';
+        import { createSolidClient } from '@gqty/solid';
         import {
           Cache,
           createClient,
@@ -1693,6 +1711,8 @@ describe('CLI behavior', () => {
             suspense: true,
           },
         });
+
+        export const { createQuery } = createSolidClient(client);
 
         export * from './schema.generated';
         "
@@ -1804,7 +1824,7 @@ test('detect client config change between files', async () => {
         case 2: {
           expect(message.replace(clientPathRegex, 'client.ts'))
             .toMatchInlineSnapshot(`
-            "[Warning] You've changed the option "react" to 'true', which is different from your existing "client.ts".
+            "[Warning] You've included "react" in frameworks, which is different from your existing "client.ts".
             If you meant to change this, please remove "client.ts" and re-run code generation."
           `);
           break;
@@ -1818,7 +1838,7 @@ test('detect client config change between files', async () => {
       endpoint,
       destination: tempDir.clientPath,
       generateOptions: {
-        react: false,
+        frameworks: [],
         subscriptions: false,
       },
     });
@@ -1829,7 +1849,7 @@ test('detect client config change between files', async () => {
       endpoint,
       destination: tempDir.clientPath,
       generateOptions: {
-        react: true,
+        frameworks: ['react'],
         subscriptions: true,
       },
     });

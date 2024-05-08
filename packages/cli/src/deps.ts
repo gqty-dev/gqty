@@ -1,9 +1,9 @@
+export { program } from '@commander-js/extra-typings';
 export { codegen } from '@graphql-codegen/core';
 export * as typescriptPlugin from '@graphql-codegen/typescript';
 export { printSchemaWithDirectives } from '@graphql-tools/utils';
 export { schemaFromExecutor, wrapSchema } from '@graphql-tools/wrap';
 export * as inquirer from '@inquirer/prompts';
-export { program } from 'commander';
 export { cosmiconfig, type Loader } from 'cosmiconfig';
 export { fetch } from 'cross-fetch';
 export { default as fg } from 'fast-glob';

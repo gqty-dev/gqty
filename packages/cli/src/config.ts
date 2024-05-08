@@ -2,7 +2,7 @@ import { promises } from 'node:fs';
 import { createRequire } from 'node:module';
 import { resolve } from 'node:path';
 import * as deps from './deps';
-import type { GenerateOptions } from './generate';
+import type { GenerateOptions, SupportedFrameworks } from './generate';
 import { __innerState } from './innerState';
 import type { IntrospectionOptions } from './introspection';
 import { formatPrettier } from './prettier';
@@ -54,17 +54,26 @@ export type SetRequired<T, K extends keyof T> = Omit<T, K> &
 
 export const defaultConfig: SetRequired<
   GQtyConfig,
-  Exclude<keyof GQtyConfig, 'introspections' | 'transformSchema'>
+  Exclude<keyof GQtyConfig, 'react' | 'introspections' | 'transformSchema'>
 > = {
-  react: (() => {
+  frameworks: (() => {
+    const result: SupportedFrameworks[] = [];
+
     try {
       cjsRequire.resolve('react');
-      return true;
+      result.push('react');
     } catch (err) {
       // noop
     }
 
-    return false;
+    try {
+      cjsRequire.resolve('solid-js');
+      result.push('solid-js');
+    } catch {
+      // noop
+    }
+
+    return result;
   })(),
   scalarTypes: {
     DateTime: 'string',
