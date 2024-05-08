@@ -36,6 +36,8 @@ const {
   assertSchema,
 } = graphql;
 
+export type SupportedFrameworks = 'react' | 'solid-js';
+
 export interface GenerateOptions {
   /**
    * The endpoint to use for the `queryFetcher` function
@@ -63,8 +65,14 @@ export interface GenerateOptions {
   preImport?: string;
   /**
    * Generate React Client code
+   *
+   * @deprecated Use `frameworks` instead.
    */
   react?: boolean;
+  /**
+   * Frontend framework integrations to be included.
+   */
+  frameworks?: Array<SupportedFrameworks>;
   /**
    * Generated enum styles.
    *
@@ -130,13 +138,14 @@ export async function generate(
     enumStyle = enumsAsConst
       ? 'assertion'
       : enumsAsStrings
-        ? 'string'
-        : defaultConfig.enumStyle,
+      ? 'string'
+      : defaultConfig.enumStyle,
     introspection = defaultConfig.introspections,
     endpoint = introspection?.endpoint ?? defaultConfig.endpoint,
     javascriptOutput: isJavascriptOutput = defaultConfig.javascriptOutput,
     preImport = defaultConfig.preImport,
     react = defaultConfig.react,
+    frameworks = defaultConfig.frameworks,
     scalarTypes = defaultConfig.scalarTypes,
     subscriptions = defaultConfig.subscriptions,
     transformSchema = defaultConfig.transformSchema,
@@ -173,6 +182,9 @@ export async function generate(
       throw Error(`"transformSchema" returned an invalid GraphQL Schema!`);
     }
   }
+
+  react ??= frameworks.includes('react');
+  const solid = frameworks.includes('solid-js');
 
   const codegenResultPromise = deps.codegen({
     schema: parse(deps.printSchemaWithDirectives(schema)),
@@ -235,7 +247,7 @@ export async function generate(
         : /* istanbul ignore next */
           fieldsDescriptions.get(typeName[0])?.[typeName[1]];
 
-      let comment = '';
+      let comment = ``;
 
       if (data?.description) {
         comment +=
@@ -260,7 +272,7 @@ export async function generate(
       return comment
         ? `/** ${comment}
       */\n`
-        : '';
+        : ``;
     } else {
       const desc = descriptions.get(typeName);
       return desc
@@ -271,7 +283,7 @@ export async function generate(
           .map((line) => '* ' + line)
           .join('\n')}
       */\n`
-        : '';
+        : ``;
     }
   }
 
@@ -360,27 +372,24 @@ export async function generate(
         }
         objectFieldsArgsDescriptions[fieldName] ||= {};
 
-        schemaType[fieldName].__args = gqlType.args.reduce(
-          (acum, arg) => {
-            acum[arg.name] = arg.type.toString();
-            if (
-              arg.description ||
-              arg.deprecationReason ||
-              arg.defaultValue != null
-            ) {
-              objectFieldsArgsDescriptions[fieldName][arg.name] = {
-                defaultValue:
-                  arg.defaultValue != null
-                    ? JSON.stringify(arg.defaultValue)
-                    : null,
-                deprecated: arg.deprecationReason,
-                description: arg.description,
-              };
-            }
-            return acum;
-          },
-          {} as Record<string, string>
-        );
+        schemaType[fieldName].__args = gqlType.args.reduce((acum, arg) => {
+          acum[arg.name] = arg.type.toString();
+          if (
+            arg.description ||
+            arg.deprecationReason ||
+            arg.defaultValue != null
+          ) {
+            objectFieldsArgsDescriptions[fieldName][arg.name] = {
+              defaultValue:
+                arg.defaultValue != null
+                  ? JSON.stringify(arg.defaultValue)
+                  : null,
+              deprecated: arg.deprecationReason,
+              description: arg.description,
+            };
+          }
+          return acum;
+        }, {} as Record<string, string>);
       }
     });
 
@@ -481,27 +490,24 @@ export async function generate(
         objectFieldsArgsDescriptions[fieldName] ||= {};
 
         schemaType[fieldName].__args = interfaceValue.__args =
-          gqlType.args.reduce(
-            (acum, arg) => {
-              acum[arg.name] = arg.type.toString();
-              if (
-                arg.description ||
-                arg.deprecationReason ||
-                arg.defaultValue != null
-              ) {
-                objectFieldsArgsDescriptions[fieldName][arg.name] = {
-                  defaultValue:
-                    arg.defaultValue != null
-                      ? JSON.stringify(arg.defaultValue)
-                      : null,
-                  deprecated: arg.deprecationReason,
-                  description: arg.description,
-                };
-              }
-              return acum;
-            },
-            {} as Record<string, string>
-          );
+          gqlType.args.reduce((acum, arg) => {
+            acum[arg.name] = arg.type.toString();
+            if (
+              arg.description ||
+              arg.deprecationReason ||
+              arg.defaultValue != null
+            ) {
+              objectFieldsArgsDescriptions[fieldName][arg.name] = {
+                defaultValue:
+                  arg.defaultValue != null
+                    ? JSON.stringify(arg.defaultValue)
+                    : null,
+                deprecated: arg.deprecationReason,
+                description: arg.description,
+              };
+            }
+            return acum;
+          }, {} as Record<string, string>);
       }
 
       if (gqlType.description || gqlType.deprecationReason) {
@@ -562,15 +568,12 @@ export async function generate(
 
   const unionsMapObj = Array.from(
     unionsAndInterfacesObjectTypesMap.entries()
-  ).reduce(
-    (acum, [key, value]) => {
-      generatedSchema[key]!.$on = { __type: `$${key}!` };
+  ).reduce((acum, [key, value]) => {
+    generatedSchema[key]!.$on = { __type: `$${key}!` };
 
-      acum[key] = value;
-      return acum;
-    },
-    {} as Record<string, string[]>
-  );
+    acum[key] = value;
+    return acum;
+  }, {} as Record<string, string[]>);
 
   if (unionsAndInterfacesObjectTypesMap.size) {
     generatedSchema[SchemaUnionsKey] = unionsMapObj;
@@ -603,7 +606,7 @@ export async function generate(
       typeToReturn = ['Maybe<', ...typeToReturn, '>'];
     }
 
-    return typeToReturn.join('');
+    return typeToReturn.join(``);
   }
 
   function parseFinalType({
@@ -628,7 +631,7 @@ export async function generate(
       typeToReturn = ['Maybe<', ...typeToReturn, '>'];
     }
 
-    return typeToReturn.join('');
+    return typeToReturn.join(``);
   }
 
   const objectTypeTSTypes = new Map<string, Map<string, string>>();
@@ -672,78 +675,70 @@ export async function generate(
             ? interfaceOrUnionsObjectTypes.map((v) => `"${v}"`).join(' | ')
             : `"${typeName}"`
         }; ${Object.entries(typeValue!).reduce(
-          (acum, [fieldKey, fieldValue]) => {
-            if (fieldKey === '__typename') {
-              objectTypeMap.set(fieldKey, `?: "${typeName}"`);
-              return acum;
-            }
-
-            const typeFieldArgDescriptions = fieldsArgsDescriptions.has(
-              typeName
-            )
-              ? fieldsArgsDescriptions.get(typeName)
-              : undefined;
-            const argDescriptions =
-              typeFieldArgDescriptions && typeFieldArgDescriptions[fieldKey]
-                ? typeFieldArgDescriptions[fieldKey]
-                : {};
-            const fieldValueProps = parseSchemaType(fieldValue.__type);
-            const typeToReturn = parseFinalType(fieldValueProps);
-            let finalType: string;
-            if (fieldValue.__args) {
-              const argsEntries = Object.entries(fieldValue.__args);
-              let onlyNullableArgs = true;
-              const argTypes = argsEntries.reduce(
-                (acum, [argKey, argValue]) => {
-                  const argValueProps = parseSchemaType(
-                    argValue,
-                    argDescriptions[argKey]
-                  );
-                  const connector =
-                    argValueProps.isNullable || argValueProps.hasDefaultValue
-                      ? '?:'
-                      : ':';
-
-                  if (!argValueProps.isNullable) {
-                    onlyNullableArgs = false;
-                  }
-
-                  const argTypeValue = parseArgType(argValueProps);
-
-                  acum += `${addDescription([
-                    typeName,
-                    fieldKey,
-                    argKey,
-                  ])}${argKey}${connector} ${argTypeValue};\n`;
-
-                  return acum;
-                },
-                ''
-              );
-              const argsConnector = onlyNullableArgs ? '?:' : ':';
-              finalType = `: (args${argsConnector} {${argTypes}}) => ${typeToReturn}`;
-            } else {
-              const connector = fieldValueProps.isNullable ? '?:' : ':';
-              finalType = `${connector} ${typeToReturn}`;
-            }
-
-            objectTypeMap.set(fieldKey, finalType);
-
-            acum +=
-              '\n' +
-              addDescription([typeName, fieldKey]) +
-              fieldKey +
-              finalType;
-
+        (acum, [fieldKey, fieldValue]) => {
+          if (fieldKey === '__typename') {
+            objectTypeMap.set(fieldKey, `?: "${typeName}"`);
             return acum;
-          },
-          ''
-        )}
+          }
+
+          const typeFieldArgDescriptions = fieldsArgsDescriptions.has(typeName)
+            ? fieldsArgsDescriptions.get(typeName)
+            : undefined;
+          const argDescriptions =
+            typeFieldArgDescriptions && typeFieldArgDescriptions[fieldKey]
+              ? typeFieldArgDescriptions[fieldKey]
+              : {};
+          const fieldValueProps = parseSchemaType(fieldValue.__type);
+          const typeToReturn = parseFinalType(fieldValueProps);
+          let finalType: string;
+          if (fieldValue.__args) {
+            const argsEntries = Object.entries(fieldValue.__args);
+            let onlyNullableArgs = true;
+            const argTypes = argsEntries.reduce((acum, [argKey, argValue]) => {
+              const argValueProps = parseSchemaType(
+                argValue,
+                argDescriptions[argKey]
+              );
+              const connector =
+                argValueProps.isNullable || argValueProps.hasDefaultValue
+                  ? '?:'
+                  : ':';
+
+              if (!argValueProps.isNullable) {
+                onlyNullableArgs = false;
+              }
+
+              const argTypeValue = parseArgType(argValueProps);
+
+              acum += `${addDescription([
+                typeName,
+                fieldKey,
+                argKey,
+              ])}${argKey}${connector} ${argTypeValue};\n`;
+
+              return acum;
+            }, '');
+            const argsConnector = onlyNullableArgs ? '?:' : ':';
+            finalType = `: (args${argsConnector} {${argTypes}}) => ${typeToReturn}`;
+          } else {
+            const connector = fieldValueProps.isNullable ? '?:' : ':';
+            finalType = `${connector} ${typeToReturn}`;
+          }
+
+          objectTypeMap.set(fieldKey, finalType);
+
+          acum +=
+            '\n' + addDescription([typeName, fieldKey]) + fieldKey + finalType;
+
+          return acum;
+        },
+        ''
+      )}
       }
       `;
 
       return acum;
-    }, '');
+    }, ``);
 
   if (unionsAndInterfacesObjectTypesMap.size) {
     typescriptTypes += `
@@ -760,7 +755,7 @@ export async function generate(
       `;
 
         return acum;
-      }, '')}
+      }, ``)}
     `;
   }
 
@@ -779,7 +774,7 @@ export async function generate(
       ${deps.sortBy(enumsNames).reduce((acum, enumName) => {
         acum += `${enumName}: ${enumName};`;
         return acum;
-      }, '')}
+      }, ``)}
     }
     `;
 
@@ -829,7 +824,7 @@ export async function generate(
       (acum, [key, value]) => {
         return `${JSON.stringify(key)}:${JSON.stringify(value)}, ${acum}`;
       },
-      hasUnions ? `[SchemaUnionsKey]: ${JSON.stringify(unionsMapObj)}` : ''
+      hasUnions ? `[SchemaUnionsKey]: ${JSON.stringify(unionsMapObj)}` : ``
     );
 
   const javascriptSchemaCode = await format(`
@@ -837,7 +832,7 @@ export async function generate(
      * GQty AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
      */
 
-    ${hasUnions ? 'import { SchemaUnionsKey } from "gqty";' : ''}
+    ${hasUnions ? 'import { SchemaUnionsKey } from "gqty";' : ``}
 
     ${typeDoc(
       'import("gqty").ScalarsEnumsHash'
@@ -858,18 +853,18 @@ export async function generate(
 
     ${preImport}
 
-    ${imports.length ? `import { ${imports.join(', ')} } from "gqty";` : ''}
+    ${imports.length ? `import { ${imports.join(', ')} } from "gqty";` : ``}
 
     ${await codegenResultPromise}
 
     export${
-      isJavascriptOutput ? ' declare' : ''
+      isJavascriptOutput ? ' declare' : ``
     } const scalarsEnumsHash: ScalarsEnumsHash${
-      isJavascriptOutput ? ';' : ` = ${scalarsEnumsHashString};`
-    }
+    isJavascriptOutput ? ';' : ` = ${scalarsEnumsHashString};`
+  }
     export${isJavascriptOutput ? ' declare' : ''} const generatedSchema ${
-      isJavascriptOutput ? ':' : '='
-    } {${generatedSchemaCodeString}}${isJavascriptOutput ? '' : ' as const'};
+    isJavascriptOutput ? ':' : '='
+  } {${generatedSchemaCodeString}}${isJavascriptOutput ? '' : ' as const'};
 
     ${typescriptTypes}
   `);
@@ -888,7 +883,7 @@ export async function generate(
           prepareReactRender,
           useHydrateCache,
           prepareQuery,
-          ${subscriptions ? 'useSubscription,' : ''}
+          ${subscriptions ? 'useSubscription,' : ``}
         } = ${
           isJavascriptOutput
             ? `${typeDoc(
@@ -902,7 +897,13 @@ export async function generate(
           }
         });
       `.trim()
-    : '';
+    : ``;
+
+  const solidClientCode = solid
+    ? `
+        export const { createQuery } = createSolidClient(client);
+      `
+    : ``;
 
   const clientCode = await format(`
     /**
@@ -910,12 +911,13 @@ export async function generate(
      */
 
     ${[
-      react ? `import { createReactClient } from "@gqty/react";` : '',
+      react ? `import { createReactClient } from "@gqty/react";` : ``,
+      solid ? `import { createSolidClient } from "@gqty/solid";` : ``,
       subscriptions
         ? `import { createClient as createSubscriptionsClient } from "${
             subscriptions === true ? 'graphql-ws' : subscriptions
           }";`
-        : '',
+        : ``,
       isJavascriptOutput
         ? 'import { Cache, createClient, defaultResponseHandler } from "gqty";'
         : 'import { Cache, createClient, defaultResponseHandler, type QueryFetcher } from "gqty";',
@@ -941,7 +943,7 @@ export async function generate(
             return url.href;
           }
         }) : undefined;`
-        : ''
+        : ``
     }
 
     const cache = new Cache(
@@ -967,7 +969,7 @@ export async function generate(
       cache,
       fetchOptions: {
         fetcher: queryFetcher,
-        ${subscriptions ? 'subscriber: subscriptionsClient' : ''}
+        ${subscriptions ? 'subscriber: subscriptionsClient' : ``}
       },
     });
     `
@@ -978,7 +980,7 @@ export async function generate(
       cache,
       fetchOptions:{
         fetcher: queryFetcher,
-        ${subscriptions ? 'subscriber: subscriptionsClient' : ''}
+        ${subscriptions ? 'subscriber: subscriptionsClient' : ``}
       },
     });
     `
@@ -991,6 +993,7 @@ export async function generate(
     export const { query, mutation, mutate, subscription, resolved, refetch, track } = client;
 
     ${reactClientCode}
+    ${solidClientCode}
 
     export * from "./schema.generated";
   `);
