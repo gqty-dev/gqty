@@ -1,3 +1,4 @@
+import { MultiDict } from 'multidict';
 import { pick, type BaseGeneratedSchema, type FetchOptions } from '.';
 import { createSchemaAccessor } from '../Accessor';
 import { type Cache } from '../Cache';
@@ -174,7 +175,7 @@ const pendingQueries = new WeakMap<Set<Set<Selection>>, Promise<unknown>>();
 export const createResolvers = <TSchema extends BaseGeneratedSchema>({
   aliasLength,
   batchWindow,
-  cache: clientCache,
+  cache: targetCache,
   debugger: debug,
   depthLimit,
   fetchOptions,
@@ -186,6 +187,11 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
   schema,
   parentContext,
 }: CreateResolversOptions): Resolvers<TSchema> => {
+  // A temporary cache is created by the resolver context for no-cache policy.
+  // When multiple queries are batched, all corresponding temporary caches must
+  // be updated. Along with the target cache.
+  const correlatedCaches = new MultiDict<Set<unknown>, Cache>();
+
   const createResolver = ({
     cachePolicy = defaultCachePolicy,
     extensions,
@@ -197,7 +203,7 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
     const selections = new Set<Selection>();
     const context = createContext({
       aliasLength,
-      cache: clientCache,
+      cache: targetCache,
       depthLimit,
       cachePolicy,
       scalars,
@@ -238,15 +244,23 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
       }
 
       // Batch selections up at client level, fetch all of them "next tick".
-      const selectionsCacheKey = operationName ?? '';
+      // 1. Query with operation names are never batched up with others.
+      // 2. 'no-store' queries are tracked separately because its data is not
+      // going into the main cache.
+      const selectionsCacheKey = `${operationName ?? (cachePolicy === 'no-store' ? 'no-store' : 'default')}`;
 
       const pendingSelections = addSelections(
-        clientCache,
+        targetCache,
         selectionsCacheKey,
         selections
       );
 
+      // Link temporary caches together
+      correlatedCaches.set(pendingSelections, context.cache);
+
       if (!pendingQueries.has(pendingSelections)) {
+        // [ ] debounceMicrotask
+
         pendingQueries.set(
           pendingSelections,
           // Batching happens at the end of microtask queue
@@ -260,7 +274,7 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
 
             const uniqueSelections = new Set<Selection>();
 
-            getSelectionsSet(clientCache, selectionsCacheKey)?.forEach(
+            getSelectionsSet(targetCache, selectionsCacheKey)?.forEach(
               (selections) => {
                 selections.forEach((selection) => {
                   uniqueSelections.add(selection);
@@ -270,7 +284,7 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
 
             pendingQueries.delete(pendingSelections);
 
-            delSelectionSet(clientCache, selectionsCacheKey);
+            delSelectionSet(targetCache, selectionsCacheKey);
 
             const results = await fetchSelections(uniqueSelections, {
               cache: context.cache,
@@ -280,13 +294,18 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
               operationName,
             });
 
-            updateCaches(
-              results,
-              cachePolicy !== 'no-store' && context.cache !== clientCache
-                ? [context.cache, clientCache]
-                : [context.cache],
-              { skipNotify: !context.notifyCacheUpdate }
-            );
+            const targetCaches =
+              correlatedCaches.get(pendingSelections) ?? new Set();
+
+            if (cachePolicy !== 'no-store') {
+              targetCaches.add(targetCache);
+            }
+
+            updateCaches(results, [...targetCaches], {
+              skipNotify: !context.notifyCacheUpdate,
+            });
+
+            correlatedCaches.delete(targetCache);
 
             return results;
           })
@@ -375,8 +394,8 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
               } else if (data !== undefined) {
                 updateCaches(
                   [{ data, error, extensions }],
-                  cachePolicy !== 'no-store' && context.cache !== clientCache
-                    ? [context.cache, clientCache]
+                  cachePolicy !== 'no-store' && context.cache !== targetCache
+                    ? [context.cache, targetCache]
                     : [context.cache],
                   { skipNotify: !context.notifyCacheUpdate }
                 );

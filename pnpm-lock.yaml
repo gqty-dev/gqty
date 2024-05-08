@@ -801,13 +801,6 @@ importers:
         version: 7.8.0(eslint@8.57.0)(typescript@5.4.5)
     publishDirectory: dist
 
-  packages/solid:
-    dependencies:
-      gqty:
-        specifier: workspace:^
-        version: link:../gqty/dist
-    publishDirectory: dist
-
   packages/subscriptions:
     dependencies:
       isomorphic-ws:
