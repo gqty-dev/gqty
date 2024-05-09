@@ -2,6 +2,8 @@
  * GQty AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
  */
 
+import { type ScalarsEnumsHash } from 'gqty';
+
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = {
@@ -13,15 +15,24 @@ export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
   [SubKey in K]: Maybe<T[SubKey]>;
 };
+export type MakeEmpty<
+  T extends { [key: string]: unknown },
+  K extends keyof T
+> = { [_ in K]?: never };
+export type Incremental<T> =
+  | T
+  | {
+      [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never;
+    };
 /** All built-in and custom scalars, mapped to their actual values */
 export interface Scalars {
-  ID: string;
-  String: string;
-  Boolean: boolean;
-  Int: number;
-  Float: number;
+  ID: { input: string; output: string };
+  String: { input: string; output: string };
+  Boolean: { input: boolean; output: boolean };
+  Int: { input: number; output: number };
+  Float: { input: number; output: number };
   /** The `Upload` scalar type represents a file upload. */
-  Upload: any;
+  Upload: { input: any; output: any };
 }
 
 export enum CacheControlScope {
@@ -30,25 +41,25 @@ export enum CacheControlScope {
 }
 
 export interface FilterCharacter {
-  gender?: InputMaybe<Scalars['String']>;
-  name?: InputMaybe<Scalars['String']>;
-  species?: InputMaybe<Scalars['String']>;
-  status?: InputMaybe<Scalars['String']>;
-  type?: InputMaybe<Scalars['String']>;
+  gender?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  species?: InputMaybe<Scalars['String']['input']>;
+  status?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<Scalars['String']['input']>;
 }
 
 export interface FilterEpisode {
-  episode?: InputMaybe<Scalars['String']>;
-  name?: InputMaybe<Scalars['String']>;
+  episode?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
 }
 
 export interface FilterLocation {
-  dimension?: InputMaybe<Scalars['String']>;
-  name?: InputMaybe<Scalars['String']>;
-  type?: InputMaybe<Scalars['String']>;
+  dimension?: InputMaybe<Scalars['String']['input']>;
+  name?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<Scalars['String']['input']>;
 }
 
-export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
+export const scalarsEnumsHash: ScalarsEnumsHash = {
   Boolean: true,
   CacheControlScope: true,
   ID: true,
@@ -154,7 +165,7 @@ export interface Character {
   /**
    * Time at which the character was created in the database.
    */
-  created?: Maybe<ScalarsEnums['String']>;
+  created?: Maybe<Scalars['String']['output']>;
   /**
    * Episodes in which this character appeared.
    */
@@ -162,16 +173,16 @@ export interface Character {
   /**
    * The gender of the character ('Female', 'Male', 'Genderless' or 'unknown').
    */
-  gender?: Maybe<ScalarsEnums['String']>;
+  gender?: Maybe<Scalars['String']['output']>;
   /**
    * The id of the character.
    */
-  id?: Maybe<ScalarsEnums['ID']>;
+  id?: Maybe<Scalars['ID']['output']>;
   /**
    * Link to the character's image.
    * All images are 300x300px and most are medium shots or portraits since they are intended to be used as avatars.
    */
-  image?: Maybe<ScalarsEnums['String']>;
+  image?: Maybe<Scalars['String']['output']>;
   /**
    * The character's last known location
    */
@@ -179,7 +190,7 @@ export interface Character {
   /**
    * The name of the character.
    */
-  name?: Maybe<ScalarsEnums['String']>;
+  name?: Maybe<Scalars['String']['output']>;
   /**
    * The character's origin location
    */
@@ -187,15 +198,15 @@ export interface Character {
   /**
    * The species of the character.
    */
-  species?: Maybe<ScalarsEnums['String']>;
+  species?: Maybe<Scalars['String']['output']>;
   /**
    * The status of the character ('Alive', 'Dead' or 'unknown').
    */
-  status?: Maybe<ScalarsEnums['String']>;
+  status?: Maybe<Scalars['String']['output']>;
   /**
    * The type or subspecies of the character.
    */
-  type?: Maybe<ScalarsEnums['String']>;
+  type?: Maybe<Scalars['String']['output']>;
 }
 
 export interface Characters {
@@ -209,7 +220,7 @@ export interface Episode {
   /**
    * The air date of the episode.
    */
-  air_date?: Maybe<ScalarsEnums['String']>;
+  air_date?: Maybe<Scalars['String']['output']>;
   /**
    * List of characters who have been seen in the episode.
    */
@@ -217,19 +228,19 @@ export interface Episode {
   /**
    * Time at which the episode was created in the database.
    */
-  created?: Maybe<ScalarsEnums['String']>;
+  created?: Maybe<Scalars['String']['output']>;
   /**
    * The code of the episode.
    */
-  episode?: Maybe<ScalarsEnums['String']>;
+  episode?: Maybe<Scalars['String']['output']>;
   /**
    * The id of the episode.
    */
-  id?: Maybe<ScalarsEnums['ID']>;
+  id?: Maybe<Scalars['ID']['output']>;
   /**
    * The name of the episode.
    */
-  name?: Maybe<ScalarsEnums['String']>;
+  name?: Maybe<Scalars['String']['output']>;
 }
 
 export interface Episodes {
@@ -243,19 +254,19 @@ export interface Info {
   /**
    * The length of the response.
    */
-  count?: Maybe<ScalarsEnums['Int']>;
+  count?: Maybe<Scalars['Int']['output']>;
   /**
    * Number of the next page (if it exists)
    */
-  next?: Maybe<ScalarsEnums['Int']>;
+  next?: Maybe<Scalars['Int']['output']>;
   /**
    * The amount of pages.
    */
-  pages?: Maybe<ScalarsEnums['Int']>;
+  pages?: Maybe<Scalars['Int']['output']>;
   /**
    * Number of the previous page (if it exists)
    */
-  prev?: Maybe<ScalarsEnums['Int']>;
+  prev?: Maybe<Scalars['Int']['output']>;
 }
 
 export interface Location {
@@ -263,19 +274,19 @@ export interface Location {
   /**
    * Time at which the location was created in the database.
    */
-  created?: Maybe<ScalarsEnums['String']>;
+  created?: Maybe<Scalars['String']['output']>;
   /**
    * The dimension in which the location is located.
    */
-  dimension?: Maybe<ScalarsEnums['String']>;
+  dimension?: Maybe<Scalars['String']['output']>;
   /**
    * The id of the location.
    */
-  id?: Maybe<ScalarsEnums['ID']>;
+  id?: Maybe<Scalars['ID']['output']>;
   /**
    * The name of the location.
    */
-  name?: Maybe<ScalarsEnums['String']>;
+  name?: Maybe<Scalars['String']['output']>;
   /**
    * List of characters who have been last seen in the location.
    */
@@ -283,7 +294,7 @@ export interface Location {
   /**
    * The type of the location.
    */
-  type?: Maybe<ScalarsEnums['String']>;
+  type?: Maybe<Scalars['String']['output']>;
 }
 
 export interface Locations {
@@ -301,53 +312,53 @@ export interface Query {
   /**
    * Get a specific character by ID
    */
-  character: (args: { id: Scalars['ID'] }) => Maybe<Character>;
+  character: (args: { id: Scalars['ID']['input'] }) => Maybe<Character>;
   /**
    * Get the list of all characters
    */
   characters: (args?: {
     filter?: Maybe<FilterCharacter>;
-    page?: Maybe<Scalars['Int']>;
+    page?: Maybe<Scalars['Int']['input']>;
   }) => Maybe<Characters>;
   /**
    * Get a list of characters selected by ids
    */
   charactersByIds: (args: {
-    ids: Array<Scalars['ID']>;
+    ids: Array<Scalars['ID']['input']>;
   }) => Maybe<Array<Maybe<Character>>>;
   /**
    * Get a specific episode by ID
    */
-  episode: (args: { id: Scalars['ID'] }) => Maybe<Episode>;
+  episode: (args: { id: Scalars['ID']['input'] }) => Maybe<Episode>;
   /**
    * Get the list of all episodes
    */
   episodes: (args?: {
     filter?: Maybe<FilterEpisode>;
-    page?: Maybe<Scalars['Int']>;
+    page?: Maybe<Scalars['Int']['input']>;
   }) => Maybe<Episodes>;
   /**
    * Get a list of episodes selected by ids
    */
   episodesByIds: (args: {
-    ids: Array<Scalars['ID']>;
+    ids: Array<Scalars['ID']['input']>;
   }) => Maybe<Array<Maybe<Episode>>>;
   /**
    * Get a specific locations by ID
    */
-  location: (args: { id: Scalars['ID'] }) => Maybe<Location>;
+  location: (args: { id: Scalars['ID']['input'] }) => Maybe<Location>;
   /**
    * Get the list of all locations
    */
   locations: (args?: {
     filter?: Maybe<FilterLocation>;
-    page?: Maybe<Scalars['Int']>;
+    page?: Maybe<Scalars['Int']['input']>;
   }) => Maybe<Locations>;
   /**
    * Get a list of locations selected by ids
    */
   locationsByIds: (args: {
-    ids: Array<Scalars['ID']>;
+    ids: Array<Scalars['ID']['input']>;
   }) => Maybe<Array<Maybe<Location>>>;
 }
 
@@ -361,10 +372,16 @@ export interface GeneratedSchema {
   subscription: Subscription;
 }
 
-export type MakeNullable<T> = {
-  [K in keyof T]: T[K] | undefined;
-};
+type Enums = {};
 
-export interface ScalarsEnums extends MakeNullable<Scalars> {
-  CacheControlScope: CacheControlScope | undefined;
-}
+export type InputFields = {
+  [Key in keyof Scalars]: Scalars[Key] extends { input: unknown }
+    ? Scalars[Key]['input']
+    : never;
+} & Enums;
+
+export type OutputFields = {
+  [Key in keyof Scalars]: Scalars[Key] extends { output: unknown }
+    ? Scalars[Key]['output']
+    : never;
+} & Enums;

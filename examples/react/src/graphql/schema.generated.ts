@@ -139,8 +139,8 @@ export const generatedSchema = {
  */
 export interface Dog {
   __typename?: 'Dog';
-  id: ScalarsEnums['ID'];
-  name: ScalarsEnums['String'];
+  id: Scalars['ID']['output'];
+  name: Scalars['String']['output'];
   owner?: Maybe<Human>;
 }
 
@@ -157,13 +157,13 @@ export interface Human {
     /**
      * @defaultValue `"Hello World"`
      */
-    a?: Maybe<ScalarsEnums['String']>;
-  }) => Maybe<ScalarsEnums['Int']>;
-  id: ScalarsEnums['ID'];
+    a?: Maybe<Scalars['String']['input']>;
+  }) => Maybe<Scalars['Int']['output']>;
+  id: Scalars['ID']['output'];
   /**
    * Human Name
    */
-  name: ScalarsEnums['String'];
+  name: Scalars['String']['output'];
 }
 
 /**
@@ -180,10 +180,10 @@ export interface HumansConnection {
  */
 export interface PageInfo {
   __typename?: 'PageInfo';
-  endCursor?: Maybe<ScalarsEnums['String']>;
-  hasNextPage: ScalarsEnums['Boolean'];
-  hasPreviousPage: ScalarsEnums['Boolean'];
-  startCursor?: Maybe<ScalarsEnums['String']>;
+  endCursor?: Maybe<Scalars['String']['output']>;
+  hasNextPage: Scalars['Boolean']['output'];
+  hasPreviousPage: Scalars['Boolean']['output'];
+  startCursor?: Maybe<Scalars['String']['output']>;
 }
 
 export interface Species {
@@ -197,27 +197,27 @@ export interface Species {
 export interface Mutation {
   __typename?: 'Mutation';
   createHuman: (args: {
-    id: ScalarsEnums['ID'];
-    name: ScalarsEnums['String'];
+    id: Scalars['ID']['input'];
+    name: Scalars['String']['input'];
   }) => Human;
-  other: (args: { arg: inputTypeExample }) => Maybe<ScalarsEnums['Int']>;
+  other: (args: { arg: inputTypeExample }) => Maybe<Scalars['Int']['output']>;
   renameDog: (args: {
     /**
      * Dog Id
      */
-    id: ScalarsEnums['ID'];
-    name: ScalarsEnums['String'];
+    id: Scalars['ID']['input'];
+    name: Scalars['String']['input'];
   }) => Maybe<Dog>;
   renameHuman: (args: {
-    id: ScalarsEnums['ID'];
-    name: ScalarsEnums['String'];
+    id: Scalars['ID']['input'];
+    name: Scalars['String']['input'];
   }) => Maybe<Human>;
   sendNotification: (args: {
-    message: ScalarsEnums['String'];
-  }) => ScalarsEnums['Boolean'];
+    message: Scalars['String']['input'];
+  }) => Scalars['Boolean']['output'];
   uploadFile: (args: {
-    file: ScalarsEnums['Upload'];
-  }) => ScalarsEnums['String'];
+    file: Scalars['Upload']['input'];
+  }) => Scalars['String']['output'];
 }
 
 /**
@@ -227,12 +227,12 @@ export interface Query {
   __typename?: 'Query';
   dogs: Array<Dog>;
   emptyHumanArray: Array<Human>;
-  emptyScalarArray: Array<ScalarsEnums['Int']>;
+  emptyScalarArray: Array<Scalars['Int']['output']>;
   /**
    * Expected Error!
    */
-  expectedError: ScalarsEnums['Boolean'];
-  expectedNullableError?: Maybe<ScalarsEnums['Boolean']>;
+  expectedError: Scalars['Boolean']['output'];
+  expectedNullableError?: Maybe<Scalars['Boolean']['output']>;
   human1: Human;
   human1Other: Human;
   humans: Array<Human>;
@@ -242,14 +242,14 @@ export interface Query {
      */
     input: ConnectionArgs;
   }) => HumansConnection;
-  stringList: Array<ScalarsEnums['String']>;
-  thirdTry: ScalarsEnums['Boolean'];
-  time: ScalarsEnums['String'];
+  stringList: Array<Scalars['String']['output']>;
+  thirdTry: Scalars['Boolean']['output'];
+  time: Scalars['String']['output'];
 }
 
 export interface Subscription {
   __typename?: 'Subscription';
-  newNotification: ScalarsEnums['String'];
+  newNotification: Scalars['String']['output'];
 }
 
 export interface $Species {
@@ -263,10 +263,16 @@ export interface GeneratedSchema {
   subscription: Subscription;
 }
 
-export type ScalarsEnums = {
+type Enums = {};
+
+export type InputFields = {
+  [Key in keyof Scalars]: Scalars[Key] extends { input: unknown }
+    ? Scalars[Key]['input']
+    : never;
+} & Enums;
+
+export type OutputFields = {
   [Key in keyof Scalars]: Scalars[Key] extends { output: unknown }
     ? Scalars[Key]['output']
     : never;
-} & {
-  DogType: DogType;
-};
+} & Enums;

@@ -121,7 +121,7 @@ test('generates code and writes existing file', async () => {
 
       export interface Query {
         __typename?: 'Query';
-        hello: ScalarsEnums['String'];
+        hello?: Scalars['String']['output'];
       }
 
       export interface Subscription {
@@ -133,12 +133,6 @@ test('generates code and writes existing file', async () => {
         mutation: Mutation;
         subscription: Subscription;
       }
-
-      export type ScalarsEnums = {
-        [Key in keyof Scalars]: Scalars[Key] extends { output: unknown }
-          ? Scalars[Key]['output']
-          : never;
-      } & {};
       "
     `);
   } finally {
@@ -230,7 +224,7 @@ test('creates dir, generates code and writes new file', async () => {
 
       export interface Query {
         __typename?: 'Query';
-        hello: ScalarsEnums['String'];
+        hello?: Scalars['String']['output'];
       }
 
       export interface Subscription {
@@ -242,12 +236,6 @@ test('creates dir, generates code and writes new file', async () => {
         mutation: Mutation;
         subscription: Subscription;
       }
-
-      export type ScalarsEnums = {
-        [Key in keyof Scalars]: Scalars[Key] extends { output: unknown }
-          ? Scalars[Key]['output']
-          : never;
-      } & {};
       "
     `);
 
@@ -306,8 +294,8 @@ test('creates dir, generates code and writes new file', async () => {
          * allowing soft refetches in background.
          */
         {
-          maxAge: 0,
-          staleWhileRevalidate: 5 * 60 * 1000,
+          maxAge: 5000,
+          staleWhileRevalidate: 30 * 60 * 1000,
           normalization: true,
         }
       );
