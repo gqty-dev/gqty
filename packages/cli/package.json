@@ -13,6 +13,22 @@
   "maintainers": [
     "Vicary Archangel <vicary.archangel@member.mensa.org>"
   ],
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
+    },
+    "./deps": "./dist/deps.js",
+    "./*": {
+      "require": "./dist/*.js",
+      "import": "./dist/*.mjs",
+      "types": "./dist/*.d.ts"
+    }
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "typings": "dist/index.d.ts",
   "bin": {
     "gqty": "bin/gqty.mjs"
   },

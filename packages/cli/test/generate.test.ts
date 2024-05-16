@@ -105,12 +105,12 @@ test('basic functionality works', async () => {
         /**
          * @defaultValue \`123\`
          */
-        arg?: Maybe<ScalarsEnums['Int']>;
-      }) => Maybe<ScalarsEnums['Int']>;
+        arg?: Maybe<Scalars['Int']['input']>;
+      }) => Maybe<Scalars['Int']['output']>;
       /**
        * Hello field
        */
-      hello: ScalarsEnums['String'];
+      hello: Scalars['String']['output'];
     }
 
     export interface Subscription {
@@ -123,11 +123,19 @@ test('basic functionality works', async () => {
       subscription: Subscription;
     }
 
-    export type ScalarsEnums = {
+    type Enums = {};
+
+    export type InputFields = {
+      [Key in keyof Scalars]: Scalars[Key] extends { input: unknown }
+        ? Scalars[Key]['input']
+        : never;
+    } & Enums;
+
+    export type OutputFields = {
       [Key in keyof Scalars]: Scalars[Key] extends { output: unknown }
         ? Scalars[Key]['output']
         : never;
-    } & {};
+    } & Enums;
     "
   `);
 
@@ -481,7 +489,7 @@ test('custom scalars works', async () => {
 
     export interface Query {
       __typename?: 'Query';
-      hello: ScalarsEnums['Custom'];
+      hello: Scalars['Custom']['output'];
     }
 
     export interface Subscription {
@@ -494,11 +502,19 @@ test('custom scalars works', async () => {
       subscription: Subscription;
     }
 
-    export type ScalarsEnums = {
+    type Enums = {};
+
+    export type InputFields = {
+      [Key in keyof Scalars]: Scalars[Key] extends { input: unknown }
+        ? Scalars[Key]['input']
+        : never;
+    } & Enums;
+
+    export type OutputFields = {
       [Key in keyof Scalars]: Scalars[Key] extends { output: unknown }
         ? Scalars[Key]['output']
         : never;
-    } & {};
+    } & Enums;
     "
   `);
 
@@ -761,14 +777,18 @@ describe('feature complete app', () => {
       export interface Human {
         __typename?: 'Human';
         father: Human;
-        fieldWithArgs: (args: { id: ScalarsEnums['Int'] }) => ScalarsEnums['Int'];
-        name: ScalarsEnums['String'];
-        other?: Maybe<ScalarsEnums['String']>;
+        fieldWithArgs: (args: {
+          id: Scalars['Int']['input'];
+        }) => Scalars['Int']['output'];
+        name: Scalars['String']['output'];
+        other?: Maybe<Scalars['String']['output']>;
         withArgs: (args: {
-          a: ScalarsEnums['Int'];
-          b?: Maybe<ScalarsEnums['Int']>;
-        }) => Maybe<ScalarsEnums['Int']>;
-        withArgs2: (args?: { a?: Maybe<ScalarsEnums['Int']> }) => ScalarsEnums['Int'];
+          a: Scalars['Int']['input'];
+          b?: Maybe<Scalars['Int']['input']>;
+        }) => Maybe<Scalars['Int']['output']>;
+        withArgs2: (args?: {
+          a?: Maybe<Scalars['Int']['input']>;
+        }) => Scalars['Int']['output'];
       }
 
       export interface HumanType {
@@ -784,25 +804,27 @@ describe('feature complete app', () => {
         /**
          * Named Entity Name
          */
-        name: ScalarsEnums['String'];
+        name: Scalars['String']['output'];
         $on: $NamedEntity;
       }
 
       export interface OtherHuman {
         __typename?: 'OtherHuman';
-        name: ScalarsEnums['String'];
-        other?: Maybe<ScalarsEnums['String']>;
-        otherHumanStyle: ScalarsEnums['String'];
+        name: Scalars['String']['output'];
+        other?: Maybe<Scalars['String']['output']>;
+        otherHumanStyle: Scalars['String']['output'];
         withArgs: (args: {
-          a: ScalarsEnums['Int'];
-          b?: Maybe<ScalarsEnums['Int']>;
-        }) => Maybe<ScalarsEnums['Int']>;
-        withArgs2: (args?: { a?: Maybe<ScalarsEnums['Int']> }) => ScalarsEnums['Int'];
+          a: Scalars['Int']['input'];
+          b?: Maybe<Scalars['Int']['input']>;
+        }) => Maybe<Scalars['Int']['output']>;
+        withArgs2: (args?: {
+          a?: Maybe<Scalars['Int']['input']>;
+        }) => Scalars['Int']['output'];
       }
 
       export interface Mutation {
         __typename?: 'Mutation';
-        increment: (args: { n: ScalarsEnums['Int'] }) => ScalarsEnums['Int'];
+        increment: (args: { n: Scalars['Int']['input'] }) => Scalars['Int']['output'];
       }
 
       export interface Query {
@@ -811,46 +833,46 @@ describe('feature complete app', () => {
           /**
            * @defaultValue \`10\`
            */
-          limit?: Maybe<ScalarsEnums['Int']>;
+          limit?: Maybe<Scalars['Int']['input']>;
         }) => Array<Human>;
-        arrayString: Array<ScalarsEnums['String']>;
+        arrayString: Array<Scalars['String']['output']>;
         enumsInput: (args: {
           notNullableEnum: GreetingsEnum;
           nullableEnum?: Maybe<GreetingsEnum>;
-        }) => Maybe<ScalarsEnums['GreetingsEnum']>;
+        }) => Maybe<GreetingsEnum>;
         giveGreetingsInput: (args: {
           input: GreetingsInput;
-        }) => ScalarsEnums['String'];
-        greetings: ScalarsEnums['GreetingsEnum'];
+        }) => Scalars['String']['output'];
+        greetings: GreetingsEnum;
         humanLike: HumanType;
         namedEntities: Array<NamedEntity>;
-        number: ScalarsEnums['Int'];
+        number: Scalars['Int']['output'];
         object?: Maybe<Human>;
         objectArray?: Maybe<Array<Maybe<Human>>>;
         objectWithArgs: (args: {
           /**
            * Who?
            */
-          who: ScalarsEnums['String'];
+          who: Scalars['String']['input'];
         }) => Human;
-        simpleString: ScalarsEnums['String'];
+        simpleString: Scalars['String']['output'];
         stringNullableWithArgs: (args: {
-          hello: ScalarsEnums['String'];
+          hello: Scalars['String']['input'];
           /**
            * @defaultValue \`"Hi"\`
            */
-          helloThree?: Maybe<ScalarsEnums['String']>;
+          helloThree?: Maybe<Scalars['String']['input']>;
           /**
            * @defaultValue \`"Hi"\`
            */
-          helloTwo?: Maybe<ScalarsEnums['String']>;
-        }) => Maybe<ScalarsEnums['String']>;
+          helloTwo?: Maybe<Scalars['String']['input']>;
+        }) => Maybe<Scalars['String']['output']>;
         stringNullableWithArgsArray: (args: {
-          hello: Array<Maybe<ScalarsEnums['String']>>;
-        }) => Maybe<ScalarsEnums['String']>;
+          hello: Array<Maybe<Scalars['String']['input']>>;
+        }) => Maybe<Scalars['String']['output']>;
         stringWithArgs: (args: {
-          hello: ScalarsEnums['String'];
-        }) => ScalarsEnums['String'];
+          hello: Scalars['String']['input'];
+        }) => Scalars['String']['output'];
       }
 
       export interface Subscription {
@@ -873,16 +895,22 @@ describe('feature complete app', () => {
         subscription: Subscription;
       }
 
-      export type ScalarsEnums = {
+      type Enums = {};
+
+      export type InputFields = {
+        [Key in keyof Scalars]: Scalars[Key] extends { input: unknown }
+          ? Scalars[Key]['input']
+          : never;
+      } & Enums;
+
+      export type OutputFields = {
         [Key in keyof Scalars]: Scalars[Key] extends { output: unknown }
           ? Scalars[Key]['output']
           : never;
-      } & {
-        GreetingsEnum: GreetingsEnum;
-        OtherEnum: OtherEnum;
-      };
+      } & Enums;
       "
     `);
+
     expect(generatedSchema).toMatchInlineSnapshot(`
       {
         "GreetingsInput": {
@@ -1189,13 +1217,13 @@ describe('mutation', () => {
       export interface Mutation {
         __typename?: 'Mutation';
         helloMutation: (args: {
-          hello: ScalarsEnums['String'];
-        }) => ScalarsEnums['String'];
+          hello: Scalars['String']['input'];
+        }) => Scalars['String']['output'];
       }
 
       export interface Query {
         __typename?: 'Query';
-        hello: ScalarsEnums['String'];
+        hello: Scalars['String']['output'];
       }
 
       export interface Subscription {
@@ -1208,13 +1236,22 @@ describe('mutation', () => {
         subscription: Subscription;
       }
 
-      export type ScalarsEnums = {
+      type Enums = {};
+
+      export type InputFields = {
+        [Key in keyof Scalars]: Scalars[Key] extends { input: unknown }
+          ? Scalars[Key]['input']
+          : never;
+      } & Enums;
+
+      export type OutputFields = {
         [Key in keyof Scalars]: Scalars[Key] extends { output: unknown }
           ? Scalars[Key]['output']
           : never;
-      } & {};
+      } & Enums;
       "
     `);
+
     expect(generatedSchema).toMatchInlineSnapshot(`
       {
         "mutation": {
@@ -1334,12 +1371,12 @@ describe('subscription', () => {
 
       export interface Query {
         __typename?: 'Query';
-        hello: ScalarsEnums['String'];
+        hello: Scalars['String']['output'];
       }
 
       export interface Subscription {
         __typename?: 'Subscription';
-        newNotification: ScalarsEnums['String'];
+        newNotification: Scalars['String']['output'];
       }
 
       export interface GeneratedSchema {
@@ -1348,13 +1385,22 @@ describe('subscription', () => {
         subscription: Subscription;
       }
 
-      export type ScalarsEnums = {
+      type Enums = {};
+
+      export type InputFields = {
+        [Key in keyof Scalars]: Scalars[Key] extends { input: unknown }
+          ? Scalars[Key]['input']
+          : never;
+      } & Enums;
+
+      export type OutputFields = {
         [Key in keyof Scalars]: Scalars[Key] extends { output: unknown }
           ? Scalars[Key]['output']
           : never;
-      } & {};
+      } & Enums;
       "
     `);
+
     expect(generatedSchema).toMatchInlineSnapshot(`
       {
         "mutation": {},
@@ -1688,12 +1734,12 @@ test('javascript output works', async () => {
 
     export interface A {
       __typename?: 'A';
-      a?: Maybe<ScalarsEnums['String']>;
+      a?: Maybe<Scalars['String']['output']>;
     }
 
     export interface B {
       __typename?: 'B';
-      b?: Maybe<ScalarsEnums['Int']>;
+      b?: Maybe<Scalars['Int']['output']>;
     }
 
     export interface C {
@@ -1707,12 +1753,12 @@ test('javascript output works', async () => {
 
     export interface Query {
       __typename?: 'Query';
-      hello: ScalarsEnums['String'];
+      hello: Scalars['String']['output'];
     }
 
     export interface Subscription {
       __typename?: 'Subscription';
-      newNotification: ScalarsEnums['String'];
+      newNotification: Scalars['String']['output'];
     }
 
     export interface $C {
@@ -1726,11 +1772,19 @@ test('javascript output works', async () => {
       subscription: Subscription;
     }
 
-    export type ScalarsEnums = {
+    type Enums = {};
+
+    export type InputFields = {
+      [Key in keyof Scalars]: Scalars[Key] extends { input: unknown }
+        ? Scalars[Key]['input']
+        : never;
+    } & Enums;
+
+    export type OutputFields = {
       [Key in keyof Scalars]: Scalars[Key] extends { output: unknown }
         ? Scalars[Key]['output']
         : never;
-    } & {};
+    } & Enums;
     "
   `);
 });
@@ -1979,11 +2033,11 @@ test('ignoreArgs transform', async () => {
 
     export interface Query {
       __typename?: 'Query';
-      asd: ScalarsEnums['String'];
+      asd: Scalars['String']['output'];
       zxc: (args: {
-        optional?: Maybe<ScalarsEnums['String']>;
-        required: ScalarsEnums['Int'];
-      }) => Maybe<ScalarsEnums['Int']>;
+        optional?: Maybe<Scalars['String']['input']>;
+        required: Scalars['Int']['input'];
+      }) => Maybe<Scalars['Int']['output']>;
     }
 
     export interface Subscription {
@@ -1996,13 +2050,22 @@ test('ignoreArgs transform', async () => {
       subscription: Subscription;
     }
 
-    export type ScalarsEnums = {
+    type Enums = {};
+
+    export type InputFields = {
+      [Key in keyof Scalars]: Scalars[Key] extends { input: unknown }
+        ? Scalars[Key]['input']
+        : never;
+    } & Enums;
+
+    export type OutputFields = {
       [Key in keyof Scalars]: Scalars[Key] extends { output: unknown }
         ? Scalars[Key]['output']
         : never;
-    } & {};
+    } & Enums;
     "
   `);
+
   expect(scalarsEnumsHash).toMatchInlineSnapshot(`
     {
       "Boolean": true,
@@ -2213,8 +2276,8 @@ test('fields with default value works', async () => {
         /**
          * @defaultValue \`"world"\`
          */
-        world?: Maybe<ScalarsEnums['String']>;
-      }) => ScalarsEnums['String'];
+        world?: Maybe<Scalars['String']['input']>;
+      }) => Scalars['String']['output'];
     }
 
     export interface Subscription {
@@ -2227,11 +2290,19 @@ test('fields with default value works', async () => {
       subscription: Subscription;
     }
 
-    export type ScalarsEnums = {
+    type Enums = {};
+
+    export type InputFields = {
+      [Key in keyof Scalars]: Scalars[Key] extends { input: unknown }
+        ? Scalars[Key]['input']
+        : never;
+    } & Enums;
+
+    export type OutputFields = {
       [Key in keyof Scalars]: Scalars[Key] extends { output: unknown }
         ? Scalars[Key]['output']
         : never;
-    } & {};
+    } & Enums;
     "
   `);
 

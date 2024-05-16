@@ -219,7 +219,7 @@ test('basic inspectWriteGenerate functionality', async () => {
 
       export interface Query {
         __typename?: 'Query';
-        hello: ScalarsEnums['String'];
+        hello: Scalars['String']['output'];
       }
 
       export interface Subscription {
@@ -232,11 +232,19 @@ test('basic inspectWriteGenerate functionality', async () => {
         subscription: Subscription;
       }
 
-      export type ScalarsEnums = {
+      type Enums = {};
+
+      export type InputFields = {
+        [Key in keyof Scalars]: Scalars[Key] extends { input: unknown }
+          ? Scalars[Key]['input']
+          : never;
+      } & Enums;
+
+      export type OutputFields = {
         [Key in keyof Scalars]: Scalars[Key] extends { output: unknown }
           ? Scalars[Key]['output']
           : never;
-      } & {};
+      } & Enums;
       "
     `);
   } finally {
@@ -442,7 +450,7 @@ describe('from file', () => {
 
         export interface Query {
           __typename?: 'Query';
-          hello: ScalarsEnums['Int'];
+          hello: Scalars['Int']['output'];
         }
 
         export interface Subscription {
@@ -455,11 +463,19 @@ describe('from file', () => {
           subscription: Subscription;
         }
 
-        export type ScalarsEnums = {
+        type Enums = {};
+
+        export type InputFields = {
+          [Key in keyof Scalars]: Scalars[Key] extends { input: unknown }
+            ? Scalars[Key]['input']
+            : never;
+        } & Enums;
+
+        export type OutputFields = {
           [Key in keyof Scalars]: Scalars[Key] extends { output: unknown }
             ? Scalars[Key]['output']
             : never;
-        } & {};
+        } & Enums;
         "
       `);
     } finally {
@@ -666,7 +682,7 @@ describe('from file', () => {
 
         export interface Query {
           __typename?: 'Query';
-          hello: ScalarsEnums['String'];
+          hello: Scalars['String']['output'];
         }
 
         export interface Subscription {
@@ -679,11 +695,19 @@ describe('from file', () => {
           subscription: Subscription;
         }
 
-        export type ScalarsEnums = {
+        type Enums = {};
+
+        export type InputFields = {
+          [Key in keyof Scalars]: Scalars[Key] extends { input: unknown }
+            ? Scalars[Key]['input']
+            : never;
+        } & Enums;
+
+        export type OutputFields = {
           [Key in keyof Scalars]: Scalars[Key] extends { output: unknown }
             ? Scalars[Key]['output']
             : never;
-        } & {};
+        } & Enums;
         "
       `);
     } finally {
@@ -890,7 +914,7 @@ describe('from file', () => {
 
         export interface Query {
           __typename?: 'Query';
-          hello: ScalarsEnums['String'];
+          hello: Scalars['String']['output'];
         }
 
         export interface Subscription {
@@ -903,11 +927,19 @@ describe('from file', () => {
           subscription: Subscription;
         }
 
-        export type ScalarsEnums = {
+        type Enums = {};
+
+        export type InputFields = {
+          [Key in keyof Scalars]: Scalars[Key] extends { input: unknown }
+            ? Scalars[Key]['input']
+            : never;
+        } & Enums;
+
+        export type OutputFields = {
           [Key in keyof Scalars]: Scalars[Key] extends { output: unknown }
             ? Scalars[Key]['output']
             : never;
-        } & {};
+        } & Enums;
         "
       `);
     } finally {
@@ -1163,8 +1195,8 @@ describe('from multiple files', () => {
 
         export interface Query {
           __typename?: 'Query';
-          bar: ScalarsEnums['Int'];
-          foo: ScalarsEnums['Int'];
+          bar: Scalars['Int']['output'];
+          foo: Scalars['Int']['output'];
         }
 
         export interface Subscription {
@@ -1177,11 +1209,19 @@ describe('from multiple files', () => {
           subscription: Subscription;
         }
 
-        export type ScalarsEnums = {
+        type Enums = {};
+
+        export type InputFields = {
+          [Key in keyof Scalars]: Scalars[Key] extends { input: unknown }
+            ? Scalars[Key]['input']
+            : never;
+        } & Enums;
+
+        export type OutputFields = {
           [Key in keyof Scalars]: Scalars[Key] extends { output: unknown }
             ? Scalars[Key]['output']
             : never;
-        } & {};
+        } & Enums;
         "
       `);
     } finally {
@@ -1444,7 +1484,7 @@ test('specify generateOptions to inspectWriteGenerate', async () => {
 
       export interface Query {
         __typename?: 'Query';
-        hello: ScalarsEnums['String'];
+        hello: Scalars['String']['output'];
       }
 
       export interface Subscription {
@@ -1457,11 +1497,19 @@ test('specify generateOptions to inspectWriteGenerate', async () => {
         subscription: Subscription;
       }
 
-      export type ScalarsEnums = {
+      type Enums = {};
+
+      export type InputFields = {
+        [Key in keyof Scalars]: Scalars[Key] extends { input: unknown }
+          ? Scalars[Key]['input']
+          : never;
+      } & Enums;
+
+      export type OutputFields = {
         [Key in keyof Scalars]: Scalars[Key] extends { output: unknown }
           ? Scalars[Key]['output']
           : never;
-      } & {};
+      } & Enums;
       "
     `);
 
@@ -1582,7 +1630,7 @@ describe('inspect headers', () => {
 
         export interface Query {
           __typename?: 'Query';
-          hello: ScalarsEnums['String'];
+          hello: Scalars['String']['output'];
         }
 
         export interface Subscription {
@@ -1595,11 +1643,19 @@ describe('inspect headers', () => {
           subscription: Subscription;
         }
 
-        export type ScalarsEnums = {
+        type Enums = {};
+
+        export type InputFields = {
+          [Key in keyof Scalars]: Scalars[Key] extends { input: unknown }
+            ? Scalars[Key]['input']
+            : never;
+        } & Enums;
+
+        export type OutputFields = {
           [Key in keyof Scalars]: Scalars[Key] extends { output: unknown }
             ? Scalars[Key]['output']
             : never;
-        } & {};
+        } & Enums;
         "
       `);
 
@@ -1775,11 +1831,8 @@ describe('CLI behavior', () => {
         "
       `);
 
-      expect(
-        await readFile(tempDir.schemaPath, {
-          encoding: 'utf-8',
-        })
-      ).toMatchInlineSnapshot(`
+      expect(await readFile(tempDir.schemaPath, { encoding: 'utf-8' }))
+        .toMatchInlineSnapshot(`
         "/**
          * GQty AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
          */
@@ -1831,7 +1884,7 @@ describe('CLI behavior', () => {
 
         export interface Query {
           __typename?: 'Query';
-          hello: ScalarsEnums['String'];
+          hello: Scalars['String']['output'];
         }
 
         export interface Subscription {
@@ -1844,11 +1897,19 @@ describe('CLI behavior', () => {
           subscription: Subscription;
         }
 
-        export type ScalarsEnums = {
+        type Enums = {};
+
+        export type InputFields = {
+          [Key in keyof Scalars]: Scalars[Key] extends { input: unknown }
+            ? Scalars[Key]['input']
+            : never;
+        } & Enums;
+
+        export type OutputFields = {
           [Key in keyof Scalars]: Scalars[Key] extends { output: unknown }
             ? Scalars[Key]['output']
             : never;
-        } & {};
+        } & Enums;
         "
       `);
     } finally {

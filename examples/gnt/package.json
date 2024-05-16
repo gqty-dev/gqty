@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "codegen": "dotenv -c local -- bash -c 'pnpm exec gqty --no-react -H apiKey:$NEXT_PUBLIC_SUPABASE_API_KEY $NEXT_PUBLIC_SUPABASE_ENDPOINT'",
+    "codegen": "dotenv -c local -- bash -c 'pnpm exec gqty --no-react https://rickandmortyapi.com/graphql'",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",

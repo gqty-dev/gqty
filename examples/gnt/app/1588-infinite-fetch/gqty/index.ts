@@ -54,8 +54,8 @@ const cache = new Cache(
    * allowing soft refetches in background.
    */
   {
-    maxAge: 0,
-    staleWhileRevalidate: 5 * 60 * 1000,
+    maxAge: 5000,
+    staleWhileRevalidate: 30 * 60 * 1000,
     normalization: true,
   }
 );

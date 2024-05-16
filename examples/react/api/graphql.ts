@@ -105,7 +105,7 @@ const paginatedData: {
 }[] = new Array(200).fill(0).map((_, index) => {
   return {
     id: index + '',
-    name: faker.name.firstName(),
+    name: faker.person.firstName(),
   };
 });
 
