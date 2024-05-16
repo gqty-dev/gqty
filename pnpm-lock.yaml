@@ -482,8 +482,8 @@ importers:
         version: 5.0.4
     devDependencies:
       '@size-limit/preset-small-lib':
-        specifier: ^11.1.2
-        version: 11.1.2(size-limit@11.1.2)
+        specifier: ^11.1.3
+        version: 11.1.3(size-limit@11.1.2)
       '@types/lodash-es':
         specifier: ^4.17.12
         version: 4.17.12
@@ -562,8 +562,8 @@ importers:
         version: 3.0.0
     devDependencies:
       '@size-limit/preset-small-lib':
-        specifier: ^11.1.2
-        version: 11.1.2(size-limit@11.1.2)
+        specifier: ^11.1.3
+        version: 11.1.3(size-limit@11.1.2)
       '@types/node':
         specifier: ^20.12.11
         version: 20.12.11
@@ -642,8 +642,8 @@ importers:
         version: 3.2.5
     devDependencies:
       '@size-limit/preset-small-lib':
-        specifier: ^11.1.2
-        version: 11.1.2(size-limit@11.1.2)
+        specifier: ^11.1.3
+        version: 11.1.3(size-limit@11.1.2)
       '@types/node':
         specifier: ^20.12.11
         version: 20.12.11
@@ -698,8 +698,8 @@ importers:
         specifier: ^9.2.0
         version: 9.2.0
       '@size-limit/preset-small-lib':
-        specifier: ^11.1.2
-        version: 11.1.2(size-limit@11.1.2)
+        specifier: ^11.1.3
+        version: 11.1.3(size-limit@11.1.2)
       '@testing-library/jest-dom':
         specifier: ^5.17.0
         version: 5.17.0
@@ -5637,33 +5637,33 @@ packages:
     dependencies:
       '@sinonjs/commons': 3.0.1
 
-  /@size-limit/esbuild@11.1.2(size-limit@11.1.2):
-    resolution: {integrity: sha512-IGQNaZsS4kP4hwU9C8P+3VvPhtW9PQ9OrwKJsvHDgMsbGX01hz39b9KkVwoI29wOXdwtj0aETaJUZPqoJq588w==}
+  /@size-limit/esbuild@11.1.3(size-limit@11.1.2):
+    resolution: {integrity: sha512-aNs0yC5sF56BRJuedBXTIZnsAT0kWa/FSWo1UMAYIGG+3eEoh5/vEhcseag2DziLAEzq3zMHUqtJNsRq9+5bnw==}
     engines: {node: ^18.0.0 || >=20.0.0}
     peerDependencies:
-      size-limit: 11.1.2
+      size-limit: 11.1.3
     dependencies:
-      esbuild: 0.20.2
+      esbuild: 0.21.1
       nanoid: 5.0.7
       size-limit: 11.1.2
     dev: true
 
-  /@size-limit/file@11.1.2(size-limit@11.1.2):
-    resolution: {integrity: sha512-zktWwhO7MxVwQXbrZzy0VKfM5mZK3Aza1G3XbWRP8q+/3+irPKCz2fmyYJqJAJVwC9U1jAs6xEPlTJzxKgEAmw==}
+  /@size-limit/file@11.1.3(size-limit@11.1.2):
+    resolution: {integrity: sha512-O4Q4Vr7CInM3kq5GlpgGM7sDLAtbCPVVyN0raNBFBYovhUEmEruEu/qXrGVdeEaA47wXOpMdZ9cYJVTkKNAV2g==}
     engines: {node: ^18.0.0 || >=20.0.0}
     peerDependencies:
-      size-limit: 11.1.2
+      size-limit: 11.1.3
     dependencies:
       size-limit: 11.1.2
     dev: true
 
-  /@size-limit/preset-small-lib@11.1.2(size-limit@11.1.2):
-    resolution: {integrity: sha512-fxZW3woI6SOYyvq44QhlnYdcYfOfiW7zqFCPf+1Ox0OHbrug7YuMz74JNFlHJcnvB4Z6aErED+afkoYJ7vxohQ==}
+  /@size-limit/preset-small-lib@11.1.3(size-limit@11.1.2):
+    resolution: {integrity: sha512-D9aLbjTpfwknSdA7+CkspHdwcdCWTEVuRZzBkcuCkehcc8pij9Taq1JJta1ae2pqrIxJpzPVIk9Tl26i6L92GA==}
     peerDependencies:
-      size-limit: 11.1.2
+      size-limit: 11.1.3
     dependencies:
-      '@size-limit/esbuild': 11.1.2(size-limit@11.1.2)
-      '@size-limit/file': 11.1.2(size-limit@11.1.2)
+      '@size-limit/esbuild': 11.1.3(size-limit@11.1.2)
+      '@size-limit/file': 11.1.3(size-limit@11.1.2)
       size-limit: 11.1.2
     dev: true
 
