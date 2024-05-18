@@ -1,4 +1,4 @@
-import { buildQuery } from 'gqty/QueryBuilder';
+import { buildQuery } from '../src/QueryBuilder';
 import { Selection } from '../src/Selection';
 
 describe('selection creation', () => {
@@ -94,7 +94,7 @@ describe('selection creation', () => {
     ).toEqual(3);
   });
 
-  fit('should descend aliasLength from root', () => {
+  it('should descend aliasLength from root', () => {
     const selectionA = Selection.createRoot('a', { aliasLength: 2 }).getChild(
       'b',
       { input: { types: { a: 'Int!' }, values: { a: 1 } } }

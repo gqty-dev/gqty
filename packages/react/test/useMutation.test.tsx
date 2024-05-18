@@ -1,4 +1,5 @@
-import { act, renderHook, waitFor } from '@testing-library/react';
+import { renderHook, waitFor } from '@testing-library/react';
+import { act } from 'react';
 import { createReactTestClient } from './utils';
 
 describe('useMutation', () => {
@@ -65,7 +66,7 @@ describe('useMutation', () => {
 
   it('should update contents of useQuery via normalized cache', async () => {
     const { useQuery, useMutation } = await createReactTestClient();
-    const q = renderHook(() => {
+    const { result: q } = renderHook(() => {
       const human = useQuery().human({ name: 'Uno' });
 
       return {
@@ -74,7 +75,7 @@ describe('useMutation', () => {
       };
     });
 
-    const m = renderHook(() => {
+    const { result: m } = renderHook(() => {
       return useMutation(
         (mutation, args: { name: string; newName: string }) => {
           const human = mutation.renameHuman(args);
@@ -87,24 +88,20 @@ describe('useMutation', () => {
       );
     });
 
-    await waitFor(() => expect(q.result.current.name).toStrictEqual('Uno'));
+    await waitFor(() => expect(q.current.name).toStrictEqual('Uno'));
+
+    await act(() => m.current[0]({ args: { name: 'Uno', newName: 'Dos' } }));
+
+    await waitFor(() => expect(q.current.name).toStrictEqual('Dos'));
+
+    await act(() => m.current[0]({ args: { name: 'Dos', newName: 'Tres' } }));
+
+    await waitFor(() => expect(q.current.name).toStrictEqual('Tres'));
 
     await act(() =>
-      m.result.current[0]({ args: { name: 'Uno', newName: 'Dos' } })
+      m.current[0]({ args: { name: 'Tres', newName: 'Cuatro' } })
     );
 
-    await waitFor(() => expect(q.result.current.name).toStrictEqual('Dos'));
-
-    await act(() =>
-      m.result.current[0]({ args: { name: 'Dos', newName: 'Tres' } })
-    );
-
-    await waitFor(() => expect(q.result.current.name).toStrictEqual('Tres'));
-
-    await act(() =>
-      m.result.current[0]({ args: { name: 'Tres', newName: 'Cuatro' } })
-    );
-
-    await waitFor(() => expect(q.result.current.name).toStrictEqual('Cuatro'));
+    await waitFor(() => expect(q.current.name).toStrictEqual('Cuatro'));
   });
 });
