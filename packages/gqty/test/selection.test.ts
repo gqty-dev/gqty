@@ -2,8 +2,8 @@ import { buildQuery } from 'gqty/QueryBuilder';
 import { Selection } from '../src/Selection';
 
 describe('selection creation', () => {
-  test('selection with manager and separating types', () => {
-    const mutationRoot = Selection.createRoot('mutation');
+  it('should make selection branches', () => {
+    const mutationRoot = Selection.createRoot('mutation', { aliasLength: 6 });
     const selectionA = mutationRoot.getChild('a');
 
     expect(selectionA.key).toBe('a');
@@ -40,9 +40,9 @@ describe('selection creation', () => {
       'a',
       'b',
       0,
-      'a07b4',
+      'a07b42',
     ]);
-    expect(selectionD.alias).toBe('a07b4');
+    expect(selectionD.alias).toBe('a07b42');
 
     const repeatSelectionD = selectionC.getChild('d', {
       input: {
@@ -56,9 +56,9 @@ describe('selection creation', () => {
       'a',
       'b',
       0,
-      'a07b4',
+      'a07b42',
     ]);
-    expect(repeatSelectionD.alias).toBe('a07b4');
+    expect(repeatSelectionD.alias).toBe('a07b42');
 
     const selectionE = selectionD.getChild('e');
 
@@ -67,7 +67,7 @@ describe('selection creation', () => {
       'a',
       'b',
       0,
-      'a07b4',
+      'a07b42',
       'e',
     ]);
 
@@ -94,7 +94,7 @@ describe('selection creation', () => {
     ).toEqual(3);
   });
 
-  fit('should descend aliasLength from root', () => {
+  it('should descend aliasLength from root', () => {
     const selectionA = Selection.createRoot('a', { aliasLength: 2 }).getChild(
       'b',
       { input: { types: { a: 'Int!' }, values: { a: 1 } } }
