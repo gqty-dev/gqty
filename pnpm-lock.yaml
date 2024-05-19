@@ -530,6 +530,9 @@ importers:
 
   packages/gqty:
     dependencies:
+      debounce-microtasks:
+        specifier: ^0.1.4
+        version: 0.1.4
       flatted:
         specifier: ^3.3.1
         version: 3.3.1
@@ -834,6 +837,9 @@ importers:
       tslib:
         specifier: ^2.6.2
         version: 2.6.2
+      typescript:
+        specifier: ^5.4.5
+        version: 5.4.5
     publishDirectory: dist
 
 packages:
@@ -7677,6 +7683,10 @@ packages:
 
   /date-fns@3.6.0:
     resolution: {integrity: sha512-fRHTG8g/Gif+kSh50gaGEdToemgfj74aRX3swtiouboip5JDLAyDE9F11nHMIcvOaXeOC6D7SpNhi7uFyB7Uww==}
+    dev: false
+
+  /debounce-microtasks@0.1.4:
+    resolution: {integrity: sha512-q58ds08ZSBC8X5I+PzD03SPy/0vNx3kThjAa8vaxtCjes716z2qwM8rzHnhwf8bD/3T6EUcW4yyihprHYRM7dQ==}
     dev: false
 
   /debounce@1.2.1:

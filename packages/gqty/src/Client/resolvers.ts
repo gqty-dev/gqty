@@ -1,3 +1,4 @@
+import { debounceMicrotask } from 'debounce-microtasks/esm/DebounceMicrotaskPromise';
 import { MultiDict } from 'multidict';
 import { pick, type BaseGeneratedSchema, type FetchOptions } from '.';
 import { createSchemaAccessor } from '../Accessor';
@@ -170,7 +171,10 @@ export type SubscribeOptions = ResolverOptions & {
 /**
  * A client level query batcher.
  */
-const pendingQueries = new WeakMap<Set<Set<Selection>>, Promise<unknown>>();
+const pendingQueries = new WeakMap<
+  Set<Set<Selection>>,
+  () => Promise<unknown>
+>();
 
 export const createResolvers = <TSchema extends BaseGeneratedSchema>({
   aliasLength,
@@ -259,12 +263,10 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
       correlatedCaches.set(pendingSelections, context.cache);
 
       if (!pendingQueries.has(pendingSelections)) {
-        // [ ] debounceMicrotask
-
         pendingQueries.set(
           pendingSelections,
           // Batching happens at the end of microtask queue
-          Promise.resolve().then(async () => {
+          debounceMicrotask(async () => {
             // Have to skip this because a 0 timeout still pushes it at least
             // one more mictotask to the future. Also setTimeout() has no real
             // time guarantee.
@@ -312,7 +314,7 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
         );
       }
 
-      return pendingQueries.get(pendingSelections)!;
+      return pendingQueries.get(pendingSelections)?.();
     };
 
     const subscribe: ResolverParts<TSchema>['subscribe'] = ({
