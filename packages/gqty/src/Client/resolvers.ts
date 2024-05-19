@@ -1,4 +1,4 @@
-import { debounceMicrotask } from 'debounce-microtasks/esm/DebounceMicrotaskPromise';
+import { debounceMicrotaskPromise } from 'debounce-microtasks';
 import { MultiDict } from 'multidict';
 import { pick, type BaseGeneratedSchema, type FetchOptions } from '.';
 import { createSchemaAccessor } from '../Accessor';
@@ -266,7 +266,7 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
         pendingQueries.set(
           pendingSelections,
           // Batching happens at the end of microtask queue
-          debounceMicrotask(async () => {
+          debounceMicrotaskPromise(async () => {
             // Have to skip this because a 0 timeout still pushes it at least
             // one more mictotask to the future. Also setTimeout() has no real
             // time guarantee.
