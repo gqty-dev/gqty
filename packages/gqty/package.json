@@ -46,6 +46,7 @@
     "test:watch-coverage": "rimraf coverage && mkdir -p coverage/lcov-report && concurrently --raw \"jest --watchAll\" \"serve -l 8787 coverage/lcov-report\" \"wait-on tcp:8787 coverage/lcov-report/index.html && open-cli http://localhost:8787\""
   },
   "dependencies": {
+    "debounce-microtasks": "^0.1.6",
     "flatted": "^3.3.1",
     "frail-map": "^1.0.10",
     "just-extend": "^6.2.0",
