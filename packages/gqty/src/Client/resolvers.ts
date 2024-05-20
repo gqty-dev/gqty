@@ -266,51 +266,59 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
         pendingQueries.set(
           pendingSelections,
           // Batching happens at the end of microtask queue
-          debounceMicrotaskPromise(async () => {
-            // Have to skip this because a 0 timeout still pushes it at least
-            // one more mictotask to the future. Also setTimeout() has no real
-            // time guarantee.
-            if (batchWindow) {
-              await new Promise((resolve) => setTimeout(resolve, batchWindow));
-            }
-
-            const uniqueSelections = new Set<Selection>();
-
-            getSelectionsSet(targetCache, selectionsCacheKey)?.forEach(
-              (selections) => {
-                selections.forEach((selection) => {
-                  uniqueSelections.add(selection);
-                });
+          debounceMicrotaskPromise(
+            async () => {
+              // Have to skip this because a 0 timeout still pushes it at least
+              // one more mictotask to the future. Also setTimeout() has no real
+              // time guarantee.
+              if (batchWindow) {
+                await new Promise((resolve) =>
+                  setTimeout(resolve, batchWindow)
+                );
               }
-            );
 
-            pendingQueries.delete(pendingSelections);
+              const uniqueSelections = new Set<Selection>();
 
-            delSelectionSet(targetCache, selectionsCacheKey);
+              getSelectionsSet(targetCache, selectionsCacheKey)?.forEach(
+                (selections) => {
+                  selections.forEach((selection) => {
+                    uniqueSelections.add(selection);
+                  });
+                }
+              );
 
-            const results = await fetchSelections(uniqueSelections, {
-              cache: context.cache,
-              debugger: debug,
-              extensions,
-              fetchOptions: { ...fetchOptions, cachePolicy, retryPolicy },
-              operationName,
-            });
+              pendingQueries.delete(pendingSelections);
 
-            const targetCaches =
-              correlatedCaches.get(pendingSelections) ?? new Set();
+              delSelectionSet(targetCache, selectionsCacheKey);
 
-            if (cachePolicy !== 'no-store') {
-              targetCaches.add(targetCache);
+              const results = await fetchSelections(uniqueSelections, {
+                cache: context.cache,
+                debugger: debug,
+                extensions,
+                fetchOptions: { ...fetchOptions, cachePolicy, retryPolicy },
+                operationName,
+              });
+
+              const targetCaches =
+                correlatedCaches.get(pendingSelections) ?? new Set();
+
+              if (cachePolicy !== 'no-store') {
+                targetCaches.add(targetCache);
+              }
+
+              updateCaches(results, [...targetCaches], {
+                skipNotify: !context.notifyCacheUpdate,
+              });
+
+              correlatedCaches.delete(targetCache);
+
+              return results;
+            },
+            {
+              debounceLimit: 20,
+              limitAction: 'invoke',
             }
-
-            updateCaches(results, [...targetCaches], {
-              skipNotify: !context.notifyCacheUpdate,
-            });
-
-            correlatedCaches.delete(targetCache);
-
-            return results;
-          })
+          )
         );
       }
 
