@@ -1,5 +1,86 @@
 # @gqty/react
 
+## 3.0.0
+
+### Minor Changes
+
+- [#1544](https://github.com/gqty-dev/gqty/pull/1544)
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724)
+  Thanks [@vicary](https://github.com/vicary)! - Added `operationName` in
+  `resolved()`, `inlineResolved()`, `useTransactionQuery()` and `useLazyQuery()`
+
+- [#1544](https://github.com/gqty-dev/gqty/pull/1544)
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724)
+  Thanks [@vicary](https://github.com/vicary)! - Upgrade to the new core
+
+- [#1544](https://github.com/gqty-dev/gqty/pull/1544)
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724)
+  Thanks [@vicary](https://github.com/vicary)! - Added `ResolverContainer` to
+  replace scheduler for legacy resolvers.
+
+- [#1544](https://github.com/gqty-dev/gqty/pull/1544)
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724)
+  Thanks [@vicary](https://github.com/vicary)! - Added `onComplete` in
+  `useMutation`
+
+- [#1544](https://github.com/gqty-dev/gqty/pull/1544)
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724)
+  Thanks [@vicary](https://github.com/vicary)! - Added `retry` in `useQuery()`
+
+- [#1470](https://github.com/gqty-dev/gqty/pull/1470)
+  [`11604f5`](https://github.com/gqty-dev/gqty/commit/11604f54f3907ea2c3662334e53f71bda4c327a3)
+  Thanks [@vicary](https://github.com/vicary)! - Added `refetchInteraval`,
+  `refetchIntervalInBackground`, `refetchOnReconnect` and
+  `refetchOnWindowVisible` in `useQuery`.
+
+- [#1544](https://github.com/gqty-dev/gqty/pull/1544)
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724)
+  Thanks [@vicary](https://github.com/vicary)! - Fetch errors now throws to
+  boundaries in suspense mode.
+
+- [#1468](https://github.com/gqty-dev/gqty/pull/1468)
+  [`6626d80`](https://github.com/gqty-dev/gqty/commit/6626d802f28ce39970acbcf27166b2732e5ac217)
+  Thanks [@vicary](https://github.com/vicary)! - Add `$refetch` in `useQuery()`
+
+- [#1544](https://github.com/gqty-dev/gqty/pull/1544)
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724)
+  Thanks [@vicary](https://github.com/vicary)! - Added `extensions` option for
+  passing arbitraty data to the query fetcher.
+
+### Patch Changes
+
+- [#1742](https://github.com/gqty-dev/gqty/pull/1742)
+  [`2e274f1`](https://github.com/gqty-dev/gqty/commit/2e274f12144a900f88c85358c23a6b357f1e8d11)
+  Thanks [@vicary](https://github.com/vicary)! - Stop auto refetch on render
+  when `maxRetries` is reached.
+
+- Updated dependencies
+  [[`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724),
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724),
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724),
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724),
+  [`fe29ac0`](https://github.com/gqty-dev/gqty/commit/fe29ac0468389ea0783d97eb297b28b4b4fc11d2),
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724),
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724),
+  [`ac34d04`](https://github.com/gqty-dev/gqty/commit/ac34d0477c6cee041177c125336003aec47080df),
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724),
+  [`7ffaebf`](https://github.com/gqty-dev/gqty/commit/7ffaebf0c327efdf567a6c241188b72732001ffc),
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724),
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724),
+  [`2e274f1`](https://github.com/gqty-dev/gqty/commit/2e274f12144a900f88c85358c23a6b357f1e8d11),
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724),
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724),
+  [`ffb7d5c`](https://github.com/gqty-dev/gqty/commit/ffb7d5c0a3ff2d640d2d885fccd6916e48b799eb),
+  [`595ec84`](https://github.com/gqty-dev/gqty/commit/595ec8431de0d4be2edc4f60809988bda0cf2833),
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724),
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724),
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724),
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724),
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724),
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724),
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724)]:
+  - gqty@3.0.0
+
 ## 2.1.1
 
 ### Patch Changes
@@ -10,7 +91,9 @@
 
 ### Minor Changes
 
-- 6ced359: New "$state.error" property in "useQuery" which gives the last scheduler Error, for more in-depth error management it's still recommended to use `useMetaState` hook
+- 6ced359: New "$state.error" property in "useQuery" which gives the last
+  scheduler Error, for more in-depth error management it's still recommended to
+  use `useMetaState` hook
 
   Closes [#111](https://github.com/gqty-dev/gqty/issues/111)
 
@@ -31,7 +114,8 @@
 ### Major Changes
 
 - 3586c45: Remove undocumented "buildSelections"
-- 3586c45: Change previous unstable `Unions` support with new `"$on"` property with support for both `Unions` & `Interfaces`
+- 3586c45: Change previous unstable `Unions` support with new `"$on"` property
+  with support for both `Unions` & `Interfaces`
 
 ### Patch Changes
 
@@ -51,7 +135,8 @@
 
 ### Minor Changes
 
-- d3d0d38: [useTransactionQuery] add "pollInBackground" and default-disable background polling
+- d3d0d38: [useTransactionQuery] add "pollInBackground" and default-disable
+  background polling
 
 ### Patch Changes
 
@@ -82,10 +167,13 @@
 ### Patch Changes
 
 - 4a3d5ef: fix useQuery's prepare update
-- af6a437: - Rename `gqtyConfig` to `GQtyConfig` (so it's consistent with the new logo)
+- af6a437: - Rename `gqtyConfig` to `GQtyConfig` (so it's consistent with the
+  new logo)
   - Rename `gqtyError` to `GQtyError`
-  - Remove `endpoint` option from the configuration, and instead always defaults to introspection one
-    - It's confusing why theres two of them, and the user can change it later by modifying the file anyway
+  - Remove `endpoint` option from the configuration, and instead always defaults
+    to introspection one
+    - It's confusing why theres two of them, and the user can change it later by
+      modifying the file anyway
 - 4a3d5ef: fix args state usePaginatedQuery
 - 4a3d5ef: detach react default retry in useMutation
 - Updated dependencies [4a3d5ef]

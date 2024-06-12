@@ -1,12 +1,135 @@
 # gqty
 
+## 3.0.0
+
+### Major Changes
+
+- [#1544](https://github.com/gqty-dev/gqty/pull/1544)
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724)
+  Thanks [@vicary](https://github.com/vicary)! - Added "Legacy" prefix to
+  deprecated types
+
+- [#1544](https://github.com/gqty-dev/gqty/pull/1544)
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724)
+  Thanks [@vicary](https://github.com/vicary)! - Added new logging interface for
+  `@gqty/logger`
+
+- [#1544](https://github.com/gqty-dev/gqty/pull/1544)
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724)
+  Thanks [@vicary](https://github.com/vicary)! - `backupPersistence()` and
+  `restorePersistence()` is now replaced with `persist()`, `restore()` and
+  `restoreAsync()`.
+
+- [#1544](https://github.com/gqty-dev/gqty/pull/1544)
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724)
+  Thanks [@vicary](https://github.com/vicary)! - QueryFetcher now accepts
+  QueryPayload as the first parameter
+
+- [#1544](https://github.com/gqty-dev/gqty/pull/1544)
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724)
+  Thanks [@vicary](https://github.com/vicary)! - Remade `Cache` with expiry,
+  normalization and persistence
+
+- [#1544](https://github.com/gqty-dev/gqty/pull/1544)
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724)
+  Thanks [@vicary](https://github.com/vicary)! - Axed `Scheduler`, `Interceptor`
+  and `EventHandler`
+
+- [#1544](https://github.com/gqty-dev/gqty/pull/1544)
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724)
+  Thanks [@vicary](https://github.com/vicary)! - Reworked `Accessor` and added
+  scoped context
+
+- [#1544](https://github.com/gqty-dev/gqty/pull/1544)
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724)
+  Thanks [@vicary](https://github.com/vicary)! - Replaced `@gqty/subscriptions`
+  with `graphql-ws` and `graphql-sse`
+
+- [#1544](https://github.com/gqty-dev/gqty/pull/1544)
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724)
+  Thanks [@vicary](https://github.com/vicary)! - Rewritten `Selection` class
+
+- [#1544](https://github.com/gqty-dev/gqty/pull/1544)
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724)
+  Thanks [@vicary](https://github.com/vicary)! - Introduced `resolve()` and
+  `subscribe()` API
+
+- [#1544](https://github.com/gqty-dev/gqty/pull/1544)
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724)
+  Thanks [@vicary](https://github.com/vicary)! - Replaced `lodash` with `just-*`
+  and dropped `@gqty/utils`
+
+- [#1544](https://github.com/gqty-dev/gqty/pull/1544)
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724)
+  Thanks [@vicary](https://github.com/vicary)! - Deprecated `resolved()`,
+  `inlineResolved()`, `mutate()`, `track()`, `prefetch()` and `refetch()`
+
+- [#1544](https://github.com/gqty-dev/gqty/pull/1544)
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724)
+  Thanks [@vicary](https://github.com/vicary)! - Replace variable serializer
+  with object-hash, now with shortened alias
+
+### Minor Changes
+
+- [#1544](https://github.com/gqty-dev/gqty/pull/1544)
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724)
+  Thanks [@vicary](https://github.com/vicary)! - Added `operationName` in
+  `resolved()`, `inlineResolved()`, `useTransactionQuery()` and `useLazyQuery()`
+
+- [#1544](https://github.com/gqty-dev/gqty/pull/1544)
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724)
+  Thanks [@vicary](https://github.com/vicary)! - Batching by microtask
+
+- [#1544](https://github.com/gqty-dev/gqty/pull/1544)
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724)
+  Thanks [@vicary](https://github.com/vicary)! - Added `$meta` API
+
+- [#1799](https://github.com/gqty-dev/gqty/pull/1799)
+  [`fe29ac0`](https://github.com/gqty-dev/gqty/commit/fe29ac0468389ea0783d97eb297b28b4b4fc11d2)
+  Thanks [@vicary](https://github.com/vicary)! - Debounce query batching with
+  microtasks
+
+- [#1742](https://github.com/gqty-dev/gqty/pull/1742)
+  [`2e274f1`](https://github.com/gqty-dev/gqty/commit/2e274f12144a900f88c85358c23a6b357f1e8d11)
+  Thanks [@vicary](https://github.com/vicary)! - Added `batchWindow` option in
+  `ClientOptions`
+
+- [#1544](https://github.com/gqty-dev/gqty/pull/1544)
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724)
+  Thanks [@vicary](https://github.com/vicary)! - Added `extensions` option for
+  passing arbitraty data to the query fetcher.
+
+- [#1544](https://github.com/gqty-dev/gqty/pull/1544)
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724)
+  Thanks [@vicary](https://github.com/vicary)! - Added `name` in `GQtyError` for
+  better logging
+
+### Patch Changes
+
+- [`ac34d04`](https://github.com/gqty-dev/gqty/commit/ac34d0477c6cee041177c125336003aec47080df)
+  Thanks [@vicary](https://github.com/vicary)! - Update all relevant temporary
+  caches for batched queries.
+
+- [`7ffaebf`](https://github.com/gqty-dev/gqty/commit/7ffaebf0c327efdf567a6c241188b72732001ffc)
+  Thanks [@vicary](https://github.com/vicary)! - Avoid sending unused arguments
+
+- [#1744](https://github.com/gqty-dev/gqty/pull/1744)
+  [`ffb7d5c`](https://github.com/gqty-dev/gqty/commit/ffb7d5c0a3ff2d640d2d885fccd6916e48b799eb)
+  Thanks [@vicary](https://github.com/vicary)! - Added default return type for
+  `resolve`
+
+- [#1476](https://github.com/gqty-dev/gqty/pull/1476)
+  [`595ec84`](https://github.com/gqty-dev/gqty/commit/595ec8431de0d4be2edc4f60809988bda0cf2833)
+  Thanks [@vicary](https://github.com/vicary)! - Remove alias without args
+
 ## 3.0.0-alpha.0
 
 ### Major Changes
 
 - Added "Legacy" prefix to deprecated types
 - Added new logging interface for `@gqty/logger`
-- `backupPersistence()` and `restorePersistence()` is now replaced with `persist()`, `restore()` and `restoreAsync()`.
+- `backupPersistence()` and `restorePersistence()` is now replaced with
+  `persist()`, `restore()` and `restoreAsync()`.
 - QueryFetcher now accepts QueryPayload instead of 3 parameters
 - Remade `Cache` with expiry, normalization and persistence
 - Axed `Scheduler`, `Interceptor` and `EventHandler`
@@ -15,7 +138,8 @@
 - Rewritten `Selection` class
 - Introduced `resolve()` and `subscribe()` API
 - Replaced `lodash` with `just-*` and dropped `@gqty/utils`
-- Deprecated `resolved()`, `inlineResolved()`, `mutate()`, `track()`, `prefetch()` and `refetch()`
+- Deprecated `resolved()`, `inlineResolved()`, `mutate()`, `track()`,
+  `prefetch()` and `refetch()`
 - Replace variable serializer with object-hash, now with shortened alias
 
 ### Minor Changes
@@ -33,7 +157,8 @@
 ### Minor Changes
 
 - 6ecd2b0: Use lodash mergeWith from "@gqty/utils" package
-- 59d38ad: Change variable aliasing to be deterministic with cached and sliced sha1 hashing
+- 59d38ad: Change variable aliasing to be deterministic with cached and sliced
+  sha1 hashing
 
 ### Patch Changes
 
@@ -45,9 +170,14 @@
 
 ### Minor Changes
 
-- dd47986: New option `"fetchOptions"`, added to the [`resolved`](https://gqty.dev/docs/client/fetching-data#resolved) client function, that allows for giving extra configurations to the expected [fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) call.
+- dd47986: New option `"fetchOptions"`, added to the
+  [`resolved`](https://gqty.dev/docs/client/fetching-data#resolved) client
+  function, that allows for giving extra configurations to the expected
+  [fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) call.
 
-  This enables, for example, the customization of the headers sent for a specific query or to pass an [AbortSignal](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal).
+  This enables, for example, the customization of the headers sent for a
+  specific query or to pass an
+  [AbortSignal](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal).
 
   ```ts
   import { resolved, query } from '../gqty';
@@ -67,7 +197,8 @@
   });
   ```
 
-  For already generated clients to be able to use this new option, it is required manually modify the existing query fetcher, to do for example:
+  For already generated clients to be able to use this new option, it is
+  required manually modify the existing query fetcher, to do for example:
 
   ```ts
   const queryFetcher: QueryFetcher = async function (
@@ -97,7 +228,9 @@
 
 ### Minor Changes
 
-- 6df0318: Add new Core configuration `"depthLimit"` (by default is `15`), needed to prevent possible infinite recursion, after the specified depth is reached, the proxy creation is stopped returning `null`.
+- 6df0318: Add new Core configuration `"depthLimit"` (by default is `15`),
+  needed to prevent possible infinite recursion, after the specified depth is
+  reached, the proxy creation is stopped returning `null`.
 
 ## 2.0.4
 
@@ -120,7 +253,8 @@
 - d014462: remove unused dependency
 - 6b60991: improve normalization key auto-fetch logic
 - 5cc001f: Fix: Prevent duplicated concurrent scheduler fetch
-- d6da2ae: `Variables`/`Args` utility type to re-use variables types from any field with arguments.
+- d6da2ae: `Variables`/`Args` utility type to re-use variables types from any
+  field with arguments.
 
   You can use either `Variables` or `Args`.
 
@@ -142,14 +276,16 @@
 
 ### Patch Changes
 
-- 28e2c09: [Bug fixing breaking change] Fix types and retrieval of unions/interfaces of different object types
+- 28e2c09: [Bug fixing breaking change] Fix types and retrieval of
+  unions/interfaces of different object types
 
 ## 2.0.0
 
 ### Major Changes
 
 - 3586c45: Remove undocumented "buildSelections"
-- 3586c45: Change previous unstable `Unions` support with new `"$on"` property with support for both `Unions` & `Interfaces`
+- 3586c45: Change previous unstable `Unions` support with new `"$on"` property
+  with support for both `Unions` & `Interfaces`
 
 ## 1.1.3
 
@@ -173,7 +309,8 @@
 
 ### Minor Changes
 
-- a216972: add "track" helper, specially useful subscriptions and tracking cache state
+- a216972: add "track" helper, specially useful subscriptions and tracking cache
+  state
 
 ## 1.0.3
 
@@ -212,10 +349,13 @@
 ### Patch Changes
 
 - 4a3d5ef: divide subscriptions with only one top level field
-- af6a437: - Rename `gqtyConfig` to `GQtyConfig` (so it's consistent with the new logo)
+- af6a437: - Rename `gqtyConfig` to `GQtyConfig` (so it's consistent with the
+  new logo)
   - Rename `gqtyError` to `GQtyError`
-  - Remove `endpoint` option from the configuration, and instead always defaults to introspection one
-    - It's confusing why theres two of them, and the user can change it later by modifying the file anyway
+  - Remove `endpoint` option from the configuration, and instead always defaults
+    to introspection one
+    - It's confusing why theres two of them, and the user can change it later by
+      modifying the file anyway
 
 ## 2.0.12
 
@@ -235,7 +375,8 @@
 
 ### Patch Changes
 
-- 65c4d32: add resolved "onEmptyResolve" callback and warn on empty "resolved" calls
+- 65c4d32: add resolved "onEmptyResolve" callback and warn on empty "resolved"
+  calls
 
 ## 2.0.9
 
