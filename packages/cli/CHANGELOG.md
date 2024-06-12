@@ -1,5 +1,74 @@
 # @gqty/cli
 
+## 4.0.0
+
+### Major Changes
+
+- [#1724](https://github.com/gqty-dev/gqty/pull/1724)
+  [`b289c05`](https://github.com/gqty-dev/gqty/commit/b289c051fb85ab045a0c75f7441927599440d105)
+  Thanks [@renovate](https://github.com/apps/renovate)! - Drop Node 16 support,
+  and add Node 22 in the tests.
+
+- [#1544](https://github.com/gqty-dev/gqty/pull/1544)
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724)
+  Thanks [@vicary](https://github.com/vicary)! - Dropped inferrable types from
+  generated schema
+
+- [#1634](https://github.com/gqty-dev/gqty/pull/1634)
+  [`3c5bc4a`](https://github.com/gqty-dev/gqty/commit/3c5bc4a7590a8e3a039b634b5600239185bf4085)
+  Thanks [@vicary](https://github.com/vicary)! - Upgrade
+  @graphql-codegen/typescript to v4
+
+- [#1544](https://github.com/gqty-dev/gqty/pull/1544)
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724)
+  Thanks [@vicary](https://github.com/vicary)! - Generated query fetcher now
+  takes a single `QueryPayload` parameter
+
+### Minor Changes
+
+- [#1585](https://github.com/gqty-dev/gqty/pull/1585)
+  [`f6d00c0`](https://github.com/gqty-dev/gqty/commit/f6d00c0741659729c8503f7957018664bb5e76ac)
+  Thanks [@vicary](https://github.com/vicary)! - Support "endpoint" in
+  configuration
+
+- [#1544](https://github.com/gqty-dev/gqty/pull/1544)
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724)
+  Thanks [@vicary](https://github.com/vicary)! - Interactive mode for generating
+  queries and mutations
+
+- [#1683](https://github.com/gqty-dev/gqty/pull/1683)
+  [`eab8c7a`](https://github.com/gqty-dev/gqty/commit/eab8c7a7178db08c0eeb339ccced3485f7fb6493)
+  Thanks [@vicary](https://github.com/vicary)! - Add `enumStyle` config option.
+
+### Patch Changes
+
+- Updated dependencies
+  [[`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724),
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724),
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724),
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724),
+  [`fe29ac0`](https://github.com/gqty-dev/gqty/commit/fe29ac0468389ea0783d97eb297b28b4b4fc11d2),
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724),
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724),
+  [`ac34d04`](https://github.com/gqty-dev/gqty/commit/ac34d0477c6cee041177c125336003aec47080df),
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724),
+  [`7ffaebf`](https://github.com/gqty-dev/gqty/commit/7ffaebf0c327efdf567a6c241188b72732001ffc),
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724),
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724),
+  [`2e274f1`](https://github.com/gqty-dev/gqty/commit/2e274f12144a900f88c85358c23a6b357f1e8d11),
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724),
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724),
+  [`ffb7d5c`](https://github.com/gqty-dev/gqty/commit/ffb7d5c0a3ff2d640d2d885fccd6916e48b799eb),
+  [`595ec84`](https://github.com/gqty-dev/gqty/commit/595ec8431de0d4be2edc4f60809988bda0cf2833),
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724),
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724),
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724),
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724),
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724),
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724),
+  [`a758ed1`](https://github.com/gqty-dev/gqty/commit/a758ed17130ff2f5e8fc659c9ded3203798f9724)]:
+  - gqty@3.0.0
+
 ## 3.3.0
 
 ### Minor Changes
@@ -44,9 +113,14 @@
 
 ### Minor Changes
 
-- dd47986: New option `"fetchOptions"`, added to the [`resolved`](https://gqty.dev/docs/client/fetching-data#resolved) client function, that allows for giving extra configurations to the expected [fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) call.
+- dd47986: New option `"fetchOptions"`, added to the
+  [`resolved`](https://gqty.dev/docs/client/fetching-data#resolved) client
+  function, that allows for giving extra configurations to the expected
+  [fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) call.
 
-  This enables, for example, the customization of the headers sent for a specific query or to pass an [AbortSignal](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal).
+  This enables, for example, the customization of the headers sent for a
+  specific query or to pass an
+  [AbortSignal](https://developer.mozilla.org/en-US/docs/Web/API/AbortSignal).
 
   ```ts
   import { resolved, query } from '../gqty';
@@ -66,7 +140,8 @@
   });
   ```
 
-  For already generated clients to be able to use this new option, it is required manually modify the existing query fetcher, to do for example:
+  For already generated clients to be able to use this new option, it is
+  required manually modify the existing query fetcher, to do for example:
 
   ```ts
   const queryFetcher: QueryFetcher = async function (
@@ -92,7 +167,8 @@
   };
   ```
 
-- b7c8710: Fix generator: Argument is required only if it is non-null and does not have default value. Previously only checking if it is non-null.
+- b7c8710: Fix generator: Argument is required only if it is non-null and does
+  not have default value. Previously only checking if it is non-null.
 
 ### Patch Changes
 
@@ -124,13 +200,15 @@
 
 ### Minor Changes
 
-- f9fd0b9: Added the ability to use fast-glob patterns in the schema generate endpoint to be able to use and combine multiple gql/graphql schema files
+- f9fd0b9: Added the ability to use fast-glob patterns in the schema generate
+  endpoint to be able to use and combine multiple gql/graphql schema files
 
 ## 2.3.1
 
 ### Patch Changes
 
-- 96ab370: Change export syntax to fix bundling issues, show a warning on existent generated clients with `export const {` syntax.
+- 96ab370: Change export syntax to fix bundling issues, show a warning on
+  existent generated clients with `export const {` syntax.
 
   Closes #292
 
@@ -151,7 +229,9 @@
 ### Minor Changes
 
 - cba5c43: Don't skip config read on NODE_ENV === "test"
-- a4fc294: New [Envelop](https://www.envelop.dev/) / [graphql-ez](https://www.graphql-ez.com/) plugin that automatically generates gqty code based on schema and gqty.config.cjs
+- a4fc294: New [Envelop](https://www.envelop.dev/) /
+  [graphql-ez](https://www.graphql-ez.com/) plugin that automatically generates
+  gqty code based on schema and gqty.config.cjs
 
   ```ts
   // graphql-ez
@@ -207,7 +287,8 @@
 
 ### Patch Changes
 
-- f4ddac9: Enforce `"importsNotUsedAsValues"` & `"preserveValueImports"` using `import type`
+- f4ddac9: Enforce `"importsNotUsedAsValues"` & `"preserveValueImports"` using
+  `import type`
 - ff821ef: default config react enabled only if "react" dependency is found
 
 ## 2.1.0
@@ -224,7 +305,8 @@
 
 ### Patch Changes
 
-- 28e2c09: [Bug fixing breaking change] Fix types and retrieval of unions/interfaces of different object types
+- 28e2c09: [Bug fixing breaking change] Fix types and retrieval of
+  unions/interfaces of different object types
 - Updated dependencies [28e2c09]
   - gqty@2.0.1
 
@@ -232,7 +314,8 @@
 
 ### Major Changes
 
-- 3586c45: Change previous unstable `Unions` support with new `"$on"` property with support for both `Unions` & `Interfaces`
+- 3586c45: Change previous unstable `Unions` support with new `"$on"` property
+  with support for both `Unions` & `Interfaces`
 
 ### Patch Changes
 
@@ -331,10 +414,13 @@
 ### Patch Changes
 
 - 4a3d5ef: allow introspection json without "data" field
-- af6a437: - Rename `gqtyConfig` to `GQtyConfig` (so it's consistent with the new logo)
+- af6a437: - Rename `gqtyConfig` to `GQtyConfig` (so it's consistent with the
+  new logo)
   - Rename `gqtyError` to `GQtyError`
-  - Remove `endpoint` option from the configuration, and instead always defaults to introspection one
-    - It's confusing why theres two of them, and the user can change it later by modifying the file anyway
+  - Remove `endpoint` option from the configuration, and instead always defaults
+    to introspection one
+    - It's confusing why theres two of them, and the user can change it later by
+      modifying the file anyway
 - 4a3d5ef: disable config file write if no cli usage
 - Updated dependencies [4a3d5ef]
 - Updated dependencies [af6a437]
