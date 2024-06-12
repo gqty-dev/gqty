@@ -1,5 +1,12 @@
 # gqty
 
+## 3.0.1
+
+### Patch Changes
+
+- [`0b69356`](https://github.com/gqty-dev/gqty/commit/0b69356a564cdb91d5c4e4780f7f7dd5fd8f2c83)
+  Thanks [@vicary](https://github.com/vicary)! - Fix logo URL in README
+
 ## 3.0.0
 
 ### Major Changes
