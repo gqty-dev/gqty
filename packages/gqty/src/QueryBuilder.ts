@@ -10,8 +10,10 @@ export type QueryBuilderOptions = {
   cache: Cache;
 };
 
+type RootType = 'query' | 'mutation' | 'subscription';
+
 export type BuiltQuery = QueryPayload<{
-  type: 'query' | 'mutation' | 'subscription';
+  type: RootType;
   hash: string;
 }>;
 
@@ -19,12 +21,6 @@ type SelectionTreeLeaf = Record<string, true>;
 type SelectionTreeNode = {
   [key: string]: SelectionTreeNode | SelectionTreeLeaf;
 };
-type SelectionTreeRoot = Record<
-  'query' | 'mutation' | 'subscription',
-  SelectionTreeNode
->;
-
-type SelectionBranchEntry = [keyof SelectionTreeRoot, SelectionTreeNode];
 
 const stringifySelectionTree = (tree: SelectionTreeNode): string =>
   Object.entries(tree)
@@ -48,15 +44,40 @@ export const buildQuery = (
   selections: Set<Selection>,
   operationName?: string
 ): BuiltQuery[] => {
-  const root = {} as SelectionTreeRoot;
-  const variables = new Map<string, { type: string; value: unknown }>();
+  const roots = new Map<
+    string,
+    {
+      args: Map<string, { type: string; value: unknown }>;
+      tree: SelectionTreeNode;
+    }
+  >();
+
   const inputDedupe = new Map<object, string>();
 
   // TODO: Stablize variable names, maybe by sorting selections beforehand?
 
   for (const { ancestry } of selections) {
+    const [type, field] = ancestry;
+
+    if (typeof type.key !== 'string') continue;
+
+    const rootKey =
+      type.key === 'subscription'
+        ? // Subscriptions are fetched separately
+          `${type.key}.${field.alias ?? field.key}`
+        : type.key;
+
+    if (!roots.has(rootKey)) {
+      roots.set(rootKey, {
+        args: new Map(),
+        tree: {},
+      });
+    }
+
+    const root = roots.get(rootKey)!;
+
     set(
-      root,
+      root.tree,
       ancestry.reduce<string[]>((prev, s) => {
         if (
           typeof s.key === 'symbol' ||
@@ -82,13 +103,14 @@ export const buildQuery = (
                   s.aliasLength
                 );
 
-                variables.set(`${variableName}`, {
+                root.args.set(`${variableName}`, {
                   value,
                   type: input.types[key],
                 });
 
                 return `${key}:$${variableName}`;
               })
+              .filter(Boolean)
               .join(' ');
 
             inputDedupe.set(input, `${key}(${queryInputs})`);
@@ -103,32 +125,15 @@ export const buildQuery = (
     );
   }
 
-  // Split top level fields of subscriptions
-  const branches = Object.entries(root).reduce<SelectionBranchEntry[]>(
-    (prev, [key, value]) => {
-      if (key !== 'subscription') {
-        return [...prev, [key, value] as SelectionBranchEntry];
-      }
-
-      return [
-        ...prev,
-        ...Object.entries(value).map<SelectionBranchEntry>(
-          ([topField, branch]) => ['subscription', { [topField]: branch }]
-        ),
-      ];
-    },
-    []
-  );
-
-  return branches.map(([key, branch]) => {
-    const rootKey = key as keyof SelectionTreeRoot;
-    let query = stringifySelectionTree({ [rootKey]: branch });
+  return [...roots].map(([key, { args, tree }]) => {
+    const rootKey = key.split('.')[0] as RootType;
+    let query = stringifySelectionTree(tree);
 
     // Query variables
-    if (variables.size > 0) {
+    if (args.size > 0) {
       query = query.replace(
         rootKey,
-        `${rootKey}(${[...variables.entries()]
+        `${rootKey}(${[...args.entries()]
           .sort(([a], [b]) => a.localeCompare(b))
           .map(([name, { type }]) => `$${name}:${type}`)
           .join('')})`
@@ -143,8 +148,8 @@ export const buildQuery = (
     return {
       query,
       variables:
-        variables.size > 0
-          ? [...variables].reduce<Record<string, unknown>>(
+        args.size > 0
+          ? [...args].reduce<Record<string, unknown>>(
               (prev, [key, { value }]) => ((prev[key] = value), prev),
               {}
             )
@@ -152,7 +157,7 @@ export const buildQuery = (
       operationName,
       extensions: {
         type: rootKey,
-        hash: hash({ query, variables }), // For query dedupe and cache keys
+        hash: hash({ query, variables: args }), // For query dedupe and cache keys
       },
     };
   });
