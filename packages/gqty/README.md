@@ -1,7 +1,6 @@
 <p align="center">
   <a href="https://gqty.dev">
-    <img src="https://github.com/gqty-dev/gqty/raw/main/internal/images/logo.png
-    " height="150" alt="gqty" />
+    <img src="https://github.com/gqty-dev/gqty/raw/main/internal/images/logo.png" height="150" alt="gqty" />
   </a>
 </p>
 
