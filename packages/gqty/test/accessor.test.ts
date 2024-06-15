@@ -218,7 +218,7 @@ describe('setCache', () => {
       unsubscribe();
 
       expect(query.hello).toBe('12345');
-      expect(mockedFn).toBeCalledTimes(1);
+      expect(mockedFn).toHaveBeenCalledTimes(1);
       expect(selections).toMatchInlineSnapshot(`
         [
           [
@@ -247,7 +247,7 @@ describe('setCache', () => {
 
       unsubscribe();
 
-      expect(mockedFn).toBeCalledTimes(1);
+      expect(mockedFn).toHaveBeenCalledTimes(1);
       expect(selections).toMatchInlineSnapshot(`
         [
           [
@@ -274,28 +274,32 @@ describe('setCache', () => {
     expect(() => {
       // @ts-expect-error
       setCache((_args?: { a: string }) => {}, undefined);
-    }).toThrowError('Subject must be an accessor.');
+    }).toThrow(new Error('Subject must be an accessor.'));
 
     expect(() => {
       setCache(query, (() => {}) as any);
-    }).toThrowError(
-      'Data must be a subset of the schema object, got type: ' + 'function'
+    }).toThrow(
+      new Error(
+        'Data must be a subset of the schema object, got type: ' + 'function.'
+      )
     );
 
     expect(() => {
       setCache(query, 123123 as any);
-    }).toThrowError(
-      'Data must be a subset of the schema object, got type: ' + 'number'
+    }).toThrow(
+      new Error(
+        'Data must be a subset of the schema object, got type: ' + 'number.'
+      )
     );
 
     expect(() => {
       setCache({}, {});
-    }).toThrowError('Subject must be an accessor.');
+    }).toThrow(new Error('Subject must be an accessor.'));
 
     expect(() => {
       // @ts-expect-error
       query.human({ name: 'ñññ' }).sons['hello'] = null;
-    }).toThrowError('Invalid array assignment.');
+    }).toThrow(new Error('Invalid array assignment.'));
   });
 });
 
@@ -360,7 +364,7 @@ describe('assign selections', () => {
 
     assignSelections(human, human);
 
-    expect(spy).toBeCalledTimes(1);
+    expect(spy).toHaveBeenCalledTimes(1);
 
     const prevNodeEnv = process.env.NODE_ENV;
     try {
@@ -371,7 +375,7 @@ describe('assign selections', () => {
       process.env.NODE_ENV = prevNodeEnv;
     }
 
-    expect(spy).toBeCalledTimes(1);
+    expect(spy).toHaveBeenCalledTimes(1);
 
     spy.mockRestore();
   });
@@ -388,11 +392,11 @@ describe('assign selections', () => {
 
     expect(() => {
       assignSelections({}, {});
-    }).toThrowError('Invalid source proxy');
+    }).toThrow(new Error('Invalid source proxy'));
 
     expect(() => {
       assignSelections(query, {} as any);
-    }).toThrowError('Invalid target proxy');
+    }).toThrow(new Error('Invalid target proxy'));
   });
 });
 

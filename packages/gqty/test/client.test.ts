@@ -146,7 +146,7 @@ describe('core#resolve', () => {
 
       await expect(() =>
         resolve(({ query }) => query.hello, { cachePolicy: 'only-if-cached' })
-      ).rejects.toThrowError(new TypeError('Failed to fetch'));
+      ).rejects.toThrow(new TypeError('Failed to fetch'));
 
       await expect(resolve(({ query }) => query.hello)).resolves.toBe(
         'hello world'
@@ -268,7 +268,7 @@ describe('compat', () => {
       resolved(() => query.hello, { refetch: true, onCacheData })
     ).resolves.toBe('hello world');
 
-    expect(onCacheData).toBeCalledTimes(1);
+    expect(onCacheData).toHaveBeenCalledTimes(1);
 
     const onCacheData2 = jest
       .fn()
@@ -282,7 +282,7 @@ describe('compat', () => {
       resolved(() => query.hello, { refetch: true, onCacheData: onCacheData2 })
     ).resolves.toBe('hello world');
 
-    expect(onCacheData2).toBeCalledTimes(1);
+    expect(onCacheData2).toHaveBeenCalledTimes(1);
   });
 
   test('resolved with operationName', async () => {

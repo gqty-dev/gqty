@@ -530,11 +530,13 @@ const arrayProxyHandler: ProxyHandler<CacheObject[]> = {
 };
 
 export const createArrayAccessor = <
-  TSchemaType extends GeneratedSchemaObject[]
+  TSchemaType extends GeneratedSchemaObject[],
 >(
   meta: Meta
 ) => {
-  if (!Array.isArray(meta.cache.data)) {
+  const { cache } = meta;
+
+  if (!Array.isArray(cache.data)) {
     if (verbose) {
       console.warn(
         'Invalid cache for an array accessor, monkey-patch by wrapping it with an array.',
@@ -543,10 +545,10 @@ export const createArrayAccessor = <
       );
     }
 
-    meta.cache.data = [meta.cache.data];
+    cache.data = [cache.data];
   }
 
-  const proxy = new Proxy(meta.cache.data as TSchemaType, arrayProxyHandler);
+  const proxy = new Proxy(cache.data as TSchemaType, arrayProxyHandler);
 
   $meta.set(proxy, meta);
 

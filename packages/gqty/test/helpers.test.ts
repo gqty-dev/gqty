@@ -1156,7 +1156,7 @@ describe('refetch function', () => {
       });
 
       expect(value).toBe(123);
-      expect(spy).toBeCalledTimes(1);
+      expect(spy).toHaveBeenCalledTimes(1);
 
       process.env.NODE_ENV = 'production';
 
@@ -1165,7 +1165,7 @@ describe('refetch function', () => {
       });
 
       expect(value2).toBe(456);
-      expect(spy).toBeCalledTimes(1);
+      expect(spy).toHaveBeenCalledTimes(1);
     } finally {
       process.env.NODE_ENV = prevEnv;
       spy.mockRestore();
@@ -1247,14 +1247,14 @@ describe('refetch function', () => {
       const invalidProxy = {};
       const refetchData = await refetch(invalidProxy);
 
-      expect(spy).toBeCalledTimes(1);
+      expect(spy).toHaveBeenCalledTimes(1);
       expect(refetchData).toBe(invalidProxy);
 
       process.env.NODE_ENV = 'production';
 
       const refetchData2 = await refetch(invalidProxy);
 
-      expect(spy).toBeCalledTimes(1);
+      expect(spy).toHaveBeenCalledTimes(1);
       expect(refetchData2).toBe(invalidProxy);
     } finally {
       process.env.NODE_ENV = prevNODE_ENV;
@@ -1498,11 +1498,10 @@ test('prepass works', () => {
 });
 
 test('type casters', async () => {
-  type Equals<X, Y> = (<T>() => T extends X ? 1 : 2) extends <
-    T
-  >() => T extends Y ? 1 : 2
-    ? true
-    : false;
+  type Equals<X, Y> =
+    (<T>() => T extends X ? 1 : 2) extends <T>() => T extends Y ? 1 : 2
+      ? true
+      : false;
 
   const a1: {
     a: string | undefined;
@@ -1541,7 +1540,7 @@ test('type casters', async () => {
                       h: [
                         {
                           i: number | undefined;
-                        }
+                        },
                       ];
                     };
                   }

@@ -1,7 +1,5 @@
-import { assertIsDefined } from 'test-utils';
-import { $meta, createSchemaAccessor } from '../src/Accessor';
-import { createObjectAccessor } from '../src/Accessor/resolve';
-import { Cache, CacheRoot } from '../src/Cache';
+import { createSchemaAccessor } from '../src/Accessor';
+import { Cache, type CacheRoot } from '../src/Cache';
 import { Selection } from '../src/Selection';
 
 describe('Cache#dataAccessors', () => {
@@ -27,43 +25,6 @@ describe('Cache#dataAccessors', () => {
     hasCacheHit: false,
     hasCacheMiss: false,
   } as const;
-
-  /**
-   * Before we figure out how to cache sub-selections for null values, caching
-   * accessors adds a lot of complixity with little performance gain.
-   *
-   * Skip this for now.
-   */
-  it('should return the cached accessor', () => {
-    const cache = new Cache();
-    const selection = Selection.createRoot('query').getChild('a');
-    const cacheValue = { a: 1 };
-
-    const obj = cache.getAccessor(selection, () =>
-      createObjectAccessor({
-        cache: {
-          data: cacheValue,
-          expiresAt: Infinity,
-          swrBefore: 0,
-        },
-        context: { ...mockContext, cache },
-        selection,
-        type: { __type: 'query' },
-      })
-    );
-
-    expect($meta(obj)).toBeDefined();
-    expect($meta(obj)?.cache.data).toEqual({ a: 1 });
-
-    const obj2 = cache.getAccessor(selection, () => {
-      throw Error("This shouldn't be called");
-    });
-
-    expect(obj).toBe(obj2);
-    assertIsDefined(selection);
-    expect(selection.key).toBe('a');
-    expect(selection.cacheKeys).toEqual(['query', 'a']);
-  });
 
   it('should make selections', () => {
     const cache = new Cache();
@@ -463,7 +424,7 @@ describe('Cache#subscribe', () => {
       },
     });
 
-    expect(listener).toBeCalledTimes(1);
+    expect(listener).toHaveBeenCalledTimes(1);
     expect(cache).toMatchInlineSnapshot(`
       {
         "query": {
@@ -508,7 +469,7 @@ describe('Cache#subscribe', () => {
       },
     });
 
-    expect(listener).toBeCalledTimes(1);
+    expect(listener).toHaveBeenCalledTimes(1);
     expect(listener).toHaveBeenCalledWith({
       query: {
         c: { __typename: 'B', id: 2, b: 4 },
