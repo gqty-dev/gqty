@@ -39,8 +39,6 @@ export const createSolidClient = <Schema extends BaseGeneratedSchema>(
           extensions,
           retryPolicy,
           operationName,
-
-          // [ ] Clear selections post-fetch to remove stale inputs.
         });
 
       const [schema, setSchema] = createSignal(accessor, { equals: false });
@@ -85,6 +83,8 @@ export const createSolidClient = <Schema extends BaseGeneratedSchema>(
           },
           onComplete() {
             resetMutex();
+
+            selections.clear();
           },
         });
       });
