@@ -1,3 +1,4 @@
+import type { CacheNode } from '../Cache';
 import type { BaseGeneratedSchema, SchemaContext } from '../Client';
 import { GQtyError } from '../Error';
 import type { GeneratedSchemaObject } from '../Schema';
@@ -45,7 +46,7 @@ export function createSchemaAccessor<TSchema extends BaseGeneratedSchema>(
           return createObjectAccessor({
             context,
             cache: {
-              data: target[key as keyof BaseGeneratedSchema],
+              data: target[key as keyof BaseGeneratedSchema] as CacheNode,
               expiresAt: Infinity,
             },
             selection,
@@ -79,7 +80,7 @@ export const setCache = <TData extends GeneratedSchemaObject>(
     );
   }
 
-  meta.cache.data = data;
+  meta.cache.data = data as CacheNode;
 
   Object.assign(accessor, data);
 };
@@ -125,10 +126,18 @@ export const assignSelections = <TData extends GeneratedSchemaObject>(
 
           currentNode = target;
         } else {
+          const node = currentNode[selection.key];
+
           if (selection.input) {
-            currentNode = currentNode[selection.key](selection.input);
+            if (typeof node !== 'function') {
+              throw new GQtyError(
+                `Unexpected inputs for selection: ${selection}`
+              );
+            }
+
+            currentNode = node(selection.input);
           } else {
-            currentNode = currentNode[selection.key];
+            currentNode = node as never;
           }
         }
       }

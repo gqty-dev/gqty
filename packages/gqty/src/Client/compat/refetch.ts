@@ -26,9 +26,9 @@ export const createRefetch = <TSchema extends BaseGeneratedSchema>({
     operationName?: string
   ): Promise<TData> => {
     if (typeof fnOrProxy === 'function') {
-      return inlineResolved(fnOrProxy as any, { refetch: true });
+      return inlineResolved(fnOrProxy as never, { refetch: true });
     } else {
-      const selection = $meta(fnOrProxy as any)?.selection;
+      const selection = $meta(fnOrProxy as never)?.selection;
       if (!selection) {
         if (process.env.NODE_ENV !== 'production') {
           console.warn('[gqty] Invalid proxy to refetch!');

@@ -30,7 +30,7 @@ export type QueryFetcher<TData = Record<string, unknown>> = (
 ) => Promise<ExecutionResult<TData>> | ExecutionResult<TData>;
 
 export type QueryPayload<
-  TExtension extends Record<string, unknown> = Record<string, unknown>
+  TExtension extends Record<string, unknown> = Record<string, unknown>,
 > = {
   readonly query: string;
   readonly variables?: Record<string, unknown>;
@@ -64,7 +64,7 @@ export const parseSchemaType = memoize(
   ): ParseSchemaTypeInfo => {
     let isArray = false;
     let isNullable = true;
-    let hasDefaultValue = !!(fieldDesc && fieldDesc.defaultValue !== null);
+    const hasDefaultValue = !!(fieldDesc && fieldDesc.defaultValue !== null);
     let pureType = type;
     let nullableItems = true;
     if (pureType.endsWith('!')) {
@@ -92,7 +92,7 @@ export const parseSchemaType = memoize(
 );
 
 export type GeneratedSchemaObject<
-  T extends Record<string, any> = Record<string, any>
+  T extends Record<string, unknown> = Record<string, unknown>,
 > = T & {
   __typename?: string;
 };

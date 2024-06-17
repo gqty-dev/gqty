@@ -81,9 +81,9 @@ export type CacheSetOptions = {
 /**
  * A scoped cache for accessors, selections and data with expiry awareness.
  */
-// TODO: LRU cap size
-// TODO: Normalized cache eviction: evict(id: string) {}
-// TODO: Simple cache eviction: evict(type: string, field: string) {}
+// [ ] LRU cap size
+// [ ] Normalized cache eviction: evict(id: string) {}
+// [ ] Simple cache eviction: evict(type: string, field: string) {}
 export class Cache {
   #maxAge = Infinity;
   get maxAge() {
@@ -288,7 +288,7 @@ export class Cache {
    */
   get(path: string, options?: CacheGetOptions): CacheDataContainer | undefined {
     const [, type, key, subpath] =
-      path.match(/^([a-z]+(?:\w*))\.(?:__)?([a-z]+(?:\w*))(.*[^\.])?$/i) ?? [];
+      path.match(/^([a-z]+(?:\w*))\.(?:__)?([a-z]+(?:\w*))(.*[^.])?$/i) ?? [];
     if (!type || !key) {
       throw new ReferenceError(
         'Cache path must starts with `${type}.`: ' + path
@@ -297,7 +297,7 @@ export class Cache {
 
     const cacheKey = `${type}.${key}`;
 
-    let dataContainer = this.#data.get(cacheKey);
+    const dataContainer = this.#data.get(cacheKey);
     if (dataContainer === undefined) return;
 
     const { expiresAt, swrBefore } = dataContainer;
@@ -412,7 +412,7 @@ export class Cache {
         }, {} as CacheRoot),
         (it, key, obj) => {
           if (isSkeleton(it)) {
-            delete (obj as any)[key];
+            Reflect.deleteProperty(obj, key);
           }
         }
       );

@@ -1,4 +1,4 @@
-import { parseSchemaType, ParseSchemaTypeInfo } from '../src/Schema';
+import { parseSchemaType, type ParseSchemaTypeInfo } from '../src/Schema';
 
 describe('parseSchemaType', () => {
   test('nullable type', () => {

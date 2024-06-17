@@ -1,4 +1,4 @@
-import { Selection } from '../Selection';
+import type { Selection } from '../Selection';
 import { isObject } from '../Utils';
 
 function getFirstNonNullValue<T>(list: T[]): T | void {
@@ -45,8 +45,8 @@ export function prepass<T extends object | null | undefined>(
     let obj: unknown = v;
     for (const key of separatedKeys) {
       if (obj && key) {
-        let property = typeof key === 'object' ? key.field : key;
-        let variables = typeof key === 'object' ? key.variables : undefined;
+        const field = typeof key === 'object' ? key.field : key;
+        const variables = typeof key === 'object' ? key.variables : undefined;
 
         if (Array.isArray(obj)) {
           const firstNonNull = getFirstNonNullValue(obj);
@@ -56,10 +56,8 @@ export function prepass<T extends object | null | undefined>(
         }
 
         if (isObject(obj)) {
-          if (property in obj) {
-            const value: unknown =
-              //@ts-expect-error
-              obj[property];
+          if (field in obj) {
+            const value: unknown = obj[field];
 
             if (typeof value === 'function') {
               obj = value(variables);

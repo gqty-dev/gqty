@@ -31,7 +31,7 @@ const stringifySelectionTree = (tree: SelectionTreeNode): string =>
           ? `${key}{${stringifySelectionTree(value as SelectionTreeNode)}}`
           : key;
 
-      // TODO: buildQuery.test.ts wants exact output of `graphql` parse,
+      // [ ] buildQuery.test.ts wants exact output of `graphql` parse,
       // but this is not future proof and unnecessarily hits the performance.
       if (!prev || prev.endsWith('}') || prev.endsWith('{')) {
         return `${prev}${query}`;

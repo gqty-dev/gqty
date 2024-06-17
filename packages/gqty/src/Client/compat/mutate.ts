@@ -10,7 +10,7 @@ export interface LegacyMutateHelpers<TSchema extends BaseGeneratedSchema> {
 }
 
 export interface LegacyMutate<TSchema extends BaseGeneratedSchema> {
-  <T = any>(
+  <T>(
     fn: (mutation: TSchema['mutation']) => T,
     opts?: {
       onComplete?: (data: T, helpers: LegacyMutateHelpers<TSchema>) => void;

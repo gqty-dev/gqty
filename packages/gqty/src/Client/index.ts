@@ -158,8 +158,10 @@ export type Client<TSchema extends BaseGeneratedSchema> = Persistors &
 export const createClient = <
   TSchema extends BaseGeneratedSchema,
   // [ ] compat: remove in v4
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _ObjectTypesNames extends string = never,
   // [ ] compat: remove in v4
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _ObjectTypes extends SchemaObjects<TSchema> = never,
 >({
   aliasLength = 6,

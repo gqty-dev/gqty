@@ -2,14 +2,14 @@ import { debounceMicrotaskPromise } from 'debounce-microtasks';
 import { MultiDict } from 'multidict';
 import { pick, type BaseGeneratedSchema, type FetchOptions } from '.';
 import { createSchemaAccessor } from '../Accessor';
-import { Cache } from '../Cache';
-import { type GQtyError, type RetryOptions } from '../Error';
-import { type ScalarsEnumsHash, type Schema } from '../Schema';
-import { type Selection } from '../Selection';
+import type { Cache } from '../Cache';
+import type { GQtyError, RetryOptions } from '../Error';
+import type { ScalarsEnumsHash, Schema } from '../Schema';
+import type { Selection } from '../Selection';
 import { createDeferredIterator } from '../Utils/deferred';
 import { addSelections, delSelectionSet, getSelectionsSet } from './batching';
 import { createContext, type SchemaContext } from './context';
-import { type Debugger } from './debugger';
+import type { Debugger } from './debugger';
 import {
   fetchSelections,
   subscribeSelections,
@@ -84,15 +84,13 @@ export type CreateResolverFn<TSchema extends BaseGeneratedSchema> = (
   options?: ResolveOptions
 ) => ResolverParts<TSchema>;
 
-export type ResolveFn<TSchema extends BaseGeneratedSchema> = <
-  TData extends unknown = unknown,
->(
+export type ResolveFn<TSchema extends BaseGeneratedSchema> = <TData = unknown>(
   fn: DataFn<TSchema, TData>,
   options?: ResolveOptions
 ) => Promise<TData>;
 
 export type SubscribeFn<TSchema extends BaseGeneratedSchema> = <
-  TData extends unknown = unknown,
+  TData = unknown,
 >(
   fn: DataFn<TSchema, TData>,
   options?: SubscribeOptions
@@ -447,9 +445,8 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
               if (error) {
                 onError?.(error);
 
-                // Discard data here because of how generators work
-                if (data !== undefined) {
-                }
+                // Generators do not allow further processing of `data`.
+                // if (data !== undefined) {}
 
                 reject(error);
               } else if (data !== undefined) {
@@ -518,13 +515,13 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
 
       options?.onFetch?.(fetchPromise);
 
-      return dataFn() ?? (pick(accessor, selections) as any);
+      return dataFn() ?? (pick(accessor, selections) as never);
     },
 
-    subscribe: (
-      fn,
-      { onSubscribe, ...options } = {}
-    ): AsyncIterableIterator<any> & { unsubscribe: Unsubscribe } => {
+    subscribe: <TData = unknown>(
+      fn: DataFn<TSchema, TData>,
+      { onSubscribe, ...options }: SubscribeOptions = {}
+    ): AsyncIterableIterator<TData> & { unsubscribe: Unsubscribe } => {
       const { accessor, selections, subscribe } = createResolver({
         ...options,
         onSubscribe: (unsubscribe) => {
@@ -546,7 +543,9 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
           observable.throw(error);
         },
         onNext(value) {
-          observable.send((fn(accessor) as any) ?? (value as any));
+          const message = fn(accessor) ?? value;
+
+          observable.send(message as TData);
         },
       });
 
@@ -555,7 +554,7 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
       // excessive duplicated selections.
       //context.onSelect = undefined;
 
-      const observable = createDeferredIterator();
+      const observable = createDeferredIterator<TData>();
 
       if (selections.size === 0) {
         observable.complete();

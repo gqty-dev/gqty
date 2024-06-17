@@ -1,6 +1,6 @@
 import type { BaseGeneratedSchema } from '../..';
 import type { CreateLegacyMethodOptions } from './client';
-import { convertSelection, LegacySelection } from './selection';
+import { convertSelection, type LegacySelection } from './selection';
 
 export interface LegacyInlineResolved {
   <TData = unknown>(
@@ -27,7 +27,7 @@ export interface LegacyInlineResolveOptions<TData> {
 }
 
 export const createLegacyInlineResolved = <
-  TSchema extends BaseGeneratedSchema = BaseGeneratedSchema
+  TSchema extends BaseGeneratedSchema = BaseGeneratedSchema,
 >({
   resolvers: { createResolver },
   subscribeLegacySelections,

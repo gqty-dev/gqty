@@ -1,14 +1,10 @@
-import {
-  type BaseGeneratedSchema,
-  type FetchOptions,
-  type SchemaContext,
-} from '../..';
-import { type Cache } from '../../Cache';
-import { type ScalarsEnumsHash, type Schema } from '../../Schema';
-import { type Selectable } from '../../Selectable';
-import { type Selection } from '../../Selection';
-import { type createDebugger } from '../debugger';
-import { type Resolvers } from '../resolvers';
+import type { BaseGeneratedSchema, FetchOptions, SchemaContext } from '../..';
+import type { Cache } from '../../Cache';
+import type { ScalarsEnumsHash, Schema } from '../../Schema';
+import type { Selectable } from '../../Selectable';
+import type { Selection } from '../../Selection';
+import type { createDebugger } from '../debugger';
+import type { Resolvers } from '../resolvers';
 import {
   createLegacyHydrateCache,
   type LegacyHydrateCache,
@@ -23,10 +19,10 @@ import {
   createLegacyPrepareRender,
   type LegacyPrepareRender,
 } from './prepareRender';
-import { type LegacyQueryFetcher } from './queryFetcher';
+import type { LegacyQueryFetcher } from './queryFetcher';
 import { createRefetch, type LegacyRefetch } from './refetch';
 import { createLegacyResolved, type LegacyResolved } from './resolved';
-import { type LegacySubscriptionsClient } from './subscriptionsClient';
+import type { LegacySubscriptionsClient } from './subscriptionsClient';
 import { createLegacyTrack, type LegacyTrack } from './track';
 
 export {

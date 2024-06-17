@@ -1,7 +1,6 @@
 import { fromJSON, toJSON } from 'flatted';
 import { FrailMap } from 'frail-map';
 import type { Cache, CacheLeaf, CacheNode, CacheObject, CacheRoot } from '.';
-import { GQtyError } from '../Error';
 import { deepCopy } from '../Helpers/deepCopy';
 import { isPlainObject } from '../Utils';
 import { crawl } from './crawl';
@@ -71,7 +70,8 @@ export const importCacheSnapshot = (
       // Dereference
       if (isCacheReference(it)) {
         const norbj = normalized[it.__ref];
-        (parent as any)[key] = norbj;
+
+        Reflect.set(parent, key, norbj);
 
         if (!seen.has(norbj)) {
           seen.add(norbj);
@@ -82,12 +82,6 @@ export const importCacheSnapshot = (
       return;
     }
   );
-
-  if (Object.keys(data).length === 0) {
-    throw new GQtyError(
-      `No known root keys (query, mutation and subscription) are found.`
-    );
-  }
 
   if (options) {
     data.normalizedObjects = Object.entries(normalized).reduce(
@@ -133,7 +127,7 @@ export const exportCacheSnapshot = (
         normalized[id] = isNormalizedObjectShell(it) ? it.toJSON() : it;
       }
 
-      (parent as any)[key] = { __ref: id };
+      Reflect.set(parent, key, { __ref: id });
     });
 
     if (Object.keys(normalized).length > 0) {
@@ -171,9 +165,9 @@ export const createPersistors = (cache: Cache): Persistors => ({
       cache.restore(data);
     } catch (e) {
       console.warn(e);
-    } finally {
-      return true;
     }
+
+    return true;
   },
 
   async restoreAsync(data, version) {

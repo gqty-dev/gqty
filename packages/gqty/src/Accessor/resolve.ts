@@ -218,7 +218,7 @@ const objectProxyHandler: ProxyHandler<GeneratedSchemaObject> = {
           return data;
         }
 
-        return Object.entries(data).reduce<Record<string, any>>(
+        return Object.entries(data).reduce<Record<string, unknown>>(
           (prev, [key, value]) => {
             if (!isSkeleton(value)) {
               prev[key] = value;
@@ -362,26 +362,30 @@ export const createObjectAccessor = <TSchemaType extends GeneratedSchemaObject>(
 };
 
 /** Recursively replace proxy accessors with its actual cached value. */
-export const deepMetadata = (input: any) => {
+export const deepMetadata = (input: Record<string, unknown>) => {
   const data = metadata(input);
-  const stack = new Set([data]);
-  const seen = new Set();
+  const stack = new Set<unknown>([data]);
+  const seen = new Set<unknown>();
 
   for (const it of stack) {
     if (seen.has(it)) continue;
     seen.add(it);
 
     if (Array.isArray(it)) {
-      for (let [k, v] of it.entries()) {
-        if (isObject(v)) v = it[k] = metadata(v);
-
-        stack.add(v);
+      for (const [k, v] of it.entries()) {
+        if (isObject(v)) {
+          stack.add((it[k] = metadata(v)));
+        } else {
+          stack.add(v);
+        }
       }
     } else if (isObject(it)) {
-      for (let [k, v] of Object.entries(it)) {
-        if (isObject(v)) v = it[k] = metadata(v);
-
-        stack.add(v);
+      for (const [k, v] of Object.entries(it)) {
+        if (isObject(v)) {
+          stack.add((it[k] = metadata(v)));
+        } else {
+          stack.add(v);
+        }
       }
     }
   }
@@ -392,7 +396,7 @@ export const deepMetadata = (input: any) => {
     return ($meta(it)?.cache.data as TData) ?? it;
   }
 
-  function isObject(it: any): it is Record<string, any> {
+  function isObject(it: unknown): it is Record<string, unknown> {
     return typeof it === 'object' && it !== null;
   }
 };
@@ -531,11 +535,7 @@ const arrayProxyHandler: ProxyHandler<CacheObject[]> = {
   },
 };
 
-export const createArrayAccessor = <
-  TSchemaType extends GeneratedSchemaObject[],
->(
-  meta: Meta
-) => {
+export const createArrayAccessor = (meta: Meta) => {
   const { cache, context, selection } = meta;
 
   if (!Array.isArray(cache.data)) {
@@ -555,7 +555,7 @@ export const createArrayAccessor = <
     context.select(selection, cache);
   }
 
-  const proxy = new Proxy(cache.data as TSchemaType, arrayProxyHandler);
+  const proxy = new Proxy(cache.data, arrayProxyHandler);
 
   $meta.set(proxy, meta);
 

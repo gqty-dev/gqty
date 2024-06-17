@@ -1,20 +1,20 @@
-import { type ExecutionResult } from 'graphql';
-import { type Client as SseClient } from 'graphql-sse';
-import {
-  type MessageType,
-  type SubscribePayload,
-  type Client as WsClient,
+import type { ExecutionResult } from 'graphql';
+import type { Client as SseClient } from 'graphql-sse';
+import type {
+  MessageType,
+  SubscribePayload,
+  Client as WsClient,
 } from 'graphql-ws';
-import { type CloseEvent } from 'ws';
-import { type FetchOptions } from '.';
-import { type Cache } from '../Cache';
+import type { CloseEvent } from 'ws';
+import type { FetchOptions } from '.';
+import type { Cache } from '../Cache';
 import { dedupePromise } from '../Cache/query';
 import { GQtyError, doRetry } from '../Error';
 import { notifyFetch, notifyRetry } from '../Helpers/useMetaStateHack';
 import { buildQuery } from '../QueryBuilder';
-import { type QueryPayload } from '../Schema';
-import { type Selection } from '../Selection';
-import { type Debugger } from './debugger';
+import type { QueryPayload } from '../Schema';
+import type { Selection } from '../Selection';
+import type { Debugger } from './debugger';
 
 export type FetchSelectionsOptions = {
   cache?: Cache;
@@ -27,11 +27,11 @@ export type FetchSelectionsOptions = {
 export type QueryExtensions = { type: string; hash: string };
 
 export type FetchResult<
-  TData extends Record<string, unknown> = Record<string, unknown>
+  TData extends Record<string, unknown> = Record<string, unknown>,
 > = Omit<ExecutionResult<TData>, 'errors'> & { error?: Error | GQtyError };
 
 export const fetchSelections = <
-  TData extends Record<string, unknown> = Record<string, unknown>
+  TData extends Record<string, unknown> = Record<string, unknown>,
 >(
   selections: Set<Selection>,
   {
@@ -117,7 +117,7 @@ const subsRef = new WeakMap<
 >();
 
 export const subscribeSelections = <
-  TData extends Record<string, unknown> = Record<string, unknown>
+  TData extends Record<string, unknown> = Record<string, unknown>,
 >(
   selections: Set<Selection>,
   /**
@@ -315,7 +315,7 @@ export const subscribeSelections = <
 };
 
 const doFetch = async <
-  TData extends Record<string, unknown> = Record<string, unknown>
+  TData extends Record<string, unknown> = Record<string, unknown>,
 >(
   payload: QueryPayload,
   {
@@ -373,7 +373,7 @@ const doFetch = async <
 };
 
 const doSubscribeOnce = async <
-  TData extends Record<string, unknown> = Record<string, unknown>
+  TData extends Record<string, unknown> = Record<string, unknown>,
 >(
   { query, variables, operationName }: SubscribePayload,
   { subscriber }: FetchOptions
@@ -384,7 +384,7 @@ const doSubscribeOnce = async <
 
   return new Promise<ExecutionResult<TData, Record<string, unknown>>>(
     (resolve, reject) => {
-      let result: any;
+      let result: ExecutionResult<TData> | undefined;
 
       const unsubscribe = subscriber.subscribe(
         {
@@ -394,12 +394,12 @@ const doSubscribeOnce = async <
         },
         {
           next(data) {
-            result = data;
+            result = data as never;
             unsubscribe();
           },
           error(error) {
             if (isCloseEvent(error)) {
-              resolve(result);
+              resolve(result as never);
             } else if (Array.isArray(error)) {
               reject(GQtyError.fromGraphQLErrors(error));
             } else {
