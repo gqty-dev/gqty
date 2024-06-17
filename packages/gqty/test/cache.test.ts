@@ -28,7 +28,11 @@ describe('Cache#dataAccessors', () => {
 
   it('should make selections', () => {
     const cache = new Cache();
-    const schema = createSchemaAccessor<{ query: { b: { c: string } } }>({
+    const {
+      accessor: { query },
+    } = createSchemaAccessor<{
+      query: { b: { c: string } };
+    }>({
       ...mockContext,
       cache,
       select(selection) {
@@ -37,7 +41,7 @@ describe('Cache#dataAccessors', () => {
     });
     const selections: Selection[] = [];
 
-    schema.query.b.c;
+    query.b.c;
 
     expect(selections.length).toBe(1);
     expect(selections[0].cacheKeys.join('.')).toBe('query.b.c');
@@ -83,7 +87,9 @@ describe('Cache#data', () => {
 
   it('should be JSON serializable', async () => {
     const cache = new Cache({ query: { nullArray: [] } });
-    const { query } = createSchemaAccessor({ ...mockContext, cache });
+    const {
+      accessor: { query },
+    } = createSchemaAccessor({ ...mockContext, cache });
 
     expect(query).toMatchInlineSnapshot(`
       {

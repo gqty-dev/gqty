@@ -14,7 +14,7 @@ const aliasGenerator = {
     const seq = this.map.get(input) ?? this.seq++;
 
     // Sane use cases shouldn't hit this
-    if (seq > Number.MAX_SAFE_INTEGER) {
+    if (seq >= Number.MAX_SAFE_INTEGER) {
       throw new GQtyError(`selection alias fallback overflow`);
     }
 

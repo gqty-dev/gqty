@@ -9,50 +9,55 @@ export { $meta } from './meta';
 
 export function createSchemaAccessor<TSchema extends BaseGeneratedSchema>(
   context: SchemaContext
-): TSchema {
+) {
+  // Reuse cached selection object to improve performance.
   const selectionCache = new Map<string, Selection>();
 
-  return new Proxy(
-    {
-      query: { __typename: 'Query' },
-      mutation: { __typename: 'Mutation' },
-      subscription: { __typename: 'Subscription' },
-    } as unknown as TSchema,
-    {
-      get(target, key: string) {
-        if (key === 'toJSON') {
-          return () => context.cache.toJSON();
-        }
+  return {
+    accessor: new Proxy(
+      {
+        query: { __typename: 'Query' },
+        mutation: { __typename: 'Mutation' },
+        subscription: { __typename: 'Subscription' },
+      } as TSchema,
+      {
+        get(target, key: string) {
+          if (key === 'toJSON') {
+            return () => context.cache.toJSON();
+          }
 
-        if (
-          !Reflect.has(target, key) ||
-          !Reflect.get(target[key as keyof TSchema] as object, '__typename') ||
-          !context.schema[key]
-        )
-          return;
+          if (
+            !Reflect.has(target, key) ||
+            !Reflect.get(
+              target[key as keyof TSchema] as object,
+              '__typename'
+            ) ||
+            !context.schema[key]
+          )
+            return;
 
-        // Reuse root selections and their internally cached children, accessors
-        // can in turn be safely cached by selections but still scoped.
-        //
-        // TODO: This is a half-way done solution for nullable objects, which
-        // returns early and removes the possibility to make child selections.
-        const selection =
-          selectionCache.get(key) ??
-          Selection.createRoot(key, { aliasLength: context.aliasLength });
-        selectionCache.set(key, selection);
+          const selection =
+            selectionCache.get(key) ??
+            Selection.createRoot(key, { aliasLength: context.aliasLength });
 
-        return createObjectAccessor({
-          context,
-          cache: {
-            data: target[key as keyof BaseGeneratedSchema],
-            expiresAt: Infinity,
-          },
-          selection,
-          type: { __type: key },
-        });
-      },
-    }
-  );
+          selectionCache.set(key, selection);
+
+          return createObjectAccessor({
+            context,
+            cache: {
+              data: target[key as keyof BaseGeneratedSchema],
+              expiresAt: Infinity,
+            },
+            selection,
+            type: { __type: key },
+          });
+        },
+      }
+    ),
+    clearCache: () => {
+      selectionCache.clear();
+    },
+  };
 }
 
 /**

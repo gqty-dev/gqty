@@ -5,14 +5,14 @@ import * as prettierGraphQL from 'prettier/plugins/graphql';
 import { format as prettierFormat } from 'prettier/standalone';
 import { serializeError } from './serializeError';
 
-async function parseGraphQL(query: string) {
+async function formatGraphQL(query: string) {
   return await prettierFormat(query, {
     parser: 'graphql',
     plugins: [prettierBabel, prettierGraphQL],
   });
 }
 
-async function parseJSON(value: unknown) {
+async function formatJSON(value: unknown) {
   return await prettierFormat(JSON.stringify(value), {
     parser: 'json',
     plugins: [prettierBabel, prettierEstree],
@@ -70,7 +70,7 @@ export function createLogger(
 
   const stringifyJSONIfEnabled = <T extends object>(v: T) => {
     if (options.stringifyJSON && v) {
-      return parseJSON(v);
+      return formatJSON(v);
     }
     return v;
   };
@@ -141,7 +141,7 @@ export function createLogger(
         );
       }
 
-      console.log(...format([await parseGraphQL(query)]));
+      console.log(...format([await formatGraphQL(query)]));
 
       console.groupEnd();
     }
@@ -180,7 +180,7 @@ export function createLogger(
     if (options.showCache) {
       console.log(
         ...format(['Cache snapshot', headerStyles]),
-        stringifyJSONIfEnabled(cache?.toJSON())
+        cache ? stringifyJSONIfEnabled(cache.toJSON()) : 'undefined'
       );
     }
 

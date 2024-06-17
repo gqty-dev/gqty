@@ -3,8 +3,6 @@ import set from 'just-safe-set';
 import { MultiDict } from 'multidict';
 import { isSkeleton } from '../Accessor/skeleton';
 import { deepCopy, select } from '../Helpers';
-import { type GeneratedSchemaObject } from '../Schema';
-import { type Selection } from '../Selection';
 import { crawl } from './crawl';
 import {
   deepNormalizeObject,
@@ -194,7 +192,7 @@ export class Cache {
     }
   }
 
-  // TODO: Optimization
+  // [ ] Optimization
   // This is pretty inefficient, but maintaining an indexed tree is too much
   // effort right now. Accepting PRs.
   #notifySubscribers = (value: CacheRoot) => {
@@ -283,38 +281,6 @@ export class Cache {
       }
     }
   };
-
-  /* TODO: Refactor
-   *
-   * Caching accessors by selections is a mean to retain sub-selections for
-   * empty arrays and nullables in cache, such accessors returns null where no
-   * futher selections can be triggered on them.
-   *
-   * When cache value is null or empty array, this cache is responsible for
-   * returning all child selections made last time in this scope.
-   *
-   * Caching accessors by cache values is broken with normalization enabled.
-   * Different selection paths leading to the same normalized object, where they
-   * overwrites each other along with the sub-selections inside.
-   *
-   * Current workaround is to cache selection children in parents, preventing
-   * excessive selection object creation.
-   */
-  #selectionAccessors = new WeakMap<Selection, GeneratedSchemaObject>();
-
-  getAccessor<TSchemaType extends GeneratedSchemaObject>(
-    selection: Selection,
-    createAccessor: () => TSchemaType
-  ): TSchemaType {
-    const map = this.#selectionAccessors;
-    const accessor = map.get(selection) ?? createAccessor();
-
-    if (!map.has(selection)) {
-      map.set(selection, accessor);
-    }
-
-    return accessor as TSchemaType;
-  }
 
   /**
    * Retrieve cache values by first 2 path segments, e.g. `query.todos` or
@@ -430,7 +396,13 @@ export class Cache {
     }
   }
 
-  toJSON() {
+  clear() {
+    this.#data.clear();
+    this.#normalizedObjects.clear();
+    this.#dataRefs.clear();
+  }
+
+  toJSON(): CacheSnapshot {
     const snapshot =
       // Remove skeletons
       crawl(
