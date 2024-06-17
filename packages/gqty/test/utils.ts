@@ -1,12 +1,15 @@
 import { createClient as createWsClient } from 'graphql-ws';
 import PLazy from 'p-lazy';
-import { createTestApp, gql, TestApp } from 'test-utils';
+import { createTestApp, gql, type TestApp } from 'test-utils';
 import { type PartialDeep } from 'type-fest';
 import { WebSocket } from 'ws';
 import { loadOrGenerateConfig } from '../../cli/src/config';
 import { generate } from '../../cli/src/generate';
-import { Cache, QueryFetcher, Schema, SchemaUnionsKey } from '../src';
-import { ClientOptions, createClient as createGQtyClient } from '../src/Client';
+import { Cache, SchemaUnionsKey, type QueryFetcher, type Schema } from '../src';
+import {
+  createClient as createGQtyClient,
+  type ClientOptions,
+} from '../src/Client';
 import { deepAssign } from '../src/Utils';
 
 afterAll(async () => {
@@ -32,12 +35,15 @@ export type Human = {
       C?: C;
     };
   }>;
+
+  echo: (args: { input: string }) => string;
 };
 export type Dog = {
   __typename: 'Dog';
   id?: string;
   name: string;
   owner?: Human;
+  bark: (args: { times: number }) => string;
 };
 export type Species = {
   __typename?: 'Human' | 'Dog';
@@ -155,6 +161,8 @@ export const createTestClient = async (
   let humanId = 0;
   const humanIds: Record<string, number> = {};
   const createHuman = (name: string = 'default') => {
+    if (name === 'John Cena') return null;
+
     return {
       id: (humanIds[name] ??= ++humanId),
       name,
@@ -207,11 +215,13 @@ export const createTestClient = async (
             dogs: [Dog!]!
             node: [Node!]!
             union: [ABC!]!
+            echo(input: String!): String!
           }
           type Dog {
             id: ID
             name: String!
             owner: Human
+            bark(times: Int!): String!
           }
           union Species = Human | Dog
 
@@ -394,6 +404,9 @@ export const createTestClient = async (
             owner({ name }: { name: string }) {
               return createHuman(name + '-owner');
             },
+            bark(_root, { times }: { times: number }) {
+              return 'arf!'.repeat(times);
+            },
           },
           Mutation: {
             sendNotification(_root, { message }: { message: string }, ctx) {
@@ -490,6 +503,9 @@ export const createTestClient = async (
                   id: 3,
                 },
               ];
+            },
+            echo(_root, { input }: { input: string }) {
+              return input;
             },
           },
           Species: {

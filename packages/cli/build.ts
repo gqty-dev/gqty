@@ -21,7 +21,7 @@ async function main() {
       clean: false,
       format: 'esm',
       outDir: 'dist',
-      target: 'node12.20',
+      target: 'node16',
       esbuild: {
         define: {
           __VERSION__: JSON.stringify(pkg.version),
@@ -39,7 +39,7 @@ async function main() {
       bundle: true,
       format: 'cjs',
       outfile: 'dist/deps.js',
-      target: 'node12.20',
+      target: 'node16',
       platform: 'node',
       minify: true,
       external: ['graphql'],
@@ -67,7 +67,7 @@ async function main() {
       clean: false,
       format: 'interop',
       outDir: 'dist',
-      target: 'node12.20',
+      target: 'node16',
       esbuild: {
         minify: true,
       },

@@ -30,7 +30,7 @@ export interface LegacyTrack {
 }
 
 export const createLegacyTrack = <
-  TSchema extends BaseGeneratedSchema = BaseGeneratedSchema
+  TSchema extends BaseGeneratedSchema = BaseGeneratedSchema,
 >({
   cache,
   context: globalContext,
@@ -41,6 +41,7 @@ export const createLegacyTrack = <
     fn,
     { onError, operationName, refetch = false } = {}
   ) => {
+    const trackedSelections = new Set<Selection>();
     const { context, selections, subscribe } = createResolver({
       cachePolicy: refetch ? 'no-cache' : 'default',
       operationName,
@@ -60,6 +61,14 @@ export const createLegacyTrack = <
     });
     const data = { current: dataFn({ type: 'initial' }) };
 
+    for (const selection of selections) {
+      trackedSelections.add(selection);
+    }
+
+    context.subscribeSelect((selection) => {
+      trackedSelections.add(selection);
+    });
+
     unsubscribe();
 
     const stop = subscribe({
@@ -77,7 +86,7 @@ export const createLegacyTrack = <
       },
     });
 
-    return { data, selections, stop };
+    return { data, selections: trackedSelections, stop };
   };
 
   return track;

@@ -2,7 +2,7 @@ import { debounceMicrotaskPromise } from 'debounce-microtasks';
 import { MultiDict } from 'multidict';
 import { pick, type BaseGeneratedSchema, type FetchOptions } from '.';
 import { createSchemaAccessor } from '../Accessor';
-import { type Cache } from '../Cache';
+import { Cache } from '../Cache';
 import { type GQtyError, type RetryOptions } from '../Error';
 import { type ScalarsEnumsHash, type Schema } from '../Schema';
 import { type Selection } from '../Selection';
@@ -176,6 +176,18 @@ const pendingQueries = new WeakMap<
   () => Promise<unknown>
 >();
 
+const getInteraction = <T>(subject: Set<T>, object: Set<T>) => {
+  const interaction = new Set<T>();
+
+  for (const item of object) {
+    if (subject.has(item)) {
+      interaction.add(item);
+    }
+  }
+
+  return interaction;
+};
+
 export const createResolvers = <TSchema extends BaseGeneratedSchema>({
   aliasLength,
   batchWindow,
@@ -191,9 +203,11 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
   schema,
   parentContext,
 }: CreateResolversOptions): Resolvers<TSchema> => {
-  // A temporary cache is created by the resolver context for no-cache policy.
+  // A temporary cache is created by the resolver context for these cache
+  // policies: no-cache, no-store.
+  //
   // When multiple queries are batched, all corresponding temporary caches must
-  // be updated. Along with the target cache.
+  // be updated. Along with the original client cache.
   const correlatedCaches = new MultiDict<Set<unknown>, Cache>();
 
   const createResolver = ({
@@ -204,6 +218,10 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
     operationName,
     retryPolicy = defaultRetryPoliy,
   }: SubscribeOptions = {}) => {
+    // The selection set after a successful resolution of `resolve()` or
+    // the first data returned from `subscribe()`.
+    let prevSelections = new Set<Selection>();
+
     const selections = new Set<Selection>();
     const context = createContext({
       aliasLength,
@@ -219,14 +237,26 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
         return;
       }
 
-      // Prevents infinite loop created by legacy functions
-      if (!selections.has(selection)) {
-        selections.add(selection);
-        parentContext?.select(selection, cache);
+      const targetSelections =
+        cache?.data === null ||
+        (Array.isArray(cache?.data) && cache.data.length === 0)
+          ? // For empty arrays and null objects, trigger sub-selections made
+            // in previous selections.
+            getInteraction(selection.getLeafNodes(), prevSelections)
+          : [selection];
+
+      for (const selection of targetSelections) {
+        if (!selections.has(selection)) {
+          selections.add(selection);
+
+          // The `has` check above prevents infinite loop created by legacy
+          // functions.
+          parentContext?.select(selection, cache);
+        }
       }
     });
 
-    const accessor = createSchemaAccessor<TSchema>(context);
+    const { accessor } = createSchemaAccessor<TSchema>(context);
 
     const resolve: ResolverParts<TSchema>['resolve'] = async () => {
       if (selections.size === 0) {
@@ -247,7 +277,8 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
         throw new TypeError('Failed to fetch');
       }
 
-      // Batch selections up at client level, fetch all of them "next tick".
+      // Batch selections up at client level, fetch all of them at the next idle
+      // microtask where no more selections are made.
       // 1. Query with operation names are never batched up with others.
       // 2. 'no-store' queries are tracked separately because its data is not
       // going into the main cache.
@@ -268,9 +299,8 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
           // Batching happens at the end of microtask queue
           debounceMicrotaskPromise(
             async () => {
-              // Have to skip this because a 0 timeout still pushes it at least
-              // one more mictotask to the future. Also setTimeout() has no real
-              // time guarantee.
+              // Have to skip this await when not set, because a 0 timeout still
+              // unnecessarily pushed it back at least one more mictotask.
               if (batchWindow) {
                 await new Promise((resolve) =>
                   setTimeout(resolve, batchWindow)
@@ -320,9 +350,28 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
             }
           )
         );
+
+        // Post-fetch actions scoped to this context
+        pendingQueries.get(pendingSelections)!()
+          .then(
+            () => {
+              // Stores selections for the next batch
+              prevSelections = new Set(selections);
+
+              // Clear current selections to drop potentially stale inputs
+              selections.clear();
+            },
+            () => {
+              // Swallow errors
+            }
+          )
+          .finally(() => {
+            // Reset the flag after fetch
+            context.shouldFetch = false;
+          });
       }
 
-      return pendingQueries.get(pendingSelections)?.();
+      return pendingQueries.get(pendingSelections)!();
     };
 
     const subscribe: ResolverParts<TSchema>['subscribe'] = ({
@@ -389,6 +438,8 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
 
       // Subscriptions ignore shouldFetch, always subscribe for changes.
       {
+        let prevSelectionsUpdated = false;
+
         const promise = new Promise<void>((resolve, reject) => {
           const unsubscribe: Unsubscribe = subscribeSelections(
             subscriptionSelections,
@@ -409,6 +460,12 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
                     : [context.cache],
                   { skipNotify: !context.notifyCacheUpdate }
                 );
+
+                if (!prevSelectionsUpdated) {
+                  prevSelectionsUpdated = true;
+
+                  prevSelections = new Set(selections);
+                }
               } else {
                 // Fetches responded, subscriptions closed, but cache subscription is
                 // still active.

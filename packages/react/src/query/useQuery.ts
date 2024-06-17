@@ -242,6 +242,8 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
               resolver.context.shouldFetch = true;
             }
 
+            // Prevent further resets because selections from now on belongs
+            // to the next fetch.
             if (!renderSession.get('postFetchSelectionCleared')) {
               renderSession.set('postFetchSelectionCleared', true);
 
@@ -353,6 +355,7 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
           // Stitch stacked selections which shared the same cache key, even if
           // those selections don't need fetching. Because without normalization
           // they will be overwritten by this fetch.
+          //
           // [ ] There is one overfetch triggered by parallel renders that I
           // cannot eliminate right now. Deferring to future me.
           if (!client.cache.normalizationOptions) {

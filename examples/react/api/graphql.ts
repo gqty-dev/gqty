@@ -51,10 +51,13 @@ const OwnerLoader = registerDataLoader('DogOwner', (DataLoader) => {
   return new DataLoader(async (keys: readonly string[]) => {
     const dogOwners: Record<string, string> = await db.getData('/dogOwners');
     const humans = await db.getData('/humans').then((humans: Human[]) =>
-      humans.reduce((acum, human) => {
-        acum[human.id] = human;
-        return acum;
-      }, {} as Record<string, Human>)
+      humans.reduce(
+        (acum, human) => {
+          acum[human.id] = human;
+          return acum;
+        },
+        {} as Record<string, Human>
+      )
     );
     return keys.map((key) => {
       return humans[dogOwners[key]];
@@ -105,7 +108,7 @@ const paginatedData: {
 }[] = new Array(200).fill(0).map((_, index) => {
   return {
     id: index + '',
-    name: faker.name.firstName(),
+    name: faker.person.firstName(),
   };
 });
 

@@ -1,3 +1,4 @@
+import { GraphQLError } from 'graphql';
 import { Cache, GQtyError, prepass, type QueryPayload } from '../src';
 import { $meta } from '../src/Accessor';
 import { fetchSelections } from '../src/Client/resolveSelections';
@@ -158,6 +159,224 @@ describe('core#resolve', () => {
     });
   });
 
+  describe('Unreachable sub-selections', () => {
+    it('should retain previous sub-selections on caches with empty arrays', async () => {
+      const { createResolver } =
+        // We cannot seed the cache with empty arrays because previous
+        // selections are required to work.
+        // { cache: new Cache({ query: { dogs: [] } }) },
+        await createTestClient();
+
+      const {
+        accessor: { query },
+        context,
+        resolve,
+        selections,
+      } = createResolver();
+
+      // 1. Make selections into dogs
+      query.dogs.map((dog) => dog.bark({ times: 1 }));
+
+      // 2. Ensure selections made
+      expect([...selections].map((v) => v.cacheKeys.join('.')))
+        .toMatchInlineSnapshot(`
+       [
+         "query.dogs.__typename",
+         "query.dogs.id",
+         "query.dogs.e61ad2",
+       ]
+      `);
+
+      // 3. resolve()
+      await expect(resolve()).resolves.toMatchInlineSnapshot(`
+       [
+         {
+           "data": {
+             "dogs": [
+               {
+                 "__typename": "Dog",
+                 "e61ad2": "arf!",
+                 "id": "1",
+               },
+               {
+                 "__typename": "Dog",
+                 "e61ad2": "arf!",
+                 "id": "2",
+               },
+             ],
+           },
+           "extensions": {
+             "hash": "a242b05e35ff15857d32ed1a1eeb07500b5138f16",
+             "type": "query",
+           },
+         },
+       ]
+      `);
+
+      // 4. Make selections again
+      query.dogs = [];
+      query.dogs.map((dog) => dog.bark({ times: 2 }));
+
+      // 5. Expect previous sub-selections
+      expect([...selections].map((v) => v.cacheKeys.join('.')))
+        .toMatchInlineSnapshot(`
+       [
+         "query.dogs.__typename",
+         "query.dogs.id",
+         "query.dogs.e61ad2",
+       ]
+      `);
+
+      await expect(resolve()).resolves.toMatchInlineSnapshot(`undefined`);
+
+      // 6. Ensure previous selections of no more than the last 1 fetch is reused.
+      context.cache.clear();
+      selections.clear();
+
+      query.dogs.map((dog) => dog.bark({ times: 3 }));
+
+      expect([...selections].map((v) => v.cacheKeys.join('.')))
+        .toMatchInlineSnapshot(`
+       [
+         "query.dogs.__typename",
+         "query.dogs.id",
+         "query.dogs.a27c8c",
+       ]
+      `);
+
+      await expect(resolve()).resolves.toMatchInlineSnapshot(`
+       [
+         {
+           "data": {
+             "dogs": [
+               {
+                 "__typename": "Dog",
+                 "a27c8c": "arf!arf!arf!",
+                 "id": "1",
+               },
+               {
+                 "__typename": "Dog",
+                 "a27c8c": "arf!arf!arf!",
+                 "id": "2",
+               },
+             ],
+           },
+           "extensions": {
+             "hash": "ec6389bde813c1b5cb4b5b294e573082ec4270e1",
+             "type": "query",
+           },
+         },
+       ]
+      `);
+    });
+
+    it('should retain previous sub-selections on caches with null objects', async () => {
+      const { createResolver } =
+        // We cannot seed the cache with empty arrays because previous
+        // selections are required to work.
+        // { cache: new Cache({ query: { dogs: [] } }) },
+        await createTestClient();
+
+      const {
+        accessor: { query },
+        context,
+        resolve,
+        selections,
+      } = createResolver();
+
+      // 1. Make selections into dogs
+      query.human({ name: 'John Doe' }).echo({ input: 'Now you see me...' });
+
+      // 2. Ensure selections made
+      expect([...selections].map((v) => v.cacheKeys.join('.')))
+        .toMatchInlineSnapshot(`
+         [
+           "query.a7f6f9.__typename",
+           "query.a7f6f9.id",
+           "query.a7f6f9.a7a17c",
+         ]
+        `);
+
+      // 3. resolve()
+      await expect(resolve()).resolves.toMatchInlineSnapshot(`
+         [
+           {
+             "data": {
+               "a7f6f9": {
+                 "__typename": "Human",
+                 "a7a17c": "Now you see me...",
+                 "id": "1",
+               },
+             },
+             "extensions": {
+               "hash": "be79c4bae3a49b23d4beb0bbdbf9023ba0ca4898",
+               "type": "query",
+             },
+           },
+         ]
+        `);
+
+      // 4. Make selections again
+      query.human({ name: 'John Cena' }).echo({ input: "Now you don't!" });
+
+      // 5. Expect sub-selections
+      expect([...selections].map((v) => v.cacheKeys.join('.')))
+        .toMatchInlineSnapshot(`
+         [
+           "query.a3f697.__typename",
+           "query.a3f697.id",
+           "query.a3f697.bad514",
+         ]
+        `);
+
+      await expect(resolve()).resolves.toMatchInlineSnapshot(`
+         [
+           {
+             "data": {
+               "a3f697": null,
+             },
+             "extensions": {
+               "hash": "fc1b66218d65d51732ed66b85bb5450d0332ba44",
+               "type": "query",
+             },
+           },
+         ]
+        `);
+
+      // 6. Ensure previous selections of no more than the last 1 fetch is reused.
+      context.cache.clear();
+
+      query.human({ name: 'Jane Doe' }).echo({ input: 'I am Jane.' });
+
+      expect([...selections].map((v) => v.cacheKeys.join('.')))
+        .toMatchInlineSnapshot(`
+         [
+           "query.a4fd2c.__typename",
+           "query.a4fd2c.id",
+           "query.a4fd2c.eb7f1d",
+         ]
+        `);
+
+      await expect(resolve()).resolves.toMatchInlineSnapshot(`
+         [
+           {
+             "data": {
+               "a4fd2c": {
+                 "__typename": "Human",
+                 "eb7f1d": "I am Jane.",
+                 "id": "2",
+               },
+             },
+             "extensions": {
+               "hash": "a1fac2bb2a1052821915362495c678811cb296e09",
+               "type": "query",
+             },
+           },
+         ]
+        `);
+    });
+  });
+
   it('mutations', async () => {
     const { resolve } = await createTestClient();
 
@@ -195,32 +414,17 @@ describe('core#resolve', () => {
   it('handles errors', async () => {
     const { resolve } = await createTestClient();
 
-    try {
-      await resolve(({ query }) => {
+    await expect(
+      resolve(({ query }) => {
         query.throw;
         query.throw2;
-      });
-    } catch (error) {
-      expect(error).toEqual(
-        Object.assign(
-          Error('GraphQL Errors, please check .graphQLErrors property'),
-          {
-            errors: [
-              {
-                message: 'expected error',
-                locations: [{ line: 1, column: 7 }],
-                path: ['throw'],
-              },
-              {
-                message: 'expected error 2',
-                locations: [{ line: 1, column: 13 }],
-                path: ['throw2'],
-              },
-            ],
-          }
-        )
-      );
-    }
+      })
+    ).rejects.toMatchObject(
+      GQtyError.fromGraphQLErrors([
+        new GraphQLError('expected error'),
+        new GraphQLError('expected error 2'),
+      ])
+    );
   });
 
   it('passes on query extensions', async () => {
@@ -664,8 +868,4 @@ describe('compat', () => {
       });
     });
   });
-});
-
-process.on('beforeExit', () => {
-  console.log('CLIENT TEST EXIT');
 });

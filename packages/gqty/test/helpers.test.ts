@@ -23,31 +23,32 @@ describe('selectFields', () => {
     });
 
     expect(data).toMatchInlineSnapshot(`
-      {
-        "__typename": "Human",
-        "dogs": [
-          null,
-          null,
-        ],
-        "father": null,
-        "id": "1",
-        "name": "foo",
-        "node": [
-          null,
-          null,
-          null,
-        ],
-        "nullFather": null,
-        "sons": [
-          null,
-          null,
-        ],
-        "union": [
-          null,
-          null,
-          null,
-        ],
-      }
+     {
+       "__typename": "Human",
+       "dogs": [
+         null,
+         null,
+       ],
+       "echo": [Function],
+       "father": null,
+       "id": "1",
+       "name": "foo",
+       "node": [
+         null,
+         null,
+         null,
+       ],
+       "nullFather": null,
+       "sons": [
+         null,
+         null,
+       ],
+       "union": [
+         null,
+         null,
+         null,
+       ],
+     }
     `);
   });
 
@@ -65,137 +66,143 @@ describe('selectFields', () => {
     });
 
     expect(data).toMatchInlineSnapshot(`
-      {
-        "__typename": "Human",
-        "dogs": [
-          {
-            "__typename": "Dog",
-            "id": "1",
-            "name": "a",
-            "owner": null,
-          },
-          {
-            "__typename": "Dog",
-            "id": "2",
-            "name": "b",
-            "owner": null,
-          },
-        ],
-        "father": {
-          "__typename": "Human",
-          "dogs": [
-            null,
-            null,
-          ],
-          "father": null,
-          "id": "4",
-          "name": "default",
-          "node": [
-            null,
-            null,
-            null,
-          ],
-          "nullFather": null,
-          "sons": [
-            null,
-            null,
-          ],
-          "union": [
-            null,
-            null,
-            null,
-          ],
-        },
-        "id": "1",
-        "name": "foo",
-        "node": [
-          {
-            "$on": null,
-            "__typename": "A",
-            "id": "1",
-            "node": null,
-          },
-          {
-            "$on": null,
-            "__typename": "B",
-            "id": "2",
-            "node": null,
-          },
-          {
-            "$on": null,
-            "__typename": "C",
-            "id": "3",
-            "node": null,
-          },
-        ],
-        "nullFather": null,
-        "sons": [
-          {
-            "__typename": "Human",
-            "dogs": [
-              null,
-              null,
-            ],
-            "father": null,
-            "id": "4",
-            "name": "default",
-            "node": [
-              null,
-              null,
-              null,
-            ],
-            "nullFather": null,
-            "sons": [
-              null,
-              null,
-            ],
-            "union": [
-              null,
-              null,
-              null,
-            ],
-          },
-          {
-            "__typename": "Human",
-            "dogs": [
-              null,
-              null,
-            ],
-            "father": null,
-            "id": "4",
-            "name": "default",
-            "node": [
-              null,
-              null,
-              null,
-            ],
-            "nullFather": null,
-            "sons": [
-              null,
-              null,
-            ],
-            "union": [
-              null,
-              null,
-              null,
-            ],
-          },
-        ],
-        "union": [
-          {
-            "$on": null,
-            "__typename": "A",
-          },
-          {
-            "$on": null,
-            "__typename": "B",
-          },
-          {
-            "$on": null,
-            "__typename": "C",
-          },
-        ],
-      }
+     {
+       "__typename": "Human",
+       "dogs": [
+         {
+           "__typename": "Dog",
+           "bark": [Function],
+           "id": "1",
+           "name": "a",
+           "owner": null,
+         },
+         {
+           "__typename": "Dog",
+           "bark": [Function],
+           "id": "2",
+           "name": "b",
+           "owner": null,
+         },
+       ],
+       "echo": [Function],
+       "father": {
+         "__typename": "Human",
+         "dogs": [
+           null,
+           null,
+         ],
+         "echo": [Function],
+         "father": null,
+         "id": "4",
+         "name": "default",
+         "node": [
+           null,
+           null,
+           null,
+         ],
+         "nullFather": null,
+         "sons": [
+           null,
+           null,
+         ],
+         "union": [
+           null,
+           null,
+           null,
+         ],
+       },
+       "id": "1",
+       "name": "foo",
+       "node": [
+         {
+           "$on": null,
+           "__typename": "A",
+           "id": "1",
+           "node": null,
+         },
+         {
+           "$on": null,
+           "__typename": "B",
+           "id": "2",
+           "node": null,
+         },
+         {
+           "$on": null,
+           "__typename": "C",
+           "id": "3",
+           "node": null,
+         },
+       ],
+       "nullFather": null,
+       "sons": [
+         {
+           "__typename": "Human",
+           "dogs": [
+             null,
+             null,
+           ],
+           "echo": [Function],
+           "father": null,
+           "id": "4",
+           "name": "default",
+           "node": [
+             null,
+             null,
+             null,
+           ],
+           "nullFather": null,
+           "sons": [
+             null,
+             null,
+           ],
+           "union": [
+             null,
+             null,
+             null,
+           ],
+         },
+         {
+           "__typename": "Human",
+           "dogs": [
+             null,
+             null,
+           ],
+           "echo": [Function],
+           "father": null,
+           "id": "4",
+           "name": "default",
+           "node": [
+             null,
+             null,
+             null,
+           ],
+           "nullFather": null,
+           "sons": [
+             null,
+             null,
+           ],
+           "union": [
+             null,
+             null,
+             null,
+           ],
+         },
+       ],
+       "union": [
+         {
+           "$on": null,
+           "__typename": "A",
+         },
+         {
+           "$on": null,
+           "__typename": "B",
+         },
+         {
+           "$on": null,
+           "__typename": "C",
+         },
+       ],
+     }
     `);
   });
 
@@ -234,33 +241,34 @@ describe('selectFields', () => {
     });
 
     expect(data).toMatchInlineSnapshot(`
-      {
-        "father": {
-          "__typename": "Human",
-          "dogs": [
-            null,
-            null,
-          ],
-          "father": null,
-          "id": "2",
-          "name": "default",
-          "node": [
-            null,
-            null,
-            null,
-          ],
-          "nullFather": null,
-          "sons": [
-            null,
-            null,
-          ],
-          "union": [
-            null,
-            null,
-            null,
-          ],
-        },
-      }
+     {
+       "father": {
+         "__typename": "Human",
+         "dogs": [
+           null,
+           null,
+         ],
+         "echo": [Function],
+         "father": null,
+         "id": "2",
+         "name": "default",
+         "node": [
+           null,
+           null,
+           null,
+         ],
+         "nullFather": null,
+         "sons": [
+           null,
+           null,
+         ],
+         "union": [
+           null,
+           null,
+           null,
+         ],
+       },
+     }
     `);
   });
 
@@ -278,139 +286,145 @@ describe('selectFields', () => {
     });
 
     expect(data).toMatchInlineSnapshot(`
-      {
-        "father": {
-          "__typename": "Human",
-          "dogs": [
-            {
-              "__typename": "Dog",
-              "id": "1",
-              "name": "a",
-              "owner": null,
-            },
-            {
-              "__typename": "Dog",
-              "id": "2",
-              "name": "b",
-              "owner": null,
-            },
-          ],
-          "father": {
-            "__typename": "Human",
-            "dogs": [
-              null,
-              null,
-            ],
-            "father": null,
-            "id": "2",
-            "name": "default",
-            "node": [
-              null,
-              null,
-              null,
-            ],
-            "nullFather": null,
-            "sons": [
-              null,
-              null,
-            ],
-            "union": [
-              null,
-              null,
-              null,
-            ],
-          },
-          "id": "2",
-          "name": "default",
-          "node": [
-            {
-              "$on": null,
-              "__typename": "A",
-              "id": "1",
-              "node": null,
-            },
-            {
-              "$on": null,
-              "__typename": "B",
-              "id": "2",
-              "node": null,
-            },
-            {
-              "$on": null,
-              "__typename": "C",
-              "id": "3",
-              "node": null,
-            },
-          ],
-          "nullFather": null,
-          "sons": [
-            {
-              "__typename": "Human",
-              "dogs": [
-                null,
-                null,
-              ],
-              "father": null,
-              "id": "2",
-              "name": "default",
-              "node": [
-                null,
-                null,
-                null,
-              ],
-              "nullFather": null,
-              "sons": [
-                null,
-                null,
-              ],
-              "union": [
-                null,
-                null,
-                null,
-              ],
-            },
-            {
-              "__typename": "Human",
-              "dogs": [
-                null,
-                null,
-              ],
-              "father": null,
-              "id": "2",
-              "name": "default",
-              "node": [
-                null,
-                null,
-                null,
-              ],
-              "nullFather": null,
-              "sons": [
-                null,
-                null,
-              ],
-              "union": [
-                null,
-                null,
-                null,
-              ],
-            },
-          ],
-          "union": [
-            {
-              "$on": null,
-              "__typename": "A",
-            },
-            {
-              "$on": null,
-              "__typename": "B",
-            },
-            {
-              "$on": null,
-              "__typename": "C",
-            },
-          ],
-        },
-      }
+     {
+       "father": {
+         "__typename": "Human",
+         "dogs": [
+           {
+             "__typename": "Dog",
+             "bark": [Function],
+             "id": "1",
+             "name": "a",
+             "owner": null,
+           },
+           {
+             "__typename": "Dog",
+             "bark": [Function],
+             "id": "2",
+             "name": "b",
+             "owner": null,
+           },
+         ],
+         "echo": [Function],
+         "father": {
+           "__typename": "Human",
+           "dogs": [
+             null,
+             null,
+           ],
+           "echo": [Function],
+           "father": null,
+           "id": "2",
+           "name": "default",
+           "node": [
+             null,
+             null,
+             null,
+           ],
+           "nullFather": null,
+           "sons": [
+             null,
+             null,
+           ],
+           "union": [
+             null,
+             null,
+             null,
+           ],
+         },
+         "id": "2",
+         "name": "default",
+         "node": [
+           {
+             "$on": null,
+             "__typename": "A",
+             "id": "1",
+             "node": null,
+           },
+           {
+             "$on": null,
+             "__typename": "B",
+             "id": "2",
+             "node": null,
+           },
+           {
+             "$on": null,
+             "__typename": "C",
+             "id": "3",
+             "node": null,
+           },
+         ],
+         "nullFather": null,
+         "sons": [
+           {
+             "__typename": "Human",
+             "dogs": [
+               null,
+               null,
+             ],
+             "echo": [Function],
+             "father": null,
+             "id": "2",
+             "name": "default",
+             "node": [
+               null,
+               null,
+               null,
+             ],
+             "nullFather": null,
+             "sons": [
+               null,
+               null,
+             ],
+             "union": [
+               null,
+               null,
+               null,
+             ],
+           },
+           {
+             "__typename": "Human",
+             "dogs": [
+               null,
+               null,
+             ],
+             "echo": [Function],
+             "father": null,
+             "id": "2",
+             "name": "default",
+             "node": [
+               null,
+               null,
+               null,
+             ],
+             "nullFather": null,
+             "sons": [
+               null,
+               null,
+             ],
+             "union": [
+               null,
+               null,
+               null,
+             ],
+           },
+         ],
+         "union": [
+           {
+             "$on": null,
+             "__typename": "A",
+           },
+           {
+             "$on": null,
+             "__typename": "B",
+           },
+           {
+             "$on": null,
+             "__typename": "C",
+           },
+         ],
+       },
+     }
     `);
   });
 
@@ -441,58 +455,60 @@ describe('selectFields', () => {
     });
 
     expect(data).toMatchInlineSnapshot(`
-      [
-        {
-          "__typename": "Human",
-          "dogs": [
-            null,
-            null,
-          ],
-          "father": null,
-          "id": "1",
-          "name": "default",
-          "node": [
-            null,
-            null,
-            null,
-          ],
-          "nullFather": null,
-          "sons": [
-            null,
-            null,
-          ],
-          "union": [
-            null,
-            null,
-            null,
-          ],
-        },
-        {
-          "__typename": "Human",
-          "dogs": [
-            null,
-            null,
-          ],
-          "father": null,
-          "id": "1",
-          "name": "default",
-          "node": [
-            null,
-            null,
-            null,
-          ],
-          "nullFather": null,
-          "sons": [
-            null,
-            null,
-          ],
-          "union": [
-            null,
-            null,
-            null,
-          ],
-        },
-      ]
+     [
+       {
+         "__typename": "Human",
+         "dogs": [
+           null,
+           null,
+         ],
+         "echo": [Function],
+         "father": null,
+         "id": "1",
+         "name": "default",
+         "node": [
+           null,
+           null,
+           null,
+         ],
+         "nullFather": null,
+         "sons": [
+           null,
+           null,
+         ],
+         "union": [
+           null,
+           null,
+           null,
+         ],
+       },
+       {
+         "__typename": "Human",
+         "dogs": [
+           null,
+           null,
+         ],
+         "echo": [Function],
+         "father": null,
+         "id": "1",
+         "name": "default",
+         "node": [
+           null,
+           null,
+           null,
+         ],
+         "nullFather": null,
+         "sons": [
+           null,
+           null,
+         ],
+         "union": [
+           null,
+           null,
+           null,
+         ],
+       },
+     ]
     `);
   });
 
@@ -525,60 +541,62 @@ describe('selectFields', () => {
     });
 
     expect(data).toMatchInlineSnapshot(`
-      {
-        "sons": [
-          {
-            "__typename": "Human",
-            "dogs": [
-              null,
-              null,
-            ],
-            "father": null,
-            "id": "1",
-            "name": "default",
-            "node": [
-              null,
-              null,
-              null,
-            ],
-            "nullFather": null,
-            "sons": [
-              null,
-              null,
-            ],
-            "union": [
-              null,
-              null,
-              null,
-            ],
-          },
-          {
-            "__typename": "Human",
-            "dogs": [
-              null,
-              null,
-            ],
-            "father": null,
-            "id": "1",
-            "name": "default",
-            "node": [
-              null,
-              null,
-              null,
-            ],
-            "nullFather": null,
-            "sons": [
-              null,
-              null,
-            ],
-            "union": [
-              null,
-              null,
-              null,
-            ],
-          },
-        ],
-      }
+     {
+       "sons": [
+         {
+           "__typename": "Human",
+           "dogs": [
+             null,
+             null,
+           ],
+           "echo": [Function],
+           "father": null,
+           "id": "1",
+           "name": "default",
+           "node": [
+             null,
+             null,
+             null,
+           ],
+           "nullFather": null,
+           "sons": [
+             null,
+             null,
+           ],
+           "union": [
+             null,
+             null,
+             null,
+           ],
+         },
+         {
+           "__typename": "Human",
+           "dogs": [
+             null,
+             null,
+           ],
+           "echo": [Function],
+           "father": null,
+           "id": "1",
+           "name": "default",
+           "node": [
+             null,
+             null,
+             null,
+           ],
+           "nullFather": null,
+           "sons": [
+             null,
+             null,
+           ],
+           "union": [
+             null,
+             null,
+             null,
+           ],
+         },
+       ],
+     }
     `);
   });
 
@@ -590,272 +608,284 @@ describe('selectFields', () => {
     });
 
     expect(data).toMatchInlineSnapshot(`
-      {
-        "sons": [
-          {
-            "__typename": "Human",
-            "dogs": [
-              {
-                "__typename": "Dog",
-                "id": "1",
-                "name": "a",
-                "owner": null,
-              },
-              {
-                "__typename": "Dog",
-                "id": "2",
-                "name": "b",
-                "owner": null,
-              },
-            ],
-            "father": {
-              "__typename": "Human",
-              "dogs": [
-                null,
-                null,
-              ],
-              "father": null,
-              "id": "1",
-              "name": "default",
-              "node": [
-                null,
-                null,
-                null,
-              ],
-              "nullFather": null,
-              "sons": [
-                null,
-                null,
-              ],
-              "union": [
-                null,
-                null,
-                null,
-              ],
-            },
-            "id": "1",
-            "name": "default",
-            "node": [
-              {
-                "$on": null,
-                "__typename": "A",
-                "id": "1",
-                "node": null,
-              },
-              {
-                "$on": null,
-                "__typename": "B",
-                "id": "2",
-                "node": null,
-              },
-              {
-                "$on": null,
-                "__typename": "C",
-                "id": "3",
-                "node": null,
-              },
-            ],
-            "nullFather": null,
-            "sons": [
-              {
-                "__typename": "Human",
-                "dogs": [
-                  null,
-                  null,
-                ],
-                "father": null,
-                "id": "1",
-                "name": "default",
-                "node": [
-                  null,
-                  null,
-                  null,
-                ],
-                "nullFather": null,
-                "sons": [
-                  null,
-                  null,
-                ],
-                "union": [
-                  null,
-                  null,
-                  null,
-                ],
-              },
-              {
-                "__typename": "Human",
-                "dogs": [
-                  null,
-                  null,
-                ],
-                "father": null,
-                "id": "1",
-                "name": "default",
-                "node": [
-                  null,
-                  null,
-                  null,
-                ],
-                "nullFather": null,
-                "sons": [
-                  null,
-                  null,
-                ],
-                "union": [
-                  null,
-                  null,
-                  null,
-                ],
-              },
-            ],
-            "union": [
-              {
-                "$on": null,
-                "__typename": "A",
-              },
-              {
-                "$on": null,
-                "__typename": "B",
-              },
-              {
-                "$on": null,
-                "__typename": "C",
-              },
-            ],
-          },
-          {
-            "__typename": "Human",
-            "dogs": [
-              {
-                "__typename": "Dog",
-                "id": "1",
-                "name": "a",
-                "owner": null,
-              },
-              {
-                "__typename": "Dog",
-                "id": "2",
-                "name": "b",
-                "owner": null,
-              },
-            ],
-            "father": {
-              "__typename": "Human",
-              "dogs": [
-                null,
-                null,
-              ],
-              "father": null,
-              "id": "1",
-              "name": "default",
-              "node": [
-                null,
-                null,
-                null,
-              ],
-              "nullFather": null,
-              "sons": [
-                null,
-                null,
-              ],
-              "union": [
-                null,
-                null,
-                null,
-              ],
-            },
-            "id": "1",
-            "name": "default",
-            "node": [
-              {
-                "$on": null,
-                "__typename": "A",
-                "id": "1",
-                "node": null,
-              },
-              {
-                "$on": null,
-                "__typename": "B",
-                "id": "2",
-                "node": null,
-              },
-              {
-                "$on": null,
-                "__typename": "C",
-                "id": "3",
-                "node": null,
-              },
-            ],
-            "nullFather": null,
-            "sons": [
-              {
-                "__typename": "Human",
-                "dogs": [
-                  null,
-                  null,
-                ],
-                "father": null,
-                "id": "1",
-                "name": "default",
-                "node": [
-                  null,
-                  null,
-                  null,
-                ],
-                "nullFather": null,
-                "sons": [
-                  null,
-                  null,
-                ],
-                "union": [
-                  null,
-                  null,
-                  null,
-                ],
-              },
-              {
-                "__typename": "Human",
-                "dogs": [
-                  null,
-                  null,
-                ],
-                "father": null,
-                "id": "1",
-                "name": "default",
-                "node": [
-                  null,
-                  null,
-                  null,
-                ],
-                "nullFather": null,
-                "sons": [
-                  null,
-                  null,
-                ],
-                "union": [
-                  null,
-                  null,
-                  null,
-                ],
-              },
-            ],
-            "union": [
-              {
-                "$on": null,
-                "__typename": "A",
-              },
-              {
-                "$on": null,
-                "__typename": "B",
-              },
-              {
-                "$on": null,
-                "__typename": "C",
-              },
-            ],
-          },
-        ],
-      }
+     {
+       "sons": [
+         {
+           "__typename": "Human",
+           "dogs": [
+             {
+               "__typename": "Dog",
+               "bark": [Function],
+               "id": "1",
+               "name": "a",
+               "owner": null,
+             },
+             {
+               "__typename": "Dog",
+               "bark": [Function],
+               "id": "2",
+               "name": "b",
+               "owner": null,
+             },
+           ],
+           "echo": [Function],
+           "father": {
+             "__typename": "Human",
+             "dogs": [
+               null,
+               null,
+             ],
+             "echo": [Function],
+             "father": null,
+             "id": "1",
+             "name": "default",
+             "node": [
+               null,
+               null,
+               null,
+             ],
+             "nullFather": null,
+             "sons": [
+               null,
+               null,
+             ],
+             "union": [
+               null,
+               null,
+               null,
+             ],
+           },
+           "id": "1",
+           "name": "default",
+           "node": [
+             {
+               "$on": null,
+               "__typename": "A",
+               "id": "1",
+               "node": null,
+             },
+             {
+               "$on": null,
+               "__typename": "B",
+               "id": "2",
+               "node": null,
+             },
+             {
+               "$on": null,
+               "__typename": "C",
+               "id": "3",
+               "node": null,
+             },
+           ],
+           "nullFather": null,
+           "sons": [
+             {
+               "__typename": "Human",
+               "dogs": [
+                 null,
+                 null,
+               ],
+               "echo": [Function],
+               "father": null,
+               "id": "1",
+               "name": "default",
+               "node": [
+                 null,
+                 null,
+                 null,
+               ],
+               "nullFather": null,
+               "sons": [
+                 null,
+                 null,
+               ],
+               "union": [
+                 null,
+                 null,
+                 null,
+               ],
+             },
+             {
+               "__typename": "Human",
+               "dogs": [
+                 null,
+                 null,
+               ],
+               "echo": [Function],
+               "father": null,
+               "id": "1",
+               "name": "default",
+               "node": [
+                 null,
+                 null,
+                 null,
+               ],
+               "nullFather": null,
+               "sons": [
+                 null,
+                 null,
+               ],
+               "union": [
+                 null,
+                 null,
+                 null,
+               ],
+             },
+           ],
+           "union": [
+             {
+               "$on": null,
+               "__typename": "A",
+             },
+             {
+               "$on": null,
+               "__typename": "B",
+             },
+             {
+               "$on": null,
+               "__typename": "C",
+             },
+           ],
+         },
+         {
+           "__typename": "Human",
+           "dogs": [
+             {
+               "__typename": "Dog",
+               "bark": [Function],
+               "id": "1",
+               "name": "a",
+               "owner": null,
+             },
+             {
+               "__typename": "Dog",
+               "bark": [Function],
+               "id": "2",
+               "name": "b",
+               "owner": null,
+             },
+           ],
+           "echo": [Function],
+           "father": {
+             "__typename": "Human",
+             "dogs": [
+               null,
+               null,
+             ],
+             "echo": [Function],
+             "father": null,
+             "id": "1",
+             "name": "default",
+             "node": [
+               null,
+               null,
+               null,
+             ],
+             "nullFather": null,
+             "sons": [
+               null,
+               null,
+             ],
+             "union": [
+               null,
+               null,
+               null,
+             ],
+           },
+           "id": "1",
+           "name": "default",
+           "node": [
+             {
+               "$on": null,
+               "__typename": "A",
+               "id": "1",
+               "node": null,
+             },
+             {
+               "$on": null,
+               "__typename": "B",
+               "id": "2",
+               "node": null,
+             },
+             {
+               "$on": null,
+               "__typename": "C",
+               "id": "3",
+               "node": null,
+             },
+           ],
+           "nullFather": null,
+           "sons": [
+             {
+               "__typename": "Human",
+               "dogs": [
+                 null,
+                 null,
+               ],
+               "echo": [Function],
+               "father": null,
+               "id": "1",
+               "name": "default",
+               "node": [
+                 null,
+                 null,
+                 null,
+               ],
+               "nullFather": null,
+               "sons": [
+                 null,
+                 null,
+               ],
+               "union": [
+                 null,
+                 null,
+                 null,
+               ],
+             },
+             {
+               "__typename": "Human",
+               "dogs": [
+                 null,
+                 null,
+               ],
+               "echo": [Function],
+               "father": null,
+               "id": "1",
+               "name": "default",
+               "node": [
+                 null,
+                 null,
+                 null,
+               ],
+               "nullFather": null,
+               "sons": [
+                 null,
+                 null,
+               ],
+               "union": [
+                 null,
+                 null,
+                 null,
+               ],
+             },
+           ],
+           "union": [
+             {
+               "$on": null,
+               "__typename": "A",
+             },
+             {
+               "$on": null,
+               "__typename": "B",
+             },
+             {
+               "$on": null,
+               "__typename": "C",
+             },
+           ],
+         },
+       ],
+     }
     `);
   });
 
@@ -867,33 +897,34 @@ describe('selectFields', () => {
     });
 
     expect(data).toMatchInlineSnapshot(`
-      {
-        "father": {
-          "__typename": "Human",
-          "dogs": [
-            null,
-            null,
-          ],
-          "father": null,
-          "id": "1",
-          "name": "default",
-          "node": [
-            null,
-            null,
-            null,
-          ],
-          "nullFather": null,
-          "sons": [
-            null,
-            null,
-          ],
-          "union": [
-            null,
-            null,
-            null,
-          ],
-        },
-      }
+     {
+       "father": {
+         "__typename": "Human",
+         "dogs": [
+           null,
+           null,
+         ],
+         "echo": [Function],
+         "father": null,
+         "id": "1",
+         "name": "default",
+         "node": [
+           null,
+           null,
+           null,
+         ],
+         "nullFather": null,
+         "sons": [
+           null,
+           null,
+         ],
+         "union": [
+           null,
+           null,
+           null,
+         ],
+       },
+     }
     `);
   });
 
@@ -905,139 +936,145 @@ describe('selectFields', () => {
     });
 
     expect(data).toMatchInlineSnapshot(`
-      {
-        "father": {
-          "__typename": "Human",
-          "dogs": [
-            {
-              "__typename": "Dog",
-              "id": "1",
-              "name": "a",
-              "owner": null,
-            },
-            {
-              "__typename": "Dog",
-              "id": "2",
-              "name": "b",
-              "owner": null,
-            },
-          ],
-          "father": {
-            "__typename": "Human",
-            "dogs": [
-              null,
-              null,
-            ],
-            "father": null,
-            "id": "1",
-            "name": "default",
-            "node": [
-              null,
-              null,
-              null,
-            ],
-            "nullFather": null,
-            "sons": [
-              null,
-              null,
-            ],
-            "union": [
-              null,
-              null,
-              null,
-            ],
-          },
-          "id": "1",
-          "name": "default",
-          "node": [
-            {
-              "$on": null,
-              "__typename": "A",
-              "id": "1",
-              "node": null,
-            },
-            {
-              "$on": null,
-              "__typename": "B",
-              "id": "2",
-              "node": null,
-            },
-            {
-              "$on": null,
-              "__typename": "C",
-              "id": "3",
-              "node": null,
-            },
-          ],
-          "nullFather": null,
-          "sons": [
-            {
-              "__typename": "Human",
-              "dogs": [
-                null,
-                null,
-              ],
-              "father": null,
-              "id": "1",
-              "name": "default",
-              "node": [
-                null,
-                null,
-                null,
-              ],
-              "nullFather": null,
-              "sons": [
-                null,
-                null,
-              ],
-              "union": [
-                null,
-                null,
-                null,
-              ],
-            },
-            {
-              "__typename": "Human",
-              "dogs": [
-                null,
-                null,
-              ],
-              "father": null,
-              "id": "1",
-              "name": "default",
-              "node": [
-                null,
-                null,
-                null,
-              ],
-              "nullFather": null,
-              "sons": [
-                null,
-                null,
-              ],
-              "union": [
-                null,
-                null,
-                null,
-              ],
-            },
-          ],
-          "union": [
-            {
-              "$on": null,
-              "__typename": "A",
-            },
-            {
-              "$on": null,
-              "__typename": "B",
-            },
-            {
-              "$on": null,
-              "__typename": "C",
-            },
-          ],
-        },
-      }
+     {
+       "father": {
+         "__typename": "Human",
+         "dogs": [
+           {
+             "__typename": "Dog",
+             "bark": [Function],
+             "id": "1",
+             "name": "a",
+             "owner": null,
+           },
+           {
+             "__typename": "Dog",
+             "bark": [Function],
+             "id": "2",
+             "name": "b",
+             "owner": null,
+           },
+         ],
+         "echo": [Function],
+         "father": {
+           "__typename": "Human",
+           "dogs": [
+             null,
+             null,
+           ],
+           "echo": [Function],
+           "father": null,
+           "id": "1",
+           "name": "default",
+           "node": [
+             null,
+             null,
+             null,
+           ],
+           "nullFather": null,
+           "sons": [
+             null,
+             null,
+           ],
+           "union": [
+             null,
+             null,
+             null,
+           ],
+         },
+         "id": "1",
+         "name": "default",
+         "node": [
+           {
+             "$on": null,
+             "__typename": "A",
+             "id": "1",
+             "node": null,
+           },
+           {
+             "$on": null,
+             "__typename": "B",
+             "id": "2",
+             "node": null,
+           },
+           {
+             "$on": null,
+             "__typename": "C",
+             "id": "3",
+             "node": null,
+           },
+         ],
+         "nullFather": null,
+         "sons": [
+           {
+             "__typename": "Human",
+             "dogs": [
+               null,
+               null,
+             ],
+             "echo": [Function],
+             "father": null,
+             "id": "1",
+             "name": "default",
+             "node": [
+               null,
+               null,
+               null,
+             ],
+             "nullFather": null,
+             "sons": [
+               null,
+               null,
+             ],
+             "union": [
+               null,
+               null,
+               null,
+             ],
+           },
+           {
+             "__typename": "Human",
+             "dogs": [
+               null,
+               null,
+             ],
+             "echo": [Function],
+             "father": null,
+             "id": "1",
+             "name": "default",
+             "node": [
+               null,
+               null,
+               null,
+             ],
+             "nullFather": null,
+             "sons": [
+               null,
+               null,
+             ],
+             "union": [
+               null,
+               null,
+               null,
+             ],
+           },
+         ],
+         "union": [
+           {
+             "$on": null,
+             "__typename": "A",
+           },
+           {
+             "$on": null,
+             "__typename": "B",
+           },
+           {
+             "$on": null,
+             "__typename": "C",
+           },
+         ],
+       },
+     }
     `);
   });
 

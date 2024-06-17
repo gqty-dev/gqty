@@ -1,6 +1,11 @@
 import { getArrayFields, GQtyError } from '../src';
 import { $meta, assignSelections, setCache } from '../src/Accessor';
-import { createTestClient, expectConsoleWarn, type Dog } from './utils';
+import {
+  createTestClient,
+  expectConsoleWarn,
+  type Dog,
+  type Human,
+} from './utils';
 
 test('legacy warning', async () => {
   const { query } = await createTestClient();
@@ -445,27 +450,28 @@ describe('mutate accessors', () => {
 
     humanHello.father = humanHello;
 
-    const newDogs: Dog[] = [
+    const newDogs = [
       {
         __typename: 'Dog',
         name: 'zxc',
         owner: humanHello,
       },
-    ];
+    ] as Dog[];
+
     humanHello.dogs = newDogs;
 
     expect(humanHello.dogs).toMatchInlineSnapshot(`
-      [
-        {
-          "__typename": "Dog",
-          "name": "zxc",
-          "owner": {
-            "dogs": [Circular],
-            "father": [Circular],
-            "name": "hello",
-          },
-        },
-      ]
+     [
+       {
+         "__typename": "Dog",
+         "name": "zxc",
+         "owner": {
+           "dogs": [Circular],
+           "father": [Circular],
+           "name": "hello",
+         },
+       },
+     ]
     `);
 
     const dogs = await resolved(() => {
@@ -480,52 +486,52 @@ describe('mutate accessors', () => {
       sons: [humanHello],
       node: [],
       union: [],
-    });
+    } as unknown as Human);
 
     expect(owner).toMatchInlineSnapshot(`
-      {
-        "__typename": "Human",
-        "dogs": [
-          {
-            "__typename": "Dog",
-            "name": "zxc",
-            "owner": {
-              "dogs": [
-                [Circular],
-              ],
-              "father": [Circular],
-              "name": "hello",
-            },
-          },
-        ],
-        "father": {
-          "dogs": [
-            {
-              "__typename": "Dog",
-              "name": "zxc",
-              "owner": [Circular],
-            },
-          ],
-          "father": [Circular],
-          "name": "hello",
-        },
-        "name": "ModifiedOwner",
-        "node": [],
-        "sons": [
-          {
-            "dogs": [
-              {
-                "__typename": "Dog",
-                "name": "zxc",
-                "owner": [Circular],
-              },
-            ],
-            "father": [Circular],
-            "name": "hello",
-          },
-        ],
-        "union": [],
-      }
+     {
+       "__typename": "Human",
+       "dogs": [
+         {
+           "__typename": "Dog",
+           "name": "zxc",
+           "owner": {
+             "dogs": [
+               [Circular],
+             ],
+             "father": [Circular],
+             "name": "hello",
+           },
+         },
+       ],
+       "father": {
+         "dogs": [
+           {
+             "__typename": "Dog",
+             "name": "zxc",
+             "owner": [Circular],
+           },
+         ],
+         "father": [Circular],
+         "name": "hello",
+       },
+       "name": "ModifiedOwner",
+       "node": [],
+       "sons": [
+         {
+           "dogs": [
+             {
+               "__typename": "Dog",
+               "name": "zxc",
+               "owner": [Circular],
+             },
+           ],
+           "father": [Circular],
+           "name": "hello",
+         },
+       ],
+       "union": [],
+     }
     `);
   });
 });

@@ -78,11 +78,14 @@ export const resolve = (
     }
   }
 
-  // nullable types
+  // Proxy cannot wrap nulls, short-circuit here to avoid unnecessary checks.
   if (data === null) {
     if (!isNullable) {
       throw new GQtyError(`Cached null for non-nullable type ${pureType}.`);
     }
+
+    // Trigger cached sub-selections for nullable object types.
+    context.select(selection, cache);
 
     return null;
   }
@@ -149,19 +152,21 @@ export const resolve = (
 
   cache.data = data;
 
-  return isArray && !isNumericSelection
-    ? createArrayAccessor({
-        cache,
-        context,
-        selection,
-        type: { __type: pureType },
-      })
-    : createObjectAccessor({
-        cache,
-        context,
-        selection,
-        type: { __type },
-      });
+  if (isArray && !isNumericSelection) {
+    return createArrayAccessor({
+      cache,
+      context,
+      selection,
+      type: { __type: pureType },
+    });
+  } else {
+    return createObjectAccessor({
+      cache,
+      context,
+      selection,
+      type: { __type },
+    });
+  }
 };
 
 export const createUnionAccessor = ({
@@ -487,9 +492,6 @@ const arrayProxyHandler: ProxyHandler<CacheObject[]> = {
     } = meta;
     if (!Array.isArray(data)) return;
 
-    // [ ] Retain selections when an empty array is encountered.
-    // see Cache.#selectionAccessors() for more context.
-
     if (typeof key === 'string') {
       if (!Array.isArray(data)) {
         throw new GQtyError(`Cache data must be an array.`);
@@ -534,7 +536,7 @@ export const createArrayAccessor = <
 >(
   meta: Meta
 ) => {
-  const { cache } = meta;
+  const { cache, context, selection } = meta;
 
   if (!Array.isArray(cache.data)) {
     if (verbose) {
@@ -546,6 +548,11 @@ export const createArrayAccessor = <
     }
 
     cache.data = [cache.data];
+  }
+
+  // Trigger cached sub-selections for empty arrays.
+  if (cache.data.length === 0) {
+    context.select(selection, cache);
   }
 
   const proxy = new Proxy(cache.data as TSchemaType, arrayProxyHandler);

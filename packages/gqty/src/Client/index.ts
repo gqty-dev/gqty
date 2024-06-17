@@ -1,5 +1,5 @@
-import { type Client as SseClient } from 'graphql-sse';
-import { type Client as WsClient } from 'graphql-ws';
+import type { Client as SseClient } from 'graphql-sse';
+import type { Client as WsClient } from 'graphql-ws';
 import { createSchemaAccessor } from '../Accessor';
 import { Cache } from '../Cache';
 import { createPersistors, type Persistors } from '../Cache/persistence';
@@ -157,16 +157,16 @@ export type Client<TSchema extends BaseGeneratedSchema> = Persistors &
 
 export const createClient = <
   TSchema extends BaseGeneratedSchema,
-  // TODO: compat: remove in v4
+  // [ ] compat: remove in v4
   _ObjectTypesNames extends string = never,
-  // TODO: compat: remove in v4
-  _ObjectTypes extends SchemaObjects<TSchema> = never
+  // [ ] compat: remove in v4
+  _ObjectTypes extends SchemaObjects<TSchema> = never,
 >({
   aliasLength = 6,
   batchWindow,
   // This default cache on a required option is for legacy clients, which does
   // not provide a `cache` option.
-  // TODO: compat: remove in v4
+  // [ ] compat: remove in v4
   cache = new Cache(undefined, { normalization: true }),
   fetchOptions: {
     fetcher,
@@ -183,7 +183,7 @@ export const createClient = <
   __depthLimit = 15,
   ...legacyOptions
 }: ClientOptions & LegacyClientOptions): Client<TSchema> => {
-  // TODO: compat: remove in next major
+  // [ ] compat: remove in v4
   {
     if (legacyOptions.queryFetcher) {
       fetcher ??= createLegacyQueryFetcher(legacyOptions.queryFetcher);
@@ -200,7 +200,7 @@ export const createClient = <
     }
   }
 
-  // TODO: Defer creation until `@gqty/logger` is used.
+  // [ ] Defer creation until `@gqty/logger` is used.
   const debug = createDebugger();
 
   // Global scope for accessing the cache via `schema` property.
@@ -232,7 +232,8 @@ export const createClient = <
     parentContext: clientContext,
   });
 
-  const accessor = createSchemaAccessor<TSchema>(clientContext);
+  // [ ] compat: Global accessors, remove in v4.
+  const { accessor } = createSchemaAccessor<TSchema>(clientContext);
 
   return {
     ...resolvers,
