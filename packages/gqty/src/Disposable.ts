@@ -1,4 +1,4 @@
-import { type Unsubscribe } from './Unsubscribe';
+import type { Unsubscribe } from './Unsubscribe';
 
 /**
  * Objects that can be manually disposed, disposed objects simply opens up

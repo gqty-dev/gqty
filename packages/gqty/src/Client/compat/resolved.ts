@@ -1,8 +1,8 @@
-import { type BaseGeneratedSchema } from '..';
+import type { BaseGeneratedSchema } from '..';
 import { GQtyError, type RetryOptions } from '../../Error';
 import { fetchSelections, subscribeSelections } from '../resolveSelections';
 import { updateCaches } from '../updateCaches';
-import { type CreateLegacyMethodOptions } from './client';
+import type { CreateLegacyMethodOptions } from './client';
 import { convertSelection, type LegacySelection } from './selection';
 
 export interface LegacyFetchOptions extends Omit<RequestInit, 'body'> {}
@@ -95,7 +95,7 @@ export interface LegacyResolveOptions<TData> {
  * promise.
  */
 export const createLegacyResolved = <
-  TSchema extends BaseGeneratedSchema = BaseGeneratedSchema
+  TSchema extends BaseGeneratedSchema = BaseGeneratedSchema,
 >({
   cache,
   context: globalContext,
@@ -133,8 +133,8 @@ export const createLegacyResolved = <
     const targetCaches = noCache
       ? [context.cache]
       : refetch
-      ? [context.cache, cache]
-      : [cache];
+        ? [context.cache, cache]
+        : [cache];
     const dataFn = () => {
       globalContext.cache = resolutionCache;
 

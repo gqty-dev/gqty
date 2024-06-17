@@ -1,13 +1,13 @@
 export type PlainObject = Record<string | number | symbol, unknown>;
 
-export const isObject = (v: unknown): v is object =>
+export const isObject = (v: unknown): v is Record<string, unknown> =>
   v != null && typeof v === 'object';
 
 export const isPlainObject = (v: unknown): v is PlainObject =>
   isObject(v) && !Array.isArray(v);
 
 export function isEmptyObject(obj: object) {
-  for (var _i in obj) return false;
+  for (const _i in obj) return false;
   return true;
 }
 

@@ -1,5 +1,5 @@
-import { type Cache } from '../Cache';
-import { Selection } from '../Selection';
+import type { Cache } from '../Cache';
+import type { Selection } from '../Selection';
 
 const pendingSelections = new Map<Cache, Map<string, Set<Set<Selection>>>>();
 

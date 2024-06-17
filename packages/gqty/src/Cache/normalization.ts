@@ -12,10 +12,10 @@ export type NormalizedObjectShell<TData extends CacheObject = CacheObject> =
   };
 
 export const isNormalizedObjectShell = (
-  value: any
-): value is NormalizedObjectShell => shells.has(value);
+  value: unknown
+): value is NormalizedObjectShell => shells.has(value as never);
 
-const deshell = (input: any) =>
+const deshell = (input: unknown) =>
   isNormalizedObjectShell(input) ? input.toJSON() : input;
 
 const shells = new Set<NormalizedObjectShell>();
@@ -43,7 +43,7 @@ export const normalizeObject = <TData extends CacheObject>(
   if (!id) return;
 
   const existing = store.get(id);
-  data = deshell(data);
+  data = deshell(data) as TData;
 
   if (existing) {
     data = deepAssign({}, [existing.toJSON(), data], onConflict);
@@ -100,7 +100,7 @@ export const deepNormalizeObject = <TData extends CacheNode>(
   function walk<T = unknown>(input: T, depth = 0): T {
     if (depth < 15 && input && typeof input === 'object') {
       for (const [key, value] of Object.entries(input)) {
-        (input as Record<string, any>)[key] = walk(value, depth + 1);
+        (input as Record<string, unknown>)[key] = walk(value, depth + 1);
       }
 
       if (!Array.isArray(input) && isCacheObject(input)) {

@@ -1,10 +1,10 @@
 import { Cache, type CacheGetOptions } from '../Cache';
-import { type Disposable } from '../Disposable';
-import { type ScalarsEnumsHash, type Schema } from '../Schema';
-import { type Selectable } from '../Selectable';
+import type { Disposable } from '../Disposable';
+import type { ScalarsEnumsHash, Schema } from '../Schema';
+import type { Selectable } from '../Selectable';
 
 export type SchemaContext<
-  T extends Record<string, unknown> = Record<string, unknown>
+  T extends Record<string, unknown> = Record<string, unknown>,
 > = T &
   Disposable &
   Selectable & {

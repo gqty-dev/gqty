@@ -96,11 +96,12 @@ export class Selection {
   /** The selection path from root the leaf as an array. */
   get ancestry() {
     const ancestry: Selection[] = [];
-    let current: Selection | undefined = this;
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
+    let node: Selection | undefined = this;
 
     do {
-      ancestry.unshift(current);
-    } while ((current = current.parent));
+      ancestry.unshift(node);
+    } while ((node = node.parent));
 
     return ancestry;
   }
@@ -155,7 +156,9 @@ export class Selection {
   }
 
   fromJSON(this: Selection, json: SelectionSnapshot) {
+    // eslint-disable-next-line @typescript-eslint/no-this-alias
     let node = this;
+
     for (const [key, options] of json) {
       node = node.getChild(key, options);
     }

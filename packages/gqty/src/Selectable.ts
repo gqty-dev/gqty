@@ -1,6 +1,6 @@
-import { type CacheDataContainer } from './Cache';
-import { type Selection } from './Selection';
-import { type Unsubscribe } from './Unsubscribe';
+import type { CacheDataContainer } from './Cache';
+import type { Selection } from './Selection';
+import type { Unsubscribe } from './Unsubscribe';
 
 /**
  * Containers that handles selections.

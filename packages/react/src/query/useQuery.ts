@@ -9,6 +9,7 @@ import {
   prepass,
   type BaseGeneratedSchema,
   type GQtyClient,
+  type GeneratedSchemaObject,
   type RetryOptions,
 } from 'gqty';
 import { MultiDict } from 'multidict';
@@ -22,7 +23,7 @@ import {
 import { useOnlineEffect } from '../useOnlineEffect';
 import { useRenderSession } from '../useRenderSession';
 import { useWindowFocusEffect } from '../useWindowFocusEffect';
-import { type ReactClientOptionsWithDefaults } from '../utils';
+import type { ReactClientOptionsWithDefaults } from '../utils';
 
 export interface UseQueryPrepareHelpers<
   GeneratedSchema extends {
@@ -151,7 +152,9 @@ export type UseQueryReturnValue<GeneratedSchema extends { query: object }> =
     ) => Promise<unknown>;
   };
 
-export interface UseQuery<GeneratedSchema extends { query: object }> {
+export interface UseQuery<
+  GeneratedSchema extends { query: GeneratedSchemaObject },
+> {
   (
     options?: UseQueryOptions<GeneratedSchema>
   ): UseQueryReturnValue<GeneratedSchema>;

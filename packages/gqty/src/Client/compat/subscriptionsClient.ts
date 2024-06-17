@@ -1,4 +1,3 @@
-import { createDeferredIterator } from '../../Utils/deferred';
 import type { ExecutionResult } from 'graphql';
 import type {
   Client,
@@ -11,6 +10,7 @@ import type {
   SubscribePayload,
 } from 'graphql-ws';
 import { GQtyError } from '../../Error';
+import { createDeferredIterator } from '../../Utils/deferred';
 import type { LegacySelection as Selection } from './selection';
 
 type Promisable<T> = T | Promise<T>;
