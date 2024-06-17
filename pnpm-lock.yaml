@@ -134,7 +134,7 @@ importers:
         version: link:../../packages/cli/dist
       '@next/bundle-analyzer':
         specifier: ^14.2.4
-        version: 14.2.4(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+        version: 14.2.4(bufferutil@4.0.8)(utf-8-validate@6.0.4)
       '@tailwindcss/typography':
         specifier: ^0.5.13
         version: 0.5.13(tailwindcss@3.4.4)
@@ -169,8 +169,8 @@ importers:
         specifier: ^5.4.5
         version: 5.4.5
       utf-8-validate:
-        specifier: ^5.0.10
-        version: 5.0.10
+        specifier: ^6.0.4
+        version: 6.0.4
 
   examples/react:
     dependencies:
@@ -5654,10 +5654,10 @@ packages:
       read-yaml-file: 1.1.0
     dev: true
 
-  /@next/bundle-analyzer@14.2.4(bufferutil@4.0.8)(utf-8-validate@5.0.10):
+  /@next/bundle-analyzer@14.2.4(bufferutil@4.0.8)(utf-8-validate@6.0.4):
     resolution: {integrity: sha512-ydSDikSgGhYmBlnvzS4tgdGyn40SCFI9uWDldbkRSwXS60tg4WBJR4qJoTSERTmdAFb1PeUYCyFdfC80i2WL1w==}
     dependencies:
-      webpack-bundle-analyzer: 4.10.1(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      webpack-bundle-analyzer: 4.10.1(bufferutil@4.0.8)(utf-8-validate@6.0.4)
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -14477,14 +14477,6 @@ packages:
       react: 18.3.1
     dev: false
 
-  /utf-8-validate@5.0.10:
-    resolution: {integrity: sha512-Z6czzLq4u8fPOyx7TU6X3dvUZVvoJmxSQ+IcrlmagKhilxlhZgxPK6C5Jqbkw1IDUmFTM+cz9QDnnLTwDz/2gQ==}
-    engines: {node: '>=6.14.2'}
-    requiresBuild: true
-    dependencies:
-      node-gyp-build: 4.8.0
-    dev: true
-
   /utf-8-validate@6.0.4:
     resolution: {integrity: sha512-xu9GQDeFp+eZ6LnCywXN/zBancWvOpUMzgjLPSjy4BRHSmTelvn2E0DG0o1sTiw5hkCKBHo8rwSKncfRfv2EEQ==}
     engines: {node: '>=6.14.2'}
@@ -14621,7 +14613,7 @@ packages:
     engines: {node: '>=12'}
     dev: true
 
-  /webpack-bundle-analyzer@4.10.1(bufferutil@4.0.8)(utf-8-validate@5.0.10):
+  /webpack-bundle-analyzer@4.10.1(bufferutil@4.0.8)(utf-8-validate@6.0.4):
     resolution: {integrity: sha512-s3P7pgexgT/HTUSYgxJyn28A+99mmLq4HsJepMPzu0R8ImJc52QNqaFYW1Z2z2uIb1/J3eYgaAWVpaC+v/1aAQ==}
     engines: {node: '>= 10.13.0'}
     hasBin: true
@@ -14638,7 +14630,7 @@ packages:
       opener: 1.5.2
       picocolors: 1.0.1
       sirv: 2.0.4
-      ws: 7.5.9(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      ws: 7.5.9(bufferutil@4.0.8)(utf-8-validate@6.0.4)
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -14799,7 +14791,7 @@ packages:
       signal-exit: 4.1.0
     dev: true
 
-  /ws@7.5.9(bufferutil@4.0.8)(utf-8-validate@5.0.10):
+  /ws@7.5.9(bufferutil@4.0.8)(utf-8-validate@6.0.4):
     resolution: {integrity: sha512-F+P9Jil7UiSKSkppIiD94dN07AwvFixvLIj1Og1Rl9GGMuNipJnV9JzjD6XuqmAeiswGvUmNLjr5cFuXwNS77Q==}
     engines: {node: '>=8.3.0'}
     peerDependencies:
@@ -14812,7 +14804,7 @@ packages:
         optional: true
     dependencies:
       bufferutil: 4.0.8
-      utf-8-validate: 5.0.10
+      utf-8-validate: 6.0.4
     dev: true
 
   /ws@8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4):
