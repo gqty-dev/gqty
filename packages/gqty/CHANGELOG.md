@@ -1,5 +1,12 @@
 # gqty
 
+## 3.1.1
+
+### Patch Changes
+
+- [`4a5b6f9`](https://github.com/gqty-dev/gqty/commit/4a5b6f9e353873bfc1ca3894bdb6e0c1e84c1578)
+  Thanks [@vicary](https://github.com/vicary)! - Generic schema type
+
 ## 3.1.0
 
 ### Minor Changes
