@@ -1,5 +1,24 @@
 # gqty
 
+## 3.1.0
+
+### Minor Changes
+
+- [#1849](https://github.com/gqty-dev/gqty/pull/1849)
+  [`a577128`](https://github.com/gqty-dev/gqty/commit/a577128f6c5e929321193f5effed700c6e7d32c8)
+  Thanks [@vicary](https://github.com/vicary)! - Retain sub-selections for empty
+  arrays and null objects
+
+### Patch Changes
+
+- [#1850](https://github.com/gqty-dev/gqty/pull/1850)
+  [`3e5cd7d`](https://github.com/gqty-dev/gqty/commit/3e5cd7d81fbe537bd4237cfd8584982b5f1b6468)
+  Thanks [@vicary](https://github.com/vicary)! - Apply eslint and fix lint
+  errors
+
+- [`dcd6ac2`](https://github.com/gqty-dev/gqty/commit/dcd6ac25cfd463c492b4d12ecdb603ca70894c8b)
+  Thanks [@vicary](https://github.com/vicary)! - Upgrade jest for Prettier v3
+
 ## 3.0.1
 
 ### Patch Changes
