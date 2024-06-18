@@ -92,7 +92,7 @@ export const parseSchemaType = memoize(
 );
 
 export type GeneratedSchemaObject<
-  T extends Record<string, unknown> = Record<string, unknown>,
+  T extends Record<string, unknown> = Record<string, any>,
 > = T & {
   __typename?: string;
 };
