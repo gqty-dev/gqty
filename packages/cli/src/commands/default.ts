@@ -181,7 +181,9 @@ export const addCommand = (command: Command) => {
       // Watch mode
       if (options.watch) {
         const { printSchema } = await import('graphql');
-        const { FasterSMA: SMA } = await import('trading-signals/dist/SMA/SMA');
+        const { FasterSMA: SMA } = await import(
+          'trading-signals/dist/SMA/SMA.js'
+        );
         const { default: throttle } = await import('lodash-es/throttle.js');
         const {
           default: { isMatch },
