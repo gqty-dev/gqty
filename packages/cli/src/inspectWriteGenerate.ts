@@ -178,7 +178,16 @@ export async function inspectWriteGenerate({
     genOptions,
     async (existingFile) => {
       const subscriptions = genOptions.subscriptions ?? config.subscriptions;
-      const react = genOptions.react ?? config.react;
+      const react =
+        genOptions.frameworks?.includes('react') ??
+        config.frameworks?.includes('react') ??
+        genOptions.react ??
+        config.react ??
+        false;
+      const solid =
+        genOptions.frameworks?.includes('solid-js') ??
+        config.frameworks?.includes('solid-js') ??
+        false;
 
       const advice = `\nIf you meant to change this, please remove "${destination}" and re-run code generation.`;
 
@@ -193,7 +202,15 @@ export async function inspectWriteGenerate({
       if (react) {
         if (!existingFile.includes('createReactClient')) {
           console.warn(
-            `[Warning] You've changed the option "react" to 'true', which is different from your existing "${destination}".` +
+            `[Warning] You've included "react" in frameworks, which is different from your existing "${destination}".` +
+              advice
+          );
+        }
+      }
+      if (solid) {
+        if (!existingFile.includes('createSolidClient')) {
+          console.warn(
+            `[Warning] You've included "solid-js" in frameworks, which is different from your existing "${destination}".` +
               advice
           );
         }

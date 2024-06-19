@@ -77,7 +77,7 @@ test('completely invalid config', () => {
 
         case 8:
           expect(message).toMatchInlineSnapshot(
-            `"Warning, invalid config react, got: null, expected boolean. true used instead."`
+            `"Warning, invalid config react, got: null, expected boolean. undefined used instead."`
           );
           break;
 
@@ -110,7 +110,10 @@ test('completely invalid config', () => {
         case 14:
           expect(message).toMatchInlineSnapshot(`
             "Invalid config, using instead: {
-              "react": true,
+              "frameworks": [
+                "react",
+                "solid-js"
+              ],
               "scalarTypes": {
                 "DateTime": "string"
               },
