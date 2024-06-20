@@ -149,7 +149,7 @@ export const assignSelections = <TData extends GeneratedSchemaObject>(
   }
 };
 
-/* TODO: Selection - use()
+/* [ ] Selection - use()
  *
  * Replace `assignSelection` with `Selection.use(Selection)`,
  * `Selection.getLeafNodes()` should comes in handy.

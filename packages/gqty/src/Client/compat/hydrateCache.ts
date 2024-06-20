@@ -67,7 +67,7 @@ export const createLegacyHydrateCache =
     }
   };
 
-// TODO: New SSR should always trust the cache during hydration, never refetch
+// [ ] New SSR should always trust the cache during hydration, never refetch
 // until cache expiry or SWR.
 
 export const parseSnapshot = (snapshot: string) => {

@@ -109,7 +109,7 @@ export type LegacyClient<TSchema extends BaseGeneratedSchema> = {
    * always skip `no-cache` and `no-store` queries, and refetches according
    * to cache expiry.
    */
-  // TODO: Make sure caches do not trigger immediate refetches.
+  // [ ] Make sure caches do not trigger immediate refetches.
   hydrateCache: LegacyHydrateCache;
   /**
    * @deprecated Please migrate from global accessors to locally scoped

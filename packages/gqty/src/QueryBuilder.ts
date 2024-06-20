@@ -54,8 +54,6 @@ export const buildQuery = (
 
   const inputDedupe = new Map<object, string>();
 
-  // TODO: Stablize variable names, maybe by sorting selections beforehand?
-
   for (const { ancestry } of selections) {
     const [type, field] = ancestry;
 

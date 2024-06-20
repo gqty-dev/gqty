@@ -93,7 +93,7 @@ export const addCommand = (command: Command) => {
       }).catch(terminateWithError);
 
       if (Object.keys(config.introspections ?? {}).length > 0) {
-        // TODO: Save config to file.
+        // [ ] Save config to file.
       }
 
       // CLI options
