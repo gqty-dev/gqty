@@ -203,7 +203,7 @@ importers:
         version: link:../../packages/subscriptions/dist
       '@graphql-ez/fastify':
         specifier: ^0.12.1
-        version: 0.12.1(@types/node@20.14.9)(fastify@4.28.0)(graphql-ez@0.16.1)(graphql@16.9.0)
+        version: 0.12.1(@types/node@20.14.9)(fastify@4.28.1)(graphql-ez@0.16.1)(graphql@16.9.0)
       '@graphql-ez/plugin-altair':
         specifier: ^0.11.3
         version: 0.11.3(@types/node@20.14.9)(graphql-ez@0.16.1)(graphql@16.9.0)
@@ -232,8 +232,8 @@ importers:
         specifier: ^13.0.0
         version: 13.0.0
       fastify:
-        specifier: ^4.28.0
-        version: 4.28.0
+        specifier: ^4.28.1
+        version: 4.28.1
       framer-motion:
         specifier: ^11.2.12
         version: 11.2.12(react-dom@18.3.1)(react@18.3.1)
@@ -358,10 +358,10 @@ importers:
     dependencies:
       '@graphql-ez/fastify':
         specifier: ^0.12.1
-        version: 0.12.1(@types/node@20.14.9)(fastify@4.28.0)(graphql-ez@0.16.1)(graphql@16.9.0)
+        version: 0.12.1(@types/node@20.14.9)(fastify@4.28.1)(graphql-ez@0.16.1)(graphql@16.9.0)
       '@graphql-ez/fastify-testing':
         specifier: ^0.4.1
-        version: 0.4.1(@graphql-ez/fastify@0.12.1)(@types/node@20.14.9)(fastify@4.28.0)(graphql-ez@0.16.1)(graphql@16.9.0)
+        version: 0.4.1(@graphql-ez/fastify@0.12.1)(@types/node@20.14.9)(fastify@4.28.1)(graphql-ez@0.16.1)(graphql@16.9.0)
       '@graphql-ez/plugin-codegen':
         specifier: ^0.8.1
         version: 0.8.1(@types/node@20.14.9)(graphql-ez@0.16.1)(graphql@16.9.0)
@@ -378,8 +378,8 @@ importers:
         specifier: ^7.0.3
         version: 7.0.3
       fastify:
-        specifier: ^4.28.0
-        version: 4.28.0
+        specifier: ^4.28.1
+        version: 4.28.1
       graphql:
         specifier: ^16.9.0
         version: 16.9.0
@@ -4311,7 +4311,7 @@ packages:
       undici: 5.28.4
     dev: false
 
-  /@graphql-ez/fastify-testing@0.4.1(@graphql-ez/fastify@0.12.1)(@types/node@20.14.9)(fastify@4.28.0)(graphql-ez@0.16.1)(graphql@16.9.0):
+  /@graphql-ez/fastify-testing@0.4.1(@graphql-ez/fastify@0.12.1)(@types/node@20.14.9)(fastify@4.28.1)(graphql-ez@0.16.1)(graphql@16.9.0):
     resolution: {integrity: sha512-NsJZU73240sEGiBV6uGZlYqzCoqoTsmJieOuUup3zYWTkm4BhZzcekOIVvi4GjtnZahjGERCv/AJplPqfjVmUw==}
     peerDependencies:
       '@graphql-ez/fastify': 0.12.1
@@ -4320,9 +4320,9 @@ packages:
       graphql-ez: ^0.16.1
     dependencies:
       '@graphql-ez/client': 0.6.2(@types/node@20.14.9)(graphql@16.9.0)
-      '@graphql-ez/fastify': 0.12.1(@types/node@20.14.9)(fastify@4.28.0)(graphql-ez@0.16.1)(graphql@16.9.0)
+      '@graphql-ez/fastify': 0.12.1(@types/node@20.14.9)(fastify@4.28.1)(graphql-ez@0.16.1)(graphql@16.9.0)
       '@graphql-ez/utils': 0.2.1(@types/node@20.14.9)(graphql@16.9.0)
-      fastify: 4.28.0
+      fastify: 4.28.1
       graphql: 16.9.0
       graphql-ez: 0.16.1(@types/node@20.14.9)(graphql@16.9.0)
     transitivePeerDependencies:
@@ -4330,7 +4330,7 @@ packages:
       - '@types/node'
     dev: false
 
-  /@graphql-ez/fastify@0.12.1(@types/node@20.14.9)(fastify@4.28.0)(graphql-ez@0.16.1)(graphql@16.9.0):
+  /@graphql-ez/fastify@0.12.1(@types/node@20.14.9)(fastify@4.28.1)(graphql-ez@0.16.1)(graphql@16.9.0):
     resolution: {integrity: sha512-du4gJHDWtQP0FbdpQ5ErxwCU+Nc4R1bj+QpfzIdNw8nbxL3jNnbVQ4z6MldlbxJYG7DXsawn5BjgTKJWXw6log==}
     engines: {node: '>=14.13.1'}
     peerDependencies:
@@ -4347,7 +4347,7 @@ packages:
       '@fastify/cors': 8.5.0
       '@graphql-ez/utils': 0.2.1(@types/node@20.14.9)(graphql@16.9.0)
       '@types/node': 20.14.9
-      fastify: 4.28.0
+      fastify: 4.28.1
       graphql: 16.9.0
       graphql-ez: 0.16.1(@types/node@20.14.9)(graphql@16.9.0)
     dev: false
@@ -8983,8 +8983,8 @@ packages:
   /fastify-plugin@4.5.1:
     resolution: {integrity: sha512-stRHYGeuqpEZTL1Ef0Ovr2ltazUT9g844X5z/zEBFLG8RYlpDiOCIG+ATvYEp+/zmc7sN29mcIMp8gvYplYPIQ==}
 
-  /fastify@4.28.0:
-    resolution: {integrity: sha512-HhW7UHW07YlqH5qpS0af8d2Gl/o98DhJ8ZDQWHRNDnzeOhZvtreWsX8xanjGgXmkYerGbo8ax/n40Dpwqkot8Q==}
+  /fastify@4.28.1:
+    resolution: {integrity: sha512-kFWUtpNr4i7t5vY2EJPCN2KgMVpuqfU4NjnJNCgiNB900oiDeYqaNDRcAfeBbOF5hGixixxcKnOU4KN9z6QncQ==}
     dependencies:
       '@fastify/ajv-compiler': 3.5.0
       '@fastify/error': 3.4.1
