@@ -5,7 +5,7 @@ import {
   type RetryOptions,
 } from 'gqty';
 import { getActivePromises } from 'gqty/Cache/query';
-import { type LegacyFetchPolicy } from './common';
+import type { LegacyFetchPolicy } from './common';
 import { createUseMetaState, type UseMetaState } from './meta/useMetaState';
 import { createUseMutation, type UseMutation } from './mutation/useMutation';
 import { createGraphqlHOC, type GraphQLHOC } from './query/hoc';
@@ -247,7 +247,7 @@ export function createReactClient<TSchema extends BaseGeneratedSchema>(
         const cache = $meta(client.schema.query)?.context.cache;
         const promises = cache && getActivePromises(cache);
 
-        return (promises?.length ?? 0) > 0;
+        return !!promises?.length;
       },
     },
     prepareReactRender,

@@ -424,7 +424,7 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
         }
 
         if (selections.size > 0) {
-          promises.push(resolve());
+          promises.push(resolve().catch(onError));
         }
       }
 
@@ -464,8 +464,8 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
                   prevSelections = new Set(selections);
                 }
               } else {
-                // Fetches responded, subscriptions closed, but cache subscription is
-                // still active.
+                // Fetches responded, subscriptions closed, but cache
+                // subscription is still active.
               }
             },
             {

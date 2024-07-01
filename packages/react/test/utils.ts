@@ -10,7 +10,7 @@ import {
 import { createClient as createSubscriptionsClient } from 'graphql-ws';
 import { merge } from 'lodash-es';
 import { createTestApp, gql } from 'test-utils';
-import { type PartialDeep } from 'type-fest';
+import type { PartialDeep } from 'type-fest';
 import { generate } from '../../cli/src/generate';
 import { createReactClient } from '../src';
 
