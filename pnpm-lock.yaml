@@ -328,6 +328,9 @@ importers:
       '@gqty/react':
         specifier: workspace:^
         version: link:../../packages/react/dist
+      '@react-hookz/web':
+        specifier: ^24.0.4
+        version: 24.0.4(react-dom@18.3.1)(react@18.3.1)
       gqty:
         specifier: workspace:^
         version: link:../../packages/gqty/dist
@@ -523,6 +526,9 @@ importers:
       tmp-promise:
         specifier: ^3.0.3
         version: 3.0.3
+      typescript:
+        specifier: ^5.5.2
+        version: 5.5.2
       wait-on:
         specifier: ^7.2.0
         version: 7.2.0
@@ -5755,6 +5761,22 @@ packages:
 
   /@react-hookz/web@23.1.0(react-dom@18.3.1)(react@18.3.1):
     resolution: {integrity: sha512-fvbURdsa1ukttbLR1ASE/XmqXP09vZ1PiCYppYeR1sNMzCrdkG0iBnjxniFSVjJ8gIw2fRs6nqMTbeBz2uAkuA==}
+    peerDependencies:
+      js-cookie: ^3.0.5
+      react: ^16.8 || ^17 || ^18
+      react-dom: ^16.8 || ^17 || ^18
+    peerDependenciesMeta:
+      js-cookie:
+        optional: true
+    dependencies:
+      '@react-hookz/deep-equal': 1.0.4
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+    dev: false
+
+  /@react-hookz/web@24.0.4(react-dom@18.3.1)(react@18.3.1):
+    resolution: {integrity: sha512-DcIM6JiZklDyHF6CRD1FTXzuggAkQ+3Ncq2Wln7Kdih8GV6ZIeN9JfS6ZaQxpQUxan8/4n0J2V/R7nMeiSrb2Q==}
+    engines: {node: '>=18.0.0'}
     peerDependencies:
       js-cookie: ^3.0.5
       react: ^16.8 || ^17 || ^18
