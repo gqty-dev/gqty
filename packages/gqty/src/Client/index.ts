@@ -24,20 +24,19 @@ import { createResolvers, type Resolvers } from './resolvers';
 export { $meta } from '../Accessor';
 export { getFields, prepass, selectFields } from '../Helpers';
 export * as useMetaStateHack from '../Helpers/useMetaStateHack';
-export { pick } from '../Utils';
 export type {
   LegacyClientOptions as LegacyFetchers,
   LegacyHydrateCache,
   LegacyHydrateCacheOptions,
-  LegacyInlineResolveOptions,
   LegacyInlineResolved,
+  LegacyInlineResolveOptions,
   LegacyMutate,
   LegacyMutateHelpers,
   LegacyPrefetch,
   LegacyQueryFetcher,
   LegacyRefetch,
-  LegacyResolveOptions,
   LegacyResolved,
+  LegacyResolveOptions,
   LegacySelection,
   LegacySubscribeEvents,
   LegacySubscriptionsClient,

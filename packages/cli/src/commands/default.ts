@@ -1,8 +1,8 @@
-import { type PackageJSON } from 'bob-esbuild/config/packageJson';
+import type { PackageJSON } from 'bob-esbuild/config/packageJson';
 import type { Command } from 'commander';
 import { cosmiconfig } from 'cosmiconfig';
 import { readFile, watch } from 'node:fs/promises';
-import { type GQtyConfig } from '../config';
+import type { GQtyConfig } from '../config';
 import { inquirer } from '../deps';
 import { convertHeadersInput } from './default/convertHeadersInput';
 import { fetchSchemas, isURL } from './default/fetchSchema';
@@ -256,6 +256,7 @@ export const addCommand = (command: Command) => {
         // Polling loop, only happens with URL endpoints.
         if (endpoints.some((endpoint) => isURL(endpoint))) {
           (async () => {
+            // eslint-disable-next-line no-constant-condition
             while (true) {
               const wait = Math.max(
                 5000,
@@ -329,7 +330,7 @@ const promptSubscriptions = async (defaultValue?: string) => {
     default: defaultValue?.trim() || undefined,
   });
 
-  return subscriptions?.trim().replace(/^\-$/, '') || false;
+  return subscriptions?.trim().replace(/^-$/, '') || false;
 };
 
 const promptTypescript = async (defaultValue: boolean) => {

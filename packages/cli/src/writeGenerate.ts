@@ -1,5 +1,5 @@
 import { existsSync, promises } from 'fs';
-import { type GraphQLSchema } from 'graphql';
+import type { GraphQLSchema } from 'graphql';
 import { dirname, resolve } from 'path';
 import { defaultConfig, type GQtyConfig } from './config';
 import { generate, type TransformSchemaOptions } from './generate';

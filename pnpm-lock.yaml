@@ -496,21 +496,27 @@ importers:
       '@types/prettier':
         specifier: ^2.7.3
         version: 2.7.3
+      '@typescript-eslint/eslint-plugin':
+        specifier: ^7.15.0
+        version: 7.16.0(@typescript-eslint/parser@7.16.0)(eslint@8.57.0)(typescript@5.5.2)
+      '@typescript-eslint/parser':
+        specifier: ^7.15.0
+        version: 7.16.0(eslint@8.57.0)(typescript@5.5.2)
       bob-tsm:
         specifier: ^1.1.2
         version: 1.1.2(esbuild@0.21.5)(typescript@5.5.2)
       esbuild:
         specifier: ^0.21.5
         version: 0.21.5
+      eslint:
+        specifier: ^8.57.0
+        version: 8.57.0
       open-cli:
         specifier: ^8.0.0
         version: 8.0.0
       p-lazy:
         specifier: ^3.1.0
         version: 3.1.0
-      rimraf:
-        specifier: ^5.0.9
-        version: 5.0.9
       serve:
         specifier: ^14.2.3
         version: 14.2.3

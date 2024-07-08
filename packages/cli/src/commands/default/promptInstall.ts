@@ -1,5 +1,5 @@
-import { type PackageJSON } from 'bob-esbuild/config/packageJson';
-import { type GQtyConfig } from '../../config';
+import type { PackageJSON } from 'bob-esbuild/config/packageJson';
+import type { GQtyConfig } from '../../config';
 import { inquirer } from '../../deps';
 import {
   getUserPackageManager,

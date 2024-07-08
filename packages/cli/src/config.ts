@@ -2,9 +2,9 @@ import { promises } from 'node:fs';
 import { createRequire } from 'node:module';
 import { resolve } from 'node:path';
 import * as deps from './deps.js';
-import { type GenerateOptions } from './generate';
+import type { GenerateOptions } from './generate';
 import { __innerState } from './innerState';
-import { type IntrospectionOptions } from './introspection';
+import type { IntrospectionOptions } from './introspection';
 import { formatPrettier } from './prettier';
 
 const cjsRequire =
@@ -60,7 +60,9 @@ export const defaultConfig: SetRequired<
     try {
       cjsRequire.resolve('react');
       return true;
-    } catch (err) {}
+    } catch (err) {
+      // noop
+    }
 
     return false;
   })(),
@@ -275,7 +277,7 @@ export const loadOrGenerateConfig = async ({
   writeConfigFile?: boolean;
 } = {}): Promise<GQtyConfigResult> => {
   if (gqtyConfigPromise === undefined) {
-    gqtyConfigPromise = new Promise(async (resolve) => {
+    const promiseHandler = async () => {
       try {
         const cjsLoader: deps.Loader = (filePath) => {
           return cjsRequire(filePath);
@@ -322,21 +324,24 @@ export const loadOrGenerateConfig = async ({
             }
           }
 
-          return resolve({
+          return {
             filepath,
             config: defaultConfig,
-          });
+          };
         }
 
-        resolve({
+        return {
           config: getValidConfig(config.config),
           filepath: config.filepath,
-        });
+        };
       } catch (err) {
         console.error(err);
-        resolve(defaultGQtyConfig);
+
+        return defaultGQtyConfig;
       }
-    });
+    };
+
+    gqtyConfigPromise = promiseHandler();
   }
 
   return gqtyConfigPromise;
