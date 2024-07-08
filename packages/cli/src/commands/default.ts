@@ -5,7 +5,7 @@ import { readFile, watch } from 'node:fs/promises';
 import type { GQtyConfig } from '../config';
 import { inquirer } from '../deps';
 import { convertHeadersInput } from './default/convertHeadersInput';
-import { fetchSchemas, isURL } from './default/fetchSchema';
+import { fetchSchema, isURL } from './default/fetchSchema';
 import { generateClient } from './default/generateClient';
 import { getCommandName } from './default/getCommandName';
 import { logger } from './default/logger';
@@ -86,7 +86,7 @@ export const addCommand = (command: Command) => {
         config.introspections = {};
       }
 
-      const schema = await fetchSchemas(endpoints, {
+      const schema = await fetchSchema(endpoints, {
         headers:
           convertHeadersInput(options.header) ?? config.introspection?.headers,
         headersByEndpoint: config.introspections,
@@ -208,7 +208,7 @@ export const addCommand = (command: Command) => {
             const start = Date.now();
 
             try {
-              const schema = await fetchSchemas(endpoints, {
+              const schema = await fetchSchema(endpoints, {
                 headers: convertHeadersInput(options.header),
                 headersByEndpoint: config.introspections,
                 silent: true,
