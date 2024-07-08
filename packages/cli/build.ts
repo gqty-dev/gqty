@@ -30,7 +30,6 @@ async function main() {
         minify: true,
       },
       sourcemap: false,
-      external: ['./deps.js'],
       rollup: {
         banner: '#!/usr/bin/env node\n',
       },

@@ -1,4 +1,4 @@
-import * as deps from './deps.js';
+import * as deps from './deps';
 
 const { format: prettierFormat, resolveConfig } = deps.prettier;
 const commonConfig = resolveConfig(process.cwd());

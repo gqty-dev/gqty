@@ -2,7 +2,7 @@ import type { AsyncExecutor } from '@graphql-tools/utils';
 import type { GraphQLSchema } from 'graphql';
 import * as graphql from 'graphql';
 import { defaultConfig, loadOrGenerateConfig } from './config';
-import * as deps from './deps.js';
+import * as deps from './deps';
 
 export interface IntrospectionOptions {
   /**

@@ -1,7 +1,7 @@
 import { promises } from 'node:fs';
 import { createRequire } from 'node:module';
 import { resolve } from 'node:path';
-import * as deps from './deps.js';
+import * as deps from './deps';
 import type { GenerateOptions } from './generate';
 import { __innerState } from './innerState';
 import type { IntrospectionOptions } from './introspection';

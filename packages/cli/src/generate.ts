@@ -19,7 +19,7 @@ import type {
 } from 'graphql';
 import * as graphql from 'graphql';
 import { defaultConfig, type GQtyConfig } from './config';
-import * as deps from './deps.js';
+import * as deps from './deps';
 import { formatPrettier } from './prettier';
 
 const {
@@ -130,8 +130,8 @@ export async function generate(
     enumStyle = enumsAsConst
       ? 'assertion'
       : enumsAsStrings
-      ? 'string'
-      : defaultConfig.enumStyle,
+        ? 'string'
+        : defaultConfig.enumStyle,
     introspection = defaultConfig.introspections,
     endpoint = introspection?.endpoint ?? defaultConfig.endpoint,
     javascriptOutput: isJavascriptOutput = defaultConfig.javascriptOutput,
@@ -360,24 +360,27 @@ export async function generate(
         }
         objectFieldsArgsDescriptions[fieldName] ||= {};
 
-        schemaType[fieldName].__args = gqlType.args.reduce((acum, arg) => {
-          acum[arg.name] = arg.type.toString();
-          if (
-            arg.description ||
-            arg.deprecationReason ||
-            arg.defaultValue != null
-          ) {
-            objectFieldsArgsDescriptions[fieldName][arg.name] = {
-              defaultValue:
-                arg.defaultValue != null
-                  ? JSON.stringify(arg.defaultValue)
-                  : null,
-              deprecated: arg.deprecationReason,
-              description: arg.description,
-            };
-          }
-          return acum;
-        }, {} as Record<string, string>);
+        schemaType[fieldName].__args = gqlType.args.reduce(
+          (acum, arg) => {
+            acum[arg.name] = arg.type.toString();
+            if (
+              arg.description ||
+              arg.deprecationReason ||
+              arg.defaultValue != null
+            ) {
+              objectFieldsArgsDescriptions[fieldName][arg.name] = {
+                defaultValue:
+                  arg.defaultValue != null
+                    ? JSON.stringify(arg.defaultValue)
+                    : null,
+                deprecated: arg.deprecationReason,
+                description: arg.description,
+              };
+            }
+            return acum;
+          },
+          {} as Record<string, string>
+        );
       }
     });
 
@@ -478,24 +481,27 @@ export async function generate(
         objectFieldsArgsDescriptions[fieldName] ||= {};
 
         schemaType[fieldName].__args = interfaceValue.__args =
-          gqlType.args.reduce((acum, arg) => {
-            acum[arg.name] = arg.type.toString();
-            if (
-              arg.description ||
-              arg.deprecationReason ||
-              arg.defaultValue != null
-            ) {
-              objectFieldsArgsDescriptions[fieldName][arg.name] = {
-                defaultValue:
-                  arg.defaultValue != null
-                    ? JSON.stringify(arg.defaultValue)
-                    : null,
-                deprecated: arg.deprecationReason,
-                description: arg.description,
-              };
-            }
-            return acum;
-          }, {} as Record<string, string>);
+          gqlType.args.reduce(
+            (acum, arg) => {
+              acum[arg.name] = arg.type.toString();
+              if (
+                arg.description ||
+                arg.deprecationReason ||
+                arg.defaultValue != null
+              ) {
+                objectFieldsArgsDescriptions[fieldName][arg.name] = {
+                  defaultValue:
+                    arg.defaultValue != null
+                      ? JSON.stringify(arg.defaultValue)
+                      : null,
+                  deprecated: arg.deprecationReason,
+                  description: arg.description,
+                };
+              }
+              return acum;
+            },
+            {} as Record<string, string>
+          );
       }
 
       if (gqlType.description || gqlType.deprecationReason) {
@@ -556,12 +562,15 @@ export async function generate(
 
   const unionsMapObj = Array.from(
     unionsAndInterfacesObjectTypesMap.entries()
-  ).reduce((acum, [key, value]) => {
-    generatedSchema[key]!.$on = { __type: `$${key}!` };
+  ).reduce(
+    (acum, [key, value]) => {
+      generatedSchema[key]!.$on = { __type: `$${key}!` };
 
-    acum[key] = value;
-    return acum;
-  }, {} as Record<string, string[]>);
+      acum[key] = value;
+      return acum;
+    },
+    {} as Record<string, string[]>
+  );
 
   if (unionsAndInterfacesObjectTypesMap.size) {
     generatedSchema[SchemaUnionsKey] = unionsMapObj;
@@ -663,65 +672,73 @@ export async function generate(
             ? interfaceOrUnionsObjectTypes.map((v) => `"${v}"`).join(' | ')
             : `"${typeName}"`
         }; ${Object.entries(typeValue!).reduce(
-        (acum, [fieldKey, fieldValue]) => {
-          if (fieldKey === '__typename') {
-            objectTypeMap.set(fieldKey, `?: "${typeName}"`);
-            return acum;
-          }
-
-          const typeFieldArgDescriptions = fieldsArgsDescriptions.has(typeName)
-            ? fieldsArgsDescriptions.get(typeName)
-            : undefined;
-          const argDescriptions =
-            typeFieldArgDescriptions && typeFieldArgDescriptions[fieldKey]
-              ? typeFieldArgDescriptions[fieldKey]
-              : {};
-          const fieldValueProps = parseSchemaType(fieldValue.__type);
-          const typeToReturn = parseFinalType(fieldValueProps);
-          let finalType: string;
-          if (fieldValue.__args) {
-            const argsEntries = Object.entries(fieldValue.__args);
-            let onlyNullableArgs = true;
-            const argTypes = argsEntries.reduce((acum, [argKey, argValue]) => {
-              const argValueProps = parseSchemaType(
-                argValue,
-                argDescriptions[argKey]
-              );
-              const connector =
-                argValueProps.isNullable || argValueProps.hasDefaultValue
-                  ? '?:'
-                  : ':';
-
-              if (!argValueProps.isNullable) {
-                onlyNullableArgs = false;
-              }
-
-              const argTypeValue = parseArgType(argValueProps);
-
-              acum += `${addDescription([
-                typeName,
-                fieldKey,
-                argKey,
-              ])}${argKey}${connector} ${argTypeValue};\n`;
-
+          (acum, [fieldKey, fieldValue]) => {
+            if (fieldKey === '__typename') {
+              objectTypeMap.set(fieldKey, `?: "${typeName}"`);
               return acum;
-            }, '');
-            const argsConnector = onlyNullableArgs ? '?:' : ':';
-            finalType = `: (args${argsConnector} {${argTypes}}) => ${typeToReturn}`;
-          } else {
-            const connector = fieldValueProps.isNullable ? '?:' : ':';
-            finalType = `${connector} ${typeToReturn}`;
-          }
+            }
 
-          objectTypeMap.set(fieldKey, finalType);
+            const typeFieldArgDescriptions = fieldsArgsDescriptions.has(
+              typeName
+            )
+              ? fieldsArgsDescriptions.get(typeName)
+              : undefined;
+            const argDescriptions =
+              typeFieldArgDescriptions && typeFieldArgDescriptions[fieldKey]
+                ? typeFieldArgDescriptions[fieldKey]
+                : {};
+            const fieldValueProps = parseSchemaType(fieldValue.__type);
+            const typeToReturn = parseFinalType(fieldValueProps);
+            let finalType: string;
+            if (fieldValue.__args) {
+              const argsEntries = Object.entries(fieldValue.__args);
+              let onlyNullableArgs = true;
+              const argTypes = argsEntries.reduce(
+                (acum, [argKey, argValue]) => {
+                  const argValueProps = parseSchemaType(
+                    argValue,
+                    argDescriptions[argKey]
+                  );
+                  const connector =
+                    argValueProps.isNullable || argValueProps.hasDefaultValue
+                      ? '?:'
+                      : ':';
 
-          acum +=
-            '\n' + addDescription([typeName, fieldKey]) + fieldKey + finalType;
+                  if (!argValueProps.isNullable) {
+                    onlyNullableArgs = false;
+                  }
 
-          return acum;
-        },
-        ''
-      )}
+                  const argTypeValue = parseArgType(argValueProps);
+
+                  acum += `${addDescription([
+                    typeName,
+                    fieldKey,
+                    argKey,
+                  ])}${argKey}${connector} ${argTypeValue};\n`;
+
+                  return acum;
+                },
+                ''
+              );
+              const argsConnector = onlyNullableArgs ? '?:' : ':';
+              finalType = `: (args${argsConnector} {${argTypes}}) => ${typeToReturn}`;
+            } else {
+              const connector = fieldValueProps.isNullable ? '?:' : ':';
+              finalType = `${connector} ${typeToReturn}`;
+            }
+
+            objectTypeMap.set(fieldKey, finalType);
+
+            acum +=
+              '\n' +
+              addDescription([typeName, fieldKey]) +
+              fieldKey +
+              finalType;
+
+            return acum;
+          },
+          ''
+        )}
       }
       `;
 
@@ -864,11 +881,11 @@ export async function generate(
     export${
       isJavascriptOutput ? ' declare' : ''
     } const scalarsEnumsHash: ScalarsEnumsHash${
-    isJavascriptOutput ? ';' : ` = ${scalarsEnumsHashString};`
-  }
+      isJavascriptOutput ? ';' : ` = ${scalarsEnumsHashString};`
+    }
     export${isJavascriptOutput ? ' declare' : ''} const generatedSchema ${
-    isJavascriptOutput ? ':' : '='
-  } {${generatedSchemaCodeString}}${isJavascriptOutput ? '' : ' as const'};
+      isJavascriptOutput ? ':' : '='
+    } {${generatedSchemaCodeString}}${isJavascriptOutput ? '' : ' as const'};
 
     ${typescriptTypes}
   `);
