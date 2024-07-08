@@ -163,8 +163,8 @@ export const addCommand = (command: Command) => {
         ? 'gqty/index.js'
         : 'gqty/index.ts';
 
-      if (isURL(argv[0])) {
-        config.endpoint = argv[0];
+      if (isURL(endpoints[0])) {
+        config.endpoint = endpoints[0];
       }
 
       await generateClient(schema, {
