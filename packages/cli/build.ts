@@ -1,7 +1,6 @@
 import { buildTsc } from 'bob-esbuild';
 import { writePackageJson } from 'bob-esbuild/config/packageJson';
 import { buildCode } from 'bob-ts';
-import { build } from 'esbuild';
 import { promises as fs } from 'fs';
 import pkg from './package.json';
 
@@ -34,15 +33,17 @@ async function main() {
         banner: '#!/usr/bin/env node\n',
       },
     }),
-    build({
+    buildCode({
       entryPoints: ['./src/envelop.ts', './src/index.ts'],
-      bundle: true,
-      outdir: 'dist',
-      format: 'esm',
+      clean: false,
+      outDir: 'dist',
+      format: 'interop',
       target: 'node16',
-      platform: 'node',
-      minify: true,
       external: ['graphql'],
+      esbuild: {
+        minify: true,
+      },
+      sourcemap: false,
     }),
     fs.copyFile('LICENSE', 'dist/LICENSE'),
     fs.copyFile('README.md', 'dist/README.md'),

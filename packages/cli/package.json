@@ -22,8 +22,8 @@
   ],
   "exports": {
     ".": {
-      "require": "./dist/index.js",
       "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
       "types": "./dist/index.d.ts"
     }
   },
@@ -86,8 +86,7 @@
     "graphql": "^16.9.0",
     "lodash-es": "^4.17.21",
     "micromatch": "^4.0.7",
-    "prettier": "^2.8.8",
-    "trading-signals": "^5.0.4"
+    "prettier": "^2.8.8"
   },
   "devDependencies": {
     "@size-limit/preset-small-lib": "^11.1.4",
@@ -108,6 +107,9 @@
     "tmp-promise": "^3.0.3",
     "typescript": "^5.5.2",
     "wait-on": "^7.2.0"
+  },
+  "optionalDependencies": {
+    "trading-signals": "^5.0.4"
   },
   "publishConfig": {
     "directory": "dist"
