@@ -36,10 +36,10 @@ async function main() {
       },
     }),
     build({
-      entryPoints: ['./src/deps.ts'],
+      entryPoints: ['./src/envelop.ts', './src/index.ts'],
       bundle: true,
-      format: 'cjs',
-      outfile: 'dist/deps.js',
+      outdir: 'dist',
+      format: 'esm',
       target: 'node16',
       platform: 'node',
       minify: true,
@@ -55,29 +55,6 @@ async function main() {
         },
       },
       distDir: 'dist',
-    }),
-  ]);
-
-  await Promise.all([
-    buildCode({
-      entryPoints: [
-        './src/inspectWriteGenerate.ts',
-        './src/envelop.ts',
-        './src/index.ts',
-      ],
-      clean: false,
-      format: 'interop',
-      outDir: 'dist',
-      target: 'node16',
-      esbuild: {
-        minify: true,
-      },
-      sourcemap: false,
-      external: ['./deps.js'],
-      keepDynamicImport: false,
-      rollup: {
-        interop: 'esModule',
-      },
     }),
   ]);
 
