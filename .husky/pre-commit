@@ -1,4 +1,6 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-pnpm pretty-quick --staged
+pnpm --quiet dlx pretty-quick --staged
+
+pnpm --quiet dlx sort-package-json --quiet packages/*/package.json && git add packages/*/package.json

@@ -1,8 +1,15 @@
 {
   "name": "@gqty/cli",
-  "private": false,
-  "sideEffects": false,
   "version": "4.0.3",
+  "description": "Interactive codegen for GQty",
+  "keywords": [
+    "client",
+    "codegen",
+    "gqty",
+    "graphql",
+    "interactive",
+    "reactive"
+  ],
   "homepage": "https://gqty.dev",
   "repository": {
     "type": "git",
@@ -13,23 +20,19 @@
   "maintainers": [
     "Vicary Archangel <vicary.archangel@member.mensa.org>"
   ],
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "bin": {
     "gqty": "bin/gqty.mjs"
   },
   "files": [
     "dist",
     "src"
-  ],
-  "publishConfig": {
-    "directory": "dist"
-  },
-  "keywords": [
-    "client",
-    "codegen",
-    "gqty",
-    "graphql",
-    "interactive",
-    "reactive"
   ],
   "scripts": {
     "analyze": "size-limit --why",
@@ -39,6 +42,33 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:watch-coverage": "rimraf coverage && mkdir -p coverage/lcov-report && concurrently --raw \"jest --watchAll\" \"serve -l 8787 coverage/lcov-report\" \"wait-on tcp:8787 coverage/lcov-report/index.html && open-cli http://localhost:8787\""
+  },
+  "eslintConfig": {
+    "env": {
+      "node": true
+    },
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+      "@typescript-eslint"
+    ],
+    "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/recommended"
+    ],
+    "rules": {
+      "@typescript-eslint/consistent-type-imports": [
+        "error",
+        {
+          "fixStyle": "inline-type-imports"
+        }
+      ],
+      "@typescript-eslint/no-import-type-side-effects": "error"
+    },
+    "ignorePatterns": [
+      "node_modules/**",
+      "**/*.js",
+      "**/*.test.ts"
+    ]
   },
   "dependencies": {
     "@graphql-codegen/core": "^4.0.2",
@@ -76,5 +106,8 @@
     "tmp-promise": "^3.0.3",
     "typescript": "^5.5.2",
     "wait-on": "^7.2.0"
+  },
+  "publishConfig": {
+    "directory": "dist"
   }
 }

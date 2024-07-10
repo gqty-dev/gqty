@@ -52,11 +52,20 @@ export interface RetryConfigState {
 }
 
 export function doRetry(options: RetryOptions, state: RetryConfigState) {
+  if (options === false) {
+    throw new Error(`Retries are disabled.`);
+  }
+
   const maxRetries =
     typeof options === 'number'
       ? options
       : (typeof options === 'object' ? options.maxRetries : undefined) ??
         defaultMaxRetries;
+
+  if (maxRetries < 1) {
+    throw new Error(`Maximum retries must be >= 1`);
+  }
+
   const retryDelay =
     (typeof options === 'object' ? options.retryDelay : undefined) ??
     defaultRetryDelay;

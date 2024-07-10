@@ -1,7 +1,7 @@
 {
   "name": "gqty",
   "version": "3.1.1",
-  "description": "gqty client without queries",
+  "description": "The No-GraphQL Client for TypeScript",
   "homepage": "https://gqty.dev",
   "repository": {
     "type": "git",
@@ -44,6 +44,34 @@
     "test:specific": "jest test/interfaces-unions.test.ts --watch --no-coverage -u",
     "test:watch": "jest --watch",
     "test:watch-coverage": "rimraf coverage && mkdir -p coverage/lcov-report && concurrently --raw \"jest --watchAll\" \"serve -l 8787 coverage/lcov-report\" \"wait-on tcp:8787 coverage/lcov-report/index.html && open-cli http://localhost:8787\""
+  },
+  "eslintConfig": {
+    "env": {
+      "node": true
+    },
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+      "@typescript-eslint"
+    ],
+    "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/recommended",
+      "plugin:eslint-plugin-you-dont-need-lodash-underscore/compatible"
+    ],
+    "rules": {
+      "@typescript-eslint/consistent-type-imports": [
+        "error",
+        {
+          "fixStyle": "inline-type-imports"
+        }
+      ],
+      "@typescript-eslint/no-import-type-side-effects": "error"
+    },
+    "ignorePatterns": [
+      "node_modules/**",
+      "**/*.js",
+      "**/*.test.ts"
+    ]
   },
   "dependencies": {
     "debounce-microtasks": "^0.1.7",
@@ -107,34 +135,6 @@
   },
   "engines": {
     "node": "^12.20.0 || >=14.13.0"
-  },
-  "eslintConfig": {
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "eslint:recommended",
-      "plugin:@typescript-eslint/recommended",
-      "plugin:eslint-plugin-you-dont-need-lodash-underscore/compatible"
-    ],
-    "ignorePatterns": [
-      "node_modules/**",
-      "**/*.js",
-      "**/*.test.ts"
-    ],
-    "parser": "@typescript-eslint/parser",
-    "plugins": [
-      "@typescript-eslint"
-    ],
-    "rules": {
-      "@typescript-eslint/no-import-type-side-effects": "error",
-      "@typescript-eslint/consistent-type-imports": [
-        "error",
-        {
-          "fixStyle": "inline-type-imports"
-        }
-      ]
-    }
   },
   "publishConfig": {
     "directory": "dist"

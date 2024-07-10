@@ -1,8 +1,17 @@
 {
   "name": "@gqty/react",
   "version": "4.0.1",
-  "private": false,
-  "sideEffects": false,
+  "description": "The No-GraphQL Client for React",
+  "keywords": [
+    "cache",
+    "client",
+    "gqty",
+    "graphql",
+    "hooks",
+    "react",
+    "reactive",
+    "state"
+  ],
   "homepage": "https://gqty.dev",
   "repository": {
     "type": "git",
@@ -13,6 +22,7 @@
   "maintainers": [
     "Vicary Archangel <vicary.archangel@member.mensa.org>"
   ],
+  "sideEffects": false,
   "exports": {
     ".": {
       "import": "./dist/index.mjs",
@@ -32,16 +42,6 @@
     "dist",
     "src"
   ],
-  "keywords": [
-    "cache",
-    "client",
-    "gqty",
-    "graphql",
-    "reactive",
-    "hooks",
-    "react",
-    "state"
-  ],
   "scripts": {
     "analyze": "size-limit --why",
     "build": "bob-esbuild build",
@@ -55,50 +55,34 @@
     "test": "jest",
     "test:watch": "jest --watch"
   },
-  "engines": {
-    "node": "^12.20.0 || >=14.13.0"
-  },
   "eslintConfig": {
     "env": {
       "node": true
     },
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+      "@typescript-eslint"
+    ],
     "extends": [
       "eslint:recommended",
       "plugin:@typescript-eslint/recommended",
       "plugin:eslint-plugin-you-dont-need-lodash-underscore/compatible"
     ],
-    "ignorePatterns": [
-      "node_modules/**",
-      "**/*.js",
-      "**/*.test.ts"
-    ],
-    "parser": "@typescript-eslint/parser",
-    "plugins": [
-      "@typescript-eslint"
-    ],
     "rules": {
-      "@typescript-eslint/no-import-type-side-effects": "error",
       "@typescript-eslint/consistent-type-imports": [
         "error",
         {
           "fixStyle": "inline-type-imports"
         }
-      ]
-    }
-  },
-  "publishConfig": {
-    "directory": "dist"
-  },
-  "size-limit": [
-    {
-      "path": "dist/gqty-react.cjs.production.min.js",
-      "limit": "10 KB"
+      ],
+      "@typescript-eslint/no-import-type-side-effects": "error"
     },
-    {
-      "path": "dist/gqty-react.esm.js",
-      "limit": "10 KB"
-    }
-  ],
+    "ignorePatterns": [
+      "node_modules/**",
+      "**/*.js",
+      "**/*.test.ts"
+    ]
+  },
   "dependencies": {
     "@react-hookz/web": "^23.1.0",
     "multidict": "^1.0.9",
@@ -160,5 +144,21 @@
     "graphql-ws": {
       "optional": true
     }
-  }
+  },
+  "engines": {
+    "node": "^12.20.0 || >=14.13.0"
+  },
+  "publishConfig": {
+    "directory": "dist"
+  },
+  "size-limit": [
+    {
+      "path": "dist/gqty-react.cjs.production.min.js",
+      "limit": "10 KB"
+    },
+    {
+      "path": "dist/gqty-react.esm.js",
+      "limit": "10 KB"
+    }
+  ]
 }

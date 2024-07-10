@@ -5,8 +5,8 @@ import {
   type RetryOptions,
 } from 'gqty';
 import * as React from 'react';
-import { type OnErrorHandler } from '../common';
-import { type ReactClientOptionsWithDefaults } from '../utils';
+import type { OnErrorHandler } from '../common';
+import type { ReactClientOptionsWithDefaults } from '../utils';
 
 export interface UseMutationOptions<TData> {
   onComplete?: (data: TData) => Promise<void> | void;
@@ -65,7 +65,7 @@ export interface UseMutation<TSchema extends BaseGeneratedSchema> {
     options?: UseMutationOptions<TData>
   ): readonly [
     (options?: { fn?: typeof fn; args: TArgs }) => Promise<TData>,
-    UseMutationState & { data?: TData }
+    UseMutationState & { data?: TData },
   ];
 }
 

@@ -107,7 +107,7 @@ export interface UseQueryOptions<TSchema extends BaseGeneratedSchema> {
    * @default true
    */
   refetchOnWindowVisible?: boolean;
-  /** Retry strategy upon fetch failure. */
+  /** Retry strategy upon fetch failures. */
   retryPolicy?: RetryOptions;
   /**
    * Changes rendering in the following ways,
@@ -530,6 +530,6 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
             ),
         }
       );
-    }, [query, refetch, state]);
+    }, [query, refetch, state.error, state.promise]);
   };
 };
