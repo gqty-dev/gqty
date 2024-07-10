@@ -1,17 +1,17 @@
 {
   "name": "@gqty/logger",
   "version": "4.0.1",
-  "homepage": "https://gqty.dev",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/gqty-dev/gqty.git"
-  },
+  "description": "A debug logger for GQty",
   "license": "MIT",
   "author": "PabloSzx <pablosaez1995@gmail.com>",
   "maintainers": [
     "Vicary Archangel <vicary.archangel@member.mensa.org>"
   ],
-  "sideEffects": false,
+  "homepage": "https://gqty.dev",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gqty-dev/gqty.git"
+  },
   "exports": {
     ".": {
       "require": "./dist/index.js",
@@ -26,7 +26,6 @@
   },
   "main": "dist/index.js",
   "module": "dist/index.mjs",
-  "typings": "dist/index.d.ts",
   "files": [
     "dist",
     "src"
@@ -42,8 +41,13 @@
     "test": "jest",
     "test:watch": "jest --watch"
   },
+  "sideEffects": false,
+  "typings": "dist/index.d.ts",
   "dependencies": {
     "prettier": "^3.0.1"
+  },
+  "peerDependencies": {
+    "gqty": "workspace:^"
   },
   "devDependencies": {
     "@size-limit/preset-small-lib": "^11.1.4",
@@ -56,9 +60,6 @@
     "test-utils": "workspace:^",
     "tslib": "^2.6.3",
     "typescript": "^5.5.2"
-  },
-  "peerDependencies": {
-    "gqty": "workspace:^"
   },
   "engines": {
     "node": "^12.20.0 || >=14.13.0"

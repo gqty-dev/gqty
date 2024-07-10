@@ -1,35 +1,30 @@
 {
   "name": "@gqty/cli",
-  "private": false,
-  "sideEffects": false,
   "version": "4.0.3",
-  "homepage": "https://gqty.dev",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/gqty-dev/gqty.git"
-  },
+  "description": "Interactive codegen for GQty",
   "license": "MIT",
   "author": "PabloSzx <pablosaez1995@gmail.com>",
   "maintainers": [
     "Vicary Archangel <vicary.archangel@member.mensa.org>"
   ],
+  "homepage": "https://gqty.dev",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gqty-dev/gqty.git"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "bin": {
     "gqty": "bin/gqty.mjs"
   },
   "files": [
     "dist",
     "src"
-  ],
-  "publishConfig": {
-    "directory": "dist"
-  },
-  "keywords": [
-    "client",
-    "codegen",
-    "gqty",
-    "graphql",
-    "interactive",
-    "reactive"
   ],
   "scripts": {
     "analyze": "size-limit --why",
@@ -76,5 +71,43 @@
     "tmp-promise": "^3.0.3",
     "typescript": "^5.5.2",
     "wait-on": "^7.2.0"
+  },
+  "keywords": [
+    "client",
+    "codegen",
+    "gqty",
+    "graphql",
+    "interactive",
+    "reactive"
+  ],
+  "publishConfig": {
+    "directory": "dist"
+  },
+  "eslintConfig": {
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/recommended"
+    ],
+    "ignorePatterns": [
+      "node_modules/**",
+      "**/*.js",
+      "**/*.test.ts"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+      "@typescript-eslint"
+    ],
+    "rules": {
+      "@typescript-eslint/consistent-type-imports": [
+        "error",
+        {
+          "fixStyle": "inline-type-imports"
+        }
+      ],
+      "@typescript-eslint/no-import-type-side-effects": "error"
+    }
   }
 }

@@ -1,18 +1,17 @@
 {
   "name": "@gqty/react",
   "version": "4.0.1",
-  "private": false,
-  "sideEffects": false,
-  "homepage": "https://gqty.dev",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/gqty-dev/gqty.git"
-  },
+  "description": "The No-GraphQL Client for React",
   "license": "MIT",
   "author": "PabloSzx <pablosaez1995@gmail.com>",
   "maintainers": [
     "Vicary Archangel <vicary.archangel@member.mensa.org>"
   ],
+  "homepage": "https://gqty.dev",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gqty-dev/gqty.git"
+  },
   "exports": {
     ".": {
       "import": "./dist/index.mjs",
@@ -27,20 +26,9 @@
   },
   "main": "dist/index.js",
   "module": "dist/index.mjs",
-  "typings": "dist/index.d.ts",
   "files": [
     "dist",
     "src"
-  ],
-  "keywords": [
-    "cache",
-    "client",
-    "gqty",
-    "graphql",
-    "reactive",
-    "hooks",
-    "react",
-    "state"
   ],
   "scripts": {
     "analyze": "size-limit --why",
@@ -55,50 +43,8 @@
     "test": "jest",
     "test:watch": "jest --watch"
   },
-  "engines": {
-    "node": "^12.20.0 || >=14.13.0"
-  },
-  "eslintConfig": {
-    "env": {
-      "node": true
-    },
-    "extends": [
-      "eslint:recommended",
-      "plugin:@typescript-eslint/recommended",
-      "plugin:eslint-plugin-you-dont-need-lodash-underscore/compatible"
-    ],
-    "ignorePatterns": [
-      "node_modules/**",
-      "**/*.js",
-      "**/*.test.ts"
-    ],
-    "parser": "@typescript-eslint/parser",
-    "plugins": [
-      "@typescript-eslint"
-    ],
-    "rules": {
-      "@typescript-eslint/no-import-type-side-effects": "error",
-      "@typescript-eslint/consistent-type-imports": [
-        "error",
-        {
-          "fixStyle": "inline-type-imports"
-        }
-      ]
-    }
-  },
-  "publishConfig": {
-    "directory": "dist"
-  },
-  "size-limit": [
-    {
-      "path": "dist/gqty-react.cjs.production.min.js",
-      "limit": "10 KB"
-    },
-    {
-      "path": "dist/gqty-react.esm.js",
-      "limit": "10 KB"
-    }
-  ],
+  "sideEffects": false,
+  "typings": "dist/index.d.ts",
   "dependencies": {
     "@react-hookz/web": "^23.1.0",
     "multidict": "^1.0.9",
@@ -106,6 +52,22 @@
     "p-defer": "^3.0.0",
     "react-ssr-prepass": "^1.5.0",
     "use-sync-external-store": "^1.2.2"
+  },
+  "peerDependencies": {
+    "gqty": "workspace:^",
+    "graphql": "*",
+    "graphql-sse": "^2.5.3",
+    "graphql-ws": "^5.16.0",
+    "react": "^16.14.0 || ^17 || ^18",
+    "react-dom": "^16.14.0 || ^17 || ^18"
+  },
+  "peerDependenciesMeta": {
+    "graphql-sse": {
+      "optional": true
+    },
+    "graphql-ws": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.1.0",
@@ -145,20 +107,58 @@
     "type-fest": "^4.21.0",
     "typescript-eslint": "^7.16.0"
   },
-  "peerDependencies": {
-    "gqty": "workspace:^",
-    "graphql": "*",
-    "graphql-sse": "^2.5.3",
-    "graphql-ws": "^5.16.0",
-    "react": "^16.14.0 || ^17 || ^18",
-    "react-dom": "^16.14.0 || ^17 || ^18"
+  "keywords": [
+    "cache",
+    "client",
+    "gqty",
+    "graphql",
+    "hooks",
+    "react",
+    "reactive",
+    "state"
+  ],
+  "engines": {
+    "node": "^12.20.0 || >=14.13.0"
   },
-  "peerDependenciesMeta": {
-    "graphql-sse": {
-      "optional": true
+  "publishConfig": {
+    "directory": "dist"
+  },
+  "eslintConfig": {
+    "env": {
+      "node": true
     },
-    "graphql-ws": {
-      "optional": true
+    "extends": [
+      "eslint:recommended",
+      "plugin:@typescript-eslint/recommended",
+      "plugin:eslint-plugin-you-dont-need-lodash-underscore/compatible"
+    ],
+    "ignorePatterns": [
+      "node_modules/**",
+      "**/*.js",
+      "**/*.test.ts"
+    ],
+    "parser": "@typescript-eslint/parser",
+    "plugins": [
+      "@typescript-eslint"
+    ],
+    "rules": {
+      "@typescript-eslint/no-import-type-side-effects": "error",
+      "@typescript-eslint/consistent-type-imports": [
+        "error",
+        {
+          "fixStyle": "inline-type-imports"
+        }
+      ]
     }
-  }
+  },
+  "size-limit": [
+    {
+      "path": "dist/gqty-react.cjs.production.min.js",
+      "limit": "10 KB"
+    },
+    {
+      "path": "dist/gqty-react.esm.js",
+      "limit": "10 KB"
+    }
+  ]
 }

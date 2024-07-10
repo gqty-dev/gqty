@@ -1,11 +1,11 @@
 {
-  "name": "gqty_monorepo",
   "private": true,
+  "name": "gqty_monorepo",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/gqty-dev/gqty.git"
   },
-  "license": "MIT",
   "type": "module",
   "scripts": {
     "build": "pnpm -r --filter=!example-* build",
@@ -40,6 +40,7 @@
     "jest": "^29.7.0",
     "open": "^10.1.0",
     "prettier": "^3.2.5",
+    "prettier-package-json": "^2.8.0",
     "pretty-quick": "^4.0.0",
     "rimraf": "^5.0.9",
     "semver": "^7.6.2",

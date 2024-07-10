@@ -1,18 +1,17 @@
 {
   "name": "gqty",
   "version": "3.1.1",
-  "description": "gqty client without queries",
-  "homepage": "https://gqty.dev",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/gqty-dev/gqty.git"
-  },
+  "description": "The No-GraphQL Client for TypeScript",
   "license": "MIT",
   "author": "PabloSzx <pablosaez1995@gmail.com>",
   "maintainers": [
     "Vicary Archangel <vicary.archangel@member.mensa.org>"
   ],
-  "sideEffects": false,
+  "homepage": "https://gqty.dev",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gqty-dev/gqty.git"
+  },
   "exports": {
     ".": {
       "require": "./dist/index.js",
@@ -27,7 +26,6 @@
   },
   "main": "dist/index.js",
   "module": "dist/index.mjs",
-  "typings": "dist/index.d.ts",
   "files": [
     "dist",
     "src"
@@ -45,6 +43,8 @@
     "test:watch": "jest --watch",
     "test:watch-coverage": "rimraf coverage && mkdir -p coverage/lcov-report && concurrently --raw \"jest --watchAll\" \"serve -l 8787 coverage/lcov-report\" \"wait-on tcp:8787 coverage/lcov-report/index.html && open-cli http://localhost:8787\""
   },
+  "sideEffects": false,
+  "typings": "dist/index.d.ts",
   "dependencies": {
     "debounce-microtasks": "^0.1.7",
     "flatted": "^3.3.1",
@@ -57,6 +57,22 @@
     "multidict": "^1.0.9",
     "object-hash": "^3.0.0",
     "p-defer": "^3.0.0"
+  },
+  "peerDependencies": {
+    "graphql": "*",
+    "graphql-sse": "^2.5.3",
+    "graphql-ws": "^5.16.0"
+  },
+  "peerDependenciesMeta": {
+    "graphql": {
+      "optional": true
+    },
+    "graphql-sse": {
+      "optional": true
+    },
+    "graphql-ws": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@size-limit/preset-small-lib": "^11.1.4",
@@ -89,24 +105,11 @@
     "wait-on": "^7.2.0",
     "ws": "^8.18.0"
   },
-  "peerDependencies": {
-    "graphql": "*",
-    "graphql-sse": "^2.5.3",
-    "graphql-ws": "^5.16.0"
-  },
-  "peerDependenciesMeta": {
-    "graphql": {
-      "optional": true
-    },
-    "graphql-sse": {
-      "optional": true
-    },
-    "graphql-ws": {
-      "optional": true
-    }
-  },
   "engines": {
     "node": "^12.20.0 || >=14.13.0"
+  },
+  "publishConfig": {
+    "directory": "dist"
   },
   "eslintConfig": {
     "env": {
@@ -135,9 +138,6 @@
         }
       ]
     }
-  },
-  "publishConfig": {
-    "directory": "dist"
   },
   "size-limit": [
     {

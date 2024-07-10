@@ -2,3 +2,6 @@
 . "$(dirname "$0")/_/husky.sh"
 
 pnpm pretty-quick --staged
+
+git diff --cached --name-only --diff-filter=ACM | grep 'package\.json$' |\
+  xargs -I % sh -c "pnpm prettier-package-json --write % && git add %"
