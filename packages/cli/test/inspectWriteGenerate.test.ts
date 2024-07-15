@@ -93,15 +93,23 @@ test('basic inspectWriteGenerate functionality', async () => {
 
         const text = await response.text();
 
-        try {
-          return JSON.parse(text);
-        } catch {
-          throw new GQtyError(
-            \`Malformed JSON response: \${
-              text.length > 50 ? text.slice(0, 50) + '...' : text
-            }\`
-          );
+        const result = (() => {
+          try {
+            return JSON.parse(text);
+          } catch {
+            throw new GQtyError(
+              \`Malformed JSON response: \${
+                text.length > 50 ? text.slice(0, 50) + '...' : text
+              }\`
+            );
+          }
+        })();
+
+        if (Array.isArray(result.errors) && result.errors.length > 0) {
+          throw GQtyError.fromGraphQLErrors(result.errors);
         }
+
+        return result;
       };
 
       const cache = new Cache(
@@ -319,15 +327,23 @@ describe('from file', () => {
 
           const text = await response.text();
 
-          try {
-            return JSON.parse(text);
-          } catch {
-            throw new GQtyError(
-              \`Malformed JSON response: \${
-                text.length > 50 ? text.slice(0, 50) + '...' : text
-              }\`
-            );
+          const result = (() => {
+            try {
+              return JSON.parse(text);
+            } catch {
+              throw new GQtyError(
+                \`Malformed JSON response: \${
+                  text.length > 50 ? text.slice(0, 50) + '...' : text
+                }\`
+              );
+            }
+          })();
+
+          if (Array.isArray(result.errors) && result.errors.length > 0) {
+            throw GQtyError.fromGraphQLErrors(result.errors);
           }
+
+          return result;
         };
 
         const cache = new Cache(
@@ -544,15 +560,23 @@ describe('from file', () => {
 
           const text = await response.text();
 
-          try {
-            return JSON.parse(text);
-          } catch {
-            throw new GQtyError(
-              \`Malformed JSON response: \${
-                text.length > 50 ? text.slice(0, 50) + '...' : text
-              }\`
-            );
+          const result = (() => {
+            try {
+              return JSON.parse(text);
+            } catch {
+              throw new GQtyError(
+                \`Malformed JSON response: \${
+                  text.length > 50 ? text.slice(0, 50) + '...' : text
+                }\`
+              );
+            }
+          })();
+
+          if (Array.isArray(result.errors) && result.errors.length > 0) {
+            throw GQtyError.fromGraphQLErrors(result.errors);
           }
+
+          return result;
         };
 
         const cache = new Cache(
@@ -768,15 +792,23 @@ describe('from file', () => {
 
           const text = await response.text();
 
-          try {
-            return JSON.parse(text);
-          } catch {
-            throw new GQtyError(
-              \`Malformed JSON response: \${
-                text.length > 50 ? text.slice(0, 50) + '...' : text
-              }\`
-            );
+          const result = (() => {
+            try {
+              return JSON.parse(text);
+            } catch {
+              throw new GQtyError(
+                \`Malformed JSON response: \${
+                  text.length > 50 ? text.slice(0, 50) + '...' : text
+                }\`
+              );
+            }
+          })();
+
+          if (Array.isArray(result.errors) && result.errors.length > 0) {
+            throw GQtyError.fromGraphQLErrors(result.errors);
           }
+
+          return result;
         };
 
         const cache = new Cache(
@@ -1036,15 +1068,23 @@ describe('from multiple files', () => {
 
           const text = await response.text();
 
-          try {
-            return JSON.parse(text);
-          } catch {
-            throw new GQtyError(
-              \`Malformed JSON response: \${
-                text.length > 50 ? text.slice(0, 50) + '...' : text
-              }\`
-            );
+          const result = (() => {
+            try {
+              return JSON.parse(text);
+            } catch {
+              throw new GQtyError(
+                \`Malformed JSON response: \${
+                  text.length > 50 ? text.slice(0, 50) + '...' : text
+                }\`
+              );
+            }
+          })();
+
+          if (Array.isArray(result.errors) && result.errors.length > 0) {
+            throw GQtyError.fromGraphQLErrors(result.errors);
           }
+
+          return result;
         };
 
         const cache = new Cache(
@@ -1320,15 +1360,23 @@ test('specify generateOptions to inspectWriteGenerate', async () => {
 
         const text = await response.text();
 
-        try {
-          return JSON.parse(text);
-        } catch {
-          throw new GQtyError(
-            \`Malformed JSON response: \${
-              text.length > 50 ? text.slice(0, 50) + '...' : text
-            }\`
-          );
+        const result = (() => {
+          try {
+            return JSON.parse(text);
+          } catch {
+            throw new GQtyError(
+              \`Malformed JSON response: \${
+                text.length > 50 ? text.slice(0, 50) + '...' : text
+              }\`
+            );
+          }
+        })();
+
+        if (Array.isArray(result.errors) && result.errors.length > 0) {
+          throw GQtyError.fromGraphQLErrors(result.errors);
         }
+
+        return result;
       };
 
       const cache = new Cache(
@@ -1705,15 +1753,23 @@ describe('CLI behavior', () => {
 
           const text = await response.text();
 
-          try {
-            return JSON.parse(text);
-          } catch {
-            throw new GQtyError(
-              \`Malformed JSON response: \${
-                text.length > 50 ? text.slice(0, 50) + '...' : text
-              }\`
-            );
+          const result = (() => {
+            try {
+              return JSON.parse(text);
+            } catch {
+              throw new GQtyError(
+                \`Malformed JSON response: \${
+                  text.length > 50 ? text.slice(0, 50) + '...' : text
+                }\`
+              );
+            }
+          })();
+
+          if (Array.isArray(result.errors) && result.errors.length > 0) {
+            throw GQtyError.fromGraphQLErrors(result.errors);
           }
+
+          return result;
         };
 
         const cache = new Cache(

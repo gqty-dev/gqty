@@ -173,15 +173,23 @@ test('basic functionality works', async () => {
 
       const text = await response.text();
 
-      try {
-        return JSON.parse(text);
-      } catch {
-        throw new GQtyError(
-          \`Malformed JSON response: \${
-            text.length > 50 ? text.slice(0, 50) + '...' : text
-          }\`
-        );
+      const result = (() => {
+        try {
+          return JSON.parse(text);
+        } catch {
+          throw new GQtyError(
+            \`Malformed JSON response: \${
+              text.length > 50 ? text.slice(0, 50) + '...' : text
+            }\`
+          );
+        }
+      })();
+
+      if (Array.isArray(result.errors) && result.errors.length > 0) {
+        throw GQtyError.fromGraphQLErrors(result.errors);
       }
+
+      return result;
     };
 
     const subscriptionsClient =
@@ -358,15 +366,23 @@ test('custom scalars works', async () => {
 
       const text = await response.text();
 
-      try {
-        return JSON.parse(text);
-      } catch {
-        throw new GQtyError(
-          \`Malformed JSON response: \${
-            text.length > 50 ? text.slice(0, 50) + '...' : text
-          }\`
-        );
+      const result = (() => {
+        try {
+          return JSON.parse(text);
+        } catch {
+          throw new GQtyError(
+            \`Malformed JSON response: \${
+              text.length > 50 ? text.slice(0, 50) + '...' : text
+            }\`
+          );
+        }
+      })();
+
+      if (Array.isArray(result.errors) && result.errors.length > 0) {
+        throw GQtyError.fromGraphQLErrors(result.errors);
       }
+
+      return result;
     };
 
     const cache = new Cache(
@@ -1468,15 +1484,23 @@ test('javascript output works', async () => {
 
       const text = await response.text();
 
-      try {
-        return JSON.parse(text);
-      } catch {
-        throw new GQtyError(
-          \`Malformed JSON response: \${
-            text.length > 50 ? text.slice(0, 50) + '...' : text
-          }\`
-        );
+      const result = (() => {
+        try {
+          return JSON.parse(text);
+        } catch {
+          throw new GQtyError(
+            \`Malformed JSON response: \${
+              text.length > 50 ? text.slice(0, 50) + '...' : text
+            }\`
+          );
+        }
+      })();
+
+      if (Array.isArray(result.errors) && result.errors.length > 0) {
+        throw GQtyError.fromGraphQLErrors(result.errors);
       }
+
+      return result;
     };
 
     const subscriptionsClient =
@@ -1811,15 +1835,23 @@ test('ignoreArgs transform', async () => {
 
       const text = await response.text();
 
-      try {
-        return JSON.parse(text);
-      } catch {
-        throw new GQtyError(
-          \`Malformed JSON response: \${
-            text.length > 50 ? text.slice(0, 50) + '...' : text
-          }\`
-        );
+      const result = (() => {
+        try {
+          return JSON.parse(text);
+        } catch {
+          throw new GQtyError(
+            \`Malformed JSON response: \${
+              text.length > 50 ? text.slice(0, 50) + '...' : text
+            }\`
+          );
+        }
+      })();
+
+      if (Array.isArray(result.errors) && result.errors.length > 0) {
+        throw GQtyError.fromGraphQLErrors(result.errors);
       }
+
+      return result;
     };
 
     const cache = new Cache(
