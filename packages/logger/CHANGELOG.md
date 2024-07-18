@@ -1,5 +1,18 @@
 # @gqty/logger
 
+## 5.0.0
+
+### Patch Changes
+
+- [`f79f363`](https://github.com/gqty-dev/gqty/commit/f79f3638d9b93025a318c8e3716026474070ab5a)
+  Thanks [@vicary](https://github.com/vicary)! - chore: add description and sort
+  fields in package.json
+
+- Updated dependencies
+  [[`f79f363`](https://github.com/gqty-dev/gqty/commit/f79f3638d9b93025a318c8e3716026474070ab5a),
+  [`8a3ff42`](https://github.com/gqty-dev/gqty/commit/8a3ff425a094de964418b94208bef4dbc8f3c4e5)]:
+  - gqty@3.2.0
+
 ## 4.0.1
 
 ### Patch Changes

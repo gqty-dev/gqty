@@ -1,5 +1,20 @@
 # gqty
 
+## 3.2.0
+
+### Minor Changes
+
+- [#1908](https://github.com/gqty-dev/gqty/pull/1908)
+  [`8a3ff42`](https://github.com/gqty-dev/gqty/commit/8a3ff425a094de964418b94208bef4dbc8f3c4e5)
+  Thanks [@vicary](https://github.com/vicary)! - Added default fetch response
+  handler
+
+### Patch Changes
+
+- [`f79f363`](https://github.com/gqty-dev/gqty/commit/f79f3638d9b93025a318c8e3716026474070ab5a)
+  Thanks [@vicary](https://github.com/vicary)! - chore: add description and sort
+  fields in package.json
+
 ## 3.1.1
 
 ### Patch Changes
@@ -309,8 +324,8 @@
 
 ### Patch Changes
 
-- 28e2c09: [Bug fixing breaking change] Fix types and retrieval of
-  unions/interfaces of different object types
+- 28e2c09: [Bug fixing breaking change] Fix types and retrieval of unions/interfaces
+  of different object types
 
 ## 2.0.0
 
