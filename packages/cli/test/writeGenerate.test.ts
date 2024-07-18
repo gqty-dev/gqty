@@ -264,7 +264,12 @@ test('creates dir, generates code and writes new file', async () => {
        */
 
       import { createReactClient } from '@gqty/react';
-      import { Cache, GQtyError, createClient, type QueryFetcher } from 'gqty';
+      import {
+        Cache,
+        createClient,
+        defaultResponseHandler,
+        type QueryFetcher,
+      } from 'gqty';
       import {
         generatedSchema,
         scalarsEnumsHash,
@@ -290,23 +295,7 @@ test('creates dir, generates code and writes new file', async () => {
           ...fetchOptions,
         });
 
-        if (response.status >= 400) {
-          throw new GQtyError(
-            \`GraphQL endpoint responded with HTTP status \${response.status}.\`
-          );
-        }
-
-        const text = await response.text();
-
-        try {
-          return JSON.parse(text);
-        } catch {
-          throw new GQtyError(
-            \`Malformed JSON response: \${
-              text.length > 50 ? text.slice(0, 50) + '...' : text
-            }\`
-          );
-        }
+        return await defaultResponseHandler(response);
       };
 
       const cache = new Cache(

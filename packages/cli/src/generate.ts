@@ -808,23 +808,7 @@ export async function generate(
           ...fetchOptions
         });
 
-        if (response.status >= 400) {
-          throw new GQtyError(
-            \`GraphQL endpoint responded with HTTP status \${response.status}.\`
-          );
-        }
-
-        const text = await response.text();
-
-        try {
-          return JSON.parse(text);
-        } catch {
-          throw new GQtyError(
-            \`Malformed JSON response: \${
-              text.length > 50 ? text.slice(0, 50) + '...' : text
-            }\`
-          );
-        }
+        return await defaultResponseHandler(response);
       };
     `;
 
@@ -933,8 +917,8 @@ export async function generate(
           }";`
         : '',
       isJavascriptOutput
-        ? 'import { Cache, GQtyError, createClient } from "gqty";'
-        : 'import { Cache, GQtyError, createClient, type QueryFetcher } from "gqty";',
+        ? 'import { Cache, createClient, defaultResponseHandler } from "gqty";'
+        : 'import { Cache, createClient, defaultResponseHandler, type QueryFetcher } from "gqty";',
       isJavascriptOutput
         ? 'import { generatedSchema, scalarsEnumsHash } from "./schema.generated";'
         : 'import { generatedSchema, scalarsEnumsHash, type GeneratedSchema } from "./schema.generated";',

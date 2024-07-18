@@ -139,7 +139,12 @@ test('basic functionality works', async () => {
 
     import { createReactClient } from '@gqty/react';
     import { createClient as createSubscriptionsClient } from 'graphql-ws';
-    import { Cache, GQtyError, createClient, type QueryFetcher } from 'gqty';
+    import {
+      Cache,
+      createClient,
+      defaultResponseHandler,
+      type QueryFetcher,
+    } from 'gqty';
     import {
       generatedSchema,
       scalarsEnumsHash,
@@ -165,23 +170,7 @@ test('basic functionality works', async () => {
         ...fetchOptions,
       });
 
-      if (response.status >= 400) {
-        throw new GQtyError(
-          \`GraphQL endpoint responded with HTTP status \${response.status}.\`
-        );
-      }
-
-      const text = await response.text();
-
-      try {
-        return JSON.parse(text);
-      } catch {
-        throw new GQtyError(
-          \`Malformed JSON response: \${
-            text.length > 50 ? text.slice(0, 50) + '...' : text
-          }\`
-        );
-      }
+      return await defaultResponseHandler(response);
     };
 
     const subscriptionsClient =
@@ -324,7 +313,12 @@ test('custom scalars works', async () => {
      */
 
     import { createReactClient } from '@gqty/react';
-    import { Cache, GQtyError, createClient, type QueryFetcher } from 'gqty';
+    import {
+      Cache,
+      createClient,
+      defaultResponseHandler,
+      type QueryFetcher,
+    } from 'gqty';
     import {
       generatedSchema,
       scalarsEnumsHash,
@@ -350,23 +344,7 @@ test('custom scalars works', async () => {
         ...fetchOptions,
       });
 
-      if (response.status >= 400) {
-        throw new GQtyError(
-          \`GraphQL endpoint responded with HTTP status \${response.status}.\`
-        );
-      }
-
-      const text = await response.text();
-
-      try {
-        return JSON.parse(text);
-      } catch {
-        throw new GQtyError(
-          \`Malformed JSON response: \${
-            text.length > 50 ? text.slice(0, 50) + '...' : text
-          }\`
-        );
-      }
+      return await defaultResponseHandler(response);
     };
 
     const cache = new Cache(
@@ -1435,7 +1413,7 @@ test('javascript output works', async () => {
 
     import { createReactClient } from '@gqty/react';
     import { createClient as createSubscriptionsClient } from 'graphql-ws';
-    import { Cache, GQtyError, createClient } from 'gqty';
+    import { Cache, createClient, defaultResponseHandler } from 'gqty';
     import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
     /**
@@ -1460,23 +1438,7 @@ test('javascript output works', async () => {
         ...fetchOptions,
       });
 
-      if (response.status >= 400) {
-        throw new GQtyError(
-          \`GraphQL endpoint responded with HTTP status \${response.status}.\`
-        );
-      }
-
-      const text = await response.text();
-
-      try {
-        return JSON.parse(text);
-      } catch {
-        throw new GQtyError(
-          \`Malformed JSON response: \${
-            text.length > 50 ? text.slice(0, 50) + '...' : text
-          }\`
-        );
-      }
+      return await defaultResponseHandler(response);
     };
 
     const subscriptionsClient =
@@ -1777,7 +1739,12 @@ test('ignoreArgs transform', async () => {
      */
 
     import { createReactClient } from '@gqty/react';
-    import { Cache, GQtyError, createClient, type QueryFetcher } from 'gqty';
+    import {
+      Cache,
+      createClient,
+      defaultResponseHandler,
+      type QueryFetcher,
+    } from 'gqty';
     import {
       generatedSchema,
       scalarsEnumsHash,
@@ -1803,23 +1770,7 @@ test('ignoreArgs transform', async () => {
         ...fetchOptions,
       });
 
-      if (response.status >= 400) {
-        throw new GQtyError(
-          \`GraphQL endpoint responded with HTTP status \${response.status}.\`
-        );
-      }
-
-      const text = await response.text();
-
-      try {
-        return JSON.parse(text);
-      } catch {
-        throw new GQtyError(
-          \`Malformed JSON response: \${
-            text.length > 50 ? text.slice(0, 50) + '...' : text
-          }\`
-        );
-      }
+      return await defaultResponseHandler(response);
     };
 
     const cache = new Cache(
