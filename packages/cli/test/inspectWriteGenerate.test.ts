@@ -59,7 +59,12 @@ test('basic inspectWriteGenerate functionality', async () => {
        */
 
       import { createReactClient } from '@gqty/react';
-      import { Cache, GQtyError, createClient, type QueryFetcher } from 'gqty';
+      import {
+        Cache,
+        createClient,
+        defaultResponseHandler,
+        type QueryFetcher,
+      } from 'gqty';
       import {
         generatedSchema,
         scalarsEnumsHash,
@@ -85,31 +90,7 @@ test('basic inspectWriteGenerate functionality', async () => {
           ...fetchOptions,
         });
 
-        if (response.status >= 400) {
-          throw new GQtyError(
-            \`GraphQL endpoint responded with HTTP status \${response.status}.\`
-          );
-        }
-
-        const text = await response.text();
-
-        const result = (() => {
-          try {
-            return JSON.parse(text);
-          } catch {
-            throw new GQtyError(
-              \`Malformed JSON response: \${
-                text.length > 50 ? text.slice(0, 50) + '...' : text
-              }\`
-            );
-          }
-        })();
-
-        if (Array.isArray(result.errors) && result.errors.length > 0) {
-          throw GQtyError.fromGraphQLErrors(result.errors);
-        }
-
-        return result;
+        return await defaultResponseHandler(response);
       };
 
       const cache = new Cache(
@@ -293,7 +274,12 @@ describe('from file', () => {
          */
 
         import { createReactClient } from '@gqty/react';
-        import { Cache, GQtyError, createClient, type QueryFetcher } from 'gqty';
+        import {
+          Cache,
+          createClient,
+          defaultResponseHandler,
+          type QueryFetcher,
+        } from 'gqty';
         import {
           generatedSchema,
           scalarsEnumsHash,
@@ -319,31 +305,7 @@ describe('from file', () => {
             ...fetchOptions,
           });
 
-          if (response.status >= 400) {
-            throw new GQtyError(
-              \`GraphQL endpoint responded with HTTP status \${response.status}.\`
-            );
-          }
-
-          const text = await response.text();
-
-          const result = (() => {
-            try {
-              return JSON.parse(text);
-            } catch {
-              throw new GQtyError(
-                \`Malformed JSON response: \${
-                  text.length > 50 ? text.slice(0, 50) + '...' : text
-                }\`
-              );
-            }
-          })();
-
-          if (Array.isArray(result.errors) && result.errors.length > 0) {
-            throw GQtyError.fromGraphQLErrors(result.errors);
-          }
-
-          return result;
+          return await defaultResponseHandler(response);
         };
 
         const cache = new Cache(
@@ -526,7 +488,12 @@ describe('from file', () => {
          */
 
         import { createReactClient } from '@gqty/react';
-        import { Cache, GQtyError, createClient, type QueryFetcher } from 'gqty';
+        import {
+          Cache,
+          createClient,
+          defaultResponseHandler,
+          type QueryFetcher,
+        } from 'gqty';
         import {
           generatedSchema,
           scalarsEnumsHash,
@@ -552,31 +519,7 @@ describe('from file', () => {
             ...fetchOptions,
           });
 
-          if (response.status >= 400) {
-            throw new GQtyError(
-              \`GraphQL endpoint responded with HTTP status \${response.status}.\`
-            );
-          }
-
-          const text = await response.text();
-
-          const result = (() => {
-            try {
-              return JSON.parse(text);
-            } catch {
-              throw new GQtyError(
-                \`Malformed JSON response: \${
-                  text.length > 50 ? text.slice(0, 50) + '...' : text
-                }\`
-              );
-            }
-          })();
-
-          if (Array.isArray(result.errors) && result.errors.length > 0) {
-            throw GQtyError.fromGraphQLErrors(result.errors);
-          }
-
-          return result;
+          return await defaultResponseHandler(response);
         };
 
         const cache = new Cache(
@@ -758,7 +701,12 @@ describe('from file', () => {
          */
 
         import { createReactClient } from '@gqty/react';
-        import { Cache, GQtyError, createClient, type QueryFetcher } from 'gqty';
+        import {
+          Cache,
+          createClient,
+          defaultResponseHandler,
+          type QueryFetcher,
+        } from 'gqty';
         import {
           generatedSchema,
           scalarsEnumsHash,
@@ -784,31 +732,7 @@ describe('from file', () => {
             ...fetchOptions,
           });
 
-          if (response.status >= 400) {
-            throw new GQtyError(
-              \`GraphQL endpoint responded with HTTP status \${response.status}.\`
-            );
-          }
-
-          const text = await response.text();
-
-          const result = (() => {
-            try {
-              return JSON.parse(text);
-            } catch {
-              throw new GQtyError(
-                \`Malformed JSON response: \${
-                  text.length > 50 ? text.slice(0, 50) + '...' : text
-                }\`
-              );
-            }
-          })();
-
-          if (Array.isArray(result.errors) && result.errors.length > 0) {
-            throw GQtyError.fromGraphQLErrors(result.errors);
-          }
-
-          return result;
+          return await defaultResponseHandler(response);
         };
 
         const cache = new Cache(
@@ -1034,7 +958,12 @@ describe('from multiple files', () => {
          */
 
         import { createReactClient } from '@gqty/react';
-        import { Cache, GQtyError, createClient, type QueryFetcher } from 'gqty';
+        import {
+          Cache,
+          createClient,
+          defaultResponseHandler,
+          type QueryFetcher,
+        } from 'gqty';
         import {
           generatedSchema,
           scalarsEnumsHash,
@@ -1060,31 +989,7 @@ describe('from multiple files', () => {
             ...fetchOptions,
           });
 
-          if (response.status >= 400) {
-            throw new GQtyError(
-              \`GraphQL endpoint responded with HTTP status \${response.status}.\`
-            );
-          }
-
-          const text = await response.text();
-
-          const result = (() => {
-            try {
-              return JSON.parse(text);
-            } catch {
-              throw new GQtyError(
-                \`Malformed JSON response: \${
-                  text.length > 50 ? text.slice(0, 50) + '...' : text
-                }\`
-              );
-            }
-          })();
-
-          if (Array.isArray(result.errors) && result.errors.length > 0) {
-            throw GQtyError.fromGraphQLErrors(result.errors);
-          }
-
-          return result;
+          return await defaultResponseHandler(response);
         };
 
         const cache = new Cache(
@@ -1326,7 +1231,12 @@ test('specify generateOptions to inspectWriteGenerate', async () => {
        */
 
       import { createReactClient } from '@gqty/react';
-      import { Cache, GQtyError, createClient, type QueryFetcher } from 'gqty';
+      import {
+        Cache,
+        createClient,
+        defaultResponseHandler,
+        type QueryFetcher,
+      } from 'gqty';
       import {
         generatedSchema,
         scalarsEnumsHash,
@@ -1352,31 +1262,7 @@ test('specify generateOptions to inspectWriteGenerate', async () => {
           ...fetchOptions,
         });
 
-        if (response.status >= 400) {
-          throw new GQtyError(
-            \`GraphQL endpoint responded with HTTP status \${response.status}.\`
-          );
-        }
-
-        const text = await response.text();
-
-        const result = (() => {
-          try {
-            return JSON.parse(text);
-          } catch {
-            throw new GQtyError(
-              \`Malformed JSON response: \${
-                text.length > 50 ? text.slice(0, 50) + '...' : text
-              }\`
-            );
-          }
-        })();
-
-        if (Array.isArray(result.errors) && result.errors.length > 0) {
-          throw GQtyError.fromGraphQLErrors(result.errors);
-        }
-
-        return result;
+        return await defaultResponseHandler(response);
       };
 
       const cache = new Cache(
@@ -1719,7 +1605,12 @@ describe('CLI behavior', () => {
          */
 
         import { createReactClient } from '@gqty/react';
-        import { Cache, GQtyError, createClient, type QueryFetcher } from 'gqty';
+        import {
+          Cache,
+          createClient,
+          defaultResponseHandler,
+          type QueryFetcher,
+        } from 'gqty';
         import {
           generatedSchema,
           scalarsEnumsHash,
@@ -1745,31 +1636,7 @@ describe('CLI behavior', () => {
             ...fetchOptions,
           });
 
-          if (response.status >= 400) {
-            throw new GQtyError(
-              \`GraphQL endpoint responded with HTTP status \${response.status}.\`
-            );
-          }
-
-          const text = await response.text();
-
-          const result = (() => {
-            try {
-              return JSON.parse(text);
-            } catch {
-              throw new GQtyError(
-                \`Malformed JSON response: \${
-                  text.length > 50 ? text.slice(0, 50) + '...' : text
-                }\`
-              );
-            }
-          })();
-
-          if (Array.isArray(result.errors) && result.errors.length > 0) {
-            throw GQtyError.fromGraphQLErrors(result.errors);
-          }
-
-          return result;
+          return await defaultResponseHandler(response);
         };
 
         const cache = new Cache(
