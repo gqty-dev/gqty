@@ -1,7 +1,8 @@
 import assert from 'assert';
 import { createTestApp, gql } from 'test-utils';
-import { generate } from '../src';
+import { generate } from '../src/generate';
 import './utils';
+
 export const clientPreComment = '';
 
 test('basic functionality works', async () => {

@@ -1,6 +1,6 @@
 import * as defaultCommand from './commands/default';
 import * as generateCommand from './commands/generate';
-import * as deps from './deps.js';
+import * as deps from './deps';
 import { __innerState } from './innerState';
 
 __innerState.isCLI = true;

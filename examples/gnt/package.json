@@ -1,24 +1,13 @@
 {
+  "private": true,
   "name": "example-gnt",
   "version": "0.1.0",
-  "private": true,
   "scripts": {
+    "build": "next build",
     "codegen": "dotenv -c local -- bash -c 'pnpm exec gqty --no-react -H apiKey:$NEXT_PUBLIC_SUPABASE_API_KEY $NEXT_PUBLIC_SUPABASE_ENDPOINT'",
     "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
-  "gqty": {
-    "scalarTypes": {
-      "BigFloat": "string",
-      "BigInt": "string",
-      "Cursor": "string",
-      "Date": "string",
-      "Datetime": "string",
-      "Time": "string",
-      "UUID": "string"
-    }
+    "lint": "next lint",
+    "start": "next start"
   },
   "dependencies": {
     "@gqty/logger": "workspace:^",
@@ -46,5 +35,16 @@
     "tailwindcss": "^3.4.4",
     "typescript": "^5.5.2",
     "utf-8-validate": "^5.0.10"
+  },
+  "gqty": {
+    "scalarTypes": {
+      "BigFloat": "string",
+      "BigInt": "string",
+      "Cursor": "string",
+      "Date": "string",
+      "Datetime": "string",
+      "Time": "string",
+      "UUID": "string"
+    }
   }
 }

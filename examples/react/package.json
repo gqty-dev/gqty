@@ -1,11 +1,11 @@
 {
+  "private": true,
   "name": "example-react",
   "version": "1.0.0",
-  "private": true,
   "scripts": {
+    "build": "next build",
     "build-example": "next build",
     "dev": "bob-tsm --watch=api api/server.ts",
-    "build": "next build",
     "start": "bob-tsm --node-env=prod api/server.ts"
   },
   "dependencies": {

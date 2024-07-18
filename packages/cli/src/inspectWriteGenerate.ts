@@ -3,7 +3,7 @@ import type { GraphQLSchema, IntrospectionQuery } from 'graphql';
 import * as graphql from 'graphql';
 import { extname, resolve } from 'path';
 import { DUMMY_ENDPOINT, defaultConfig, loadOrGenerateConfig } from './config';
-import * as deps from './deps.js';
+import * as deps from './deps';
 import type { GenerateOptions, TransformSchemaOptions } from './generate';
 import { getRemoteSchema } from './introspection';
 import { writeGenerate } from './writeGenerate';

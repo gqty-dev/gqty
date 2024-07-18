@@ -1,12 +1,13 @@
 import { debounceMicrotaskPromise } from 'debounce-microtasks';
 import { MultiDict } from 'multidict';
-import { pick, type BaseGeneratedSchema, type FetchOptions } from '.';
+import type { BaseGeneratedSchema, FetchOptions } from '.';
 import { createSchemaAccessor } from '../Accessor';
 import type { Cache } from '../Cache';
 import type { GQtyError, RetryOptions } from '../Error';
 import type { ScalarsEnumsHash, Schema } from '../Schema';
 import type { Selection } from '../Selection';
 import { createDeferredIterator } from '../Utils/deferred';
+import { pick } from '../Utils/pick';
 import { addSelections, delSelectionSet, getSelectionsSet } from './batching';
 import { createContext, type SchemaContext } from './context';
 import type { Debugger } from './debugger';

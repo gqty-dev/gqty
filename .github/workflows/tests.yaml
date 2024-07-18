@@ -2,6 +2,8 @@ name: Tests
 
 on:
   push:
+    branches:
+      - main
     paths-ignore:
       - 'docs/**'
       - 'internal/website/**'

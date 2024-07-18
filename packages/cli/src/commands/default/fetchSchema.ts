@@ -1,8 +1,8 @@
-import { type AsyncExecutor } from '@graphql-tools/utils';
-import { type ExecutionResult, type GraphQLSchema } from 'graphql';
+import type { AsyncExecutor } from '@graphql-tools/utils';
+import type { ExecutionResult, GraphQLSchema } from 'graphql';
 import { readFile } from 'node:fs/promises';
 import { extname } from 'path';
-import { type GQtyConfig } from '../../config';
+import type { GQtyConfig } from '../../config';
 import * as deps from '../../deps';
 import { convertHeadersInput } from './convertHeadersInput';
 import { logger } from './logger';
@@ -12,7 +12,10 @@ const schemaFileExtensions = ['.gql', '.graphql'];
 export class FetchError extends Error {
   readonly name = 'FetchError';
 
-  constructor(readonly request: RequestInit, readonly response: Response) {
+  constructor(
+    readonly request: RequestInit,
+    readonly response: Response
+  ) {
     super(
       `Received status code ${response.status} when introspecting ${response.url}`
     );
@@ -25,21 +28,33 @@ export type FetchSchemasOptions = {
   silent?: boolean;
 };
 
-export const fetchSchemas = async (
-  endpoints: string[],
-  options: FetchSchemasOptions
-): Promise<GraphQLSchema> => {
+export function fetchSchema(
+  endpoint: string,
+  options?: FetchSchemasOptions
+): Promise<GraphQLSchema>;
+export function fetchSchema(
+  endpoint: string[],
+  options?: FetchSchemasOptions
+): Promise<GraphQLSchema>;
+export async function fetchSchema(
+  endpoints: string[] | string,
+  options: FetchSchemasOptions = {}
+): Promise<GraphQLSchema> {
   const schemas: string[] = [];
 
   if (!options.headersByEndpoint) {
     options.headersByEndpoint = {};
   }
 
+  if (!Array.isArray(endpoints)) {
+    endpoints = [endpoints];
+  }
+
   for (const endpoint of endpoints) {
     const { headers, headersByEndpoint } = options;
 
     const doFetchSchema = async () => {
-      const schema = await fetchSchema(endpoint, {
+      const schema = await doIntrospection(endpoint, {
         headers: headers ?? headersByEndpoint[endpoint]?.headers,
         silent: options.silent,
       });
@@ -69,11 +84,7 @@ export const fetchSchemas = async (
 
         headersByEndpoint[e.response.url] = { headers: inHeaders };
 
-        try {
-          await doFetchSchema();
-        } catch (e) {
-          throw e;
-        }
+        await doFetchSchema();
       } else {
         throw e;
       }
@@ -90,9 +101,9 @@ export const fetchSchemas = async (
   }
 
   return deps.buildSchema(schemas.join('\n'));
-};
+}
 
-const fetchSchema = async (
+const doIntrospection = async (
   endpoint: string,
   options?: Pick<RequestInit, 'headers'> & { silent?: boolean }
 ): Promise<string | undefined> => {
@@ -103,7 +114,7 @@ const fetchSchema = async (
       );
     }
 
-    const executor: AsyncExecutor<ExecutionResult<any, any>> = async ({
+    const executor: AsyncExecutor<ExecutionResult> = async ({
       document,
       variables,
       extensions = {},
@@ -133,7 +144,7 @@ const fetchSchema = async (
       const body = await response.text();
 
       try {
-        return JSON.parse(body) as ExecutionResult<any, any>;
+        return JSON.parse(body);
       } catch {
         throw new SyntaxError(
           `Invalid JSON received from ${endpoint}: "${

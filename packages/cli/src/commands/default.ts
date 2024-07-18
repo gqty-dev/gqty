@@ -1,11 +1,11 @@
-import { type PackageJSON } from 'bob-esbuild/config/packageJson';
+import type { PackageJSON } from 'bob-esbuild/config/packageJson';
 import type { Command } from 'commander';
 import { cosmiconfig } from 'cosmiconfig';
 import { readFile, watch } from 'node:fs/promises';
-import { type GQtyConfig } from '../config';
+import type { GQtyConfig } from '../config';
 import { inquirer } from '../deps';
 import { convertHeadersInput } from './default/convertHeadersInput';
-import { fetchSchemas, isURL } from './default/fetchSchema';
+import { fetchSchema, isURL } from './default/fetchSchema';
 import { generateClient } from './default/generateClient';
 import { getCommandName } from './default/getCommandName';
 import { logger } from './default/logger';
@@ -86,7 +86,7 @@ export const addCommand = (command: Command) => {
         config.introspections = {};
       }
 
-      const schema = await fetchSchemas(endpoints, {
+      const schema = await fetchSchema(endpoints, {
         headers:
           convertHeadersInput(options.header) ?? config.introspection?.headers,
         headersByEndpoint: config.introspections,
@@ -208,7 +208,7 @@ export const addCommand = (command: Command) => {
             const start = Date.now();
 
             try {
-              const schema = await fetchSchemas(endpoints, {
+              const schema = await fetchSchema(endpoints, {
                 headers: convertHeadersInput(options.header),
                 headersByEndpoint: config.introspections,
                 silent: true,
@@ -256,6 +256,7 @@ export const addCommand = (command: Command) => {
         // Polling loop, only happens with URL endpoints.
         if (endpoints.some((endpoint) => isURL(endpoint))) {
           (async () => {
+            // eslint-disable-next-line no-constant-condition
             while (true) {
               const wait = Math.max(
                 5000,
@@ -329,7 +330,7 @@ const promptSubscriptions = async (defaultValue?: string) => {
     default: defaultValue?.trim() || undefined,
   });
 
-  return subscriptions?.trim().replace(/^\-$/, '') || false;
+  return subscriptions?.trim().replace(/^-$/, '') || false;
 };
 
 const promptTypescript = async (defaultValue: boolean) => {
