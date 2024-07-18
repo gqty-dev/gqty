@@ -1,5 +1,5 @@
-import { GQtyError } from 'gqty/Error';
 import type { ExecutionResult } from 'graphql';
+import { GQtyError } from '../Error';
 
 export const defaultResponseHandler = async (response: Response) => {
   const result = await parseResponse(response);
