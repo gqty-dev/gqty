@@ -1,5 +1,40 @@
 # @gqty/cli
 
+## 4.1.0
+
+### Minor Changes
+
+- [#1901](https://github.com/gqty-dev/gqty/pull/1901)
+  [`df2fb48`](https://github.com/gqty-dev/gqty/commit/df2fb483849dbc235790e707182ff7e91bd02b9e)
+  Thanks [@vicary](https://github.com/vicary)! - Expose CLI essentials for
+  external integrations
+
+- [#1908](https://github.com/gqty-dev/gqty/pull/1908)
+  [`8a3ff42`](https://github.com/gqty-dev/gqty/commit/8a3ff425a094de964418b94208bef4dbc8f3c4e5)
+  Thanks [@vicary](https://github.com/vicary)! - Added default fetch response
+  handler
+
+- [#1908](https://github.com/gqty-dev/gqty/pull/1908)
+  [`8a3ff42`](https://github.com/gqty-dev/gqty/commit/8a3ff425a094de964418b94208bef4dbc8f3c4e5)
+  Thanks [@vicary](https://github.com/vicary)! - Throw GraphQL errors in the
+  generated client.
+
+### Patch Changes
+
+- [`f79f363`](https://github.com/gqty-dev/gqty/commit/f79f3638d9b93025a318c8e3716026474070ab5a)
+  Thanks [@vicary](https://github.com/vicary)! - chore: add description and sort
+  fields in package.json
+
+- [#1902](https://github.com/gqty-dev/gqty/pull/1902)
+  [`152a1d9`](https://github.com/gqty-dev/gqty/commit/152a1d9ac6b1e136484e61a7d0e602f450c6d4f8)
+  Thanks [@vicary](https://github.com/vicary)! - Respect interactive endpoint as
+  generation result.
+
+- Updated dependencies
+  [[`f79f363`](https://github.com/gqty-dev/gqty/commit/f79f3638d9b93025a318c8e3716026474070ab5a),
+  [`8a3ff42`](https://github.com/gqty-dev/gqty/commit/8a3ff425a094de964418b94208bef4dbc8f3c4e5)]:
+  - gqty@3.2.0
+
 ## 4.0.3
 
 ### Patch Changes
@@ -339,8 +374,8 @@
 
 ### Patch Changes
 
-- 28e2c09: [Bug fixing breaking change] Fix types and retrieval of
-  unions/interfaces of different object types
+- 28e2c09: [Bug fixing breaking change] Fix types and retrieval of unions/interfaces
+  of different object types
 - Updated dependencies [28e2c09]
   - gqty@2.0.1
 
