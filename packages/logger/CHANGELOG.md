@@ -1,6 +1,6 @@
 # @gqty/logger
 
-## 5.0.0
+## 3.0.2
 
 ### Patch Changes
 
@@ -12,24 +12,6 @@
   [[`f79f363`](https://github.com/gqty-dev/gqty/commit/f79f3638d9b93025a318c8e3716026474070ab5a),
   [`8a3ff42`](https://github.com/gqty-dev/gqty/commit/8a3ff425a094de964418b94208bef4dbc8f3c4e5)]:
   - gqty@3.2.0
-
-## 4.0.1
-
-### Patch Changes
-
-- Updated dependencies
-  [[`4a5b6f9`](https://github.com/gqty-dev/gqty/commit/4a5b6f9e353873bfc1ca3894bdb6e0c1e84c1578)]:
-  - gqty@3.1.1
-
-## 4.0.0
-
-### Patch Changes
-
-- Updated dependencies
-  [[`a577128`](https://github.com/gqty-dev/gqty/commit/a577128f6c5e929321193f5effed700c6e7d32c8),
-  [`3e5cd7d`](https://github.com/gqty-dev/gqty/commit/3e5cd7d81fbe537bd4237cfd8584982b5f1b6468),
-  [`dcd6ac2`](https://github.com/gqty-dev/gqty/commit/dcd6ac25cfd463c492b4d12ecdb603ca70894c8b)]:
-  - gqty@3.1.0
 
 ## 3.0.1
 
