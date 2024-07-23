@@ -430,8 +430,8 @@ importers:
         specifier: ^4.0.9
         version: 4.0.9(graphql@16.9.0)
       '@graphql-tools/delegate':
-        specifier: ^10.0.15
-        version: 10.0.15(graphql@16.9.0)
+        specifier: ^10.0.16
+        version: 10.0.16(graphql@16.9.0)
       '@graphql-tools/utils':
         specifier: ^10.3.2
         version: 10.3.2(graphql@16.9.0)
@@ -4693,14 +4693,14 @@ packages:
       value-or-promise: 1.0.12
     dev: false
 
-  /@graphql-tools/delegate@10.0.15(graphql@16.9.0):
-    resolution: {integrity: sha512-18R4vcJWz/6pk6K9SslijR0jCSe0mAnSs0sd1eioTvSSCWiagPdCOOhaM9dPNfEnxp3TRHg3cnYqywRtJgKHvw==}
+  /@graphql-tools/delegate@10.0.16(graphql@16.9.0):
+    resolution: {integrity: sha512-no4jIdHsTrHzR6Vv1YlwbxFeBnHBwPhBpemvLVnQ7CHhAviwIUWkCOHs4Uyzc5GYuHFyKJOZEXqhOz+da3hR3A==}
     engines: {node: '>=16.0.0'}
     peerDependencies:
       graphql: ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
     dependencies:
       '@graphql-tools/batch-execute': 9.0.4(graphql@16.9.0)
-      '@graphql-tools/executor': 1.2.8(graphql@16.9.0)
+      '@graphql-tools/executor': 1.3.0(graphql@16.9.0)
       '@graphql-tools/schema': 10.0.4(graphql@16.9.0)
       '@graphql-tools/utils': 10.3.2(graphql@16.9.0)
       dataloader: 2.2.2
@@ -4708,8 +4708,8 @@ packages:
       tslib: 2.6.3
     dev: false
 
-  /@graphql-tools/executor@1.2.8(graphql@16.9.0):
-    resolution: {integrity: sha512-0qZs/iuRiYRir7bBkA7oN+21wwmSMPQuFK8WcAcxUYJZRhvnlrJ8Nid++PN4OCzTgHPV70GNFyXOajseVCCffA==}
+  /@graphql-tools/executor@1.3.0(graphql@16.9.0):
+    resolution: {integrity: sha512-e+rmEf/2EO4hDnbkO8mTS2FI+jGUNmYkSDKw5TgPVlO8VOKS+TXmJBK6E9v4Gc/39yVkZsffYfW/R8obJrA0mg==}
     engines: {node: '>=16.0.0'}
     peerDependencies:
       graphql: ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
@@ -4903,7 +4903,7 @@ packages:
     peerDependencies:
       graphql: ^14.0.0 || ^15.0.0 || ^16.0.0 || ^17.0.0
     dependencies:
-      '@graphql-tools/delegate': 10.0.15(graphql@16.9.0)
+      '@graphql-tools/delegate': 10.0.16(graphql@16.9.0)
       '@graphql-tools/schema': 10.0.3(graphql@16.9.0)
       '@graphql-tools/utils': 10.3.2(graphql@16.9.0)
       graphql: 16.9.0
