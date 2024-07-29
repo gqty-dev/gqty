@@ -33,12 +33,10 @@
     "src"
   ],
   "scripts": {
-    "analyze": "size-limit --why",
     "build": "bob-esbuild build",
     "dev": "bob-esbuild watch",
     "prepare": "bob-esbuild build",
     "postpublish": "gh-release",
-    "size": "size-limit",
     "start": "bob-esbuild watch",
     "test": "jest",
     "test:watch": "jest --watch"
@@ -47,13 +45,10 @@
     "prettier": "^3.0.1"
   },
   "devDependencies": {
-    "@size-limit/preset-small-lib": "^11.1.4",
     "@types/node": "^20.14.15",
     "bob-esbuild-cli": "^4.0.0",
-    "esbuild": "^0.23.0",
     "gqty": "workspace:^",
     "jest": "^29.7.0",
-    "size-limit": "^11.1.4",
     "test-utils": "workspace:^",
     "tslib": "^2.6.3",
     "typescript": "^5.5.4"
@@ -66,15 +61,5 @@
   },
   "publishConfig": {
     "directory": "dist"
-  },
-  "size-limit": [
-    {
-      "path": "dist/gqty-logger.cjs.production.min.js",
-      "limit": "260 KB"
-    },
-    {
-      "path": "dist/gqty-logger.esm.js",
-      "limit": "260 KB"
-    }
-  ]
+  }
 }

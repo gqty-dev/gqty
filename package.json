@@ -13,10 +13,9 @@
     "ci:release": "pnpm -r publish --access public --no-git-checks",
     "ci:version": "changeset version && pnpm i --no-frozen-lockfile --lockfile-only --ignore-scripts && pnpm update -r \"@gqty/*\" gqty",
     "clean": "pnpm dlx rimraf \"**/{node_modules,dist,.nyc_output,coverage,.next}\" pnpm-lock.yaml && pnpm i",
-    "prepare": "husky install",
+    "prepare": "husky",
     "publish:all": "changeset version && pnpm i && pnpm test && pnpm -r publish --access public",
-    "test": "pnpm test -r --no-sort --no-bail --stream --",
-    "test:ci": "CI=1 pnpm test -r --workspace-concurrency=0 --no-sort --no-bail --stream --"
+    "test": "pnpm test -r"
   },
   "devDependencies": {
     "@changesets/apply-release-plan": "^7.0.4",

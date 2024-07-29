@@ -27,17 +27,13 @@
       "types": "./dist/index.d.ts"
     }
   },
-  "bin": {
-    "gqty": "bin/gqty.mjs"
-  },
   "files": [
     "dist",
     "src"
   ],
   "scripts": {
-    "analyze": "size-limit --why",
-    "build": "bob-tsm build.ts",
-    "prepare": "bob-tsm build.ts",
+    "build": "tsx build.ts",
+    "prepare": "pnpm build",
     "postpublish": "gh-release",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -90,20 +86,16 @@
     "prettier": "^2.8.8"
   },
   "devDependencies": {
-    "@size-limit/preset-small-lib": "^11.1.4",
+    "@pnpm/types": "^11.1.0",
     "@types/lodash-es": "^4.17.12",
     "@types/micromatch": "^4.0.9",
     "@types/node": "^20.14.15",
     "@types/prettier": "^2.7.3",
     "@typescript-eslint/eslint-plugin": "^7.18.0",
     "@typescript-eslint/parser": "^7.18.0",
-    "bob-tsm": "^1.1.2",
-    "esbuild": "^0.23.0",
     "eslint": "^8.57.0",
     "open-cli": "^8.0.0",
     "p-lazy": "^3.1.0",
-    "serve": "^14.2.3",
-    "size-limit": "^11.1.4",
     "test-utils": "workspace:^",
     "tmp-promise": "^3.0.3",
     "typescript": "^5.5.4",

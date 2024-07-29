@@ -59,6 +59,7 @@ test('basic inspectWriteGenerate functionality', async () => {
        */
 
       import { createReactClient } from '@gqty/react';
+      import { createSolidClient } from '@gqty/solid';
       import {
         Cache,
         createClient,

@@ -33,7 +33,8 @@
     "prepare": "bob-esbuild build",
     "postpublish": "gh-release",
     "start": "bob-esbuild watch",
-    "test": "jest"
+    "test": "jest",
+    "test:ci": "jest --collectCoverage"
   },
   "dependencies": {
     "isomorphic-ws": "^5.0.0",
@@ -43,7 +44,6 @@
     "@types/node": "^20.14.15",
     "@types/ws": "^8.5.12",
     "bob-esbuild-cli": "^4.0.0",
-    "esbuild": "^0.23.0",
     "gqty": "workspace:^",
     "graphql": "^16.9.0",
     "test-utils": "workspace:^",
