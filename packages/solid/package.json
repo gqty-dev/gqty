@@ -1,23 +1,7 @@
 {
   "name": "@gqty/solid",
   "version": "0.1.1",
-  "type": "module",
   "private": false,
-  "sideEffects": false,
-  "license": "MIT",
-  "homepage": "https://gqty.dev",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/gqty-dev/gqty.git"
-  },
-  "author": "Vicary Archangel <vicary.archangel@member.mensa.org>",
-  "exports": {
-    ".": {
-      "import": "./index.mjs",
-      "require": "./index.cjs",
-      "types": "./index.d.ts"
-    }
-  },
   "keywords": [
     "cache",
     "client",
@@ -27,26 +11,41 @@
     "solid",
     "state"
   ],
+  "homepage": "https://gqty.dev",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gqty-dev/gqty.git"
+  },
+  "license": "MIT",
+  "author": "Vicary Archangel <vicary.archangel@member.mensa.org>",
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": {
+      "import": "./index.mjs",
+      "require": "./index.cjs",
+      "types": "./index.d.ts"
+    }
+  },
   "scripts": {
-    "prepare": "pnpm build",
     "build": "tsx build.ts",
-    "test": "vitest"
+    "prepare": "pnpm build",
+    "test": "vitest --no-watch"
   },
-  "engines": {
-    "node": ">=16 <=22"
-  },
-  "publishConfig": {
-    "directory": "dist"
+  "dependencies": {
+    "debounce-microtasks": "^0.1.3",
+    "p-defer": "^3.0.0"
   },
   "devDependencies": {
     "@solidjs/testing-library": "^0.8.7",
     "@testing-library/jest-dom": "^6.4.5",
-    "esbuild": "^0.20.2",
+    "@testing-library/user-event": "^14.5.2",
+    "@vitest/coverage-v8": "^2.0.5",
     "gqty": "workspace:^",
     "jsdom": "^24.0.0",
-    "tsx": "^4.9.3",
+    "test-utils": "workspace:^",
     "typescript": "^5.4.5",
-    "vitest": "^1.6.0"
+    "vitest": "^2.0.4"
   },
   "peerDependencies": {
     "gqty": "workspace:^",
@@ -60,7 +59,10 @@
       "optional": true
     }
   },
-  "dependencies": {
-    "debounce-microtasks": "^0.1.3"
+  "engines": {
+    "node": ">=16 <=22"
+  },
+  "publishConfig": {
+    "directory": "dist"
   }
 }

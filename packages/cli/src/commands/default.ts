@@ -1,5 +1,5 @@
 import type { Command } from '@commander-js/extra-typings';
-import type { PackageJSON } from 'bob-esbuild/config/packageJson';
+import type { ProjectManifest } from '@pnpm/types';
 import { cosmiconfig } from 'cosmiconfig';
 import { readFile, watch } from 'node:fs/promises';
 import type { GQtyConfig } from '../config';
@@ -125,7 +125,7 @@ export const addCommand = (command: Command) => {
         try {
           return JSON.parse(
             await readFile('package.json', { encoding: 'utf-8' })
-          ) as PackageJSON;
+          ) as ProjectManifest;
         } catch {
           return;
         }

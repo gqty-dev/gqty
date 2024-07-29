@@ -1,6 +1,6 @@
-import { existsSync, promises } from 'fs';
 import type { GraphQLSchema } from 'graphql';
-import { dirname, resolve } from 'path';
+import { existsSync, promises } from 'node:fs';
+import { dirname, resolve } from 'node:path';
 import { defaultConfig, type GQtyConfig } from './config';
 import { generate, type TransformSchemaOptions } from './generate';
 

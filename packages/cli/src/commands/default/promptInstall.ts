@@ -1,4 +1,4 @@
-import type { PackageJSON } from 'bob-esbuild/config/packageJson';
+import type { ProjectManifest } from '@pnpm/types';
 import type { GQtyConfig } from '../../config';
 import { inquirer } from '../../deps';
 import {
@@ -27,7 +27,7 @@ export const promptInstall = async (configuration: GQtyConfig) => {
  * Install missing packages with the current package manager.
  */
 export const runInstall = async (
-  { dependencies, devDependencies }: PackageJSON,
+  { dependencies, devDependencies }: ProjectManifest,
   configuration: GQtyConfig
 ) => {
   const deps = new Set([
