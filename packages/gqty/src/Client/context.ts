@@ -1,5 +1,6 @@
 import { Cache, type CacheGetOptions } from '../Cache';
 import type { Disposable } from '../Disposable';
+import type { Resetable } from '../Resetable';
 import type { ScalarsEnumsHash, Schema } from '../Schema';
 import type { Selectable } from '../Selectable';
 
@@ -7,6 +8,7 @@ export type SchemaContext<
   T extends Record<string, unknown> = Record<string, unknown>,
 > = T &
   Disposable &
+  Resetable &
   Selectable & {
     cache: Cache;
     readonly aliasLength?: number;
@@ -85,6 +87,12 @@ export const createContext = ({
       }
 
       selectSubscriptions.forEach((fn) => fn(selection, cacheNode));
+    },
+    reset() {
+      this.shouldFetch = false;
+      this.hasCacheHit = false;
+      this.hasCacheMiss = false;
+      this.notifyCacheUpdate = cachePolicy !== 'default';
     },
     subscribeSelect(callback) {
       selectSubscriptions.add(callback);

@@ -203,7 +203,7 @@ export const subscribeSelections = <
           // modifications to the generated client.
           subscriptionId = 'EventSource';
           onSubscribe?.();
-        } else if (type === 'subscription') {
+        } else {
           throw new GQtyError(`Please specify a subscriber for subscriptions.`);
         }
 

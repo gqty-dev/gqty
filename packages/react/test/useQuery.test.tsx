@@ -261,7 +261,7 @@ describe('useQuery', () => {
     });
   });
 
-  it.only('should retain sub-selections for nulls and empty arrays', async () => {
+  it('should retain sub-selections for nulls and empty arrays', async () => {
     const queries: string[] = [];
     const cache = new Cache(undefined, {
       maxAge: 0,

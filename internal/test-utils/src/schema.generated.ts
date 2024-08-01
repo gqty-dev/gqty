@@ -88,6 +88,8 @@ export const generatedSchema = {
     createDog: { __type: 'Dog!', __args: { name: 'String' } },
     createPeople: { __type: 'People!', __args: { name: 'String!' } },
     dropPet: { __type: 'Pet!', __args: { people: 'ID!', pet: 'ID!' } },
+    renameCat: { __type: 'Cat!', __args: { id: 'ID!', name: 'String!' } },
+    renameDog: { __type: 'Dog!', __args: { id: 'ID!', name: 'String!' } },
     takePet: { __type: 'Pet!', __args: { people: 'ID!', pet: 'ID!' } },
   },
   query: {
@@ -177,6 +179,14 @@ export interface Mutation {
     people: ScalarsEnums['ID'];
     pet: ScalarsEnums['ID'];
   }) => Pet;
+  renameCat: (args: {
+    id: ScalarsEnums['ID'];
+    name: ScalarsEnums['String'];
+  }) => Cat;
+  renameDog: (args: {
+    id: ScalarsEnums['ID'];
+    name: ScalarsEnums['String'];
+  }) => Dog;
   takePet: (args: {
     people: ScalarsEnums['ID'];
     pet: ScalarsEnums['ID'];

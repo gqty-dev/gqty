@@ -63,8 +63,12 @@ type Mutation {
   dropPet(people: ID!, pet: ID!): Pet!
 
   createPeople(name: String!): People!
+
   createDog(name: String): Dog!
+  renameDog(id: ID!, name: String!): Dog!
+
   createCat(name: String): Cat!
+  renameCat(id: ID!, name: String!): Cat!
 }
 
 """

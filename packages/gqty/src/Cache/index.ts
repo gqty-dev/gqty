@@ -352,9 +352,9 @@ export class Cache {
         const dataContainer: CacheDataContainer =
           // Mutation and subscription results should be returned right away for
           // immediate use. Their responses are only meaningful to a cache with
-          // normalization enabled, where it updates subscribing clients.
-          // We force a short expiration to let it survives the next render,
-          // then leave it up for GC.
+          // normalization enabled, where it already updates listeners.
+          //
+          // We force a short expiration here to let it survive the next render.
           type === 'mutation' || type === 'subscription'
             ? {
                 data,

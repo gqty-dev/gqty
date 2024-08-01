@@ -1,4 +1,3 @@
-import { generate } from '@gqty/cli';
 import { buildHTTPExecutor } from '@graphql-tools/executor-http';
 import assert from 'assert';
 import {
@@ -9,20 +8,27 @@ import {
   type QueryPayload,
 } from 'gqty';
 import { parse, type ExecutionResult } from 'graphql';
-import { DateResolver } from 'graphql-scalars';
+import { DateTimeISOResolver } from 'graphql-scalars';
 import type { Client, Sink, SubscribePayload } from 'graphql-ws';
 import { createPubSub, createSchema, createYoga } from 'graphql-yoga';
-import type { GeneratedSchema } from './schema.generated.ts';
+import type { GeneratedSchema } from './schema.generated';
 
-export type MockClientOptions = Omit<TestClientOptions, 'schema'>;
+export type MockClientOptions = Omit<TestClientOptions, 'schema'> & {
+  mockData?: {
+    peoples?: Record<string, People>;
+    cats?: Record<string, Pet>;
+    dogs?: Record<string, Pet>;
+  };
+};
+
+type People = { id: string; name: string; pets: Pet[] };
+type Pet = { id: string; name?: string; owner?: People };
 
 export const createMockClient = async (options?: MockClientOptions) => {
-  type People = { name: string; pets: Set<Pet> };
-  type Pet = { name?: string; owner?: People };
+  const peoples = options?.mockData?.peoples ?? {};
+  const cats = options?.mockData?.cats ?? {};
+  const dogs = options?.mockData?.dogs ?? {};
 
-  const peoples = new Map<number, People>();
-  const cats = new Map<number, Pet>();
-  const dogs = new Map<number, Pet>();
   const pubsub = createPubSub<{
     people: [
       {
@@ -36,12 +42,30 @@ export const createMockClient = async (options?: MockClientOptions) => {
     ...options,
     schema: {
       resolvers: {
-        Date: DateResolver,
+        Date: DateTimeISOResolver,
         Query: {
           now: () => new Date(),
-          peoples: () => Array.from(peoples.values()),
-          people: (_, { id }) => peoples.get(id),
-          pet: (_, { id }) => cats.get(id) ?? dogs.get(id),
+          peoples: () => Object.values(peoples),
+          people: (_, { id }) => peoples[id],
+          pet: (_, { id }) => {
+            const cat = cats[id];
+            if (cat) {
+              return {
+                __typename: 'Cat',
+                ...cat,
+              };
+            }
+
+            const dog = dogs[id];
+            if (dog) {
+              return {
+                __typename: 'Dog',
+                ...dog,
+              };
+            }
+
+            return null;
+          },
         },
         People: {
           pets: (people) => Array.from(people.pets),
@@ -55,13 +79,13 @@ export const createMockClient = async (options?: MockClientOptions) => {
         },
         Mutation: {
           takePet: (_, { people, pet }) => {
-            const peopleObj = peoples.get(people);
+            const peopleObj = peoples[people];
             assert(peopleObj, `People ${people} not found`);
 
-            const petObj = cats.get(pet) ?? dogs.get(pet);
+            const petObj = cats[pet] ?? dogs[pet];
             assert(petObj, `Pet ${pet} not found`);
 
-            peopleObj.pets.add(petObj);
+            peopleObj.pets.push(petObj);
 
             pubsub.publish('people', {
               type: 'UPDATED',
@@ -71,13 +95,15 @@ export const createMockClient = async (options?: MockClientOptions) => {
             return petObj;
           },
           dropPet: (_, { people, pet }) => {
-            const peopleObj = peoples.get(people);
+            const peopleObj = peoples[people];
             assert(peopleObj, `People ${people} not found`);
 
-            const petObj = cats.get(pet) ?? dogs.get(pet);
+            const petObj = cats[pet] ?? dogs[pet];
             assert(petObj, `Pet ${pet} not found`);
 
-            peopleObj.pets.delete(petObj);
+            const petIdx = peopleObj.pets.findIndex((p) => p === petObj);
+            assert(petIdx !== -1, `Pet ${pet} not found in ${people}`);
+            peopleObj.pets.splice(petIdx, 1);
 
             pubsub.publish('people', {
               type: 'UPDATED',
@@ -87,9 +113,10 @@ export const createMockClient = async (options?: MockClientOptions) => {
             return petObj;
           },
           createPeople: (_, { name }) => {
-            const people = { name, pets: new Set<Pet>() };
+            const peopleId = Object.keys(peoples).length.toString();
+            const people = { id: peopleId, name, pets: [] };
 
-            peoples.set(peoples.size + 1, people);
+            peoples[peopleId] = people;
 
             pubsub.publish('people', {
               type: 'CREATED',
@@ -99,13 +126,35 @@ export const createMockClient = async (options?: MockClientOptions) => {
             return people;
           },
           createDog: (_, { name }) => {
-            const dog = { name };
-            dogs.set(dogs.size + 1, dog);
+            const dogId = Object.keys(dogs).length.toString();
+            const dog = { id: dogId, name };
+
+            dogs[dogId] = dog;
+
+            return dog;
+          },
+          renameDog: (_, { id, name }) => {
+            const dog = dogs[id];
+            assert(dog, `Dog ${id} not found`);
+
+            dog.name = name;
+
             return dog;
           },
           createCat: (_, { name }) => {
-            const cat = { name };
-            cats.set(cats.size + 1, cat);
+            const catId = Object.keys(cats).length.toString();
+            const cat = { id: catId, name };
+
+            cats[catId] = cat;
+
+            return cat;
+          },
+          renameCat: (_, { id, name }) => {
+            const cat = cats[id];
+            assert(cat, `Cat ${id} not found`);
+
+            cat.name = name;
+
             return cat;
           },
         },
@@ -178,8 +227,12 @@ export const createMockClient = async (options?: MockClientOptions) => {
           dropPet(people: ID!, pet: ID!): Pet!
 
           createPeople(name: String!): People!
+
           createDog(name: String!): Dog!
+          renameDog(id: ID!, name: String!): Dog!
+
           createCat(name: String!): Cat!
+          renameCat(id: ID!, name: String!): Cat!
         }
 
         """
@@ -218,16 +271,23 @@ export type TestClientOptions = {
 /**
  * A local GQty client that resolve values in-memory without actually fetching.
  */
-export const createInMemoryClient = async <TSchame extends BaseGeneratedSchema>(
+export const createInMemoryClient = async <TSchema extends BaseGeneratedSchema>(
   options: TestClientOptions
-): Promise<GQtyClient<TSchame>> => {
+): Promise<GQtyClient<TSchema>> => {
   const schema = createSchema(options.schema);
   const yoga = createYoga({ schema });
   const executor = buildHTTPExecutor({ fetch: yoga.fetch });
 
-  const { generatedSchema, scalarsEnumsHash } = await generate(schema);
+  // We cannot generate client schema on-the-fly because of circular dependency,
+  // it has to be pre-generated.
+  // const { generate } = await import('@gqty/cli');
+  // const { generatedSchema, scalarsEnumsHash } = await generate(schema);
 
-  return createClient<TSchame>({
+  const { generatedSchema, scalarsEnumsHash } = await import(
+    './schema.generated'
+  );
+
+  return createClient<TSchema>({
     schema: generatedSchema,
     scalars: scalarsEnumsHash,
     cache: options.cache ?? new Cache(),

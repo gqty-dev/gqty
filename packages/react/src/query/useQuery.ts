@@ -86,23 +86,23 @@ export interface UseQueryOptions<TSchema extends BaseGeneratedSchema> {
    */
   prepare?: (helpers: UseQueryPrepareHelpers<TSchema>) => void;
   /**
-   * Soft refetches on the specified interval, skip this option to disable.
+   * Soft-refetch on the specified interval, skip this option to disable.
    */
   refetchInterval?: number;
   /**
-   * Soft refetches when the browser regains connectivity.
+   * Soft-refetch when the browser regains connectivity.
    *
    * @default true
    */
   refetchOnReconnect?: boolean;
   /**
-   * Soft refetches on render.
+   * Soft-refetch on render.
    *
    * @default true
    */
   refetchOnRender?: boolean;
   /**
-   * Soft refetches when user comes back to the browser tab.
+   * Soft-refetch when user comes back to the browser tab.
    *
    * @default true
    */
@@ -127,7 +127,7 @@ export interface UseQueryOptions<TSchema extends BaseGeneratedSchema> {
 }
 
 export interface UseQueryState {
-  /** Useful for `Non-Suspense` usage. */
+  /** The current loading state when suspense is disabled. */
   readonly isLoading: boolean;
 
   /**
@@ -235,7 +235,8 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
             Promise.resolve().then(() =>
               refetch({ skipPrepass: true, skipOnError: true })
             );
-          } // Clears previous selections if the current render is not triggered
+          }
+          // Clears previous selections if the current render is not triggered
           // by a fetch, because it implies a user-triggered state change where
           // old query inputs may be stale. Only clear selections once right
           // when the first selection is made.
@@ -339,16 +340,15 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
           return;
         }
 
-        // Soft-refetches here may not know if the WeakRefs in the cache is
-        // already garbage collected. Running this again to update context with
-        // the latest cache freshness, this inevitably affects the timing of
-        // garbage collection if the specific implementation has LRU components.
-        if (!options?.skipPrepass && isFinite(client.cache.maxAge)) {
-          prepass(accessor, selections);
-        }
-
         if (options?.ignoreCache === true) {
           context.shouldFetch = true;
+        }
+        // Soft-refetches here may not know if the WeakRefs in the cache is
+        // already garbage collected. Running the selections again to update
+        // the context with the latest cache freshness, this will push back the
+        // garbage collection if the specific implementation has LRU components.
+        else if (!options?.skipPrepass && isFinite(client.cache.maxAge)) {
+          prepass(accessor, selections);
         }
 
         if (!context.shouldFetch) {
@@ -433,10 +433,7 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
           onError?.(error);
           setState({ error });
         } finally {
-          context.shouldFetch = false;
-          context.hasCacheHit = false;
-          context.hasCacheMiss = false;
-          context.notifyCacheUpdate = cachePolicy !== 'default';
+          context.reset();
 
           // Synchronous mutex release, just to be safe.
           state.promise = undefined;

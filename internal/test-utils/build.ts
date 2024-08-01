@@ -11,7 +11,11 @@ fs.rmSync('dist/', { force: true, recursive: true });
 const baseOptions: BuildOptions = {
   bundle: true,
   entryPoints: ['src/index.ts'],
-  external: Object.keys(packageJson.peerDependencies ?? {}),
+  external: Object.keys({
+    ...packageJson.dependencies,
+    ...packageJson.devDependencies,
+    ...packageJson.peerDependencies,
+  }),
   minify: true,
   platform: 'node',
   target: 'es2020',
