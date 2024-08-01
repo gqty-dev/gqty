@@ -6,7 +6,7 @@ import { fileURLToPath } from 'url';
 
 async function main() {
   const cwd = dirname(fileURLToPath(import.meta.url));
-  const mjsFiles = await globby(['../packages/**/dist/*.mjs'], {
+  const mjsFiles = await globby(['../packages/*/dist/*.mjs'], {
     cwd,
   });
 

@@ -1,5 +1,5 @@
-import { ErrorBoundary, Suspense, type Component } from 'solid-js';
-import CharactersSearch from '~/components/Characters';
+import { ErrorBoundary, type Component } from 'solid-js';
+import Characters from '~/components/Characters';
 import Character from './components/Character';
 import Card from './components/tailwindui/Card';
 import logo from './logo.svg';
@@ -27,9 +27,7 @@ const App: Component = () => {
               </Card>
             )}
           >
-            <Suspense fallback={<div>Loading...</div>}>
-              <CharactersSearch />
-            </Suspense>
+            <Characters />
           </ErrorBoundary>
         </section>
       </main>

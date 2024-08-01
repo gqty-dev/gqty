@@ -1,3 +1,4 @@
 pnpm --quiet dlx pretty-quick --staged
 
-pnpm --quiet dlx sort-package-json --quiet packages/*/package.json && git add packages/*/package.json
+pnpm --quiet dlx sort-package-json --quiet packages/*/package.json && \
+  git add packages/*/package.json

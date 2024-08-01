@@ -32,7 +32,6 @@
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --config local.jest.config.js"
   },
   "dependencies": {
-    "@gqty/cli": "workspace:^",
     "@graphql-ez/fastify": "^0.12.1",
     "@graphql-ez/fastify-testing": "^0.4.1",
     "@graphql-ez/plugin-codegen": "^0.8.1",
@@ -54,13 +53,9 @@
   },
   "devDependencies": {
     "@graphql-ez/plugin-websockets": "^0.11.3",
-    "@graphql-tools/executor-http": "^1.0.9",
     "@jest/types": "^29.6.3",
     "@types/node": "^20.14.15",
     "esbuild": "^0.23.0",
-    "graphql-scalars": "^1.23.0",
-    "graphql-ws": "^5.16.0",
-    "graphql-yoga": "^5.4.0",
     "typescript": "^5.5.4"
   },
   "peerDependencies": {

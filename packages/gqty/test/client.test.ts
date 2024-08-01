@@ -129,8 +129,8 @@ describe('core#resolve', () => {
     });
 
     /**
-     * When multiple tests are running, GC gets triggered more often and this
-     * randomly fails. Should work when run individually.
+     * Due to the random nature of GC, this test is especially flaky when
+     * running concurrently with other tests. Skipping this by default.
      */
     xit('only-if-cached', async () => {
       const { resolve } = await createTestClient(

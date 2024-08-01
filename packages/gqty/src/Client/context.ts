@@ -5,7 +5,7 @@ import type { ScalarsEnumsHash, Schema } from '../Schema';
 import type { Selectable } from '../Selectable';
 
 export type SchemaContext<
-  T extends Record<string, unknown> = Record<string, unknown>
+  T extends Record<string, unknown> = Record<string, unknown>,
 > = T &
   Disposable &
   Resetable &

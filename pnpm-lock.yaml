@@ -346,7 +346,7 @@ importers:
         version: 5.4.0(@types/node@20.14.15)
       vite-plugin-solid:
         specifier: ^2.8.2
-        version: 2.10.2(solid-js@1.8.17)(vite@5.4.0)
+        version: 2.10.2(@testing-library/jest-dom@6.4.5)(solid-js@1.8.17)(vite@5.4.0)
 
   examples/vite-react:
     dependencies:
@@ -387,9 +387,6 @@ importers:
 
   internal/test-utils:
     dependencies:
-      '@gqty/cli':
-        specifier: workspace:^
-        version: link:../../packages/cli/dist
       '@graphql-ez/fastify':
         specifier: ^0.12.1
         version: 0.12.1(@types/node@20.14.15)(fastify@4.28.1)(graphql-ez@0.16.1)(graphql@16.9.0)
@@ -505,9 +502,6 @@ importers:
       graphql:
         specifier: ^16.9.0
         version: 16.9.0
-      iter-ops:
-        specifier: ^3.5.0
-        version: 3.5.0
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
@@ -656,7 +650,7 @@ importers:
         specifier: ^14.2.3
         version: 14.2.3
       test-utils:
-        specifier: workspace:^0.2.0
+        specifier: workspace:^
         version: link:../../internal/test-utils
       tsc-watch:
         specifier: ^6.2.0
@@ -812,7 +806,10 @@ importers:
     dependencies:
       debounce-microtasks:
         specifier: ^0.1.3
-        version: 0.1.7
+        version: 0.1.8
+      gqty:
+        specifier: workspace:^
+        version: link:../gqty/dist
       p-defer:
         specifier: ^3.0.0
         version: 3.0.0
@@ -832,9 +829,9 @@ importers:
       '@vitest/coverage-v8':
         specifier: ^2.0.5
         version: 2.0.5(vitest@2.0.5)
-      gqty:
-        specifier: workspace:^
-        version: link:../gqty/dist
+      date-fns:
+        specifier: ^3.6.0
+        version: 3.6.0
       jsdom:
         specifier: ^24.0.0
         version: 24.0.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)
@@ -844,6 +841,9 @@ importers:
       typescript:
         specifier: ^5.4.5
         version: 5.5.4
+      vite-plugin-solid:
+        specifier: ^2.8.2
+        version: 2.10.2(@testing-library/jest-dom@6.4.5)(solid-js@1.8.17)(vite@5.4.0)
       vitest:
         specifier: ^2.0.4
         version: 2.0.5(@types/node@20.14.15)(jsdom@24.0.0)
@@ -958,12 +958,12 @@ packages:
       '@babel/helper-compilation-targets': 7.25.2
       '@babel/helper-module-transforms': 7.25.2(@babel/core@7.25.2)
       '@babel/helpers': 7.25.0
-      '@babel/parser': 7.25.0
+      '@babel/parser': 7.25.3
       '@babel/template': 7.25.0
-      '@babel/traverse': 7.25.2
+      '@babel/traverse': 7.25.3
       '@babel/types': 7.25.2
       convert-source-map: 2.0.0
-      debug: 4.3.4
+      debug: 4.3.6
       gensync: 1.0.0-beta.2
       json5: 2.2.3
       semver: 6.3.1
@@ -989,7 +989,7 @@ packages:
     resolution: {integrity: sha512-xZeCVVdwb4MsDBkkyZ64tReWYrLRHlMN72vP7Bdm3OUOuyFZExhsHUUnuWnm2/XOlAJzR0LfPpB56WXZn0X/lA==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/traverse': 7.25.2
+      '@babel/traverse': 7.25.3
       '@babel/types': 7.25.2
     transitivePeerDependencies:
       - supports-color
@@ -1129,7 +1129,7 @@ packages:
       '@babel/core': 7.25.2
       '@babel/helper-annotate-as-pure': 7.24.7
       '@babel/helper-wrap-function': 7.25.0
-      '@babel/traverse': 7.25.2
+      '@babel/traverse': 7.25.3
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -1143,7 +1143,7 @@ packages:
       '@babel/core': 7.25.2
       '@babel/helper-member-expression-to-functions': 7.24.8
       '@babel/helper-optimise-call-expression': 7.24.7
-      '@babel/traverse': 7.25.2
+      '@babel/traverse': 7.25.3
     transitivePeerDependencies:
       - supports-color
 
@@ -1151,7 +1151,7 @@ packages:
     resolution: {integrity: sha512-zBAIvbCMh5Ts+b86r/CjU+4XGYIs+R1j951gxI3KmmxBMhCg4oQMsv6ZXQ64XOm/cvzfU1FmoCyt6+owc5QMYg==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/traverse': 7.25.2
+      '@babel/traverse': 7.25.3
       '@babel/types': 7.25.2
     transitivePeerDependencies:
       - supports-color
@@ -1160,7 +1160,7 @@ packages:
     resolution: {integrity: sha512-IO+DLT3LQUElMbpzlatRASEyQtfhSE0+m465v++3jyyXeBTBUjtVZg28/gHeV5mrTJqvEKhKroBGAvhW+qPHiQ==}
     engines: {node: '>=6.9.0'}
     dependencies:
-      '@babel/traverse': 7.25.2
+      '@babel/traverse': 7.25.3
       '@babel/types': 7.25.2
     transitivePeerDependencies:
       - supports-color
@@ -2276,7 +2276,7 @@ packages:
       '@babel/parser': 7.25.3
       '@babel/template': 7.25.0
       '@babel/types': 7.25.2
-      debug: 4.3.4
+      debug: 4.3.6
       globals: 11.12.0
     transitivePeerDependencies:
       - supports-color
@@ -8806,7 +8806,6 @@ packages:
 
   /date-fns@3.6.0:
     resolution: {integrity: sha512-fRHTG8g/Gif+kSh50gaGEdToemgfj74aRX3swtiouboip5JDLAyDE9F11nHMIcvOaXeOC6D7SpNhi7uFyB7Uww==}
-    dev: false
 
   /debounce-microtasks@0.1.8:
     resolution: {integrity: sha512-7mbJYntoO1FFIuOgwX2vnVwZMfbRpN6s16zTUHm/a1xmpZTGxSKvT6nOpAs1kHWQn7Ly2DGlCKeKdQrKMLBslw==}
@@ -8859,7 +8858,6 @@ packages:
         optional: true
     dependencies:
       ms: 2.1.2
-    dev: true
 
   /decamelize@1.2.0:
     resolution: {integrity: sha512-z2S+W9X73hAUUki+N+9Za2lBlun89zigOyGrsax+KUQ6wKW4ZoWpEYBkGhQjwAjjDCkWxhY0VKEhk8wzY7F5cA==}
@@ -11126,12 +11124,6 @@ packages:
     dependencies:
       html-escaper: 2.0.2
       istanbul-lib-report: 3.0.1
-
-  /iter-ops@3.5.0:
-    resolution: {integrity: sha512-0/DU67w30nLAyyYETTAVOwtts871N6jjQEY9NAzSXqtlAGuo8CX6O+/Hx11eRZIchACaAMUn6alEndINx27j/Q==}
-    engines: {node: '>=18'}
-    requiresBuild: true
-    dev: false
 
   /iterall@1.3.0:
     resolution: {integrity: sha512-QZ9qOMdF+QLHxy1QIpUHUU1D5pS2CG2P69LF6L6CPjPYA/XMOmKV3PZpawHoAjHNyB0swdVTRxdYT4tbBbxqwg==}
@@ -15285,7 +15277,7 @@ packages:
       - terser
     dev: true
 
-  /vite-plugin-solid@2.10.2(solid-js@1.8.17)(vite@5.4.0):
+  /vite-plugin-solid@2.10.2(@testing-library/jest-dom@6.4.5)(solid-js@1.8.17)(vite@5.4.0):
     resolution: {integrity: sha512-AOEtwMe2baBSXMXdo+BUwECC8IFHcKS6WQV/1NEd+Q7vHPap5fmIhLcAzr+DUJ04/KHx/1UBU0l1/GWP+rMAPQ==}
     peerDependencies:
       '@testing-library/jest-dom': ^5.16.6 || ^5.17.0 || ^6.*
@@ -15296,6 +15288,7 @@ packages:
         optional: true
     dependencies:
       '@babel/core': 7.25.2
+      '@testing-library/jest-dom': 6.4.5(jest@29.7.0)(vitest@2.0.5)
       '@types/babel__core': 7.20.5
       babel-preset-solid: 1.8.17(@babel/core@7.25.2)
       merge-anything: 5.1.7

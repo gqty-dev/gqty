@@ -1,16 +1,58 @@
-import { debounceMicrotask } from 'debounce-microtasks';
-import {
-  GQtyError,
-  prepass,
-  type BaseGeneratedSchema,
-  type Client,
-} from 'gqty';
-import { createSignal } from 'solid-js';
-import type {
-  CreateQueryOptions,
-  SolidClient,
-  SolidClientOptions,
-} from './types';
+import type { BaseGeneratedSchema, Client, RetryOptions } from 'gqty';
+import { createMutation, type CreateMutation } from './mutation';
+import { createQuery, type CreateQuery } from './query';
+import { createSubscription, type CreateSubscription } from './subscription';
+
+export type ArrowFunction = (...args: unknown[]) => unknown;
+
+export type DefaultOptions = {
+  /**
+   * Defines how a query should fetch from the cache and network.
+   *
+   * - `default`: Serves the cached contents when it is fresh, and if they are
+   * stale within `staleWhileRevalidate` window, fetches in the background and
+   * updates the cache. Or simply fetches on stale cache or cache miss. During
+   * SWR, a successful fetch will not notify cache updates. New contents are
+   * served on next query.
+   * - `no-store`: Always fetch and does not update on response.
+   * GQty creates a temporary cache at query-level which immediately expires.
+   * - `reload`: Always fetch, updates on response.
+   * - `no-cache`: Same as `reload`, for GraphQL does not support conditional
+   * requests.
+   * - `force-cache`: Serves the cached contents regardless of staleness. It
+   * fetches on cache miss or a stale cache, updates cache on response.
+   * - `only-if-cached`: Serves the cached contents regardless of staleness,
+   * throws a network error on cache miss.
+   *
+   * _It takes effort to make sure the above stays true for all supported
+   * frameworks, please consider sponsoring so we can dedicate even more time on
+   * this._
+   */
+  cachePolicy?: RequestCache;
+  /** Retry strategy upon fetch failure. */
+  retryPolicy?: RetryOptions;
+};
+
+export type CommonOptions = {
+  /** Custom GraphQL extensions to be exposed to the query fetcher. */
+  extensions?: Record<string, unknown>;
+  /**
+   * Specify a custom GraphQL operation name in the query. This separates the
+   * query from the internal query batcher, resulting a standalone fetch for
+   * easier debugging.
+   */
+  operationName?: string;
+};
+
+export type SolidClientOptions = {
+  defaults?: Partial<DefaultOptions>;
+};
+
+export type SolidClient<Schema extends BaseGeneratedSchema> = {
+  createQuery: CreateQuery<Schema>;
+  createMutation: CreateMutation<Schema>;
+  createSubscription: CreateSubscription<Schema>;
+};
 
 // Export the types to prevent tsc from removing the imports
 export type { BaseGeneratedSchema, Client };
@@ -19,159 +61,9 @@ export const createSolidClient = <Schema extends BaseGeneratedSchema>(
   client: Client<Schema>,
   options?: SolidClientOptions
 ): SolidClient<Schema> => {
-  const { defaults } = options ?? {};
-
   return {
-    createQuery: ({
-      cachePolicy = defaults?.cachePolicy ?? 'default',
-      extensions,
-      operationName,
-      prepare,
-      retryPolicy = defaults?.retryPolicy,
-    }: CreateQueryOptions<Schema> = {}) => {
-      let resolvePromise: Promise<unknown> | undefined;
-      let resolveError: Error | undefined;
-      let unsubscribe: (() => void) | undefined;
-
-      const { accessor, context, resolve, selections, subscribe } =
-        client.createResolver({
-          cachePolicy,
-          extensions,
-          retryPolicy,
-          operationName,
-        });
-
-      const [schema, setSchema] = createSignal(accessor, { equals: false });
-
-      const rerender = () => {
-        setSchema(schema);
-      };
-
-      const resubscribeLater = debounceMicrotask((): void => {
-        if (resolvePromise) return;
-
-        const mutexPromise = new Promise(() => {});
-
-        resolvePromise = mutexPromise;
-
-        const resetMutex = () => {
-          if (resolvePromise === mutexPromise) {
-            context.shouldFetch = false;
-            context.hasCacheHit = false;
-            context.hasCacheMiss = false;
-
-            resolvePromise = undefined;
-          }
-        };
-
-        unsubscribe?.();
-        unsubscribe = subscribe({
-          onError(error) {
-            // if (!(error instanceof GQtyError)) throw error;
-
-            resolveError = error;
-
-            rerender();
-          },
-          onNext() {
-            // Skips rerender if there is already an error.
-            if (resolveError) return;
-
-            resetMutex();
-
-            rerender();
-          },
-          onComplete() {
-            resetMutex();
-
-            selections.clear();
-          },
-        });
-      });
-
-      context.subscribeSelect(() => {
-        if (!context.shouldFetch) return;
-
-        resubscribeLater();
-      });
-
-      const refetch = async (options?: {
-        ignoreCache?: boolean;
-        skipPrepass?: boolean;
-      }) => {
-        // Internal resolve mutex
-        if (resolvePromise) return;
-
-        // Soft-refetches here may not know if the WeakRefs in the cache is
-        // already garbage collected. Running this again to update context with
-        // the latest cache freshness, this inevitably affects the timing of
-        // garbage collection if the specific implementation has LRU components.
-        if (!options?.skipPrepass && isFinite(client.cache.maxAge)) {
-          prepass(accessor, selections);
-        }
-
-        if (options?.ignoreCache) {
-          context.shouldFetch = true;
-        }
-
-        if (!context.shouldFetch) return;
-
-        // [ ] cofetch selections for denormalized caches
-
-        resolvePromise = resolve();
-        resolveError = undefined;
-
-        try {
-          await resolvePromise;
-
-          // Triggers Suspense
-          rerender();
-        } catch (error) {
-          if (!(error instanceof GQtyError)) throw error;
-
-          resolveError = error;
-
-          // Triggers ErrorBounary
-          rerender();
-        } finally {
-          context.shouldFetch = false;
-          context.hasCacheHit = false;
-          context.hasCacheMiss = false;
-
-          // Release mutex
-          resolvePromise = undefined;
-        }
-      };
-
-      // With `prepare`, selections are only collected within the provided
-      // function. Accessing other properties in the proxy should not trigger
-      // further fetches.
-      if (prepare) {
-        context.shouldFetch = false;
-
-        prepare(accessor, { prepass });
-
-        if (context.shouldFetch) {
-          resolvePromise = resolve();
-        }
-      }
-
-      if (resolvePromise && !context.hasCacheHit) {
-        // [ ] Test if suspense still works after first render, because
-        // signals are fine-grained and store updates may not means
-        // a component level render.
-        throw resolvePromise;
-      }
-
-      if (resolveError) {
-        throw resolveError;
-      }
-
-      return {
-        schema,
-        $refetch: (ignoreCache = true) => refetch({ ignoreCache }),
-        debug: rerender,
-      };
-    },
+    createQuery: createQuery(client, options),
+    createMutation: createMutation(client, options),
+    createSubscription: createSubscription(client, options),
   };
 };
