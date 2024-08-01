@@ -121,6 +121,7 @@ export const addCommand = (command: Command) => {
 
         if (options.target) {
           config.destination = options.target;
+          config.javascriptOutput = path.extname(options.target) === '.js';
         }
       }
 

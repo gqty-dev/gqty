@@ -115,7 +115,7 @@ export type ResolveFn<TSchema extends BaseGeneratedSchema> = <TData = unknown>(
 ) => Promise<TData>;
 
 export type SubscribeFn<TSchema extends BaseGeneratedSchema> = <
-  TData = unknown,
+  TData = unknown
 >(
   fn: DataFn<TSchema, TData>,
   options?: SubscribeOptions

@@ -28,7 +28,7 @@ import type { ReactClientOptionsWithDefaults } from '../utils';
 export interface UseQueryPrepareHelpers<
   GeneratedSchema extends {
     query: object;
-  },
+  }
 > {
   readonly prepass: typeof prepass;
   readonly query: GeneratedSchema['query'];
@@ -153,7 +153,7 @@ export type UseQueryReturnValue<GeneratedSchema extends { query: object }> =
   };
 
 export interface UseQuery<
-  GeneratedSchema extends { query: GeneratedSchemaObject },
+  GeneratedSchema extends { query: GeneratedSchemaObject }
 > {
   (
     options?: UseQueryOptions<GeneratedSchema>
