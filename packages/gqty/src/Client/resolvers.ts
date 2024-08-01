@@ -175,16 +175,20 @@ const pendingQueries = new WeakMap<
   () => Promise<unknown>
 >();
 
-const getInteraction = <T>(subject: Set<T>, object: Set<T>) => {
-  const interaction = new Set<T>();
+const getIntersection = <T>(subject: Set<T>, object: Set<T>) => {
+  if (typeof subject.intersection === 'function') {
+    return subject.intersection(object);
+  }
+
+  const intersection = new Set<T>();
 
   for (const item of object) {
     if (subject.has(item)) {
-      interaction.add(item);
+      intersection.add(item);
     }
   }
 
-  return interaction;
+  return intersection;
 };
 
 export const createResolvers = <TSchema extends BaseGeneratedSchema>({
@@ -237,11 +241,10 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
       }
 
       const targetSelections =
-        cache?.data === null ||
-        (Array.isArray(cache?.data) && cache.data.length === 0)
+        cache === undefined
           ? // For empty arrays and null objects, trigger sub-selections made
             // in previous selections.
-            getInteraction(selection.getLeafNodes(), prevSelections)
+            getIntersection(selection.getLeafNodes(), prevSelections)
           : [selection];
 
       for (const selection of targetSelections) {
@@ -281,7 +284,9 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
       // 1. Query with operation names are never batched up with others.
       // 2. 'no-store' queries are tracked separately because its data is not
       // going into the main cache.
-      const selectionsCacheKey = `${operationName ?? (cachePolicy === 'no-store' ? 'no-store' : 'default')}`;
+      const selectionsCacheKey = `${
+        operationName ?? (cachePolicy === 'no-store' ? 'no-store' : 'default')
+      }`;
 
       const pendingSelections = addSelections(
         targetCache,

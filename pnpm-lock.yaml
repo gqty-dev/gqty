@@ -77,9 +77,6 @@ importers:
       ts-node:
         specifier: ^10.9.2
         version: 10.9.2(@types/node@20.14.14)(typescript@5.5.4)
-      tslib:
-        specifier: ^2.6.3
-        version: 2.6.3
       tsx:
         specifier: ^4.16.2
         version: 4.16.2
@@ -451,15 +448,18 @@ importers:
       esbuild:
         specifier: ^0.23.0
         version: 0.23.0
+      graphql-scalars:
+        specifier: ^1.23.0
+        version: 1.23.0(graphql@16.9.0)
       graphql-ws:
         specifier: ^5.16.0
         version: 5.16.0(graphql@16.9.0)
       graphql-yoga:
         specifier: ^5.4.0
         version: 5.4.0(graphql@16.9.0)
-      tslib:
-        specifier: ^2.6.3
-        version: 2.6.3
+      typescript:
+        specifier: ^5.5.4
+        version: 5.5.4
 
   packages/cli:
     dependencies:
@@ -485,8 +485,8 @@ importers:
         specifier: ^5.3.8
         version: 5.3.8
       chalk:
-        specifier: ^5.3.0
-        version: 5.3.0
+        specifier: ^4.1.2
+        version: 4.1.2
       commander:
         specifier: ^12.1.0
         version: 12.1.0
@@ -694,9 +694,6 @@ importers:
       test-utils:
         specifier: workspace:^
         version: link:../../internal/test-utils
-      tslib:
-        specifier: ^2.6.3
-        version: 2.6.3
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
@@ -877,9 +874,6 @@ importers:
       test-utils:
         specifier: workspace:^
         version: link:../../internal/test-utils
-      tslib:
-        specifier: ^2.6.3
-        version: 2.6.3
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
@@ -10364,6 +10358,16 @@ packages:
       tiny-lru: 10.0.1
     transitivePeerDependencies:
       - '@types/node'
+
+  /graphql-scalars@1.23.0(graphql@16.9.0):
+    resolution: {integrity: sha512-YTRNcwitkn8CqYcleKOx9IvedA8JIERn8BRq21nlKgOr4NEcTaWEG0sT+H92eF3ALTFbPgsqfft4cw+MGgv0Gg==}
+    engines: {node: '>=10'}
+    peerDependencies:
+      graphql: ^0.8.0 || ^0.9.0 || ^0.10.0 || ^0.11.0 || ^0.12.0 || ^0.13.0 || ^14.0.0 || ^15.0.0 || ^16.0.0
+    dependencies:
+      graphql: 16.9.0
+      tslib: 2.6.3
+    dev: true
 
   /graphql-sse@2.5.3(graphql@16.9.0):
     resolution: {integrity: sha512-5IcFW3e7fPOG7oFkK1v3X1wWtCJArQKB/H1UJeNotjy7a/9EYA5K+EiHJF1BiDSVNx7y64bd0FlDETrNBSvIHQ==}

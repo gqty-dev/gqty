@@ -70,16 +70,19 @@ export const createContext = ({
       const now = Date.now();
       const { data, expiresAt: age = Infinity } = cacheNode ?? {};
 
-      // Suggests a fetch on a stale or missing cache.
-      //
-      // We add a minimum of 100 ms leeway for caches with immedidate staleness,
-      // this helps avoid infinite fetch loops.
-      this.shouldFetch ||= data === undefined || age < now - 100;
-      this.hasCacheHit ||= data !== undefined;
+      if (cacheNode) {
+        // Suggests a fetch on a stale or missing cache.
+        this.shouldFetch ||=
+          data === undefined ||
+          // Add 100 ms leeway to avoiding infinite fetch loops for caches with
+          // immedidate staleness.
+          age < now - 100;
+        this.hasCacheHit ||= data !== undefined;
 
-      // Missing cache always notify on cache updates.
-      // The only case we skip this is when fetching for SWR on 'default'.
-      this.notifyCacheUpdate ||= data === undefined;
+        // Missing cache always notify on cache updates.
+        // The only case we skip this is when fetching for SWR on 'default'.
+        this.notifyCacheUpdate ||= data === undefined;
+      }
 
       selectSubscriptions.forEach((fn) => fn(selection, cacheNode));
     },

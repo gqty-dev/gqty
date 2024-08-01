@@ -2,6 +2,7 @@ import * as fastify from 'fastify';
 
 export { default as waitForExpect } from 'wait-for-expect';
 export * from './app';
+export * from './client';
 export { fastify };
 
 export function assertIsDefined<T = unknown>(

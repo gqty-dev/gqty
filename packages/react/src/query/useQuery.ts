@@ -230,7 +230,11 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
           // Trigger a fetch when selections are made outside of the rendering
           // phase, such as event listeners or polling.
           if (!renderSession.get('isRendering')) {
-            refetch({ skipPrepass: true, skipOnError: true });
+            // Assuming external access are mostly synchronous, run at the next
+            // microtask.
+            Promise.resolve().then(() =>
+              refetch({ skipPrepass: true, skipOnError: true })
+            );
           } // Clears previous selections if the current render is not triggered
           // by a fetch, because it implies a user-triggered state change where
           // old query inputs may be stale. Only clear selections once right
@@ -245,8 +249,8 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
               resolver.context.shouldFetch = true;
             }
 
-            // Prevent further resets because selections from now on belongs
-            // to the next fetch.
+            // Only reset once because selections from now on belongs to the
+            // next fetch.
             if (!renderSession.get('postFetchSelectionCleared')) {
               renderSession.set('postFetchSelectionCleared', true);
 

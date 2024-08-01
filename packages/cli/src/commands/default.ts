@@ -2,6 +2,7 @@ import type { Command } from '@commander-js/extra-typings';
 import type { ProjectManifest } from '@pnpm/types';
 import { cosmiconfig } from 'cosmiconfig';
 import { readFile, watch } from 'node:fs/promises';
+import path from 'node:path';
 import type { GQtyConfig } from '../config';
 import { inquirer } from '../deps';
 import type { SupportedFrameworks } from '../generate';
@@ -118,6 +119,7 @@ export const addCommand = (command: Command) => {
 
         if (options.target) {
           config.destination = options.target;
+          config.javascriptOutput = path.extname(options.target) === '.js';
         }
       }
 

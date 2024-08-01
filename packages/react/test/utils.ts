@@ -9,7 +9,12 @@ import {
 } from 'gqty';
 import { createClient as createSubscriptionsClient } from 'graphql-ws';
 import { merge } from 'lodash-es';
-import { createTestApp, gql } from 'test-utils';
+import {
+  createMockClient,
+  createTestApp,
+  gql,
+  type MockClientOptions,
+} from 'test-utils';
 import type { PartialDeep } from 'type-fest';
 import { generate } from '../../cli/src/generate';
 import { createReactClient } from '../src';
@@ -318,6 +323,16 @@ export const createReactTestClient = async (
     ...core,
     ...react,
   };
+};
+
+export type MockReactClientOptions = MockClientOptions;
+
+export const createMockReactClient = async (
+  options?: MockReactClientOptions
+) => {
+  const client = await createMockClient(options);
+
+  return createReactClient(client);
 };
 
 export const sleep = (amount: number) =>
