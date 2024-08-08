@@ -12,7 +12,7 @@ import {
   uniqBy,
   type LegacyFetchPolicy,
 } from '../common';
-import { type ReactClientOptionsWithDefaults } from '../utils';
+import type { ReactClientOptionsWithDefaults } from '../utils';
 
 export type PaginatedQueryFetchPolicy = Extract<
   LegacyFetchPolicy,
@@ -249,9 +249,7 @@ export const createUsePaginatedQuery =
             }));
           }
         )
-        .finally(() => {
-          context.shouldFetch = false;
-        });
+        .finally(() => context.reset());
 
       if (context.shouldFetch) {
         if (suspense) {
@@ -283,7 +281,7 @@ export const createUsePaginatedQuery =
         const currentArgs =
           typeof newArgs === 'function'
             ? newArgs({ existingData: state.data, existingArgs: state.args })
-            : newArgs ?? state.args;
+            : (newArgs ?? state.args);
 
         try {
           const promise = fetchData(currentArgs, fetchPolicy);

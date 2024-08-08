@@ -29,7 +29,7 @@ const defaultConfig = {
     url: 'http://localhost',
   },
   testPathIgnorePatterns: ['/node_modules/', '/test/generated'],
-  collectCoverage: true,
+  collectCoverage: !!process.env.CI,
   collectCoverageFrom: ['./src/**/*.ts', './src/**/*.tsx', '!**/*.d.ts'],
   testTimeout: 10000,
   watchPlugins: [

@@ -6,7 +6,7 @@ import {
   type ScalarsEnumsHash,
   type Schema,
   type Type,
-} from 'gqty/Schema';
+} from 'gqty';
 import type {
   GraphQLEnumType,
   GraphQLField,
@@ -36,6 +36,8 @@ const {
   assertSchema,
 } = graphql;
 
+export type SupportedFrameworks = 'react' | 'solid-js';
+
 export interface GenerateOptions {
   /**
    * The endpoint to use for the `queryFetcher` function
@@ -63,8 +65,14 @@ export interface GenerateOptions {
   preImport?: string;
   /**
    * Generate React Client code
+   *
+   * @deprecated Use `frameworks` instead.
    */
   react?: boolean;
+  /**
+   * Frontend framework integrations to be included.
+   */
+  frameworks?: Array<SupportedFrameworks>;
   /**
    * Generated enum styles.
    *
@@ -137,6 +145,7 @@ export async function generate(
     javascriptOutput: isJavascriptOutput = defaultConfig.javascriptOutput,
     preImport = defaultConfig.preImport,
     react = defaultConfig.react,
+    frameworks = defaultConfig.frameworks,
     scalarTypes = defaultConfig.scalarTypes,
     subscriptions = defaultConfig.subscriptions,
     transformSchema = defaultConfig.transformSchema,
@@ -173,6 +182,9 @@ export async function generate(
       throw Error(`"transformSchema" returned an invalid GraphQL Schema!`);
     }
   }
+
+  react ??= frameworks.includes('react');
+  const solid = frameworks.includes('solid-js');
 
   const codegenResultPromise = deps.codegen({
     schema: parse(deps.printSchemaWithDirectives(schema)),
@@ -235,7 +247,7 @@ export async function generate(
         : /* istanbul ignore next */
           fieldsDescriptions.get(typeName[0])?.[typeName[1]];
 
-      let comment = '';
+      let comment = ``;
 
       if (data?.description) {
         comment +=
@@ -260,7 +272,7 @@ export async function generate(
       return comment
         ? `/** ${comment}
       */\n`
-        : '';
+        : ``;
     } else {
       const desc = descriptions.get(typeName);
       return desc
@@ -271,7 +283,7 @@ export async function generate(
           .map((line) => '* ' + line)
           .join('\n')}
       */\n`
-        : '';
+        : ``;
     }
   }
 
@@ -603,7 +615,7 @@ export async function generate(
       typeToReturn = ['Maybe<', ...typeToReturn, '>'];
     }
 
-    return typeToReturn.join('');
+    return typeToReturn.join(``);
   }
 
   function parseFinalType({
@@ -628,7 +640,7 @@ export async function generate(
       typeToReturn = ['Maybe<', ...typeToReturn, '>'];
     }
 
-    return typeToReturn.join('');
+    return typeToReturn.join(``);
   }
 
   const objectTypeTSTypes = new Map<string, Map<string, string>>();
@@ -743,7 +755,7 @@ export async function generate(
       `;
 
       return acum;
-    }, '');
+    }, ``);
 
   if (unionsAndInterfacesObjectTypesMap.size) {
     typescriptTypes += `
@@ -760,7 +772,7 @@ export async function generate(
       `;
 
         return acum;
-      }, '')}
+      }, ``)}
     `;
   }
 
@@ -779,7 +791,7 @@ export async function generate(
       ${deps.sortBy(enumsNames).reduce((acum, enumName) => {
         acum += `${enumName}: ${enumName};`;
         return acum;
-      }, '')}
+      }, ``)}
     }
     `;
 
@@ -829,7 +841,7 @@ export async function generate(
       (acum, [key, value]) => {
         return `${JSON.stringify(key)}:${JSON.stringify(value)}, ${acum}`;
       },
-      hasUnions ? `[SchemaUnionsKey]: ${JSON.stringify(unionsMapObj)}` : ''
+      hasUnions ? `[SchemaUnionsKey]: ${JSON.stringify(unionsMapObj)}` : ``
     );
 
   const javascriptSchemaCode = await format(`
@@ -837,7 +849,7 @@ export async function generate(
      * GQty AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
      */
 
-    ${hasUnions ? 'import { SchemaUnionsKey } from "gqty";' : ''}
+    ${hasUnions ? 'import { SchemaUnionsKey } from "gqty";' : ``}
 
     ${typeDoc(
       'import("gqty").ScalarsEnumsHash'
@@ -858,12 +870,12 @@ export async function generate(
 
     ${preImport}
 
-    ${imports.length ? `import { ${imports.join(', ')} } from "gqty";` : ''}
+    ${imports.length ? `import { ${imports.join(', ')} } from "gqty";` : ``}
 
     ${await codegenResultPromise}
 
     export${
-      isJavascriptOutput ? ' declare' : ''
+      isJavascriptOutput ? ' declare' : ``
     } const scalarsEnumsHash: ScalarsEnumsHash${
       isJavascriptOutput ? ';' : ` = ${scalarsEnumsHashString};`
     }
@@ -888,7 +900,7 @@ export async function generate(
           prepareReactRender,
           useHydrateCache,
           prepareQuery,
-          ${subscriptions ? 'useSubscription,' : ''}
+          ${subscriptions ? 'useSubscription,' : ``}
         } = ${
           isJavascriptOutput
             ? `${typeDoc(
@@ -902,7 +914,13 @@ export async function generate(
           }
         });
       `.trim()
-    : '';
+    : ``;
+
+  const solidClientCode = solid
+    ? `
+        export const { createQuery } = createSolidClient(client);
+      `
+    : ``;
 
   const clientCode = await format(`
     /**
@@ -910,12 +928,13 @@ export async function generate(
      */
 
     ${[
-      react ? `import { createReactClient } from "@gqty/react";` : '',
+      react ? `import { createReactClient } from "@gqty/react";` : ``,
+      solid ? `import { createSolidClient } from "@gqty/solid";` : ``,
       subscriptions
         ? `import { createClient as createSubscriptionsClient } from "${
             subscriptions === true ? 'graphql-ws' : subscriptions
           }";`
-        : '',
+        : ``,
       isJavascriptOutput
         ? 'import { Cache, createClient, defaultResponseHandler } from "gqty";'
         : 'import { Cache, createClient, defaultResponseHandler, type QueryFetcher } from "gqty";',
@@ -941,7 +960,7 @@ export async function generate(
             return url.href;
           }
         }) : undefined;`
-        : ''
+        : ``
     }
 
     const cache = new Cache(
@@ -967,7 +986,7 @@ export async function generate(
       cache,
       fetchOptions: {
         fetcher: queryFetcher,
-        ${subscriptions ? 'subscriber: subscriptionsClient' : ''}
+        ${subscriptions ? 'subscriber: subscriptionsClient' : ``}
       },
     });
     `
@@ -978,7 +997,7 @@ export async function generate(
       cache,
       fetchOptions:{
         fetcher: queryFetcher,
-        ${subscriptions ? 'subscriber: subscriptionsClient' : ''}
+        ${subscriptions ? 'subscriber: subscriptionsClient' : ``}
       },
     });
     `
@@ -991,6 +1010,7 @@ export async function generate(
     export const { query, mutation, mutate, subscription, resolved, refetch, track } = client;
 
     ${reactClientCode}
+    ${solidClientCode}
 
     export * from "./schema.generated";
   `);
