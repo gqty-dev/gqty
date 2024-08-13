@@ -1,5 +1,13 @@
 # @gqty/subscriptions
 
+## 3.0.3
+
+### Patch Changes
+
+- Updated dependencies
+  [[`c222005`](https://github.com/gqty-dev/gqty/commit/c222005ef1295f06f6ed6abcedccc512405d8771)]:
+  - gqty@3.2.1
+
 ## 3.0.2
 
 ### Patch Changes

@@ -1,5 +1,14 @@
 # gqty
 
+## 3.2.1
+
+### Patch Changes
+
+- [#1992](https://github.com/gqty-dev/gqty/pull/1992)
+  [`c222005`](https://github.com/gqty-dev/gqty/commit/c222005ef1295f06f6ed6abcedccc512405d8771)
+  Thanks [@vicary](https://github.com/vicary)! - Allow `resolve` to return
+  `null`
+
 ## 3.2.0
 
 ### Minor Changes
