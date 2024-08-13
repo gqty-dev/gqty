@@ -1,0 +1,95 @@
+# Note: Manually regenerate types after editing this schema.
+# pnpm dlx @gqty/cli --no-install ./src/schema.graphql
+
+"""
+# Basic query
+1. Top-level scalar
+2. Object types
+3. Unions
+4. Interfaces
+5. Arrays
+
+## Special cases
+1. Nullables
+2. Empty arrays
+3. Recursive relationships
+4. Customer scalar
+"""
+type Query {
+  now: Date!
+  peoples: [People!]!
+  people(id: ID!): People
+  pet(id: ID!): Pet
+}
+
+scalar Date
+
+type People {
+  id: ID!
+  name: String!
+  pets: [Pet!]!
+}
+
+interface Pet {
+  id: ID!
+  name: String
+  pet(times: Int = 1): String
+  owner: People
+}
+
+type Dog implements Pet {
+  id: ID!
+  name: String
+  "Dog arf x times."
+  pet(times: Int = 1): String
+  owner: People
+}
+
+type Cat implements Pet {
+  id: ID!
+  name: String
+  "Cat ignores you and returns null"
+  pet(times: Int = 1): String
+  owner: People
+}
+
+"""
+1. Basic mutation
+2. Loading state change and query refetches
+3. Optimistic updates
+"""
+type Mutation {
+  takePet(people: ID!, pet: ID!): Pet!
+  dropPet(people: ID!, pet: ID!): Pet!
+
+  createPeople(name: String!): People!
+
+  createDog(name: String): Dog!
+  renameDog(id: ID!, name: String!): Dog!
+
+  createCat(name: String): Cat!
+  renameCat(id: ID!, name: String!): Cat!
+}
+
+"""
+1. Triggered by mutation
+2. Triggered externally
+3. Normalized cache update
+"""
+type Subscription {
+  peopleChanged: PeopleChangeEvent!
+
+  # pet never changes, people change.
+  # petChanged: PetChangeEvent!
+}
+
+type PeopleChangeEvent {
+  type: ChangeEventType!
+  people: People!
+}
+
+enum ChangeEventType {
+  CREATED
+  UPDATED
+  DELETED
+}
