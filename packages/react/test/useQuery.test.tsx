@@ -1,7 +1,7 @@
 import { renderHook, waitFor } from '@testing-library/react';
 import { Cache, type QueryPayload } from 'gqty';
 import { act } from 'react';
-import { createReactTestClient } from './utils';
+import { createMockReactClient, createReactTestClient, sleep } from './utils';
 
 describe('useQuery', () => {
   describe('isLoading', () => {
@@ -248,16 +248,74 @@ describe('useQuery', () => {
 
     expect(fetches.length).toBe(1);
 
+    await new Promise((r) => setTimeout(r, 120));
+
     act(rerender);
 
     await waitFor(() => {
       expect(fetches.length).toBe(2);
     });
 
+    await new Promise((r) => setTimeout(r, 120));
+
     act(rerender);
 
     await waitFor(() => {
       expect(fetches.length).toBe(3);
     });
+  });
+
+  it('should retain sub-selections for nulls and empty arrays', async () => {
+    const queries: string[] = [];
+    const cache = new Cache(undefined, {
+      maxAge: 0,
+      staleWhileRevalidate: 5 * 30 * 1000,
+    });
+    const { useQuery } = await createMockReactClient({
+      cache,
+      onFetch: ({ query }) => {
+        queries.push(query);
+      },
+    });
+
+    const { result } = renderHook(() => {
+      const query = useQuery({
+        initialLoadingState: true,
+      });
+
+      // Empty array
+      query.peoples.map((people) => people.name);
+
+      // Null
+      query.pet({ id: '999' })?.owner?.name;
+
+      query.now;
+
+      return query;
+    });
+
+    await waitFor(() => expect(result.current.$state.isLoading).toBe(false));
+
+    // This should NOT trigger a SWR refetch
+    await act(() => result.current.$refetch(false));
+
+    expect(queries).toMatchInlineSnapshot(`
+      [
+        "query($a2a039:ID!){eb2884:pet(id:$a2a039){__typename id owner{__typename id name}}now peoples{__typename id name}}",
+      ]
+    `);
+
+    // Wait for the minimum leeway of 100ms
+    await sleep(150);
+
+    // This should trigger a SWR refetch
+    await act(() => result.current.$refetch(false));
+
+    expect(queries).toMatchInlineSnapshot(`
+      [
+        "query($a2a039:ID!){eb2884:pet(id:$a2a039){__typename id owner{__typename id name}}now peoples{__typename id name}}",
+        "query($a2a039:ID!){eb2884:pet(id:$a2a039){__typename id owner{__typename id name}}now peoples{__typename id name}}",
+      ]
+    `);
   });
 });

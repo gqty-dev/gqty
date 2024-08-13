@@ -1,5 +1,6 @@
 import { Cache, type CacheGetOptions } from '../Cache';
 import type { Disposable } from '../Disposable';
+import type { Resetable } from '../Resetable';
 import type { ScalarsEnumsHash, Schema } from '../Schema';
 import type { Selectable } from '../Selectable';
 
@@ -7,6 +8,7 @@ export type SchemaContext<
   T extends Record<string, unknown> = Record<string, unknown>,
 > = T &
   Disposable &
+  Resetable &
   Selectable & {
     cache: Cache;
     readonly aliasLength?: number;
@@ -51,7 +53,7 @@ export const createContext = ({
       cachePolicy === 'no-cache' ||
       cachePolicy === 'no-store' ||
       cachePolicy === 'reload'
-        ? new Cache(undefined, { maxAge: Infinity })
+        ? new Cache(undefined, { maxAge: 0 })
         : cache,
     cacheOptions: {
       includeExpired:
@@ -70,18 +72,27 @@ export const createContext = ({
       const now = Date.now();
       const { data, expiresAt: age = Infinity } = cacheNode ?? {};
 
-      // Suggests a fetch on a stale or missing cache.
-      //
-      // We add a minimum of 100 ms leeway for caches with immedidate staleness,
-      // this helps avoid infinite fetch loops.
-      this.shouldFetch ||= data === undefined || age < now - 100;
-      this.hasCacheHit ||= data !== undefined;
+      if (cacheNode) {
+        // Suggests a fetch on a stale or missing cache.
+        this.shouldFetch ||=
+          data === undefined ||
+          // Add 100 ms leeway to avoiding infinite fetch loops for caches with
+          // immedidate staleness.
+          age < now;
+        this.hasCacheHit ||= data !== undefined;
 
-      // Missing cache always notify on cache updates.
-      // The only case we skip this is when fetching for SWR on 'default'.
-      this.notifyCacheUpdate ||= data === undefined;
+        // Missing cache always notify on cache updates.
+        // The only case we skip this is when fetching for SWR on 'default'.
+        this.notifyCacheUpdate ||= data === undefined;
+      }
 
       selectSubscriptions.forEach((fn) => fn(selection, cacheNode));
+    },
+    reset() {
+      this.shouldFetch = false;
+      this.hasCacheHit = false;
+      this.hasCacheMiss = false;
+      this.notifyCacheUpdate = cachePolicy !== 'default';
     },
     subscribeSelect(callback) {
       selectSubscriptions.add(callback);

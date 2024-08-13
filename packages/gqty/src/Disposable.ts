@@ -10,8 +10,8 @@ import type { Unsubscribe } from './Unsubscribe';
 export interface Disposable {
   /**
    * Notifying subscribers about the intended dispoal of this object,
-   * subscribers are responsible to remove any references and release any
-   * resources.
+   * subscribers are responsible to remove any references in the local scope and
+   * release active resources.
    */
   dispose(): void;
 

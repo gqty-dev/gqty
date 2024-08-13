@@ -284,7 +284,7 @@ describe('core#resolve', () => {
         selections,
       } = createResolver();
 
-      // 1. Make selections into dogs
+      // 1. Select something non-null
       query.human({ name: 'John Doe' }).echo({ input: 'Now you see me...' });
 
       // 2. Ensure selections made
@@ -316,7 +316,7 @@ describe('core#resolve', () => {
          ]
         `);
 
-      // 4. Make selections again
+      // 4. Select a null object
       query.human({ name: 'John Cena' }).echo({ input: "Now you don't!" });
 
       // 5. Expect sub-selections
