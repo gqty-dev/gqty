@@ -84,8 +84,13 @@ export const resolve = (
       throw new GQtyError(`Cached null for non-nullable type ${pureType}.`);
     }
 
+    if (context.scalars[pureType]) {
+      context.select(selection, cache);
+    }
     // Trigger cached sub-selections for nullable object types.
-    context.select(selection, cache);
+    else {
+      context.select(selection);
+    }
 
     return null;
   }
@@ -552,7 +557,7 @@ export const createArrayAccessor = (meta: Meta) => {
 
   // Trigger cached sub-selections for empty arrays.
   if (cache.data.length === 0) {
-    context.select(selection, cache);
+    context.select(selection);
   }
 
   const proxy = new Proxy(cache.data, arrayProxyHandler);

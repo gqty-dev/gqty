@@ -33,6 +33,12 @@ export type CacheObject = {
 export type CacheLeaf = string | number | boolean | null | undefined;
 
 export type CacheOptions = {
+  /**
+   * Maximum age of cache data in milliseconds, expired data nodes are subjected
+   * to garbage collection.
+   *
+   * @default Infinity
+   */
   readonly maxAge?: number;
 
   /**
@@ -41,6 +47,12 @@ export type CacheOptions = {
    */
   readonly normalization?: boolean | CacheNormalizationHandler;
 
+  /**
+   * Maximum time in milliseconds to keep stale data in cache, while allowing
+   * stale-while-revalidate background fetches.
+   *
+   * @default 0
+   */
   readonly staleWhileRevalidate?: number;
 };
 
@@ -79,6 +91,13 @@ export type CacheSetOptions = {
 };
 
 /**
+ * Clamping minimum cache age to avoid infinite fetch loops from immediate
+ * expirations.
+ */
+// [ ] Rewrite framework integrations with a cleaner rendering strategy that allows immediate expirations.
+const MINIMUM_CACHE_AGE = 100;
+
+/**
  * A scoped cache for accessors, selections and data with expiry awareness.
  */
 // [ ] LRU cap size
@@ -86,11 +105,21 @@ export type CacheSetOptions = {
 // [ ] Simple cache eviction: evict(type: string, field: string) {}
 export class Cache {
   #maxAge = Infinity;
+
+  /**
+   * Maximum age of cache data in milliseconds, expired data nodes are subjected
+   * to garbage collection.
+   */
   get maxAge() {
     return this.#maxAge;
   }
 
   #staleWhileRevalidate: number = 0;
+
+  /**
+   * Maximum time in milliseconds to keep stale data in cache, while allowing
+   * stale-while-revalidate background fetches.
+   */
   get staleWhileRevalidate() {
     return this.#staleWhileRevalidate;
   }
@@ -122,7 +151,7 @@ export class Cache {
       normalization,
     }: CacheOptions = {}
   ) {
-    this.#maxAge = Math.max(maxAge, 0);
+    this.#maxAge = Math.max(maxAge, MINIMUM_CACHE_AGE);
     this.#staleWhileRevalidate = Math.max(staleWhileRevalidate, 0);
 
     if (normalization) {
@@ -352,9 +381,9 @@ export class Cache {
         const dataContainer: CacheDataContainer =
           // Mutation and subscription results should be returned right away for
           // immediate use. Their responses are only meaningful to a cache with
-          // normalization enabled, where it updates subscribing clients.
-          // We force a short expiration to let it survives the next render,
-          // then leave it up for GC.
+          // normalization enabled, where it already updates listeners.
+          //
+          // We force a short expiration here to let it survive the next render.
           type === 'mutation' || type === 'subscription'
             ? {
                 data,
