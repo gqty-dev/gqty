@@ -2,6 +2,7 @@ import type { PackageJSON } from 'bob-esbuild/config/packageJson';
 import type { Command } from 'commander';
 import { cosmiconfig } from 'cosmiconfig';
 import { readFile, watch } from 'node:fs/promises';
+import path from 'node:path';
 import type { GQtyConfig } from '../config';
 import { inquirer } from '../deps';
 import { convertHeadersInput } from './default/convertHeadersInput';
@@ -180,14 +181,15 @@ export const addCommand = (command: Command) => {
 
       // Watch mode
       if (options.watch) {
-        const { printSchema } = await import('graphql');
-        const { FasterSMA: SMA } = await import(
-          'trading-signals/dist/SMA/SMA.js'
-        );
-        const { default: throttle } = await import('lodash-es/throttle.js');
         const {
           default: { isMatch },
         } = await import('micromatch');
+        const { default: throttle } = await import('lodash-es/throttle.js');
+        const { FasterSMA: SMA } = await import(
+          'trading-signals/dist/SMA/SMA.js'
+        );
+        const { flat, map, pipeAsync } = await import('iter-ops');
+        const { printSchema } = await import('graphql');
 
         const sma = new SMA(3);
         const getMovingAverage = () => {
@@ -272,22 +274,41 @@ export const addCommand = (command: Command) => {
 
         // Watch file changes
         (async () => {
+          const watchEndpoints = endpoints
+            .map((endpoint) => path.resolve(endpoint))
+            .map((endpoint) => path.dirname(endpoint));
+
+          const watchIterable = pipeAsync(
+            [...new Set(watchEndpoints)],
+            map((path) =>
+              pipeAsync(
+                watch(path),
+                map((watcher) => [watcher, path] as const)
+              )
+            ),
+            flat()
+          );
+
           let shouldRun = false;
 
-          for await (const { filename } of watch('.', { recursive: true })) {
-            if (filename && isMatch(filename, endpoints)) {
-              // Already queued
-              if (shouldRun) continue;
-              shouldRun = true;
+          for await (const [{ filename }, parentPath] of watchIterable) {
+            if (!filename) continue;
 
-              process.nextTick(() => {
-                // Already executed
-                if (!shouldRun) return;
-                shouldRun = false;
+            const fullPath = path.resolve(parentPath, filename);
 
-                doGenerateSchema();
-              });
-            }
+            if (!isMatch(fullPath, watchEndpoints)) continue;
+
+            // Already queued
+            if (shouldRun) continue;
+            shouldRun = true;
+
+            process.nextTick(() => {
+              // Already executed
+              if (!shouldRun) return;
+              shouldRun = false;
+
+              doGenerateSchema();
+            });
           }
         })();
       }

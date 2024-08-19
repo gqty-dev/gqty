@@ -108,8 +108,17 @@
     "typescript": "^5.5.4",
     "wait-on": "^7.2.0"
   },
-  "optionalDependencies": {
+  "peerDependencies": {
+    "iter-ops": "^3.5.0",
     "trading-signals": "^5.0.4"
+  },
+  "peerDependenciesMeta": {
+    "iter-ops": {
+      "optional": true
+    },
+    "trading-signals": {
+      "optional": true
+    }
   },
   "publishConfig": {
     "directory": "dist"
