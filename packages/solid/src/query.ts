@@ -278,29 +278,26 @@ export const createQuery = <Schema extends BaseGeneratedSchema>(
       });
     }
 
-    return Object.assign(
-      () => resource.latest?.query ?? resource()?.query ?? accessor.query,
-      {
-        $state: {
-          get loading() {
-            return resource.loading;
-          },
-          get error() {
-            return resource.error;
-          },
+    return Object.assign(() => resource()?.query ?? accessor.query, {
+      $state: {
+        get loading() {
+          return resource.loading;
         },
-        $refetch: async (ignoreCache = true) => {
-          if (resolvePromise) {
-            return;
-          }
-
-          // Always replace current selections with those from last successful
-          // fetch for user-triggered refetches.
-          restorePreviousSelections();
-
-          return await $refetch({ ignoreCache });
+        get error() {
+          return resource.error;
         },
-      }
-    );
+      },
+      $refetch: async (ignoreCache = true) => {
+        if (resolvePromise) {
+          return;
+        }
+
+        // Always replace current selections with those from last successful
+        // fetch for user-triggered refetches.
+        restorePreviousSelections();
+
+        return await $refetch({ ignoreCache });
+      },
+    });
   };
 };
