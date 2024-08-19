@@ -1,7 +1,6 @@
 import type { PackageJSON } from 'bob-esbuild/config/packageJson';
 import type { Command } from 'commander';
 import { cosmiconfig } from 'cosmiconfig';
-import { flat, map, pipeAsync } from 'iter-ops';
 import { readFile, watch } from 'node:fs/promises';
 import path from 'node:path';
 import type { GQtyConfig } from '../config';
@@ -182,14 +181,15 @@ export const addCommand = (command: Command) => {
 
       // Watch mode
       if (options.watch) {
-        const { printSchema } = await import('graphql');
-        const { FasterSMA: SMA } = await import(
-          'trading-signals/dist/SMA/SMA.js'
-        );
-        const { default: throttle } = await import('lodash-es/throttle.js');
         const {
           default: { isMatch },
         } = await import('micromatch');
+        const { default: throttle } = await import('lodash-es/throttle.js');
+        const { FasterSMA: SMA } = await import(
+          'trading-signals/dist/SMA/SMA.js'
+        );
+        const { flat, map, pipeAsync } = await import('iter-ops');
+        const { printSchema } = await import('graphql');
 
         const sma = new SMA(3);
         const getMovingAverage = () => {
@@ -272,31 +272,23 @@ export const addCommand = (command: Command) => {
           })();
         }
 
-        const filesToWatch = endpoints.map((schemaFilePath) =>
-          path.resolve(schemaFilePath)
-        );
-        const dirsToWatch = [
-          ...new Set(
-            filesToWatch.map((endpoint) => {
-              const dirToWatch = path.dirname(endpoint);
-              return dirToWatch;
-            })
-          ),
-        ];
-
-        const watchIterable = pipeAsync(
-          dirsToWatch,
-          map((path) =>
-            pipeAsync(
-              watch(path),
-              map((watcher) => [watcher, path] as const)
-            )
-          ),
-          flat()
-        );
-
         // Watch file changes
         (async () => {
+          const watchEndpoints = endpoints
+            .map((endpoint) => path.resolve(endpoint))
+            .map((endpoint) => path.dirname(endpoint));
+
+          const watchIterable = pipeAsync(
+            [...new Set(watchEndpoints)],
+            map((path) =>
+              pipeAsync(
+                watch(path),
+                map((watcher) => [watcher, path] as const)
+              )
+            ),
+            flat()
+          );
+
           let shouldRun = false;
 
           for await (const [{ filename }, parentPath] of watchIterable) {
@@ -304,7 +296,7 @@ export const addCommand = (command: Command) => {
 
             const fullPath = path.resolve(parentPath, filename);
 
-            if (!isMatch(fullPath, filesToWatch)) continue;
+            if (!isMatch(fullPath, watchEndpoints)) continue;
 
             // Already queued
             if (shouldRun) continue;
