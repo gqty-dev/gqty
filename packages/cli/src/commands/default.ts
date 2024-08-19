@@ -2,14 +2,17 @@ import type { PackageJSON } from 'bob-esbuild/config/packageJson';
 import type { Command } from 'commander';
 import { cosmiconfig } from 'cosmiconfig';
 import { readFile, watch } from 'node:fs/promises';
+import path from 'node:path';
 import type { GQtyConfig } from '../config';
-import { inquirer } from '../deps';
+import { fg, inquirer } from '../deps';
 import { convertHeadersInput } from './default/convertHeadersInput';
 import { fetchSchema, isURL } from './default/fetchSchema';
 import { generateClient } from './default/generateClient';
 import { getCommandName } from './default/getCommandName';
 import { logger } from './default/logger';
 import { promptInstall, runInstall } from './default/promptInstall';
+import process from 'node:process';
+import { sep } from 'node:path';
 
 export type CommandOptions = {
   header?: string[];
@@ -180,14 +183,14 @@ export const addCommand = (command: Command) => {
 
       // Watch mode
       if (options.watch) {
-        const { printSchema } = await import('graphql');
-        const { FasterSMA: SMA } = await import(
-          'trading-signals/dist/SMA/SMA.js'
-        );
-        const { default: throttle } = await import('lodash-es/throttle.js');
         const {
           default: { isMatch },
         } = await import('micromatch');
+        const { default: throttle } = await import('lodash-es/throttle.js');
+        const { FasterSMA: SMA } = await import(
+          'trading-signals/dist/SMA/SMA.js'
+        );
+        const { printSchema } = await import('graphql');
 
         const sma = new SMA(3);
         const getMovingAverage = () => {
@@ -202,7 +205,6 @@ export const addCommand = (command: Command) => {
         const doGenerateSchema = throttle(
           async () => {
             if (mutexLock) return;
-
             mutexLock = true;
 
             const start = Date.now();
@@ -272,22 +274,57 @@ export const addCommand = (command: Command) => {
 
         // Watch file changes
         (async () => {
-          let shouldRun = false;
+          // micromatch does not understand relative patterns, normalize them
+          // ahead of time.
+          const matchPatterns = endpoints.map((endpoint) =>
+            path.resolve(endpoint)
+          );
+          const watchTargets = await fg(matchPatterns).then((files) => [
+            ...new Set(files.map((file) => path.dirname(file))),
+          ]);
 
-          for await (const { filename } of watch('.', { recursive: true })) {
-            if (filename && isMatch(filename, endpoints)) {
-              // Already queued
-              if (shouldRun) continue;
-              shouldRun = true;
+          const findCommonPathPrefix = (paths: string[]) => {
+            const [first = '', ...remaining] = paths;
+            if (first === '' || remaining.length === 0) return '';
+            const parts = first.split(sep);
 
-              process.nextTick(() => {
-                // Already executed
-                if (!shouldRun) return;
-                shouldRun = false;
-
-                doGenerateSchema();
-              });
+            let endOfPrefix = parts.length;
+            for (const path of remaining) {
+              const compare = path.split(sep);
+              for (let i = 0; i < endOfPrefix; i++) {
+                if (compare[i] !== parts[i]) {
+                  endOfPrefix = i;
+                }
+              }
+              if (endOfPrefix === 0) return '';
             }
+
+            const prefix = parts.slice(0, endOfPrefix).join(sep);
+            return prefix.endsWith(sep) ? prefix : prefix + sep;
+          };
+          const pathToWatch = findCommonPathPrefix([
+            process.cwd(),
+            ...watchTargets,
+          ]);
+
+          let queued = false;
+
+          for await (const { filename } of watch(pathToWatch, {
+            recursive: true,
+          })) {
+            if (!filename) continue;
+
+            const absolutePath = path.resolve(pathToWatch, filename);
+            if (!isMatch(absolutePath, matchPatterns)) continue;
+            if (mutexLock || queued) continue;
+
+            queued = true;
+
+            setTimeout(() => {
+              doGenerateSchema().finally(() => {
+                queued = false;
+              });
+            });
           }
         })();
       }
