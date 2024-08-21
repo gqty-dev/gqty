@@ -290,7 +290,7 @@ export const addCommand = (command: Command) => {
 
                   while (
                     lastIndex < prev.length &&
-                    prev[lastIndex] !== file[lastIndex]
+                    prev[lastIndex] === file[lastIndex]
                   ) {
                     lastIndex++;
                   }
