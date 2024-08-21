@@ -1,5 +1,14 @@
 # @gqty/cli
 
+## 4.1.2
+
+### Patch Changes
+
+- [#2000](https://github.com/gqty-dev/gqty/pull/2000)
+  [`fc1155f`](https://github.com/gqty-dev/gqty/commit/fc1155f4a70c352416b107d5d8a47d6a15998e4b)
+  Thanks [@lubosmato](https://github.com/lubosmato)! - Allow watch targets above
+  current working directory
+
 ## 4.1.1
 
 ### Patch Changes
