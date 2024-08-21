@@ -23,7 +23,7 @@ export class FetchError extends Error {
 }
 
 export type FetchSchemasOptions = {
-  headers?: Record<string, string>;
+  headers?: HeadersInit;
   headersByEndpoint?: GQtyConfig['introspections'];
   silent?: boolean;
 };
