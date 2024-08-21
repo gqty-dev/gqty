@@ -1,9 +1,12 @@
 import type { PackageJSON } from 'bob-esbuild/config/packageJson';
 import type { Command } from 'commander';
 import { cosmiconfig } from 'cosmiconfig';
+import assert from 'node:assert';
 import { readFile, watch } from 'node:fs/promises';
+import path from 'node:path';
+import process from 'node:process';
 import type { GQtyConfig } from '../config';
-import { inquirer } from '../deps';
+import { fg, inquirer } from '../deps';
 import { convertHeadersInput } from './default/convertHeadersInput';
 import { fetchSchema, isURL } from './default/fetchSchema';
 import { generateClient } from './default/generateClient';
@@ -180,14 +183,14 @@ export const addCommand = (command: Command) => {
 
       // Watch mode
       if (options.watch) {
-        const { printSchema } = await import('graphql');
-        const { FasterSMA: SMA } = await import(
-          'trading-signals/dist/SMA/SMA.js'
-        );
-        const { default: throttle } = await import('lodash-es/throttle.js');
         const {
           default: { isMatch },
         } = await import('micromatch');
+        const { default: throttle } = await import('lodash-es/throttle.js');
+        const { FasterSMA: SMA } = await import(
+          'trading-signals/dist/SMA/SMA.js'
+        );
+        const { printSchema } = await import('graphql');
 
         const sma = new SMA(3);
         const getMovingAverage = () => {
@@ -202,7 +205,6 @@ export const addCommand = (command: Command) => {
         const doGenerateSchema = throttle(
           async () => {
             if (mutexLock) return;
-
             mutexLock = true;
 
             const start = Date.now();
@@ -272,22 +274,54 @@ export const addCommand = (command: Command) => {
 
         // Watch file changes
         (async () => {
-          let shouldRun = false;
+          // micromatch does not understand relative patterns, normalize them
+          // ahead of time.
+          const matchPatterns = endpoints.map((endpoint) =>
+            path.resolve(endpoint)
+          );
 
-          for await (const { filename } of watch('.', { recursive: true })) {
-            if (filename && isMatch(filename, endpoints)) {
-              // Already queued
-              if (shouldRun) continue;
-              shouldRun = true;
+          // Find common path prefix
+          const watchTarget = await fg(matchPatterns, { absolute: true }).then(
+            (files) =>
+              files
+                .map((file) => path.dirname(file).split(path.sep))
+                .reduce((prev, file) => {
+                  let lastIndex = 0;
 
-              process.nextTick(() => {
-                // Already executed
-                if (!shouldRun) return;
-                shouldRun = false;
+                  while (
+                    lastIndex < prev.length &&
+                    prev[lastIndex] === file[lastIndex]
+                  ) {
+                    lastIndex++;
+                  }
 
-                doGenerateSchema();
+                  return prev.slice(0, lastIndex);
+                })
+                // Intentionally combining roots and unresolveable parents here,
+                // because roots are probably too noisy.
+                .join(path.sep) || undefined
+          );
+
+          assert(watchTarget, `No common path for specified endpoints.`);
+
+          let queued = false;
+
+          for await (const { filename } of watch(watchTarget, {
+            recursive: true,
+          })) {
+            if (!filename) continue;
+
+            const absolutePath = path.resolve(watchTarget, filename);
+            if (!isMatch(absolutePath, matchPatterns)) continue;
+            if (mutexLock || queued) continue;
+
+            queued = true;
+
+            setTimeout(() => {
+              doGenerateSchema().finally(() => {
+                queued = false;
               });
-            }
+            });
           }
         })();
       }
