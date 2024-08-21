@@ -1,8 +1,10 @@
 import type { PackageJSON } from 'bob-esbuild/config/packageJson';
 import type { Command } from 'commander';
 import { cosmiconfig } from 'cosmiconfig';
+import assert from 'node:assert';
 import { readFile, watch } from 'node:fs/promises';
 import path from 'node:path';
+import process from 'node:process';
 import type { GQtyConfig } from '../config';
 import { fg, inquirer } from '../deps';
 import { convertHeadersInput } from './default/convertHeadersInput';
@@ -11,8 +13,6 @@ import { generateClient } from './default/generateClient';
 import { getCommandName } from './default/getCommandName';
 import { logger } from './default/logger';
 import { promptInstall, runInstall } from './default/promptInstall';
-import process from 'node:process';
-import { sep } from 'node:path';
 
 export type CommandOptions = {
   header?: string[];
@@ -279,42 +279,39 @@ export const addCommand = (command: Command) => {
           const matchPatterns = endpoints.map((endpoint) =>
             path.resolve(endpoint)
           );
-          const watchTargets = await fg(matchPatterns).then((files) => [
-            ...new Set(files.map((file) => path.dirname(file))),
-          ]);
 
-          const findCommonPathPrefix = (paths: string[]) => {
-            const [first = '', ...remaining] = paths;
-            if (first === '' || remaining.length === 0) return '';
-            const parts = first.split(sep);
+          // Find common path prefix
+          const watchTarget = await fg(matchPatterns, { absolute: true }).then(
+            (files) =>
+              files
+                .map((file) => path.dirname(file).split(path.sep))
+                .reduce((prev, file) => {
+                  let lastIndex = 0;
 
-            let endOfPrefix = parts.length;
-            for (const path of remaining) {
-              const compare = path.split(sep);
-              for (let i = 0; i < endOfPrefix; i++) {
-                if (compare[i] !== parts[i]) {
-                  endOfPrefix = i;
-                }
-              }
-              if (endOfPrefix === 0) return '';
-            }
+                  while (
+                    lastIndex < prev.length &&
+                    prev[lastIndex] !== file[lastIndex]
+                  ) {
+                    lastIndex++;
+                  }
 
-            const prefix = parts.slice(0, endOfPrefix).join(sep);
-            return prefix.endsWith(sep) ? prefix : prefix + sep;
-          };
-          const pathToWatch = findCommonPathPrefix([
-            process.cwd(),
-            ...watchTargets,
-          ]);
+                  return prev.slice(0, lastIndex);
+                })
+                // Intentionally combining roots and unresolveable parents here,
+                // because roots are probably too noisy.
+                .join(path.sep) || undefined
+          );
+
+          assert(watchTarget, `No common path for specified endpoints.`);
 
           let queued = false;
 
-          for await (const { filename } of watch(pathToWatch, {
+          for await (const { filename } of watch(watchTarget, {
             recursive: true,
           })) {
             if (!filename) continue;
 
-            const absolutePath = path.resolve(pathToWatch, filename);
+            const absolutePath = path.resolve(watchTarget, filename);
             if (!isMatch(absolutePath, matchPatterns)) continue;
             if (mutexLock || queued) continue;
 
