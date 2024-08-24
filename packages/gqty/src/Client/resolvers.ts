@@ -12,6 +12,7 @@ import { addSelections, delSelectionSet, getSelectionsSet } from './batching';
 import { createContext, type SchemaContext } from './context';
 import type { Debugger } from './debugger';
 import {
+  type FetchResult,
   fetchSelections,
   subscribeSelections,
   type Unsubscribe,
@@ -192,11 +193,11 @@ export type SubscribeOptions = ResolverOptions & {
 };
 
 /**
- * A client level query batcher.
+ * A module level query batcher.
  */
 const pendingQueries = new WeakMap<
   Set<Set<Selection>>,
-  () => Promise<unknown>
+  () => Promise<Promise<FetchResult<Record<string, unknown>>[]>>
 >();
 
 const getIntersection = <T>(subject: Set<T>, object: Set<T>) => {
@@ -254,8 +255,6 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
       for (const value of source) {
         target.add(value);
       }
-
-      // return target;
     };
 
     const selections = new Set<Selection>();
@@ -295,6 +294,11 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
     });
 
     const { accessor } = createSchemaAccessor<TSchema>(context);
+
+    // Calls to `resolve()` during an active fetch results in a new fetch
+    // this variable keeps track of the last active one, i.e. Only the last
+    // fetch should reset selections and context.
+    let activePromise: Promise<unknown> | undefined;
 
     const resolve: ResolverParts<TSchema>['resolve'] = async () => {
       if (selections.size === 0) {
@@ -377,7 +381,7 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
               }
 
               updateCaches(results, [...targetCaches], {
-                skipNotify: !context.notifyCacheUpdate,
+                skipNotify: promiseDropped() || !context.notifyCacheUpdate,
               });
 
               correlatedCaches.delete(resolverCache);
@@ -399,37 +403,42 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
         // Post-fetch actions scoped to this context
         const currentPromise = pendingQueries.get(pendingSelections)!();
 
+        activePromise = currentPromise;
+
         // When `resolve()` is called again during an active fetch, let the next
         // promise does post-fetch actions. Cache updates above are fine, also
         // cancelling the fetch requires checking ALL of the pending contextes
         // which is too expensive to maintain.
-        const promiseDropped = () => {
-          const activePromise = pendingQueries.get(pendingSelections)?.();
-
-          return activePromise && currentPromise !== activePromise;
-        };
+        const promiseDropped = () =>
+          activePromise !== undefined && currentPromise !== activePromise;
 
         currentPromise
           .then(
             () => {
               if (promiseDropped()) return;
-
               if (selections.size === 0) return;
 
               // Stores selections for the next batch
               replaceSet(prevSelections, selections);
 
-              // Clear current selections to drop potentially stale inputs
+              // Clear current selections only on successful fetches to drop
+              // potentially stale inputs.
               selections.clear();
             },
             () => {
-              // Swallow errors
+              // Adds a default noop error handler to prevent tests from failing
+              // when running concurrently in CI.
+              //
+              // Exposed API such as `resolve()` still responds to try-catch and
+              // .catch() handlers in userland.
             }
           )
           .finally(() => {
             if (promiseDropped()) return;
 
             context.reset();
+
+            activePromise = undefined;
           });
       }
 

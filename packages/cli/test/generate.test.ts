@@ -138,6 +138,7 @@ test('basic functionality works', async () => {
      */
 
     import { createReactClient } from '@gqty/react';
+    import { createSolidClient } from '@gqty/solid';
     import { createClient as createSubscriptionsClient } from 'graphql-ws';
     import {
       Cache,
@@ -243,6 +244,8 @@ test('basic functionality works', async () => {
       },
     });
 
+    export const { createQuery } = createSolidClient(client);
+
     export * from './schema.generated';
     "
   `);
@@ -313,6 +316,7 @@ test('custom scalars works', async () => {
      */
 
     import { createReactClient } from '@gqty/react';
+    import { createSolidClient } from '@gqty/solid';
     import {
       Cache,
       createClient,
@@ -401,6 +405,8 @@ test('custom scalars works', async () => {
         suspense: true,
       },
     });
+
+    export const { createQuery } = createSolidClient(client);
 
     export * from './schema.generated';
     "
@@ -1412,6 +1418,7 @@ test('javascript output works', async () => {
      */
 
     import { createReactClient } from '@gqty/react';
+    import { createSolidClient } from '@gqty/solid';
     import { createClient as createSubscriptionsClient } from 'graphql-ws';
     import { Cache, createClient, defaultResponseHandler } from 'gqty';
     import { generatedSchema, scalarsEnumsHash } from './schema.generated';
@@ -1517,6 +1524,8 @@ test('javascript output works', async () => {
           suspense: true,
         },
       });
+
+    export const { createQuery } = createSolidClient(client);
 
     export * from './schema.generated';
     "
@@ -1739,6 +1748,7 @@ test('ignoreArgs transform', async () => {
      */
 
     import { createReactClient } from '@gqty/react';
+    import { createSolidClient } from '@gqty/solid';
     import {
       Cache,
       createClient,
@@ -1827,6 +1837,8 @@ test('ignoreArgs transform', async () => {
         suspense: true,
       },
     });
+
+    export const { createQuery } = createSolidClient(client);
 
     export * from './schema.generated';
     "

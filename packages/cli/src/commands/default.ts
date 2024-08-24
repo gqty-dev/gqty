@@ -1,5 +1,5 @@
-import type { PackageJSON } from 'bob-esbuild/config/packageJson';
-import type { Command } from 'commander';
+import type { Command } from '@commander-js/extra-typings';
+import type { ProjectManifest } from '@pnpm/types';
 import { cosmiconfig } from 'cosmiconfig';
 import assert from 'node:assert';
 import { readFile, watch } from 'node:fs/promises';
@@ -7,6 +7,7 @@ import path from 'node:path';
 import process from 'node:process';
 import type { GQtyConfig } from '../config';
 import { fg, inquirer } from '../deps';
+import type { SupportedFrameworks } from '../generate';
 import { convertHeadersInput } from './default/convertHeadersInput';
 import { fetchSchema, isURL } from './default/fetchSchema';
 import { generateClient } from './default/generateClient';
@@ -18,6 +19,7 @@ export type CommandOptions = {
   header?: string[];
   install?: boolean;
   react?: boolean;
+  solid?: boolean;
   subscriptions?: string;
   target?: string;
   typescript?: boolean;
@@ -37,6 +39,8 @@ export const addCommand = (command: Command) => {
     )
     .option('--react', 'Include React hooks in the generated client.')
     .option('--no-react')
+    .option('--solid', 'Include SolidJS signals in the generated client.')
+    .option('--no-solid')
     .option(
       '--subscriptions [client]',
       'Includes specified package as subscription client, must be graphql-ws compatible.'
@@ -58,7 +62,7 @@ export const addCommand = (command: Command) => {
       'Activate watch mode, regenerate on change changes.',
       false
     )
-    .action(async (argv: string[], options: CommandOptions) => {
+    .action(async (argv: string[], options) => {
       const config: GQtyConfig = await cosmiconfig('gqty')
         .search()
         .then((result) => result?.config ?? {});
@@ -101,7 +105,10 @@ export const addCommand = (command: Command) => {
 
       // CLI options
       {
-        config.react ??= options.react;
+        config.frameworks ??= [
+          options.react && 'react',
+          options.solid && 'solid-js',
+        ].filter((v): v is SupportedFrameworks => !!v);
 
         // Explicitly allow empty string
         if (options.subscriptions !== undefined) {
@@ -114,6 +121,7 @@ export const addCommand = (command: Command) => {
 
         if (options.target) {
           config.destination = options.target;
+          config.javascriptOutput = path.extname(options.target) === '.js';
         }
       }
 
@@ -121,7 +129,7 @@ export const addCommand = (command: Command) => {
         try {
           return JSON.parse(
             await readFile('package.json', { encoding: 'utf-8' })
-          ) as PackageJSON;
+          ) as ProjectManifest;
         } catch {
           return;
         }
@@ -129,7 +137,10 @@ export const addCommand = (command: Command) => {
 
       // Detect React and TypeScript from package.json.
       if (manifest) {
-        config.react ??= manifest.dependencies?.['react'] !== undefined;
+        config.frameworks ??= [
+          manifest.dependencies?.['react'] && 'react',
+          manifest.dependencies?.['solid-js'] && 'solid-js',
+        ].filter((v): v is SupportedFrameworks => !!v);
 
         config.javascriptOutput ??=
           manifest.dependencies?.['typescript'] === undefined &&
@@ -143,7 +154,7 @@ export const addCommand = (command: Command) => {
 
       // Enter interactive mode if user did not provide arguments.
       if (argv.length === 0) {
-        config.react = await promptReact(config.react ?? false);
+        config.frameworks = await promptFrameworks();
 
         config.subscriptions = await promptSubscriptions(
           config.subscriptions
@@ -349,13 +360,13 @@ const promptTarget = async (defaultTarget: string) => {
   return target;
 };
 
-const promptReact = async (defaultValue: boolean) => {
-  const react = await inquirer.confirm({
-    message: 'Are you using React with GQty?',
-    default: defaultValue,
+const promptFrameworks = async () => {
+  const frameworks = await inquirer.checkbox({
+    message: `Pick the frontend frameworks in use:`,
+    choices: [{ value: 'react' }, { value: 'solid-js' }],
   });
 
-  return react;
+  return frameworks as SupportedFrameworks[];
 };
 
 const promptSubscriptions = async (defaultValue?: string) => {

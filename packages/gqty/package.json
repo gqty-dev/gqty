@@ -33,15 +33,10 @@
     "src"
   ],
   "scripts": {
-    "analyze": "size-limit --why",
     "build": "bob-esbuild build",
-    "dev": "bob-esbuild watch",
-    "prepare": "bob-esbuild build",
+    "prepare": "pnpm build",
     "postpublish": "gh-release",
-    "size": "size-limit",
-    "start": "bob-esbuild watch",
     "test": "jest",
-    "test:specific": "jest test/interfaces-unions.test.ts --watch --no-coverage -u",
     "test:watch": "jest --watch",
     "test:watch-coverage": "pnpm dlx rimraf coverage && mkdir -p coverage/lcov-report && concurrently --raw \"jest --watchAll\" \"serve -l 8787 coverage/lcov-report\" \"wait-on tcp:8787 coverage/lcov-report/index.html && open-cli http://localhost:8787\""
   },
@@ -87,7 +82,6 @@
     "p-defer": "^3.0.0"
   },
   "devDependencies": {
-    "@size-limit/preset-small-lib": "^11.1.4",
     "@types/node": "^20.14.15",
     "@types/object-hash": "^3.0.6",
     "@types/wait-on": "^5.3.4",
@@ -97,7 +91,6 @@
     "bob-esbuild-cli": "^4.0.0",
     "concurrently": "^8.2.2",
     "cross-env": "^7.0.3",
-    "esbuild": "^0.23.0",
     "eslint": "^8.57.0",
     "eslint-plugin-you-dont-need-lodash-underscore": "^6.14.0",
     "graphql": "^16.9.0",
@@ -108,8 +101,7 @@
     "open-cli": "^8.0.0",
     "p-lazy": "^3.1.0",
     "serve": "^14.2.3",
-    "size-limit": "^11.1.4",
-    "test-utils": "workspace:^0.2.0",
+    "test-utils": "workspace:^",
     "tsc-watch": "^6.2.0",
     "type-fest": "^4.24.0",
     "typescript": "^5.5.4",
@@ -137,15 +129,5 @@
   },
   "publishConfig": {
     "directory": "dist"
-  },
-  "size-limit": [
-    {
-      "path": "dist/gqty.cjs.production.min.js",
-      "limit": "20 KB"
-    },
-    {
-      "path": "dist/gqty.esm.js",
-      "limit": "20 KB"
-    }
-  ]
+  }
 }

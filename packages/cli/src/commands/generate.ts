@@ -1,4 +1,4 @@
-import type { Command } from 'commander';
+import type { Command } from '@commander-js/extra-typings';
 
 export const addCommand = (command: Command) => {
   return command
