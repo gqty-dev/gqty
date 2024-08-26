@@ -1,5 +1,14 @@
 # @gqty/cli
 
+## 4.2.0
+
+### Minor Changes
+
+- [#1758](https://github.com/gqty-dev/gqty/pull/1758)
+  [`3297a2d`](https://github.com/gqty-dev/gqty/commit/3297a2dbfd06a4952acef4cc7fab0d14a002b986)
+  Thanks [@vicary](https://github.com/vicary)! - Improves Solid support using
+  createResource over createSignal
+
 ## 4.1.2
 
 ### Patch Changes
