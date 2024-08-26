@@ -4,8 +4,8 @@ export type Props = ParentProps<{
   fallback?: JSX.Element;
 }>;
 
-const Skeleton: Component<Props> = ({ children, fallback }) => {
-  return <>{children ?? fallback}</>;
+const Skeleton: Component<Props> = (props) => {
+  return <>{props.children ?? props.fallback}</>;
 };
 
 export default Skeleton;

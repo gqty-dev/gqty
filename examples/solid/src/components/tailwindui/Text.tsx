@@ -1,7 +1,7 @@
 import type { Component, ParentProps } from 'solid-js';
 import Skeleton from './Skeleton';
 
-const Text: Component<ParentProps> = ({ children }) => (
+const Text: Component<ParentProps> = (props) => (
   <Skeleton
     fallback={
       <span
@@ -21,7 +21,7 @@ const Text: Component<ParentProps> = ({ children }) => (
       </span>
     }
   >
-    {children}
+    {props.children}
   </Skeleton>
 );
 
