@@ -1,5 +1,12 @@
 # @gqty/solid
 
+## 0.2.1
+
+### Patch Changes
+
+- [`31d1319`](https://github.com/gqty-dev/gqty/commit/31d1319ffe18dc9ab16f22af7869f8b23ee075ac)
+  Thanks [@vicary](https://github.com/vicary)! - Add package description
+
 ## 0.2.0
 
 ### Minor Changes
