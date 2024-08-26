@@ -2,6 +2,7 @@
   "name": "@gqty/solid",
   "version": "0.2.0",
   "private": false,
+  "description": "The No-GraphQL Client for React",
   "keywords": [
     "cache",
     "client",
@@ -30,6 +31,7 @@
   "scripts": {
     "build": "tsx build.ts",
     "prepare": "pnpm build",
+    "postpublish": "gh-release",
     "test": "vitest --no-watch"
   },
   "dependencies": {
