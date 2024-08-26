@@ -1,7 +1,7 @@
 {
-  "private": true,
   "name": "example-gnt",
-  "version": "0.1.0",
+  "version": "0.0.0-development",
+  "private": true,
   "scripts": {
     "build": "next build",
     "codegen": "dotenv -c local -- bash -c 'pnpm exec gqty --no-react -H apiKey:$NEXT_PUBLIC_SUPABASE_API_KEY $NEXT_PUBLIC_SUPABASE_ENDPOINT'",

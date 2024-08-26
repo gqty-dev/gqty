@@ -1,16 +1,21 @@
 {
-  "name": "@gqty/example-solid",
+  "name": "example-solid",
   "version": "0.0.0-development",
-  "type": "module",
   "private": true,
-  "author": "Vicary Archangel <vicary.archangel@member.mensa.org>",
-  "scripts": {
-    "start": "vite",
-    "dev": "vite",
-    "build": "vite build",
-    "serve": "vite preview"
-  },
   "license": "MIT",
+  "author": "Vicary Archangel <vicary.archangel@member.mensa.org>",
+  "type": "module",
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite",
+    "serve": "vite preview",
+    "start": "vite"
+  },
+  "dependencies": {
+    "@gqty/solid": "workspace:^",
+    "gqty": "workspace:^",
+    "solid-js": "^1.8.11"
+  },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.13",
     "autoprefixer": "^10.4.19",
@@ -21,10 +26,5 @@
     "typescript": "^5.3.3",
     "vite": "^5.0.11",
     "vite-plugin-solid": "^2.8.2"
-  },
-  "dependencies": {
-    "@gqty/solid": "workspace:^",
-    "gqty": "workspace:^",
-    "solid-js": "^1.8.11"
   }
 }
