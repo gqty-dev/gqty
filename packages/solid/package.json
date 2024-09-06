@@ -23,9 +23,9 @@
   "type": "module",
   "exports": {
     ".": {
+      "types": "./index.d.ts",
       "import": "./index.mjs",
-      "require": "./index.cjs",
-      "types": "./index.d.ts"
+      "require": "./index.cjs"
     }
   },
   "scripts": {
@@ -47,9 +47,9 @@
     "jsdom": "^24.0.0",
     "test-utils": "workspace:^",
     "typescript": "^5.4.5",
-    "vite": "^5.4.2",
-    "vite-plugin-solid": "^2.8.2",
-    "vitest": "^2.0.4"
+    "vite": "^5.4.3",
+    "vite-plugin-solid": "^2.10.2",
+    "vitest": "^2.0.5"
   },
   "peerDependencies": {
     "gqty": "workspace:^",
