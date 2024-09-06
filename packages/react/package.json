@@ -25,14 +25,14 @@
   "sideEffects": false,
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "import": "./dist/index.mjs",
-      "require": "./dist/index.js",
-      "types": "./dist/index.d.ts"
+      "require": "./dist/index.js"
     },
     "./*": {
+      "types": "./dist/*.d.ts",
       "import": "./dist/*.mjs",
-      "require": "./dist/*.js",
-      "types": "./dist/*.d.ts"
+      "require": "./dist/*.js"
     }
   },
   "main": "dist/index.js",
@@ -102,8 +102,8 @@
     "@types/node": "^20.14.15",
     "@types/react": "^18.3.3",
     "@types/use-sync-external-store": "^0.0.6",
-    "@typescript-eslint/eslint-plugin": "^7.18.0",
-    "@typescript-eslint/parser": "^7.18.0",
+    "@typescript-eslint/eslint-plugin": "^8.4.0",
+    "@typescript-eslint/parser": "^8.4.0",
     "eslint": "^8.57.0",
     "eslint-plugin-you-dont-need-lodash-underscore": "^6.14.0",
     "gqty": "workspace:^",
@@ -117,7 +117,7 @@
     "react-test-renderer": "^18.3.1",
     "test-utils": "workspace:^",
     "type-fest": "^4.24.0",
-    "typescript-eslint": "^7.18.0"
+    "typescript-eslint": "^8.4.0"
   },
   "peerDependencies": {
     "gqty": "workspace:^",
