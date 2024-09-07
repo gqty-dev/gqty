@@ -1,41 +1,22 @@
 import { GQtyError } from './Error';
-import { hash } from './Utils/hash';
 
 const createSymbol = Symbol();
 
-const aliasGenerator = {
-  seq: 0,
-  map: new WeakMap<object, number>(),
-  hash,
-  get(key: string | number, input: Record<string, unknown>) {
-    const hash = this.hash({ key, ...input });
-    if (hash) return hash;
-
-    const seq = this.map.get(input) ?? this.seq++;
-
-    // Sane use cases shouldn't hit this
-    if (seq >= Number.MAX_SAFE_INTEGER) {
-      throw new GQtyError(`selection alias fallback overflow`);
-    }
-
-    this.map.set(input, seq);
-
-    return `alias${seq}`;
-  },
-};
-
 export type SelectionOptions = {
   readonly alias?: string;
-  readonly aliasLength?: number;
   readonly input?: SelectionInput;
   readonly isUnion?: boolean;
   readonly parent?: Selection;
 };
 
-export type SelectionInput = {
-  readonly types: Record<string, string>;
-  readonly values: Record<string, unknown>;
-};
+export type SelectionInput = Record<
+  string,
+  {
+    alias?: string;
+    type: string;
+    value: unknown;
+  }
+>;
 
 export type SelectionSnapshot = Array<
   [string | number, SelectionOptions] | [string | number]
@@ -56,10 +37,6 @@ export class Selection {
 
   get alias() {
     return this.options.alias;
-  }
-
-  get aliasLength(): number | undefined {
-    return this.options.aliasLength ?? this.parent?.aliasLength ?? 6;
   }
 
   get input() {
@@ -111,18 +88,11 @@ export class Selection {
   }
 
   getChild(key: string | number, options?: SelectionOptions) {
-    const alias =
-      options?.alias ??
-      (options?.input
-        ? aliasGenerator
-            .get(key, options.input)
-            .slice(0, options?.aliasLength ?? this.aliasLength)
-        : undefined);
-    const hashKey = alias ?? key.toString();
+    const hashKey = options?.alias ?? key.toString();
 
     const selection =
       this.children.get(hashKey) ??
-      new Selection(key, { ...options, alias, parent: this }, createSymbol);
+      new Selection(key, { ...options, parent: this }, createSymbol);
 
     this.children.set(hashKey, selection);
 

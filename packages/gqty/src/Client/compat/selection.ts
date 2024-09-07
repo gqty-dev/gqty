@@ -65,13 +65,13 @@ export class LegacySelection {
     const isInterfaceUnionSelection = key === '$on';
 
     this.cachePath = isInterfaceUnionSelection
-      ? prevSelection?.cachePath ?? []
+      ? (prevSelection?.cachePath ?? [])
       : prevSelection
-      ? [...prevSelection.cachePath, pathKey]
-      : [pathKey];
+        ? [...prevSelection.cachePath, pathKey]
+        : [pathKey];
 
     this.pathString = isInterfaceUnionSelection
-      ? prevSelection?.pathString ?? ''
+      ? (prevSelection?.pathString ?? '')
       : `${prevSelection?.pathString.concat('.') ?? ''}${pathKey}`;
 
     const prevSelectionsList = prevSelection?.selectionsList ?? [];
@@ -129,6 +129,17 @@ export const convertSelection = (
   selectionId = 0,
   operationName?: string
 ): LegacySelection => {
+  const args: Record<string, unknown> = {};
+  const argTypes: Record<string, string> = {};
+
+  if (selection.input) {
+    for (const key in selection.input) {
+      const { type, value } = selection.input[key];
+      args[key] = value;
+      argTypes[key] = type;
+    }
+  }
+
   return new LegacySelection({
     id: ++selectionId,
     key: selection.key,
@@ -136,14 +147,14 @@ export const convertSelection = (
     prevSelection: selection.parent
       ? convertSelection(selection.parent, selectionId, operationName)
       : undefined,
-    args: selection.input?.values,
-    argTypes: selection.input?.types,
+    args,
+    argTypes,
     type:
       selection.root.key === 'query'
         ? LegacySelectionType.Query
         : selection.root.key === 'mutation'
-        ? LegacySelectionType.Mutation
-        : LegacySelectionType.Subscription,
+          ? LegacySelectionType.Mutation
+          : LegacySelectionType.Subscription,
     operationName,
     alias: selection.alias,
     unions: selection.isUnion ? [selection.key.toString()] : undefined,

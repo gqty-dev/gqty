@@ -10,6 +10,7 @@ import type {
   ScalarsEnumsHash,
   Schema,
 } from '../Schema';
+import { createAliasHasher, type AliasGenerator } from './alias';
 import {
   createLegacyClient,
   type LegacyClient,
@@ -21,9 +22,7 @@ import { createContext } from './context';
 import { createDebugger, type Debugger } from './debugger';
 import { createResolvers, type Resolvers } from './resolvers';
 
-export { $meta } from '../Accessor';
-export { getFields, prepass, selectFields } from '../Helpers';
-export * as useMetaStateHack from '../Helpers/useMetaStateHack';
+export * from './alias';
 export type {
   LegacyClientOptions as LegacyFetchers,
   LegacyHydrateCache,
@@ -107,8 +106,16 @@ export type ClientOptions = {
    * when collisions occur, specify Infinity here to use the full hash.
    *
    * @default 6
+   * @deprecated Use `aliasGenerator` instead.
    */
   aliasLength?: number;
+
+  /**
+   * Alias generator function, useful for debugging and logging.
+   *
+   * This option takes precedence over `aliasLength`.
+   */
+  aliasGenerator?: AliasGenerator;
 
   /**
    * Milliseconds to wait before pending queries are batched up for fetching.
@@ -164,6 +171,7 @@ export const createClient = <
   _ObjectTypes extends SchemaObjects<TSchema> = never,
 >({
   aliasLength = 6,
+  aliasGenerator = createAliasHasher(aliasLength),
   batchWindow,
   // This default cache on a required option is for legacy clients, which does
   // not provide a `cache` option.
@@ -206,7 +214,7 @@ export const createClient = <
 
   // Global scope for accessing the cache via `schema` property.
   const clientContext = createContext({
-    aliasLength,
+    aliasGenerator,
     cache,
     depthLimit: __depthLimit,
     cachePolicy: fetchPolicy,
@@ -216,7 +224,7 @@ export const createClient = <
   });
 
   const resolvers = createResolvers<TSchema>({
-    aliasLength,
+    aliasGenerator,
     batchWindow,
     scalars,
     schema,

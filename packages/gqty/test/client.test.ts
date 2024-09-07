@@ -180,37 +180,37 @@ describe('core#resolve', () => {
       // 2. Ensure selections made
       expect([...selections].map((v) => v.cacheKeys.join('.')))
         .toMatchInlineSnapshot(`
-       [
-         "query.dogs.__typename",
-         "query.dogs.id",
-         "query.dogs.e61ad2",
-       ]
+        [
+          "query.dogs.__typename",
+          "query.dogs.id",
+          "query.dogs.a0dc8a",
+        ]
       `);
 
       // 3. resolve()
       await expect(resolve()).resolves.toMatchInlineSnapshot(`
-       [
-         {
-           "data": {
-             "dogs": [
-               {
-                 "__typename": "Dog",
-                 "e61ad2": "arf!",
-                 "id": "1",
-               },
-               {
-                 "__typename": "Dog",
-                 "e61ad2": "arf!",
-                 "id": "2",
-               },
-             ],
-           },
-           "extensions": {
-             "hash": "a242b05e35ff15857d32ed1a1eeb07500b5138f16",
-             "type": "query",
-           },
-         },
-       ]
+        [
+          {
+            "data": {
+              "dogs": [
+                {
+                  "__typename": "Dog",
+                  "a0dc8a": "arf!",
+                  "id": "1",
+                },
+                {
+                  "__typename": "Dog",
+                  "a0dc8a": "arf!",
+                  "id": "2",
+                },
+              ],
+            },
+            "extensions": {
+              "hash": "a8b29a162380cfd9676af8b927bd5fd8f3e0d2f28",
+              "type": "query",
+            },
+          },
+        ]
       `);
 
       // 4. Make selections again
@@ -220,11 +220,11 @@ describe('core#resolve', () => {
       // 5. Expect previous sub-selections
       expect([...selections].map((v) => v.cacheKeys.join('.')))
         .toMatchInlineSnapshot(`
-       [
-         "query.dogs.__typename",
-         "query.dogs.id",
-         "query.dogs.e61ad2",
-       ]
+        [
+          "query.dogs.__typename",
+          "query.dogs.id",
+          "query.dogs.a0dc8a",
+        ]
       `);
 
       await expect(resolve()).resolves.toMatchInlineSnapshot(`undefined`);
@@ -237,36 +237,36 @@ describe('core#resolve', () => {
 
       expect([...selections].map((v) => v.cacheKeys.join('.')))
         .toMatchInlineSnapshot(`
-       [
-         "query.dogs.__typename",
-         "query.dogs.id",
-         "query.dogs.a27c8c",
-       ]
+        [
+          "query.dogs.__typename",
+          "query.dogs.id",
+          "query.dogs.a17bb3",
+        ]
       `);
 
       await expect(resolve()).resolves.toMatchInlineSnapshot(`
-       [
-         {
-           "data": {
-             "dogs": [
-               {
-                 "__typename": "Dog",
-                 "a27c8c": "arf!arf!arf!",
-                 "id": "1",
-               },
-               {
-                 "__typename": "Dog",
-                 "a27c8c": "arf!arf!arf!",
-                 "id": "2",
-               },
-             ],
-           },
-           "extensions": {
-             "hash": "ec6389bde813c1b5cb4b5b294e573082ec4270e1",
-             "type": "query",
-           },
-         },
-       ]
+        [
+          {
+            "data": {
+              "dogs": [
+                {
+                  "__typename": "Dog",
+                  "a17bb3": "arf!arf!arf!",
+                  "id": "1",
+                },
+                {
+                  "__typename": "Dog",
+                  "a17bb3": "arf!arf!arf!",
+                  "id": "2",
+                },
+              ],
+            },
+            "extensions": {
+              "hash": "a0efe7fd478d07bb108f99004a09168fe1af03c14",
+              "type": "query",
+            },
+          },
+        ]
       `);
     });
 
@@ -290,31 +290,31 @@ describe('core#resolve', () => {
       // 2. Ensure selections made
       expect([...selections].map((v) => v.cacheKeys.join('.')))
         .toMatchInlineSnapshot(`
-         [
-           "query.a7f6f9.__typename",
-           "query.a7f6f9.id",
-           "query.a7f6f9.a7a17c",
-         ]
-        `);
+        [
+          "query.a18678.__typename",
+          "query.a18678.id",
+          "query.a18678.a0e564",
+        ]
+      `);
 
       // 3. resolve()
       await expect(resolve()).resolves.toMatchInlineSnapshot(`
-         [
-           {
-             "data": {
-               "a7f6f9": {
-                 "__typename": "Human",
-                 "a7a17c": "Now you see me...",
-                 "id": "1",
-               },
-             },
-             "extensions": {
-               "hash": "be79c4bae3a49b23d4beb0bbdbf9023ba0ca4898",
-               "type": "query",
-             },
-           },
-         ]
-        `);
+        [
+          {
+            "data": {
+              "a18678": {
+                "__typename": "Human",
+                "a0e564": "Now you see me...",
+                "id": "1",
+              },
+            },
+            "extensions": {
+              "hash": "a8e1a6acbe2dbb991879221d9ef424fbc77215163",
+              "type": "query",
+            },
+          },
+        ]
+      `);
 
       // 4. Select a null object
       query.human({ name: 'John Cena' }).echo({ input: "Now you don't!" });
@@ -322,26 +322,26 @@ describe('core#resolve', () => {
       // 5. Expect sub-selections
       expect([...selections].map((v) => v.cacheKeys.join('.')))
         .toMatchInlineSnapshot(`
-         [
-           "query.a3f697.__typename",
-           "query.a3f697.id",
-           "query.a3f697.bad514",
-         ]
-        `);
+        [
+          "query.c96cf3.__typename",
+          "query.c96cf3.id",
+          "query.c96cf3.a49ef4",
+        ]
+      `);
 
       await expect(resolve()).resolves.toMatchInlineSnapshot(`
-         [
-           {
-             "data": {
-               "a3f697": null,
-             },
-             "extensions": {
-               "hash": "fc1b66218d65d51732ed66b85bb5450d0332ba44",
-               "type": "query",
-             },
-           },
-         ]
-        `);
+        [
+          {
+            "data": {
+              "c96cf3": null,
+            },
+            "extensions": {
+              "hash": "a16b64e81d40b446c756d510bcb228ca477f1b84",
+              "type": "query",
+            },
+          },
+        ]
+      `);
 
       // 6. Ensure previous selections of no more than the last 1 fetch is reused.
       context.cache.clear();
@@ -350,30 +350,30 @@ describe('core#resolve', () => {
 
       expect([...selections].map((v) => v.cacheKeys.join('.')))
         .toMatchInlineSnapshot(`
-         [
-           "query.a4fd2c.__typename",
-           "query.a4fd2c.id",
-           "query.a4fd2c.eb7f1d",
-         ]
-        `);
+        [
+          "query.f22b60.__typename",
+          "query.f22b60.id",
+          "query.f22b60.a2b965",
+        ]
+      `);
 
       await expect(resolve()).resolves.toMatchInlineSnapshot(`
-         [
-           {
-             "data": {
-               "a4fd2c": {
-                 "__typename": "Human",
-                 "eb7f1d": "I am Jane.",
-                 "id": "2",
-               },
-             },
-             "extensions": {
-               "hash": "a1fac2bb2a1052821915362495c678811cb296e09",
-               "type": "query",
-             },
-           },
-         ]
-        `);
+        [
+          {
+            "data": {
+              "f22b60": {
+                "__typename": "Human",
+                "a2b965": "I am Jane.",
+                "id": "2",
+              },
+            },
+            "extensions": {
+              "hash": "e8cd19dcff849f0474f799823816c3dbd721c45e",
+              "type": "query",
+            },
+          },
+        ]
+      `);
     });
   });
 
@@ -549,8 +549,8 @@ describe('compat', () => {
 
     expect(queries.map(({ query }) => query)).toMatchInlineSnapshot(`
       [
-        "query TestQueryA($e8a374:String){a5b434:human(name:$e8a374){__typename}}",
-        "mutation TestMutation($ef3ee3:String!){a133ff:humanMutation(nameArg:$ef3ee3){__typename}}",
+        "query TestQueryA($a4f77a:String){b9e7d5:human(name:$a4f77a){__typename}}",
+        "mutation TestMutation($a69492:String!){a016a1:humanMutation(nameArg:$a69492){__typename}}",
         "query TestQueryB{hello}",
       ]
     `);

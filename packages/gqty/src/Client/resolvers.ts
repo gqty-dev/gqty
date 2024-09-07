@@ -8,6 +8,7 @@ import type { ScalarsEnumsHash, Schema } from '../Schema';
 import type { Selection } from '../Selection';
 import { createDeferredIterator } from '../Utils/deferred';
 import { pick } from '../Utils/pick';
+import type { AliasGenerator } from './alias';
 import { addSelections, delSelectionSet, getSelectionsSet } from './batching';
 import { createContext, type SchemaContext } from './context';
 import type { Debugger } from './debugger';
@@ -20,7 +21,7 @@ import {
 import { updateCaches } from './updateCaches';
 
 export type CreateResolversOptions = {
-  aliasLength?: number;
+  aliasGenerator: AliasGenerator;
   batchWindow?: number;
   cache: Cache;
   debugger?: Debugger;
@@ -217,7 +218,7 @@ const getIntersection = <T>(subject: Set<T>, object: Set<T>) => {
 };
 
 export const createResolvers = <TSchema extends BaseGeneratedSchema>({
-  aliasLength,
+  aliasGenerator,
   batchWindow,
   cache: resolverCache,
   debugger: debug,
@@ -259,7 +260,7 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
 
     const selections = new Set<Selection>();
     const context = createContext({
-      aliasLength,
+      aliasGenerator,
       cache: resolverCache,
       cachePolicy,
       depthLimit,

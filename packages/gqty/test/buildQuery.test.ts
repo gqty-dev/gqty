@@ -58,13 +58,13 @@ describe('buildQuery()', () => {
       alias: 'gqtyAlias_1',
       parent: baseSelection,
       input: {
-        types: {
-          a: 'Int!',
-          b: 'String!',
+        a: {
+          type: 'Int!',
+          value: 1,
         },
-        values: {
-          a: 1,
-          b: 1,
+        b: {
+          type: 'String!',
+          value: 1,
         },
       },
     });
@@ -77,10 +77,10 @@ describe('buildQuery()', () => {
     );
 
     expect(query).toMatchInlineSnapshot(
-      `"query($a03b9b:Int!$ad2f8d:String!){d gqtyAlias_1:a(a:$a03b9b b:$ad2f8d){a_b a_c}}"`
+      `"query($a:Int!$b:String!){d gqtyAlias_1:a(a:$a b:$b){a_b a_c}}"`
     );
     expect(() => parse(query)).not.toThrow();
-    expect(variables).toEqual({ a03b9b: 1, ad2f8d: 1 });
+    expect(variables).toEqual({ a: 1, b: 1 });
     expect(officialStripIgnoredCharacters(query)).toBe(query);
   });
 
@@ -90,13 +90,13 @@ describe('buildQuery()', () => {
       alias: 'gqtyAlias_1',
       parent: baseSelection,
       input: {
-        values: {
-          a: 1,
-          b: 1,
+        a: {
+          type: 'Int!',
+          value: 1,
         },
-        types: {
-          a: 'Int!',
-          b: 'String!',
+        b: {
+          type: 'String!',
+          value: 1,
         },
       },
     });
@@ -104,14 +104,14 @@ describe('buildQuery()', () => {
     const [{ query, variables }] = buildQuery(new Set([selectionA]));
 
     expect(query).toMatchInlineSnapshot(
-      `"mutation($a03b9b:Int!$ad2f8d:String!){gqtyAlias_1:a(a:$a03b9b b:$ad2f8d)}"`
+      `"mutation($a:Int!$b:String!){gqtyAlias_1:a(a:$a b:$b)}"`
     );
 
     expect(() => {
       parse(query);
     }).not.toThrow();
 
-    expect(variables).toEqual({ a03b9b: 1, ad2f8d: 1 });
+    expect(variables).toEqual({ a: 1, b: 1 });
 
     expect(officialStripIgnoredCharacters(query)).toBe(query);
   });

@@ -8,7 +8,7 @@ import {
   type GeneratedSchemaObject,
   type Type,
 } from '../Schema';
-import type { Selection } from '../Selection';
+import type { Selection, SelectionInput } from '../Selection';
 import { isPlainObject } from '../Utils';
 import type { Meta } from './meta';
 import { $meta } from './meta';
@@ -253,15 +253,32 @@ const objectProxyHandler: ProxyHandler<GeneratedSchemaObject> = {
 
     const { __args, __type } = targetType;
     if (__args) {
-      return (args?: Record<string, unknown>) =>
-        resolve(
+      return (args?: Record<string, unknown>) => {
+        const alias = meta.context.aliasGenerator?.(
+          meta.selection.ancestry.map((s) => s.key.toString()).concat(key),
+          args
+        );
+        const input: SelectionInput = {};
+
+        if (args) {
+          for (const key in args) {
+            input[key] = {
+              alias: alias?.input[key],
+              type: __args[key],
+              value: args[key],
+            };
+          }
+        }
+
+        return resolve(
           proxy,
           meta.selection.getChild(
             key,
-            args ? { input: { types: __args!, values: args } } : {}
+            args ? { alias: alias?.field, input } : {}
           ),
           __type
         );
+      };
     }
 
     return resolve(proxy, meta.selection.getChild(key), __type);
@@ -468,7 +485,7 @@ const selectIdentityFields = (
 
   // Always __typename except inside interfaces and unions
   if (parent?.key !== '$on') {
-    accessor.__typename;
+    Reflect.get(accessor, '__typename');
   }
 
   const keys = getIdentityFields(meta);
@@ -479,7 +496,7 @@ const selectIdentityFields = (
     // Already selected at the common root of this interface/union.
     if (isUnion && parent?.parent?.children.has(key)) continue;
 
-    accessor[key];
+    Reflect.get(accessor, key);
   }
 };
 
@@ -506,7 +523,7 @@ const arrayProxyHandler: ProxyHandler<CacheObject[]> = {
         throw new GQtyError(`Cache data must be an array.`);
       }
 
-      if (key === 'length') proxy[0];
+      if (key === 'length') Reflect.get(proxy, 0);
 
       const numKey = +key;
       if (!isNaN(numKey) && numKey < data.length) {

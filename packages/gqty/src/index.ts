@@ -1,3 +1,4 @@
+export { $meta } from './Accessor';
 export * from './Cache';
 export * from './Client';
 export type { Client as GQtyClient } from './Client';

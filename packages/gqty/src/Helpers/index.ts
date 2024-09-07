@@ -5,4 +5,5 @@ export * from './getFields';
 export * from './prepass';
 export * from './select';
 export * from './selectFields';
+export * as useMetaStateHack from './useMetaStateHack';
 export * from './variables';

@@ -89,7 +89,7 @@ describe('playground', () => {
           },
         },
         "query": {
-          "a7b306": {
+          "a3750d": {
             "__ref": "Human:1",
           },
         },
