@@ -461,6 +461,7 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
         fetchInBackground,
         operationName,
         selections,
+        state,
       ]
     );
 

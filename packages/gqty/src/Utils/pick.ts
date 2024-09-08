@@ -9,11 +9,11 @@ export const pick = (
 
   for (const { ancestry } of selections) {
     let srcNode = schema;
-    for (const { key, input } of ancestry) {
+    for (const { key, inputValues } of ancestry) {
       if (srcNode == null) break;
 
       if (typeof srcNode[key] === 'function') {
-        srcNode = srcNode[key](input?.values);
+        srcNode = srcNode[key](inputValues);
       } else {
         srcNode = srcNode[key];
       }

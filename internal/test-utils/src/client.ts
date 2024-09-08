@@ -3,6 +3,7 @@ import assert from 'assert';
 import {
   Cache,
   createClient,
+  GQtyError,
   type BaseGeneratedSchema,
   type GQtyClient,
   type QueryPayload,
@@ -295,13 +296,25 @@ export const createInMemoryClient = async <TSchema extends BaseGeneratedSchema>(
       fetcher: async ({ query, variables, operationName }) => {
         await options.onFetch?.({ query, variables, operationName });
 
-        const res = await executor({
+        const result = await executor({
           document: parse(query),
           variables,
           operationName,
+        }).then((result) => {
+          if (Symbol.asyncIterator in result) {
+            return result[Symbol.asyncIterator]()
+              .next()
+              .then((res) => res.value as ExecutionResult<any, any>);
+          } else {
+            return result;
+          }
         });
 
-        return res as never;
+        if (result.errors?.length) {
+          throw GQtyError.fromGraphQLErrors(result.errors);
+        }
+
+        return result;
       },
       subscriber: new MockWsClient(executor),
     },

@@ -43,6 +43,18 @@ export class Selection {
     return this.options.input;
   }
 
+  /**
+   * Stripping alias and type information from inputs, returning a bare mapping
+   * of variable names and values.
+   */
+  get inputValues() {
+    if (!this.input) return;
+
+    return Object.fromEntries(
+      Object.entries(this.input).map(([key, { value }]) => [key, value])
+    );
+  }
+
   /** Indicates current selection being a inteface/union key. */
   get isUnion() {
     return this.options.isUnion ?? false;
@@ -142,7 +154,7 @@ export class Selection {
 
   toString() {
     return `Selection(${this.cacheKeys.join('.')}) ${JSON.stringify(
-      this.input?.values ?? {}
+      this.inputValues ?? {}
     )}`;
   }
 }

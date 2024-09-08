@@ -254,10 +254,10 @@ const objectProxyHandler: ProxyHandler<GeneratedSchemaObject> = {
     const { __args, __type } = targetType;
     if (__args) {
       return (args?: Record<string, unknown>) => {
-        const alias = meta.context.aliasGenerator?.(
-          meta.selection.ancestry.map((s) => s.key.toString()).concat(key),
-          args
-        );
+        const keys = meta.selection.ancestry
+          .map((s) => s.key.toString())
+          .concat(key);
+        const alias = meta.context.aliasGenerator?.(keys, args);
         const input: SelectionInput = {};
 
         if (args) {
@@ -270,14 +270,12 @@ const objectProxyHandler: ProxyHandler<GeneratedSchemaObject> = {
           }
         }
 
-        return resolve(
-          proxy,
-          meta.selection.getChild(
-            key,
-            args ? { alias: alias?.field, input } : {}
-          ),
-          __type
+        const child = meta.selection.getChild(
+          key,
+          args ? { alias: alias?.field, input } : {}
         );
+
+        return resolve(proxy, child, __type);
       };
     }
 

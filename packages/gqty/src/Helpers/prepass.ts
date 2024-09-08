@@ -31,7 +31,7 @@ export function prepass<T extends object | null | undefined>(
             s.input
               ? {
                   field: `${s.key}`,
-                  variables: s.input.values,
+                  variables: s.inputValues,
                 }
               : `${s.key}`
           );

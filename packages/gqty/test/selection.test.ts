@@ -10,8 +10,7 @@ describe('selection creation', () => {
     expect(selectionA.alias).toBe(undefined);
     expect(selectionA.root.key).toBe('mutation');
 
-    expect(selectionA.input?.values).toBe(undefined);
-    expect(selectionA.input?.types).toBe(undefined);
+    expect(selectionA.input).toBe(undefined);
     expect(selectionA.ancestry).toEqual([mutationRoot, selectionA]);
 
     expect(selectionA.cacheKeys).toEqual(['mutation', 'a']);

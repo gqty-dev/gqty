@@ -162,14 +162,14 @@ export function createLogger(
       console.groupCollapsed(...format(['Selections', headerStyles]));
       for (const [
         ,
-        { key, cacheKeys, alias, input, isUnion },
+        { key, cacheKeys, alias, inputValues, isUnion },
       ] of uniqueSelections) {
         console.log(
           stringifyJSONIfEnabled({
             key,
             cacheKeys: cacheKeys.join('.'),
             alias,
-            input,
+            input: inputValues,
             isUnion,
           })
         );
