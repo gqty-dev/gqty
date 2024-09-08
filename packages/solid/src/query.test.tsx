@@ -179,23 +179,23 @@ describe('createQuery', () => {
               [
                 {
                   "operationName": undefined,
-                  "query": "query($e61a8e:ID!){a02d2c:people(id:$e61a8e){__typename id name}}",
+                  "query": "query($a176f8:ID!){a66965:people(id:$a176f8){__typename id name}}",
                   "variables": {
-                    "e61a8e": "1",
+                    "a176f8": "1",
                   },
                 },
                 {
                   "operationName": undefined,
-                  "query": "query($d6d931:ID!){e084c7:people(id:$d6d931){__typename id name}}",
+                  "query": "query($a482a1:ID!){eebe6f:people(id:$a482a1){__typename id name}}",
                   "variables": {
-                    "d6d931": "2",
+                    "a482a1": "2",
                   },
                 },
                 {
                   "operationName": undefined,
-                  "query": "query($a60dd8:ID!){d2f785:people(id:$a60dd8){__typename id name}}",
+                  "query": "query($b8233c:ID!){c0c0aa:people(id:$b8233c){__typename id name}}",
                   "variables": {
-                    "a60dd8": "3",
+                    "b8233c": "3",
                   },
                 },
               ]

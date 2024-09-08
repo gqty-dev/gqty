@@ -3,7 +3,13 @@
  */
 
 import { createSolidClient } from '@gqty/solid';
-import { Cache, GQtyError, createClient, type QueryFetcher } from 'gqty';
+import {
+  Cache,
+  GQtyError,
+  createClient,
+  createDebugAliasHasher,
+  type QueryFetcher,
+} from 'gqty';
 import {
   generatedSchema,
   scalarsEnumsHash,
@@ -62,6 +68,7 @@ const cache = new Cache(
 );
 
 export const client = createClient<GeneratedSchema>({
+  aliasGenerator: createDebugAliasHasher(6),
   schema: generatedSchema,
   scalars: scalarsEnumsHash,
   cache,

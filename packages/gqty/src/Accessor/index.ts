@@ -38,8 +38,7 @@ export function createSchemaAccessor<TSchema extends BaseGeneratedSchema>(
             return;
 
           const selection =
-            selectionCache.get(key) ??
-            Selection.createRoot(key, { aliasLength: context.aliasLength });
+            selectionCache.get(key) ?? Selection.createRoot(key);
 
           selectionCache.set(key, selection);
 

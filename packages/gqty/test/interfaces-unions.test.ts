@@ -122,23 +122,23 @@ describe('interfaces and unions', () => {
     `);
 
     expect(queries).toMatchInlineSnapshot(`
-     [
-       {
-         "query": "query($a18aa4:NodeType!){a0b55f:node(type:$a18aa4){__typename ...on A{a}...on B{b}id}}",
-         "result": {
-           "data": {
-             "a0b55f": {
-               "__typename": "A",
-               "a": 1,
-               "id": "1",
-             },
-           },
-         },
-         "variables": {
-           "a18aa4": "A",
-         },
-       },
-     ]
+      [
+        {
+          "query": "query($ed0e40:NodeType!){c548d6:node(type:$ed0e40){__typename ...on A{a}...on B{b}id}}",
+          "result": {
+            "data": {
+              "c548d6": {
+                "__typename": "A",
+                "a": 1,
+                "id": "1",
+              },
+            },
+          },
+          "variables": {
+            "ed0e40": "A",
+          },
+        },
+      ]
     `);
 
     expect(nodeResult).toStrictEqual({
@@ -185,31 +185,31 @@ describe('interfaces and unions', () => {
       }
     `);
     expect(queries).toMatchInlineSnapshot(`
-     [
-       {
-         "query": "query($a18aa4:NodeType!){a0b55f:node(type:$a18aa4){__typename ...on A{a node{__typename ...on A{id node{__typename ...on C{node{__typename ...on A{id}id}}id}}id}}...on B{b}id}}",
-         "result": {
-           "data": {
-             "a0b55f": {
-               "__typename": "A",
-               "a": 1,
-               "id": "1",
-               "node": {
-                 "__typename": "A",
-                 "id": "1",
-                 "node": {
-                   "__typename": "A",
-                   "id": "1",
-                 },
-               },
-             },
-           },
-         },
-         "variables": {
-           "a18aa4": "A",
-         },
-       },
-     ]
+      [
+        {
+          "query": "query($ed0e40:NodeType!){c548d6:node(type:$ed0e40){__typename ...on A{a node{__typename ...on A{id node{__typename ...on C{node{__typename ...on A{id}id}}id}}id}}...on B{b}id}}",
+          "result": {
+            "data": {
+              "c548d6": {
+                "__typename": "A",
+                "a": 1,
+                "id": "1",
+                "node": {
+                  "__typename": "A",
+                  "id": "1",
+                  "node": {
+                    "__typename": "A",
+                    "id": "1",
+                  },
+                },
+              },
+            },
+          },
+          "variables": {
+            "ed0e40": "A",
+          },
+        },
+      ]
     `);
   });
 });

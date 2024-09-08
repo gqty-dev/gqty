@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 import { renderHook, waitFor } from '@testing-library/react';
 import { Cache, type QueryPayload } from 'gqty';
 import { act } from 'react';
@@ -17,7 +18,7 @@ describe('useQuery', () => {
 
         results.push(query.$state.isLoading);
 
-        query.time;
+        Reflect.get(query, 'time');
 
         return query.$state.isLoading;
       });
@@ -146,16 +147,16 @@ describe('useQuery', () => {
       [
         {
           "operationName": undefined,
-          "query": "query($a00425:String){a2c936:human(name:$a00425){__typename id name}}",
+          "query": "query($a69281:String){a7b317:human(name:$a69281){__typename id name}}",
           "variables": {
-            "a00425": "1",
+            "a69281": "1",
           },
         },
         {
           "operationName": undefined,
-          "query": "query($dd0895:String){a657eb:human(name:$dd0895){__typename id name}}",
+          "query": "query($a7c6a0:String){dc91d3:human(name:$a7c6a0){__typename id name}}",
           "variables": {
-            "dd0895": "2",
+            "a7c6a0": "2",
           },
         },
       ]
@@ -299,9 +300,11 @@ describe('useQuery', () => {
     // This should NOT trigger a SWR refetch
     await act(() => result.current.$refetch(false));
 
+    expect(result.current.$state.error).toBeUndefined();
+
     expect(queries).toMatchInlineSnapshot(`
       [
-        "query($a2a039:ID!){eb2884:pet(id:$a2a039){__typename id owner{__typename id name}}now peoples{__typename id name}}",
+        "query($a1a2bc:ID!){a1648a:pet(id:$a1a2bc){__typename id owner{__typename id name}}now peoples{__typename id name}}",
       ]
     `);
 
@@ -311,10 +314,12 @@ describe('useQuery', () => {
     // This should trigger a SWR refetch
     await act(() => result.current.$refetch(false));
 
+    expect(result.current.$state.error).toBeUndefined();
+
     expect(queries).toMatchInlineSnapshot(`
       [
-        "query($a2a039:ID!){eb2884:pet(id:$a2a039){__typename id owner{__typename id name}}now peoples{__typename id name}}",
-        "query($a2a039:ID!){eb2884:pet(id:$a2a039){__typename id owner{__typename id name}}now peoples{__typename id name}}",
+        "query($a1a2bc:ID!){a1648a:pet(id:$a1a2bc){__typename id owner{__typename id name}}now peoples{__typename id name}}",
+        "query($a1a2bc:ID!){a1648a:pet(id:$a1a2bc){__typename id owner{__typename id name}}now peoples{__typename id name}}",
       ]
     `);
   });

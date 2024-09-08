@@ -10,8 +10,7 @@ describe('selection creation', () => {
     expect(selectionA.alias).toBe(undefined);
     expect(selectionA.root.key).toBe('mutation');
 
-    expect(selectionA.input?.values).toBe(undefined);
-    expect(selectionA.input?.types).toBe(undefined);
+    expect(selectionA.input).toBe(undefined);
     expect(selectionA.ancestry).toEqual([mutationRoot, selectionA]);
 
     expect(selectionA.cacheKeys).toEqual(['mutation', 'a']);
@@ -30,8 +29,7 @@ describe('selection creation', () => {
 
     const selectionD = selectionC.getChild('d', {
       input: {
-        types: { a: 'Int!' },
-        values: { a: 1 },
+        a: { type: 'Int!', value: 1 },
       },
     });
 
@@ -40,14 +38,12 @@ describe('selection creation', () => {
       'a',
       'b',
       0,
-      'a07b42',
+      'd',
     ]);
-    expect(selectionD.alias).toBe('a07b42');
 
     const repeatSelectionD = selectionC.getChild('d', {
       input: {
-        types: { a: 'Int!' },
-        values: { a: 1 },
+        a: { type: 'Int!', value: 1 },
       },
     });
 
@@ -56,9 +52,8 @@ describe('selection creation', () => {
       'a',
       'b',
       0,
-      'a07b42',
+      'd',
     ]);
-    expect(repeatSelectionD.alias).toBe('a07b42');
 
     const selectionE = selectionD.getChild('e');
 
@@ -67,7 +62,7 @@ describe('selection creation', () => {
       'a',
       'b',
       0,
-      'a07b42',
+      'd',
       'e',
     ]);
 
@@ -92,21 +87,5 @@ describe('selection creation', () => {
         ])
       ).length
     ).toEqual(3);
-  });
-
-  it('should derive aliasLength from root', () => {
-    const selectionA = Selection.createRoot('a', { aliasLength: 2 }).getChild(
-      'b',
-      { input: { types: { a: 'Int!' }, values: { a: 1 } } }
-    );
-
-    expect(selectionA.alias?.length).toBe(2);
-
-    const selectionB = Selection.createRoot('a', {
-      aliasLength: Infinity,
-    }).getChild('b', { input: { types: { a: 'Int!' }, values: { a: 1 } } });
-
-    // Future proof: object-hash defaults to SHA1, check against that or above.
-    expect(selectionB.alias?.length).toBeGreaterThanOrEqual(40);
   });
 });

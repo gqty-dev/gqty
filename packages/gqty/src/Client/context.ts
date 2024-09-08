@@ -3,6 +3,7 @@ import type { Disposable } from '../Disposable';
 import type { Resetable } from '../Resetable';
 import type { ScalarsEnumsHash, Schema } from '../Schema';
 import type { Selectable } from '../Selectable';
+import type { AliasGenerator } from './alias';
 
 export type SchemaContext<
   T extends Record<string, unknown> = Record<string, unknown>,
@@ -11,7 +12,7 @@ export type SchemaContext<
   Resetable &
   Selectable & {
     cache: Cache;
-    readonly aliasLength?: number;
+    readonly aliasGenerator?: AliasGenerator;
     readonly cacheOptions?: CacheGetOptions;
     readonly depthLimit: number;
     readonly scalars: ScalarsEnumsHash;
@@ -26,7 +27,7 @@ export type SchemaContext<
   };
 
 export type CreateContextOptions = {
-  aliasLength?: number;
+  aliasGenerator?: AliasGenerator;
   cache: Cache;
   depthLimit: number;
   cachePolicy: RequestCache;
@@ -36,7 +37,7 @@ export type CreateContextOptions = {
 };
 
 export const createContext = ({
-  aliasLength,
+  aliasGenerator,
   cache,
   cachePolicy,
   depthLimit,
@@ -48,7 +49,7 @@ export const createContext = ({
   const selectSubscriptions = new Set<Selectable['select']>();
 
   return {
-    aliasLength,
+    aliasGenerator,
     cache:
       cachePolicy === 'no-cache' ||
       cachePolicy === 'no-store' ||

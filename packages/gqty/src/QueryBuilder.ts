@@ -94,19 +94,11 @@ export const buildQuery = (
 
         if (input) {
           if (!inputDedupe.has(input)) {
-            const queryInputs = Object.entries(input.values)
-              .map(([key, value]) => {
-                const variableName = hash((s.alias ?? s.key) + '_' + key).slice(
-                  0,
-                  s.aliasLength
-                );
+            const queryInputs = Object.entries(input)
+              .map(([key, { alias = key, type, value }]) => {
+                root.args.set(alias, { value, type });
 
-                root.args.set(`${variableName}`, {
-                  value,
-                  type: input.types[key],
-                });
-
-                return `${key}:$${variableName}`;
+                return `${key}:$${alias}`;
               })
               .filter(Boolean)
               .join(' ');
