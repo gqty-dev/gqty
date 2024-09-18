@@ -214,8 +214,8 @@ importers:
         specifier: ^0.11.3
         version: 0.11.3(@types/node@20.14.15)(bufferutil@4.0.8)(graphql-ez@0.16.1)(graphql@16.9.0)(utf-8-validate@6.0.4)
       '@react-hookz/web':
-        specifier: ^22.0.0
-        version: 22.0.0(react-dom@18.3.1)(react@18.3.1)
+        specifier: ^24.0.4
+        version: 24.0.4(react-dom@18.3.1)(react@18.3.1)
       date-fns:
         specifier: ^3.6.0
         version: 3.6.0
@@ -698,8 +698,8 @@ importers:
   packages/react:
     dependencies:
       '@react-hookz/web':
-        specifier: ^23.1.0
-        version: 23.1.0(react-dom@18.3.1)(react@18.3.1)
+        specifier: ^24.0.4
+        version: 24.0.4(react-dom@18.3.1)(react@18.3.1)
       multidict:
         specifier: ^1.0.9
         version: 1.0.9
@@ -6397,36 +6397,6 @@ packages:
 
   /@react-hookz/deep-equal@1.0.4:
     resolution: {integrity: sha512-N56fTrAPUDz/R423pag+n6TXWbvlBZDtTehaGFjK0InmN+V2OFWLE/WmORhmn6Ce7dlwH5+tQN1LJFw3ngTJVg==}
-    dev: false
-
-  /@react-hookz/web@22.0.0(react-dom@18.3.1)(react@18.3.1):
-    resolution: {integrity: sha512-jl4JgUXaiSvvDVQD2z/rq2/RaykjjLrAZxHOEQj2H38j4UFWIVhv5oKUH8yrKF4wX6tMX9gdrj62f9yGq/nSaQ==}
-    peerDependencies:
-      js-cookie: ^3.0.1
-      react: ^16.8 || ^17 || ^18
-      react-dom: ^16.8 || ^17 || ^18
-    peerDependenciesMeta:
-      js-cookie:
-        optional: true
-    dependencies:
-      '@react-hookz/deep-equal': 1.0.4
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-    dev: false
-
-  /@react-hookz/web@23.1.0(react-dom@18.3.1)(react@18.3.1):
-    resolution: {integrity: sha512-fvbURdsa1ukttbLR1ASE/XmqXP09vZ1PiCYppYeR1sNMzCrdkG0iBnjxniFSVjJ8gIw2fRs6nqMTbeBz2uAkuA==}
-    peerDependencies:
-      js-cookie: ^3.0.5
-      react: ^16.8 || ^17 || ^18
-      react-dom: ^16.8 || ^17 || ^18
-    peerDependenciesMeta:
-      js-cookie:
-        optional: true
-    dependencies:
-      '@react-hookz/deep-equal': 1.0.4
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
     dev: false
 
   /@react-hookz/web@24.0.4(react-dom@18.3.1)(react@18.3.1):
