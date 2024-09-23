@@ -128,7 +128,7 @@ importers:
         version: 14.2.5(bufferutil@4.0.8)(utf-8-validate@5.0.10)
       '@tailwindcss/typography':
         specifier: ^0.5.15
-        version: 0.5.15(tailwindcss@3.4.9)
+        version: 0.5.15(tailwindcss@3.4.13)
       '@types/node':
         specifier: 20.14.15
         version: 20.14.15
@@ -154,8 +154,8 @@ importers:
         specifier: ^8.4.41
         version: 8.4.41
       tailwindcss:
-        specifier: ^3.4.9
-        version: 3.4.9(ts-node@10.9.2)
+        specifier: ^3.4.13
+        version: 3.4.13(ts-node@10.9.2)
       typescript:
         specifier: ^5.5.4
         version: 5.5.4
@@ -322,7 +322,7 @@ importers:
     devDependencies:
       '@tailwindcss/typography':
         specifier: ^0.5.15
-        version: 0.5.15(tailwindcss@3.4.9)
+        version: 0.5.15(tailwindcss@3.4.13)
       autoprefixer:
         specifier: ^10.4.19
         version: 10.4.20(postcss@8.4.41)
@@ -336,8 +336,8 @@ importers:
         specifier: ^0.29.2
         version: 0.29.3(solid-js@1.8.17)(vite@5.4.6)
       tailwindcss:
-        specifier: ^3.4.3
-        version: 3.4.9(ts-node@10.9.2)
+        specifier: ^3.4.13
+        version: 3.4.13(ts-node@10.9.2)
       typescript:
         specifier: ^5.3.3
         version: 5.5.4
@@ -945,7 +945,7 @@ packages:
     engines: {node: '>=6.9.0'}
     dependencies:
       '@babel/highlight': 7.24.7
-      picocolors: 1.0.1
+      picocolors: 1.1.0
 
   /@babel/compat-data@7.25.2:
     resolution: {integrity: sha512-bYcppcpKBvX4znYaPEeFau03bp89ShqNMLs+rmdptMw+heSZh9+z84d2YG+K7cYLbWwzdjtDoW/uqZmPjulClQ==}
@@ -1270,7 +1270,7 @@ packages:
       '@babel/helper-validator-identifier': 7.24.7
       chalk: 2.4.2
       js-tokens: 4.0.0
-      picocolors: 1.0.1
+      picocolors: 1.1.0
 
   /@babel/parser@7.25.0:
     resolution: {integrity: sha512-CzdIU9jdP0dg7HdyB+bHvDJGagUv+qtzZt5rYCWwW6tITNqV9odjp6Qu41gkG0ca5UfdDUWrKkiAnHHdGRnOrA==}
@@ -5835,7 +5835,7 @@ packages:
       chalk: 4.1.2
       collect-v8-coverage: 1.0.2
       exit: 0.1.2
-      glob: 10.3.10
+      glob: 10.4.5
       graceful-fs: 4.2.11
       istanbul-lib-coverage: 3.2.2
       istanbul-lib-instrument: 6.0.2
@@ -6884,7 +6884,7 @@ packages:
       tslib: 2.6.3
     dev: false
 
-  /@tailwindcss/typography@0.5.15(tailwindcss@3.4.9):
+  /@tailwindcss/typography@0.5.15(tailwindcss@3.4.13):
     resolution: {integrity: sha512-AqhlCXl+8grUz8uqExv5OTtgpjuVIwFTSXTrh8y9/pw6q2ek7fJ+Y8ZEVw7EB2DCcuCOtEjf9w3+J3rzts01uA==}
     peerDependencies:
       tailwindcss: '>=3.0.0 || insiders || >=4.0.0-alpha.20'
@@ -6893,7 +6893,7 @@ packages:
       lodash.isplainobject: 4.0.6
       lodash.merge: 4.6.2
       postcss-selector-parser: 6.0.10
-      tailwindcss: 3.4.9(ts-node@10.9.2)
+      tailwindcss: 3.4.13(ts-node@10.9.2)
     dev: true
 
   /@testing-library/dom@10.4.0:
@@ -11996,7 +11996,7 @@ packages:
       chalk: 4.1.2
       ci-info: 4.0.0
       deepmerge: 4.3.1
-      glob: 10.3.10
+      glob: 10.4.5
       graceful-fs: 4.2.11
       jest-circus: 30.0.0-alpha.6
       jest-docblock: 30.0.0-alpha.6
@@ -12423,7 +12423,7 @@ packages:
       chalk: 4.1.2
       cjs-module-lexer: 1.2.3
       collect-v8-coverage: 1.0.2
-      glob: 10.3.10
+      glob: 10.4.5
       graceful-fs: 4.2.11
       jest-haste-map: 30.0.0-alpha.6
       jest-message-util: 30.0.0-alpha.6
@@ -13029,7 +13029,7 @@ packages:
     dependencies:
       '@babel/parser': 7.25.3
       '@babel/types': 7.25.2
-      source-map-js: 1.2.0
+      source-map-js: 1.2.1
     dev: true
 
   /make-dir@4.0.0:
@@ -13085,14 +13085,6 @@ packages:
     dependencies:
       '@types/node': 20.14.15
     dev: false
-
-  /micromatch@4.0.7:
-    resolution: {integrity: sha512-LPP/3KorzCwBxfeUuZmaR6bG2kdeHSbe0P2tY3FLRU4vYrjYz5hI4QZwV0njUx3jeuKe67YukQ1LSPZBKDqO/Q==}
-    engines: {node: '>=8.6'}
-    dependencies:
-      braces: 3.0.3
-      picomatch: 2.3.1
-    dev: true
 
   /micromatch@4.0.8:
     resolution: {integrity: sha512-PXwfBhYu0hBCPw8Dn0E+WDYb7af3dSLVWKi3HGv84IdF4TyFoC0ysxFd0Goxw7nSv4T/PzEJQxsYsEiFCKo2BA==}
@@ -13800,7 +13792,6 @@ packages:
 
   /picocolors@1.1.0:
     resolution: {integrity: sha512-TQ92mBOW0l3LeMeyLV6mzy/kWr8lkd/hp3mTg7wYK7zJhuBStmGMBG0BdeDZS/dZx1IukaX6Bk11zcln25o1Aw==}
-    dev: true
 
   /picomatch@2.3.1:
     resolution: {integrity: sha512-JU3teHTNjmE2VCGFzuY8EXzCDVwEqB2a8fsIvwaStHhAWJEeVd1o1QD80CU6+ZdEXXSLbSsuLwJjkCBWqRQUVA==}
@@ -13864,29 +13855,29 @@ packages:
     engines: {node: '>= 0.4'}
     dev: true
 
-  /postcss-import@15.1.0(postcss@8.4.41):
+  /postcss-import@15.1.0(postcss@8.4.47):
     resolution: {integrity: sha512-hpr+J05B2FVYUAXHeK1YyI267J/dDDhMU6B6civm8hSY1jYJnBXxzKDKDswzJmtLHryrjhnDjqqp/49t8FALew==}
     engines: {node: '>=14.0.0'}
     peerDependencies:
       postcss: ^8.0.0
     dependencies:
-      postcss: 8.4.41
+      postcss: 8.4.47
       postcss-value-parser: 4.2.0
       read-cache: 1.0.0
       resolve: 1.22.8
     dev: true
 
-  /postcss-js@4.0.1(postcss@8.4.41):
+  /postcss-js@4.0.1(postcss@8.4.47):
     resolution: {integrity: sha512-dDLF8pEO191hJMtlHFPRa8xsizHaM82MLfNkUHdUtVEV3tgTp5oj+8qbEqYM57SLfc74KSbw//4SeJma2LRVIw==}
     engines: {node: ^12 || ^14 || >= 16}
     peerDependencies:
       postcss: ^8.4.21
     dependencies:
       camelcase-css: 2.0.1
-      postcss: 8.4.41
+      postcss: 8.4.47
     dev: true
 
-  /postcss-load-config@4.0.1(postcss@8.4.41)(ts-node@10.9.2):
+  /postcss-load-config@4.0.1(postcss@8.4.47)(ts-node@10.9.2):
     resolution: {integrity: sha512-vEJIc8RdiBRu3oRAI0ymerOn+7rPuMvRXslTvZUKZonDHFIczxztIyJ1urxM1x9JXEikvpWWTUUqal5j/8QgvA==}
     engines: {node: '>= 14'}
     peerDependencies:
@@ -13899,18 +13890,18 @@ packages:
         optional: true
     dependencies:
       lilconfig: 2.1.0
-      postcss: 8.4.41
+      postcss: 8.4.47
       ts-node: 10.9.2(@types/node@20.16.5)(typescript@5.5.4)
       yaml: 2.3.1
     dev: true
 
-  /postcss-nested@6.0.1(postcss@8.4.41):
+  /postcss-nested@6.0.1(postcss@8.4.47):
     resolution: {integrity: sha512-mEp4xPMi5bSWiMbsgoPfcP74lsWLHkQbZc3sY+jWYd65CUwXrUaTp0fmNpa01ZcETKlIgUdFN/MpS2xZtqL9dQ==}
     engines: {node: '>=12.0'}
     peerDependencies:
       postcss: ^8.2.14
     dependencies:
-      postcss: 8.4.41
+      postcss: 8.4.47
       postcss-selector-parser: 6.0.13
     dev: true
 
@@ -13939,7 +13930,7 @@ packages:
     engines: {node: ^10 || ^12 || >=14}
     dependencies:
       nanoid: 3.3.7
-      picocolors: 1.0.1
+      picocolors: 1.1.0
       source-map-js: 1.2.0
 
   /postcss@8.4.41:
@@ -15197,8 +15188,8 @@ packages:
       tslib: 2.6.3
     dev: true
 
-  /tailwindcss@3.4.9(ts-node@10.9.2):
-    resolution: {integrity: sha512-1SEOvRr6sSdV5IDf9iC+NU4dhwdqzF4zKKq3sAbasUWHEM6lsMhX+eNN5gkPx1BvLFEnZQEUFbXnGj8Qlp83Pg==}
+  /tailwindcss@3.4.13(ts-node@10.9.2):
+    resolution: {integrity: sha512-KqjHOJKogOUt5Bs752ykCeiwvi0fKVkr5oqsFNt/8px/tA8scFPIlkygsf6jXrfCqGHz7VflA6+yytWuM+XhFw==}
     engines: {node: '>=14.0.0'}
     hasBin: true
     dependencies:
@@ -15212,15 +15203,15 @@ packages:
       is-glob: 4.0.3
       jiti: 1.21.0
       lilconfig: 2.1.0
-      micromatch: 4.0.7
+      micromatch: 4.0.8
       normalize-path: 3.0.0
       object-hash: 3.0.0
-      picocolors: 1.0.1
-      postcss: 8.4.41
-      postcss-import: 15.1.0(postcss@8.4.41)
-      postcss-js: 4.0.1(postcss@8.4.41)
-      postcss-load-config: 4.0.1(postcss@8.4.41)(ts-node@10.9.2)
-      postcss-nested: 6.0.1(postcss@8.4.41)
+      picocolors: 1.1.0
+      postcss: 8.4.47
+      postcss-import: 15.1.0(postcss@8.4.47)
+      postcss-js: 4.0.1(postcss@8.4.47)
+      postcss-load-config: 4.0.1(postcss@8.4.47)(ts-node@10.9.2)
+      postcss-nested: 6.0.1(postcss@8.4.47)
       postcss-selector-parser: 6.0.13
       resolve: 1.22.8
       sucrase: 3.34.0
