@@ -56,7 +56,7 @@ export const isExecutionResult = (input: unknown): input is ExecutionResult => {
 
   const value = input as Record<string, unknown>;
 
-  return 'data' in value || Array.isArray(value.errors);
+  return Boolean(value?.data) || Array.isArray(value.errors);
 };
 
 export const handleResponseErrors = async (result: ExecutionResult) => {
