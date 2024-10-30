@@ -183,9 +183,9 @@ export interface ReactClient<TSchema extends BaseGeneratedSchema> {
 export function createReactClient<TSchema extends BaseGeneratedSchema>(
   client: GQtyClient<TSchema>,
   {
+    defaults: { suspense = false } = {},
     defaults: {
       initialLoadingState = false,
-      suspense = false,
       transactionFetchPolicy = 'cache-first',
       lazyFetchPolicy = 'network-only',
       staleWhileRevalidate = false,

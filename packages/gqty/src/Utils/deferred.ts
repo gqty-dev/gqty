@@ -57,5 +57,8 @@ export const createDeferredIterator = <T>(): DeferredIterator<T> => {
     [Symbol.asyncIterator]() {
       return this;
     },
+    async [Symbol.asyncDispose]() {
+      await this.return();
+    },
   };
 };

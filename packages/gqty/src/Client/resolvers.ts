@@ -17,6 +17,7 @@ import {
   subscribeSelections,
   type Unsubscribe,
 } from './resolveSelections';
+import { createSubscriber, isWsClient } from './subscriber';
 import { updateCaches } from './updateCaches';
 
 export type CreateResolversOptions = {
@@ -188,6 +189,8 @@ export type SubscribeOptions = ResolverOptions & {
    * Called when a subscription is established, receives an unsubscribe
    * function that immediately terminates the async generator and any pending
    * promise.
+   *
+   * @deprecated Use the `unsubscribe` method returned from `subscribe()` instead.
    */
   onSubscribe?: (unsubscribe: Unsubscribe) => void;
 };
@@ -237,6 +240,10 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
   // When multiple queries are batched, all corresponding temporary caches must
   // be updated. Along with the original client cache.
   const correlatedCaches = new MultiDict<Set<unknown>, Cache>();
+
+  const subscriber = isWsClient(fetchOptions.subscriber)
+    ? createSubscriber(fetchOptions.subscriber)
+    : fetchOptions.subscriber;
 
   const createResolver: CreateResolverFn<TSchema> = ({
     cachePolicy = defaultCachePolicy,
@@ -530,8 +537,7 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
                   [{ data, error, extensions }],
                   cachePolicy !== 'no-store' && context.cache !== resolverCache
                     ? [context.cache, resolverCache]
-                    : [context.cache],
-                  { skipNotify: !context.notifyCacheUpdate }
+                    : [context.cache]
                 );
 
                 if (!lastSelectionsUpdated) {
@@ -554,9 +560,11 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
                 ...fetchOptions,
                 cachePolicy,
                 retryPolicy,
+                subscriber,
               },
               operationName,
-              onSubscribe: () => onSubscribe?.(unsubscribe),
+              onSubscribe: () =>
+                queueMicrotask(() => onSubscribe?.(unsubscribe)),
               onComplete: () => resolve(),
             }
           );
