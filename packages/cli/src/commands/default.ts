@@ -105,10 +105,12 @@ export const addCommand = (command: Command) => {
 
       // CLI options
       {
-        config.frameworks ??= [
-          options.react && 'react',
-          options.solid && 'solid-js',
-        ].filter((v): v is SupportedFrameworks => !!v);
+        if (config.frameworks?.length === 0) {
+          config.frameworks = [
+            options.react && 'react',
+            options.solid && 'solid-js',
+          ].filter((v): v is SupportedFrameworks => !!v);
+        }
 
         // Explicitly allow empty string
         if (options.subscriptions !== undefined) {

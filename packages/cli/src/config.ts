@@ -62,7 +62,7 @@ export const defaultConfig: SetRequired<
     try {
       cjsRequire.resolve('react');
       result.push('react');
-    } catch (err) {
+    } catch {
       // noop
     }
 
