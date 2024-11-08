@@ -59,7 +59,7 @@ export const isExecutionResult = (input: unknown): input is ExecutionResult => {
   return 'data' in value || Array.isArray(value.errors);
 };
 
-export const handleResponseErrors = async (result: ExecutionResult) => {
+export const handleResponseErrors = (result: ExecutionResult) => {
   if (result.errors?.length) {
     throw GQtyError.fromGraphQLErrors(result.errors);
   }
