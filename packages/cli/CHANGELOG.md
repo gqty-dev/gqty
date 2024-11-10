@@ -1,5 +1,18 @@
 # @gqty/cli
 
+## 4.2.1
+
+### Patch Changes
+
+- [`92498f8`](https://github.com/gqty-dev/gqty/commit/92498f8c3944f6322b7d91925531fd278ee4da81)
+  Thanks [@vicary](https://github.com/vicary)! - allow default auto-detected
+  frameworks
+
+- Updated dependencies
+  [[`f681c06`](https://github.com/gqty-dev/gqty/commit/f681c06b2af6d979a5d9af92e087872c17234af4),
+  [`ee30fe3`](https://github.com/gqty-dev/gqty/commit/ee30fe39f2ebf512716247d9ae37eb6dbd33f8eb)]:
+  - gqty@3.2.2
+
 ## 4.2.0
 
 ### Minor Changes
