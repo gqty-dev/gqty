@@ -5,7 +5,7 @@ import { updateCaches } from '../updateCaches';
 import type { CreateLegacyMethodOptions } from './client';
 import { convertSelection, type LegacySelection } from './selection';
 
-export interface LegacyFetchOptions extends Omit<RequestInit, 'body'> {}
+export type LegacyFetchOptions = Omit<RequestInit, 'body'>;
 
 export interface LegacyResolved {
   <T = unknown>(fn: () => T, opts?: LegacyResolveOptions<T>): Promise<T>;

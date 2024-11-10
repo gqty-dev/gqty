@@ -17,11 +17,11 @@ const deduplicationCache = new WeakMap<
  *
  * After promise resolution, the hash is removed from the map.
  *
- * If the cache to omitted, a global cache will be used instead.
+ * If the `cache` argument is omitted, a global cache will be used instead.
  */
 export const dedupePromise = <
   TData = Record<string, unknown>,
-  TExtensions = Record<string, unknown>
+  TExtensions = Record<string, unknown>,
 >(
   cache: Cache | undefined,
   hash: string,

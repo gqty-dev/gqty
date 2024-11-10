@@ -1,3 +1,4 @@
+import type { FrailMap } from 'frail-map';
 import type { CacheNode, CacheObject } from '.';
 import { GQtyError } from '../Error';
 import { deepAssign } from '../Utils';
@@ -22,7 +23,7 @@ const shells = new Set<NormalizedObjectShell>();
 
 export type NormalizatioOptions<TData extends CacheObject = CacheObject> =
   CacheNormalizationHandler & {
-    store: Map<string, NormalizedObjectShell<TData>>;
+    store: FrailMap<string, NormalizedObjectShell<TData>>;
   };
 
 /**

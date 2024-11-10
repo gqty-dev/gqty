@@ -1,10 +1,6 @@
 import type { ExecutionResult } from 'graphql';
 import type { Client as SseClient } from 'graphql-sse';
-import type {
-  MessageType,
-  SubscribePayload,
-  Client as WsClient,
-} from 'graphql-ws';
+import type { MessageType, SubscribePayload } from 'graphql-ws';
 import type { CloseEvent } from 'ws';
 import type { FetchOptions } from '.';
 import type { Cache } from '../Cache';
@@ -15,12 +11,17 @@ import { buildQuery } from '../QueryBuilder';
 import type { QueryPayload } from '../Schema';
 import type { Selection } from '../Selection';
 import type { Debugger } from './debugger';
+import { isWsClient, type GQtyWsClient } from './subscriber';
+
+export type ResolverFetchOptions = Omit<FetchOptions, 'subscriber'> & {
+  subscriber?: SseClient | GQtyWsClient;
+};
 
 export type FetchSelectionsOptions = {
   cache?: Cache;
   debugger?: Debugger;
   extensions?: Record<string, unknown>;
-  fetchOptions: FetchOptions;
+  fetchOptions: ResolverFetchOptions;
   operationName?: string;
 };
 
@@ -163,15 +164,7 @@ export const subscribeSelections = <
 
         if (isWsClient(subscriber)) {
           if (onSubscribe) {
-            const unsub = subscriber.on('message', (message) => {
-              switch (message.type) {
-                case 'connection_ack' as MessageType.ConnectionAck: {
-                  unsub();
-                  onSubscribe();
-                  break;
-                }
-              }
-            });
+            subscriber.onSubscribe(onSubscribe);
           }
 
           if (debug) {
@@ -198,13 +191,11 @@ export const subscribeSelections = <
               }
             });
           }
-        } else if (isSseClient(subscriber)) {
+        } else {
           // [ ] Get id via constructor#onMessage option, this requires
           // modifications to the generated client.
           subscriptionId = 'EventSource';
           onSubscribe?.();
-        } else {
-          throw new GQtyError(`Please specify a subscriber for subscriptions.`);
         }
 
         const next = ({ data, errors, extensions }: ExecutionResult<TData>) => {
@@ -258,11 +249,15 @@ export const subscribeSelections = <
               queryPayload,
               {
                 next,
-                error(err) {
-                  if (Array.isArray(err)) {
-                    error(GQtyError.fromGraphQLErrors(err));
-                  } else if (!isCloseEvent(err)) {
-                    error(GQtyError.create(err));
+                error(e) {
+                  if (Array.isArray(e)) {
+                    error(GQtyError.fromGraphQLErrors(e));
+                  } else if (!isCloseEvent(e)) {
+                    if (e instanceof Error) {
+                      error(GQtyError.create(e));
+                    } else {
+                      console.error('Unknown subscription error:', e);
+                    }
                   }
 
                   this.complete();
@@ -433,10 +428,3 @@ export const isCloseEvent = (input: unknown): input is CloseEvent => {
       ].includes(error.code))
   );
 };
-
-const isWsClient = (client?: SseClient | WsClient): client is WsClient => {
-  return client !== undefined && typeof (client as WsClient).on === 'function';
-};
-
-const isSseClient = (client?: SseClient | WsClient): client is SseClient =>
-  client !== undefined && !isWsClient(client);

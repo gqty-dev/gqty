@@ -138,7 +138,10 @@ export class Cache {
   #data = new FrailMap<string, CacheDataContainer>();
 
   /** Look up table for normalized objects. */
-  #normalizedObjects = new Map<string, NormalizedObjectShell<CacheObject>>();
+  #normalizedObjects = new FrailMap<
+    string,
+    NormalizedObjectShell<CacheObject>
+  >();
 
   /** Temporary strong references for the WeakRefs in FrailMap. */
   #dataRefs = new Set<CacheDataContainer>();

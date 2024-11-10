@@ -92,7 +92,7 @@ export const buildQuery = (
         const key = s.alias ? `${s.alias}:${s.key}` : s.key;
         const input = s.input;
 
-        if (input) {
+        if (input && Object.keys(input.values).length > 0) {
           if (!inputDedupe.has(input)) {
             const queryInputs = Object.entries(input.values)
               .map(([key, value]) => {
