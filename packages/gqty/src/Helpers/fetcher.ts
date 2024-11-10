@@ -30,7 +30,7 @@ export const parseResponse = async (response: Response) => {
 
   try {
     return JSON.parse(text);
-  } catch (error) {
+  } catch {
     throw new GQtyError(
       `Received malformed JSON response from GraphQL endpoint: ${
         text.length > 50 ? text.slice(0, 50) + '...' : text
