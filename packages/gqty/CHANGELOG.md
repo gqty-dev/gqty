@@ -1,5 +1,19 @@
 # gqty
 
+## 3.2.2
+
+### Patch Changes
+
+- [#2033](https://github.com/gqty-dev/gqty/pull/2033)
+  [`f681c06`](https://github.com/gqty-dev/gqty/commit/f681c06b2af6d979a5d9af92e087872c17234af4)
+  Thanks [@vicary](https://github.com/vicary)! - fix(gqty): onSubscribe for
+  connected WebSockets
+
+- [#2035](https://github.com/gqty-dev/gqty/pull/2035)
+  [`ee30fe3`](https://github.com/gqty-dev/gqty/commit/ee30fe39f2ebf512716247d9ae37eb6dbd33f8eb)
+  Thanks [@bkniffler](https://github.com/bkniffler)! - fix(package/gqty): remove
+  async keyword from default error handler
+
 ## 3.2.1
 
 ### Patch Changes
