@@ -344,13 +344,19 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
 
         if (options?.ignoreCache === true) {
           context.shouldFetch = true;
-        }
-        // Soft-refetches here may not know if the WeakRefs in the cache is
-        // already garbage collected. Running the selections again to update
-        // the context with the latest cache freshness, this will push back the
-        // garbage collection if the specific implementation has LRU components.
-        else if (!options?.skipPrepass && isFinite(client.cache.maxAge)) {
-          prepass(accessor, selections);
+        } else {
+          // Soft-refetches here may not know if the WeakRefs in the cache is
+          // already garbage collected. Running the selections again to update
+          // the context with the latest cache freshness, this will push back the
+          // garbage collection if the specific implementation has LRU components.
+          if (!options?.skipPrepass && isFinite(client.cache.maxAge)) {
+            prepass(accessor, selections);
+          }
+
+          // Skip SWR fetches to prevent render-fetch loops.
+          if (renderSession.get('postFetch') && !context.hasCacheMiss) {
+            context.shouldFetch = false;
+          }
         }
 
         if (!context.shouldFetch) {
@@ -463,6 +469,19 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
         selections,
       ]
     );
+
+    // Foolproof check on first render only when initialLoadingState is enabled,
+    // because it's confusing for this particular use case.
+    useEffect(() => {
+      if (initialLoadingState && selections.size === 0) {
+        if (process.env.NODE_ENV !== 'production') {
+          console.warn(
+            '[GQty] No selections found, ' +
+              'this is rarely expected with initialLoadingState.'
+          );
+        }
+      }
+    }, []);
 
     // context.shouldFetch only changes during component render, which happens
     // after this hook is called. A useEffect hook that runs every render
