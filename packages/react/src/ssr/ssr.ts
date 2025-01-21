@@ -55,17 +55,27 @@ export function createSSRHelpers<TSchema extends BaseGeneratedSchema>(
       const majorVersion = +version.split('.')[0];
 
       if (majorVersion >= 18) {
-        const { renderToPipeableStream } = await import('react-dom/server');
-
-        return prepareRender(
-          () =>
-            new Promise((resolve, reject) => {
-              renderToPipeableStream(element, {
-                onAllReady: resolve,
-                onError: reject,
-              });
-            })
+        const { renderToPipeableStream, renderToReadableStream } = await import(
+          'react-dom/server'
         );
+
+        if (renderToReadableStream !== undefined) {
+          return prepareRender(async () => {
+            const stream = await renderToReadableStream(element);
+
+            await stream.allReady;
+          });
+        } else {
+          return prepareRender(
+            () =>
+              new Promise((resolve, reject) => {
+                renderToPipeableStream(element, {
+                  onAllReady: resolve,
+                  onError: reject,
+                });
+              })
+          );
+        }
       } else {
         const ssrPrepass = getDefault(await import('react-ssr-prepass'));
 

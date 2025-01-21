@@ -2,4 +2,4 @@
 '@gqty/react': minor
 ---
 
-SSR uses renderToPipeableStream on react-dom@>=18
+streaming SSR on react-dom@>=18
