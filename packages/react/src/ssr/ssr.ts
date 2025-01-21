@@ -3,7 +3,8 @@ import {
   type GQtyClient,
   type LegacyHydrateCacheOptions,
 } from 'gqty';
-import { useEffect, useMemo, type ReactNode } from 'react';
+import { type ReactNode, useEffect, useMemo } from 'react';
+import { version } from 'react-dom/server';
 import { getDefault, type ReactClientOptionsWithDefaults } from '../utils';
 
 export interface UseHydrateCacheOptions
@@ -25,7 +26,7 @@ export interface UseHydrateCacheOptions
  * Props with `cacheSnapshot` that would be returned from `prepareReactRender`
  */
 export type PropsWithServerCache<
-  T extends Record<string | number, unknown> = Record<string | number, unknown>
+  T extends Record<string | number, unknown> = Record<string | number, unknown>,
 > = {
   /**
    * Cache snapshot, returned from `prepareReactRender`
@@ -51,10 +52,27 @@ export function createSSRHelpers<TSchema extends BaseGeneratedSchema>(
 ) {
   const prepareReactRender: PrepareReactRender =
     async function prepareReactRender(element: ReactNode) {
-      const ssrPrepass = getDefault(await import('react-ssr-prepass'));
+      const majorVersion = +version.split('.')[0];
 
-      return prepareRender(() => ssrPrepass(element));
+      if (majorVersion >= 18) {
+        const { renderToPipeableStream } = await import('react-dom/server');
+
+        return prepareRender(
+          () =>
+            new Promise((resolve, reject) => {
+              renderToPipeableStream(element, {
+                onAllReady: resolve,
+                onError: reject,
+              });
+            })
+        );
+      } else {
+        const ssrPrepass = getDefault(await import('react-ssr-prepass'));
+
+        return prepareRender(() => ssrPrepass(element));
+      }
     };
+
   const useHydrateCache: UseHydrateCache = function useHydrateCache({
     cacheSnapshot,
     shouldRefetch = refetchAfterHydrate,
