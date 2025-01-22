@@ -36,7 +36,7 @@ const {
   assertSchema,
 } = graphql;
 
-export type SupportedFrameworks = 'react' | 'solid-js';
+export type SupportedFrameworks = 'react' | 'solid-js' | 'hono' | 'pylon';
 
 export interface GenerateOptions {
   /**
@@ -173,6 +173,11 @@ export async function generate(
     parser: 'typescript',
   });
 
+  react ??= frameworks.includes('react');
+  const solid = frameworks.includes('solid-js');
+  const hono = frameworks.includes('hono');
+  const pylon = frameworks.includes('pylon');
+
   schema = lexicographicSortSchema(assertSchema(schema));
 
   if (transformSchema) {
@@ -182,9 +187,6 @@ export async function generate(
       throw Error(`"transformSchema" returned an invalid GraphQL Schema!`);
     }
   }
-
-  react ??= frameworks.includes('react');
-  const solid = frameworks.includes('solid-js');
 
   const codegenResultPromise = deps.codegen({
     schema: parse(deps.printSchemaWithDirectives(schema)),
@@ -799,6 +801,8 @@ export async function generate(
     return `/**\n * @type {${type}}\n */\n`;
   }
 
+  const cors = hono || pylon;
+
   const queryFetcher = `
     ${
       isJavascriptOutput
@@ -815,8 +819,7 @@ export async function generate(
             query,
             variables,
             operationName,
-          }),
-          mode: "cors",
+          }),${!cors ? '\nmode: "cors",' : ''}
           ...fetchOptions
         });
 
