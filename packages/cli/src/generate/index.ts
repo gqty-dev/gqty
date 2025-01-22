@@ -18,9 +18,9 @@ import type {
   GraphQLUnionType,
 } from 'graphql';
 import * as graphql from 'graphql';
-import { defaultConfig, type GQtyConfig } from './config';
-import * as deps from './deps';
-import { formatPrettier } from './prettier';
+import { defaultConfig, type GQtyConfig } from '../config';
+import * as deps from '../deps';
+import { formatPrettier } from '../prettier';
 
 const {
   isEnumType,
