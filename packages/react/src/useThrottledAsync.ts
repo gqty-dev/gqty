@@ -65,7 +65,7 @@ export function useThrottledAsync<Result, Args extends unknown[] = unknown[]>(
 ): [
   AsyncState<Result>,
   UseAsyncActions<Result, Args>,
-  UseAsyncMeta<Result, Args>
+  UseAsyncMeta<Result, Args>,
 ];
 export function useThrottledAsync<Result, Args extends unknown[] = unknown[]>(
   asyncFn: (...params: Args) => Promise<Result>,
@@ -73,7 +73,7 @@ export function useThrottledAsync<Result, Args extends unknown[] = unknown[]>(
 ): [
   AsyncState<Result | undefined>,
   UseAsyncActions<Result, Args>,
-  UseAsyncMeta<Result, Args>
+  UseAsyncMeta<Result, Args>,
 ];
 export function useThrottledAsync<Result, Args extends unknown[] = unknown[]>(
   asyncFn: (...params: Args) => Promise<Result>,
@@ -81,15 +81,15 @@ export function useThrottledAsync<Result, Args extends unknown[] = unknown[]>(
 ): [
   AsyncState<Result | undefined>,
   UseAsyncActions<Result, Args>,
-  UseAsyncMeta<Result, Args>
+  UseAsyncMeta<Result, Args>,
 ] {
   const [state, setState] = useState<AsyncState<Result | undefined>>({
     status: 'not-executed',
     error: undefined,
     result: initialValue,
   });
-  const promiseRef = useRef<Promise<Result>>();
-  const argsRef = useRef<Args>();
+  const promiseRef = useRef<Promise<Result> | undefined>(undefined);
+  const argsRef = useRef<Args | undefined>(undefined);
 
   const methods = useSyncedRef({
     execute: (...params: Args) => {
