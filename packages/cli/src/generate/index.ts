@@ -22,6 +22,8 @@ import { defaultConfig, type GQtyConfig } from '../config';
 import * as deps from '../deps';
 import { formatPrettier } from '../prettier';
 
+import { generateMutationQueryTypes } from './mutation-query-types';
+
 const {
   isEnumType,
   isInputObjectType,
@@ -867,6 +869,14 @@ export async function generate(
     export const generatedSchema = {${generatedSchemaCodeString}};
   `);
 
+  const paramsToArgsSchemaCode = await format(`
+    /**
+     * Contains code for parameter to argument conversion.
+     */
+
+    ${generateMutationQueryTypes(generatedSchema, scalarsEnumsHash)}
+  `);
+
   const imports = [
     hasUnions && 'SchemaUnionsKey',
     !isJavascriptOutput && 'type ScalarsEnumsHash',
@@ -893,6 +903,8 @@ export async function generate(
     } {${generatedSchemaCodeString}}${isJavascriptOutput ? '' : ' as const'};
 
     ${typescriptTypes}
+
+    ${hono || pylon ? paramsToArgsSchemaCode : ''}
   `);
 
   const reactClientCode = react
