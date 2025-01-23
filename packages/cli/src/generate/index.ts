@@ -23,6 +23,7 @@ import * as deps from '../deps';
 import { formatPrettier } from '../prettier';
 
 import { generateMutationQueryTypes } from './mutation-query-types';
+import { generateMutationQueryParamNames } from './mutation-query-param-names';
 
 const {
   isEnumType,
@@ -875,6 +876,8 @@ export async function generate(
      */
 
     ${generateMutationQueryTypes(generatedSchema, scalarsEnumsHash)}
+
+    ${generateMutationQueryParamNames(generatedSchema)}
   `);
 
   const imports = [
