@@ -178,7 +178,13 @@ export async function generate(
   const hono = frameworks.includes('hono');
   const pylon = frameworks.includes('pylon');
 
-  schema = lexicographicSortSchema(assertSchema(schema));
+  const requiresSchemaSorting = !(hono || pylon);
+
+  if (requiresSchemaSorting) {
+    schema = lexicographicSortSchema(assertSchema(schema));
+  } else {
+    schema = assertSchema(schema);
+  }
 
   if (transformSchema) {
     schema = await transformSchema(schema, graphql);
