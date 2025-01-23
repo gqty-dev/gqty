@@ -24,6 +24,7 @@ import { formatPrettier } from '../prettier';
 
 import { generateMutationQueryTypes } from './mutation-query-types';
 import { generateMutationQueryParamNames } from './mutation-query-param-names';
+import { generateConvertParamsToArgs } from './convert-params-to-args';
 
 const {
   isEnumType,
@@ -878,6 +879,8 @@ export async function generate(
     ${generateMutationQueryTypes(generatedSchema, scalarsEnumsHash)}
 
     ${generateMutationQueryParamNames(generatedSchema)}
+
+    ${generateConvertParamsToArgs(generatedSchema)}
   `);
 
   const imports = [
