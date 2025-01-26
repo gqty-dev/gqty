@@ -1,4 +1,4 @@
-import type { ExecutionResult } from 'graphql';
+import { GraphQLError, type ExecutionResult } from 'graphql';
 import { GQtyError } from '../Error';
 
 export const defaultResponseHandler = async (response: Response) => {
@@ -29,7 +29,15 @@ export const parseResponse = async (response: Response) => {
   }
 
   try {
-    return JSON.parse(text);
+    const result = JSON.parse(text);
+
+    if (Array.isArray(result?.errors)) {
+      result.errors = result.errors.map(
+        (error: any) => new GraphQLError(error.message, error)
+      );
+    }
+
+    return result;
   } catch {
     throw new GQtyError(
       `Received malformed JSON response from GraphQL endpoint: ${
@@ -56,7 +64,11 @@ export const isExecutionResult = (input: unknown): input is ExecutionResult => {
 
   const value = input as Record<string, unknown>;
 
-  return 'data' in value || Array.isArray(value.errors);
+  return (
+    'data' in value ||
+    (Array.isArray(value.errors) &&
+      value.errors.every((error) => error instanceof GraphQLError))
+  );
 };
 
 export const handleResponseErrors = (result: ExecutionResult) => {
