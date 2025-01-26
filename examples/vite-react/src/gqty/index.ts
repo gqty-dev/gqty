@@ -4,7 +4,7 @@
 
 import { createReactClient } from '@gqty/react';
 import type { QueryFetcher } from 'gqty';
-import { Cache, createClient } from 'gqty';
+import { Cache, createClient, defaultResponseHandler } from 'gqty';
 import type { GeneratedSchema } from './schema.generated';
 import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
@@ -27,9 +27,7 @@ const queryFetcher: QueryFetcher = async function (
     ...fetchOptions,
   });
 
-  const json = await response.json();
-
-  return json;
+  return await defaultResponseHandler(response);
 };
 
 const cache = new Cache(
