@@ -14,7 +14,7 @@ export type GQtyConfig = GenerateOptions & {
   /**
    * Introspection options
    *
-   * @deprecated Use `introspectionOptions` instead
+   * @deprecated Use `introspections` instead
    */
   introspection?: IntrospectionOptions;
   /**

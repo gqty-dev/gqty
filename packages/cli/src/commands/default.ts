@@ -145,8 +145,9 @@ export const addCommand = (command: Command) => {
         ].filter((v): v is SupportedFrameworks => !!v);
 
         config.javascriptOutput ??=
-          manifest.dependencies?.['typescript'] === undefined &&
-          manifest.devDependencies?.['typescript'] === undefined;
+          !manifest.dependencies?.['typescript'] &&
+          !manifest.devDependencies?.['typescript'] &&
+          (config.destination?.endsWith('.js') ?? true);
       }
 
       // Detect Subscriptions from schema.
