@@ -77,10 +77,10 @@ describe('buildQuery()', () => {
     );
 
     expect(query).toMatchInlineSnapshot(
-      `"query($a03b9b:Int!$ad2f8d:String!){d gqtyAlias_1:a(a:$a03b9b b:$ad2f8d){a_b a_c}}"`
+      `"query($a1968d:String!$a93e62:Int!){d gqtyAlias_1:a(a:$a93e62 b:$a1968d){a_b a_c}}"`
     );
     expect(() => parse(query)).not.toThrow();
-    expect(variables).toEqual({ a03b9b: 1, ad2f8d: 1 });
+    expect(variables).toEqual({ a1968d: 1, a93e62: 1 });
     expect(officialStripIgnoredCharacters(query)).toBe(query);
   });
 
@@ -104,14 +104,14 @@ describe('buildQuery()', () => {
     const [{ query, variables }] = buildQuery(new Set([selectionA]));
 
     expect(query).toMatchInlineSnapshot(
-      `"mutation($a03b9b:Int!$ad2f8d:String!){gqtyAlias_1:a(a:$a03b9b b:$ad2f8d)}"`
+      `"mutation($a1968d:String!$a93e62:Int!){gqtyAlias_1:a(a:$a93e62 b:$a1968d)}"`
     );
 
     expect(() => {
       parse(query);
     }).not.toThrow();
 
-    expect(variables).toEqual({ a03b9b: 1, ad2f8d: 1 });
+    expect(variables).toEqual({ a1968d: 1, a93e62: 1 });
 
     expect(officialStripIgnoredCharacters(query)).toBe(query);
   });

@@ -186,16 +186,16 @@ describe('useQuery', () => {
       [
         {
           "operationName": undefined,
-          "query": "query($a00425:String){a2c936:human(name:$a00425){__typename id name}}",
+          "query": "query($a2ccff:String){ffcf6a:human(name:$a2ccff){__typename id name}}",
           "variables": {
-            "a00425": "1",
+            "a2ccff": "1",
           },
         },
         {
           "operationName": undefined,
-          "query": "query($dd0895:String){a657eb:human(name:$dd0895){__typename id name}}",
+          "query": "query($a9f80d:String){a7be6c:human(name:$a9f80d){__typename id name}}",
           "variables": {
-            "dd0895": "2",
+            "a9f80d": "2",
           },
         },
       ]
@@ -341,7 +341,7 @@ describe('useQuery', () => {
 
     expect(queries).toMatchInlineSnapshot(`
       [
-        "query($a2a039:ID!){eb2884:pet(id:$a2a039){__typename id owner{__typename id name}}now peoples{__typename id name}}",
+        "query($a16193:ID!){a7c8bb:pet(id:$a16193){__typename id owner{__typename id name}}now peoples{__typename id name}}",
       ]
     `);
 
@@ -353,8 +353,8 @@ describe('useQuery', () => {
 
     expect(queries).toMatchInlineSnapshot(`
       [
-        "query($a2a039:ID!){eb2884:pet(id:$a2a039){__typename id owner{__typename id name}}now peoples{__typename id name}}",
-        "query($a2a039:ID!){eb2884:pet(id:$a2a039){__typename id owner{__typename id name}}now peoples{__typename id name}}",
+        "query($a16193:ID!){a7c8bb:pet(id:$a16193){__typename id owner{__typename id name}}now peoples{__typename id name}}",
+        "query($a16193:ID!){a7c8bb:pet(id:$a16193){__typename id owner{__typename id name}}now peoples{__typename id name}}",
       ]
     `);
   });

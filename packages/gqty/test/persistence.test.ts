@@ -123,7 +123,7 @@ test('basic functionality', async () => {
   const dataBackup1 = client1.persist();
 
   expect(JSON.stringify(dataBackup1)).toMatchInlineSnapshot(
-    `"{"query":{"a7b306":{"__typename":"Human","id":"1","name":"asd"}}}"`
+    `"{"query":{"be710e":{"__typename":"Human","id":"1","name":"asd"}}}"`
   );
 
   const client2 = await createTestClient();
@@ -220,7 +220,7 @@ test('version check', async () => {
   const cacheBackupv1 = client1.persist('v1');
 
   expect(JSON.stringify(cacheBackupv1)).toMatchInlineSnapshot(
-    `"{"query":{"a7b306":{"__typename":"Human","id":"1","name":"asd"}},"version":"v1"}"`
+    `"{"query":{"be710e":{"__typename":"Human","id":"1","name":"asd"}},"version":"v1"}"`
   );
 
   const client2 = await createTestClient();

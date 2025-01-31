@@ -40,9 +40,9 @@ describe('selection creation', () => {
       'a',
       'b',
       0,
-      'a07b42',
+      'a04687',
     ]);
-    expect(selectionD.alias).toBe('a07b42');
+    expect(selectionD.alias).toBe('a04687');
 
     const repeatSelectionD = selectionC.getChild('d', {
       input: {
@@ -56,9 +56,9 @@ describe('selection creation', () => {
       'a',
       'b',
       0,
-      'a07b42',
+      'a04687',
     ]);
-    expect(repeatSelectionD.alias).toBe('a07b42');
+    expect(repeatSelectionD.alias).toBe('a04687');
 
     const selectionE = selectionD.getChild('e');
 
@@ -67,7 +67,7 @@ describe('selection creation', () => {
       'a',
       'b',
       0,
-      'a07b42',
+      'a04687',
       'e',
     ]);
 
@@ -106,7 +106,7 @@ describe('selection creation', () => {
       aliasLength: Infinity,
     }).getChild('b', { input: { types: { a: 'Int!' }, values: { a: 1 } } });
 
-    // Future proof: object-hash defaults to SHA1, check against that or above.
-    expect(selectionB.alias?.length).toBeGreaterThanOrEqual(40);
+    // Future proof: ohash uses SHA256, check against that or above.
+    expect(selectionB.alias?.length).toBeGreaterThanOrEqual(64);
   });
 });

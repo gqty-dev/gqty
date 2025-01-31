@@ -110,7 +110,7 @@ export const createLegacyResolved = <
     {
       fetchOptions,
       noCache = false, // prevent cache writes after fetch
-      //nonSerializableVariables, // Ignored, object-hash can handle files
+      //nonSerializableVariables, // Ignored since our hasher can handle files
       onCacheData,
       onEmptyResolve,
       onNoCacheFound,
