@@ -42,8 +42,8 @@ importers:
         specifier: ^1.1.2
         version: 1.1.2(esbuild@0.23.1)(typescript@5.6.3)
       bufferutil:
-        specifier: ^4.0.8
-        version: 4.0.8
+        specifier: ^4.0.9
+        version: 4.0.9
       chalk:
         specifier: ^5.3.0
         version: 5.3.0
@@ -125,7 +125,7 @@ importers:
         version: link:../../packages/cli/dist
       '@next/bundle-analyzer':
         specifier: ^14.2.5
-        version: 14.2.5(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+        version: 14.2.5(bufferutil@4.0.9)(utf-8-validate@5.0.10)
       '@tailwindcss/typography':
         specifier: ^0.5.15
         version: 0.5.15(tailwindcss@3.4.9)
@@ -212,7 +212,7 @@ importers:
         version: 0.8.1(@types/graphql-upload@16.0.7)(@types/node@20.14.15)(graphql-ez@0.16.1)(graphql-upload@13.0.0)(graphql@16.9.0)
       '@graphql-ez/plugin-websockets':
         specifier: ^0.11.3
-        version: 0.11.3(@types/node@20.14.15)(bufferutil@4.0.8)(graphql-ez@0.16.1)(graphql@16.9.0)(utf-8-validate@6.0.4)
+        version: 0.11.3(@types/node@20.14.15)(bufferutil@4.0.9)(graphql-ez@0.16.1)(graphql@16.9.0)(utf-8-validate@6.0.4)
       '@react-hookz/web':
         specifier: ^22.0.0
         version: 22.0.0(react-dom@18.3.1)(react@18.3.1)
@@ -444,7 +444,7 @@ importers:
     devDependencies:
       '@graphql-ez/plugin-websockets':
         specifier: ^0.11.3
-        version: 0.11.3(@types/node@20.14.15)(bufferutil@4.0.8)(graphql-ez@0.16.1)(graphql@16.9.0)(utf-8-validate@6.0.4)
+        version: 0.11.3(@types/node@20.14.15)(bufferutil@4.0.9)(graphql-ez@0.16.1)(graphql@16.9.0)(utf-8-validate@6.0.4)
       '@jest/types':
         specifier: ^29.6.3
         version: 29.6.3
@@ -666,7 +666,7 @@ importers:
         version: 7.2.0
       ws:
         specifier: ^8.18.0
-        version: 8.18.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+        version: 8.18.0(bufferutil@4.0.9)(utf-8-validate@6.0.4)
     publishDirectory: dist
 
   packages/logger:
@@ -781,7 +781,7 @@ importers:
         version: 29.7.0(@types/node@20.14.15)(ts-node@10.9.2)
       jest-environment-jsdom:
         specifier: ^29.7.0
-        version: 29.7.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+        version: 29.7.0(bufferutil@4.0.9)(utf-8-validate@6.0.4)
       lodash-es:
         specifier: ^4.17.21
         version: 4.17.21
@@ -837,7 +837,7 @@ importers:
         version: 3.6.0
       jsdom:
         specifier: ^24.0.0
-        version: 24.0.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+        version: 24.0.0(bufferutil@4.0.9)(utf-8-validate@6.0.4)
       test-utils:
         specifier: workspace:^
         version: link:../../internal/test-utils
@@ -862,7 +862,7 @@ importers:
         version: 5.0.0(ws@8.18.0)
       ws:
         specifier: ^8.18.0
-        version: 8.18.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+        version: 8.18.0(bufferutil@4.0.9)(utf-8-validate@6.0.4)
     devDependencies:
       '@types/node':
         specifier: ^20.14.15
@@ -5628,7 +5628,7 @@ packages:
       - '@types/node'
     dev: false
 
-  /@graphql-ez/plugin-websockets@0.11.3(@types/node@20.14.15)(bufferutil@4.0.8)(graphql-ez@0.16.1)(graphql@16.9.0)(utf-8-validate@6.0.4):
+  /@graphql-ez/plugin-websockets@0.11.3(@types/node@20.14.15)(bufferutil@4.0.9)(graphql-ez@0.16.1)(graphql@16.9.0)(utf-8-validate@6.0.4):
     resolution: {integrity: sha512-BVMWG5zdVdyVs9B0V+jCO9qnIEJqCN7JeMPP9dGh44fz68N0LZHA6MHzT1fwLWlN0QjtLeSL55nQkIbQqRqhYA==}
     engines: {node: '>=14.13.1'}
     peerDependencies:
@@ -5644,7 +5644,7 @@ packages:
       graphql-ez: 0.16.1(@types/node@20.14.15)(graphql@16.9.0)
       graphql-ws: 5.16.0(graphql@16.9.0)
       subscriptions-transport-ws-envelop: 2.0.2(graphql@16.9.0)(ws@8.17.0)
-      ws: 8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      ws: 8.17.0(bufferutil@4.0.9)(utf-8-validate@6.0.4)
     transitivePeerDependencies:
       - '@types/node'
       - bufferutil
@@ -6654,10 +6654,10 @@ packages:
       read-yaml-file: 1.1.0
     dev: true
 
-  /@next/bundle-analyzer@14.2.5(bufferutil@4.0.8)(utf-8-validate@5.0.10):
+  /@next/bundle-analyzer@14.2.5(bufferutil@4.0.9)(utf-8-validate@5.0.10):
     resolution: {integrity: sha512-BtBbI8VUnB7s4m9ut6CkeJ8Hyx+aq+86mbH+uAld7ZGG0/eH4+5hcPnkHKsQM/yj74iClazS0fninI8yZbIZWA==}
     dependencies:
-      webpack-bundle-analyzer: 4.10.1(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      webpack-bundle-analyzer: 4.10.1(bufferutil@4.0.9)(utf-8-validate@5.0.10)
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -9269,8 +9269,8 @@ packages:
       ieee754: 1.2.1
     dev: false
 
-  /bufferutil@4.0.8:
-    resolution: {integrity: sha512-4T53u4PdgsXqKaIctwF8ifXlRTTmEPJ8iEPWFdGZvcf7sbwYo6FKFEX9eNNAnzFZ7EzJAQ3CJeOtCRA4rDp7Pw==}
+  /bufferutil@4.0.9:
+    resolution: {integrity: sha512-WDtdLmJvAuNNPzByAYpRo2rF1Mmradw6gvWsQKf63476DDXmomT9zUiGypLcG4ibIM67vhAj8jJRdbmEws2Aqw==}
     engines: {node: '>=6.14.2'}
     requiresBuild: true
     dependencies:
@@ -12168,14 +12168,14 @@ packages:
     peerDependencies:
       ws: '*'
     dependencies:
-      ws: 8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      ws: 8.17.0(bufferutil@4.0.9)(utf-8-validate@6.0.4)
 
   /isomorphic-ws@5.0.0(ws@8.18.0):
     resolution: {integrity: sha512-muId7Zzn9ywDsyXgTIafTry2sV3nySZeUDe6YedVd1Hvuuep5AsIlqK+XefWpYTyJG5e503F2xIuT2lcU6rCSw==}
     peerDependencies:
       ws: '*'
     dependencies:
-      ws: 8.18.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      ws: 8.18.0(bufferutil@4.0.9)(utf-8-validate@6.0.4)
     dev: false
 
   /istanbul-lib-coverage@3.2.2:
@@ -12676,7 +12676,7 @@ packages:
       pretty-format: 30.0.0-alpha.6
     dev: true
 
-  /jest-environment-jsdom@29.7.0(bufferutil@4.0.8)(utf-8-validate@6.0.4):
+  /jest-environment-jsdom@29.7.0(bufferutil@4.0.9)(utf-8-validate@6.0.4):
     resolution: {integrity: sha512-k9iQbsf9OyOfdzWH8HDmrRT0gSIcX+FLNW7IQq94tFX0gynPwqDTW0Ho6iMVNjGz/nb+l/vW3dWM2bbLLpkbXA==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     peerDependencies:
@@ -12692,7 +12692,7 @@ packages:
       '@types/node': 20.14.15
       jest-mock: 29.7.0
       jest-util: 29.7.0
-      jsdom: 20.0.3(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      jsdom: 20.0.3(bufferutil@4.0.9)(utf-8-validate@6.0.4)
     transitivePeerDependencies:
       - bufferutil
       - supports-color
@@ -13307,7 +13307,7 @@ packages:
     dependencies:
       argparse: 2.0.1
 
-  /jsdom@20.0.3(bufferutil@4.0.8)(utf-8-validate@6.0.4):
+  /jsdom@20.0.3(bufferutil@4.0.9)(utf-8-validate@6.0.4):
     resolution: {integrity: sha512-SYhBvTh89tTfCD/CRdSOm13mOBa42iTaTyfyEWBdKcGdPxPtLFBXuHR8XHb33YNYaP+lLbmSvBTsnoesCNJEsQ==}
     engines: {node: '>=14'}
     peerDependencies:
@@ -13340,7 +13340,7 @@ packages:
       whatwg-encoding: 2.0.0
       whatwg-mimetype: 3.0.0
       whatwg-url: 11.0.0
-      ws: 8.18.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      ws: 8.18.0(bufferutil@4.0.9)(utf-8-validate@6.0.4)
       xml-name-validator: 4.0.0
     transitivePeerDependencies:
       - bufferutil
@@ -13348,7 +13348,7 @@ packages:
       - utf-8-validate
     dev: true
 
-  /jsdom@24.0.0(bufferutil@4.0.8)(utf-8-validate@6.0.4):
+  /jsdom@24.0.0(bufferutil@4.0.9)(utf-8-validate@6.0.4):
     resolution: {integrity: sha512-UDS2NayCvmXSXVP6mpTj+73JnNQadZlr9N68189xib2tx5Mls7swlTNao26IoHv46BZJFvXygyRtyXd1feAk1A==}
     engines: {node: '>=18'}
     peerDependencies:
@@ -13376,7 +13376,7 @@ packages:
       whatwg-encoding: 3.1.1
       whatwg-mimetype: 4.0.0
       whatwg-url: 14.0.0
-      ws: 8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      ws: 8.17.0(bufferutil@4.0.9)(utf-8-validate@6.0.4)
       xml-name-validator: 5.0.0
     transitivePeerDependencies:
       - bufferutil
@@ -15736,7 +15736,7 @@ packages:
       isomorphic-ws: 4.0.1(ws@8.17.0)
       iterall: 1.3.0
       symbol-observable: 4.0.0
-      ws: 8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      ws: 8.17.0(bufferutil@4.0.9)(utf-8-validate@6.0.4)
 
   /sucrase@3.34.0:
     resolution: {integrity: sha512-70/LQEZ07TEcxiU2dz51FKaE6hCTWC6vr7FOk3Gr0U60C3shtAN+H+BFr9XlYe5xqf3RA8nrc+VIwzCfnxuXJw==}
@@ -16791,7 +16791,7 @@ packages:
       chai: 5.1.1
       debug: 4.3.6
       execa: 8.0.1
-      jsdom: 24.0.0(bufferutil@4.0.8)(utf-8-validate@6.0.4)
+      jsdom: 24.0.0(bufferutil@4.0.9)(utf-8-validate@6.0.4)
       magic-string: 0.30.10
       pathe: 1.1.2
       std-env: 3.7.0
@@ -16874,7 +16874,7 @@ packages:
     engines: {node: '>=12'}
     dev: true
 
-  /webpack-bundle-analyzer@4.10.1(bufferutil@4.0.8)(utf-8-validate@5.0.10):
+  /webpack-bundle-analyzer@4.10.1(bufferutil@4.0.9)(utf-8-validate@5.0.10):
     resolution: {integrity: sha512-s3P7pgexgT/HTUSYgxJyn28A+99mmLq4HsJepMPzu0R8ImJc52QNqaFYW1Z2z2uIb1/J3eYgaAWVpaC+v/1aAQ==}
     engines: {node: '>= 10.13.0'}
     hasBin: true
@@ -16891,7 +16891,7 @@ packages:
       opener: 1.5.2
       picocolors: 1.0.1
       sirv: 2.0.4
-      ws: 7.5.9(bufferutil@4.0.8)(utf-8-validate@5.0.10)
+      ws: 7.5.9(bufferutil@4.0.9)(utf-8-validate@5.0.10)
     transitivePeerDependencies:
       - bufferutil
       - utf-8-validate
@@ -17075,7 +17075,7 @@ packages:
       signal-exit: 4.1.0
     dev: true
 
-  /ws@7.5.9(bufferutil@4.0.8)(utf-8-validate@5.0.10):
+  /ws@7.5.9(bufferutil@4.0.9)(utf-8-validate@5.0.10):
     resolution: {integrity: sha512-F+P9Jil7UiSKSkppIiD94dN07AwvFixvLIj1Og1Rl9GGMuNipJnV9JzjD6XuqmAeiswGvUmNLjr5cFuXwNS77Q==}
     engines: {node: '>=8.3.0'}
     peerDependencies:
@@ -17087,11 +17087,11 @@ packages:
       utf-8-validate:
         optional: true
     dependencies:
-      bufferutil: 4.0.8
+      bufferutil: 4.0.9
       utf-8-validate: 5.0.10
     dev: true
 
-  /ws@8.17.0(bufferutil@4.0.8)(utf-8-validate@6.0.4):
+  /ws@8.17.0(bufferutil@4.0.9)(utf-8-validate@6.0.4):
     resolution: {integrity: sha512-uJq6108EgZMAl20KagGkzCKfMEjxmKvZHG7Tlq0Z6nOky7YF7aq4mOx6xK8TJ/i1LeK4Qus7INktacctDgY8Ow==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
@@ -17103,10 +17103,10 @@ packages:
       utf-8-validate:
         optional: true
     dependencies:
-      bufferutil: 4.0.8
+      bufferutil: 4.0.9
       utf-8-validate: 6.0.4
 
-  /ws@8.18.0(bufferutil@4.0.8)(utf-8-validate@6.0.4):
+  /ws@8.18.0(bufferutil@4.0.9)(utf-8-validate@6.0.4):
     resolution: {integrity: sha512-8VbfWfHLbbwu3+N6OKsOMpBdT4kXPDDB9cJk2bJ6mh9ucxdlnNvH1e+roYkKmN9Nxw2yjz7VzeO9oOz2zJ04Pw==}
     engines: {node: '>=10.0.0'}
     peerDependencies:
@@ -17118,7 +17118,7 @@ packages:
       utf-8-validate:
         optional: true
     dependencies:
-      bufferutil: 4.0.8
+      bufferutil: 4.0.9
       utf-8-validate: 6.0.4
 
   /xml-name-validator@4.0.0:
