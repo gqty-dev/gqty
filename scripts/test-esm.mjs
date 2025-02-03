@@ -1,12 +1,12 @@
 import chalk from 'chalk';
 import { execSync } from 'child_process';
-import { globby } from 'globby';
+import glob from 'fast-glob';
 import { dirname, resolve } from 'path';
 import { fileURLToPath } from 'url';
 
 async function main() {
   const cwd = dirname(fileURLToPath(import.meta.url));
-  const mjsFiles = await globby(['../packages/*/dist/*.mjs'], {
+  const mjsFiles = await glob(['../packages/*/dist/*.mjs'], {
     cwd,
   });
 

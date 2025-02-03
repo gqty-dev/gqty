@@ -1,4 +1,5 @@
 import { renderHook, waitFor } from '@testing-library/react';
+import { Cache } from 'gqty';
 import { act } from 'react';
 import { createReactTestClient } from './utils';
 
@@ -65,7 +66,17 @@ describe('useMutation', () => {
   });
 
   it('should update contents of useQuery via normalized cache', async () => {
-    const { useQuery, useMutation } = await createReactTestClient();
+    const { useQuery, useMutation } = await createReactTestClient(
+      undefined,
+      undefined,
+      undefined,
+      {
+        cache: new Cache(undefined, {
+          maxAge: Infinity,
+          normalization: true,
+        }),
+      }
+    );
     const { result: q } = renderHook(() => {
       const human = useQuery().human({ name: 'Uno' });
 
@@ -88,20 +99,17 @@ describe('useMutation', () => {
       );
     });
 
-    await waitFor(() => expect(q.current.name).toStrictEqual('Uno'));
+    const waitForName = (name: string) =>
+      waitFor(() => expect(q.current.name).toStrictEqual(name));
 
-    await act(() => m.current[0]({ args: { name: 'Uno', newName: 'Dos' } }));
+    const changeName = async (name: string, newName: string) => {
+      await act(() => m.current[0]({ args: { name, newName } }));
+      await waitForName(newName);
+    };
 
-    await waitFor(() => expect(q.current.name).toStrictEqual('Dos'));
-
-    await act(() => m.current[0]({ args: { name: 'Dos', newName: 'Tres' } }));
-
-    await waitFor(() => expect(q.current.name).toStrictEqual('Tres'));
-
-    await act(() =>
-      m.current[0]({ args: { name: 'Tres', newName: 'Cuatro' } })
-    );
-
-    await waitFor(() => expect(q.current.name).toStrictEqual('Cuatro'));
+    await waitForName('Uno');
+    await changeName('Uno', 'Dos');
+    await changeName('Dos', 'Tres');
+    await changeName('Tres', 'Cuatro');
   });
 });
