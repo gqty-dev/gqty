@@ -21,7 +21,7 @@ describe('createQuery', () => {
     const { createQuery } = await createMockSolidClient({
       client: {
         cache: new Cache(undefined, {
-          maxAge: 100,
+          maxAge: 0,
           staleWhileRevalidate: 5 * 30 * 1000,
         }),
         onFetch: ({ query }) => {
@@ -366,7 +366,7 @@ describe('createQuery', () => {
     const { createQuery } = await createMockSolidClient({
       client: {
         cache: new Cache(undefined, {
-          maxAge: 100,
+          maxAge: 0,
           staleWhileRevalidate: 5 * 30 * 1000,
         }),
       },
@@ -430,7 +430,7 @@ describe('createQuery', () => {
     const { createQuery } = await createMockSolidClient({
       client: {
         cache: new Cache(undefined, {
-          maxAge: 100,
+          maxAge: 0,
           staleWhileRevalidate: 5 * 30 * 1000,
         }),
       },
