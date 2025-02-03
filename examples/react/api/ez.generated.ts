@@ -202,7 +202,7 @@ export interface SubscriptionSubscriberObject<
   TKey extends string,
   TParent,
   TContext,
-  TArgs
+  TArgs,
 > {
   subscribe: SubscriptionSubscribeFn<
     { [key in TKey]: TResult },
@@ -228,7 +228,7 @@ export type SubscriptionObject<
   TKey extends string,
   TParent,
   TContext,
-  TArgs
+  TArgs,
 > =
   | SubscriptionSubscriberObject<TResult, TKey, TParent, TContext, TArgs>
   | SubscriptionResolverObject<TResult, TParent, TContext, TArgs>;
@@ -238,7 +238,7 @@ export type SubscriptionResolver<
   TKey extends string,
   TParent = {},
   TContext = {},
-  TArgs = {}
+  TArgs = {},
 > =
   | ((
       ...args: any[]
@@ -263,7 +263,7 @@ export type DirectiveResolverFn<
   TResult = {},
   TParent = {},
   TContext = {},
-  TArgs = {}
+  TArgs = {},
 > = (
   next: NextResolverFn<TResult>,
   parent: TParent,
@@ -313,7 +313,7 @@ export type ResolversParentTypes = {
 
 export type DogResolvers<
   ContextType = EZContext,
-  ParentType extends ResolversParentTypes['Dog'] = ResolversParentTypes['Dog']
+  ParentType extends ResolversParentTypes['Dog'] = ResolversParentTypes['Dog'],
 > = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -323,7 +323,8 @@ export type DogResolvers<
 
 export type HumanResolvers<
   ContextType = EZContext,
-  ParentType extends ResolversParentTypes['Human'] = ResolversParentTypes['Human']
+  ParentType extends
+    ResolversParentTypes['Human'] = ResolversParentTypes['Human'],
 > = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -339,7 +340,8 @@ export type HumanResolvers<
 
 export type QueryResolvers<
   ContextType = EZContext,
-  ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']
+  ParentType extends
+    ResolversParentTypes['Query'] = ResolversParentTypes['Query'],
 > = {
   expectedError?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   expectedNullableError?: Resolver<
@@ -378,7 +380,8 @@ export type QueryResolvers<
 
 export type MutationResolvers<
   ContextType = EZContext,
-  ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']
+  ParentType extends
+    ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation'],
 > = {
   renameDog?: Resolver<
     Maybe<ResolversTypes['Dog']>,
@@ -420,7 +423,8 @@ export type MutationResolvers<
 
 export type SubscriptionResolvers<
   ContextType = EZContext,
-  ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']
+  ParentType extends
+    ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription'],
 > = {
   newNotification?: SubscriptionResolver<
     ResolversTypes['String'],
@@ -432,7 +436,8 @@ export type SubscriptionResolvers<
 
 export type HumansConnectionResolvers<
   ContextType = EZContext,
-  ParentType extends ResolversParentTypes['HumansConnection'] = ResolversParentTypes['HumansConnection']
+  ParentType extends
+    ResolversParentTypes['HumansConnection'] = ResolversParentTypes['HumansConnection'],
 > = {
   pageInfo?: Resolver<ResolversTypes['PageInfo'], ParentType, ContextType>;
   nodes?: Resolver<Array<ResolversTypes['Human']>, ParentType, ContextType>;
@@ -441,7 +446,8 @@ export type HumansConnectionResolvers<
 
 export type PageInfoResolvers<
   ContextType = EZContext,
-  ParentType extends ResolversParentTypes['PageInfo'] = ResolversParentTypes['PageInfo']
+  ParentType extends
+    ResolversParentTypes['PageInfo'] = ResolversParentTypes['PageInfo'],
 > = {
   hasPreviousPage?: Resolver<
     ResolversTypes['Boolean'],
@@ -464,7 +470,8 @@ export type PageInfoResolvers<
 
 export type SpeciesResolvers<
   ContextType = EZContext,
-  ParentType extends ResolversParentTypes['Species'] = ResolversParentTypes['Species']
+  ParentType extends
+    ResolversParentTypes['Species'] = ResolversParentTypes['Species'],
 > = {
   __resolveType: TypeResolveFn<'Human' | 'Dog', ParentType, ContextType>;
 };

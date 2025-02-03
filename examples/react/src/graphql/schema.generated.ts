@@ -2,7 +2,7 @@
  * GQty AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
  */
 
-import { SchemaUnionsKey } from 'gqty';
+import { SchemaUnionsKey, type ScalarsEnumsHash } from 'gqty';
 
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
@@ -15,24 +15,33 @@ export type MakeOptional<T, K extends keyof T> = Omit<T, K> & {
 export type MakeMaybe<T, K extends keyof T> = Omit<T, K> & {
   [SubKey in K]: Maybe<T[SubKey]>;
 };
+export type MakeEmpty<
+  T extends { [key: string]: unknown },
+  K extends keyof T,
+> = { [_ in K]?: never };
+export type Incremental<T> =
+  | T
+  | {
+      [P in keyof T]?: P extends ' $fragmentName' | '__typename' ? T[P] : never;
+    };
 /** All built-in and custom scalars, mapped to their actual values */
 export interface Scalars {
-  ID: string;
-  String: string;
-  Boolean: boolean;
-  Int: number;
-  Float: number;
+  ID: { input: string; output: string };
+  String: { input: string; output: string };
+  Boolean: { input: boolean; output: boolean };
+  Int: { input: number; output: number };
+  Float: { input: number; output: number };
   /** The `Upload` scalar type represents a file upload. */
-  Upload: File;
+  Upload: { input: File; output: File };
 }
 
 /** ConnectionArgs description! */
 export interface ConnectionArgs {
-  after?: InputMaybe<Scalars['String']>;
-  before?: InputMaybe<Scalars['String']>;
-  first?: InputMaybe<Scalars['Int']>;
+  after?: InputMaybe<Scalars['String']['input']>;
+  before?: InputMaybe<Scalars['String']['input']>;
+  first?: InputMaybe<Scalars['Int']['input']>;
   /** @deprecated asd */
-  last?: InputMaybe<Scalars['Int']>;
+  last?: InputMaybe<Scalars['Int']['input']>;
 }
 
 /** Dog Type */
@@ -45,11 +54,11 @@ export enum DogType {
 
 /** Input Type Example XD */
 export interface inputTypeExample {
-  a: Scalars['String'];
-  other?: InputMaybe<Scalars['Int']>;
+  a: Scalars['String']['input'];
+  other?: InputMaybe<Scalars['Int']['input']>;
 }
 
-export const scalarsEnumsHash: import('gqty').ScalarsEnumsHash = {
+export const scalarsEnumsHash: ScalarsEnumsHash = {
   Boolean: true,
   DogType: true,
   ID: true,
@@ -148,7 +157,7 @@ export interface Human {
     /**
      * @defaultValue `"Hello World"`
      */
-    a?: Maybe<Scalars['String']>;
+    a?: Maybe<ScalarsEnums['String']>;
   }) => Maybe<ScalarsEnums['Int']>;
   id: ScalarsEnums['ID'];
   /**
@@ -187,23 +196,28 @@ export interface Species {
  */
 export interface Mutation {
   __typename?: 'Mutation';
-  createHuman: (args: { id: Scalars['ID']; name: Scalars['String'] }) => Human;
+  createHuman: (args: {
+    id: ScalarsEnums['ID'];
+    name: ScalarsEnums['String'];
+  }) => Human;
   other: (args: { arg: inputTypeExample }) => Maybe<ScalarsEnums['Int']>;
   renameDog: (args: {
     /**
      * Dog Id
      */
-    id: Scalars['ID'];
-    name: Scalars['String'];
+    id: ScalarsEnums['ID'];
+    name: ScalarsEnums['String'];
   }) => Maybe<Dog>;
   renameHuman: (args: {
-    id: Scalars['ID'];
-    name: Scalars['String'];
+    id: ScalarsEnums['ID'];
+    name: ScalarsEnums['String'];
   }) => Maybe<Human>;
   sendNotification: (args: {
-    message: Scalars['String'];
+    message: ScalarsEnums['String'];
   }) => ScalarsEnums['Boolean'];
-  uploadFile: (args: { file: Scalars['Upload'] }) => ScalarsEnums['String'];
+  uploadFile: (args: {
+    file: ScalarsEnums['Upload'];
+  }) => ScalarsEnums['String'];
 }
 
 /**
@@ -249,10 +263,10 @@ export interface GeneratedSchema {
   subscription: Subscription;
 }
 
-export type MakeNullable<T> = {
-  [K in keyof T]: T[K] | undefined;
+export type ScalarsEnums = {
+  [Key in keyof Scalars]: Scalars[Key] extends { output: unknown }
+    ? Scalars[Key]['output']
+    : never;
+} & {
+  DogType: DogType;
 };
-
-export interface ScalarsEnums extends MakeNullable<Scalars> {
-  DogType: DogType | undefined;
-}
