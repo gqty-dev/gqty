@@ -142,8 +142,8 @@ importers:
         specifier: ^10.4.20
         version: 10.4.20(postcss@8.4.49)
       dotenv-cli:
-        specifier: ^7.4.3
-        version: 7.4.3
+        specifier: ^7.4.4
+        version: 7.4.4
       eslint:
         specifier: ^9.15.0
         version: 9.15.0
@@ -9816,6 +9816,15 @@ packages:
       shebang-command: 2.0.0
       which: 2.0.2
 
+  /cross-spawn@7.0.6:
+    resolution: {integrity: sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA==}
+    engines: {node: '>= 8'}
+    dependencies:
+      path-key: 3.1.1
+      shebang-command: 2.0.0
+      which: 2.0.2
+    dev: true
+
   /cross-undici-fetch@0.4.14:
     resolution: {integrity: sha512-CCep44A/baoO8kYJBIR1cRO/tRAk29xzb/tH3O85OtgwZGkL5I0tJZ47ccZdrnAJxrl5tlaYhAOx09fJXMcUqQ==}
     dependencies:
@@ -10204,11 +10213,11 @@ packages:
       tslib: 2.6.3
     dev: false
 
-  /dotenv-cli@7.4.3:
-    resolution: {integrity: sha512-lf1E+TL1xFeoOHy2hSO3kLkx3KX8CDi17ccn5z5dVCnk2PuWqUKAnBVgQmhfS0BPuzFbptTEHVcIKFsGF0NAcg==}
+  /dotenv-cli@7.4.4:
+    resolution: {integrity: sha512-XkBYCG0tPIes+YZr4SpfFv76SQrV/LeCE8CI7JSEMi3VR9MvTihCGTOtbIexD6i2mXF+6px7trb1imVCXSNMDw==}
     hasBin: true
     dependencies:
-      cross-spawn: 7.0.5
+      cross-spawn: 7.0.6
       dotenv: 16.4.5
       dotenv-expand: 10.0.0
       minimist: 1.2.8
