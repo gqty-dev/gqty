@@ -1,4 +1,5 @@
 import { renderHook, waitFor } from '@testing-library/react';
+import { Cache } from 'gqty';
 import { act } from 'react';
 import { createReactTestClient } from './utils';
 
@@ -65,7 +66,17 @@ describe('useMutation', () => {
   });
 
   it('should update contents of useQuery via normalized cache', async () => {
-    const { useQuery, useMutation } = await createReactTestClient();
+    const { useQuery, useMutation } = await createReactTestClient(
+      undefined,
+      undefined,
+      undefined,
+      {
+        cache: new Cache(undefined, {
+          maxAge: Infinity,
+          normalization: true,
+        }),
+      }
+    );
     const { result: q } = renderHook(() => {
       const human = useQuery().human({ name: 'Uno' });
 

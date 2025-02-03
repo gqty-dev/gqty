@@ -83,7 +83,11 @@ export const normalizeObject = <TData extends CacheObject>(
 
     shells.add(result);
 
-    store.set(id, result);
+    store.set(id, result, {
+      // Has to use strong reference as this is usually the only reference,
+      // the cache is referencing the object via an internal identifier string.
+      strong: true,
+    });
 
     return result;
   }

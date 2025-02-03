@@ -10,7 +10,7 @@ fs.rmSync('dist', { force: true, recursive: true });
 // tsc --emitDeclarationOnly
 // Note: Creates the target directory, and serves as a pre-build typecheck.
 tsc
-  .createProgram(['src/index.ts'], {
+  .createProgram(['src/envelop.ts', 'src/index.ts'], {
     baseUrl: '.',
     declaration: true,
     emitDeclarationOnly: true,

@@ -6,13 +6,16 @@
 import { createSubscriptionsClient } from '@gqty/subscriptions';
 import extractFiles from 'extract-files/extractFiles.mjs';
 import isExtractableFile from 'extract-files/isExtractableFile.mjs';
-import { Cache, createClient, LegacyQueryFetcher as QueryFetcher } from 'gqty';
 import {
-  generatedSchema,
+  Cache,
+  createClient,
+  defaultResponseHandler,
+  LegacyQueryFetcher as QueryFetcher,
+} from 'gqty';
+import {
   GeneratedSchema,
+  generatedSchema,
   scalarsEnumsHash,
-  SchemaObjectTypes,
-  SchemaObjectTypesNames,
 } from './schema.generated';
 
 const queryFetcher: QueryFetcher = async function (query, variables) {
@@ -33,10 +36,13 @@ const queryFetcher: QueryFetcher = async function (query, variables) {
     formData.append(
       'map',
       JSON.stringify(
-        [...files.values()].reduce((prev, paths, i) => {
-          prev[i + 1] = paths;
-          return prev;
-        }, {} as Record<number, string[]>)
+        [...files.values()].reduce(
+          (prev, paths, i) => {
+            prev[i + 1] = paths;
+            return prev;
+          },
+          {} as Record<number, string[]>
+        )
       )
     );
 
@@ -51,7 +57,7 @@ const queryFetcher: QueryFetcher = async function (query, variables) {
       mode: 'cors',
     });
 
-    return await response.json();
+    return await defaultResponseHandler(response);
   } else {
     const response = await fetch(endpoint, {
       method: 'POST',
@@ -65,13 +71,14 @@ const queryFetcher: QueryFetcher = async function (query, variables) {
       mode: 'cors',
     });
 
-    return await response.json();
+    return await defaultResponseHandler(response);
   }
 };
 
 const subscriptionsClient =
-  typeof window !== 'undefined'
-    ? createSubscriptionsClient({
+  typeof window === 'undefined'
+    ? undefined
+    : createSubscriptionsClient({
         wsEndpoint: () => {
           // Modify if needed
           const url = new URL('/api/graphql', window.location.href);
@@ -80,8 +87,7 @@ const subscriptionsClient =
           console.log(42, url.href);
           return url.href;
         },
-      })
-    : undefined;
+      });
 
 export const cache = new Cache(undefined, {
   maxAge: 1000,
@@ -89,11 +95,7 @@ export const cache = new Cache(undefined, {
   normalization: true,
 });
 
-export const client = createClient<
-  GeneratedSchema,
-  SchemaObjectTypesNames,
-  SchemaObjectTypes
->({
+export const client = createClient<GeneratedSchema>({
   cache,
   schema: generatedSchema,
   scalarsEnumsHash,
@@ -105,4 +107,4 @@ const { query, mutation, mutate, subscription, resolved, refetch, track } =
   client;
 
 export * from './schema.generated';
-export { query, mutation, mutate, subscription, resolved, refetch, track };
+export { mutate, mutation, query, refetch, resolved, subscription, track };
