@@ -3,6 +3,11 @@
  * bob-esbuild from resolving *.test.tsx with react, and we cannot remove
  * bob-esbuild before the esbuild options to produce a result as clean as those
  * published to NPM, e.g. without CommonJS polyfills.
+ *
+ * Vitest produce the following warning since 3.0, which is irrelevant to
+ * solid-js:
+ * The JSX import source cannot be set without also enabling React's "automatic"
+ * JSX transform
  */
 /** @jsxImportSource solid-js */
 
