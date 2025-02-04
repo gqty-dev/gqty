@@ -22,6 +22,10 @@ export type SchemaContext<
     notifyCacheUpdate: boolean;
     shouldFetch: boolean;
     hasCacheHit: boolean;
+    /**
+     * Useful for identifying SWR fetches where
+     * `shouldFetch` is true and `hasCacheHit` is false.
+     */
     hasCacheMiss: boolean;
   };
 
@@ -85,6 +89,8 @@ export const createContext = ({
         // The only case we skip this is when fetching for SWR on 'default'.
         this.notifyCacheUpdate ||= data === undefined;
       }
+
+      this.hasCacheMiss ||= cacheNode?.data === undefined;
 
       selectSubscriptions.forEach((fn) => fn(selection, cacheNode));
     },

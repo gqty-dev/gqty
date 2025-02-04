@@ -26,6 +26,46 @@ describe('useQuery', () => {
 
       expect(results).toMatchObject([true, true, false]);
     });
+
+    it('should correctly update initial state with a valid cache', async () => {
+      const { useQuery } = await createReactTestClient(
+        undefined,
+        undefined,
+        undefined,
+        {
+          cache: new Cache(
+            {
+              query: {
+                dogs: [{ id: 1, name: 'a' }],
+              },
+            },
+            { maxAge: Infinity }
+          ),
+        }
+      );
+
+      const results: boolean[] = [];
+
+      const { result } = renderHook(() => {
+        const query = useQuery({
+          initialLoadingState: true,
+        });
+
+        results.push(query.$state.isLoading);
+
+        query.dogs.map((dog) => ({ ...dog }));
+
+        return query.$state.isLoading;
+      });
+
+      await waitFor(() => expect(result.current).toBe(false));
+
+      expect(results).toMatchObject([
+        true, // initial
+        true, // fetch
+        false, // response
+      ]);
+    });
   });
 
   test('should fetch without suspense', async () => {
