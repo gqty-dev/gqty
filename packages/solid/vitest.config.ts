@@ -6,7 +6,9 @@ export default defineConfig({
   test: {
     coverage: {
       enabled: !!process.env.CI,
+      provider: 'v8',
     },
     environment: 'jsdom',
+    setupFiles: ['./vitest.setup.ts'],
   },
 });
