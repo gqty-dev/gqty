@@ -1,7 +1,5 @@
-import React from 'react';
-
 import { render, waitFor } from '@testing-library/react';
-
+import React from 'react';
 import { createReactTestClient } from './utils';
 
 test('Basic Non-Suspense', async () => {
