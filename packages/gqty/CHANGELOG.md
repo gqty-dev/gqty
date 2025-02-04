@@ -1,5 +1,14 @@
 # gqty
 
+## 3.3.0
+
+### Minor Changes
+
+- [#2058](https://github.com/gqty-dev/gqty/pull/2058)
+  [`a9502fc`](https://github.com/gqty-dev/gqty/commit/a9502fc4e5c627e635ba8d156cb5c2128548ebe6)
+  Thanks [@vicary](https://github.com/vicary)! - Use GraphQLError over plain
+  objects in defaultResponseHandler
+
 ## 3.2.2
 
 ### Patch Changes
@@ -347,8 +356,8 @@
 
 ### Patch Changes
 
-- 28e2c09: [Bug fixing breaking change] Fix types and retrieval of unions/interfaces
-  of different object types
+- 28e2c09: [Bug fixing breaking change] Fix types and retrieval of
+  unions/interfaces of different object types
 
 ## 2.0.0
 
