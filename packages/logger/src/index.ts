@@ -1,4 +1,5 @@
 import type { DebugEvent, GQtyClient, Selection } from 'gqty';
+import type { Plugin } from 'prettier';
 import * as prettierBabel from 'prettier/plugins/babel';
 import * as prettierEstree from 'prettier/plugins/estree';
 import * as prettierGraphQL from 'prettier/plugins/graphql';
@@ -15,7 +16,7 @@ async function formatGraphQL(query: string) {
 async function formatJSON(value: unknown) {
   return await prettierFormat(JSON.stringify(value), {
     parser: 'json',
-    plugins: [prettierBabel, prettierEstree],
+    plugins: [prettierBabel, prettierEstree as Plugin],
   });
 }
 
