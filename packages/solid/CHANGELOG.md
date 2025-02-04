@@ -1,5 +1,17 @@
 # @gqty/solid
 
+## 0.2.3
+
+### Patch Changes
+
+- [`3f89bf4`](https://github.com/gqty-dev/gqty/commit/3f89bf4f11462cc1f86c499c08641cca367ee7cd)
+  Thanks [@vicary](https://github.com/vicary)! - include version range in
+  peerDependencies
+
+- Updated dependencies
+  [[`a9502fc`](https://github.com/gqty-dev/gqty/commit/a9502fc4e5c627e635ba8d156cb5c2128548ebe6)]:
+  - gqty@3.3.0
+
 ## 0.2.2
 
 ### Patch Changes

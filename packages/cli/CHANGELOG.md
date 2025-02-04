@@ -1,5 +1,21 @@
 # @gqty/cli
 
+## 4.2.2
+
+### Patch Changes
+
+- [`3f89bf4`](https://github.com/gqty-dev/gqty/commit/3f89bf4f11462cc1f86c499c08641cca367ee7cd)
+  Thanks [@vicary](https://github.com/vicary)! - include version range in
+  peerDependencies
+
+- [`d16d70b`](https://github.com/gqty-dev/gqty/commit/d16d70b7606c558d03f3c8755070980de175339a)
+  Thanks [@vicary](https://github.com/vicary)! - defaults to javascript clients
+  when target is .js
+
+- Updated dependencies
+  [[`a9502fc`](https://github.com/gqty-dev/gqty/commit/a9502fc4e5c627e635ba8d156cb5c2128548ebe6)]:
+  - gqty@3.3.0
+
 ## 4.2.1
 
 ### Patch Changes
@@ -413,8 +429,8 @@
 
 ### Patch Changes
 
-- 28e2c09: [Bug fixing breaking change] Fix types and retrieval of unions/interfaces
-  of different object types
+- 28e2c09: [Bug fixing breaking change] Fix types and retrieval of
+  unions/interfaces of different object types
 - Updated dependencies [28e2c09]
   - gqty@2.0.1
 

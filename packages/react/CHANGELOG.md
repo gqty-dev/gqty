@@ -1,5 +1,27 @@
 # @gqty/react
 
+## 3.1.0
+
+### Minor Changes
+
+- [#2049](https://github.com/gqty-dev/gqty/pull/2049)
+  [`2367645`](https://github.com/gqty-dev/gqty/commit/23676456c0739f7841643f3fea215ac7c77ce026)
+  Thanks [@vicary](https://github.com/vicary)! - streaming SSR on react-dom@>=18
+
+### Patch Changes
+
+- [`3f89bf4`](https://github.com/gqty-dev/gqty/commit/3f89bf4f11462cc1f86c499c08641cca367ee7cd)
+  Thanks [@vicary](https://github.com/vicary)! - include version range in
+  peerDependencies
+
+- [`5032bc2`](https://github.com/gqty-dev/gqty/commit/5032bc2a551496ebc5cecc4c8926890acf3eea7d)
+  Thanks [@vicary](https://github.com/vicary)! - fix(package/react): prevent
+  render loops from SWR fetches
+
+- Updated dependencies
+  [[`a9502fc`](https://github.com/gqty-dev/gqty/commit/a9502fc4e5c627e635ba8d156cb5c2128548ebe6)]:
+  - gqty@3.3.0
+
 ## 3.0.5
 
 ### Patch Changes
