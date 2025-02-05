@@ -96,8 +96,8 @@ importers:
         specifier: workspace:^
         version: link:../../packages/react/dist
       '@nhost/nextjs':
-        specifier: ^2.2.2
-        version: 2.2.2(@types/react@18.3.18)(next@14.2.23)(react-dom@18.3.1)(react@18.3.1)
+        specifier: ^2.2.3
+        version: 2.2.3(@types/react@18.3.18)(next@14.2.23)(react-dom@18.3.1)(react@18.3.1)
       gqty:
         specifier: workspace:^
         version: link:../../packages/gqty/dist
@@ -4793,14 +4793,14 @@ packages:
       - encoding
     dev: false
 
-  /@nhost/nextjs@2.2.2(@types/react@18.3.18)(next@14.2.23)(react-dom@18.3.1)(react@18.3.1):
-    resolution: {integrity: sha512-DAYUfzp8Nd80KbqMJk2L6AN4m13qeEUHcUCkFi5hYXp4X2VfW3iIC1S74dj0I/6Cs/zUqCpO41271x5RkZ+T+w==}
+  /@nhost/nextjs@2.2.3(@types/react@18.3.18)(next@14.2.23)(react-dom@18.3.1)(react@18.3.1):
+    resolution: {integrity: sha512-2Eu0msRwlTeo9/VblorGZa6CX5RPzjerwLHQ3CvJKLQ/RCBWy63754bfsS4yOf34RA8iEjDp6e71CoB2EEVvdw==}
     peerDependencies:
       next: ^12.0.10 || ^13.0.0 || ^14.0.0 || ^15.0.0
       react: ^17.0.0 || ^18.0.0 || ^19.0.0
       react-dom: ^17.0.0 || ^18.0.0 || ^19.0.0
     dependencies:
-      '@nhost/react': 3.9.1(@types/react@18.3.18)(graphql@16.8.1)(react-dom@18.3.1)(react@18.3.1)
+      '@nhost/react': 3.10.0(@types/react@18.3.18)(graphql@16.8.1)(react-dom@18.3.1)(react@18.3.1)
       graphql: 16.8.1
       isomorphic-unfetch: 3.1.0
       js-cookie: 3.0.5
@@ -4828,11 +4828,11 @@ packages:
       - encoding
     dev: false
 
-  /@nhost/react@3.9.1(@types/react@18.3.18)(graphql@16.8.1)(react-dom@18.3.1)(react@18.3.1):
-    resolution: {integrity: sha512-qTDKlZHPDnCdvrzwuKYf/VtODJ735JV+I7Mt/ZQX6voI1OoMci70gZ0vZ2X1uQP1bLlWI8/3bkwavcxSUcZ6bA==}
+  /@nhost/react@3.10.0(@types/react@18.3.18)(graphql@16.8.1)(react-dom@18.3.1)(react@18.3.1):
+    resolution: {integrity: sha512-U2qsxyGrJaWuXCQCpYRO4o4Vwi0/9hOTHkw82VgcMJrJEaDAi1ItuHAoi5RyJ4Gg8eoovpZykW/MfW7EfbZPHQ==}
     peerDependencies:
-      react: ^17.0.0 || ^18.1.0
-      react-dom: ^17.0.0 || ^18.1.0
+      react: ^17.0.0 || ^18.1.0 || ^19.0.0
+      react-dom: ^17.0.0 || ^18.1.0 || ^19.0.0
     dependencies:
       '@nhost/nhost-js': 3.2.4(graphql@16.8.1)
       '@xstate/react': 3.2.2(@types/react@18.3.18)(react@18.3.1)(xstate@4.38.3)
