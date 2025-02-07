@@ -66,7 +66,7 @@ const SearchBox: Component<{
         type="text"
         value={inputName()}
         onChange={(e) => setInputName(e.target.value)}
-        class="border border-gray-300 rounded-md px-3 py-2 w-full text-black"
+        class="border border-gray-300 rounded-md px-3 py-2 w-full text-black bg-white"
       />
       <Button type="submit" size="lg">
         Search

@@ -54,15 +54,24 @@ const SearchBox: FunctionComponent<{
   const [inputName, setInputName] = useState('');
 
   return (
-    <div className="flex gap-3">
+    <form
+      className="flex gap-3 items-center mb-3"
+      onSubmit={(e) => {
+        e.preventDefault();
+        onChange?.(inputName);
+      }}
+    >
       <input
+        autoFocus
         type="text"
         defaultValue={inputName}
         onChange={(e) => setInputName(e.target.value)}
-        className="border border-gray-300 rounded-md px-3 py-2 w-full text-black"
+        className="border border-gray-300 rounded-md px-3 py-2 w-full text-black bg-white"
       />
-      <Button onClick={() => onChange?.(inputName)}>Search</Button>
-    </div>
+      <Button type="submit" size="lg">
+        Search
+      </Button>
+    </form>
   );
 };
 
