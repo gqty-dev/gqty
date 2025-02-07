@@ -201,15 +201,13 @@ export const addCommand = (command: Command) => {
           default: { isMatch },
         } = await import('micromatch');
         const { default: throttle } = await import('lodash-es/throttle.js');
-        const { FasterSMA: SMA } = await import(
-          'trading-signals/dist/SMA/SMA.js'
-        );
+        const { FasterSMA: SMA } = await import('trading-signals');
         const { printSchema } = await import('graphql');
 
         const sma = new SMA(3);
         const getMovingAverage = () => {
           try {
-            return sma.getResult();
+            return sma.getResult() ?? 0;
           } catch {
             if (sma.prices.length === 0) return 0;
 
@@ -250,7 +248,7 @@ export const addCommand = (command: Command) => {
                   ...config,
                 });
 
-                sma.update(Date.now() - start);
+                sma.update(Date.now() - start, false);
               }
 
               logger.infoProgress(
