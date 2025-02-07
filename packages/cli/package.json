@@ -42,7 +42,7 @@
     "postpublish": "gh-release",
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:watch-coverage": "pnpm dlx rimraf coverage && mkdir -p coverage/lcov-report && concurrently --raw \"jest --watchAll\" \"serve -l 8787 coverage/lcov-report\" \"wait-on tcp:8787 coverage/lcov-report/index.html && open-cli http://localhost:8787\""
+    "test:watch-coverage": "rm -rf coverage && mkdir -p coverage/lcov-report && concurrently --raw \"jest --watchAll\" \"pnpm dlx serve -l 8787 coverage/lcov-report\" \"pnpm dlx wait-on tcp:8787 coverage/lcov-report/index.html && curl http://localhost:8787\""
   },
   "eslintConfig": {
     "env": {
@@ -98,12 +98,10 @@
     "@typescript-eslint/eslint-plugin": "^8.23.0",
     "@typescript-eslint/parser": "^8.23.0",
     "eslint": "^9.19.0",
-    "open-cli": "^8.0.0",
     "p-lazy": "^3.1.0",
     "test-utils": "workspace:^",
     "tmp-promise": "^3.0.3",
-    "typescript": "^5.7.3",
-    "wait-on": "^7.2.0"
+    "typescript": "^5.7.3"
   },
   "peerDependencies": {
     "trading-signals": "^6.0.1"
