@@ -180,38 +180,38 @@ describe('core#resolve', () => {
       // 2. Ensure selections made
       expect([...selections].map((v) => v.cacheKeys.join('.')))
         .toMatchInlineSnapshot(`
-       [
-         "query.dogs.__typename",
-         "query.dogs.id",
-         "query.dogs.e61ad2",
-       ]
-      `);
+               [
+                 "query.dogs.__typename",
+                 "query.dogs.id",
+                 "query.dogs.a10168",
+               ]
+            `);
 
       // 3. resolve()
       await expect(resolve()).resolves.toMatchInlineSnapshot(`
-       [
-         {
-           "data": {
-             "dogs": [
-               {
-                 "__typename": "Dog",
-                 "e61ad2": "arf!",
-                 "id": "1",
-               },
-               {
-                 "__typename": "Dog",
-                 "e61ad2": "arf!",
-                 "id": "2",
-               },
-             ],
-           },
-           "extensions": {
-             "hash": "a242b05e35ff15857d32ed1a1eeb07500b5138f16",
-             "type": "query",
-           },
-         },
-       ]
-      `);
+               [
+                 {
+                   "data": {
+                     "dogs": [
+                       {
+                         "__typename": "Dog",
+                         "a10168": "arf!",
+                         "id": "1",
+                       },
+                       {
+                         "__typename": "Dog",
+                         "a10168": "arf!",
+                         "id": "2",
+                       },
+                     ],
+                   },
+                   "extensions": {
+                     "hash": "a4049161dd3fbeed6f5c5658ae5aeb067002147bed201698119cf6fa3c93f6f8d",
+                     "type": "query",
+                   },
+                 },
+               ]
+            `);
 
       // 4. Make selections again
       query.dogs = [];
@@ -220,12 +220,12 @@ describe('core#resolve', () => {
       // 5. Expect previous sub-selections
       expect([...selections].map((v) => v.cacheKeys.join('.')))
         .toMatchInlineSnapshot(`
-       [
-         "query.dogs.__typename",
-         "query.dogs.id",
-         "query.dogs.e61ad2",
-       ]
-      `);
+               [
+                 "query.dogs.__typename",
+                 "query.dogs.id",
+                 "query.dogs.a10168",
+               ]
+            `);
 
       await expect(resolve()).resolves.toMatchInlineSnapshot(`undefined`);
 
@@ -237,37 +237,37 @@ describe('core#resolve', () => {
 
       expect([...selections].map((v) => v.cacheKeys.join('.')))
         .toMatchInlineSnapshot(`
-       [
-         "query.dogs.__typename",
-         "query.dogs.id",
-         "query.dogs.a27c8c",
-       ]
-      `);
+               [
+                 "query.dogs.__typename",
+                 "query.dogs.id",
+                 "query.dogs.a516ab",
+               ]
+            `);
 
       await expect(resolve()).resolves.toMatchInlineSnapshot(`
-       [
-         {
-           "data": {
-             "dogs": [
-               {
-                 "__typename": "Dog",
-                 "a27c8c": "arf!arf!arf!",
-                 "id": "1",
-               },
-               {
-                 "__typename": "Dog",
-                 "a27c8c": "arf!arf!arf!",
-                 "id": "2",
-               },
-             ],
-           },
-           "extensions": {
-             "hash": "ec6389bde813c1b5cb4b5b294e573082ec4270e1",
-             "type": "query",
-           },
-         },
-       ]
-      `);
+               [
+                 {
+                   "data": {
+                     "dogs": [
+                       {
+                         "__typename": "Dog",
+                         "a516ab": "arf!arf!arf!",
+                         "id": "1",
+                       },
+                       {
+                         "__typename": "Dog",
+                         "a516ab": "arf!arf!arf!",
+                         "id": "2",
+                       },
+                     ],
+                   },
+                   "extensions": {
+                     "hash": "a559a7f6482e7959e433f04f7274247f7cf5661540c3af47424ee1446027a816",
+                     "type": "query",
+                   },
+                 },
+               ]
+            `);
     });
 
     it('should retain previous sub-selections on caches with null objects', async () => {
@@ -291,9 +291,9 @@ describe('core#resolve', () => {
       expect([...selections].map((v) => v.cacheKeys.join('.')))
         .toMatchInlineSnapshot(`
          [
-           "query.a7f6f9.__typename",
-           "query.a7f6f9.id",
-           "query.a7f6f9.a7a17c",
+           "query.a6c916.__typename",
+           "query.a6c916.id",
+           "query.a6c916.e61179",
          ]
         `);
 
@@ -302,14 +302,14 @@ describe('core#resolve', () => {
          [
            {
              "data": {
-               "a7f6f9": {
+               "a6c916": {
                  "__typename": "Human",
-                 "a7a17c": "Now you see me...",
+                 "e61179": "Now you see me...",
                  "id": "1",
                },
              },
              "extensions": {
-               "hash": "be79c4bae3a49b23d4beb0bbdbf9023ba0ca4898",
+               "hash": "a10b43bf9c52ee5bbc996198f56cc4f89f203199bfb6ad6f13b1082a5bcc1eae7",
                "type": "query",
              },
            },
@@ -322,26 +322,26 @@ describe('core#resolve', () => {
       // 5. Expect sub-selections
       expect([...selections].map((v) => v.cacheKeys.join('.')))
         .toMatchInlineSnapshot(`
-         [
-           "query.a3f697.__typename",
-           "query.a3f697.id",
-           "query.a3f697.bad514",
-         ]
-        `);
+        [
+          "query.a1cda9.__typename",
+          "query.a1cda9.id",
+          "query.a1cda9.a2ce8c",
+        ]
+      `);
 
       await expect(resolve()).resolves.toMatchInlineSnapshot(`
-         [
-           {
-             "data": {
-               "a3f697": null,
-             },
-             "extensions": {
-               "hash": "fc1b66218d65d51732ed66b85bb5450d0332ba44",
-               "type": "query",
-             },
-           },
-         ]
-        `);
+        [
+          {
+            "data": {
+              "a1cda9": null,
+            },
+            "extensions": {
+              "hash": "b9ae5a3dfdf2c9949d51bdf555c8eecc4c4c091d5d11cf0734853c4ba10bdd34",
+              "type": "query",
+            },
+          },
+        ]
+      `);
 
       // 6. Ensure previous selections of no more than the last 1 fetch is reused.
       context.cache.clear();
@@ -350,30 +350,30 @@ describe('core#resolve', () => {
 
       expect([...selections].map((v) => v.cacheKeys.join('.')))
         .toMatchInlineSnapshot(`
-         [
-           "query.a4fd2c.__typename",
-           "query.a4fd2c.id",
-           "query.a4fd2c.eb7f1d",
-         ]
-        `);
+        [
+          "query.a7816d.__typename",
+          "query.a7816d.id",
+          "query.a7816d.a0564a",
+        ]
+      `);
 
       await expect(resolve()).resolves.toMatchInlineSnapshot(`
-         [
-           {
-             "data": {
-               "a4fd2c": {
-                 "__typename": "Human",
-                 "eb7f1d": "I am Jane.",
-                 "id": "2",
-               },
-             },
-             "extensions": {
-               "hash": "a1fac2bb2a1052821915362495c678811cb296e09",
-               "type": "query",
-             },
-           },
-         ]
-        `);
+        [
+          {
+            "data": {
+              "a7816d": {
+                "__typename": "Human",
+                "a0564a": "I am Jane.",
+                "id": "2",
+              },
+            },
+            "extensions": {
+              "hash": "a9df6d7b05fcef74f68db84388ccac8b33b9b3766e859e764b0e626741628bcd2",
+              "type": "query",
+            },
+          },
+        ]
+      `);
     });
   });
 
@@ -549,8 +549,8 @@ describe('compat', () => {
 
     expect(queries.map(({ query }) => query)).toMatchInlineSnapshot(`
       [
-        "query TestQueryA($e8a374:String){a5b434:human(name:$e8a374){__typename}}",
-        "mutation TestMutation($ef3ee3:String!){a133ff:humanMutation(nameArg:$ef3ee3){__typename}}",
+        "query TestQueryA($a860ed:String){a1c0de:human(name:$a860ed){__typename}}",
+        "mutation TestMutation($de937b:String!){eed53f:humanMutation(nameArg:$de937b){__typename}}",
         "query TestQueryB{hello}",
       ]
     `);
