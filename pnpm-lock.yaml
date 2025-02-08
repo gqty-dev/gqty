@@ -200,7 +200,7 @@ importers:
         version: 0.9.1(@types/node@22.13.1)(graphql-ez@0.16.1)(graphql@16.10.0)
       '@graphql-ez/plugin-upload':
         specifier: ^0.8.1
-        version: 0.8.1(@types/graphql-upload@16.0.7)(@types/node@22.13.1)(graphql-ez@0.16.1)(graphql-upload@13.0.0)(graphql@16.10.0)
+        version: 0.8.1(@types/graphql-upload@17.0.0)(@types/node@22.13.1)(graphql-ez@0.16.1)(graphql-upload@17.0.0)(graphql@16.10.0)
       '@graphql-ez/plugin-websockets':
         specifier: ^0.11.3
         version: 0.11.3(@types/node@22.13.1)(bufferutil@4.0.9)(graphql-ez@0.16.1)(graphql@16.10.0)
@@ -226,8 +226,8 @@ importers:
         specifier: ^0.16.1
         version: 0.16.1(@types/node@22.13.1)(graphql@16.10.0)
       graphql-upload:
-        specifier: ^13.0.0
-        version: 13.0.0(graphql@16.10.0)
+        specifier: ^17.0.0
+        version: 17.0.0(graphql@16.10.0)
       ms:
         specifier: ^2.1.3
         version: 2.1.3
@@ -263,8 +263,8 @@ importers:
         specifier: ^13.0.1
         version: 13.0.1
       '@types/graphql-upload':
-        specifier: ^16.0.7
-        version: 16.0.7
+        specifier: ^17.0.0
+        version: 17.0.0
       '@types/lodash':
         specifier: ^4.17.15
         version: 4.17.15
@@ -3664,7 +3664,7 @@ packages:
       - '@types/node'
     dev: false
 
-  /@graphql-ez/plugin-upload@0.8.1(@types/graphql-upload@16.0.7)(@types/node@22.13.1)(graphql-ez@0.16.1)(graphql-upload@13.0.0)(graphql@16.10.0):
+  /@graphql-ez/plugin-upload@0.8.1(@types/graphql-upload@17.0.0)(@types/node@22.13.1)(graphql-ez@0.16.1)(graphql-upload@17.0.0)(graphql@16.10.0):
     resolution: {integrity: sha512-t7MA7c6kpnN9rPVEpgGraMk+edlchQ+S+z+sFgXHCvFi5kmHAThwsYYwFyfl4f9RU47W89/KYwJLXOk5jFujOw==}
     engines: {node: '>=14.13.1'}
     peerDependencies:
@@ -3679,10 +3679,10 @@ packages:
         optional: true
     dependencies:
       '@graphql-ez/utils': 0.2.1(@types/node@22.13.1)(graphql@16.10.0)
-      '@types/graphql-upload': 16.0.7
+      '@types/graphql-upload': 17.0.0
       graphql: 16.10.0
       graphql-ez: 0.16.1(@types/node@22.13.1)(graphql@16.10.0)
-      graphql-upload: 13.0.0(graphql@16.10.0)
+      graphql-upload: 17.0.0(graphql@16.10.0)
     transitivePeerDependencies:
       - '@types/node'
     dev: false
@@ -5762,6 +5762,12 @@ packages:
     resolution: {integrity: sha512-SQFof9H+LXeWNz8wDe7oN5zu7ket0qwMu5vZubW4GCJ8Kkeh6nBWUz87+KTz/G3Kqsrp0j/W253XJb3KMEeg3w==}
     dev: true
 
+  /@types/busboy@1.5.4:
+    resolution: {integrity: sha512-kG7WrUuAKK0NoyxfQHsVE6j1m01s6kMma64E+OZenQABMQyTJop1DumUWcLwAQ2JzpefU7PDYoRDKl8uZosFjw==}
+    dependencies:
+      '@types/node': 22.13.1
+    dev: false
+
   /@types/connect@3.4.38:
     resolution: {integrity: sha512-K6uROf1LD88uDQqJCktA4yzL1YYAK6NgfsI0v/mTgyPKWsX1CnJ0XPSDhViejru1GcRkLWb8RlzFYJRqGUbaug==}
     dependencies:
@@ -5828,8 +5834,8 @@ packages:
     dependencies:
       '@types/node': 22.13.1
 
-  /@types/graphql-upload@16.0.7:
-    resolution: {integrity: sha512-7vCoxIv2pVTvV8n+miYyfkINdguWsYomAkPlOfHoM6z/qzsiBAdfRb6lNc8PvEUhe7TXaxX4+LHubejw1og1DQ==}
+  /@types/graphql-upload@17.0.0:
+    resolution: {integrity: sha512-2ccZtgR7o43PultV3asCeqHZxFnAbtBA7nZ4slEMSaf3fN9yWI11HtZvRuN3LK0Qcdnzj2YeXzBYwbI8WGqhUw==}
     dependencies:
       '@types/express': 5.0.0
       '@types/koa': 2.15.0
@@ -5930,6 +5936,10 @@ packages:
     resolution: {integrity: sha512-jK8uzQlrvXqEU91UxiK5J7pKHyzgnI1Qnl0QDHIgVGuolJhRb9EEl28Cj9b3rGR8B2lhFCtvIm5os8lFnO/1Ew==}
     dependencies:
       undici-types: 6.20.0
+
+  /@types/object-path@0.11.4:
+    resolution: {integrity: sha512-4tgJ1Z3elF/tOMpA8JLVuR9spt9Ynsf7+JjqsQ2IqtiPJtcLoHoXcT6qU4E10cPFqyXX5HDm9QwIzZhBSkLxsw==}
+    dev: false
 
   /@types/parse-json@4.0.2:
     resolution: {integrity: sha512-dISoDXWWQwUquiKsyZ4Ng+HX2KsPL7LyHKHQwgGFEA3IaKac4Obd+h2a/a6waisAoepJlBcx9paWqjA8/HVjCw==}
@@ -7017,13 +7027,6 @@ packages:
       run-applescript: 7.0.0
     dev: true
 
-  /busboy@0.3.1:
-    resolution: {integrity: sha512-y7tTxhGKXcyBxRKAni+awqx8uqaJKrSFSNFSeRG5CsWNdmy2BIK+6VGWEW7TZnIO/533mtMEA4rOevQV815YJw==}
-    engines: {node: '>=4.5.0'}
-    dependencies:
-      dicer: 0.3.0
-    dev: false
-
   /busboy@1.6.0:
     resolution: {integrity: sha512-8SFQbg/0hQ9xy3UNTB0YEnsNBbWfhf7RtnzpL7TkBiTBRfrQ9Fxcnz7VJsleJpyp6rVLvXiuORqjlHi5q+PYuA==}
     engines: {node: '>=10.16.0'}
@@ -7598,9 +7601,9 @@ packages:
     resolution: {integrity: sha512-ZySD7Nf91aLB0RxL4KGrKHBXl7Eds1DAmEdcoVawXnLD7SDhpNgtuII2aAkg7a7QS41jxPSZ17p4VdGnMHk3MQ==}
     engines: {node: '>=0.4.0'}
 
-  /depd@1.1.2:
-    resolution: {integrity: sha512-7emPTl6Dpo6JRXOXjLRxck+FlLRX5847cLKEn00PLAgc3g2hTZZgr+e4c2v6QpSmLeFP3n5yUo7ft6avBK/5jQ==}
-    engines: {node: '>= 0.6'}
+  /depd@2.0.0:
+    resolution: {integrity: sha512-g7nH6P6dyDioJogAAGprGpCtVImJhpPk/roCzdb3fIh61/s/nPsfR6onyMwkCAR/OlC3yBC0lESvUoQEAssIrw==}
+    engines: {node: '>= 0.8'}
     dev: false
 
   /dependency-graph@0.11.0:
@@ -7630,13 +7633,6 @@ packages:
 
   /detect-node-es@1.1.0:
     resolution: {integrity: sha512-ypdmJU/TbBby2Dxibuv7ZLW3Bs1QEmM7nHjEANfohJLvE0XVujisn1qPJcZxg+qDucsr+bP6fLD1rPS3AhJ7EQ==}
-    dev: false
-
-  /dicer@0.3.0:
-    resolution: {integrity: sha512-MdceRRWqltEG2dZqO769g27N/3PXfcKl04VhYnBlo2YhH7zPi88VebsjTKclaOyiuMaGU72hTfw3VkUitGcVCA==}
-    engines: {node: '>=4.5.0'}
-    dependencies:
-      streamsearch: 0.1.2
     dev: false
 
   /diff-sequences@29.6.3:
@@ -8671,11 +8667,6 @@ packages:
     resolution: {integrity: sha512-twe20eF1OxVxp/ML/kq2p1uc6KvFK/+vs8WjEbeKmV2He22MKm7YF2ANIt+EOqhJ5L3K/SuuPhk0hWQDjOM23g==}
     dev: true
 
-  /fs-capacitor@6.2.0:
-    resolution: {integrity: sha512-nKcE1UduoSKX27NSZlg879LdQc94OtbOsEmKMN2MBNudXREvijRKx2GEBsTMTfws+BrbkJoEuynbGSVRSpauvw==}
-    engines: {node: '>=10'}
-    dev: false
-
   /fs-capacitor@8.0.0:
     resolution: {integrity: sha512-+Lk6iSKajdGw+7XYxUkwIzreJ2G1JFlYOdnKJv5PzwFLVsoJYBpCuS7WPIUSNT1IbQaEWT1nhYU63Ud03DyzLA==}
     engines: {node: ^14.17.0 || >=16.0.0}
@@ -8922,16 +8913,26 @@ packages:
       tslib: 2.8.1
     dev: false
 
-  /graphql-upload@13.0.0(graphql@16.10.0):
-    resolution: {integrity: sha512-YKhx8m/uOtKu4Y1UzBFJhbBGJTlk7k4CydlUUiNrtxnwZv0WigbRHP+DVhRNKt7u7DXOtcKZeYJlGtnMXvreXA==}
-    engines: {node: ^12.22.0 || ^14.17.0 || >= 16.0.0}
+  /graphql-upload@17.0.0(graphql@16.10.0):
+    resolution: {integrity: sha512-AI42S1UR1mdqg+LQ7KqGbrgcf4l9gpPu/R0drM4vSA5C94NfIjYyCeCdpktEledvZoAL8JURLLeB53++WACo1w==}
+    engines: {node: ^18.18.0 || ^20.9.0 || >=22.0.0}
     peerDependencies:
-      graphql: 0.13.1 - 16
+      '@types/express': 4.0.29 - 5
+      '@types/koa': ^2.11.4
+      graphql: ^16.3.0
+    peerDependenciesMeta:
+      '@types/express':
+        optional: true
+      '@types/koa':
+        optional: true
     dependencies:
-      busboy: 0.3.1
-      fs-capacitor: 6.2.0
+      '@types/busboy': 1.5.4
+      '@types/node': 22.13.1
+      '@types/object-path': 0.11.4
+      busboy: 1.6.0
+      fs-capacitor: 8.0.0
       graphql: 16.10.0
-      http-errors: 1.8.1
+      http-errors: 2.0.0
       object-path: 0.11.8
     dev: false
 
@@ -9053,14 +9054,14 @@ packages:
   /html-escaper@2.0.2:
     resolution: {integrity: sha512-H2iMtd0I4Mt5eYiapRdIDjp+XzelXQ0tFE4JS7YFwFevXXMmOp9myNrUvCg0D6ws8iqkRPBfKHgbwig1SmlLfg==}
 
-  /http-errors@1.8.1:
-    resolution: {integrity: sha512-Kpk9Sm7NmI+RHhnj6OIWDI1d6fIoFAtFt9RLaTMRlg/8w49juAStsrBgp0Dp4OdxdVbRIeKhtCUvoi/RuAhO4g==}
-    engines: {node: '>= 0.6'}
+  /http-errors@2.0.0:
+    resolution: {integrity: sha512-FtwrG/euBzaEjYeRqOgly7G0qviiXoJWnvEH2Z1plBdXgbyjv34pHTSb9zoeHMyDy33+DWy5Wt9Wo+TURtOYSQ==}
+    engines: {node: '>= 0.8'}
     dependencies:
-      depd: 1.1.2
+      depd: 2.0.0
       inherits: 2.0.4
       setprototypeof: 1.2.0
-      statuses: 1.5.0
+      statuses: 2.0.1
       toidentifier: 1.0.1
     dev: false
 
@@ -12421,9 +12422,9 @@ packages:
     resolution: {integrity: sha512-1XMJE5fQo1jGH6Y/7ebnwPOBEkIEnT4QF32d5R1+VXdXveM0IBMJt8zfaxX1P3QhVwrYe+576+jkANtSS2mBbw==}
     dev: true
 
-  /statuses@1.5.0:
-    resolution: {integrity: sha512-OpZ3zP+jT1PI7I8nemJX4AKmAX070ZkYPVWV/AaKTJl+tXCTGyVdC1a4SL8RUQYEwk/f34ZX8UTykN68FwrqAA==}
-    engines: {node: '>= 0.6'}
+  /statuses@2.0.1:
+    resolution: {integrity: sha512-RwNA9Z/7PrK06rYLIzFMlaF+l73iwpzsqRIFgbMLbTcLD6cOao82TaWefPXQvB2fOC4AjuYSEndS7N/mTCbkdQ==}
+    engines: {node: '>= 0.8'}
     dev: false
 
   /std-env@3.8.0:
@@ -12435,11 +12436,6 @@ packages:
     dependencies:
       duplexer: 0.1.2
     dev: true
-
-  /streamsearch@0.1.2:
-    resolution: {integrity: sha512-jos8u++JKm0ARcSUTAZXOVC0mSox7Bhn6sBgty73P1f3JGf7yG2clTbBNHUdde/kdvP2FESam+vM6l8jBrNxHA==}
-    engines: {node: '>=0.8.0'}
-    dev: false
 
   /streamsearch@1.1.0:
     resolution: {integrity: sha512-Mcc5wHehp9aXz1ax6bZUyY5afg9u2rv5cqQI3mRrYkGC8rW2hM02jWuwjtL++LS5qinSyhj2QfLyNsuc+VsExg==}
