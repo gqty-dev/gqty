@@ -1,5 +1,13 @@
 # @gqty/cli
 
+## 4.2.3
+
+### Patch Changes
+
+- Updated dependencies
+  [[`d379a9f`](https://github.com/gqty-dev/gqty/commit/d379a9fccfdda4cda119743bb8d33f701186e6a3)]:
+  - gqty@3.4.0
+
 ## 4.2.2
 
 ### Patch Changes
