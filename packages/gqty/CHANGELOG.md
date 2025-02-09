@@ -1,5 +1,14 @@
 # gqty
 
+## 3.4.0
+
+### Minor Changes
+
+- [#2062](https://github.com/gqty-dev/gqty/pull/2062)
+  [`d379a9f`](https://github.com/gqty-dev/gqty/commit/d379a9fccfdda4cda119743bb8d33f701186e6a3)
+  Thanks [@vicary](https://github.com/vicary)! - reduce bundle size with ohash
+  over object-hash
+
 ## 3.3.0
 
 ### Minor Changes
