@@ -341,10 +341,12 @@ export const addCommand = (command: Command) => {
 };
 
 const promptEndpoints = async (defaultEndpoint?: string) => {
-  const endpoints = await inquirer.input({
-    message: 'Where is your GraphQL endpoint or schema files?',
-    default: defaultEndpoint,
-  });
+  const endpoints = await inquirer
+    .input({
+      message: 'Where is your GraphQL endpoint or schema files?',
+      default: defaultEndpoint,
+    })
+    .catch(terminateOnInterrupt);
 
   return endpoints
     .split(/[,\s+]/)
@@ -353,39 +355,56 @@ const promptEndpoints = async (defaultEndpoint?: string) => {
 };
 
 const promptTarget = async (defaultTarget: string) => {
-  const target = await inquirer.input({
-    message: 'Where should the client be generated?',
-    default: defaultTarget,
-  });
+  const target = await inquirer
+    .input({
+      message: 'Where should the client be generated?',
+      default: defaultTarget,
+    })
+    .catch(terminateOnInterrupt);
 
   return target;
 };
 
 const promptFrameworks = async () => {
-  const frameworks = await inquirer.checkbox({
-    message: `Pick the frontend frameworks in use:`,
-    choices: [{ value: 'react' }, { value: 'solid-js' }],
-  });
+  const frameworks = await inquirer
+    .checkbox({
+      message: `Pick the frontend frameworks in use:`,
+      choices: [{ value: 'react' }, { value: 'solid-js' }],
+    })
+    .catch(terminateOnInterrupt);
 
   return frameworks as SupportedFrameworks[];
 };
 
 const promptSubscriptions = async (defaultValue?: string) => {
-  const subscriptions = await inquirer.input({
-    message: 'Do you need a subscription client? (Enter "-" to skip)',
-    default: defaultValue?.trim() || undefined,
-  });
+  const subscriptions = await inquirer
+    .input({
+      message: 'Do you need a subscription client? (Enter "-" to skip)',
+      default: defaultValue?.trim() || undefined,
+    })
+    .catch(terminateOnInterrupt);
 
   return subscriptions?.trim().replace(/^-$/, '') || false;
 };
 
 const promptTypescript = async (defaultValue: boolean) => {
-  const typescript = await inquirer.confirm({
-    message: 'Do you want a TypeScript client over vanilla.js?',
-    default: defaultValue,
-  });
+  const typescript = await inquirer
+    .confirm({
+      message: 'Do you want a TypeScript client over vanilla.js?',
+      default: defaultValue,
+    })
+    .catch(terminateOnInterrupt);
 
   return typescript;
+};
+
+const terminateOnInterrupt = (e: unknown) => {
+  if (e instanceof Error && e.name === 'ExitPromptError') {
+    logger.info('Goodbye 👋');
+    process.exit();
+  }
+
+  throw e;
 };
 
 const terminateWithError = (e: unknown) => {
