@@ -1,5 +1,14 @@
 # gqty
 
+## 3.4.1
+
+### Patch Changes
+
+- [#2154](https://github.com/gqty-dev/gqty/pull/2154)
+  [`1d5ddfd`](https://github.com/gqty-dev/gqty/commit/1d5ddfd36bd88fdb86ecb424e78a2f388bfe3560)
+  Thanks [@andrewpeters9](https://github.com/andrewpeters9)! - mave ohash to
+  normal dependency
+
 ## 3.4.0
 
 ### Minor Changes
