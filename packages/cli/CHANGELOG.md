@@ -1,5 +1,13 @@
 # @gqty/cli
 
+## 4.2.4
+
+### Patch Changes
+
+- [#2135](https://github.com/gqty-dev/gqty/pull/2135)
+  [`c18a3da`](https://github.com/gqty-dev/gqty/commit/c18a3da9f8a99264a60c0152445c5e130e98e60e)
+  Thanks [@renovate](https://github.com/apps/renovate)! - graceful user exit
+
 ## 4.2.3
 
 ### Patch Changes
