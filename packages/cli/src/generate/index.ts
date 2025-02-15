@@ -809,8 +809,6 @@ export async function generate(
     return `/**\n * @type {${type}}\n */\n`;
   }
 
-  const cors = true;
-
   const queryFetcher = `
     ${
       isJavascriptOutput
@@ -827,7 +825,8 @@ export async function generate(
             query,
             variables,
             operationName,
-          }),${!cors ? '\nmode: "cors",' : ''}
+          }),
+          mode: "cors",
           ...fetchOptions
         });
 
