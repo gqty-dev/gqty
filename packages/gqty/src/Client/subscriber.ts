@@ -15,7 +15,7 @@ export type GQtyWsClient = WsClient & {
 };
 
 /**
- * Warning: If the WebSocket is already connected before this funciton is
+ * Warning: If the WebSocket is already connected before this function is
  * called, the `onSubscribe` will not be called until next connected event.
  */
 export const createSubscriber = (input: WsClient): GQtyWsClient => {
