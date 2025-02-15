@@ -40,7 +40,7 @@ const {
   assertSchema,
 } = graphql;
 
-export type SupportedFrameworks = 'react' | 'solid-js' | 'hono' | 'pylon';
+export type SupportedFrameworks = 'react' | 'solid-js';
 
 export interface GenerateOptions {
   /**
@@ -179,10 +179,8 @@ export async function generate(
 
   react ??= frameworks.includes('react');
   const solid = frameworks.includes('solid-js');
-  const hono = frameworks.includes('hono');
-  const pylon = frameworks.includes('pylon');
 
-  const requiresSchemaSorting = !(hono || pylon);
+  const requiresSchemaSorting = false;
 
   if (requiresSchemaSorting) {
     schema = lexicographicSortSchema(assertSchema(schema));
@@ -811,7 +809,7 @@ export async function generate(
     return `/**\n * @type {${type}}\n */\n`;
   }
 
-  const cors = hono || pylon;
+  const cors = true;
 
   const queryFetcher = `
     ${
@@ -910,7 +908,7 @@ export async function generate(
 
     ${typescriptTypes}
 
-    ${hono || pylon ? paramsToArgsSchemaCode : ''}
+    ${paramsToArgsSchemaCode}
   `);
 
   const reactClientCode = react
