@@ -185,7 +185,7 @@ importers:
         version: link:../../packages/subscriptions/dist
       '@graphql-ez/fastify':
         specifier: ^0.12.1
-        version: 0.12.1(@types/node@22.13.4)(fastify@4.29.0)(graphql-ez@0.16.1)(graphql@16.10.0)
+        version: 0.12.1(@types/node@22.13.4)(fastify@5.2.1)(graphql-ez@0.16.1)(graphql@16.10.0)
       '@graphql-ez/plugin-altair':
         specifier: ^0.11.3
         version: 0.11.3(@types/node@22.13.4)(graphql-ez@0.16.1)(graphql@16.10.0)
@@ -211,8 +211,8 @@ importers:
         specifier: ^13.0.0
         version: 13.0.0
       fastify:
-        specifier: ^4.29.0
-        version: 4.29.0
+        specifier: ^5.2.1
+        version: 5.2.1
       framer-motion:
         specifier: ^11.18.2
         version: 11.18.2(react-dom@18.3.1)(react@18.3.1)
@@ -371,10 +371,10 @@ importers:
     dependencies:
       '@graphql-ez/fastify':
         specifier: ^0.12.1
-        version: 0.12.1(@types/node@22.13.4)(fastify@4.29.0)(graphql-ez@0.16.1)(graphql@16.10.0)
+        version: 0.12.1(@types/node@22.13.4)(fastify@5.2.1)(graphql-ez@0.16.1)(graphql@16.10.0)
       '@graphql-ez/fastify-testing':
         specifier: ^0.4.1
-        version: 0.4.1(@graphql-ez/fastify@0.12.1)(@types/node@22.13.4)(fastify@4.29.0)(graphql-ez@0.16.1)(graphql@16.10.0)
+        version: 0.4.1(@graphql-ez/fastify@0.12.1)(@types/node@22.13.4)(fastify@5.2.1)(graphql-ez@0.16.1)(graphql@16.10.0)
       '@graphql-ez/plugin-codegen':
         specifier: ^0.8.1
         version: 0.8.1(@types/node@22.13.4)(graphql-ez@0.16.1)(graphql@16.10.0)
@@ -394,8 +394,8 @@ importers:
         specifier: ^7.0.3
         version: 7.0.3
       fastify:
-        specifier: ^4.29.0
-        version: 4.29.0
+        specifier: ^5.2.1
+        version: 5.2.1
       gqty:
         specifier: workspace:^
         version: link:../../packages/gqty/dist
@@ -3570,12 +3570,12 @@ packages:
     engines: {node: '>=18.0.0', npm: '>=9.0.0'}
     dev: false
 
-  /@fastify/ajv-compiler@3.6.0:
-    resolution: {integrity: sha512-LwdXQJjmMD+GwLOkP7TVC68qa+pSSogeWWmznRJ/coyTcfe9qA05AHFSe1eZFwK6q+xVRpChnvFUkf1iYaSZsQ==}
+  /@fastify/ajv-compiler@4.0.2:
+    resolution: {integrity: sha512-Rkiu/8wIjpsf46Rr+Fitd3HRP+VsxUFDDeag0hs9L0ksfnwx2g7SPQQTFL0E8Qv+rfXzQOxBJnjUB9ITUDjfWQ==}
     dependencies:
       ajv: 8.17.1
-      ajv-formats: 2.1.1(ajv@8.17.1)
-      fast-uri: 2.4.0
+      ajv-formats: 3.0.1(ajv@8.17.1)
+      fast-uri: 3.0.6
     dev: false
 
   /@fastify/busboy@2.1.1:
@@ -3590,24 +3590,23 @@ packages:
       mnemonist: 0.39.6
     dev: false
 
-  /@fastify/error@3.4.1:
-    resolution: {integrity: sha512-wWSvph+29GR783IhmvdwWnN4bUxTD01Vm5Xad4i7i1VuAOItLvbPAb69sb0IQ2N57yprvhNIwAP5B6xfKTmjmQ==}
-    dev: false
-
   /@fastify/error@4.0.0:
     resolution: {integrity: sha512-OO/SA8As24JtT1usTUTKgGH7uLvhfwZPwlptRi2Dp5P4KKmJI3gvsZ8MIHnNwDs4sLf/aai5LzTyl66xr7qMxA==}
-    dev: true
 
-  /@fastify/fast-json-stringify-compiler@4.3.0:
-    resolution: {integrity: sha512-aZAXGYo6m22Fk1zZzEUKBvut/CIIQe/BapEORnxiD5Qr0kPHqqI69NtEMCme74h+at72sPhbkb4ZrLd1W3KRLA==}
+  /@fastify/fast-json-stringify-compiler@5.0.2:
+    resolution: {integrity: sha512-YdR7gqlLg1xZAQa+SX4sMNzQHY5pC54fu9oC5aYSUqBhyn6fkLkrdtKlpVdCNPlwuUuXA1PjFTEmvMF6ZVXVGw==}
     dependencies:
-      fast-json-stringify: 5.16.1
+      fast-json-stringify: 6.0.1
     dev: false
 
-  /@fastify/merge-json-schemas@0.1.1:
-    resolution: {integrity: sha512-fERDVz7topgNjtXsJTTW1JKLy0rhuLRcquYqNR9rF7OcVpCa2OVW49ZPDIhaRRCaUuvVxI+N416xUoF76HNSXA==}
+  /@fastify/forwarded@3.0.0:
+    resolution: {integrity: sha512-kJExsp4JCms7ipzg7SJ3y8DwmePaELHxKYtg+tZow+k0znUTf3cb+npgyqm8+ATZOdmfgfydIebPDWM172wfyA==}
+    dev: false
+
+  /@fastify/merge-json-schemas@0.2.1:
+    resolution: {integrity: sha512-OA3KGBCy6KtIvLf8DINC5880o5iBlDX4SxzLQS8HorJAbqluzLRn80UXU0bxZn7UOFhFgpRJDasfwn9nG4FG4A==}
     dependencies:
-      fast-deep-equal: 3.1.3
+      dequal: 2.0.3
     dev: false
 
   /@fastify/nextjs@11.0.0(next@15.1.7):
@@ -3619,6 +3618,13 @@ packages:
       fastify-plugin: 5.0.1
       next: 15.1.7(@babel/core@7.26.9)(react-dom@18.3.1)(react@18.3.1)
     dev: true
+
+  /@fastify/proxy-addr@5.0.0:
+    resolution: {integrity: sha512-37qVVA1qZ5sgH7KpHkkC4z9SK6StIsIcOmpjvMPXNb3vx2GQxhZocogVYbr2PbbeLCQxYIPDok307xEvRZOzGA==}
+    dependencies:
+      '@fastify/forwarded': 3.0.0
+      ipaddr.js: 2.2.0
+    dev: false
 
   /@fastify/under-pressure@9.0.3:
     resolution: {integrity: sha512-uWzyFn9ThgGgynxyoX/kqgLtPtNBXXvQgN3U8fSRPNBS1y5mEZC/uCBRx03hXm9PDsQwTGN7qt83ItsHVQ0L4A==}
@@ -3845,7 +3851,7 @@ packages:
       undici: 5.28.5
     dev: false
 
-  /@graphql-ez/fastify-testing@0.4.1(@graphql-ez/fastify@0.12.1)(@types/node@22.13.4)(fastify@4.29.0)(graphql-ez@0.16.1)(graphql@16.10.0):
+  /@graphql-ez/fastify-testing@0.4.1(@graphql-ez/fastify@0.12.1)(@types/node@22.13.4)(fastify@5.2.1)(graphql-ez@0.16.1)(graphql@16.10.0):
     resolution: {integrity: sha512-NsJZU73240sEGiBV6uGZlYqzCoqoTsmJieOuUup3zYWTkm4BhZzcekOIVvi4GjtnZahjGERCv/AJplPqfjVmUw==}
     peerDependencies:
       '@graphql-ez/fastify': 0.12.1
@@ -3854,9 +3860,9 @@ packages:
       graphql-ez: ^0.16.1
     dependencies:
       '@graphql-ez/client': 0.6.2(@types/node@22.13.4)(graphql@16.10.0)
-      '@graphql-ez/fastify': 0.12.1(@types/node@22.13.4)(fastify@4.29.0)(graphql-ez@0.16.1)(graphql@16.10.0)
+      '@graphql-ez/fastify': 0.12.1(@types/node@22.13.4)(fastify@5.2.1)(graphql-ez@0.16.1)(graphql@16.10.0)
       '@graphql-ez/utils': 0.2.1(@types/node@22.13.4)(graphql@16.10.0)
-      fastify: 4.29.0
+      fastify: 5.2.1
       graphql: 16.10.0
       graphql-ez: 0.16.1(@types/node@22.13.4)(graphql@16.10.0)
     transitivePeerDependencies:
@@ -3864,7 +3870,7 @@ packages:
       - '@types/node'
     dev: false
 
-  /@graphql-ez/fastify@0.12.1(@types/node@22.13.4)(fastify@4.29.0)(graphql-ez@0.16.1)(graphql@16.10.0):
+  /@graphql-ez/fastify@0.12.1(@types/node@22.13.4)(fastify@5.2.1)(graphql-ez@0.16.1)(graphql@16.10.0):
     resolution: {integrity: sha512-du4gJHDWtQP0FbdpQ5ErxwCU+Nc4R1bj+QpfzIdNw8nbxL3jNnbVQ4z6MldlbxJYG7DXsawn5BjgTKJWXw6log==}
     engines: {node: '>=14.13.1'}
     peerDependencies:
@@ -3881,7 +3887,7 @@ packages:
       '@fastify/cors': 8.5.0
       '@graphql-ez/utils': 0.2.1(@types/node@22.13.4)(graphql@16.10.0)
       '@types/node': 22.13.4
-      fastify: 4.29.0
+      fastify: 5.2.1
       graphql: 16.10.0
       graphql-ez: 0.16.1(@types/node@22.13.4)(graphql@16.10.0)
     dev: false
@@ -6818,17 +6824,6 @@ packages:
     engines: {node: '>= 14'}
     dev: true
 
-  /ajv-formats@2.1.1(ajv@8.17.1):
-    resolution: {integrity: sha512-Wx0Kx52hxE7C18hkMEggYlEifqWZtYaRgouJor+WMdPnQyEK13vgEWyVNup7SoeeoLMsr4kf5h6dOW11I15MUA==}
-    peerDependencies:
-      ajv: ^8.0.0
-    peerDependenciesMeta:
-      ajv:
-        optional: true
-    dependencies:
-      ajv: 8.17.1
-    dev: false
-
   /ajv-formats@3.0.1(ajv@8.17.1):
     resolution: {integrity: sha512-8iUql50EUR+uUcdRQ3HDqa6EVyo3docL8g5WJ3FNcWmu62IbkGUue/pEyLBW8VGKKucTPgqeks4fIU1DA4yowQ==}
     peerDependencies:
@@ -7072,10 +7067,10 @@ packages:
       possible-typed-array-names: 1.0.0
     dev: true
 
-  /avvio@8.4.0:
-    resolution: {integrity: sha512-CDSwaxINFy59iNwhYnkvALBwZiTydGkOecZyPkqBpABYR1KqGEsET0VOOYDwtleZSUIdeY36DC2bSZ24CO1igA==}
+  /avvio@9.1.0:
+    resolution: {integrity: sha512-fYASnYi600CsH/j9EQov7lECAniYiBFiiAtBNuZYLA2leLe9qOvZzqYHFjtIj6gD2VMoMLP14834LFWvr4IfDw==}
     dependencies:
-      '@fastify/error': 3.4.1
+      '@fastify/error': 4.0.0
       fastq: 1.19.0
     dev: false
 
@@ -7773,9 +7768,9 @@ packages:
   /convert-source-map@2.0.0:
     resolution: {integrity: sha512-Kvp459HrV2FEJ1CAsi1Ku+MY3kasH19TFykTz2xWmMeq6bk2NU3XXvfJ+Q61m0xktWwt+1HSYf3JZsTms3aRJg==}
 
-  /cookie@0.7.2:
-    resolution: {integrity: sha512-yki5XnKuf750l50uGTllt6kKILY4nQ1eNIQatoXEByZ5dWgnKqbnqmTrBE5B4N7lrMJKQ2ytWMiTO2o0v6Ew/w==}
-    engines: {node: '>= 0.6'}
+  /cookie@1.0.2:
+    resolution: {integrity: sha512-9Kr/j4O16ISv8zBBhJoi4bXOYNTkFLOqSL3UDB0njXxCXNezjeyVrJyGOWtgfs/q2km1gwBcfH8q1yEGoMYunA==}
+    engines: {node: '>=18'}
     dev: false
 
   /copy-to-clipboard@3.3.3:
@@ -8095,7 +8090,6 @@ packages:
   /dequal@2.0.3:
     resolution: {integrity: sha512-0je+qPKHEMohvfRTCEo3CrPG6cAzAYgmzKyxRiYSSDkS6eGJdyVJm7WaYA5ECaAD9wLB2T4EEeymA5aFVcYXCA==}
     engines: {node: '>=6'}
-    dev: true
 
   /detect-indent@6.1.0:
     resolution: {integrity: sha512-reYkTUJAZb9gUuZ2RvVCNhVHdg62RHnJ7WJl8ftMi4diZ6NWlciOzQN88pUhSELEwflJht4oQDv0F0BMlwaYtA==}
@@ -8930,10 +8924,6 @@ packages:
       is-plain-obj: 4.1.0
     dev: false
 
-  /fast-content-type-parse@1.1.0:
-    resolution: {integrity: sha512-fBHHqSTFLVnR61C+gltJuE5GkVQMV0S2nqUO8TJ+5Z3qAKG8vAx4FKai1s5jq/inV1+sREynIWSuQ6HgoSXpDQ==}
-    dev: false
-
   /fast-decode-uri-component@1.0.1:
     resolution: {integrity: sha512-WKgKWg5eUxvRZGwW8FvfbaH7AXSh2cL+3j5fMGzUMCxWBJ3dV3a7Wz8y2f/uQ0e3B6WmodD3oS54jTQ9HVTIIg==}
     dev: false
@@ -8965,15 +8955,14 @@ packages:
   /fast-json-stable-stringify@2.1.0:
     resolution: {integrity: sha512-lhd/wF+Lk98HZoTCtlVraHtfh5XYijIjalXck7saUtuanSDyLMxnHhSXEDJqHxD7msR8D0uCmqlkwjCV8xvwHw==}
 
-  /fast-json-stringify@5.16.1:
-    resolution: {integrity: sha512-KAdnLvy1yu/XrRtP+LJnxbBGrhN+xXu+gt3EUvZhYGKCr3lFHq/7UFJHHFgmJKoqlh6B40bZLEv7w46B0mqn1g==}
+  /fast-json-stringify@6.0.1:
+    resolution: {integrity: sha512-s7SJE83QKBZwg54dIbD5rCtzOBVD43V1ReWXXYqBgwCwHLYAAT0RQc/FmrQglXqWPpz6omtryJQOau5jI4Nrvg==}
     dependencies:
-      '@fastify/merge-json-schemas': 0.1.1
+      '@fastify/merge-json-schemas': 0.2.1
       ajv: 8.17.1
       ajv-formats: 3.0.1(ajv@8.17.1)
-      fast-deep-equal: 3.1.3
-      fast-uri: 2.4.0
-      json-schema-ref-resolver: 1.0.1
+      fast-uri: 3.0.6
+      json-schema-ref-resolver: 2.0.1
       rfdc: 1.4.1
     dev: false
 
@@ -8992,10 +8981,6 @@ packages:
     engines: {node: '>=6'}
     dev: false
 
-  /fast-uri@2.4.0:
-    resolution: {integrity: sha512-ypuAmmMKInk5q7XcepxlnUWDLWv4GFtaJqAzWKqn62IpQ3pejtr5dTVbt3vwqVaMKmkNR55sTT+CqUKIaT21BA==}
-    dev: false
-
   /fast-uri@3.0.6:
     resolution: {integrity: sha512-Atfo14OibSv5wAp4VWNsFYE1AchQRTv9cBGWET4pZWHzYshFSS9NQI6I57rdKn9croWVMbYFbLhJ+yJvmZIIHw==}
     dev: false
@@ -9008,23 +8993,22 @@ packages:
     resolution: {integrity: sha512-HCxs+YnRaWzCl+cWRYFnHmeRFyR5GVnJTAaCJQiYzQSDwK9MgJdyAsuL3nh0EWRCYMgQ5MeziymvmAhUHYHDUQ==}
     dev: true
 
-  /fastify@4.29.0:
-    resolution: {integrity: sha512-MaaUHUGcCgC8fXQDsDtioaCcag1fmPJ9j64vAKunqZF4aSub040ZGi/ag8NGE2714yREPOKZuHCfpPzuUD3UQQ==}
+  /fastify@5.2.1:
+    resolution: {integrity: sha512-rslrNBF67eg8/Gyn7P2URV8/6pz8kSAscFL4EThZJ8JBMaXacVdVE4hmUcnPNKERl5o/xTiBSLfdowBRhVF1WA==}
     dependencies:
-      '@fastify/ajv-compiler': 3.6.0
-      '@fastify/error': 3.4.1
-      '@fastify/fast-json-stringify-compiler': 4.3.0
+      '@fastify/ajv-compiler': 4.0.2
+      '@fastify/error': 4.0.0
+      '@fastify/fast-json-stringify-compiler': 5.0.2
+      '@fastify/proxy-addr': 5.0.0
       abstract-logging: 2.0.1
-      avvio: 8.4.0
-      fast-content-type-parse: 1.1.0
-      fast-json-stringify: 5.16.1
-      find-my-way: 8.2.2
-      light-my-request: 5.14.0
+      avvio: 9.1.0
+      fast-json-stringify: 6.0.1
+      find-my-way: 9.2.0
+      light-my-request: 6.6.0
       pino: 9.6.0
-      process-warning: 3.0.0
-      proxy-addr: 2.0.7
+      process-warning: 4.0.1
       rfdc: 1.4.1
-      secure-json-parse: 2.7.0
+      secure-json-parse: 3.0.2
       semver: 7.7.1
       toad-cache: 3.7.0
     dev: false
@@ -9084,13 +9068,13 @@ packages:
     dependencies:
       to-regex-range: 5.0.1
 
-  /find-my-way@8.2.2:
-    resolution: {integrity: sha512-Dobi7gcTEq8yszimcfp/R7+owiT4WncAJ7VTTgFH1jYJ5GaG1FbhjwDG820hptN0QDFvzVY3RfCzdInvGPGzjA==}
+  /find-my-way@9.2.0:
+    resolution: {integrity: sha512-d3uCir8Hmg7W1Ywp8nKf2lJJYU9Nwinvo+1D39Dn09nz65UKXIxUh7j7K8zeWhxqe1WrkS7FJyON/Q/3lPoc6w==}
     engines: {node: '>=14'}
     dependencies:
       fast-deep-equal: 3.1.3
       fast-querystring: 1.1.2
-      safe-regex2: 3.1.0
+      safe-regex2: 4.0.1
     dev: false
 
   /find-root@1.1.0:
@@ -9163,11 +9147,6 @@ packages:
     dependencies:
       node-domexception: 1.0.0
       web-streams-polyfill: 4.0.0-beta.3
-    dev: false
-
-  /forwarded@0.2.0:
-    resolution: {integrity: sha512-buRG0fpBtRHSTCOASe6hD258tEubFoRLb4ZNA6NxMVHNw2gOcwHo9wyablzMzOA5z9xA9L1KNjk/Nt6MT9aYow==}
-    engines: {node: '>= 0.6'}
     dev: false
 
   /frail-map@1.0.10:
@@ -9717,9 +9696,9 @@ packages:
       loose-envify: 1.4.0
     dev: false
 
-  /ipaddr.js@1.9.1:
-    resolution: {integrity: sha512-0KI/607xoxSToH7GjN1FfSbLoU0+btTicjsQSWQlh/hZykN8KpmMf7uYwPW3R+akZ6R/w18ZlXSHBYXiYUPO3g==}
-    engines: {node: '>= 0.10'}
+  /ipaddr.js@2.2.0:
+    resolution: {integrity: sha512-Ag3wB2o37wslZS19hZqorUnrnzSkpOVy+IiiDEiTqNubEYpYuHWIf6K4psgN2ZWKExS4xhVCrRVfb/wfW8fWJA==}
+    engines: {node: '>= 10'}
     dev: false
 
   /is-absolute@1.0.0:
@@ -11098,10 +11077,10 @@ packages:
   /json-parse-even-better-errors@2.3.1:
     resolution: {integrity: sha512-xyFwyhro/JEof6Ghe2iz2NcXoj2sloNsWr/XsERDK/oiPCfaNhl5ONfp+jQdAZRQQ0IJWNzH9zIZF7li91kh2w==}
 
-  /json-schema-ref-resolver@1.0.1:
-    resolution: {integrity: sha512-EJAj1pgHc1hxF6vo2Z3s69fMjO1INq6eGHXZ8Z6wCQeldCuwxGK9Sxf4/cScGn3FZubCVUehfWtcDM/PLteCQw==}
+  /json-schema-ref-resolver@2.0.1:
+    resolution: {integrity: sha512-HG0SIB9X4J8bwbxCbnd5FfPEbcXAJYTi1pBJeP/QPON+w8ovSME8iRG+ElHNxZNX2Qh6eYn1GdzJFS4cDFfx0Q==}
     dependencies:
-      fast-deep-equal: 3.1.3
+      dequal: 2.0.3
     dev: false
 
   /json-schema-traverse@0.4.1:
@@ -11206,11 +11185,11 @@ packages:
       type-check: 0.4.0
     dev: true
 
-  /light-my-request@5.14.0:
-    resolution: {integrity: sha512-aORPWntbpH5esaYpGOOmri0OHDOe3wC5M2MQxZ9dvMLZm6DnaAn0kJlcbU9hwsQgLzmZyReKwFwwPkR+nHu5kA==}
+  /light-my-request@6.6.0:
+    resolution: {integrity: sha512-CHYbu8RtboSIoVsHZ6Ye4cj4Aw/yg2oAFimlF7mNvfDV192LR7nDiKtSIfCuLT7KokPSTn/9kfVLm5OGN0A28A==}
     dependencies:
-      cookie: 0.7.2
-      process-warning: 3.0.0
+      cookie: 1.0.2
+      process-warning: 4.0.1
       set-cookie-parser: 2.7.1
     dev: false
 
@@ -12136,10 +12115,6 @@ packages:
       react-is: 18.3.1
     dev: true
 
-  /process-warning@3.0.0:
-    resolution: {integrity: sha512-mqn0kFRl0EoqhnL0GQ0veqFHyIN1yig9RHh/InzORTUiZHFRAur+aMtRkELNwGs9aNwKS6tg/An4NYBPGwvtzQ==}
-    dev: false
-
   /process-warning@4.0.1:
     resolution: {integrity: sha512-3c2LzQ3rY9d0hc1emcsHhfT9Jwz0cChib/QN89oME2R451w5fy3f0afAhERFZAwrbDU43wk12d0ORBpDVME50Q==}
     dev: false
@@ -12163,14 +12138,6 @@ packages:
       loose-envify: 1.4.0
       object-assign: 4.1.1
       react-is: 16.13.1
-
-  /proxy-addr@2.0.7:
-    resolution: {integrity: sha512-llQsMLSUDUPT44jdrU/O37qlnifitDP+ZwrmmZcoSKyLKvtZxpyV0n2/bD/N4tBAAZ/gJEdZU7KMraoK1+XYAg==}
-    engines: {node: '>= 0.10'}
-    dependencies:
-      forwarded: 0.2.0
-      ipaddr.js: 1.9.1
-    dev: false
 
   /ps-tree@1.2.0:
     resolution: {integrity: sha512-0VnamPPYHl4uaU/nSFeZZpR21QAWRz+sRv4iW9+v/GS/J5U5iZB5BNN6J0RMoOvdx2gWM2+ZFMIm58q24e4UYA==}
@@ -12523,8 +12490,8 @@ packages:
       supports-preserve-symlinks-flag: 1.0.0
     dev: true
 
-  /ret@0.4.3:
-    resolution: {integrity: sha512-0f4Memo5QP7WQyUEAYUO3esD/XjOc3Zjjg5CPsAq1p8sIu0XPeMbHJemKA0BO7tV0X7+A0FoEpbmHXWxPyD3wQ==}
+  /ret@0.5.0:
+    resolution: {integrity: sha512-I1XxrZSQ+oErkRR4jYbAyEEu2I0avBvvMM5JN+6EBprOGRCs63ENqZ3vjavq8fBw2+62G5LF5XelKwuJpcvcxw==}
     engines: {node: '>=10'}
     dev: false
 
@@ -12625,10 +12592,10 @@ packages:
       is-regex: 1.2.1
     dev: true
 
-  /safe-regex2@3.1.0:
-    resolution: {integrity: sha512-RAAZAGbap2kBfbVhvmnTFv73NWLMvDGOITFYTZBAaY8eR+Ir4ef7Up/e7amo+y1+AH+3PtLkrt9mvcTsG9LXug==}
+  /safe-regex2@4.0.1:
+    resolution: {integrity: sha512-goqsB+bSlOmVX+CiFX2PFc1OV88j5jvBqIM+DgqrucHnUguAUNtiNOs+aTadq2NqsLQ+TQ3UEVG3gtSFcdlkCg==}
     dependencies:
-      ret: 0.4.3
+      ret: 0.5.0
     dev: false
 
   /safe-stable-stringify@2.5.0:
@@ -12651,8 +12618,8 @@ packages:
     dependencies:
       loose-envify: 1.4.0
 
-  /secure-json-parse@2.7.0:
-    resolution: {integrity: sha512-6aU+Rwsezw7VR8/nyvKTx8QpWH9FrcYiXXlqC4z5d5XQBDRqtbfsRjnwGyqbi3gddNtWHuEk9OANUotL26qKUw==}
+  /secure-json-parse@3.0.2:
+    resolution: {integrity: sha512-H6nS2o8bWfpFEV6U38sOSjS7bTbdgbCGU9wEM6W14P5H0QOsz94KCusifV44GpHDTu2nqZbuDNhTzu+mjDSw1w==}
     dev: false
 
   /semver@6.3.1:
