@@ -166,8 +166,8 @@ importers:
         specifier: ^11.14.0
         version: 11.14.0(@emotion/react@11.14.0)(@types/react@18.3.18)(react@18.3.1)
       '@envelop/core':
-        specifier: ^3.0.6
-        version: 3.0.6
+        specifier: ^5.0.3
+        version: 5.0.3
       '@faker-js/faker':
         specifier: ^9.5.0
         version: 9.5.0
@@ -194,7 +194,7 @@ importers:
         version: 0.8.1(@types/node@22.13.4)(graphql-ez@0.16.1)(graphql@16.10.0)
       '@graphql-ez/plugin-dataloader':
         specifier: ^0.8.1
-        version: 0.8.1(@envelop/core@3.0.6)(graphql-ez@0.16.1)(graphql@16.10.0)
+        version: 0.8.1(@envelop/core@5.0.3)(graphql-ez@0.16.1)(graphql@16.10.0)
       '@graphql-ez/plugin-schema':
         specifier: ^0.9.1
         version: 0.9.1(@types/node@22.13.4)(graphql-ez@0.16.1)(graphql@16.10.0)
@@ -2790,24 +2790,24 @@ packages:
       tslib: 2.8.1
     dev: false
 
-  /@envelop/dataloader@4.0.6(@envelop/core@3.0.6)(dataloader@2.2.3):
+  /@envelop/dataloader@4.0.6(@envelop/core@5.0.3)(dataloader@2.2.3):
     resolution: {integrity: sha512-U0i6ha7c0XgfWpGGLkTL8+0lc1FkJS5hxtRr+798Je7V1e2dyrBSRxSWVRnEtyyImIqZ/UTH1/nfktX6v1g1hw==}
     peerDependencies:
       '@envelop/core': ^3.0.6
       dataloader: ^2.0.0
     dependencies:
-      '@envelop/core': 3.0.6
+      '@envelop/core': 5.0.3
       dataloader: 2.2.3
       tslib: 2.8.1
     dev: false
 
-  /@envelop/execute-subscription-event@3.0.6(@envelop/core@3.0.6)(graphql@16.10.0):
+  /@envelop/execute-subscription-event@3.0.6(@envelop/core@5.0.3)(graphql@16.10.0):
     resolution: {integrity: sha512-MRKPxcESS9VVK+//sGSMYv7RYrWH8qtya5RQOu9+6JnfsZriXheXGikuU6w3b2fqxAYSUiZpQddsQtJY3NhkBw==}
     peerDependencies:
       '@envelop/core': ^3.0.6
       graphql: ^14.0.0 || ^15.0.0 || ^16.0.0
     dependencies:
-      '@envelop/core': 3.0.6
+      '@envelop/core': 5.0.3
       graphql: 16.10.0
       tslib: 2.8.1
     dev: false
@@ -3934,14 +3934,14 @@ packages:
       - supports-color
     dev: false
 
-  /@graphql-ez/plugin-dataloader@0.8.1(@envelop/core@3.0.6)(graphql-ez@0.16.1)(graphql@16.10.0):
+  /@graphql-ez/plugin-dataloader@0.8.1(@envelop/core@5.0.3)(graphql-ez@0.16.1)(graphql@16.10.0):
     resolution: {integrity: sha512-dRqK3k/fAWjEzvYQlO3/AGykdIpsPh4OoAxIuvcHaHcd9K03j5J9ejYvHBKhxukOx4qstMTiY6/bVQEWQ9P13Q==}
     engines: {node: '>=14.13.1'}
     peerDependencies:
       graphql-ez: ^0.16.1
     dependencies:
-      '@envelop/dataloader': 4.0.6(@envelop/core@3.0.6)(dataloader@2.2.3)
-      '@envelop/execute-subscription-event': 3.0.6(@envelop/core@3.0.6)(graphql@16.10.0)
+      '@envelop/dataloader': 4.0.6(@envelop/core@5.0.3)(dataloader@2.2.3)
+      '@envelop/execute-subscription-event': 3.0.6(@envelop/core@5.0.3)(graphql@16.10.0)
       dataloader: 2.2.3
       graphql-ez: 0.16.1(@types/node@22.13.4)(graphql@16.10.0)
     transitivePeerDependencies:
