@@ -376,7 +376,12 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
                 cache: context.cache,
                 debugger: debug,
                 extensions,
-                fetchOptions: { ...fetchOptions, cachePolicy, retryPolicy },
+                fetchOptions: {
+                  ...fetchOptions,
+                  cachePolicy,
+                  retryPolicy,
+                  subscriber,
+                },
                 operationName,
               });
 

@@ -102,8 +102,8 @@ importers:
         specifier: ^16.10.0
         version: 16.10.0
       graphql-ws:
-        specifier: ^5.16.2
-        version: 5.16.2(graphql@16.10.0)
+        specifier: ^6.0.3
+        version: 6.0.3(graphql@16.10.0)(ws@8.18.0)
       next:
         specifier: 15.1.7
         version: 15.1.7(@babel/core@7.26.9)(react-dom@18.3.1)(react@18.3.1)
@@ -409,8 +409,8 @@ importers:
         specifier: ^1.24.1
         version: 1.24.1(graphql@16.10.0)
       graphql-ws:
-        specifier: ^5.16.2
-        version: 5.16.2(graphql@16.10.0)
+        specifier: ^6.0.3
+        version: 6.0.3(graphql@16.10.0)(ws@8.18.0)
       graphql-yoga:
         specifier: ^5.11.0
         version: 5.11.0(graphql@16.10.0)
@@ -599,8 +599,8 @@ importers:
         specifier: ^2.5.4
         version: 2.5.4(graphql@16.10.0)
       graphql-ws:
-        specifier: ^5.16.2
-        version: 5.16.2(graphql@16.10.0)
+        specifier: ^6.0.3
+        version: 6.0.3(graphql@16.10.0)(ws@8.18.0)
       jest:
         specifier: ^30.0.0-alpha.7
         version: 30.0.0-alpha.7(@types/node@22.13.4)(ts-node@10.9.2)
@@ -729,8 +729,8 @@ importers:
         specifier: ^2.5.4
         version: 2.5.4(graphql@16.10.0)
       graphql-ws:
-        specifier: ^5.16.2
-        version: 5.16.2(graphql@16.10.0)
+        specifier: ^6.0.3
+        version: 6.0.3(graphql@16.10.0)(ws@8.18.0)
       jest:
         specifier: ^29.7.0
         version: 29.7.0(@types/node@22.13.4)(ts-node@10.9.2)
@@ -9571,6 +9571,25 @@ packages:
       graphql: '>=0.11 <=16'
     dependencies:
       graphql: 16.10.0
+
+  /graphql-ws@6.0.3(graphql@16.10.0)(ws@8.18.0):
+    resolution: {integrity: sha512-mvLRHihMg0llF74vo16063HufZHMGaiMxAjzyj0ARYueIikGzj1khlbPNl7vUc2h9rxbq9pGpQYbqypgq1fAXA==}
+    engines: {node: '>=20'}
+    peerDependencies:
+      '@fastify/websocket': ^10 || ^11
+      graphql: ^15.10.1 || ^16
+      uWebSockets.js: ^20
+      ws: ^8
+    peerDependenciesMeta:
+      '@fastify/websocket':
+        optional: true
+      uWebSockets.js:
+        optional: true
+      ws:
+        optional: true
+    dependencies:
+      graphql: 16.10.0
+      ws: 8.18.0(bufferutil@4.0.9)
 
   /graphql-yoga@5.11.0(graphql@16.10.0):
     resolution: {integrity: sha512-zyeXE79hKBzEvb/jYK3bnouoPsNNtv+pyNR6BeMHyeGmavimSvi1LH3vqSlh1sjxUTMXZu715X0L4T8RrexCcA==}
