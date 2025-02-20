@@ -9,8 +9,8 @@ importers:
   .:
     devDependencies:
       '@changesets/apply-release-plan':
-        specifier: ^7.0.9
-        version: 7.0.9
+        specifier: ^7.0.10
+        version: 7.0.10
       '@changesets/assemble-release-plan':
         specifier: ^6.0.6
         version: 6.0.6
@@ -2355,10 +2355,10 @@ packages:
       react: 18.3.1
     dev: false
 
-  /@changesets/apply-release-plan@7.0.9:
-    resolution: {integrity: sha512-xB1shQP6WhflnAN+rV8eJ7j4oBgka/K62+pHuEv6jmUtSqlx2ZvJSnCGzyNfkiQmSfVsqXoI3pbAuyVpTbsKzA==}
+  /@changesets/apply-release-plan@7.0.10:
+    resolution: {integrity: sha512-wNyeIJ3yDsVspYvHnEz1xQDq18D9ifed3lI+wxRQRK4pArUcuHgCTrHv0QRnnwjhVCQACxZ+CBih3wgOct6UXw==}
     dependencies:
-      '@changesets/config': 3.1.0
+      '@changesets/config': 3.1.1
       '@changesets/get-version-range-type': 0.4.0
       '@changesets/git': 3.0.2
       '@changesets/should-skip-package': 0.1.2
@@ -2404,7 +2404,7 @@ packages:
     resolution: {integrity: sha512-of9/8Gzc+DP/Ol9Lak++Y0RsB1oO1CRzZoGIWTYcvHNREJQNqxW5tXm3YzqsA1Gx8ecZZw82FfahtiS+HkNqIw==}
     hasBin: true
     dependencies:
-      '@changesets/apply-release-plan': 7.0.9
+      '@changesets/apply-release-plan': 7.0.10
       '@changesets/assemble-release-plan': 6.0.6
       '@changesets/changelog-git': 0.2.1
       '@changesets/config': 3.1.0
@@ -2436,6 +2436,18 @@ packages:
 
   /@changesets/config@3.1.0:
     resolution: {integrity: sha512-UbZsPkRnv2SF8Ln72B8opmNLhsazv7/M0r6GSQSQzLY++/ZPr5dDSz3L+6G2fDZ+AN1ZjsEGDdBkpEna9eJtrA==}
+    dependencies:
+      '@changesets/errors': 0.2.0
+      '@changesets/get-dependents-graph': 2.1.3
+      '@changesets/logger': 0.1.1
+      '@changesets/types': 6.1.0
+      '@manypkg/get-packages': 1.1.3
+      fs-extra: 7.0.1
+      micromatch: 4.0.8
+    dev: true
+
+  /@changesets/config@3.1.1:
+    resolution: {integrity: sha512-bd+3Ap2TKXxljCggI0mKPfzCQKeV/TU4yO2h2C6vAihIo8tzseAn2e7klSuiyYYXvgu53zMN1OeYMIQkaQoWnA==}
     dependencies:
       '@changesets/errors': 0.2.0
       '@changesets/get-dependents-graph': 2.1.3
