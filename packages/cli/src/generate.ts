@@ -37,7 +37,7 @@ const {
   assertSchema,
 } = graphql;
 
-export type SupportedFrameworks = 'react' | 'solid-js';
+export type SupportedFrameworks = 'react' | 'solid-js' | 'pylon';
 
 export interface GenerateOptions {
   /**
@@ -174,7 +174,15 @@ export async function generate(
     parser: 'typescript',
   });
 
-  schema = lexicographicSortSchema(assertSchema(schema));
+  react ??= frameworks.includes('react');
+  const solid = frameworks.includes('solid-js');
+  const pylon = frameworks.includes('pylon');
+
+  schema = assertSchema(schema);
+
+  if (!pylon) {
+    schema = lexicographicSortSchema(schema);
+  }
 
   if (transformSchema) {
     schema = await transformSchema(schema, graphql);
@@ -183,9 +191,6 @@ export async function generate(
       throw Error(`"transformSchema" returned an invalid GraphQL Schema!`);
     }
   }
-
-  react ??= frameworks.includes('react');
-  const solid = frameworks.includes('solid-js');
 
   const codegenResultPromise = deps.codegen({
     schema: parse(deps.printSchemaWithDirectives(schema)),

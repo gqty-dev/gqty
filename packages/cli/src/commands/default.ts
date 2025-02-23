@@ -42,6 +42,11 @@ export const addCommand = (command: Command) => {
     .option('--solid', 'Include SolidJS signals in the generated client.')
     .option('--no-solid')
     .option(
+      '--pylon',
+      'Generate an unsorted schema compatible with Pylon GraphQL.'
+    )
+    .option('--no-pylon')
+    .option(
       '--subscriptions [client]',
       'Includes specified package as subscription client, must be graphql-ws compatible.'
     )
@@ -107,6 +112,7 @@ export const addCommand = (command: Command) => {
       {
         if (config.frameworks?.length === 0) {
           config.frameworks = [
+            options.pylon && 'pylon',
             options.react && 'react',
             options.solid && 'solid-js',
           ].filter((v): v is SupportedFrameworks => !!v);
@@ -140,6 +146,7 @@ export const addCommand = (command: Command) => {
       // Detect React and TypeScript from package.json.
       if (manifest) {
         config.frameworks ??= [
+          manifest.dependencies?.['@getcronit/pylon'] && 'pylon',
           manifest.dependencies?.['react'] && 'react',
           manifest.dependencies?.['solid-js'] && 'solid-js',
         ].filter((v): v is SupportedFrameworks => !!v);
@@ -371,7 +378,7 @@ const promptFrameworks = async () => {
   const frameworks = await inquirer
     .checkbox({
       message: `Pick the frontend frameworks in use:`,
-      choices: [{ value: 'react' }, { value: 'solid-js' }],
+      choices: [{ value: 'react' }, { value: 'solid-js' }, { value: 'pylon' }],
     })
     .catch(terminateOnInterrupt);
 
