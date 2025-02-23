@@ -3,6 +3,7 @@ import {
   parseSchemaType,
   type ArgsDescriptions,
   type FieldDescription,
+  type ParsedSchemaType,
   type ScalarsEnumsHash,
   type Schema,
   type Type,
@@ -214,7 +215,7 @@ export async function generate(
 
   const scalarsEnumsHash: ScalarsEnumsHash = {};
 
-  const enumsNames: string[] = [];
+  const enumsNames = new Set<string>();
 
   const inputTypeNames = new Set<string>();
 
@@ -224,28 +225,23 @@ export async function generate(
     subscription: {},
   };
 
-  const queryType = config.query;
-  const mutationType = config.mutation;
-  const subscriptionType = config.subscription;
-
   const descriptions = new Map<string, string>();
 
-  const fieldsDescriptions = new Map<
+  const inputsDescription = new Map<string, ArgsDescriptions>();
+
+  const outputsDescription = new Map<
     string,
     Record<string, FieldDescription | undefined>
   >();
 
-  const fieldsArgsDescriptions = new Map<string, ArgsDescriptions>();
-
   function addDescription(
-    typeName: string | [parent: string, field: string, arg?: string]
+    typeName: string | [source: string, field: string, args?: string]
   ) {
     if (Array.isArray(typeName)) {
-      const data = typeName[2]
-        ? /* istanbul ignore next */
-          fieldsArgsDescriptions.get(typeName[0])?.[typeName[1]]?.[typeName[2]]
-        : /* istanbul ignore next */
-          fieldsDescriptions.get(typeName[0])?.[typeName[1]];
+      const [source, field, args] = typeName;
+      const data = args
+        ? inputsDescription.get(source)?.[field]?.[args]
+        : outputsDescription.get(source)?.[field];
 
       let comment = ``;
 
@@ -266,7 +262,7 @@ export async function generate(
       }
 
       if (data?.defaultValue) {
-        comment += '\n* @defaultValue ' + '`' + data.defaultValue.trim() + '`';
+        comment += '\n* @default ' + '`' + data.defaultValue.trim() + '`';
       }
 
       return comment
@@ -289,23 +285,26 @@ export async function generate(
 
   const parseEnumType = (type: GraphQLEnumType) => {
     scalarsEnumsHash[type.name] = true;
-    enumsNames.push(type.name);
 
-    const values = type.getValues();
+    enumsNames.add(type.name);
 
-    const enumValuesDescriptions: Record<string, FieldDescription> = {};
+    outputsDescription.set(
+      type.name,
+      type
+        .getValues()
+        .reduce<Record<string, FieldDescription>>((acum, value) => {
+          if (value.deprecationReason || value.description) {
+            acum[value.name] = {
+              description: value.description,
+              deprecated: value.deprecationReason,
+            };
+          }
 
-    for (const value of values) {
-      if (value.deprecationReason || value.description) {
-        enumValuesDescriptions[value.name] = {
-          description: value.description,
-          deprecated: value.deprecationReason,
-        };
-      }
-    }
-
-    fieldsDescriptions.set(type.name, enumValuesDescriptions);
+          return acum;
+        }, {})
+    );
   };
+
   const parseScalarType = (type: GraphQLScalarType) => {
     scalarsEnumsHash[type.name] = true;
   };
@@ -372,32 +371,34 @@ export async function generate(
         }
         objectFieldsArgsDescriptions[fieldName] ||= {};
 
-        schemaType[fieldName].__args = gqlType.args.reduce(
-          (acum, arg) => {
-            acum[arg.name] = arg.type.toString();
-            if (
-              arg.description ||
-              arg.deprecationReason ||
-              arg.defaultValue != null
-            ) {
-              objectFieldsArgsDescriptions[fieldName][arg.name] = {
-                defaultValue:
-                  arg.defaultValue != null
-                    ? JSON.stringify(arg.defaultValue)
-                    : null,
-                deprecated: arg.deprecationReason,
-                description: arg.description,
-              };
-            }
-            return acum;
-          },
-          {} as Record<string, string>
-        );
+        schemaType[fieldName].__args = gqlType.args.reduce<
+          Record<string, string>
+        >((acum, arg) => {
+          acum[arg.name] = arg.type.toString();
+
+          if (
+            arg.description ||
+            arg.deprecationReason ||
+            arg.defaultValue != null
+          ) {
+            objectFieldsArgsDescriptions[fieldName][arg.name] = {
+              defaultValue:
+                arg.defaultValue != null
+                  ? JSON.stringify(arg.defaultValue)
+                  : null,
+              deprecated: arg.deprecationReason,
+              description: arg.description,
+            };
+          }
+
+          return acum;
+        }, {});
       }
     });
 
-    fieldsDescriptions.set(type.name, objectFieldsDescriptions);
-    fieldsArgsDescriptions.set(type.name, objectFieldsArgsDescriptions);
+    inputsDescription.set(type.name, objectFieldsArgsDescriptions);
+
+    outputsDescription.set(type.name, objectFieldsDescriptions);
 
     generatedSchema[typeName] = schemaType;
   };
@@ -457,28 +458,28 @@ export async function generate(
 
     const fields = type.getFields();
 
-    const interfaceFieldDescriptions: Record<string, FieldDescription> = {};
+    const inputDescription: ArgsDescriptions = {};
 
-    const objectFieldsArgsDescriptions: ArgsDescriptions = {};
+    const outputDescription: Record<string, FieldDescription> = {};
 
-    Object.entries(fields).forEach(([fieldName, gqlType]) => {
+    Object.entries(fields).forEach(([fieldName, fieldType]) => {
       const interfaceValue: InterfaceMapValue = {
         fieldName,
-        __type: gqlType.type.toString(),
+        __type: fieldType.type.toString(),
       };
       schemaType[fieldName] = {
-        __type: gqlType.type.toString(),
+        __type: fieldType.type.toString(),
       };
 
       let hasArgs = true;
-      if (gqlType.args.length) {
+      if (fieldType.args.length) {
         if (ignoreArgs) {
-          const isEveryArgOptional = gqlType.args.every(({ type }) => {
-            return isNullableType(type);
-          });
+          const isEveryArgOptional = fieldType.args.every(({ type }) =>
+            isNullableType(type)
+          );
 
           if (isEveryArgOptional) {
-            const shouldIgnore = ignoreArgs(gqlType);
+            const shouldIgnore = ignoreArgs(fieldType);
 
             if (shouldIgnore) {
               hasArgs = false;
@@ -490,42 +491,42 @@ export async function generate(
       }
 
       if (hasArgs) {
-        objectFieldsArgsDescriptions[fieldName] ||= {};
+        inputDescription[fieldName] ||= {};
 
         schemaType[fieldName].__args = interfaceValue.__args =
-          gqlType.args.reduce(
-            (acum, arg) => {
-              acum[arg.name] = arg.type.toString();
-              if (
-                arg.description ||
-                arg.deprecationReason ||
-                arg.defaultValue != null
-              ) {
-                objectFieldsArgsDescriptions[fieldName][arg.name] = {
-                  defaultValue:
-                    arg.defaultValue != null
-                      ? JSON.stringify(arg.defaultValue)
-                      : null,
-                  deprecated: arg.deprecationReason,
-                  description: arg.description,
-                };
-              }
-              return acum;
-            },
-            {} as Record<string, string>
-          );
+          fieldType.args.reduce<Record<string, string>>((acum, arg) => {
+            acum[arg.name] = arg.type.toString();
+
+            if (
+              arg.description ||
+              arg.deprecationReason ||
+              arg.defaultValue != null
+            ) {
+              inputDescription[fieldName][arg.name] = {
+                defaultValue:
+                  arg.defaultValue != null
+                    ? JSON.stringify(arg.defaultValue)
+                    : null,
+                deprecated: arg.deprecationReason,
+                description: arg.description,
+              };
+            }
+
+            return acum;
+          }, {});
       }
 
-      if (gqlType.description || gqlType.deprecationReason) {
-        interfaceFieldDescriptions[fieldName] = {
-          description: gqlType.description,
-          deprecated: gqlType.deprecationReason,
+      if (fieldType.description || fieldType.deprecationReason) {
+        outputDescription[fieldName] = {
+          description: fieldType.description,
+          deprecated: fieldType.deprecationReason,
         };
       }
     });
-    fieldsDescriptions.set(type.name, interfaceFieldDescriptions);
 
-    fieldsArgsDescriptions.set(type.name, objectFieldsArgsDescriptions);
+    inputsDescription.set(type.name, inputDescription);
+
+    outputsDescription.set(type.name, outputDescription);
 
     generatedSchema[type.name] = schemaType;
   };
@@ -534,16 +535,16 @@ export async function generate(
     if (type.description) {
       descriptions.set(type.name, type.description);
     }
+
     if (
       type.name.startsWith('__') ||
-      type === queryType ||
-      type === mutationType ||
-      type === subscriptionType
+      type === config.query ||
+      type === config.mutation ||
+      type === config.subscription
     ) {
       return;
     }
 
-    /* istanbul ignore else */
     if (isScalarType(type)) {
       parseScalarType(type);
     } else if (isObjectType(type)) {
@@ -559,30 +560,27 @@ export async function generate(
     }
   });
 
-  /* istanbul ignore else */
-  if (queryType) {
-    parseObjectType(queryType, 'query');
+  if (config.query) {
+    parseObjectType(config.query, 'query');
   }
 
-  if (mutationType) {
-    parseObjectType(mutationType, 'mutation');
+  if (config.mutation) {
+    parseObjectType(config.mutation, 'mutation');
   }
 
-  if (subscriptionType) {
-    parseObjectType(subscriptionType, 'subscription');
+  if (config.subscription) {
+    parseObjectType(config.subscription, 'subscription');
   }
 
   const unionsMapObj = Array.from(
     unionsAndInterfacesObjectTypesMap.entries()
-  ).reduce(
-    (acum, [key, value]) => {
-      generatedSchema[key]!.$on = { __type: `$${key}!` };
+  ).reduce<Record<string, string[]>>((acum, [key, value]) => {
+    generatedSchema[key]!.$on = { __type: `$${key}!` };
 
-      acum[key] = value;
-      return acum;
-    },
-    {} as Record<string, string[]>
-  );
+    acum[key] = value;
+
+    return acum;
+  }, {});
 
   if (unionsAndInterfacesObjectTypesMap.size) {
     generatedSchema[SchemaUnionsKey] = unionsMapObj;
@@ -594,28 +592,21 @@ export async function generate(
     nullableItems,
     isNullable,
     hasDefaultValue,
-  }: ReturnType<typeof parseSchemaType>) {
-    let typeToReturn: string[] = [
-      scalarsEnumsHash[pureType]
-        ? enumsNames.includes(pureType)
-          ? pureType
-          : `ScalarsEnums["${pureType}"]`
-        : pureType,
-    ];
+  }: ParsedSchemaType) {
+    let type =
+      scalarsEnumsHash[pureType] && !enumsNames.has(pureType)
+        ? `ScalarsEnums["${pureType}"]`
+        : pureType;
 
     if (isArray) {
-      typeToReturn = [
-        'Array<',
-        ...(nullableItems ? ['Maybe<', ...typeToReturn, '>'] : typeToReturn),
-        '>',
-      ];
+      type = `Array<${nullableItems ? `Maybe<${type}>` : type}>`;
     }
 
     if (isNullable || hasDefaultValue) {
-      typeToReturn = ['Maybe<', ...typeToReturn, '>'];
+      type = `Maybe<${type}>`;
     }
 
-    return typeToReturn.join(``);
+    return type;
   }
 
   function parseFinalType({
@@ -623,7 +614,7 @@ export async function generate(
     isArray,
     nullableItems,
     isNullable,
-  }: ReturnType<typeof parseSchemaType>) {
+  }: ParsedSchemaType) {
     let typeToReturn: string[] = [
       scalarsEnumsHash[pureType] ? `ScalarsEnums["${pureType}"]` : pureType,
     ];
@@ -643,35 +634,20 @@ export async function generate(
     return typeToReturn.join(``);
   }
 
-  const objectTypeTSTypes = new Map<string, Map<string, string>>();
+  const typeNames: Record<string, string | undefined> = {
+    query: 'Query',
+    mutation: 'Mutation',
+    subscription: 'Subscription',
+  };
 
-  let typescriptTypes = deps
-    .sortBy(Object.entries(generatedSchema), (v) => v[0])
+  let typescriptTypes = Object.entries(generatedSchema)
+    .sort(deps.sortBy(0))
     .reduce((acum, [typeKey, typeValue]) => {
-      const typeName = (() => {
-        switch (typeKey) {
-          case 'query': {
-            return 'Query';
-          }
-          case 'mutation': {
-            return 'Mutation';
-          }
-          case 'subscription': {
-            return 'Subscription';
-          }
-          default: {
-            return typeKey;
-          }
-        }
-      })();
+      const typeName = typeNames[typeKey] ?? typeKey;
 
       if (inputTypeNames.has(typeName)) return acum;
 
       const objectTypeMap = new Map<string, string>();
-
-      if (!unionsAndInterfacesObjectTypesMap.has(typeName)) {
-        objectTypeTSTypes.set(typeName, objectTypeMap);
-      }
 
       const interfaceOrUnionsObjectTypes =
         unionsAndInterfacesObjectTypesMap.get(typeName);
@@ -690,53 +666,40 @@ export async function generate(
               return acum;
             }
 
-            const typeFieldArgDescriptions = fieldsArgsDescriptions.has(
-              typeName
-            )
-              ? fieldsArgsDescriptions.get(typeName)
-              : undefined;
-            const argDescriptions =
-              typeFieldArgDescriptions && typeFieldArgDescriptions[fieldKey]
-                ? typeFieldArgDescriptions[fieldKey]
-                : {};
-            const fieldValueProps = parseSchemaType(fieldValue.__type);
-            const typeToReturn = parseFinalType(fieldValueProps);
+            const field = parseSchemaType(fieldValue.__type);
+            const returnType = parseFinalType(field);
             let finalType: string;
+
             if (fieldValue.__args) {
-              const argsEntries = Object.entries(fieldValue.__args);
-              let onlyNullableArgs = true;
-              const argTypes = argsEntries.reduce(
-                (acum, [argKey, argValue]) => {
-                  const argValueProps = parseSchemaType(
-                    argValue,
-                    argDescriptions[argKey]
+              let isArgsOptional = true;
+
+              const argsType = Object.entries(fieldValue.__args).reduce(
+                (acum, [key, value]) => {
+                  const arg = parseSchemaType(
+                    value,
+                    inputsDescription.get(typeName)?.[fieldKey]?.[key]
                   );
-                  const connector =
-                    argValueProps.isNullable || argValueProps.hasDefaultValue
-                      ? '?:'
-                      : ':';
+                  const isOptional = arg.isNullable || arg.hasDefaultValue;
 
-                  if (!argValueProps.isNullable) {
-                    onlyNullableArgs = false;
-                  }
+                  isArgsOptional &&= isOptional;
 
-                  const argTypeValue = parseArgType(argValueProps);
+                  const description = addDescription([typeName, fieldKey, key]);
+                  const operator = isOptional ? '?:' : ':';
+                  const operand = parseArgType(arg);
 
-                  acum += `${addDescription([
-                    typeName,
-                    fieldKey,
-                    argKey,
-                  ])}${argKey}${connector} ${argTypeValue};\n`;
+                  acum += `${description}${key}${operator} ${operand};\n`;
 
                   return acum;
                 },
                 ''
               );
-              const argsConnector = onlyNullableArgs ? '?:' : ':';
-              finalType = `: (args${argsConnector} {${argTypes}}) => ${typeToReturn}`;
+
+              const operator = isArgsOptional ? '?:' : ':';
+
+              finalType = `: (args${operator} {${argsType}}) => ${returnType}`;
             } else {
-              const connector = fieldValueProps.isNullable ? '?:' : ':';
-              finalType = `${connector} ${typeToReturn}`;
+              const operator = field.isNullable ? '?:' : ':';
+              finalType = `${operator} ${returnType}`;
             }
 
             objectTypeMap.set(fieldKey, finalType);
@@ -759,11 +722,8 @@ export async function generate(
 
   if (unionsAndInterfacesObjectTypesMap.size) {
     typescriptTypes += `
-    ${deps
-      .sortBy(
-        Array.from(unionsAndInterfacesObjectTypesMap.entries()),
-        (v) => v[0]
-      )
+    ${Array.from(unionsAndInterfacesObjectTypesMap)
+      .sort(deps.sortBy(0))
       .reduce((acum, [unionInterfaceName, objectTypes]) => {
         acum += `
       export interface $${unionInterfaceName} {
@@ -788,10 +748,10 @@ export async function generate(
         ? Scalars[Key]['output']
         : never;
     } & {
-      ${deps.sortBy(enumsNames).reduce((acum, enumName) => {
-        acum += `${enumName}: ${enumName};`;
-        return acum;
-      }, ``)}
+      ${Array.from(enumsNames)
+        .sort()
+        .map((enumName) => `${enumName}: ${enumName};`)
+        .join('\n')}
     }
     `;
 
@@ -824,7 +784,7 @@ export async function generate(
       };
     `;
 
-  const hasUnions = !!unionsAndInterfacesObjectTypesMap.size;
+  const hasUnions = unionsAndInterfacesObjectTypesMap.size > 0;
 
   const scalarsEnumsHashString = JSON.stringify(
     Object.keys(scalarsEnumsHash)
@@ -835,12 +795,11 @@ export async function generate(
       }, {})
   );
 
-  const generatedSchemaCodeString = deps
-    .sortBy(Object.entries(generatedSchema), (v) => v[0])
+  const generatedSchemaCodeString = Object.entries(generatedSchema)
+    .sort(deps.sortBy(0))
     .reduceRight(
-      (acum, [key, value]) => {
-        return `${JSON.stringify(key)}:${JSON.stringify(value)}, ${acum}`;
-      },
+      (acum, [key, value]) =>
+        `${JSON.stringify(key)}:${JSON.stringify(value)}, ${acum}`,
       hasUnions ? `[SchemaUnionsKey]: ${JSON.stringify(unionsMapObj)}` : ``
     );
 
@@ -879,6 +838,7 @@ export async function generate(
     } const scalarsEnumsHash: ScalarsEnumsHash${
       isJavascriptOutput ? ';' : ` = ${scalarsEnumsHashString};`
     }
+
     export${isJavascriptOutput ? ' declare' : ''} const generatedSchema ${
       isJavascriptOutput ? ':' : '='
     } {${generatedSchemaCodeString}}${isJavascriptOutput ? '' : ' as const'};

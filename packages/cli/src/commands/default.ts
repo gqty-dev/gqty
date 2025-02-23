@@ -200,7 +200,7 @@ export const addCommand = (command: Command) => {
         const {
           default: { isMatch },
         } = await import('micromatch');
-        const { default: throttle } = await import('lodash-es/throttle.js');
+        const { default: throttle } = await import('just-throttle');
         const { FasterSMA: SMA } = await import('trading-signals');
         const { printSchema } = await import('graphql');
 
@@ -288,9 +288,11 @@ export const addCommand = (command: Command) => {
         (async () => {
           // micromatch does not understand relative patterns, normalize them
           // ahead of time.
-          const matchPatterns = endpoints.map((endpoint) =>
-            path.resolve(endpoint)
-          );
+          const matchPatterns = endpoints
+            .filter((endpoint) => !isURL(endpoint))
+            .map((endpoint) => path.resolve(endpoint));
+
+          if (matchPatterns.length === 0) return;
 
           // Find common path prefix
           const watchTarget = await fg(matchPatterns, { absolute: true }).then(
@@ -308,7 +310,7 @@ export const addCommand = (command: Command) => {
                   }
 
                   return prev.slice(0, lastIndex);
-                })
+                }, [])
                 // Intentionally combining roots and unresolveable parents here,
                 // because roots are probably too noisy.
                 .join(path.sep) || undefined
