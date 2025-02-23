@@ -7,13 +7,12 @@ import {
   Cache,
   createClient,
   defaultResponseHandler,
-  GQtyError,
   type QueryFetcher,
 } from 'gqty';
 import {
-  type GeneratedSchema,
   generatedSchema,
   scalarsEnumsHash,
+  type GeneratedSchema,
 } from './schema.generated';
 
 const queryFetcher: QueryFetcher = async function (
@@ -35,12 +34,6 @@ const queryFetcher: QueryFetcher = async function (
     ...fetchOptions,
   });
 
-  if (response.status >= 400) {
-    throw new GQtyError(
-      `GraphQL endpoint responded with HTTP status ${response.status}.`
-    );
-  }
-
   return await defaultResponseHandler(response);
 };
 
@@ -51,8 +44,8 @@ const cache = new Cache(
    * allowing soft refetches in background.
    */
   {
-    maxAge: 5 * 1000,
-    staleWhileRevalidate: 30 * 60 * 1000,
+    maxAge: 0,
+    staleWhileRevalidate: 5 * 60 * 1000,
     normalization: true,
   }
 );
@@ -65,8 +58,6 @@ export const client = createClient<GeneratedSchema>({
     fetcher: queryFetcher,
   },
 });
-
-export const { createQuery } = createSolidClient(client);
 
 // Core functions
 export const { resolve, subscribe, schema } = client;
@@ -81,5 +72,7 @@ export const {
   refetch,
   track,
 } = client;
+
+export const { createQuery } = createSolidClient(client);
 
 export * from './schema.generated';

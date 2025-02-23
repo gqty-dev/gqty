@@ -8,5 +8,14 @@ export { cosmiconfig, type Loader } from 'cosmiconfig';
 export { fetch } from 'cross-fetch';
 export { default as fg } from 'fast-glob';
 export { buildSchema, printSchema } from 'graphql';
-export { default as sortBy } from 'lodash-es/sortBy.js';
 export { default as prettier, type Options as PrettierOptions } from 'prettier';
+
+export function sortBy(
+  key: string
+): <T extends Record<string, unknown>>(a: T, b: T) => number;
+export function sortBy(
+  key: number
+): <T extends Array<unknown>>(a: T, b: T) => number;
+export function sortBy(key: string | number) {
+  return (a: any, b: any) => (a[key] > b[key] ? 1 : b[key] > a[key] ? -1 : 0);
+}

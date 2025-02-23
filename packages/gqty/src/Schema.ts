@@ -38,7 +38,7 @@ export type QueryPayload<
   readonly extensions?: TExtension;
 };
 
-export interface ParseSchemaTypeInfo {
+export interface ParsedSchemaType {
   pureType: string;
   isNullable: boolean;
   hasDefaultValue: boolean;
@@ -57,14 +57,15 @@ export type ArgsDescriptions = Record<
   Record<string, FieldDescription | undefined>
 >;
 
+// [ ] Rewrite generatedSchema from text representations to bit patterns
 export const parseSchemaType = memoize(
   (
     type: string,
     fieldDesc: FieldDescription | undefined = undefined
-  ): ParseSchemaTypeInfo => {
+  ): ParsedSchemaType => {
     let isArray = false;
     let isNullable = true;
-    const hasDefaultValue = !!(fieldDesc && fieldDesc.defaultValue !== null);
+    const hasDefaultValue = fieldDesc?.defaultValue != null;
     let pureType = type;
     let nullableItems = true;
     if (pureType.endsWith('!')) {

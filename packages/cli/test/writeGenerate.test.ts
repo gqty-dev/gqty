@@ -109,6 +109,7 @@ test('generates code and writes existing file', async () => {
         Boolean: true,
         String: true,
       };
+
       export const generatedSchema = {
         mutation: {},
         query: { __typename: { __type: 'String!' }, hello: { __type: 'String!' } },
@@ -218,6 +219,7 @@ test('creates dir, generates code and writes new file', async () => {
         Boolean: true,
         String: true,
       };
+
       export const generatedSchema = {
         mutation: {},
         query: { __typename: { __type: 'String!' }, hello: { __type: 'String!' } },

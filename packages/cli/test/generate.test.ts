@@ -80,6 +80,7 @@ test('basic functionality works', async () => {
       Int: true,
       String: true,
     };
+
     export const generatedSchema = {
       mutation: {},
       query: {
@@ -104,7 +105,7 @@ test('basic functionality works', async () => {
        */
       deprecatedArg: (args?: {
         /**
-         * @defaultValue \`123\`
+         * @default \`123\`
          */
         arg?: Maybe<ScalarsEnums['Int']>;
       }) => Maybe<ScalarsEnums['Int']>;
@@ -454,6 +455,7 @@ test('custom scalars works', async () => {
       Custom: true,
       String: true,
     };
+
     export const generatedSchema = {
       mutation: {},
       query: { __typename: { __type: 'String!' }, hello: { __type: 'Custom!' } },
@@ -667,6 +669,7 @@ describe('feature complete app', () => {
         OtherEnum: true,
         String: true,
       };
+
       export const generatedSchema = {
         GreetingsInput: {
           language: { __type: 'String!' },
@@ -794,7 +797,7 @@ describe('feature complete app', () => {
         __typename?: 'Query';
         arrayObjectArgs: (args?: {
           /**
-           * @defaultValue \`10\`
+           * @default \`10\`
            */
           limit?: Maybe<ScalarsEnums['Int']>;
         }) => Array<Human>;
@@ -822,11 +825,11 @@ describe('feature complete app', () => {
         stringNullableWithArgs: (args: {
           hello: ScalarsEnums['String'];
           /**
-           * @defaultValue \`"Hi"\`
+           * @default \`"Hi"\`
            */
           helloThree?: Maybe<ScalarsEnums['String']>;
           /**
-           * @defaultValue \`"Hi"\`
+           * @default \`"Hi"\`
            */
           helloTwo?: Maybe<ScalarsEnums['String']>;
         }) => Maybe<ScalarsEnums['String']>;
@@ -1162,6 +1165,7 @@ describe('mutation', () => {
         Boolean: true,
         String: true,
       };
+
       export const generatedSchema = {
         mutation: {
           __typename: { __type: 'String!' },
@@ -1304,6 +1308,7 @@ describe('subscription', () => {
         Boolean: true,
         String: true,
       };
+
       export const generatedSchema = {
         mutation: {},
         query: { __typename: { __type: 'String!' }, hello: { __type: 'String!' } },
@@ -1645,6 +1650,7 @@ test('javascript output works', async () => {
     }
 
     export declare const scalarsEnumsHash: ScalarsEnumsHash;
+
     export declare const generatedSchema: {
       A: { __typename: { __type: 'String!' }; a: { __type: 'String' } };
       B: { __typename: { __type: 'String!' }; b: { __type: 'Int' } };
@@ -1927,6 +1933,7 @@ test('ignoreArgs transform', async () => {
       Int: true,
       String: true,
     };
+
     export const generatedSchema = {
       mutation: {},
       query: {
@@ -2155,6 +2162,7 @@ test('fields with default value works', async () => {
       Boolean: true,
       String: true,
     };
+
     export const generatedSchema = {
       mutation: {},
       query: {
@@ -2173,9 +2181,9 @@ test('fields with default value works', async () => {
      */
     export interface Query {
       __typename?: 'Query';
-      hello: (args: {
+      hello: (args?: {
         /**
-         * @defaultValue \`"world"\`
+         * @default \`"world"\`
          */
         world?: Maybe<ScalarsEnums['String']>;
       }) => ScalarsEnums['String'];
