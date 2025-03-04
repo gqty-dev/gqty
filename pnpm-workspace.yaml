@@ -1,4 +1,9 @@
 packages:
-  - 'packages/*'
-  - 'examples/*'
-  - 'internal/*'
+  - packages/*
+  - examples/*
+  - internal/*
+
+onlyBuiltDependencies:
+  - '@tailwindcss/oxide'
+  - esbuild
+  - unrs-resolver

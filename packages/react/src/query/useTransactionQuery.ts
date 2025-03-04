@@ -4,6 +4,7 @@ import {
   type GQtyError,
   type RetryOptions,
 } from 'gqty';
+import { useEffect } from 'react';
 import {
   translateFetchPolicy,
   type LegacyFetchPolicy,
@@ -105,6 +106,12 @@ export function createUseTransactionQuery<TSchema extends BaseGeneratedSchema>(
         onError?.(query.$state.error);
       }
     }, [query.$state.error]);
+
+    useEffect(() => {
+      if (!skip) {
+        query.$refetch(false);
+      }
+    }, [skip]);
 
     return skip
       ? {
