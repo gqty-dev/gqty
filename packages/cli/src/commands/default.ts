@@ -42,6 +42,11 @@ export const addCommand = (command: Command) => {
     .option('--solid', 'Include SolidJS signals in the generated client.')
     .option('--no-solid')
     .option(
+      '--pylon',
+      'Generate an unsorted schema compatible with Pylon GraphQL.'
+    )
+    .option('--no-pylon')
+    .option(
       '--subscriptions [client]',
       'Includes specified package as subscription client, must be graphql-ws compatible.'
     )
@@ -107,6 +112,7 @@ export const addCommand = (command: Command) => {
       {
         if (config.frameworks?.length === 0) {
           config.frameworks = [
+            options.pylon && 'pylon',
             options.react && 'react',
             options.solid && 'solid-js',
           ].filter((v): v is SupportedFrameworks => !!v);
@@ -140,6 +146,7 @@ export const addCommand = (command: Command) => {
       // Detect React and TypeScript from package.json.
       if (manifest) {
         config.frameworks ??= [
+          manifest.dependencies?.['@getcronit/pylon'] && 'pylon',
           manifest.dependencies?.['react'] && 'react',
           manifest.dependencies?.['solid-js'] && 'solid-js',
         ].filter((v): v is SupportedFrameworks => !!v);
@@ -200,7 +207,7 @@ export const addCommand = (command: Command) => {
         const {
           default: { isMatch },
         } = await import('micromatch');
-        const { default: throttle } = await import('lodash-es/throttle.js');
+        const { default: throttle } = await import('just-throttle');
         const { FasterSMA: SMA } = await import('trading-signals');
         const { printSchema } = await import('graphql');
 
@@ -288,9 +295,11 @@ export const addCommand = (command: Command) => {
         (async () => {
           // micromatch does not understand relative patterns, normalize them
           // ahead of time.
-          const matchPatterns = endpoints.map((endpoint) =>
-            path.resolve(endpoint)
-          );
+          const matchPatterns = endpoints
+            .filter((endpoint) => !isURL(endpoint))
+            .map((endpoint) => path.resolve(endpoint));
+
+          if (matchPatterns.length === 0) return;
 
           // Find common path prefix
           const watchTarget = await fg(matchPatterns, { absolute: true }).then(
@@ -308,7 +317,7 @@ export const addCommand = (command: Command) => {
                   }
 
                   return prev.slice(0, lastIndex);
-                })
+                }, [])
                 // Intentionally combining roots and unresolveable parents here,
                 // because roots are probably too noisy.
                 .join(path.sep) || undefined
@@ -369,7 +378,7 @@ const promptFrameworks = async () => {
   const frameworks = await inquirer
     .checkbox({
       message: `Pick the frontend frameworks in use:`,
-      choices: [{ value: 'react' }, { value: 'solid-js' }],
+      choices: [{ value: 'react' }, { value: 'solid-js' }, { value: 'pylon' }],
     })
     .catch(terminateOnInterrupt);
 

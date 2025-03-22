@@ -155,11 +155,8 @@ test('basic inspectWriteGenerate functionality', async () => {
       "
     `);
 
-    expect(
-      await readFile(tempDir.schemaPath, {
-        encoding: 'utf-8',
-      })
-    ).toMatchInlineSnapshot(`
+    expect(await readFile(tempDir.schemaPath, { encoding: 'utf-8' }))
+      .toMatchInlineSnapshot(`
       "/**
        * GQty AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
        */
@@ -199,6 +196,7 @@ test('basic inspectWriteGenerate functionality', async () => {
         Boolean: true,
         String: true,
       };
+
       export const generatedSchema = {
         mutation: {},
         query: { __typename: { __type: 'String!' }, hello: { __type: 'String!' } },
@@ -414,6 +412,7 @@ describe('from file', () => {
           Int: true,
           String: true,
         };
+
         export const generatedSchema = {
           mutation: {},
           query: { __typename: { __type: 'String!' }, hello: { __type: 'Int!' } },
@@ -630,6 +629,7 @@ describe('from file', () => {
           Boolean: true,
           String: true,
         };
+
         export const generatedSchema = {
           mutation: {},
           query: { __typename: { __type: 'String!' }, hello: { __type: 'String!' } },
@@ -846,6 +846,7 @@ describe('from file', () => {
           Boolean: true,
           String: true,
         };
+
         export const generatedSchema = {
           mutation: {},
           query: { __typename: { __type: 'String!' }, hello: { __type: 'String!' } },
@@ -1107,6 +1108,7 @@ describe('from multiple files', () => {
           Int: true,
           String: true,
         };
+
         export const generatedSchema = {
           mutation: {},
           query: {
@@ -1384,6 +1386,7 @@ test('specify generateOptions to inspectWriteGenerate', async () => {
         Boolean: true,
         String: true,
       };
+
       export const generatedSchema = {
         mutation: {},
         query: { __typename: { __type: 'String!' }, hello: { __type: 'String!' } },
@@ -1522,6 +1525,7 @@ describe('inspect headers', () => {
           Boolean: true,
           String: true,
         };
+
         export const generatedSchema = {
           mutation: {},
           query: { __typename: { __type: 'String!' }, hello: { __type: 'String!' } },
@@ -1719,11 +1723,8 @@ describe('CLI behavior', () => {
         "
       `);
 
-      expect(
-        await readFile(tempDir.schemaPath, {
-          encoding: 'utf-8',
-        })
-      ).toMatchInlineSnapshot(`
+      expect(await readFile(tempDir.schemaPath, { encoding: 'utf-8' }))
+        .toMatchInlineSnapshot(`
         "/**
          * GQty AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
          */
@@ -1763,6 +1764,7 @@ describe('CLI behavior', () => {
           Boolean: true,
           String: true,
         };
+
         export const generatedSchema = {
           mutation: {},
           query: { __typename: { __type: 'String!' }, hello: { __type: 'String!' } },
