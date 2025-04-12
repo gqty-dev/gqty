@@ -235,7 +235,7 @@ export class Cache {
     const nsubs = this.#normalizedSubscriptions;
     const getId = this.normalizationOptions?.identity;
 
-    for (const [paths, notify] of this.#subscriptions) {
+    for (const [paths, notify] of subs) {
       for (const path of paths) {
         const parts = path.split('.');
         const node = select(value, parts, (node) => {
