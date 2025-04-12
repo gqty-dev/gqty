@@ -312,6 +312,9 @@ const objectProxyHandler: ProxyHandler<GeneratedSchemaObject> = {
     for (const [keys, scalar] of flattenObject(value)) {
       let currentSelection = selection.getChild(key);
       for (const key of keys) {
+        // Skip array indices
+        if (!isNaN(Number(key))) continue;
+
         currentSelection = currentSelection.getChild(key);
       }
 
