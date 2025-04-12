@@ -1,5 +1,13 @@
 # gqty
 
+## 3.4.2
+
+### Patch Changes
+
+- [`05a299e`](https://github.com/gqty-dev/gqty/commit/05a299eae3320039dab44cfbbb928b6271b0e5cd)
+  Thanks [@vicary](https://github.com/vicary)! - skip numeric selection keys in
+  optimistic updates
+
 ## 3.4.1
 
 ### Patch Changes
