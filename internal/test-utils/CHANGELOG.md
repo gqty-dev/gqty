@@ -1,5 +1,13 @@
 # test-utils
 
+## 0.2.5
+
+### Patch Changes
+
+- Updated dependencies
+  [[`05a299e`](https://github.com/gqty-dev/gqty/commit/05a299eae3320039dab44cfbbb928b6271b0e5cd)]:
+  - gqty@3.4.2
+
 ## 0.2.4
 
 ### Patch Changes

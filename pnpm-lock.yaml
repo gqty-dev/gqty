@@ -766,7 +766,7 @@ importers:
         specifier: ^0.1.8
         version: 0.1.8
       gqty:
-        specifier: workspace:^3.4.1
+        specifier: workspace:^3.4.2
         version: link:../gqty/dist
       p-defer:
         specifier: ^3.0.0
@@ -2625,8 +2625,8 @@ packages:
     engines: {node: '>=10.0.0'}
     dev: true
 
-  /@emnapi/runtime@1.4.0:
-    resolution: {integrity: sha512-64WYIf4UYcdLnbKn/umDlNjQDSS8AgZrI/R9+x5ilkUVFxXcA1Ebl+gQLc/6mERA4407Xof0R7wEyEuj091CVw==}
+  /@emnapi/runtime@1.4.1:
+    resolution: {integrity: sha512-LMshMVP0ZhACNjQNYXiU1iZJ6QCcv0lUdPDPugqGvCGXt5xtRVBPdtA0qU12pEXZzpWAhWlZYptfdAFq10DOVQ==}
     requiresBuild: true
     dependencies:
       tslib: 2.8.1
@@ -4501,7 +4501,7 @@ packages:
     cpu: [wasm32]
     requiresBuild: true
     dependencies:
-      '@emnapi/runtime': 1.4.0
+      '@emnapi/runtime': 1.4.1
     optional: true
 
   /@img/sharp-win32-ia32@0.33.5:
