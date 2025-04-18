@@ -185,7 +185,7 @@ importers:
         version: link:../../packages/subscriptions/dist
       '@graphql-ez/fastify':
         specifier: ^0.12.1
-        version: 0.12.1(@types/node@22.14.1)(fastify@5.3.1)(graphql-ez@0.16.1)(graphql@16.10.0)
+        version: 0.12.1(@types/node@22.14.1)(fastify@5.3.2)(graphql-ez@0.16.1)(graphql@16.10.0)
       '@graphql-ez/plugin-altair':
         specifier: ^0.11.3
         version: 0.11.3(@types/node@22.14.1)(graphql-ez@0.16.1)(graphql@16.10.0)
@@ -212,7 +212,7 @@ importers:
         version: 13.0.0
       fastify:
         specifier: ^5.2.2
-        version: 5.3.1
+        version: 5.3.2
       framer-motion:
         specifier: ^11.18.2
         version: 11.18.2(react-dom@18.3.1)(react@18.3.1)
@@ -371,10 +371,10 @@ importers:
     dependencies:
       '@graphql-ez/fastify':
         specifier: ^0.12.1
-        version: 0.12.1(@types/node@22.14.1)(fastify@5.3.1)(graphql-ez@0.16.1)(graphql@16.10.0)
+        version: 0.12.1(@types/node@22.14.1)(fastify@5.3.2)(graphql-ez@0.16.1)(graphql@16.10.0)
       '@graphql-ez/fastify-testing':
         specifier: ^0.4.1
-        version: 0.4.1(@graphql-ez/fastify@0.12.1)(@types/node@22.14.1)(fastify@5.3.1)(graphql-ez@0.16.1)(graphql@16.10.0)
+        version: 0.4.1(@graphql-ez/fastify@0.12.1)(@types/node@22.14.1)(fastify@5.3.2)(graphql-ez@0.16.1)(graphql@16.10.0)
       '@graphql-ez/plugin-codegen':
         specifier: ^0.8.1
         version: 0.8.1(@types/node@22.14.1)(graphql-ez@0.16.1)(graphql@16.10.0)
@@ -395,7 +395,7 @@ importers:
         version: 7.0.3
       fastify:
         specifier: ^5.2.2
-        version: 5.3.1
+        version: 5.3.2
       gqty:
         specifier: workspace:^
         version: link:../../packages/gqty/dist
@@ -3868,7 +3868,7 @@ packages:
       undici: 5.28.5
     dev: false
 
-  /@graphql-ez/fastify-testing@0.4.1(@graphql-ez/fastify@0.12.1)(@types/node@22.14.1)(fastify@5.3.1)(graphql-ez@0.16.1)(graphql@16.10.0):
+  /@graphql-ez/fastify-testing@0.4.1(@graphql-ez/fastify@0.12.1)(@types/node@22.14.1)(fastify@5.3.2)(graphql-ez@0.16.1)(graphql@16.10.0):
     resolution: {integrity: sha512-NsJZU73240sEGiBV6uGZlYqzCoqoTsmJieOuUup3zYWTkm4BhZzcekOIVvi4GjtnZahjGERCv/AJplPqfjVmUw==}
     peerDependencies:
       '@graphql-ez/fastify': 0.12.1
@@ -3877,9 +3877,9 @@ packages:
       graphql-ez: ^0.16.1
     dependencies:
       '@graphql-ez/client': 0.6.2(@types/node@22.14.1)(graphql@16.10.0)
-      '@graphql-ez/fastify': 0.12.1(@types/node@22.14.1)(fastify@5.3.1)(graphql-ez@0.16.1)(graphql@16.10.0)
+      '@graphql-ez/fastify': 0.12.1(@types/node@22.14.1)(fastify@5.3.2)(graphql-ez@0.16.1)(graphql@16.10.0)
       '@graphql-ez/utils': 0.2.1(@types/node@22.14.1)(graphql@16.10.0)
-      fastify: 5.3.1
+      fastify: 5.3.2
       graphql: 16.10.0
       graphql-ez: 0.16.1(@types/node@22.14.1)(graphql@16.10.0)
     transitivePeerDependencies:
@@ -3887,7 +3887,7 @@ packages:
       - '@types/node'
     dev: false
 
-  /@graphql-ez/fastify@0.12.1(@types/node@22.14.1)(fastify@5.3.1)(graphql-ez@0.16.1)(graphql@16.10.0):
+  /@graphql-ez/fastify@0.12.1(@types/node@22.14.1)(fastify@5.3.2)(graphql-ez@0.16.1)(graphql@16.10.0):
     resolution: {integrity: sha512-du4gJHDWtQP0FbdpQ5ErxwCU+Nc4R1bj+QpfzIdNw8nbxL3jNnbVQ4z6MldlbxJYG7DXsawn5BjgTKJWXw6log==}
     engines: {node: '>=14.13.1'}
     peerDependencies:
@@ -3904,7 +3904,7 @@ packages:
       '@fastify/cors': 8.5.0
       '@graphql-ez/utils': 0.2.1(@types/node@22.14.1)(graphql@16.10.0)
       '@types/node': 22.14.1
-      fastify: 5.3.1
+      fastify: 5.3.2
       graphql: 16.10.0
       graphql-ez: 0.16.1(@types/node@22.14.1)(graphql@16.10.0)
     dev: false
@@ -9158,8 +9158,8 @@ packages:
     resolution: {integrity: sha512-HCxs+YnRaWzCl+cWRYFnHmeRFyR5GVnJTAaCJQiYzQSDwK9MgJdyAsuL3nh0EWRCYMgQ5MeziymvmAhUHYHDUQ==}
     dev: true
 
-  /fastify@5.3.1:
-    resolution: {integrity: sha512-PhpFhuUZVnq1IvTHCrIMCqqukNuJGWnV/nxTrSDtirbsAZnVYO8I9LaxSk5OPXSiioA6DoEG1r5U1g41/cix0g==}
+  /fastify@5.3.2:
+    resolution: {integrity: sha512-AIPqBgtqBAwkOkrnwesEE+dOyU30dQ4kh7udxeGVR05CRGwubZx+p2H8P0C4cRnQT0+EPK4VGea2DTL2RtWttg==}
     dependencies:
       '@fastify/ajv-compiler': 4.0.2
       '@fastify/error': 4.1.0
