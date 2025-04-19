@@ -18,9 +18,13 @@ import type {
   GraphQLUnionType,
 } from 'graphql';
 import * as graphql from 'graphql';
-import { defaultConfig, type GQtyConfig } from './config';
-import * as deps from './deps';
-import { formatPrettier } from './prettier';
+import { defaultConfig, type GQtyConfig } from '../config';
+import * as deps from '../deps';
+import { formatPrettier } from '../prettier';
+
+import { generateMutationQueryTypes } from './mutation-query-types';
+import { generateMutationQueryParamNames } from './mutation-query-param-names';
+import { generateConvertParamsToArgs } from './convert-params-to-args';
 
 const {
   isEnumType,
@@ -173,7 +177,16 @@ export async function generate(
     parser: 'typescript',
   });
 
-  schema = lexicographicSortSchema(assertSchema(schema));
+  react ??= frameworks.includes('react');
+  const solid = frameworks.includes('solid-js');
+
+  const requiresSchemaSorting = false;
+
+  if (requiresSchemaSorting) {
+    schema = lexicographicSortSchema(assertSchema(schema));
+  } else {
+    schema = assertSchema(schema);
+  }
 
   if (transformSchema) {
     schema = await transformSchema(schema, graphql);
@@ -182,9 +195,6 @@ export async function generate(
       throw Error(`"transformSchema" returned an invalid GraphQL Schema!`);
     }
   }
-
-  react ??= frameworks.includes('react');
-  const solid = frameworks.includes('solid-js');
 
   const codegenResultPromise = deps.codegen({
     schema: parse(deps.printSchemaWithDirectives(schema)),
@@ -858,6 +868,18 @@ export async function generate(
     export const generatedSchema = {${generatedSchemaCodeString}};
   `);
 
+  const paramsToArgsSchemaCode = await format(`
+    /**
+     * Contains code for parameter to argument conversion.
+     */
+
+    ${generateMutationQueryTypes(generatedSchema, scalarsEnumsHash)}
+
+    ${generateMutationQueryParamNames(generatedSchema)}
+
+    ${generateConvertParamsToArgs(generatedSchema)}
+  `);
+
   const imports = [
     hasUnions && 'SchemaUnionsKey',
     !isJavascriptOutput && 'type ScalarsEnumsHash',
@@ -884,6 +906,8 @@ export async function generate(
     } {${generatedSchemaCodeString}}${isJavascriptOutput ? '' : ' as const'};
 
     ${typescriptTypes}
+
+    ${paramsToArgsSchemaCode}
   `);
 
   const reactClientCode = react
