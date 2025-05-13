@@ -190,7 +190,7 @@ export class Cache {
     const pathsSnapshot = Object.freeze([...paths]);
 
     this.#subscriptions.set(pathsSnapshot, fn);
-    this.#subscribeNormalized(paths, fn);
+    this.#subscribeNormalized(pathsSnapshot, fn);
 
     return () => {
       this.#subscriptions.delete(pathsSnapshot);
