@@ -172,6 +172,11 @@ export type ResolveOptions = ResolverOptions & {
   awaitsFetch?: boolean;
 
   onFetch?: (fetchPromise: Promise<unknown>) => void;
+
+  /**
+   * When specified, query errors are called here instead of being thrown.
+   */
+  onError?: (error: unknown) => void;
 };
 
 export type SubscribeOptions = ResolverOptions & {
@@ -387,7 +392,7 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
                 targetCaches.add(resolverCache);
               }
 
-              updateCaches(results, [...targetCaches], {
+              updateCaches(results, targetCaches, {
                 skipNotify: promiseDropped() || !context.notifyCacheUpdate,
               });
 
@@ -395,7 +400,7 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
 
               return results;
             },
-            // When neughty users are adding selections every next microtask, we
+            // When naughty users are adding selections every next microtask, we
             // forcibly start the fetch after a number of delays. This number is
             // picked arbitrarily, it should be a number that is large enough to
             // prevent excessive fetches but small enough to not block the
@@ -600,7 +605,7 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
       // Run once to trigger selections
       dataFn();
 
-      const fetchPromise = resolve().then(dataFn);
+      const fetchPromise = resolve().then(dataFn, options?.onError);
 
       if (options?.awaitsFetch ?? true) {
         await fetchPromise;
