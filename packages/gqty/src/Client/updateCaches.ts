@@ -5,8 +5,8 @@ import { GQtyError } from '../Error';
 import type { FetchResult } from './resolveSelections';
 
 export const updateCaches = <TData extends Record<string, unknown>>(
-  results: FetchResult<TData>[],
-  caches: Cache[],
+  results: Iterable<FetchResult<TData>>,
+  caches: Iterable<Cache>,
   cacheSetOptions?: CacheSetOptions
 ) => {
   const errorSet = new Set<GraphQLError>();
@@ -43,6 +43,6 @@ export const updateCaches = <TData extends Record<string, unknown>>(
   }
 
   if (errorSet.size) {
-    throw GQtyError.fromGraphQLErrors([...errorSet]);
+    throw GQtyError.fromGraphQLErrors(Array.from(errorSet));
   }
 };
