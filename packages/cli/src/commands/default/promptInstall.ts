@@ -49,6 +49,7 @@ export const runInstall = async (
 
 const getInstallCommand = (packager: PackageManager) => {
   switch (packager) {
+    default:
     case 'npm': {
       return ['install', '--save-dev'];
     }

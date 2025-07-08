@@ -2,21 +2,19 @@
 
 import { existsSync } from 'node:fs';
 
-export type PackageManager = 'npm' | 'pnpm' | 'yarn';
+export type PackageManager = 'npm' | 'pnpm' | 'yarn' | 'bun';
 
-export const getUserPackageManager: () => PackageManager | undefined = () => {
+export const getUserPackageManager: () => PackageManager = () => {
   // This environment variable is set by npm and yarn but pnpm seems less consistent
   const userAgent = process.env.npm_config_user_agent;
 
-  if (userAgent) {
-    if (userAgent.startsWith('yarn') || existsSync('yarn.lock')) {
-      return 'yarn';
-    } else if (userAgent.startsWith('pnpm') || existsSync('pnpm-lock.yaml')) {
-      return 'pnpm';
-    } else {
-      return 'npm';
-    }
+  if (userAgent?.startsWith('yarn') || existsSync('yarn.lock')) {
+    return 'yarn';
+  } else if (userAgent?.startsWith('pnpm') || existsSync('pnpm-lock.yaml')) {
+    return 'pnpm';
+  } else if (userAgent?.startsWith('bun') || existsSync('bun.lockb')) {
+    return 'bun';
+  } else {
+    return 'npm';
   }
-
-  return;
 };
