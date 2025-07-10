@@ -2,7 +2,7 @@
 
 import { useState, type FunctionComponent } from 'react';
 import Button from '~/components/tailwindui/Button';
-import type { Character, Characters, Maybe } from '~/gqty';
+import type { Character, Maybe } from '~/gqty';
 import { useQuery } from '~/gqty/react';
 import Avatar from './Avatar';
 import Card from './Card';
