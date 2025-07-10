@@ -7,9 +7,10 @@ import {
 } from './getUserPackageManager';
 
 export const promptInstall = async (configuration: GQtyConfig) => {
-  const packages = getInstallPackages(configuration);
   const command = getUserPackageManager() ?? 'npm';
-  const args = getInstallCommand(command).concat(packages);
+  const pkgs = getInstallPackages(configuration, command);
+  const args = getInstallCommand(command).concat(pkgs);
+  const { spawnSync } = await import('child_process');
 
   const install = await inquirer.confirm({
     message: `Do you want us to run "${command} ${args[0]}" for you?`,
@@ -17,8 +18,6 @@ export const promptInstall = async (configuration: GQtyConfig) => {
   });
 
   if (!install) return;
-
-  const { spawnSync } = await import('child_process');
 
   spawnSync(command, args, { stdio: 'inherit' });
 };
@@ -30,17 +29,17 @@ export const runInstall = async (
   { dependencies, devDependencies }: ProjectManifest,
   configuration: GQtyConfig
 ) => {
+  const command = getUserPackageManager() ?? 'npm';
   const deps = new Set([
     ...Object.keys(dependencies ?? {}),
     ...Object.keys(devDependencies ?? {}),
   ]);
-  const pkgs = getInstallPackages(configuration).filter(
+  const pkgs = getInstallPackages(configuration, command).filter(
     (pkg) => !deps.has(pkg)
   );
 
   if (pkgs.length === 0) return;
 
-  const command = getUserPackageManager() ?? 'npm';
   const args = getInstallCommand(command).concat(pkgs);
   const { spawnSync } = await import('child_process');
 
@@ -49,6 +48,9 @@ export const runInstall = async (
 
 const getInstallCommand = (packager: PackageManager) => {
   switch (packager) {
+    case 'bun': {
+      return ['add', '--dev'];
+    }
     default:
     case 'npm': {
       return ['install', '--save-dev'];
@@ -62,11 +64,18 @@ const getInstallCommand = (packager: PackageManager) => {
   }
 };
 
-const getInstallPackages = (configuration: GQtyConfig) => {
+const getInstallPackages = (
+  configuration: GQtyConfig,
+  command: PackageManager
+) => {
   const packages = ['gqty', 'graphql'];
 
-  if (configuration.react) {
+  if (configuration.frameworks?.includes('react')) {
     packages.push('@gqty/react');
+  }
+
+  if (configuration.frameworks?.includes('solid-js')) {
+    packages.push('@gqty/solid');
   }
 
   if (configuration.subscriptions === true) {
@@ -75,7 +84,11 @@ const getInstallPackages = (configuration: GQtyConfig) => {
     packages.push(configuration.subscriptions);
   }
 
-  if (!configuration.javascriptOutput) {
+  if (
+    !configuration.javascriptOutput &&
+    // Bun has built-in typescript
+    command !== 'bun'
+  ) {
     packages.push('typescript');
   }
 
