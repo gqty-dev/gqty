@@ -12,7 +12,7 @@ export const getUserPackageManager: () => PackageManager = () => {
     return 'yarn';
   } else if (userAgent?.startsWith('pnpm') || existsSync('pnpm-lock.yaml')) {
     return 'pnpm';
-  } else if (userAgent?.startsWith('bun') || existsSync('bun.lock')) {
+  } else if (userAgent?.startsWith('bun') || existsSync('bun.lockb') || existsSync('bun.lock')) {
     return 'bun';
   } else {
     return 'npm';
