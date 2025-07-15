@@ -1,5 +1,13 @@
 # @gqty/cli
 
+## 4.3.0
+
+### Minor Changes
+
+- [#2243](https://github.com/gqty-dev/gqty/pull/2243)
+  [`42cea3c`](https://github.com/gqty-dev/gqty/commit/42cea3c6a49948094851f9818a7134a865ce7e91)
+  Thanks [@vicary](https://github.com/vicary)! - Support bun as package manager
+
 ## 4.2.6
 
 ### Patch Changes
@@ -261,7 +269,6 @@
   ```
 
   See also:
-
   - [Ben Lesh on Twitter: "I've run across this pattern for enums in TypeScript..."](https://twitter.com/BenLesh/status/1510983348944056327/)
   - [Replacing Enums With Unions](https://www.tomche.space/post/replacing-enums-with-unions/)
 
