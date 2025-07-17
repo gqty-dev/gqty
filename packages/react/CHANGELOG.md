@@ -1,5 +1,18 @@
 # @gqty/react
 
+## 3.1.1
+
+### Patch Changes
+
+- [#2188](https://github.com/gqty-dev/gqty/pull/2188)
+  [`4c39578`](https://github.com/gqty-dev/gqty/commit/4c3957861df8285b86c6c654f6aa922c6c7f8bbc)
+  Thanks [@vicary](https://github.com/vicary)! - useTransactionQuery should work
+  without suspense
+
+- Updated dependencies
+  [[`247a4fb`](https://github.com/gqty-dev/gqty/commit/247a4fb6c14255228926da6db7fbee2ef8cca54b)]:
+  - gqty@3.5.0
+
 ## 3.1.0
 
 ### Minor Changes

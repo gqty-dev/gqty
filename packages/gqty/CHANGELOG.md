@@ -1,5 +1,14 @@
 # gqty
 
+## 3.5.0
+
+### Minor Changes
+
+- [#2230](https://github.com/gqty-dev/gqty/pull/2230)
+  [`247a4fb`](https://github.com/gqty-dev/gqty/commit/247a4fb6c14255228926da6db7fbee2ef8cca54b)
+  Thanks [@vicary](https://github.com/vicary)! - Add `onError` option to
+  `resolve()`
+
 ## 3.4.2
 
 ### Patch Changes
