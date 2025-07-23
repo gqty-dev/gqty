@@ -202,8 +202,8 @@ importers:
         specifier: ^0.8.1
         version: 0.8.1(@types/graphql-upload@16.0.7)(@types/node@22.16.5)(graphql-ez@0.16.1(@types/node@22.16.5)(graphql@16.11.0))(graphql-upload@13.0.0(graphql@16.11.0))(graphql@16.11.0)
       '@graphql-ez/plugin-websockets':
-        specifier: ^0.11.3
-        version: 0.11.3(@types/node@22.16.5)(bufferutil@4.0.9)(graphql-ez@0.16.1(@types/node@22.16.5)(graphql@16.11.0))(graphql@16.11.0)
+        specifier: ^0.12.0
+        version: 0.12.0(@types/node@22.16.5)(bufferutil@4.0.9)(graphql-ez@0.16.1(@types/node@22.16.5)(graphql@16.11.0))(graphql@16.11.0)
       '@react-hookz/web':
         specifier: ^22.0.0
         version: 22.0.0(js-cookie@3.0.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -425,8 +425,8 @@ importers:
         version: 3.0.2
     devDependencies:
       '@graphql-ez/plugin-websockets':
-        specifier: ^0.11.3
-        version: 0.11.3(@types/node@22.16.5)(bufferutil@4.0.9)(graphql-ez@0.16.1(@types/node@22.16.5)(graphql@16.11.0))(graphql@16.11.0)
+        specifier: ^0.12.0
+        version: 0.12.0(@types/node@22.16.5)(bufferutil@4.0.9)(graphql-ez@0.16.1(@types/node@22.16.5)(graphql@16.11.0))(graphql@16.11.0)
       '@jest/types':
         specifier: ^29.6.3
         version: 29.6.3
@@ -2260,9 +2260,9 @@ packages:
       graphql-upload:
         optional: true
 
-  '@graphql-ez/plugin-websockets@0.11.3':
-    resolution: {integrity: sha512-BVMWG5zdVdyVs9B0V+jCO9qnIEJqCN7JeMPP9dGh44fz68N0LZHA6MHzT1fwLWlN0QjtLeSL55nQkIbQqRqhYA==}
-    engines: {node: '>=14.13.1'}
+  '@graphql-ez/plugin-websockets@0.12.0':
+    resolution: {integrity: sha512-Hf9eNB4PPg292x/HR5aaUDTpaehfsQib7ulEWZ1EVODPslZpCRw1UbbSWBFnpyoEj9DunBhIbJlmec8RVRtBwA==}
+    engines: {node: '>=22.16.0'}
     peerDependencies:
       graphql: '*'
       graphql-ez: ^0.16.1
@@ -5228,6 +5228,25 @@ packages:
     engines: {node: '>=10'}
     peerDependencies:
       graphql: '>=0.11 <=16'
+
+  graphql-ws@6.0.6:
+    resolution: {integrity: sha512-zgfER9s+ftkGKUZgc0xbx8T7/HMO4AV5/YuYiFc+AtgcO5T0v8AxYYNQ+ltzuzDZgNkYJaFspm5MMYLjQzrkmw==}
+    engines: {node: '>=20'}
+    peerDependencies:
+      '@fastify/websocket': ^10 || ^11
+      crossws: ~0.3
+      graphql: ^15.10.1 || ^16
+      uWebSockets.js: ^20
+      ws: ^8
+    peerDependenciesMeta:
+      '@fastify/websocket':
+        optional: true
+      crossws:
+        optional: true
+      uWebSockets.js:
+        optional: true
+      ws:
+        optional: true
 
   graphql-yoga@5.15.1:
     resolution: {integrity: sha512-wCSnviFFGC4CF9lyeRNMW1p55xVWkMRLPu9iHYbBd8WCJEjduDTo3nh91sVktpbJdUQ6rxNBN6hhpTYMFZuMwg==}
@@ -9663,19 +9682,22 @@ snapshots:
     transitivePeerDependencies:
       - '@types/node'
 
-  '@graphql-ez/plugin-websockets@0.11.3(@types/node@22.16.5)(bufferutil@4.0.9)(graphql-ez@0.16.1(@types/node@22.16.5)(graphql@16.11.0))(graphql@16.11.0)':
+  '@graphql-ez/plugin-websockets@0.12.0(@types/node@22.16.5)(bufferutil@4.0.9)(graphql-ez@0.16.1(@types/node@22.16.5)(graphql@16.11.0))(graphql@16.11.0)':
     dependencies:
       '@graphql-ez/utils': 0.2.1(@types/node@22.16.5)(graphql@16.11.0)
       '@types/ws': 8.18.1
       graphql-ez: 0.16.1(@types/node@22.16.5)(graphql@16.11.0)
-      graphql-ws: 5.16.2(graphql@16.11.0)
+      graphql-ws: 6.0.6(graphql@16.11.0)(ws@8.18.3(bufferutil@4.0.9))
       subscriptions-transport-ws-envelop: 2.0.2(graphql@16.11.0)(ws@8.18.3(bufferutil@4.0.9))
       ws: 8.18.3(bufferutil@4.0.9)
     optionalDependencies:
       graphql: 16.11.0
     transitivePeerDependencies:
+      - '@fastify/websocket'
       - '@types/node'
       - bufferutil
+      - crossws
+      - uWebSockets.js
       - utf-8-validate
 
   '@graphql-ez/utils@0.2.1(@types/node@22.16.5)(graphql@16.11.0)':
@@ -13203,6 +13225,12 @@ snapshots:
   graphql-ws@5.16.2(graphql@16.11.0):
     dependencies:
       graphql: 16.11.0
+
+  graphql-ws@6.0.6(graphql@16.11.0)(ws@8.18.3(bufferutil@4.0.9)):
+    dependencies:
+      graphql: 16.11.0
+    optionalDependencies:
+      ws: 8.18.3(bufferutil@4.0.9)
 
   graphql-yoga@5.15.1(graphql@16.11.0):
     dependencies:
