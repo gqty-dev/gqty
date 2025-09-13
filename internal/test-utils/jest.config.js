@@ -16,7 +16,6 @@ const defaultConfig = {
       'ts-jest',
       {
         tsconfig: require.resolve('./test/tsconfig.json'),
-        isolatedModules: true,
       },
     ],
   },
