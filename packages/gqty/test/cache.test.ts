@@ -404,7 +404,7 @@ describe('Cache#subscribe', () => {
       },
     });
 
-    expect(listener).toHaveBeenCalledWith({
+    expect(listener).toHaveBeenLastCalledWith({
       query: { c: { a: { __typename: 'A', id: 1, a: 1, b: 2 } } },
     });
 
@@ -526,5 +526,26 @@ describe('Cache#subscribe', () => {
         },
       }
     `);
+  });
+
+  it('should notify global subscribers with delta payloads', () => {
+    const cache = new Cache();
+    const listener = jest.fn();
+    const unsub = cache.subscribe(listener);
+
+    cache.set({ query: { a: 1 } });
+    cache.set({ mutation: { doThing: true } });
+    cache.set({ subscription: { newEvent: 123 } });
+
+    expect(listener).toHaveBeenCalledTimes(3);
+    expect(listener).toHaveBeenNthCalledWith(1, { query: { a: 1 } });
+    expect(listener).toHaveBeenNthCalledWith(2, {
+      mutation: { doThing: true },
+    });
+    expect(listener).toHaveBeenNthCalledWith(3, {
+      subscription: { newEvent: 123 },
+    });
+
+    unsub();
   });
 });
