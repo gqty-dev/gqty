@@ -1,4 +1,4 @@
-import { useRerender } from '@react-hookz/web';
+import { useRerender } from '../hooks';
 import type { BaseGeneratedSchema, GQtyClient } from 'gqty';
 import * as React from 'react';
 import type { OnErrorHandler } from '../common';
