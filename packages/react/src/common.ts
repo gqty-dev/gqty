@@ -12,7 +12,9 @@ import {
 } from 'gqty';
 import * as React from 'react';
 
-export const IS_BROWSER = typeof window !== 'undefined';
+export const IS_BROWSER =
+  typeof window !== 'undefined' ||
+  globalThis.navigator?.product === 'ReactNative';
 
 export const useIsomorphicLayoutEffect = IS_BROWSER
   ? React.useLayoutEffect

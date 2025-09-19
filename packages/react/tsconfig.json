@@ -1,3 +1,7 @@
 {
-  "extends": "../../tsconfig.json"
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "types": ["./native-types/react-native"]
+  },
+  "include": ["src", "native-types"]
 }

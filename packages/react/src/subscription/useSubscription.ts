@@ -1,4 +1,4 @@
-import { useRerender, useThrottledCallback } from '@react-hookz/web';
+import { useRerender, useThrottledCallback } from '../hooks';
 import { GQtyError, type BaseGeneratedSchema, type GQtyClient } from 'gqty';
 import { useEffect, useMemo, useState } from 'react';
 
