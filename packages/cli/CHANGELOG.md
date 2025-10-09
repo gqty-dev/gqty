@@ -1,5 +1,20 @@
 # @gqty/cli
 
+## 5.0.0
+
+### Major Changes
+
+- [#1773](https://github.com/gqty-dev/gqty/pull/1773)
+  [`4942054`](https://github.com/gqty-dev/gqty/commit/4942054dfaf4dcab341ea2b94d68ed74ad4937c7)
+  Thanks [@vicary](https://github.com/vicary)! - Split ScalarsEnums and
+  increased default Cache expiry in the generated client
+
+### Patch Changes
+
+- Updated dependencies
+  [[`13fa932`](https://github.com/gqty-dev/gqty/commit/13fa9329d25f29c8aabdb46ae9675aaf800808c9)]:
+  - gqty@3.6.0
+
 ## 4.3.0
 
 ### Minor Changes
