@@ -5,15 +5,15 @@ import { isSkeleton } from '../Accessor/skeleton';
 import { deepCopy, select } from '../Helpers';
 import { crawl } from './crawl';
 import {
+  type CacheNormalizationHandler,
   deepNormalizeObject,
   defaultNormalizationHandler,
-  type CacheNormalizationHandler,
   type NormalizedObjectShell,
 } from './normalization';
 import {
+  type CacheSnapshot,
   exportCacheSnapshot,
   importCacheSnapshot,
-  type CacheSnapshot,
 } from './persistence';
 import { isCacheObject } from './utils';
 
@@ -182,18 +182,34 @@ export class Cache {
   /** Subscription paths and it's listener function. */
   #subscriptions = new Map<readonly string[], CacheListener>();
 
+  /** Subscriptions for all paths. */
+  #globalSubscriptions = new Set<CacheListener>();
+
   /** Subscription paths that reached a normalized object. */
   #normalizedSubscriptions = new MultiDict<CacheObject, CacheListener>();
 
   /** Subscribe to cache changes. */
-  subscribe(paths: string[], fn: CacheListener) {
-    const pathsSnapshot = Object.freeze([...paths]);
+  subscribe(fn: CacheListener): () => void;
+  subscribe(paths: string[], fn: CacheListener): () => void;
+  subscribe(arg1: string[] | CacheListener, arg2?: CacheListener) {
+    if (typeof arg1 === 'function') {
+      this.#globalSubscriptions.add(arg1);
 
-    this.#subscriptions.set(pathsSnapshot, fn);
-    this.#subscribeNormalized(pathsSnapshot, fn);
+      return () => {
+        this.#globalSubscriptions.delete(arg1);
+      };
+    }
+
+    if (!arg2) return () => {};
+
+    const fn = arg2!;
+    const paths = Object.freeze(arg1);
+
+    this.#subscriptions.set(paths, fn);
+    this.#subscribeNormalized(paths, fn);
 
     return () => {
-      this.#subscriptions.delete(pathsSnapshot);
+      this.#subscriptions.delete(paths);
       this.#normalizedSubscriptions.delete(fn);
     };
   }
@@ -230,7 +246,7 @@ export class Cache {
   #notifySubscribers = (value: CacheRoot) => {
     // Collect all relevant listeners from both path selections and
     // normalized objects in a unique Set.
-    const listeners = new Set<CacheListener>();
+    const listeners = new Set<CacheListener>(this.#globalSubscriptions);
     const subs = this.#subscriptions;
     const nsubs = this.#normalizedSubscriptions;
     const getId = this.normalizationOptions?.identity;
