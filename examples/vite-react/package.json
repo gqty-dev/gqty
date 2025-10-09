@@ -5,8 +5,11 @@
   "scripts": {
     "build": "tsc && vite build",
     "dev": "vite",
-    "generate": "gqty generate",
+    "generate": "gqty --no-install https://gql.omniwe.com",
     "serve": "vite preview"
+  },
+  "gqty": {
+    "destination": "src/gqty/index.ts"
   },
   "dependencies": {
     "@gqty/cli": "workspace:^",
@@ -21,6 +24,8 @@
     "@types/react": "^18.3.23",
     "@types/react-dom": "^18.3.7",
     "@vitejs/plugin-react": "^4.7.0",
+    "graphql": "^16.8.1",
+    "typescript": "^5.4.5",
     "vite": "^6.3.5"
   }
 }

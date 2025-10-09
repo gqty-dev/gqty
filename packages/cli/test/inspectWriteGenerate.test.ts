@@ -97,12 +97,12 @@ test('basic inspectWriteGenerate functionality', async () => {
       const cache = new Cache(
         undefined,
         /**
-         * Default option is immediate cache expiry but keep it for 5 minutes,
+         * Cache is valid for 30 minutes, but starts revalidating after 5 seconds,
          * allowing soft refetches in background.
          */
         {
-          maxAge: 0,
-          staleWhileRevalidate: 5 * 60 * 1000,
+          maxAge: 5000,
+          staleWhileRevalidate: 30 * 60 * 1000,
           normalization: true,
         }
       );
@@ -211,7 +211,7 @@ test('basic inspectWriteGenerate functionality', async () => {
 
       export interface Query {
         __typename?: 'Query';
-        hello: ScalarsEnums['String'];
+        hello?: Scalars['String']['output'];
       }
 
       export interface Subscription {
@@ -223,12 +223,6 @@ test('basic inspectWriteGenerate functionality', async () => {
         mutation: Mutation;
         subscription: Subscription;
       }
-
-      export type ScalarsEnums = {
-        [Key in keyof Scalars]: Scalars[Key] extends { output: unknown }
-          ? Scalars[Key]['output']
-          : never;
-      } & {};
       "
     `);
   } finally {
@@ -315,12 +309,12 @@ describe('from file', () => {
         const cache = new Cache(
           undefined,
           /**
-           * Default option is immediate cache expiry but keep it for 5 minutes,
+           * Cache is valid for 30 minutes, but starts revalidating after 5 seconds,
            * allowing soft refetches in background.
            */
           {
-            maxAge: 0,
-            staleWhileRevalidate: 5 * 60 * 1000,
+            maxAge: 5000,
+            staleWhileRevalidate: 30 * 60 * 1000,
             normalization: true,
           }
         );
@@ -426,7 +420,7 @@ describe('from file', () => {
 
         export interface Query {
           __typename?: 'Query';
-          hello: ScalarsEnums['Int'];
+          hello?: Scalars['Int']['output'];
         }
 
         export interface Subscription {
@@ -438,12 +432,6 @@ describe('from file', () => {
           mutation: Mutation;
           subscription: Subscription;
         }
-
-        export type ScalarsEnums = {
-          [Key in keyof Scalars]: Scalars[Key] extends { output: unknown }
-            ? Scalars[Key]['output']
-            : never;
-        } & {};
         "
       `);
     } finally {
@@ -532,12 +520,12 @@ describe('from file', () => {
         const cache = new Cache(
           undefined,
           /**
-           * Default option is immediate cache expiry but keep it for 5 minutes,
+           * Cache is valid for 30 minutes, but starts revalidating after 5 seconds,
            * allowing soft refetches in background.
            */
           {
-            maxAge: 0,
-            staleWhileRevalidate: 5 * 60 * 1000,
+            maxAge: 5000,
+            staleWhileRevalidate: 30 * 60 * 1000,
             normalization: true,
           }
         );
@@ -642,7 +630,7 @@ describe('from file', () => {
 
         export interface Query {
           __typename?: 'Query';
-          hello: ScalarsEnums['String'];
+          hello?: Scalars['String']['output'];
         }
 
         export interface Subscription {
@@ -654,12 +642,6 @@ describe('from file', () => {
           mutation: Mutation;
           subscription: Subscription;
         }
-
-        export type ScalarsEnums = {
-          [Key in keyof Scalars]: Scalars[Key] extends { output: unknown }
-            ? Scalars[Key]['output']
-            : never;
-        } & {};
         "
       `);
     } finally {
@@ -748,12 +730,12 @@ describe('from file', () => {
         const cache = new Cache(
           undefined,
           /**
-           * Default option is immediate cache expiry but keep it for 5 minutes,
+           * Cache is valid for 30 minutes, but starts revalidating after 5 seconds,
            * allowing soft refetches in background.
            */
           {
-            maxAge: 0,
-            staleWhileRevalidate: 5 * 60 * 1000,
+            maxAge: 5000,
+            staleWhileRevalidate: 30 * 60 * 1000,
             normalization: true,
           }
         );
@@ -858,7 +840,7 @@ describe('from file', () => {
 
         export interface Query {
           __typename?: 'Query';
-          hello: ScalarsEnums['String'];
+          hello?: Scalars['String']['output'];
         }
 
         export interface Subscription {
@@ -870,12 +852,6 @@ describe('from file', () => {
           mutation: Mutation;
           subscription: Subscription;
         }
-
-        export type ScalarsEnums = {
-          [Key in keyof Scalars]: Scalars[Key] extends { output: unknown }
-            ? Scalars[Key]['output']
-            : never;
-        } & {};
         "
       `);
     } finally {
@@ -1008,12 +984,12 @@ describe('from multiple files', () => {
         const cache = new Cache(
           undefined,
           /**
-           * Default option is immediate cache expiry but keep it for 5 minutes,
+           * Cache is valid for 30 minutes, but starts revalidating after 5 seconds,
            * allowing soft refetches in background.
            */
           {
-            maxAge: 0,
-            staleWhileRevalidate: 5 * 60 * 1000,
+            maxAge: 5000,
+            staleWhileRevalidate: 30 * 60 * 1000,
             normalization: true,
           }
         );
@@ -1123,8 +1099,8 @@ describe('from multiple files', () => {
 
         export interface Query {
           __typename?: 'Query';
-          bar: ScalarsEnums['Int'];
-          foo: ScalarsEnums['Int'];
+          bar?: Scalars['Int']['output'];
+          foo?: Scalars['Int']['output'];
         }
 
         export interface Subscription {
@@ -1136,12 +1112,6 @@ describe('from multiple files', () => {
           mutation: Mutation;
           subscription: Subscription;
         }
-
-        export type ScalarsEnums = {
-          [Key in keyof Scalars]: Scalars[Key] extends { output: unknown }
-            ? Scalars[Key]['output']
-            : never;
-        } & {};
         "
       `);
     } finally {
@@ -1284,12 +1254,12 @@ test('specify generateOptions to inspectWriteGenerate', async () => {
       const cache = new Cache(
         undefined,
         /**
-         * Default option is immediate cache expiry but keep it for 5 minutes,
+         * Cache is valid for 30 minutes, but starts revalidating after 5 seconds,
          * allowing soft refetches in background.
          */
         {
-          maxAge: 0,
-          staleWhileRevalidate: 5 * 60 * 1000,
+          maxAge: 5000,
+          staleWhileRevalidate: 30 * 60 * 1000,
           normalization: true,
         }
       );
@@ -1396,7 +1366,7 @@ test('specify generateOptions to inspectWriteGenerate', async () => {
 
       export interface Query {
         __typename?: 'Query';
-        hello: ScalarsEnums['String'];
+        hello?: Scalars['String']['output'];
       }
 
       export interface Subscription {
@@ -1408,12 +1378,6 @@ test('specify generateOptions to inspectWriteGenerate', async () => {
         mutation: Mutation;
         subscription: Subscription;
       }
-
-      export type ScalarsEnums = {
-        [Key in keyof Scalars]: Scalars[Key] extends { output: unknown }
-          ? Scalars[Key]['output']
-          : never;
-      } & {};
       "
     `);
 
@@ -1534,7 +1498,7 @@ describe('inspect headers', () => {
 
         export interface Query {
           __typename?: 'Query';
-          hello: ScalarsEnums['String'];
+          hello?: Scalars['String']['output'];
         }
 
         export interface Subscription {
@@ -1546,12 +1510,6 @@ describe('inspect headers', () => {
           mutation: Mutation;
           subscription: Subscription;
         }
-
-        export type ScalarsEnums = {
-          [Key in keyof Scalars]: Scalars[Key] extends { output: unknown }
-            ? Scalars[Key]['output']
-            : never;
-        } & {};
         "
       `);
 
@@ -1661,12 +1619,12 @@ describe('CLI behavior', () => {
         const cache = new Cache(
           undefined,
           /**
-           * Default option is immediate cache expiry but keep it for 5 minutes,
+           * Cache is valid for 30 minutes, but starts revalidating after 5 seconds,
            * allowing soft refetches in background.
            */
           {
-            maxAge: 0,
-            staleWhileRevalidate: 5 * 60 * 1000,
+            maxAge: 5000,
+            staleWhileRevalidate: 30 * 60 * 1000,
             normalization: true,
           }
         );
@@ -1719,11 +1677,8 @@ describe('CLI behavior', () => {
         "
       `);
 
-      expect(
-        await readFile(tempDir.schemaPath, {
-          encoding: 'utf-8',
-        })
-      ).toMatchInlineSnapshot(`
+      expect(await readFile(tempDir.schemaPath, { encoding: 'utf-8' }))
+        .toMatchInlineSnapshot(`
         "/**
          * GQty AUTO-GENERATED CODE: PLEASE DO NOT MODIFY MANUALLY
          */
@@ -1775,7 +1730,7 @@ describe('CLI behavior', () => {
 
         export interface Query {
           __typename?: 'Query';
-          hello: ScalarsEnums['String'];
+          hello?: Scalars['String']['output'];
         }
 
         export interface Subscription {
@@ -1787,12 +1742,6 @@ describe('CLI behavior', () => {
           mutation: Mutation;
           subscription: Subscription;
         }
-
-        export type ScalarsEnums = {
-          [Key in keyof Scalars]: Scalars[Key] extends { output: unknown }
-            ? Scalars[Key]['output']
-            : never;
-        } & {};
         "
       `);
     } finally {

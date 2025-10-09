@@ -22,15 +22,22 @@
   ],
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
+      "require": "./dist/index.js",
       "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
+      "types": "./dist/index.d.ts"
     },
-    "./envelop": {
-      "types": "./dist/envelop.d.ts",
-      "import": "./dist/envelop.mjs",
-      "require": "./dist/envelop.js"
+    "./deps": "./dist/deps.js",
+    "./*": {
+      "require": "./dist/*.js",
+      "import": "./dist/*.mjs",
+      "types": "./dist/*.d.ts"
     }
+  },
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "typings": "dist/index.d.ts",
+  "bin": {
+    "gqty": "bin/gqty.mjs"
   },
   "files": [
     "dist",

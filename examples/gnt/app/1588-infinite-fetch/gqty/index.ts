@@ -50,12 +50,12 @@ const queryFetcher: QueryFetcher = async function (
 const cache = new Cache(
   undefined,
   /**
-   * Default option is immediate cache expiry but keep it for 5 minutes,
+   * Cache is valid for 30 minutes, but starts revalidating after 5 seconds,
    * allowing soft refetches in background.
    */
   {
-    maxAge: 0,
-    staleWhileRevalidate: 5 * 60 * 1000,
+    maxAge: 5000,
+    staleWhileRevalidate: 30 * 60 * 1000,
     normalization: true,
   }
 );

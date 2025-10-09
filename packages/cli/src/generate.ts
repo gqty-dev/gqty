@@ -212,9 +212,9 @@ export async function generate(
 
   const config = schema.toConfig();
 
-  const scalarsEnumsHash: ScalarsEnumsHash = {};
+  const enums = new Set<string>();
 
-  const enumsNames: string[] = [];
+  const scalars = new Set<string>();
 
   const inputTypeNames = new Set<string>();
 
@@ -288,8 +288,7 @@ export async function generate(
   }
 
   const parseEnumType = (type: GraphQLEnumType) => {
-    scalarsEnumsHash[type.name] = true;
-    enumsNames.push(type.name);
+    enums.add(type.name);
 
     const values = type.getValues();
 
@@ -307,7 +306,7 @@ export async function generate(
     fieldsDescriptions.set(type.name, enumValuesDescriptions);
   };
   const parseScalarType = (type: GraphQLScalarType) => {
-    scalarsEnumsHash[type.name] = true;
+    scalars.add(type.name);
   };
 
   const interfacesOfObjectTypesMap = new Map<string, string[]>();
@@ -375,6 +374,7 @@ export async function generate(
         schemaType[fieldName].__args = gqlType.args.reduce(
           (acum, arg) => {
             acum[arg.name] = arg.type.toString();
+
             if (
               arg.description ||
               arg.deprecationReason ||
@@ -389,6 +389,7 @@ export async function generate(
                 description: arg.description,
               };
             }
+
             return acum;
           },
           {} as Record<string, string>
@@ -496,6 +497,7 @@ export async function generate(
           gqlType.args.reduce(
             (acum, arg) => {
               acum[arg.name] = arg.type.toString();
+
               if (
                 arg.description ||
                 arg.deprecationReason ||
@@ -510,6 +512,7 @@ export async function generate(
                   description: arg.description,
                 };
               }
+
               return acum;
             },
             {} as Record<string, string>
@@ -595,27 +598,23 @@ export async function generate(
     isNullable,
     hasDefaultValue,
   }: ReturnType<typeof parseSchemaType>) {
-    let typeToReturn: string[] = [
-      scalarsEnumsHash[pureType]
-        ? enumsNames.includes(pureType)
-          ? pureType
-          : `ScalarsEnums["${pureType}"]`
-        : pureType,
-    ];
+    let typeToReturn = scalars.has(pureType)
+      ? `Scalars["${pureType}"]["input"]`
+      : pureType;
 
     if (isArray) {
-      typeToReturn = [
-        'Array<',
-        ...(nullableItems ? ['Maybe<', ...typeToReturn, '>'] : typeToReturn),
-        '>',
-      ];
+      if (nullableItems) {
+        typeToReturn = `Maybe<${typeToReturn}>`;
+      }
+
+      typeToReturn = `Array<${typeToReturn}>`;
     }
 
     if (isNullable || hasDefaultValue) {
-      typeToReturn = ['Maybe<', ...typeToReturn, '>'];
+      typeToReturn = `Maybe<${typeToReturn}>`;
     }
 
-    return typeToReturn.join(``);
+    return typeToReturn;
   }
 
   function parseFinalType({
@@ -624,23 +623,23 @@ export async function generate(
     nullableItems,
     isNullable,
   }: ReturnType<typeof parseSchemaType>) {
-    let typeToReturn: string[] = [
-      scalarsEnumsHash[pureType] ? `ScalarsEnums["${pureType}"]` : pureType,
-    ];
+    let typeToReturn = scalars.has(pureType)
+      ? `Scalars["${pureType}"]["output"]`
+      : pureType;
 
     if (isArray) {
-      typeToReturn = [
-        'Array<',
-        ...(nullableItems ? ['Maybe<', ...typeToReturn, '>'] : typeToReturn),
-        '>',
-      ];
+      if (nullableItems) {
+        typeToReturn = `Maybe<${typeToReturn}>`;
+      }
+
+      typeToReturn = `Array<${typeToReturn}>`;
     }
 
     if (isNullable) {
-      typeToReturn = ['Maybe<', ...typeToReturn, '>'];
+      typeToReturn = `Maybe<${typeToReturn}>`;
     }
 
-    return typeToReturn.join(``);
+    return typeToReturn;
   }
 
   const objectTypeTSTypes = new Map<string, Map<string, string>>();
@@ -702,6 +701,7 @@ export async function generate(
             const fieldValueProps = parseSchemaType(fieldValue.__type);
             const typeToReturn = parseFinalType(fieldValueProps);
             let finalType: string;
+
             if (fieldValue.__args) {
               const argsEntries = Object.entries(fieldValue.__args);
               let onlyNullableArgs = true;
@@ -735,7 +735,13 @@ export async function generate(
               const argsConnector = onlyNullableArgs ? '?:' : ':';
               finalType = `: (args${argsConnector} {${argTypes}}) => ${typeToReturn}`;
             } else {
-              const connector = fieldValueProps.isNullable ? '?:' : ':';
+              const connector =
+                fieldValueProps.isNullable ||
+                enums.has(fieldValueProps.pureType) ||
+                scalars.has(fieldValueProps.pureType)
+                  ? '?:'
+                  : ':';
+
               finalType = `${connector} ${typeToReturn}`;
             }
 
@@ -758,42 +764,31 @@ export async function generate(
     }, ``);
 
   if (unionsAndInterfacesObjectTypesMap.size) {
-    typescriptTypes += `
-    ${deps
+    typescriptTypes += deps
       .sortBy(
         Array.from(unionsAndInterfacesObjectTypesMap.entries()),
-        (v) => v[0]
+        ([v]) => v
       )
-      .reduce((acum, [unionInterfaceName, objectTypes]) => {
-        acum += `
-      export interface $${unionInterfaceName} {
-        ${objectTypes.map((typeName) => `${typeName}?:${typeName}`).join('\n')}
-      }
-      `;
+      .map(
+        ([unionInterfaceName, objectTypes]) => `
 
-        return acum;
-      }, ``)}
-    `;
+        export interface $${unionInterfaceName} {
+          ${objectTypes
+            .map((typeName) => `${typeName}?: ${typeName}`)
+            .join('\n')}
+        }`
+      )
+      .join('');
   }
 
   typescriptTypes += `
+
     export interface GeneratedSchema {
       query: Query
       mutation: Mutation
       subscription: Subscription
     }
-
-    export type ScalarsEnums = {
-      [Key in keyof Scalars]: Scalars[Key] extends { output: unknown }
-        ? Scalars[Key]['output']
-        : never;
-    } & {
-      ${deps.sortBy(enumsNames).reduce((acum, enumName) => {
-        acum += `${enumName}: ${enumName};`;
-        return acum;
-      }, ``)}
-    }
-    `;
+  `;
 
   function typeDoc(type: string) {
     return `/**\n * @type {${type}}\n */\n`;
@@ -826,14 +821,11 @@ export async function generate(
 
   const hasUnions = !!unionsAndInterfacesObjectTypesMap.size;
 
-  const scalarsEnumsHashString = JSON.stringify(
-    Object.keys(scalarsEnumsHash)
-      .sort()
-      .reduce<ScalarsEnumsHash>((acum, key) => {
-        acum[key] = true;
-        return acum;
-      }, {})
+  const scalarsEnumsHash: ScalarsEnumsHash = Object.fromEntries(
+    [...scalars, ...enums].sort().map((v) => [v, true])
   );
+
+  const scalarsEnumsHashString = JSON.stringify(scalarsEnumsHash);
 
   const generatedSchemaCodeString = deps
     .sortBy(Object.entries(generatedSchema), (v) => v[0])
@@ -966,12 +958,12 @@ export async function generate(
     const cache = new Cache(
       undefined,
       /**
-       * Default option is immediate cache expiry but keep it for 5 minutes,
+       * Cache is valid for 30 minutes, but starts revalidating after 5 seconds,
        * allowing soft refetches in background.
        */
       {
-        maxAge: 0,
-        staleWhileRevalidate: 5 * 60 * 1000,
+        maxAge: 5000,
+        staleWhileRevalidate: 30 * 60 * 1000,
         normalization: true,
       }
     );
