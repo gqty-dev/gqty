@@ -97,7 +97,7 @@ test('basic inspectWriteGenerate functionality', async () => {
       const cache = new Cache(
         undefined,
         /**
-         * Default option is immediate cache expiry but keep it for 5 minutes,
+         * Cache is valid for 30 minutes, but starts revalidating after 5 seconds,
          * allowing soft refetches in background.
          */
         {
@@ -309,7 +309,7 @@ describe('from file', () => {
         const cache = new Cache(
           undefined,
           /**
-           * Default option is immediate cache expiry but keep it for 5 minutes,
+           * Cache is valid for 30 minutes, but starts revalidating after 5 seconds,
            * allowing soft refetches in background.
            */
           {
@@ -520,7 +520,7 @@ describe('from file', () => {
         const cache = new Cache(
           undefined,
           /**
-           * Default option is immediate cache expiry but keep it for 5 minutes,
+           * Cache is valid for 30 minutes, but starts revalidating after 5 seconds,
            * allowing soft refetches in background.
            */
           {
@@ -730,7 +730,7 @@ describe('from file', () => {
         const cache = new Cache(
           undefined,
           /**
-           * Default option is immediate cache expiry but keep it for 5 minutes,
+           * Cache is valid for 30 minutes, but starts revalidating after 5 seconds,
            * allowing soft refetches in background.
            */
           {
@@ -984,7 +984,7 @@ describe('from multiple files', () => {
         const cache = new Cache(
           undefined,
           /**
-           * Default option is immediate cache expiry but keep it for 5 minutes,
+           * Cache is valid for 30 minutes, but starts revalidating after 5 seconds,
            * allowing soft refetches in background.
            */
           {
@@ -1254,7 +1254,7 @@ test('specify generateOptions to inspectWriteGenerate', async () => {
       const cache = new Cache(
         undefined,
         /**
-         * Default option is immediate cache expiry but keep it for 5 minutes,
+         * Cache is valid for 30 minutes, but starts revalidating after 5 seconds,
          * allowing soft refetches in background.
          */
         {
@@ -1619,7 +1619,7 @@ describe('CLI behavior', () => {
         const cache = new Cache(
           undefined,
           /**
-           * Default option is immediate cache expiry but keep it for 5 minutes,
+           * Cache is valid for 30 minutes, but starts revalidating after 5 seconds,
            * allowing soft refetches in background.
            */
           {

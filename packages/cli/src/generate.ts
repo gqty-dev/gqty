@@ -374,6 +374,7 @@ export async function generate(
         schemaType[fieldName].__args = gqlType.args.reduce(
           (acum, arg) => {
             acum[arg.name] = arg.type.toString();
+
             if (
               arg.description ||
               arg.deprecationReason ||
@@ -388,6 +389,7 @@ export async function generate(
                 description: arg.description,
               };
             }
+
             return acum;
           },
           {} as Record<string, string>
@@ -495,6 +497,7 @@ export async function generate(
           gqlType.args.reduce(
             (acum, arg) => {
               acum[arg.name] = arg.type.toString();
+
               if (
                 arg.description ||
                 arg.deprecationReason ||
@@ -509,6 +512,7 @@ export async function generate(
                   description: arg.description,
                 };
               }
+
               return acum;
             },
             {} as Record<string, string>
@@ -697,6 +701,7 @@ export async function generate(
             const fieldValueProps = parseSchemaType(fieldValue.__type);
             const typeToReturn = parseFinalType(fieldValueProps);
             let finalType: string;
+
             if (fieldValue.__args) {
               const argsEntries = Object.entries(fieldValue.__args);
               let onlyNullableArgs = true;
@@ -953,7 +958,7 @@ export async function generate(
     const cache = new Cache(
       undefined,
       /**
-       * Default option is immediate cache expiry but keep it for 5 minutes,
+       * Cache is valid for 30 minutes, but starts revalidating after 5 seconds,
        * allowing soft refetches in background.
        */
       {

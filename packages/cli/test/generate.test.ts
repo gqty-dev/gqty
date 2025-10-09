@@ -184,7 +184,7 @@ test('basic functionality works', async () => {
     const cache = new Cache(
       undefined,
       /**
-       * Default option is immediate cache expiry but keep it for 5 minutes,
+       * Cache is valid for 30 minutes, but starts revalidating after 5 seconds,
        * allowing soft refetches in background.
        */
       {
@@ -348,7 +348,7 @@ test('custom scalars works', async () => {
     const cache = new Cache(
       undefined,
       /**
-       * Default option is immediate cache expiry but keep it for 5 minutes,
+       * Cache is valid for 30 minutes, but starts revalidating after 5 seconds,
        * allowing soft refetches in background.
        */
       {
@@ -1440,7 +1440,7 @@ test('javascript output works', async () => {
     const cache = new Cache(
       undefined,
       /**
-       * Default option is immediate cache expiry but keep it for 5 minutes,
+       * Cache is valid for 30 minutes, but starts revalidating after 5 seconds,
        * allowing soft refetches in background.
        */
       {
@@ -1756,7 +1756,7 @@ test('ignoreArgs transform', async () => {
     const cache = new Cache(
       undefined,
       /**
-       * Default option is immediate cache expiry but keep it for 5 minutes,
+       * Cache is valid for 30 minutes, but starts revalidating after 5 seconds,
        * allowing soft refetches in background.
        */
       {
