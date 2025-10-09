@@ -1,5 +1,13 @@
 # gqty
 
+## 3.6.0
+
+### Minor Changes
+
+- [`13fa932`](https://github.com/gqty-dev/gqty/commit/13fa9329d25f29c8aabdb46ae9675aaf800808c9)
+  Thanks [@vicary](https://github.com/vicary)! - Allow subscription to all cache
+  changes
+
 ## 3.5.0
 
 ### Minor Changes
