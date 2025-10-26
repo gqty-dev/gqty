@@ -3,7 +3,7 @@ import {
   usePrevious,
   useRerender,
   useUpdateEffect,
-} from '@react-hookz/web';
+} from '../hooks';
 import {
   GQtyError,
   prepass,

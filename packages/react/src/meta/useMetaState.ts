@@ -1,4 +1,4 @@
-import { useRerender } from '@react-hookz/web';
+import { useRerender } from '../hooks';
 import { GQtyError, Selection, useMetaStateHack } from 'gqty';
 import * as React from 'react';
 import { useExtractedSelections, type SelectionsOrProxy } from '../common';
