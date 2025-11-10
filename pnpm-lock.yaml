@@ -534,8 +534,8 @@ importers:
         specifier: ^9.31.0
         version: 9.31.0(jiti@2.4.2)
       p-lazy:
-        specifier: ^3.1.0
-        version: 3.1.0
+        specifier: ^5.0.0
+        version: 5.0.0
       test-utils:
         specifier: workspace:^
         version: link:../../internal/test-utils
@@ -623,8 +623,8 @@ importers:
         specifier: ^30.0.5
         version: 30.0.5(@types/node@22.16.5)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@22.16.5)(typescript@5.8.3))
       p-lazy:
-        specifier: ^3.1.0
-        version: 3.1.0
+        specifier: ^5.0.0
+        version: 5.0.0
       test-utils:
         specifier: workspace:^
         version: link:../../internal/test-utils
@@ -3088,17 +3088,21 @@ packages:
 
   '@nhost/graphql-js@0.3.0':
     resolution: {integrity: sha512-CVYq6wx0VbaYdpUBmfNO/6mZatHB5+YBCqFjWyxhpN1nzHCHEO6rgdL7j0qk31OFE6XAX0z7AQZSXg1Pn63GUw==}
+    deprecated: '⚠ DEPRECATED: This package is deprecated in favor of @nhost/nhost-js@^4.0.0. The new SDK is auto-generated from OpenAPI specs, provides better consistency, and works isomorphically across all JavaScript environments. This package will receive security patches and bug fixes until March 31st but no new features. Migrate to @nhost/nhost-js for future compatibility. Learn more: https://nhost.io/blog/introducing-new-javascript-sdk'
     peerDependencies:
       graphql: ^14.0.0 || ^15.0.0 || ^16.0.0
 
   '@nhost/hasura-auth-js@2.12.0':
     resolution: {integrity: sha512-yOugrb9VCJr7Br/aSmv3iSN0rHvSBmynWppD1jiWuGqGVE0Fe/nwmYzJka1+5xDEdjtJvqaLnINEd84FI+pXSQ==}
+    deprecated: '⚠ DEPRECATED: This package is deprecated in favor of @nhost/nhost-js@^4.0.0. The new SDK is auto-generated from OpenAPI specs, provides better consistency, and works isomorphically across all JavaScript environments. This package will receive security patches and bug fixes until March 31st but no new features. Migrate to @nhost/nhost-js for future compatibility. Learn more: https://nhost.io/blog/introducing-new-javascript-sdk'
 
   '@nhost/hasura-storage-js@2.8.0':
     resolution: {integrity: sha512-F4IYe0FnezcaGnBJyPMTAFcFa7pJBTOWng+iXsFQkBPAEtjHvRVCaAdb6VLH0caYf24CotTdJ9H7RH+DOD8Vfw==}
+    deprecated: '⚠ DEPRECATED: This package is deprecated in favor of @nhost/nhost-js@^4.0.0. The new SDK is auto-generated from OpenAPI specs, provides better consistency, and works isomorphically across all JavaScript environments. This package will receive security patches and bug fixes until March 31st but no new features. Migrate to @nhost/nhost-js for future compatibility. Learn more: https://nhost.io/blog/introducing-new-javascript-sdk'
 
   '@nhost/nextjs@2.2.9':
     resolution: {integrity: sha512-h6PMUpYJIFjdLhWO7I5jxTU/BXuVzGAlEM/XPdb/hLgESLN7rFjfGYOf9o2Cg8szK8yFFkKHeDYVcOU6t2Y/4Q==}
+    deprecated: '⚠ DEPRECATED: This package is deprecated in favor of @nhost/nhost-js@^4.0.0. The new SDK is auto-generated from OpenAPI specs, provides better consistency, and works isomorphically across all JavaScript environments. This package will receive security patches and bug fixes until March 31st but no new features. Migrate to @nhost/nhost-js for future compatibility. Learn more: https://nhost.io/blog/introducing-new-javascript-sdk'
     peerDependencies:
       next: ^12.0.10 || ^13.0.0 || ^14.0.0 || ^15.0.0
       react: ^17.0.0 || ^18.0.0 || ^19.0.0
@@ -3106,11 +3110,13 @@ packages:
 
   '@nhost/nhost-js@3.3.0':
     resolution: {integrity: sha512-Nlym38IPhYiJRXW+oHRy8MQ/p2pCwcuHRw0qasrJFbkqX6UbPcsOkyzB2XOqbPQvsD009xOOr4TswA3UU2F1Lw==}
+    deprecated: '⚠ DEPRECATED: This version is deprecated in favor of @nhost/nhost-js@^4.0.0. The new SDK is auto-generated from OpenAPI specs, provides better consistency, and works isomorphically across all JavaScript environments. This package will receive security patches and bug fixes until March 31st but no new features. Migrate to @nhost/nhost-js for future compatibility. Learn more: https://nhost.io/blog/introducing-new-javascript-sdk'
     peerDependencies:
       graphql: ^14.0.0 || ^15.0.0 || ^16.0.0
 
   '@nhost/react@3.11.1':
     resolution: {integrity: sha512-28ewEwjgw89afbMP00T54fJYLYlKl8+ShnauehWhMqwh3Za4p1sVrY0+Uyj3qO0mq/ctorQLMfSNzrtGxYK/+w==}
+    deprecated: '⚠ DEPRECATED: This package is deprecated in favor of @nhost/nhost-js@^4.0.0. The new SDK is auto-generated from OpenAPI specs, provides better consistency, and works isomorphically across all JavaScript environments. This package will receive security patches and bug fixes until March 31st but no new features. Migrate to @nhost/nhost-js for future compatibility. Learn more: https://nhost.io/blog/introducing-new-javascript-sdk'
     peerDependencies:
       react: ^17.0.0 || ^18.1.0 || ^19.0.0
       react-dom: ^17.0.0 || ^18.1.0 || ^19.0.0
@@ -3163,7 +3169,7 @@ packages:
 
   '@react-hookz/deep-equal@1.0.4':
     resolution: {integrity: sha512-N56fTrAPUDz/R423pag+n6TXWbvlBZDtTehaGFjK0InmN+V2OFWLE/WmORhmn6Ce7dlwH5+tQN1LJFw3ngTJVg==}
-    deprecated: Package is deprecated and will be deleted soon. Use @ver0/deep-equal instead.
+    deprecated: PACKAGE IS DEPRECATED AND WILL BE DETED SOON, USE @ver0/deep-equal INSTEAD
 
   '@react-hookz/web@22.0.0':
     resolution: {integrity: sha512-jl4JgUXaiSvvDVQD2z/rq2/RaykjjLrAZxHOEQj2H38j4UFWIVhv5oKUH8yrKF4wX6tMX9gdrj62f9yGq/nSaQ==}
@@ -6671,9 +6677,9 @@ packages:
     resolution: {integrity: sha512-ZBxxZ5sL2HghephhpGAQdoskxplTwr7ICaehZwLIlfL6acuVgZPm8yBNuRAFBGEqtD/hmUeq9eqLg2ys9Xr/yw==}
     engines: {node: '>=8'}
 
-  p-lazy@3.1.0:
-    resolution: {integrity: sha512-sCJn0Cdahs6G6SX9+DUihVFUhrzDEduzE5xeViVBGtoqy5dBWko7W8T6Kk6TjR2uevRXJO7CShfWrqdH5s3w3g==}
-    engines: {node: '>=8'}
+  p-lazy@5.0.0:
+    resolution: {integrity: sha512-C4xW5/wLGqswBx1xgu/t7fBaHMDKm7SXycgc0MEQvQ5KwzjT1E4MmE9cg0RXn9d0MTgUGJLUCb2EkLBevXi6eA==}
+    engines: {node: '>=18'}
 
   p-limit@2.3.0:
     resolution: {integrity: sha512-//88mFWSJx8lxCzwdAABTJL2MyWB12+eIY7MDL2SqLmAkeKU9qxRvWuSyTjm3FUmpBEMuFfckAIqEaVGUDxb6w==}
@@ -15191,7 +15197,7 @@ snapshots:
     dependencies:
       p-map: 2.1.0
 
-  p-lazy@3.1.0: {}
+  p-lazy@5.0.0: {}
 
   p-limit@2.3.0:
     dependencies:
