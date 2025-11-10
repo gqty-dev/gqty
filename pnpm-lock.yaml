@@ -705,8 +705,8 @@ importers:
         specifier: ^8.56.12
         version: 8.56.12
       '@types/eslint__eslintrc':
-        specifier: ^2.1.2
-        version: 2.1.2
+        specifier: ^3.3.0
+        version: 3.3.0
       '@types/eslint__js':
         specifier: ^8.42.3
         version: 8.42.3
@@ -3088,17 +3088,21 @@ packages:
 
   '@nhost/graphql-js@0.3.0':
     resolution: {integrity: sha512-CVYq6wx0VbaYdpUBmfNO/6mZatHB5+YBCqFjWyxhpN1nzHCHEO6rgdL7j0qk31OFE6XAX0z7AQZSXg1Pn63GUw==}
+    deprecated: '⚠ DEPRECATED: This package is deprecated in favor of @nhost/nhost-js@^4.0.0. The new SDK is auto-generated from OpenAPI specs, provides better consistency, and works isomorphically across all JavaScript environments. This package will receive security patches and bug fixes until March 31st but no new features. Migrate to @nhost/nhost-js for future compatibility. Learn more: https://nhost.io/blog/introducing-new-javascript-sdk'
     peerDependencies:
       graphql: ^14.0.0 || ^15.0.0 || ^16.0.0
 
   '@nhost/hasura-auth-js@2.12.0':
     resolution: {integrity: sha512-yOugrb9VCJr7Br/aSmv3iSN0rHvSBmynWppD1jiWuGqGVE0Fe/nwmYzJka1+5xDEdjtJvqaLnINEd84FI+pXSQ==}
+    deprecated: '⚠ DEPRECATED: This package is deprecated in favor of @nhost/nhost-js@^4.0.0. The new SDK is auto-generated from OpenAPI specs, provides better consistency, and works isomorphically across all JavaScript environments. This package will receive security patches and bug fixes until March 31st but no new features. Migrate to @nhost/nhost-js for future compatibility. Learn more: https://nhost.io/blog/introducing-new-javascript-sdk'
 
   '@nhost/hasura-storage-js@2.8.0':
     resolution: {integrity: sha512-F4IYe0FnezcaGnBJyPMTAFcFa7pJBTOWng+iXsFQkBPAEtjHvRVCaAdb6VLH0caYf24CotTdJ9H7RH+DOD8Vfw==}
+    deprecated: '⚠ DEPRECATED: This package is deprecated in favor of @nhost/nhost-js@^4.0.0. The new SDK is auto-generated from OpenAPI specs, provides better consistency, and works isomorphically across all JavaScript environments. This package will receive security patches and bug fixes until March 31st but no new features. Migrate to @nhost/nhost-js for future compatibility. Learn more: https://nhost.io/blog/introducing-new-javascript-sdk'
 
   '@nhost/nextjs@2.2.9':
     resolution: {integrity: sha512-h6PMUpYJIFjdLhWO7I5jxTU/BXuVzGAlEM/XPdb/hLgESLN7rFjfGYOf9o2Cg8szK8yFFkKHeDYVcOU6t2Y/4Q==}
+    deprecated: '⚠ DEPRECATED: This package is deprecated in favor of @nhost/nhost-js@^4.0.0. The new SDK is auto-generated from OpenAPI specs, provides better consistency, and works isomorphically across all JavaScript environments. This package will receive security patches and bug fixes until March 31st but no new features. Migrate to @nhost/nhost-js for future compatibility. Learn more: https://nhost.io/blog/introducing-new-javascript-sdk'
     peerDependencies:
       next: ^12.0.10 || ^13.0.0 || ^14.0.0 || ^15.0.0
       react: ^17.0.0 || ^18.0.0 || ^19.0.0
@@ -3106,11 +3110,13 @@ packages:
 
   '@nhost/nhost-js@3.3.0':
     resolution: {integrity: sha512-Nlym38IPhYiJRXW+oHRy8MQ/p2pCwcuHRw0qasrJFbkqX6UbPcsOkyzB2XOqbPQvsD009xOOr4TswA3UU2F1Lw==}
+    deprecated: '⚠ DEPRECATED: This version is deprecated in favor of @nhost/nhost-js@^4.0.0. The new SDK is auto-generated from OpenAPI specs, provides better consistency, and works isomorphically across all JavaScript environments. This package will receive security patches and bug fixes until March 31st but no new features. Migrate to @nhost/nhost-js for future compatibility. Learn more: https://nhost.io/blog/introducing-new-javascript-sdk'
     peerDependencies:
       graphql: ^14.0.0 || ^15.0.0 || ^16.0.0
 
   '@nhost/react@3.11.1':
     resolution: {integrity: sha512-28ewEwjgw89afbMP00T54fJYLYlKl8+ShnauehWhMqwh3Za4p1sVrY0+Uyj3qO0mq/ctorQLMfSNzrtGxYK/+w==}
+    deprecated: '⚠ DEPRECATED: This package is deprecated in favor of @nhost/nhost-js@^4.0.0. The new SDK is auto-generated from OpenAPI specs, provides better consistency, and works isomorphically across all JavaScript environments. This package will receive security patches and bug fixes until March 31st but no new features. Migrate to @nhost/nhost-js for future compatibility. Learn more: https://nhost.io/blog/introducing-new-javascript-sdk'
     peerDependencies:
       react: ^17.0.0 || ^18.1.0 || ^19.0.0
       react-dom: ^17.0.0 || ^18.1.0 || ^19.0.0
@@ -3163,7 +3169,7 @@ packages:
 
   '@react-hookz/deep-equal@1.0.4':
     resolution: {integrity: sha512-N56fTrAPUDz/R423pag+n6TXWbvlBZDtTehaGFjK0InmN+V2OFWLE/WmORhmn6Ce7dlwH5+tQN1LJFw3ngTJVg==}
-    deprecated: Package is deprecated and will be deleted soon. Use @ver0/deep-equal instead.
+    deprecated: PACKAGE IS DEPRECATED AND WILL BE DETED SOON, USE @ver0/deep-equal INSTEAD
 
   '@react-hookz/web@22.0.0':
     resolution: {integrity: sha512-jl4JgUXaiSvvDVQD2z/rq2/RaykjjLrAZxHOEQj2H38j4UFWIVhv5oKUH8yrKF4wX6tMX9gdrj62f9yGq/nSaQ==}
@@ -3640,8 +3646,9 @@ packages:
   '@types/eslint@8.56.12':
     resolution: {integrity: sha512-03ruubjWyOHlmljCVoxSuNDdmfZDzsrrz0P2LeJsOXr+ZwFQ+0yQIwNCwt/GYhV7Z31fgtXJTAEs+FYlEL851g==}
 
-  '@types/eslint__eslintrc@2.1.2':
-    resolution: {integrity: sha512-qXvzPFY7Rz05xD8ZApXJ3S8xStQD2Ibzu3EFIF0UMNOAfLY5xUu3H61q0JrHo2OXD6rcFG75yUxNQbkKtFKBSw==}
+  '@types/eslint__eslintrc@3.3.0':
+    resolution: {integrity: sha512-u9C5PHo8zhLBTEpWAV1YsP3ijj3GjM+4r2aGLbkT+vqtBubwgSI8KiRHXtC2QcxDGR0qM3Qapg7OtTB58JmoYQ==}
+    deprecated: This is a stub types definition. @eslint/eslintrc provides its own type definitions, so you do not need this installed.
 
   '@types/eslint__js@8.42.3':
     resolution: {integrity: sha512-alfG737uhmPdnvkrLdZLcEKJ/B8s9Y4hrZ+YAdzUeoArBlSUERA2E87ROfOaS4jd/C45fzOoZzidLc1IPwLqOw==}
@@ -11396,9 +11403,11 @@ snapshots:
       '@types/estree': 1.0.8
       '@types/json-schema': 7.0.15
 
-  '@types/eslint__eslintrc@2.1.2':
+  '@types/eslint__eslintrc@3.3.0':
     dependencies:
-      '@types/eslint': 8.56.12
+      '@eslint/eslintrc': 3.3.1
+    transitivePeerDependencies:
+      - supports-color
 
   '@types/eslint__js@8.42.3':
     dependencies:
