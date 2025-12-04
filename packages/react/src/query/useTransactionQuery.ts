@@ -1,4 +1,4 @@
-import { useUpdateEffect } from '@react-hookz/web';
+import { useUpdateEffect } from '../hooks';
 import {
   type BaseGeneratedSchema,
   type GQtyError,

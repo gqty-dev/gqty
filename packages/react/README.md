@@ -28,3 +28,15 @@ documentations!**
 
 Documentation, bug reports, pull requests, and other contributions are welcomed!
 See [`CONTRIBUTING.md`](CONTRIBUTING.md) for more information.
+
+## React Native
+
+- The React bindings ship platform-specific entry points so Metro can resolve
+  React Native friendly implementations automatically; no `react-dom` dependency
+  is required.
+- `prepareReactRender` is a no-op on native targets. Server-rendering helpers
+  remain web-only, and hydration defaults to cache snapshots from client
+  renders.
+- Effects that previously relied on browser visibility and online events now
+  listen to `AppState` changes to refetch when the app returns to the
+  foreground.
