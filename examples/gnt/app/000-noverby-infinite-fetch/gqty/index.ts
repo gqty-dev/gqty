@@ -1,12 +1,12 @@
 import { createReactClient } from '@gqty/react';
-import { NhostClient } from '@nhost/nextjs';
+import { createClient as createNhostClient } from '@nhost/nhost-js';
 import type { QueryFetcher } from 'gqty';
 import { Cache, createClient } from 'gqty';
 import { createClient as createSubscriptionsClient } from 'graphql-ws';
 import type { GeneratedSchema } from './schema.generated';
 import { generatedSchema, scalarsEnumsHash } from './schema.generated';
 
-const nhost = new NhostClient({
+const nhost = createNhostClient({
   subdomain: process.env.NEXT_PUBLIC_NHOST_SUBDOMAIN,
   region: process.env.NEXT_PUBLIC_NHOST_REGION,
 });
@@ -17,15 +17,15 @@ const getHeaders = (): Record<string, string> =>
         'Content-Type': 'application/json',
         'x-hasura-admin-secret': process.env.HASURA_GRAPHQL_ADMIN_SECRET,
       }
-    : nhost.auth.isAuthenticated()
-    ? {
-        'Content-Type': 'application/json',
-        authorization: `Bearer ${nhost.auth.getAccessToken()}`,
-      }
-    : {
-        'Content-Type': 'application/json',
-        'x-hasura-role': 'public',
-      };
+    : nhost.getUserSession()
+      ? {
+          'Content-Type': 'application/json',
+          authorization: `Bearer ${nhost.getUserSession()?.accessToken}`,
+        }
+      : {
+          'Content-Type': 'application/json',
+          'x-hasura-role': 'public',
+        };
 
 const url = `https://${process.env.NEXT_PUBLIC_NHOST_SUBDOMAIN}.hasura.${process.env.NEXT_PUBLIC_NHOST_REGION}.nhost.run/v1/graphql`;
 
