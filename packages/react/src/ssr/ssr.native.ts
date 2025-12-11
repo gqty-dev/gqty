@@ -4,8 +4,7 @@ import {
   type LegacyHydrateCacheOptions,
 } from 'gqty';
 import { type ReactNode, useEffect, useMemo } from 'react';
-import { version } from 'react-dom/server';
-import { getDefault, type ReactClientOptionsWithDefaults } from '../utils';
+import type { ReactClientOptionsWithDefaults } from '../utils';
 
 export interface UseHydrateCacheOptions
   extends Partial<LegacyHydrateCacheOptions> {
@@ -44,45 +43,23 @@ export interface PrepareReactRender {
   }>;
 }
 
-const IS_SERVER =
-  typeof window === 'undefined' &&
-  globalThis.navigator?.product !== 'ReactNative';
+const IS_SERVER = false;
+let hasWarnedAboutSSR = false;
 
 export function createSSRHelpers<TSchema extends BaseGeneratedSchema>(
   { hydrateCache, prepareRender, query, refetch }: GQtyClient<TSchema>,
   { defaults: { refetchAfterHydrate } }: ReactClientOptionsWithDefaults
 ) {
   const prepareReactRender: PrepareReactRender =
-    async function prepareReactRender(element: ReactNode) {
-      const majorVersion = +version.split('.')[0];
-
-      if (majorVersion >= 18) {
-        const { renderToPipeableStream, renderToReadableStream } = await import(
-          'react-dom/server'
+    async function prepareReactRenderRN(_element: ReactNode) {
+      if (!hasWarnedAboutSSR && process.env.NODE_ENV !== 'production') {
+        hasWarnedAboutSSR = true;
+        console.warn(
+          '[GQty] prepareReactRender is not supported on React Native environments.'
         );
-
-        if (renderToReadableStream !== undefined) {
-          return prepareRender(async () => {
-            const stream = await renderToReadableStream(element);
-
-            await stream.allReady;
-          });
-        } else {
-          return prepareRender(
-            () =>
-              new Promise((resolve, reject) => {
-                renderToPipeableStream(element, {
-                  onAllReady: resolve,
-                  onError: reject,
-                });
-              })
-          );
-        }
-      } else {
-        const ssrPrepass = getDefault(await import('react-ssr-prepass'));
-
-        return prepareRender(() => ssrPrepass(element));
       }
+
+      return prepareRender(async () => {});
     };
 
   const useHydrateCache: UseHydrateCache = function useHydrateCache({

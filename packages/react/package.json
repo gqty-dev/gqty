@@ -26,17 +26,26 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "import": "./dist/index.mjs",
-      "require": "./dist/index.js"
+      "react-native": "./dist/index.native.js",
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs"
     },
-    "./*": {
-      "types": "./dist/*.d.ts",
-      "import": "./dist/*.mjs",
-      "require": "./dist/*.js"
+    "./client": {
+      "types": "./dist/client.d.ts",
+      "react-native": "./dist/client.native.js",
+      "require": "./dist/client.js",
+      "import": "./dist/client.mjs"
+    },
+    "./ssr/ssr": {
+      "types": "./dist/ssr/ssr.d.ts",
+      "react-native": "./dist/ssr/ssr.native.js",
+      "require": "./dist/ssr/ssr.js",
+      "import": "./dist/ssr/ssr.mjs"
     }
   },
   "main": "dist/index.js",
   "module": "dist/index.mjs",
+  "react-native": "dist/index.native.js",
   "typings": "dist/index.d.ts",
   "files": [
     "dist",
@@ -82,7 +91,6 @@
     ]
   },
   "dependencies": {
-    "@react-hookz/web": "^23.1.0",
     "multidict": "^1.0.9",
     "p-debounce": "^4.0.0",
     "p-defer": "^3.0.0",
@@ -134,6 +142,9 @@
       "optional": true
     },
     "graphql-ws": {
+      "optional": true
+    },
+    "react-dom": {
       "optional": true
     }
   },

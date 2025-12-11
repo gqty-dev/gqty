@@ -670,9 +670,6 @@ importers:
 
   packages/react:
     dependencies:
-      '@react-hookz/web':
-        specifier: ^23.1.0
-        version: 23.1.0(js-cookie@3.0.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       multidict:
         specifier: ^1.0.9
         version: 1.0.9
@@ -3346,16 +3343,6 @@ packages:
     resolution: {integrity: sha512-jl4JgUXaiSvvDVQD2z/rq2/RaykjjLrAZxHOEQj2H38j4UFWIVhv5oKUH8yrKF4wX6tMX9gdrj62f9yGq/nSaQ==}
     peerDependencies:
       js-cookie: ^3.0.1
-      react: ^16.8 || ^17 || ^18
-      react-dom: ^16.8 || ^17 || ^18
-    peerDependenciesMeta:
-      js-cookie:
-        optional: true
-
-  '@react-hookz/web@23.1.0':
-    resolution: {integrity: sha512-fvbURdsa1ukttbLR1ASE/XmqXP09vZ1PiCYppYeR1sNMzCrdkG0iBnjxniFSVjJ8gIw2fRs6nqMTbeBz2uAkuA==}
-    peerDependencies:
-      js-cookie: ^3.0.5
       react: ^16.8 || ^17 || ^18
       react-dom: ^16.8 || ^17 || ^18
     peerDependenciesMeta:
@@ -11257,14 +11244,6 @@ snapshots:
   '@react-hookz/deep-equal@1.0.4': {}
 
   '@react-hookz/web@22.0.0(js-cookie@3.0.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
-    dependencies:
-      '@react-hookz/deep-equal': 1.0.4
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-    optionalDependencies:
-      js-cookie: 3.0.5
-
-  '@react-hookz/web@23.1.0(js-cookie@3.0.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
       '@react-hookz/deep-equal': 1.0.4
       react: 18.3.1

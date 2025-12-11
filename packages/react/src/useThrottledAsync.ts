@@ -1,4 +1,4 @@
-import { useSyncedRef } from '@react-hookz/web';
+import { useSyncedRef } from './hooks';
 import { useMemo, useRef, useState } from 'react';
 
 export type AsyncStatus = 'loading' | 'success' | 'error' | 'not-executed';
