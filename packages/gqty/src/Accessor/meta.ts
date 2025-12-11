@@ -9,6 +9,7 @@ export type Meta = {
   selection: Selection;
   /** Object type definition from the geneated schema. */
   type: Type;
+  isFetching: boolean;
 };
 
 /** Pun-intended, a universe of metadata. */

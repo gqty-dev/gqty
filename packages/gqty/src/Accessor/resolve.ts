@@ -9,6 +9,7 @@ import {
   type Type,
 } from '../Schema';
 import type { Selection } from '../Selection';
+import { isFetchingCacheKey } from '../Selection';
 import { isPlainObject } from '../Utils';
 import type { Meta } from './meta';
 import { $meta } from './meta';
@@ -179,7 +180,9 @@ export const createUnionAccessor = ({
   cache,
   possibleTypes,
   selection,
-}: Omit<Meta, 'type'> & { possibleTypes: readonly string[] }) => {
+}: Omit<Meta, 'isFetching' | 'type'> & {
+  possibleTypes: readonly string[];
+}) => {
   return new Proxy(
     Object.fromEntries(possibleTypes.map((__typename) => [__typename, true])),
     {
@@ -330,8 +333,18 @@ export type AccessorOptions = {
 };
 
 export const createObjectAccessor = <TSchemaType extends GeneratedSchemaObject>(
-  meta: Meta
+  meta: Omit<Meta, 'isFetching'>
 ) => {
+  Object.defineProperty(meta, 'isFetching', {
+    get() {
+      // Check if this selection or any of its descendants are being fetched
+      const cacheKey = meta.selection.cacheKeys.join('.');
+      return isFetchingCacheKey(cacheKey);
+    },
+    enumerable: true,
+    configurable: true,
+  });
+
   const {
     cache: { data },
     context: { schema },
@@ -361,7 +374,7 @@ export const createObjectAccessor = <TSchemaType extends GeneratedSchemaObject>(
         : objectProxyHandler
     );
 
-    $meta.set(proxy, meta);
+    $meta.set(proxy, meta as Meta);
 
     return proxy;
   };
@@ -543,7 +556,16 @@ const arrayProxyHandler: ProxyHandler<CacheObject[]> = {
   },
 };
 
-export const createArrayAccessor = (meta: Meta) => {
+export const createArrayAccessor = (meta: Omit<Meta, 'isFetching'>) => {
+  Object.defineProperty(meta, 'isFetching', {
+    get() {
+      // Check if this selection or any of its descendants are being fetched
+      const cacheKey = meta.selection.cacheKeys.join('.');
+      return isFetchingCacheKey(cacheKey);
+    },
+    enumerable: true,
+    configurable: true,
+  });
   const { cache, context, selection } = meta;
 
   if (!Array.isArray(cache.data)) {
@@ -565,7 +587,7 @@ export const createArrayAccessor = (meta: Meta) => {
 
   const proxy = new Proxy(cache.data, arrayProxyHandler);
 
-  $meta.set(proxy, meta);
+  $meta.set(proxy, meta as Meta);
 
   return proxy;
 };

@@ -9,7 +9,11 @@ import { GQtyError, doRetry } from '../Error';
 import { notifyFetch, notifyRetry } from '../Helpers/useMetaStateHack';
 import { buildQuery } from '../QueryBuilder';
 import type { QueryPayload } from '../Schema';
-import type { Selection } from '../Selection';
+import {
+  decrementFetchingCacheKey,
+  incrementFetchingCacheKey,
+  type Selection,
+} from '../Selection';
 import type { Debugger } from './debugger';
 import { isWsClient, type GQtyWsClient } from './subscriber';
 
@@ -42,8 +46,20 @@ export const fetchSelections = <
     fetchOptions,
     operationName,
   }: FetchSelectionsOptions
-): Promise<FetchResult<TData>[]> =>
-  Promise.all(
+): Promise<FetchResult<TData>[]> => {
+  const fetchingCacheKeys = new Set<string>();
+  for (const selection of selections) {
+    const keys = selection.cacheKeys;
+    for (let i = 1; i <= keys.length; i++) {
+      fetchingCacheKeys.add(keys.slice(0, i).join('.'));
+    }
+  }
+
+  for (const cacheKey of fetchingCacheKeys) {
+    incrementFetchingCacheKey(cacheKey);
+  }
+
+  return Promise.all(
     buildQuery(selections, operationName).map(
       async ({
         query,
@@ -92,7 +108,12 @@ export const fetchSelections = <
         return await promise;
       }
     )
-  );
+  ).finally(() => {
+    for (const cacheKey of fetchingCacheKeys) {
+      decrementFetchingCacheKey(cacheKey);
+    }
+  });
+};
 
 export type SubscribeSelectionOptions = FetchSelectionsOptions & {
   onComplete?: () => void;
