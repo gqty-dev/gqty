@@ -41,6 +41,25 @@ export type SelectionSnapshot = Array<
   [string | number, SelectionOptions] | [string | number]
 >;
 
+/** Global map tracking active fetches per cache key */
+const fetchingCacheKeys = new Map<string, number>();
+
+export const isFetchingCacheKey = (cacheKey: string) =>
+  fetchingCacheKeys.has(cacheKey);
+
+export const incrementFetchingCacheKey = (cacheKey: string) => {
+  fetchingCacheKeys.set(cacheKey, (fetchingCacheKeys.get(cacheKey) ?? 0) + 1);
+};
+
+export const decrementFetchingCacheKey = (cacheKey: string) => {
+  const count = (fetchingCacheKeys.get(cacheKey) ?? 0) - 1;
+  if (count <= 0) {
+    fetchingCacheKeys.delete(cacheKey);
+  } else {
+    fetchingCacheKeys.set(cacheKey, count);
+  }
+};
+
 export class Selection {
   readonly children = new Map<string | number, Selection>();
 
