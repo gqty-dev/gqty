@@ -22,15 +22,15 @@
   ],
   "exports": {
     ".": {
+      "types": "./dist/index.d.ts",
       "require": "./dist/index.js",
-      "import": "./dist/index.mjs",
-      "types": "./dist/index.d.ts"
+      "import": "./dist/index.mjs"
     },
     "./deps": "./dist/deps.js",
     "./*": {
+      "types": "./dist/*.d.ts",
       "require": "./dist/*.js",
-      "import": "./dist/*.mjs",
-      "types": "./dist/*.d.ts"
+      "import": "./dist/*.mjs"
     }
   },
   "main": "dist/index.js",
