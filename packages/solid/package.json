@@ -35,6 +35,7 @@
     "test": "vitest --no-watch"
   },
   "dependencies": {
+    "@types/node": "^25.0.0",
     "debounce-microtasks": "^0.1.8",
     "p-defer": "^3.0.0"
   },
@@ -63,7 +64,7 @@
     }
   },
   "engines": {
-    "node": ">=16 <=24"
+    "node": ">=16 <=25"
   },
   "publishConfig": {
     "directory": "dist"
