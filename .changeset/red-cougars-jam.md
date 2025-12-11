@@ -1,5 +1,5 @@
 ---
-'@gqty/react': minor
+'gqty': minor
 ---
 
 Add isFetching to proxy states
