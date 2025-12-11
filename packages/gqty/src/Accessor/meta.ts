@@ -7,7 +7,7 @@ export type Meta = {
   context: SchemaContext;
   cache: CacheDataContainer<CacheNode>;
   selection: Selection;
-  /** Object type definition from the geneated schema. */
+  /** Object type definition from the generated schema. */
   type: Type;
   isFetching: boolean;
 };
