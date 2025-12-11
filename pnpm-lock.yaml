@@ -105,7 +105,7 @@ importers:
         specifier: workspace:^
         version: link:../../packages/react/dist
       '@nhost/nhost-js':
-        specifier: ^4.0.0
+        specifier: ^4.2.0
         version: 4.2.0
       gqty:
         specifier: workspace:^
@@ -217,8 +217,8 @@ importers:
         specifier: ^0.12.0
         version: 0.12.0(@types/node@22.16.5)(bufferutil@4.0.9)(graphql-ez@0.16.1(@types/node@22.16.5)(graphql@16.11.0))(graphql@16.11.0)
       '@react-hookz/web':
-        specifier: ^22.0.0
-        version: 22.0.0(js-cookie@3.0.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        specifier: ^25.2.0
+        version: 25.2.0(js-cookie@3.0.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       extract-files:
         specifier: ^13.0.0
         version: 13.0.0
@@ -3309,20 +3309,6 @@ packages:
 
   '@popperjs/core@2.11.8':
     resolution: {integrity: sha512-P1st0aksCrn9sGZhp8GMYwBnQsbvAWsZAX44oXNNvLHGqAOcoVxmjZiohstwQ7SqKnbR47akdNi+uleWD8+g6A==}
-
-  '@react-hookz/deep-equal@1.0.4':
-    resolution: {integrity: sha512-N56fTrAPUDz/R423pag+n6TXWbvlBZDtTehaGFjK0InmN+V2OFWLE/WmORhmn6Ce7dlwH5+tQN1LJFw3ngTJVg==}
-    deprecated: Package is deprecated and will be deleted soon. Use @ver0/deep-equal instead.
-
-  '@react-hookz/web@22.0.0':
-    resolution: {integrity: sha512-jl4JgUXaiSvvDVQD2z/rq2/RaykjjLrAZxHOEQj2H38j4UFWIVhv5oKUH8yrKF4wX6tMX9gdrj62f9yGq/nSaQ==}
-    peerDependencies:
-      js-cookie: ^3.0.1
-      react: ^16.8 || ^17 || ^18
-      react-dom: ^16.8 || ^17 || ^18
-    peerDependenciesMeta:
-      js-cookie:
-        optional: true
 
   '@react-hookz/web@25.2.0':
     resolution: {integrity: sha512-60iU7lGnZOjdkNVpu/8xNEnTPVQQ5ckauIEvsh9S+58v2j/mY1lhgNas+w+9UF8VoUhWC4/cpaxT64EUC6DgsQ==}
@@ -11167,16 +11153,6 @@ snapshots:
   '@polka/url@1.0.0-next.29': {}
 
   '@popperjs/core@2.11.8': {}
-
-  '@react-hookz/deep-equal@1.0.4': {}
-
-  '@react-hookz/web@22.0.0(js-cookie@3.0.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
-    dependencies:
-      '@react-hookz/deep-equal': 1.0.4
-      react: 18.3.1
-      react-dom: 18.3.1(react@18.3.1)
-    optionalDependencies:
-      js-cookie: 3.0.5
 
   '@react-hookz/web@25.2.0(js-cookie@3.0.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)':
     dependencies:
