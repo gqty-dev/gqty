@@ -214,7 +214,7 @@ export const createUnionAccessor = ({
  * Key fix for React 19 dev mode: For data-backed proxies, `ownKeys()` only
  * returns keys that exist in the cache, not all schema fields. This prevents
  * React's prop diffing from triggering selections for fields the user never
- * requested. The `allowEnumeration` context flag overrides this behavior for
+ * requested. The `activeEnumerators` context flag overrides this behavior for
  * helpers like selectFields() that need to enumerate all schema fields.
  */
 const createObjectProxyHandler = (
@@ -223,7 +223,7 @@ const createObjectProxyHandler = (
 ): ProxyHandler<GeneratedSchemaObject> => {
   return {
     ownKeys(target) {
-      // When allowEnumeration > 0 (e.g., selectFields helper), always
+      // When activeEnumerators > 0 (e.g., selectFields helper), always
       // return all schema keys regardless of cache state.
       if (context.activeEnumerators > 0) {
         return Reflect.ownKeys(target).filter(
@@ -403,7 +403,7 @@ export const createObjectAccessor = <TSchemaType extends GeneratedSchemaObject>(
     if (!type) throw new GQtyError(`Invalid schema type ${__type}.`);
 
     // Create a per-proxy handler
-    // Pass context for allowEnumeration flag access
+    // Pass context for activeEnumerators flag access
     const handler = createObjectProxyHandler(
       isCacheObject(data) ? data : undefined,
       context

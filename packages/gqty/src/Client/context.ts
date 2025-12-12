@@ -106,12 +106,11 @@ export const createContext = ({
       selectSubscriptions.forEach((fn) => fn(selection, cacheNode));
     },
     reset() {
-      this.shouldFetch = false;
+      this.activeEnumerators = 0;
       this.hasCacheHit = false;
       this.hasCacheMiss = false;
-      this.shouldFetch = false;
-      this.activeEnumerators = 0;
       this.notifyCacheUpdate = cachePolicy !== 'default';
+      this.shouldFetch = false;
     },
     subscribeSelect(callback) {
       selectSubscriptions.add(callback);
