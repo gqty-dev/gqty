@@ -27,6 +27,16 @@ export type SchemaContext<
      * `shouldFetch` is true and `hasCacheHit` is false.
      */
     hasCacheMiss: boolean;
+    /**
+     * When > 0, enumeration-based access (spread, for...in, Object.keys, etc.)
+     * will enumerate all schema fields. When 0 (default), only cached fields
+     * are returned during enumeration. This prevents React 19's prop diffing
+     * from selecting all fields while allowing helpers like selectFields() to
+     * work correctly.
+     *
+     * Using a counter instead of boolean allows re-entrant/nested helper calls.
+     */
+    activeEnumerators: number;
   };
 
 export type CreateContextOptions = {
@@ -52,6 +62,7 @@ export const createContext = ({
   const selectSubscriptions = new Set<Selectable['select']>();
 
   return {
+    activeEnumerators: 0,
     aliasLength,
     cache:
       cachePolicy === 'no-cache' ||
@@ -98,6 +109,8 @@ export const createContext = ({
       this.shouldFetch = false;
       this.hasCacheHit = false;
       this.hasCacheMiss = false;
+      this.shouldFetch = false;
+      this.activeEnumerators = 0;
       this.notifyCacheUpdate = cachePolicy !== 'default';
     },
     subscribeSelect(callback) {
