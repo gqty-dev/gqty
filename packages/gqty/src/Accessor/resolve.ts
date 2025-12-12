@@ -225,7 +225,10 @@ const createObjectProxyHandler = (
     ownKeys(target) {
       // When activeEnumerators > 0 (e.g., selectFields helper), always
       // return all schema keys regardless of cache state.
-      if (context.activeEnumerators > 0) {
+      if (
+        process.env.NODE_ENV === 'production' ||
+        context.activeEnumerators > 0
+      ) {
         return Reflect.ownKeys(target).filter(
           (k) => typeof k === 'string'
         ) as string[];

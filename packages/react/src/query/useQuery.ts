@@ -548,20 +548,25 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
           : query;
 
       return new Proxy(target, {
-        // Only expose $refetch and $state in enumeration.
+        // Only expose $refetch and $state in enumeration in dev mode.
         // This prevents React 19 dev mode from enumerating all schema fields
         // during prop diffing, which would trigger unintended selections.
-        // Users who need to enumerate query fields should access the underlying
-        // accessor directly or use selectFields/getFields helpers.
-        ownKeys: () => ['$refetch', '$state'],
+        // In production, return actual target keys (just $refetch and $state).
+        ownKeys:
+          process.env.NODE_ENV !== 'production'
+            ? () => ['$refetch', '$state']
+            : undefined,
 
-        getOwnPropertyDescriptor: (target, key) => {
-          if (key === '$refetch' || key === '$state') {
-            return Reflect.getOwnPropertyDescriptor(target, key);
-          }
-          // Return undefined for schema keys - they're not "own" properties
-          return undefined;
-        },
+        getOwnPropertyDescriptor:
+          process.env.NODE_ENV !== 'production'
+            ? (target, key) => {
+                if (key === '$refetch' || key === '$state') {
+                  return Reflect.getOwnPropertyDescriptor(target, key);
+                }
+                // Return undefined for schema keys - they're not "own" properties
+                return undefined;
+              }
+            : undefined,
 
         has: (_, key) => {
           // $refetch and $state are always present

@@ -24,8 +24,11 @@ export function selectFields<A extends object | null | undefined>(
     return {} as A;
   }
 
-  // Allow enumeration to see all schema fields, not just cached ones
-  const meta = $meta(accessor);
+  // Allow enumeration to see all schema fields, not just cached ones.
+  // Only needed in dev mode where we restrict ownKeys to prevent React 19's
+  // prop diffing from triggering selections.
+  const meta =
+    process.env.NODE_ENV !== 'production' ? $meta(accessor) : undefined;
   if (meta) {
     meta.context.activeEnumerators++;
   }
