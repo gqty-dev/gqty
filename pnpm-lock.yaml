@@ -534,8 +534,8 @@ importers:
         specifier: ^9.31.0
         version: 9.31.0(jiti@2.4.2)
       p-lazy:
-        specifier: ^3.1.0
-        version: 3.1.0
+        specifier: ^5.0.0
+        version: 5.0.0
       test-utils:
         specifier: workspace:^
         version: link:../../internal/test-utils
@@ -623,8 +623,8 @@ importers:
         specifier: ^30.0.5
         version: 30.0.5(@types/node@25.0.0)(babel-plugin-macros@3.1.0)(ts-node@10.9.2(@types/node@25.0.0)(typescript@5.8.3))
       p-lazy:
-        specifier: ^3.1.0
-        version: 3.1.0
+        specifier: ^5.0.0
+        version: 5.0.0
       test-utils:
         specifier: workspace:^
         version: link:../../internal/test-utils
@@ -6829,9 +6829,9 @@ packages:
     resolution: {integrity: sha512-ZBxxZ5sL2HghephhpGAQdoskxplTwr7ICaehZwLIlfL6acuVgZPm8yBNuRAFBGEqtD/hmUeq9eqLg2ys9Xr/yw==}
     engines: {node: '>=8'}
 
-  p-lazy@3.1.0:
-    resolution: {integrity: sha512-sCJn0Cdahs6G6SX9+DUihVFUhrzDEduzE5xeViVBGtoqy5dBWko7W8T6Kk6TjR2uevRXJO7CShfWrqdH5s3w3g==}
-    engines: {node: '>=8'}
+  p-lazy@5.0.0:
+    resolution: {integrity: sha512-C4xW5/wLGqswBx1xgu/t7fBaHMDKm7SXycgc0MEQvQ5KwzjT1E4MmE9cg0RXn9d0MTgUGJLUCb2EkLBevXi6eA==}
+    engines: {node: '>=18'}
 
   p-limit@2.3.0:
     resolution: {integrity: sha512-//88mFWSJx8lxCzwdAABTJL2MyWB12+eIY7MDL2SqLmAkeKU9qxRvWuSyTjm3FUmpBEMuFfckAIqEaVGUDxb6w==}
@@ -15980,7 +15980,7 @@ snapshots:
     dependencies:
       p-map: 2.1.0
 
-  p-lazy@3.1.0: {}
+  p-lazy@5.0.0: {}
 
   p-limit@2.3.0:
     dependencies:
