@@ -705,8 +705,8 @@ importers:
         specifier: ^8.56.12
         version: 8.56.12
       '@types/eslint__eslintrc':
-        specifier: ^2.1.2
-        version: 2.1.2
+        specifier: ^3.3.0
+        version: 3.3.0
       '@types/eslint__js':
         specifier: ^8.42.3
         version: 8.42.3
@@ -3814,8 +3814,9 @@ packages:
   '@types/eslint@8.56.12':
     resolution: {integrity: sha512-03ruubjWyOHlmljCVoxSuNDdmfZDzsrrz0P2LeJsOXr+ZwFQ+0yQIwNCwt/GYhV7Z31fgtXJTAEs+FYlEL851g==}
 
-  '@types/eslint__eslintrc@2.1.2':
-    resolution: {integrity: sha512-qXvzPFY7Rz05xD8ZApXJ3S8xStQD2Ibzu3EFIF0UMNOAfLY5xUu3H61q0JrHo2OXD6rcFG75yUxNQbkKtFKBSw==}
+  '@types/eslint__eslintrc@3.3.0':
+    resolution: {integrity: sha512-u9C5PHo8zhLBTEpWAV1YsP3ijj3GjM+4r2aGLbkT+vqtBubwgSI8KiRHXtC2QcxDGR0qM3Qapg7OtTB58JmoYQ==}
+    deprecated: This is a stub types definition. @eslint/eslintrc provides its own type definitions, so you do not need this installed.
 
   '@types/eslint__js@8.42.3':
     resolution: {integrity: sha512-alfG737uhmPdnvkrLdZLcEKJ/B8s9Y4hrZ+YAdzUeoArBlSUERA2E87ROfOaS4jd/C45fzOoZzidLc1IPwLqOw==}
@@ -11801,9 +11802,11 @@ snapshots:
       '@types/estree': 1.0.8
       '@types/json-schema': 7.0.15
 
-  '@types/eslint__eslintrc@2.1.2':
+  '@types/eslint__eslintrc@3.3.0':
     dependencies:
-      '@types/eslint': 8.56.12
+      '@eslint/eslintrc': 3.3.1
+    transitivePeerDependencies:
+      - supports-color
 
   '@types/eslint__js@8.42.3':
     dependencies:
