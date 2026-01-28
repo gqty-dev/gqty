@@ -291,7 +291,7 @@ importers:
         version: 18.3.7(@types/react@18.3.23)
       bob-tsm:
         specifier: ^1.1.2
-        version: 1.1.2(esbuild@0.25.12)(typescript@5.9.3)
+        version: 1.1.2(esbuild@0.27.2)(typescript@5.9.3)
       concurrently:
         specifier: ^9.2.0
         version: 9.2.0
@@ -790,7 +790,7 @@ importers:
         specifier: ^0.1.8
         version: 0.1.8
       gqty:
-        specifier: workspace:^3.4.2
+        specifier: workspace:^3.6.1
         version: link:../gqty/dist
       p-defer:
         specifier: ^3.0.0
@@ -12753,19 +12753,19 @@ snapshots:
       '@types/node': 22.16.5
       typescript: 5.8.3
 
-  bob-tsm@1.1.2(esbuild@0.25.12)(typescript@5.9.3):
-    dependencies:
-      esbuild: 0.25.12
-    optionalDependencies:
-      fsevents: 2.3.3
-      typescript: 5.9.3
-
   bob-tsm@1.1.2(esbuild@0.25.8)(typescript@5.8.3):
     dependencies:
       esbuild: 0.25.8
     optionalDependencies:
       fsevents: 2.3.3
       typescript: 5.8.3
+
+  bob-tsm@1.1.2(esbuild@0.27.2)(typescript@5.9.3):
+    dependencies:
+      esbuild: 0.27.2
+    optionalDependencies:
+      fsevents: 2.3.3
+      typescript: 5.9.3
 
   brace-expansion@1.1.12:
     dependencies:
