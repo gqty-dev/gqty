@@ -197,7 +197,7 @@ importers:
         version: link:../../packages/subscriptions/dist
       '@graphql-ez/fastify':
         specifier: ^0.12.1
-        version: 0.12.1(@types/node@22.16.5)(fastify@5.7.3)(graphql-ez@0.16.1(@types/node@22.16.5)(graphql@16.11.0))(graphql@16.11.0)
+        version: 0.12.1(@types/node@22.16.5)(fastify@5.8.1)(graphql-ez@0.16.1(@types/node@22.16.5)(graphql@16.11.0))(graphql@16.11.0)
       '@graphql-ez/plugin-altair':
         specifier: ^0.11.3
         version: 0.11.3(@types/node@22.16.5)(graphql-ez@0.16.1(@types/node@22.16.5)(graphql@16.11.0))(graphql@16.11.0)
@@ -224,7 +224,7 @@ importers:
         version: 13.0.0
       fastify:
         specifier: ^5.4.0
-        version: 5.7.3
+        version: 5.8.1
       framer-motion:
         specifier: ^11.18.2
         version: 11.18.2(@emotion/is-prop-valid@1.3.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -389,10 +389,10 @@ importers:
     dependencies:
       '@graphql-ez/fastify':
         specifier: ^0.12.1
-        version: 0.12.1(@types/node@22.16.5)(fastify@5.7.3)(graphql-ez@0.16.1(@types/node@22.16.5)(graphql@16.11.0))(graphql@16.11.0)
+        version: 0.12.1(@types/node@22.16.5)(fastify@5.8.1)(graphql-ez@0.16.1(@types/node@22.16.5)(graphql@16.11.0))(graphql@16.11.0)
       '@graphql-ez/fastify-testing':
         specifier: ^0.4.1
-        version: 0.4.1(@graphql-ez/fastify@0.12.1(@types/node@22.16.5)(fastify@5.7.3)(graphql-ez@0.16.1(@types/node@22.16.5)(graphql@16.11.0))(graphql@16.11.0))(@graphql-typed-document-node/core@3.2.0(graphql@16.11.0))(@types/node@22.16.5)(fastify@5.7.3)(graphql-ez@0.16.1(@types/node@22.16.5)(graphql@16.11.0))(graphql@16.11.0)
+        version: 0.4.1(@graphql-ez/fastify@0.12.1(@types/node@22.16.5)(fastify@5.8.1)(graphql-ez@0.16.1(@types/node@22.16.5)(graphql@16.11.0))(graphql@16.11.0))(@graphql-typed-document-node/core@3.2.0(graphql@16.11.0))(@types/node@22.16.5)(fastify@5.8.1)(graphql-ez@0.16.1(@types/node@22.16.5)(graphql@16.11.0))(graphql@16.11.0)
       '@graphql-ez/plugin-codegen':
         specifier: ^0.8.2
         version: 0.8.2(@types/node@22.16.5)(graphql-ez@0.16.1(@types/node@22.16.5)(graphql@16.11.0))(graphql@16.11.0)
@@ -413,7 +413,7 @@ importers:
         version: 7.0.3
       fastify:
         specifier: ^5.4.0
-        version: 5.7.3
+        version: 5.8.1
       gqty:
         specifier: workspace:^
         version: link:../../packages/gqty/dist
@@ -4241,8 +4241,8 @@ packages:
   ajv@6.12.6:
     resolution: {integrity: sha512-j3fVLgvTo527anyYyJOGTYJbG+vnnQYvE0m5mmkc1TK+nxAppkCLMIL0aZ4dblVCNoGShhm+kzE4ZUykBoMg4g==}
 
-  ajv@8.17.1:
-    resolution: {integrity: sha512-B/gBuNg5SiMTrPkC+A2+cW0RszwxYmn6VYxB/inlBStS5nx6xHIt/ehKRhIMhqusl7a8LjQoZnjCs5vhwxOQ1g==}
+  ajv@8.18.0:
+    resolution: {integrity: sha512-PlXPeEWMXMZ7sPYOHqmDyCJzcfNrUr3fGNKtezX14ykXOEIvyK81d+qydx89KY5O71FKMPaQ2vBfBFI5NHR63A==}
 
   altair-static@6.4.2:
     resolution: {integrity: sha512-JSSUU0gH9/je0z8yVTGFKepDQc3dQBYHw/mSufa6oFM43C7lG4p3Dd4KuA/KjcIpa7vV+TXSHS8G7fOIpO7HRg==}
@@ -4375,8 +4375,8 @@ packages:
     resolution: {integrity: sha512-wvUjBtSGN7+7SjNpq/9M2Tg350UZD3q62IFZLbRAR1bSMlCo1ZaeW+BJ+D090e4hIIZLBcTDWe4Mh4jvUDajzQ==}
     engines: {node: '>= 0.4'}
 
-  avvio@9.1.0:
-    resolution: {integrity: sha512-fYASnYi600CsH/j9EQov7lECAniYiBFiiAtBNuZYLA2leLe9qOvZzqYHFjtIj6gD2VMoMLP14834LFWvr4IfDw==}
+  avvio@9.2.0:
+    resolution: {integrity: sha512-2t/sy01ArdHHE0vRH5Hsay+RtCZt3dLPji7W7/MMOCEgze5b7SNDC4j5H6FnVgPkI1MTNFGzHdHrVXDDl7QSSQ==}
 
   axe-core@4.10.3:
     resolution: {integrity: sha512-Xm7bpRXnDSX2YE2YFfBk2FnF0ep6tmG7xPh8iHee8MIcrgq762Nkce856dYtJYLkuIoYZvGfTs/PbZhideTcEg==}
@@ -5330,8 +5330,8 @@ packages:
   fast-json-stable-stringify@2.1.0:
     resolution: {integrity: sha512-lhd/wF+Lk98HZoTCtlVraHtfh5XYijIjalXck7saUtuanSDyLMxnHhSXEDJqHxD7msR8D0uCmqlkwjCV8xvwHw==}
 
-  fast-json-stringify@6.2.0:
-    resolution: {integrity: sha512-Eaf/KNIDwHkzfyeQFNfLXJnQ7cl1XQI3+zRqmPlvtkMigbXnAcasTrvJQmquBSxKfFGeRA6PFog8t+hFmpDoWw==}
+  fast-json-stringify@6.3.0:
+    resolution: {integrity: sha512-oRCntNDY/329HJPlmdNLIdogNtt6Vyjb1WuT01Soss3slIdyUp8kAcDU3saQTOquEK8KFVfwIIF7FebxUAu+yA==}
 
   fast-levenshtein@2.0.6:
     resolution: {integrity: sha512-DCXu6Ifhqcks7TZKY3Hxp3y6qphY5SJZmrWMDrKcERSOXWQdMhU9Ig/PYrzyw/ul9jOIyh0N4M0tbC5hodg8dw==}
@@ -5348,8 +5348,8 @@ packages:
   fastify-plugin@5.0.1:
     resolution: {integrity: sha512-HCxs+YnRaWzCl+cWRYFnHmeRFyR5GVnJTAaCJQiYzQSDwK9MgJdyAsuL3nh0EWRCYMgQ5MeziymvmAhUHYHDUQ==}
 
-  fastify@5.7.3:
-    resolution: {integrity: sha512-QHzWSmTNUg9Ba8tNXzb92FTH77K+c8yeQPH80EeSIc9wyZj85jbPisMP0rwmyKv8oJwUFPe1UpN8HkNIXwCnUQ==}
+  fastify@5.8.1:
+    resolution: {integrity: sha512-y0kicFvvn7CYWoPOVLOcvn4YyKQz03DIY7UxmyOy21/J8eXm09R+tmb+tVDBW5h+pja30cHI5dqUcSlvY86V2A==}
 
   fastq@1.19.1:
     resolution: {integrity: sha512-GwLTyxkCXjXbxqIhTsMI2Nui8huMPtnxg7krajPJAjnEG/iiOS7i+zCtWGZR9G0NBKbXKh6X9m9UIsYX/N6vvQ==}
@@ -5386,8 +5386,8 @@ packages:
     resolution: {integrity: sha512-YsGpe3WHLK8ZYi4tWDg2Jy3ebRz2rXowDxnld4bkQB00cc/1Zw9AWnC0i9ztDJitivtQvaI9KaLyKrc+hBW0yg==}
     engines: {node: '>=8'}
 
-  find-my-way@9.4.0:
-    resolution: {integrity: sha512-5Ye4vHsypZRYtS01ob/iwHzGRUDELlsoCftI/OZFhcLs1M0tkGPcXldE80TAZC5yYuJMBPJQQ43UHlqbJWiX2w==}
+  find-my-way@9.5.0:
+    resolution: {integrity: sha512-VW2RfnmscZO5KgBY5XVyKREMW5nMZcxDy+buTOsL+zIPnBlbKm+00sgzoQzq1EVh4aALZLfKdwv6atBGcjvjrQ==}
     engines: {node: '>=20'}
 
   find-root@1.1.0:
@@ -5542,11 +5542,12 @@ packages:
 
   glob@10.4.5:
     resolution: {integrity: sha512-7Bv8RF0k6xjo7d4A/PxYLbUCfb6c+Vpd2/mB2yRDlew7Jb5hEXiCD9ibfO7wpk8i4sevK6DFny9h7EYbM3/sHg==}
+    deprecated: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
     hasBin: true
 
   glob@7.2.3:
     resolution: {integrity: sha512-nFR0zLpU2YCaRxwoCJvL6UvCH2JFyFVIvwTLsIf21AuHlMskA1hhTdk+LlYJtOlYt9v6dvszD2BGRqBL+iQK9Q==}
-    deprecated: Glob versions prior to v9 are no longer supported
+    deprecated: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
 
   globals@14.0.0:
     resolution: {integrity: sha512-oahGvuMGQlPw/ivIYBjVSrWAfWLBeku5tpPE2fOPLi+WHffIWbuh2tCjhyQhTBPMf5E9jDEH4FOmTYgYwbKwtQ==}
@@ -6955,8 +6956,8 @@ packages:
   pino-std-serializers@7.1.0:
     resolution: {integrity: sha512-BndPH67/JxGExRgiX1dX0w1FvZck5Wa4aal9198SrRhZjH3GxKQUKIBnYJTdj2HDN3UQAS06HlfcSbQj2OHmaw==}
 
-  pino@10.3.0:
-    resolution: {integrity: sha512-0GNPNzHXBKw6U/InGe79A3Crzyk9bcSyObF9/Gfo9DLEf5qj5RF50RSjsu0W1rZ6ZqRGdzDFCRBQvi9/rSGPtA==}
+  pino@10.3.1:
+    resolution: {integrity: sha512-r34yH/GlQpKZbU1BvFFqOjhISRo1MNx1tWYsYvmj6KIRHSPMT2+yHOEb1SG6NMvRoHRF0a07kCOox/9yakl1vg==}
     hasBin: true
 
   pirates@4.0.7:
@@ -7358,6 +7359,11 @@ packages:
     engines: {node: '>=10'}
     hasBin: true
 
+  semver@7.7.4:
+    resolution: {integrity: sha512-vFKC2IEtQnVhpT78h1Yp8wzwrf8CM+MzKMHGJZfBtzhZNycRFnXsHk6E5TxIkkMsgNS7mdX3AGB7x2QM2di4lA==}
+    engines: {node: '>=10'}
+    hasBin: true
+
   sentence-case@3.0.4:
     resolution: {integrity: sha512-8LS0JInaQMCRoQ7YUytAo/xUu5W2XnQxV2HI/6uM6U7CITS1RqPElr30V6uIqyMKM9lJGRVFy5/4CuzcixNYSg==}
 
@@ -7479,8 +7485,8 @@ packages:
     peerDependencies:
       solid-js: ^1.3
 
-  sonic-boom@4.2.0:
-    resolution: {integrity: sha512-INb7TM37/mAcsGmc9hyyI6+QR3rR1zVRu36B0NeGXKnOOLiZOfER5SA+N7X7k3yUYRzLWafduTDvJAfDswwEww==}
+  sonic-boom@4.2.1:
+    resolution: {integrity: sha512-w6AxtubXa2wTXAUsZMMWERrsIRAdrK0Sc+FUytWvYAhBJLyuI4llrMIC1DtlNSdI99EI86KZum2MMq3EAZlF9Q==}
 
   source-map-js@1.2.1:
     resolution: {integrity: sha512-UXWMKhLOwVKb728IUtQPXxfYU+usdybtUrK/8uGE8CQMvrhOpwvzDBwj0QhSL7MQc7vIsISBG8VQ8+IDQxpfQA==}
@@ -7677,7 +7683,7 @@ packages:
   tar@7.4.3:
     resolution: {integrity: sha512-5S7Va8hKfV7W5U6g3aYxXmlPoZVAwUMy9AOKyF2fVuZa2UD3qZjg578OrLRt8PcNN1PleVaL/5/yYATNL0ICUw==}
     engines: {node: '>=18'}
-    deprecated: Old versions of tar are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exhorbitant rates) by contacting i@izs.me
+    deprecated: Old versions of tar are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
 
   term-size@2.2.1:
     resolution: {integrity: sha512-wK0Ri4fOGjv/XPy8SBHZChl8CM7uMc5VML7SqiQ0zG7+J5Vr+RMQDoHa2CNT6KHUnTGIXH34UDMkPzAUyapBZg==}
@@ -10065,8 +10071,8 @@ snapshots:
 
   '@fastify/ajv-compiler@4.0.5':
     dependencies:
-      ajv: 8.17.1
-      ajv-formats: 3.0.1(ajv@8.17.1)
+      ajv: 8.18.0
+      ajv-formats: 3.0.1(ajv@8.18.0)
       fast-uri: 3.1.0
 
   '@fastify/busboy@2.1.1': {}
@@ -10082,7 +10088,7 @@ snapshots:
 
   '@fastify/fast-json-stringify-compiler@5.0.3':
     dependencies:
-      fast-json-stringify: 6.2.0
+      fast-json-stringify: 6.3.0
 
   '@fastify/forwarded@3.0.1': {}
 
@@ -10258,26 +10264,26 @@ snapshots:
     optionalDependencies:
       '@graphql-typed-document-node/core': 3.2.0(graphql@16.11.0)
 
-  '@graphql-ez/fastify-testing@0.4.1(@graphql-ez/fastify@0.12.1(@types/node@22.16.5)(fastify@5.7.3)(graphql-ez@0.16.1(@types/node@22.16.5)(graphql@16.11.0))(graphql@16.11.0))(@graphql-typed-document-node/core@3.2.0(graphql@16.11.0))(@types/node@22.16.5)(fastify@5.7.3)(graphql-ez@0.16.1(@types/node@22.16.5)(graphql@16.11.0))(graphql@16.11.0)':
+  '@graphql-ez/fastify-testing@0.4.1(@graphql-ez/fastify@0.12.1(@types/node@22.16.5)(fastify@5.8.1)(graphql-ez@0.16.1(@types/node@22.16.5)(graphql@16.11.0))(graphql@16.11.0))(@graphql-typed-document-node/core@3.2.0(graphql@16.11.0))(@types/node@22.16.5)(fastify@5.8.1)(graphql-ez@0.16.1(@types/node@22.16.5)(graphql@16.11.0))(graphql@16.11.0)':
     dependencies:
       '@graphql-ez/client': 0.6.2(@graphql-typed-document-node/core@3.2.0(graphql@16.11.0))(@types/node@22.16.5)(graphql@16.11.0)
-      '@graphql-ez/fastify': 0.12.1(@types/node@22.16.5)(fastify@5.7.3)(graphql-ez@0.16.1(@types/node@22.16.5)(graphql@16.11.0))(graphql@16.11.0)
+      '@graphql-ez/fastify': 0.12.1(@types/node@22.16.5)(fastify@5.8.1)(graphql-ez@0.16.1(@types/node@22.16.5)(graphql@16.11.0))(graphql@16.11.0)
       '@graphql-ez/utils': 0.2.1(@types/node@22.16.5)(graphql@16.11.0)
-      fastify: 5.7.3
+      fastify: 5.8.1
       graphql: 16.11.0
       graphql-ez: 0.16.1(@types/node@22.16.5)(graphql@16.11.0)
     transitivePeerDependencies:
       - '@graphql-typed-document-node/core'
       - '@types/node'
 
-  '@graphql-ez/fastify@0.12.1(@types/node@22.16.5)(fastify@5.7.3)(graphql-ez@0.16.1(@types/node@22.16.5)(graphql@16.11.0))(graphql@16.11.0)':
+  '@graphql-ez/fastify@0.12.1(@types/node@22.16.5)(fastify@5.8.1)(graphql-ez@0.16.1(@types/node@22.16.5)(graphql@16.11.0))(graphql@16.11.0)':
     dependencies:
       '@fastify/cors': 8.5.0
       '@graphql-ez/utils': 0.2.1(@types/node@22.16.5)(graphql@16.11.0)
       '@types/node': 22.16.5
       graphql-ez: 0.16.1(@types/node@22.16.5)(graphql@16.11.0)
     optionalDependencies:
-      fastify: 5.7.3
+      fastify: 5.8.1
       graphql: 16.11.0
 
   '@graphql-ez/plugin-altair@0.11.3(@types/node@22.16.5)(graphql-ez@0.16.1(@types/node@22.16.5)(graphql@16.11.0))(graphql@16.11.0)':
@@ -12099,7 +12105,7 @@ snapshots:
       fast-glob: 3.3.3
       is-glob: 4.0.3
       minimatch: 9.0.5
-      semver: 7.7.3
+      semver: 7.7.4
       ts-api-utils: 2.1.0(typescript@5.8.3)
       typescript: 5.8.3
     transitivePeerDependencies:
@@ -12115,7 +12121,7 @@ snapshots:
       fast-glob: 3.3.3
       is-glob: 4.0.3
       minimatch: 9.0.5
-      semver: 7.7.3
+      semver: 7.7.4
       ts-api-utils: 2.1.0(typescript@5.9.3)
       typescript: 5.9.3
     transitivePeerDependencies:
@@ -12356,9 +12362,9 @@ snapshots:
 
   agent-base@7.1.4: {}
 
-  ajv-formats@3.0.1(ajv@8.17.1):
+  ajv-formats@3.0.1(ajv@8.18.0):
     optionalDependencies:
-      ajv: 8.17.1
+      ajv: 8.18.0
 
   ajv@6.12.6:
     dependencies:
@@ -12367,7 +12373,7 @@ snapshots:
       json-schema-traverse: 0.4.1
       uri-js: 4.4.1
 
-  ajv@8.17.1:
+  ajv@8.18.0:
     dependencies:
       fast-deep-equal: 3.1.3
       fast-uri: 3.1.0
@@ -12514,7 +12520,7 @@ snapshots:
     dependencies:
       possible-typed-array-names: 1.1.0
 
-  avvio@9.1.0:
+  avvio@9.2.0:
     dependencies:
       '@fastify/error': 4.2.0
       fastq: 1.20.1
@@ -13857,11 +13863,11 @@ snapshots:
 
   fast-json-stable-stringify@2.1.0: {}
 
-  fast-json-stringify@6.2.0:
+  fast-json-stringify@6.3.0:
     dependencies:
       '@fastify/merge-json-schemas': 0.2.1
-      ajv: 8.17.1
-      ajv-formats: 3.0.1(ajv@8.17.1)
+      ajv: 8.18.0
+      ajv-formats: 3.0.1(ajv@8.18.0)
       fast-uri: 3.1.0
       json-schema-ref-resolver: 3.0.0
       rfdc: 1.4.1
@@ -13878,22 +13884,22 @@ snapshots:
 
   fastify-plugin@5.0.1: {}
 
-  fastify@5.7.3:
+  fastify@5.8.1:
     dependencies:
       '@fastify/ajv-compiler': 4.0.5
       '@fastify/error': 4.2.0
       '@fastify/fast-json-stringify-compiler': 5.0.3
       '@fastify/proxy-addr': 5.1.0
       abstract-logging: 2.0.1
-      avvio: 9.1.0
-      fast-json-stringify: 6.2.0
-      find-my-way: 9.4.0
+      avvio: 9.2.0
+      fast-json-stringify: 6.3.0
+      find-my-way: 9.5.0
       light-my-request: 6.6.0
-      pino: 10.3.0
+      pino: 10.3.1
       process-warning: 5.0.0
       rfdc: 1.4.1
       secure-json-parse: 4.1.0
-      semver: 7.7.3
+      semver: 7.7.4
       toad-cache: 3.7.0
 
   fastq@1.19.1:
@@ -13938,7 +13944,7 @@ snapshots:
     dependencies:
       to-regex-range: 5.0.1
 
-  find-my-way@9.4.0:
+  find-my-way@9.5.0:
     dependencies:
       fast-deep-equal: 3.1.3
       fast-querystring: 1.1.2
@@ -14372,7 +14378,7 @@ snapshots:
 
   is-bun-module@2.0.0:
     dependencies:
-      semver: 7.7.3
+      semver: 7.7.4
 
   is-callable@1.2.7: {}
 
@@ -14534,7 +14540,7 @@ snapshots:
       '@babel/parser': 7.28.5
       '@istanbuljs/schema': 0.1.3
       istanbul-lib-coverage: 3.2.2
-      semver: 7.7.3
+      semver: 7.7.4
     transitivePeerDependencies:
       - supports-color
 
@@ -15309,7 +15315,7 @@ snapshots:
       jest-util: 29.7.0
       natural-compare: 1.4.0
       pretty-format: 29.7.0
-      semver: 7.7.3
+      semver: 7.7.4
     transitivePeerDependencies:
       - supports-color
 
@@ -15334,7 +15340,7 @@ snapshots:
       jest-message-util: 30.0.5
       jest-util: 30.0.5
       pretty-format: 30.0.5
-      semver: 7.7.3
+      semver: 7.7.4
       synckit: 0.11.11
     transitivePeerDependencies:
       - supports-color
@@ -15741,7 +15747,7 @@ snapshots:
 
   make-dir@4.0.0:
     dependencies:
-      semver: 7.7.3
+      semver: 7.7.4
 
   make-error@1.3.6: {}
 
@@ -16096,7 +16102,7 @@ snapshots:
 
   pino-std-serializers@7.1.0: {}
 
-  pino@10.3.0:
+  pino@10.3.1:
     dependencies:
       '@pinojs/redact': 0.4.0
       atomic-sleep: 1.0.0
@@ -16107,7 +16113,7 @@ snapshots:
       quick-format-unescaped: 4.0.4
       real-require: 0.2.0
       safe-stable-stringify: 2.5.0
-      sonic-boom: 4.2.0
+      sonic-boom: 4.2.1
       thread-stream: 4.0.0
 
   pirates@4.0.7: {}
@@ -16523,6 +16529,8 @@ snapshots:
 
   semver@7.7.3: {}
 
+  semver@7.7.4: {}
+
   sentence-case@3.0.4:
     dependencies:
       no-case: 3.0.4
@@ -16573,7 +16581,7 @@ snapshots:
     dependencies:
       '@img/colour': 1.0.0
       detect-libc: 2.1.2
-      semver: 7.7.3
+      semver: 7.7.4
     optionalDependencies:
       '@img/sharp-darwin-arm64': 0.34.5
       '@img/sharp-darwin-x64': 0.34.5
@@ -16690,7 +16698,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  sonic-boom@4.2.0:
+  sonic-boom@4.2.1:
     dependencies:
       atomic-sleep: 1.0.0
 
