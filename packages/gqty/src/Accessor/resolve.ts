@@ -209,120 +209,175 @@ export const createUnionAccessor = ({
 };
 
 /**
- * Globally defining the proxy handler to avoid accidential scope references.
+ * Creates a proxy handler for object accessors.
+ *
+ * Key fix for React 19 dev mode: For data-backed proxies, `ownKeys()` only
+ * returns keys that exist in the cache, not all schema fields. This prevents
+ * React's prop diffing from triggering selections for fields the user never
+ * requested. The `activeEnumerators` context flag overrides this behavior for
+ * helpers like selectFields() that need to enumerate all schema fields.
  */
-const objectProxyHandler: ProxyHandler<GeneratedSchemaObject> = {
-  get(currentType: Record<string, Type | undefined>, key, proxy) {
-    if (typeof key !== 'string') return;
+const createObjectProxyHandler = (
+  data: CacheObject | undefined,
+  context: { activeEnumerators: number }
+): ProxyHandler<GeneratedSchemaObject> => {
+  return {
+    ownKeys(target) {
+      // When activeEnumerators > 0 (e.g., selectFields helper), always
+      // return all schema keys regardless of cache state.
+      if (
+        process.env.NODE_ENV === 'production' ||
+        context.activeEnumerators > 0
+      ) {
+        return Reflect.ownKeys(target).filter(
+          (k) => typeof k === 'string'
+        ) as string[];
+      }
 
-    if (key === 'toJSON') {
-      return () => {
-        const data = $meta(proxy)?.cache.data;
+      // For data-backed proxies with actual data, only return keys that exist
+      // in the cache. This prevents React 19's prop diffing from seeing all
+      // schema fields when it enumerates a proxy - it only sees the actually
+      // cached fields.
+      //
+      // For skeleton proxies (no data or empty data), return all schema keys
+      // so that spread and for...in work correctly for initial selections.
+      const dataKeys = data
+        ? (Reflect.ownKeys(data).filter(
+            (k) => typeof k === 'string'
+          ) as string[])
+        : [];
 
-        if (typeof data !== 'object' || data === null) {
-          return data;
+      if (dataKeys.length > 0) {
+        return dataKeys;
+      }
+
+      return Reflect.ownKeys(target).filter(
+        (k) => typeof k === 'string'
+      ) as string[];
+    },
+    getOwnPropertyDescriptor(target, key) {
+      // For data-backed proxies, check data first
+      if (data) {
+        return (
+          Reflect.getOwnPropertyDescriptor(data, key) ??
+          Reflect.getOwnPropertyDescriptor(target, key)
+        );
+      }
+
+      return Reflect.getOwnPropertyDescriptor(target, key);
+    },
+    get(currentType: Record<string, Type | undefined>, key, proxy) {
+      if (typeof key !== 'string') return;
+
+      if (key === 'toJSON') {
+        return () => {
+          const data = $meta(proxy)?.cache.data;
+
+          if (typeof data !== 'object' || data === null) {
+            return data;
+          }
+
+          return Object.entries(data).reduce<Record<string, unknown>>(
+            (prev, [key, value]) => {
+              if (!isSkeleton(value)) {
+                prev[key] = value;
+              }
+
+              return prev;
+            },
+            {}
+          );
+        };
+      }
+
+      const meta = $meta(proxy);
+      if (!meta) return;
+
+      if (
+        // Skip Query, Mutation and Subscription
+        meta.selection.parent !== undefined &&
+        // Prevent infinite recursions
+        !getIdentityFields(meta).includes(key)
+      ) {
+        selectIdentityFields(proxy, currentType);
+      }
+
+      const targetType = currentType[key];
+      if (!targetType || typeof targetType !== 'object') return;
+
+      const { __args, __type } = targetType;
+      if (__args) {
+        return (args?: Record<string, unknown>) =>
+          resolve(
+            proxy,
+            meta.selection.getChild(
+              key,
+              args ? { input: { types: __args!, values: args } } : {}
+            ),
+            __type
+          );
+      }
+
+      return resolve(proxy, meta.selection.getChild(key), __type);
+    },
+    set(_, key, value, proxy) {
+      const meta = $meta(proxy);
+      if (typeof key !== 'string' || !meta) return false;
+
+      const { cache, context, selection } = meta;
+
+      // Extract proxy data, keep the object reference unless users deep clone it.
+      value = deepMetadata(value) ?? value;
+
+      if (selection.ancestry.length <= 2) {
+        const [type, field] = selection.cacheKeys;
+
+        if (field) {
+          const data =
+            context.cache.get(`${type}.${field}`, context.cacheOptions)?.data ??
+            {};
+
+          if (!isPlainObject(data)) return false;
+
+          data[key] = value;
+
+          context.cache.set({ [type]: { [field]: data } });
+        } else {
+          context.cache.set({ [type]: { [key]: value } });
+        }
+      }
+
+      let result = false;
+
+      if (isCacheObject(cache.data)) {
+        result = Reflect.set(cache.data, key, value);
+      }
+
+      /**
+       * Ported for backward compatability.
+       *
+       * Triggering selections via optimistic updates is asking for infinite
+       * recursions, also it's unnecessarily complicated to infer arrays,
+       * interfaces and union selections down the selection tree.
+       *
+       * If we can't figure out an elegant way to infer selections in future
+       * iterations, remove it at some point.
+       */
+      for (const [keys, scalar] of flattenObject(value)) {
+        let currentSelection = selection.getChild(key);
+        for (const key of keys) {
+          // Skip array indices
+          if (!isNaN(Number(key))) continue;
+
+          currentSelection = currentSelection.getChild(key);
         }
 
-        return Object.entries(data).reduce<Record<string, unknown>>(
-          (prev, [key, value]) => {
-            if (!isSkeleton(value)) {
-              prev[key] = value;
-            }
-
-            return prev;
-          },
-          {}
-        );
-      };
-    }
-
-    const meta = $meta(proxy);
-    if (!meta) return;
-
-    if (
-      // Skip Query, Mutation and Subscription
-      meta.selection.parent !== undefined &&
-      // Prevent infinite recursions
-      !getIdentityFields(meta).includes(key)
-    ) {
-      selectIdentityFields(proxy, currentType);
-    }
-
-    const targetType = currentType[key];
-    if (!targetType || typeof targetType !== 'object') return;
-
-    const { __args, __type } = targetType;
-    if (__args) {
-      return (args?: Record<string, unknown>) =>
-        resolve(
-          proxy,
-          meta.selection.getChild(
-            key,
-            args ? { input: { types: __args!, values: args } } : {}
-          ),
-          __type
-        );
-    }
-
-    return resolve(proxy, meta.selection.getChild(key), __type);
-  },
-  set(_, key, value, proxy) {
-    const meta = $meta(proxy);
-    if (typeof key !== 'string' || !meta) return false;
-
-    const { cache, context, selection } = meta;
-
-    // Extract proxy data, keep the object reference unless users deep clone it.
-    value = deepMetadata(value) ?? value;
-
-    if (selection.ancestry.length <= 2) {
-      const [type, field] = selection.cacheKeys;
-
-      if (field) {
-        const data =
-          context.cache.get(`${type}.${field}`, context.cacheOptions)?.data ??
-          {};
-
-        if (!isPlainObject(data)) return false;
-
-        data[key] = value;
-
-        context.cache.set({ [type]: { [field]: data } });
-      } else {
-        context.cache.set({ [type]: { [key]: value } });
-      }
-    }
-
-    let result = false;
-
-    if (isCacheObject(cache.data)) {
-      result = Reflect.set(cache.data, key, value);
-    }
-
-    /**
-     * Ported for backward compatability.
-     *
-     * Triggering selections via optimistic updates is asking for infinite
-     * recursions, also it's unnecessarily complicated to infer arrays,
-     * interfaces and union selections down the selection tree.
-     *
-     * If we can't figure out an elegant way to infer selections in future
-     * iterations, remove it at some point.
-     */
-    for (const [keys, scalar] of flattenObject(value)) {
-      let currentSelection = selection.getChild(key);
-      for (const key of keys) {
-        // Skip array indices
-        if (!isNaN(Number(key))) continue;
-
-        currentSelection = currentSelection.getChild(key);
+        context.select(currentSelection, { ...cache, data: scalar });
       }
 
-      context.select(currentSelection, { ...cache, data: scalar });
-    }
-
-    return result;
-  },
+      return result;
+    },
+  };
 };
 
 export type AccessorOptions = {
@@ -334,6 +389,7 @@ export const createObjectAccessor = <TSchemaType extends GeneratedSchemaObject>(
 ) => {
   const {
     cache: { data },
+    context,
     context: { schema },
     type: { __type },
   } = meta;
@@ -349,16 +405,17 @@ export const createObjectAccessor = <TSchemaType extends GeneratedSchemaObject>(
     const type = schema[parseSchemaType(__type).pureType];
     if (!type) throw new GQtyError(`Invalid schema type ${__type}.`);
 
+    // Create a per-proxy handler
+    // Pass context for activeEnumerators flag access
+    const handler = createObjectProxyHandler(
+      isCacheObject(data) ? data : undefined,
+      context
+    );
+
     const proxy = new Proxy(
       // `type` here for ownKeys proxy trap
       type as TSchemaType,
-      data
-        ? Object.assign({}, objectProxyHandler, {
-            getOwnPropertyDescriptor: (target, key) =>
-              Reflect.getOwnPropertyDescriptor(data, key) ??
-              Reflect.getOwnPropertyDescriptor(target, key),
-          } satisfies typeof objectProxyHandler)
-        : objectProxyHandler
+      handler
     );
 
     $meta.set(proxy, meta);
