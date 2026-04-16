@@ -197,7 +197,7 @@ importers:
         version: link:../../packages/subscriptions/dist
       '@graphql-ez/fastify':
         specifier: ^0.12.1
-        version: 0.12.1(@types/node@22.16.5)(fastify@5.8.3)(graphql-ez@0.16.1(@types/node@22.16.5)(graphql@16.11.0))(graphql@16.11.0)
+        version: 0.12.1(@types/node@22.16.5)(fastify@5.8.5)(graphql-ez@0.16.1(@types/node@22.16.5)(graphql@16.11.0))(graphql@16.11.0)
       '@graphql-ez/plugin-altair':
         specifier: ^0.11.3
         version: 0.11.3(@types/node@22.16.5)(graphql-ez@0.16.1(@types/node@22.16.5)(graphql@16.11.0))(graphql@16.11.0)
@@ -224,7 +224,7 @@ importers:
         version: 13.0.0
       fastify:
         specifier: ^5.4.0
-        version: 5.8.3
+        version: 5.8.5
       framer-motion:
         specifier: ^11.18.2
         version: 11.18.2(@emotion/is-prop-valid@1.3.1)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -389,10 +389,10 @@ importers:
     dependencies:
       '@graphql-ez/fastify':
         specifier: ^0.12.1
-        version: 0.12.1(@types/node@22.16.5)(fastify@5.8.3)(graphql-ez@0.16.1(@types/node@22.16.5)(graphql@16.11.0))(graphql@16.11.0)
+        version: 0.12.1(@types/node@22.16.5)(fastify@5.8.5)(graphql-ez@0.16.1(@types/node@22.16.5)(graphql@16.11.0))(graphql@16.11.0)
       '@graphql-ez/fastify-testing':
         specifier: ^0.4.1
-        version: 0.4.1(@graphql-ez/fastify@0.12.1(@types/node@22.16.5)(fastify@5.8.3)(graphql-ez@0.16.1(@types/node@22.16.5)(graphql@16.11.0))(graphql@16.11.0))(@graphql-typed-document-node/core@3.2.0(graphql@16.11.0))(@types/node@22.16.5)(fastify@5.8.3)(graphql-ez@0.16.1(@types/node@22.16.5)(graphql@16.11.0))(graphql@16.11.0)
+        version: 0.4.1(@graphql-ez/fastify@0.12.1(@types/node@22.16.5)(fastify@5.8.5)(graphql-ez@0.16.1(@types/node@22.16.5)(graphql@16.11.0))(graphql@16.11.0))(@graphql-typed-document-node/core@3.2.0(graphql@16.11.0))(@types/node@22.16.5)(fastify@5.8.5)(graphql-ez@0.16.1(@types/node@22.16.5)(graphql@16.11.0))(graphql@16.11.0)
       '@graphql-ez/plugin-codegen':
         specifier: ^0.8.2
         version: 0.8.2(@types/node@22.16.5)(graphql-ez@0.16.1(@types/node@22.16.5)(graphql@16.11.0))(graphql@16.11.0)
@@ -413,7 +413,7 @@ importers:
         version: 7.0.3
       fastify:
         specifier: ^5.4.0
-        version: 5.8.3
+        version: 5.8.5
       gqty:
         specifier: workspace:^
         version: link:../../packages/gqty/dist
@@ -5348,8 +5348,8 @@ packages:
   fastify-plugin@5.0.1:
     resolution: {integrity: sha512-HCxs+YnRaWzCl+cWRYFnHmeRFyR5GVnJTAaCJQiYzQSDwK9MgJdyAsuL3nh0EWRCYMgQ5MeziymvmAhUHYHDUQ==}
 
-  fastify@5.8.3:
-    resolution: {integrity: sha512-XJXpRQ41+rsJ/GLeP9vyDC+fBXilcTlEXokMSexkdEkla4uf7ZQNaI5xl3el+kW5TZQulqYxLr659ey/KX7XmQ==}
+  fastify@5.8.5:
+    resolution: {integrity: sha512-Yqptv59pQzPgQUSIm87hMqHJmdkb1+GPxdE6vW6FRyVE9G86mt7rOghitiU4JHRaTyDUk9pfeKmDeu70lAwM4Q==}
 
   fastq@1.19.1:
     resolution: {integrity: sha512-GwLTyxkCXjXbxqIhTsMI2Nui8huMPtnxg7krajPJAjnEG/iiOS7i+zCtWGZR9G0NBKbXKh6X9m9UIsYX/N6vvQ==}
@@ -10265,26 +10265,26 @@ snapshots:
     optionalDependencies:
       '@graphql-typed-document-node/core': 3.2.0(graphql@16.11.0)
 
-  '@graphql-ez/fastify-testing@0.4.1(@graphql-ez/fastify@0.12.1(@types/node@22.16.5)(fastify@5.8.3)(graphql-ez@0.16.1(@types/node@22.16.5)(graphql@16.11.0))(graphql@16.11.0))(@graphql-typed-document-node/core@3.2.0(graphql@16.11.0))(@types/node@22.16.5)(fastify@5.8.3)(graphql-ez@0.16.1(@types/node@22.16.5)(graphql@16.11.0))(graphql@16.11.0)':
+  '@graphql-ez/fastify-testing@0.4.1(@graphql-ez/fastify@0.12.1(@types/node@22.16.5)(fastify@5.8.5)(graphql-ez@0.16.1(@types/node@22.16.5)(graphql@16.11.0))(graphql@16.11.0))(@graphql-typed-document-node/core@3.2.0(graphql@16.11.0))(@types/node@22.16.5)(fastify@5.8.5)(graphql-ez@0.16.1(@types/node@22.16.5)(graphql@16.11.0))(graphql@16.11.0)':
     dependencies:
       '@graphql-ez/client': 0.6.2(@graphql-typed-document-node/core@3.2.0(graphql@16.11.0))(@types/node@22.16.5)(graphql@16.11.0)
-      '@graphql-ez/fastify': 0.12.1(@types/node@22.16.5)(fastify@5.8.3)(graphql-ez@0.16.1(@types/node@22.16.5)(graphql@16.11.0))(graphql@16.11.0)
+      '@graphql-ez/fastify': 0.12.1(@types/node@22.16.5)(fastify@5.8.5)(graphql-ez@0.16.1(@types/node@22.16.5)(graphql@16.11.0))(graphql@16.11.0)
       '@graphql-ez/utils': 0.2.1(@types/node@22.16.5)(graphql@16.11.0)
-      fastify: 5.8.3
+      fastify: 5.8.5
       graphql: 16.11.0
       graphql-ez: 0.16.1(@types/node@22.16.5)(graphql@16.11.0)
     transitivePeerDependencies:
       - '@graphql-typed-document-node/core'
       - '@types/node'
 
-  '@graphql-ez/fastify@0.12.1(@types/node@22.16.5)(fastify@5.8.3)(graphql-ez@0.16.1(@types/node@22.16.5)(graphql@16.11.0))(graphql@16.11.0)':
+  '@graphql-ez/fastify@0.12.1(@types/node@22.16.5)(fastify@5.8.5)(graphql-ez@0.16.1(@types/node@22.16.5)(graphql@16.11.0))(graphql@16.11.0)':
     dependencies:
       '@fastify/cors': 8.5.0
       '@graphql-ez/utils': 0.2.1(@types/node@22.16.5)(graphql@16.11.0)
       '@types/node': 22.16.5
       graphql-ez: 0.16.1(@types/node@22.16.5)(graphql@16.11.0)
     optionalDependencies:
-      fastify: 5.8.3
+      fastify: 5.8.5
       graphql: 16.11.0
 
   '@graphql-ez/plugin-altair@0.11.3(@types/node@22.16.5)(graphql-ez@0.16.1(@types/node@22.16.5)(graphql@16.11.0))(graphql@16.11.0)':
@@ -13885,7 +13885,7 @@ snapshots:
 
   fastify-plugin@5.0.1: {}
 
-  fastify@5.8.3:
+  fastify@5.8.5:
     dependencies:
       '@fastify/ajv-compiler': 4.0.5
       '@fastify/error': 4.2.0
