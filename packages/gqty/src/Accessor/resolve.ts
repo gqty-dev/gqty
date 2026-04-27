@@ -89,7 +89,23 @@ export const resolve = (
     }
     // Trigger cached sub-selections for nullable object types.
     else {
-      context.select(selection);
+      let hasLeaf = false;
+
+      // GraphQL requires sub-selections for object types.
+      // If we just selected the parent (e.g. `nullFather`), it would generate an invalid query
+      // like `human { nullFather }` instead of `human { nullFather { name } }` if a fetch is triggered later.
+      for (const leaf of selection.getLeafNodes()) {
+        if (leaf !== selection) {
+          context.select(leaf, cache);
+          hasLeaf = true;
+        }
+      }
+
+      // If no sub-selections were cached (e.g. it was never accessed before),
+      // fallback to __typename so the GraphQL query is syntactically valid if fetched.
+      if (!hasLeaf) {
+        context.select(selection.getChild('__typename'), cache);
+      }
     }
 
     return null;
@@ -560,7 +576,24 @@ export const createArrayAccessor = (meta: Meta) => {
 
   // Trigger cached sub-selections for empty arrays.
   if (cache.data.length === 0) {
-    context.select(selection);
+    const { pureType } = parseSchemaType(meta.type.__type);
+    if (context.scalars[pureType]) {
+      context.select(selection, cache);
+    } else {
+      let hasLeaf = false;
+
+      // Ensure that an array of objects generates a valid GraphQL query with sub-selections.
+      for (const leaf of selection.getLeafNodes()) {
+        if (leaf !== selection) {
+          context.select(leaf, cache);
+          hasLeaf = true;
+        }
+      }
+
+      if (!hasLeaf) {
+        context.select(selection.getChild('__typename'), cache);
+      }
+    }
   }
 
   const proxy = new Proxy(cache.data, arrayProxyHandler);
