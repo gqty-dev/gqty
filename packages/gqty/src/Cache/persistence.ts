@@ -85,15 +85,11 @@ export const importCacheSnapshot = (
 
   if (options) {
     data.normalizedObjects = Object.entries(normalized).reduce(
-      (store, [key, value]) => {
-        const norbject = normalizeObject(value as CacheObject, {
+      (store, [, value]) => {
+        normalizeObject(value as CacheObject, {
           ...options,
           store,
         });
-
-        if (norbject !== undefined) {
-          store.set(key, norbject);
-        }
 
         return store;
       },
