@@ -26,9 +26,7 @@ import { useWindowFocusEffect } from '../useWindowFocusEffect';
 import type { ReactClientOptionsWithDefaults } from '../utils';
 
 export interface UseQueryPrepareHelpers<
-  GeneratedSchema extends {
-    query: object;
-  },
+  GeneratedSchema extends { query: object },
 > {
   readonly prepass: typeof prepass;
   readonly query: GeneratedSchema['query'];
@@ -529,29 +527,64 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
     }, [refetch, swrDiff]);
 
     return useMemo(() => {
-      return new Proxy(
-        Object.freeze({
-          $refetch: (ignoreCache = true) =>
-            refetch({ ignoreCache, skipOnError: false }),
-          $state: Object.freeze({
-            isLoading: state.promise !== undefined || initialStateRef.current,
-            error: state.error,
-          }),
+      // Minimal target with only our custom properties.
+      // We avoid pre-populating schema keys which is O(schemaSize) per hook.
+      const target = Object.freeze({
+        $refetch: (ignoreCache = true) =>
+          refetch({ ignoreCache, skipOnError: false }),
+        $state: Object.freeze({
+          isLoading: state.promise !== undefined || initialStateRef.current,
+          error: state.error,
         }),
-        {
-          get: (target, key, proxy) =>
-            Reflect.get(target, key, proxy) ??
-            Reflect.get(
-              prepare && cachePolicy !== 'no-store'
-                ? // Using global schema accessor prevents the second pass fetch
-                  // essentially let `prepare` decides what data to fetch, data
-                  // placeholder will always render in case of a cache miss.
-                  client.schema.query
-                : query,
-              key
-            ),
-        }
-      );
+      });
+
+      // The underlying query accessor to delegate field access to
+      const queryAccessor =
+        prepare && cachePolicy !== 'no-store'
+          ? // Using global schema accessor prevents the second pass fetch
+            // essentially let `prepare` decides what data to fetch, data
+            // placeholder will always render in case of a cache miss.
+            client.schema.query
+          : query;
+
+      return new Proxy(target, {
+        // Only expose $refetch and $state in enumeration in dev mode.
+        // This prevents React 19 dev mode from enumerating all schema fields
+        // during prop diffing, which would trigger unintended selections.
+        // In production, return actual target keys (just $refetch and $state).
+        ownKeys:
+          process.env.NODE_ENV !== 'production'
+            ? () => ['$refetch', '$state']
+            : undefined,
+
+        getOwnPropertyDescriptor:
+          process.env.NODE_ENV !== 'production'
+            ? (target, key) => {
+                if (key === '$refetch' || key === '$state') {
+                  return Reflect.getOwnPropertyDescriptor(target, key);
+                }
+                // Return undefined for schema keys - they're not "own" properties
+                return undefined;
+              }
+            : undefined,
+
+        has: (_, key) => {
+          // $refetch and $state are always present
+          if (key === '$refetch' || key === '$state') return true;
+          // Schema keys are accessible via get but not enumerable
+          return key in queryAccessor;
+        },
+
+        get: (target, key, proxy) => {
+          // Return our custom properties
+          if (key in target) {
+            return Reflect.get(target, key, proxy);
+          }
+
+          // Delegate all other access to the query accessor
+          return Reflect.get(queryAccessor, key);
+        },
+      });
     }, [query, refetch, state.error, state.promise]);
   };
 };
