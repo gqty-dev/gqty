@@ -1,5 +1,17 @@
 # @gqty/logger
 
+## 3.0.7
+
+### Patch Changes
+
+- [`0bbe1d7`](https://github.com/gqty-dev/gqty/commit/0bbe1d71adb041c038de97b6b4a799fc72192faf)
+  Thanks [@vicary](https://github.com/vicary)! - chore(deps): upgrade deprecated
+  packages
+
+- Updated dependencies
+  [[`0bbe1d7`](https://github.com/gqty-dev/gqty/commit/0bbe1d71adb041c038de97b6b4a799fc72192faf)]:
+  - gqty@3.6.1
+
 ## 3.0.6
 
 ### Patch Changes
