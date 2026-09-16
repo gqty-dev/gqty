@@ -21,10 +21,14 @@ export interface UseRefetchOptions {
   retry?: RetryOptions;
   startWatching?: boolean;
   suspense?: boolean;
+  /** Custom GraphQL extensions to be exposed to the query fetcher. */
+  extensions?: Record<string, unknown>;
 }
 
 export interface UseRefetch<TSchema extends BaseGeneratedSchema> {
-  (refetchOptions?: UseRefetchOptions): (<T = void>(
+  (
+    refetchOptions?: UseRefetchOptions
+  ): (<T = void>(
     refetchArg?: T | ((query: TSchema['query']) => T)
   ) => Promise<T | undefined>) &
     UseRefetchState;
@@ -40,6 +44,7 @@ export const createUseRefetch = <TSchema extends BaseGeneratedSchema>(
     startWatching = true,
     retry = defaultRetry,
     suspense = false,
+    extensions,
   } = {}) => {
     const [state, setState] = React.useState<{
       error?: GQtyError;
@@ -78,6 +83,7 @@ export const createUseRefetch = <TSchema extends BaseGeneratedSchema>(
           const { context, resolve } = client.createResolver({
             retryPolicy: retry,
             operationName,
+            extensions,
           });
 
           selections.forEach((selection) => {
@@ -97,7 +103,7 @@ export const createUseRefetch = <TSchema extends BaseGeneratedSchema>(
           throw theError;
         }
       },
-      [notifyOnNetworkStatusChange, operationName, retry]
+      [notifyOnNetworkStatusChange, operationName, retry, extensions]
     );
 
     return React.useMemo(
