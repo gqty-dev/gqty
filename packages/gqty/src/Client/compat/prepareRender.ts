@@ -1,5 +1,6 @@
 import { toJSON } from 'flatted';
 import type { BaseGeneratedSchema } from '..';
+import { isSkeleton } from '../../Accessor/skeleton';
 import { Cache } from '../../Cache';
 import type { CacheSnapshot } from '../../Cache/persistence';
 import type { Selection, SelectionSnapshot } from '../../Selection';
@@ -97,7 +98,26 @@ export const createLegacyPrepareRender = <TSchema extends BaseGeneratedSchema>({
     // server side. Deferred fetches such as useLazyQuery and useMutation
     // also don't fire during SSR.
     await fetchSelections(
-      new Set([...selections].filter((s) => s.root.key !== 'subscription')),
+      new Set(
+        [...selections].filter((s) => {
+          if (s.root.key === 'subscription') return false;
+
+          // Skip selections that are already successfully loaded in the cache.
+          // This prevents redundant fetches at the end of SSR when `useQuery(suspense: true)`
+          // has already fetched and hydrated the cache for these selections.
+          const cacheKey = s.cacheKeys.join('.');
+          const dataContainer = cache.get(cacheKey);
+          const data = dataContainer?.data;
+
+          const hasMissing = (val: any): boolean => {
+            if (val === undefined || isSkeleton(val)) return true;
+            if (Array.isArray(val)) return val.some(hasMissing);
+            return false;
+          };
+
+          return hasMissing(data);
+        })
+      ),
       {
         cache,
         debugger: debug,

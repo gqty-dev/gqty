@@ -1,7 +1,13 @@
 import { renderHook, waitFor } from '@testing-library/react';
 import { Cache, type QueryPayload } from 'gqty';
-import { act } from 'react';
+import { ReadableStream } from 'node:stream/web';
+import React, { act, type FC } from 'react';
+
 import { createMockReactClient, createReactTestClient, sleep } from './utils';
+
+if (typeof global.ReadableStream === 'undefined') {
+  global.ReadableStream = ReadableStream as any;
+}
 
 describe('useQuery', () => {
   describe('isLoading', () => {
@@ -357,5 +363,116 @@ describe('useQuery', () => {
         "query($a16193:ID!){a7c8bb:pet(id:$a16193){__typename id owner{__typename id name}}now peoples{__typename id name}}",
       ]
     `);
+  });
+
+  it('should not fail during prepareReactRender when null objects are accessed', async () => {
+    const fetches: QueryPayload[] = [];
+    const { useQuery, prepareReactRender } = await createReactTestClient(
+      undefined,
+      async (payload) => {
+        fetches.push(payload);
+        const { client } = await createReactTestClient();
+        return client.query(payload.query, payload.variables);
+      }
+    );
+
+    const Human: FC = () => {
+      const data = useQuery({
+        suspense: true,
+        prepare(helpers) {
+          const human = helpers.query.human();
+          human.nullFather?.__typename;
+          human.nullFather?.id;
+          human.nullFather?.name;
+        },
+      });
+
+      return <div>{data.human().nullFather?.name ?? 'No father'}</div>;
+    };
+
+    await prepareReactRender(<Human />);
+
+    // Check if the prepare function was called
+    expect(fetches.length).toBe(1);
+    expect(fetches[0].query).toMatchInlineSnapshot(
+      `"query{human{__typename id nullFather{__typename id name}}}"`
+    );
+  });
+  it('should fetch again during prepareReactRender if JSX accesses fields not in prepare', async () => {
+    const fetches: QueryPayload[] = [];
+    const { useQuery, prepareReactRender } = await createReactTestClient(
+      undefined,
+      async (payload) => {
+        fetches.push(payload);
+        const { client } = await createReactTestClient();
+        return client.query(payload.query, payload.variables);
+      }
+    );
+
+    const Human: FC = () => {
+      const data = useQuery({
+        suspense: true,
+        prepare(helpers) {
+          helpers.query.human().name;
+        },
+      });
+
+      return (
+        <div>
+          {data.human().name}
+          {data.human().father?.name}
+        </div>
+      );
+    };
+
+    await prepareReactRender(<Human />);
+
+    expect(fetches.length).toBe(2);
+    expect(fetches[0].query).toMatchInlineSnapshot(
+      `"query{human{__typename id name}}"`
+    );
+    expect(fetches[1].query).toMatchInlineSnapshot(
+      `"query{human{father{__typename id name}}}"`
+    );
+  });
+  it('should fetch again during prepareReactRender if some array elements are missing fields in cache', async () => {
+    const fetches: QueryPayload[] = [];
+    const { useQuery, prepareReactRender, cache } = await createReactTestClient(
+      undefined,
+      async (payload) => {
+        fetches.push(payload);
+        const { client } = await createReactTestClient();
+        return client.query(payload.query, payload.variables);
+      }
+    );
+
+    // Partially hydrate the cache: dogs exist, but their names are missing
+    cache.set({
+      query: {
+        dogs: [
+          { __typename: 'Dog', id: '1' },
+          { __typename: 'Dog', id: '2' },
+        ],
+      },
+    });
+
+    const Dogs: FC = () => {
+      const data = useQuery({
+        suspense: true,
+      });
+
+      return (
+        <div>
+          {data.dogs.map((p) => (
+            <div key={p.id}>{p.name}</div>
+          ))}
+        </div>
+      );
+    };
+
+    await prepareReactRender(<Dogs />);
+
+    // It should have fetched the names
+    expect(fetches.some((f) => f.query.includes('name'))).toBe(true);
   });
 });
