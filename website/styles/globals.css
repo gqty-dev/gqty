@@ -606,30 +606,80 @@ body {
 
 .playground__viewport {
   position: relative;
+  display: grid;
+  gap: var(--space-4);
   width: 100%;
-  overflow: hidden;
+  padding: var(--space-4);
   border-radius: var(--radius-xl);
   background: var(--color-bg);
 }
 
-.playground__viewport iframe {
-  display: block;
-  width: 100%;
-  height: 600px;
-  border: 0;
-  mix-blend-mode: lighten;
+@media (min-width: 768px) {
+  .playground__viewport {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
-.playground__fallback {
+.playground__panel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+  padding: var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  background: color-mix(in srgb, var(--color-surface) 60%, transparent);
+}
+
+.playground__panel-label {
   margin: 0;
-  padding: var(--space-3) var(--space-4);
-  border-top: 1px solid var(--color-border);
   color: var(--color-text-muted);
+  font-size: var(--text-caption);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.playground__code {
+  margin: 0;
+  overflow-x: auto;
+  color: var(--color-text);
+  font-family: var(--font-mono);
+  font-size: var(--text-caption);
+  line-height: var(--leading-normal);
+}
+
+.playground__launch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
   text-align: center;
 }
 
-.playground__fallback a {
-  color: var(--color-primary);
+.playground__launch-link {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-md);
+  background: var(--color-primary);
+  color: var(--color-bg);
+  font-weight: 600;
+  text-decoration: none;
+  transition: opacity var(--duration-fast) var(--ease-enter);
+}
+
+.playground__launch-link:hover {
+  opacity: 0.85;
+}
+
+.playground__caption {
+  margin: 0;
+  max-width: 48ch;
+  color: var(--color-text-muted);
+  font-size: var(--text-caption);
 }
 
 /* --- Feature sections (USP) -------------------------------------------- */

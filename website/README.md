@@ -178,9 +178,13 @@ this package builds, deploys, fetches, or links to it at runtime.
   gone; contributors and sponsorship now appear as stable repository and GitHub
   Sponsors links without fabricated counts.
 - Vercel Analytics and Speed Insights were removed.
-- The playground iframe is retained: it embeds a third-party StackBlitz example
-  and now also links directly to that project so the feature still works if the
-  embed is blocked.
+- The playground no longer embeds the third-party StackBlitz example. The
+  editor runs the example in a WebContainer, which requires a
+  cross-origin-isolated document, and GitHub Pages cannot serve the
+  `Cross-Origin-Opener-Policy` and `Cross-Origin-Embedder-Policy` headers that
+  provides. The section now shows the example's own source and the query GQty
+  generates from it, and opens the real editor from StackBlitz through an
+  ordinary external link.
 
 ## Design tokens
 
