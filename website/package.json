@@ -5,7 +5,7 @@
   "description": "GQty documentation website (static export for GitHub Pages)",
   "scripts": {
     "dev": "next dev",
-    "build": "NEXTRA_STATIC_EXPORT=1 next build && node scripts/fix-search-index.mjs",
+    "build": "NEXTRA_STATIC_EXPORT=1 next build",
     "check": "tsc --noEmit",
     "check:export": "node scripts/check-export.mjs",
     "test": "node --test \"scripts/*.test.mjs\"",

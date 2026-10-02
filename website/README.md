@@ -60,11 +60,17 @@ Two consequences are worth knowing before editing:
    Every public asset must therefore go through `asset()` from `lib/asset.ts`.
    Statically imported images (`import x from "./x.svg"`) already carry the
    built asset path and are passed through unchanged by the same helper.
-2. **Nextra 2 writes Markdown links without the base path.** A small CSS prefix
-   rule on `.nextra-content` handles those, scoped to the `static-base-path`
-   class that `pages/_document.tsx` emits only for production exports. The
-   exported search index is rewritten separately by
-   `scripts/fix-search-index.mjs`, which runs as part of `pnpm build`.
+2. **`next/image` does not receive the base path.** With image optimization
+   disabled — which static export requires — Next emits the `src` verbatim.
+   Every public asset must therefore go through `asset()` from `lib/asset.ts`.
+   Statically imported images (`import x from "./x.svg"`) already carry the
+   built asset path and are passed through unchanged by the same helper.
+3. **Markdown links are already prefixed.** Nextra renders them through
+   `next/link`, which applies `basePath` exactly once, so hrefs need no
+   post-processing. The Nextra search index is the one exception: its route
+   keys stay unprefixed, because `next/link` prefixes the search-hit href and
+   the theme loads the index from the base-prefixed
+   `/_next/static/chunks/nextra-data-<locale>.json`.
 
 ## Validation
 

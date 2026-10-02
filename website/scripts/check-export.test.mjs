@@ -7,12 +7,18 @@ import test from 'node:test';
 import {
   BASE_PATH,
   CANONICAL_ROOT,
+  FAVICON_PATH,
   checkExport,
   checkInternalReference,
+  checkSearchIndex,
+  extractAnchorIds,
   extractCssUrls,
+  extractFragmentLinks,
+  extractMetadataValues,
   extractReferences,
   isInternalReference,
   resolveExportPath,
+  routeFromExportFile,
 } from './check-export.mjs';
 
 /**
@@ -33,6 +39,49 @@ async function makeExport(files) {
   }
 
   return dir;
+}
+
+/** Metadata block every healthy page is expected to carry. */
+function pageMetadata(url) {
+  return [
+    '<meta name="description" content="A No-GraphQL Client for TypeScript">',
+    `<link rel="canonical" href="${url}">`,
+    '<meta property="og:title" content="GQty">',
+    '<meta property="og:description" content="A No-GraphQL Client for TypeScript">',
+    `<meta property="og:url" content="${url}">`,
+  ].join('');
+}
+
+/** A small export that passes every check, with the routes a test cares about. */
+async function makeHealthyExport() {
+  const dir = await makeExport({
+    'index.html': [
+      pageMetadata(`${CANONICAL_ROOT}/`),
+      `<a href="${BASE_PATH}/getting-started/">start</a>`,
+    ].join(''),
+    '_next/static/site.css': `a{background:url(${BASE_PATH}/logo/gqty.svg)}`,
+    '_next/static/chunks/nextra-data-en-US.json': JSON.stringify({
+      '/getting-started': { title: 'Quickstart' },
+      '/': { title: 'Index' },
+    }),
+    'favicon.ico': 'icon',
+    'logo/gqty.svg': '<svg/>',
+    'getting-started/index.html': [
+      pageMetadata(`${CANONICAL_ROOT}/getting-started/`),
+      '<h2 id="install">Install</h2>',
+      `<a href="${BASE_PATH}/">home</a>`,
+    ].join(''),
+  });
+
+  return dir;
+}
+
+/** Runs `checkExport` and drops the route-list noise from `ROUTES`. */
+async function failuresIgnoringRoutes(dir) {
+  const failures = await checkExport(dir);
+  return failures.filter(
+    (failure) => !failure.startsWith('missing expected route:')
+  );
 }
 
 test('internal reference detection ignores external, protocol-relative, and hash links', () => {
@@ -94,23 +143,270 @@ test('CSS url() extraction ignores data URIs', () => {
   ]);
 });
 
+test('exported file paths map back to their route', () => {
+  assert.equal(routeFromExportFile('index.html'), `${BASE_PATH}/`);
+  assert.equal(
+    routeFromExportFile(join('guides', 'react', 'read', 'index.html')),
+    `${BASE_PATH}/guides/react/read/`
+  );
+  assert.equal(routeFromExportFile('404.html'), `${BASE_PATH}/404.html`);
+});
+
+test('fragment links are read for both bare and routed hrefs', () => {
+  const html = [
+    '<a href="#install">bare</a>',
+    `<a href="${BASE_PATH}/guides/react/read/#suspense">routed</a>`,
+    '<a href="https://example.com/x#y">external</a>',
+  ].join('');
+
+  assert.deepEqual(extractFragmentLinks(html, `${BASE_PATH}/concepts/`), [
+    { route: `${BASE_PATH}/concepts/`, fragment: 'install' },
+    { route: `${BASE_PATH}/guides/react/read/`, fragment: 'suspense' },
+  ]);
+});
+
+test('anchor ids are collected from the rendered page', () => {
+  const ids = extractAnchorIds(
+    '<h2 id="install">Install</h2><a class="subheading-anchor" href="#usage" id="usage"></a>'
+  );
+  assert.deepEqual([...ids].sort(), ['install', 'usage']);
+});
+
+test('metadata extraction returns every value, not just the first', () => {
+  const html =
+    '<meta name="description" content="one"><meta name="description" content="two">';
+  assert.deepEqual(
+    extractMetadataValues(html, /<meta name="description" content="([^"]*)"/g),
+    ['one', 'two']
+  );
+});
+
 test('a healthy export passes every check', async () => {
+  const dir = await makeHealthyExport();
+
+  try {
+    assert.deepEqual(await failuresIgnoringRoutes(dir), []);
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
+});
+
+test('a duplicate page description is reported', async () => {
+  const dir = await makeHealthyExport();
+  const home = await import('node:fs/promises').then((fs) =>
+    fs.readFile(join(dir, 'index.html'), 'utf8')
+  );
+
+  try {
+    await writeFile(
+      join(dir, 'index.html'),
+      `${home}<meta name="description" content="Nextra: the next docs builder">`
+    );
+
+    const failures = await failuresIgnoringRoutes(dir);
+    assert.ok(
+      failures.some((failure) =>
+        failure.includes('expected exactly one description, found 2')
+      ),
+      `expected a duplicate-description failure, got: ${failures.join('; ')}`
+    );
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
+});
+
+test('a missing canonical is reported rather than silently skipped', async () => {
   const dir = await makeExport({
-    'index.html': [
-      `<link rel="canonical" href="${CANONICAL_ROOT}/">`,
-      `<meta property="og:url" content="${CANONICAL_ROOT}/">`,
-      `<a href="${BASE_PATH}/getting-started/">start</a>`,
-    ].join(''),
-    '_next/static/site.css': `a{background:url(${BASE_PATH}/logo/gqty.svg)}`,
-    'getting-started/index.html': `<a href="${BASE_PATH}/">home</a>`,
-    'logo/gqty.svg': '<svg/>',
+    'index.html':
+      '<meta name="description" content="x"><meta property="og:title" content="x"><meta property="og:description" content="x">',
   });
 
   try {
-    const failures = (await checkExport(dir)).filter(
-      (failure) => !failure.startsWith('missing expected route:')
+    const failures = await failuresIgnoringRoutes(dir);
+    assert.ok(
+      failures.some((failure) =>
+        failure.includes('expected exactly one canonical, found 0')
+      ),
+      `expected a missing-canonical failure, got: ${failures.join('; ')}`
     );
-    assert.deepEqual(failures, []);
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
+});
+
+test('a page whose canonical points at a different route is reported', async () => {
+  const dir = await makeExport({
+    'index.html': pageMetadata(`${CANONICAL_ROOT}/`),
+    'getting-started/index.html': pageMetadata(`${CANONICAL_ROOT}/`),
+  });
+
+  try {
+    const failures = await failuresIgnoringRoutes(dir);
+    assert.ok(
+      failures.some((failure) =>
+        failure.includes(
+          `getting-started/index.html: canonical is ${CANONICAL_ROOT}/, expected ${CANONICAL_ROOT}/getting-started/`
+        )
+      ),
+      `expected a wrong-route canonical failure, got: ${failures.join('; ')}`
+    );
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
+});
+
+test('a canonical that merely starts with the site origin is reported', async () => {
+  const dir = await makeExport({
+    'index.html': pageMetadata(`${CANONICAL_ROOT}/getting-started`),
+  });
+
+  try {
+    const failures = await failuresIgnoringRoutes(dir);
+    assert.ok(
+      failures.some((failure) => failure.includes('canonical is')),
+      `expected a canonical mismatch, got: ${failures.join('; ')}`
+    );
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
+});
+
+test('framework-generated 404 pages are exempt from per-page metadata', async () => {
+  const dir = await makeExport({
+    'index.html': pageMetadata(`${CANONICAL_ROOT}/`),
+    '404.html': '<p>Not found</p>',
+    '404/index.html': '<p>Not found</p>',
+    '_next/static/chunks/nextra-data-en-US.json': JSON.stringify({
+      '/': { title: 'Index' },
+    }),
+    'favicon.ico': 'icon',
+  });
+
+  try {
+    const failures = await failuresIgnoringRoutes(dir);
+    assert.deepEqual(
+      failures.filter((failure) => failure.includes('404')),
+      []
+    );
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
+});
+
+test('the metadata exemption does not extend to content pages', async () => {
+  const dir = await makeExport({
+    'index.html': pageMetadata(`${CANONICAL_ROOT}/`),
+    'getting-started/index.html': '<p>No metadata</p>',
+    '_next/static/chunks/nextra-data-en-US.json': JSON.stringify({
+      '/': { title: 'Index' },
+    }),
+    'favicon.ico': 'icon',
+  });
+
+  try {
+    const failures = await failuresIgnoringRoutes(dir);
+    assert.ok(
+      failures.some((failure) =>
+        failure.includes(
+          'getting-started/index.html: expected exactly one description, found 0'
+        )
+      ),
+      `expected a missing-metadata failure, got: ${failures.join('; ')}`
+    );
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
+});
+
+test('Nextra attribution metadata is reported', async () => {
+  const dir = await makeHealthyExport();
+  const home = await import('node:fs/promises').then((fs) =>
+    fs.readFile(join(dir, 'index.html'), 'utf8')
+  );
+
+  try {
+    await writeFile(
+      join(dir, 'index.html'),
+      `${home}<meta name="twitter:site" content="@shuding_">`
+    );
+
+    const failures = await failuresIgnoringRoutes(dir);
+    assert.ok(
+      failures.some((failure) =>
+        failure.includes('Nextra theme author attribution')
+      ),
+      `expected an attribution failure, got: ${failures.join('; ')}`
+    );
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
+});
+
+test('a fragment link to a heading that does not exist is reported', async () => {
+  const dir = await makeExport({
+    'index.html': pageMetadata(`${CANONICAL_ROOT}/`),
+    'getting-started/index.html': [
+      pageMetadata(`${CANONICAL_ROOT}/getting-started/`),
+      '<h2 id="install">Install</h2>',
+      `<a href="${BASE_PATH}/guides/react/read/#suspense">suspense</a>`,
+    ].join(''),
+    'guides/react/read/index.html': [
+      pageMetadata(`${CANONICAL_ROOT}/guides/react/read/`),
+      '<h3 id="suspense-on-data-fetching">Suspense on Data Fetching</h3>',
+    ].join(''),
+  });
+
+  try {
+    const failures = await failuresIgnoringRoutes(dir);
+    assert.ok(
+      failures.some((failure) =>
+        failure.includes(
+          `fragment does not resolve: ${BASE_PATH}/guides/react/read/#suspense`
+        )
+      ),
+      `expected a broken-fragment failure, got: ${failures.join('; ')}`
+    );
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
+});
+
+test('a bare fragment link on its own page is validated too', async () => {
+  const dir = await makeExport({
+    'index.html': [
+      pageMetadata(`${CANONICAL_ROOT}/`),
+      '<a href="#roadmap">roadmap</a>',
+    ].join(''),
+  });
+
+  try {
+    const failures = await failuresIgnoringRoutes(dir);
+    assert.ok(
+      failures.some((failure) =>
+        failure.includes(`fragment does not resolve: ${BASE_PATH}/#roadmap`)
+      ),
+      `expected a bare-fragment failure, got: ${failures.join('; ')}`
+    );
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
+});
+
+test('a fragment link to an existing heading is accepted', async () => {
+  const dir = await makeExport({
+    'index.html': [
+      pageMetadata(`${CANONICAL_ROOT}/`),
+      '<a href="#roadmap">roadmap</a>',
+      '<a class="subheading-anchor" href="#roadmap" id="roadmap"></a>',
+    ].join(''),
+    '_next/static/chunks/nextra-data-en-US.json': JSON.stringify({
+      '/': { title: 'Index' },
+    }),
+    'favicon.ico': 'icon',
+  });
+
+  try {
+    assert.deepEqual(await failuresIgnoringRoutes(dir), []);
   } finally {
     await rm(dir, { recursive: true, force: true });
   }
@@ -203,19 +499,165 @@ test('a canonical URL outside the published origin is reported', async () => {
   }
 });
 
-test('documentation prose about GraphQL and SSR is not treated as a runtime failure', async () => {
+test('a missing favicon is reported', async () => {
   const dir = await makeExport({
-    'index.html': [
-      '<p>Use <code>getStaticProps</code> for SSR with GraphQL, or <code>useRouter</code>.</p>',
-      `<a href="https://stackblitz.com/edit/nextjs-2jqmx4">playground</a>`,
-    ].join(''),
+    'index.html': pageMetadata(`${CANONICAL_ROOT}/`),
   });
 
   try {
-    const failures = (await checkExport(dir)).filter(
-      (failure) => !failure.startsWith('missing expected route:')
+    const failures = await failuresIgnoringRoutes(dir);
+    assert.ok(
+      failures.some((failure) =>
+        failure.includes(`favicon is not exported: ${FAVICON_PATH}`)
+      ),
+      `expected a missing-favicon failure, got: ${failures.join('; ')}`
     );
-    assert.deepEqual(failures, []);
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
+});
+
+test('an exported favicon satisfies the favicon check', async () => {
+  const dir = await makeHealthyExport();
+
+  try {
+    const failures = await failuresIgnoringRoutes(dir);
+    assert.deepEqual(
+      failures.filter((failure) => failure.includes('favicon')),
+      []
+    );
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
+});
+
+test('documentation prose about GraphQL and SSR is not treated as a runtime failure', async () => {
+  const dir = await makeExport({
+    'index.html': [
+      pageMetadata(`${CANONICAL_ROOT}/`),
+      '<p>Use <code>getStaticProps</code> for SSR with GraphQL, or <code>useRouter</code>.</p>',
+      `<a href="https://stackblitz.com/edit/nextjs-2jqmx4">playground</a>`,
+    ].join(''),
+    '_next/static/chunks/nextra-data-en-US.json': JSON.stringify({
+      '/': { title: 'Index' },
+    }),
+    'favicon.ico': 'icon',
+  });
+
+  try {
+    assert.deepEqual(await failuresIgnoringRoutes(dir), []);
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
+});
+
+test('a search index with unprefixed route keys passes', async () => {
+  const dir = await makeExport({
+    '_next/static/chunks/nextra-data-en-US.json': JSON.stringify({
+      '/': { title: 'Index' },
+      '/concepts': { title: 'Concepts' },
+    }),
+    'index.html': pageMetadata(`${CANONICAL_ROOT}/`),
+    'concepts/index.html': pageMetadata(`${CANONICAL_ROOT}/concepts/`),
+  });
+
+  try {
+    assert.deepEqual(await checkSearchIndex(dir), []);
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
+});
+
+test('a base-prefixed search index route is reported as a double prefix', async () => {
+  const dir = await makeExport({
+    '_next/static/chunks/nextra-data-en-US.json': JSON.stringify({
+      [`${BASE_PATH}/concepts`]: { title: 'Concepts' },
+    }),
+    'concepts/index.html': pageMetadata(`${CANONICAL_ROOT}/concepts/`),
+  });
+
+  try {
+    const failures = await checkSearchIndex(dir);
+    assert.ok(
+      failures.some((failure) =>
+        failure.includes(
+          `search index route is already base-prefixed and would double-prefix: ${BASE_PATH}/concepts`
+        )
+      ),
+      `expected a double-prefix failure, got: ${failures.join('; ')}`
+    );
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
+});
+
+test('a search index route with no matching page is reported', async () => {
+  const dir = await makeExport({
+    '_next/static/chunks/nextra-data-en-US.json': JSON.stringify({
+      '/concepts': { title: 'Concepts' },
+    }),
+  });
+
+  try {
+    const failures = await checkSearchIndex(dir);
+    assert.ok(
+      failures.some((failure) =>
+        failure.includes(
+          `search index route does not resolve after basePath: /concepts -> ${BASE_PATH}/concepts`
+        )
+      ),
+      `expected an unresolved-route failure, got: ${failures.join('; ')}`
+    );
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
+});
+
+test('a missing search index is reported', async () => {
+  const dir = await makeExport({ 'index.html': '<p>empty</p>' });
+
+  try {
+    const failures = await checkSearchIndex(dir);
+    assert.ok(
+      failures.some((failure) =>
+        failure.includes('search index not found in the export')
+      ),
+      `expected a missing-index failure, got: ${failures.join('; ')}`
+    );
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
+});
+
+test('an empty search index is reported', async () => {
+  const dir = await makeExport({
+    '_next/static/chunks/nextra-data-en-US.json': '{}',
+  });
+
+  try {
+    const failures = await checkSearchIndex(dir);
+    assert.ok(
+      failures.some((failure) =>
+        failure.includes('search index nextra-data-en-US.json is empty')
+      ),
+      `expected an empty-index failure, got: ${failures.join('; ')}`
+    );
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
+});
+
+test('a malformed search index is reported rather than throwing', async () => {
+  const dir = await makeExport({
+    '_next/static/chunks/nextra-data-en-US.json': 'not json',
+  });
+
+  try {
+    const failures = await checkSearchIndex(dir);
+    assert.ok(
+      failures.some((failure) => failure.includes('is not valid JSON')),
+      `expected a malformed-index failure, got: ${failures.join('; ')}`
+    );
   } finally {
     await rm(dir, { recursive: true, force: true });
   }

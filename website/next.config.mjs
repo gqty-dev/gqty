@@ -5,9 +5,10 @@ import { remarkMermaid } from 'remark-mermaid-nextra';
  * Static export served from a GitHub Pages project site
  * (`https://gqty-dev.github.io/gqty/`).
  *
- * The `basePath` is also recorded in `NEXT_PUBLIC_BASE_PATH` so
- * `pages/_document.tsx` can emit the prefix rule used for Markdown-authored
- * links, which Nextra 2 writes as absolute paths and does not prefix itself.
+ * `basePath` is declared once here. Next prefixes its own bundles and route
+ * links from it, Nextra routes Markdown links through `next/link`, which
+ * prefixes them too, and `NEXT_PUBLIC_BASE_PATH` lets `asset()` prefix the
+ * `next/image` sources that `images.unoptimized` leaves untouched.
  */
 const basePath = '/gqty';
 

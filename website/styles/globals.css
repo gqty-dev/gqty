@@ -1062,25 +1062,6 @@ body {
   }
 }
 
-/* --- Nextra link normalization under a base path ------------------------
- * Nextra 2 renders internal links from Markdown as absolute paths without the
- * configured `basePath`. This rule is scoped to the static instance, which is
- * built with `NEXTRA_STATIC_EXPORT=1` (see `next.config.mjs`). The prefix is
- * injected once, in both text and CSS, so next/font and Nextra's own styles
- * cannot collide with it.
- *
- * Live development (`pnpm dev`) does not set the flag, so links stay absolute
- * and resolve normally against the dev server root.
- */
-
-.static-base-path .nextra-content a[href^='/']::before {
-  content: var(--static-base-path);
-}
-
-.static-base-path .nextra-content a[href='/']::before {
-  content: '';
-}
-
 /* --- Tabs (used inside MDX content) ------------------------------------ */
 
 .tabs {

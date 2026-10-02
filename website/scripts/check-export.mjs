@@ -6,7 +6,9 @@
  *   - missing expected routes
  *   - internal references that escape `/gqty/`
  *   - local references that do not resolve to a file in the export
- *   - canonical/Open Graph URLs pointing somewhere other than the site origin
+ *   - markdown fragment links whose target heading does not exist
+ *   - per-page metadata that is missing, duplicated, or not the page's own URL
+ *   - search-index routes that would resolve somewhere other than the export
  *   - expired-domain, proprietary-CSS, or build-time-secret assumptions
  *
  * Nothing here executes the site or talks to the network.
@@ -23,6 +25,9 @@ const siteRoot = resolve(here, '..');
 export const BASE_PATH = '/gqty';
 export const SITE_ORIGIN = 'https://gqty-dev.github.io';
 export const CANONICAL_ROOT = `${SITE_ORIGIN}${BASE_PATH}`;
+
+/** Public file that must be reachable at the origin root, outside `basePath`. */
+export const FAVICON_PATH = '/gqty/favicon.ico';
 
 export const ROUTES = [
   '/',
@@ -50,6 +55,40 @@ export const ROUTES = [
 ];
 
 /**
+ * Exported pages that are framework-generated and carry no per-page metadata.
+ *
+ * Nextra only runs its head for routes that exist in the page map, so the
+ * stock 404 exports (which `output: export` writes to both `404.html` and
+ * `404/index.html`) have no `<head>` metadata at all. They are not content
+ * pages and are excluded from the per-page metadata checks rather than
+ * weakening those checks for real pages.
+ */
+export const METADATA_EXEMPT_ROUTES = new Set([
+  `${BASE_PATH}/404.html`,
+  `${BASE_PATH}/404/`,
+  `${BASE_PATH}/500.html`,
+  `${BASE_PATH}/500/`,
+]);
+
+/** Per-page metadata that must appear exactly once, per route. */
+export const METADATA_FIELDS = [
+  {
+    label: 'description',
+    pattern: /<meta name="description" content="([^"]*)"/g,
+  },
+  { label: 'canonical', pattern: /<link rel="canonical" href="([^"]*)"/g },
+  {
+    label: 'og:title',
+    pattern: /<meta property="og:title" content="([^"]*)"/g,
+  },
+  {
+    label: 'og:description',
+    pattern: /<meta property="og:description" content="([^"]*)"/g,
+  },
+  { label: 'og:url', pattern: /<meta property="og:url" content="([^"]*)"/g },
+];
+
+/**
  * Strings that must not appear in build output. These are provenance or
  * licensing regressions, not legitimate documentation content.
  *
@@ -64,6 +103,26 @@ export const FORBIDDEN_PATTERNS = [
   { pattern: 'reshaped', reason: 'proprietary design system' },
   { pattern: '@vercel/', reason: 'Vercel telemetry package' },
   { pattern: 'vercel.com', reason: 'Vercel deployment host' },
+];
+
+/**
+ * Hard-coded framework metadata that must not survive into the export.
+ *
+ * Nextra 2's docs theme injects these unless the theme config replaces its
+ * default `head`. They are not provenance problems, but they are wrong
+ * attribution and, in the case of `description`, they override the page's own
+ * description.
+ */
+export const FORBIDDEN_ATTRIBUTION = [
+  { pattern: '@shuding_', reason: 'Nextra theme author attribution' },
+  {
+    pattern: 'Nextra: the next docs builder',
+    reason: 'Nextra theme default description',
+  },
+  {
+    pattern: 'apple-mobile-web-app-title" content="Nextra',
+    reason: 'Nextra theme default app title',
+  },
 ];
 
 /** Local reference prefixes that are expected to stay outside `BASE_PATH`. */
@@ -129,6 +188,74 @@ export function extractCssUrls(css) {
   return urls;
 }
 
+/** Any attribute string beginning with `href="` and naming a fragment. */
+export const FRAGMENT_HREF_PATTERN = /(?:href|src)="([^"]*#[^"]*)"/g;
+
+/**
+ * Extracts every in-site link that carries a `#fragment`.
+ *
+ * Returns `{ route, fragment }` pairs, where `route` is the site-absolute path
+ * the fragment applies to (`'/gqty/concepts/'` for both `/gqty/concepts/#x`
+ * and a bare `#x` on that page).
+ */
+export function extractFragmentLinks(html, pageRoute) {
+  /** @type {Array<{ route: string, fragment: string }>} */
+  const links = [];
+
+  for (const match of html.matchAll(FRAGMENT_HREF_PATTERN)) {
+    const value = match[1];
+    if (value.startsWith('//')) continue;
+
+    const [path, fragment] = value.split('#');
+    if (!fragment) continue;
+
+    if (path === '') {
+      links.push({ route: pageRoute, fragment });
+      continue;
+    }
+
+    if (!path.startsWith('/')) continue;
+    const route =
+      path === BASE_PATH || path === `${BASE_PATH}/`
+        ? `${BASE_PATH}/`
+        : path.endsWith('/')
+          ? path
+          : path;
+    links.push({ route, fragment });
+  }
+
+  return links;
+}
+
+/**
+ * Collects the element `id` values and heading anchor names a page exposes.
+ *
+ * Nextra renders markdown headings as `<a class="subheading-anchor" href="#x"
+ * id="x">` anchors and list headings as `id="x"`, so ids alone cover both.
+ */
+export function extractAnchorIds(html) {
+  const ids = new Set();
+  for (const match of html.matchAll(/\sid="([^"]+)"/g)) {
+    ids.add(match[1]);
+  }
+  return ids;
+}
+
+/** Reads the route a page file belongs to, as used in canonical URLs. */
+export function routeFromExportFile(rel) {
+  const normalized = rel.replaceAll('\\', '/');
+  if (normalized === 'index.html') return `${BASE_PATH}/`;
+  if (normalized.endsWith('/index.html')) {
+    return `${BASE_PATH}/${normalized.slice(0, -'index.html'.length)}`;
+  }
+  return `${BASE_PATH}/${normalized}`;
+}
+
+/** Reads every occurrence of a field's capture group. */
+export function extractMetadataValues(html, pattern) {
+  return [...html.matchAll(pattern)].map((match) => match[1]);
+}
+
 async function exists(path) {
   try {
     await access(path, constants.F_OK);
@@ -161,6 +288,73 @@ export function checkInternalReference(value) {
 }
 
 /**
+ * Validates the exported Nextra search index.
+ *
+ * The theme loads `nextra-data-<locale>.json` from
+ * `<basePath>/_next/static/chunks/`, builds one result URL per index key, and
+ * renders each result through `next/link`, which applies `basePath` itself.
+ * A key therefore has to be unprefixed: a prefixed key resolves to
+ * `/gqty/gqty/...` once the link is rendered.
+ */
+export async function checkSearchIndex(outDir) {
+  const failures = [];
+  const chunksDir = join(outDir, '_next', 'static', 'chunks');
+
+  const entries = await readdir(chunksDir).catch(() => []);
+  const indexFiles = entries.filter(
+    (name) => name.startsWith('nextra-data-') && name.endsWith('.json')
+  );
+
+  if (indexFiles.length === 0) {
+    failures.push('search index not found in the export');
+    return failures;
+  }
+
+  for (const name of indexFiles) {
+    const raw = await readFile(join(chunksDir, name), 'utf8').catch(() => '');
+
+    let data;
+    try {
+      data = JSON.parse(raw);
+    } catch {
+      failures.push(`search index ${name} is not valid JSON`);
+      continue;
+    }
+
+    const routes = Object.keys(data);
+    if (routes.length === 0) {
+      failures.push(`search index ${name} is empty`);
+      continue;
+    }
+
+    for (const route of routes) {
+      if (route.startsWith(`${BASE_PATH}/`) || route === BASE_PATH) {
+        failures.push(
+          `search index route is already base-prefixed and would double-prefix: ${route}`
+        );
+        continue;
+      }
+
+      if (!route.startsWith('/')) {
+        failures.push(`search index route is not site-absolute: ${route}`);
+        continue;
+      }
+
+      // This is the URL the theme builds, before `next/link` adds basePath.
+      const themeUrl = `${BASE_PATH}${route}`;
+      const candidates = resolveExportPath(outDir, themeUrl);
+      if (!candidates || !(await pathExistsAny(candidates))) {
+        failures.push(
+          `search index route does not resolve after basePath: ${route} -> ${themeUrl}`
+        );
+      }
+    }
+  }
+
+  return failures;
+}
+
+/**
  * Runs every check against an export directory.
  *
  * @param {string} outDir
@@ -177,6 +371,17 @@ export async function checkExport(outDir) {
   }
 
   const files = await listFiles(outDir);
+
+  /** Anchor ids per exported route, so fragment links can be validated. */
+  const anchorIds = new Map();
+  for (const file of files) {
+    if (!file.endsWith('.html')) continue;
+    const rel = relative(outDir, file);
+    anchorIds.set(
+      routeFromExportFile(rel),
+      extractAnchorIds(await readFile(file, 'utf8'))
+    );
+  }
 
   for (const file of files) {
     const rel = relative(outDir, file);
@@ -198,10 +403,68 @@ export async function checkExport(outDir) {
         }
       }
 
+      const fragmentPageRoute = routeFromExportFile(rel);
+      for (const { route, fragment } of extractFragmentLinks(
+        html,
+        fragmentPageRoute
+      )) {
+        if (!route.startsWith(`${BASE_PATH}/`)) continue;
+        const ids = anchorIds.get(route);
+        if (!ids) continue;
+        if (!ids.has(decodeURIComponent(fragment))) {
+          failures.push(
+            `${rel}: fragment does not resolve: ${route}#${fragment}`
+          );
+        }
+      }
+
       for (const { pattern, reason } of FORBIDDEN_PATTERNS) {
         if (html.includes(pattern)) {
           failures.push(`${rel}: contains ${reason} ("${pattern}")`);
         }
+      }
+
+      for (const { pattern, reason } of FORBIDDEN_ATTRIBUTION) {
+        if (html.includes(pattern)) {
+          failures.push(`${rel}: contains ${reason} ("${pattern}")`);
+        }
+      }
+
+      const pageRoute = routeFromExportFile(rel);
+      const enforcesMetadata = !METADATA_EXEMPT_ROUTES.has(pageRoute);
+
+      for (const { label, pattern } of METADATA_FIELDS) {
+        if (!enforcesMetadata) break;
+        const values = extractMetadataValues(html, pattern);
+        if (values.length !== 1) {
+          failures.push(
+            `${rel}: expected exactly one ${label}, found ${values.length}`
+          );
+        }
+      }
+
+      const expectedUrl = `${CANONICAL_ROOT}${pageRoute.slice(BASE_PATH.length)}`;
+
+      const canonical = extractMetadataValues(
+        html,
+        /<link rel="canonical" href="([^"]*)"/g
+      );
+      if (
+        enforcesMetadata &&
+        canonical.length === 1 &&
+        canonical[0] !== expectedUrl
+      ) {
+        failures.push(
+          `${rel}: canonical is ${canonical[0]}, expected ${expectedUrl}`
+        );
+      }
+
+      const ogUrl = extractMetadataValues(
+        html,
+        /<meta property="og:url" content="([^"]*)"/g
+      );
+      if (enforcesMetadata && ogUrl.length === 1 && ogUrl[0] !== expectedUrl) {
+        failures.push(`${rel}: og:url is ${ogUrl[0]}, expected ${expectedUrl}`);
       }
     }
 
@@ -224,6 +487,11 @@ export async function checkExport(outDir) {
     }
   }
 
+  const faviconCandidates = resolveExportPath(outDir, FAVICON_PATH);
+  if (!faviconCandidates || !(await pathExistsAny(faviconCandidates))) {
+    failures.push(`favicon is not exported: ${FAVICON_PATH}`);
+  }
+
   const home = await readFile(join(outDir, 'index.html'), 'utf8').catch(
     () => ''
   );
@@ -241,6 +509,8 @@ export async function checkExport(outDir) {
       failures.push(`og:url outside site origin: ${match[1]}`);
     }
   }
+
+  failures.push(...(await checkSearchIndex(outDir)));
 
   return failures;
 }
