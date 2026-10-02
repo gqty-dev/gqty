@@ -11,6 +11,7 @@ import {
   checkExport,
   checkInternalReference,
   checkSearchIndex,
+  countNestedParagraphs,
   extractAnchorIds,
   extractCssUrls,
   extractFragmentLinks,
@@ -196,6 +197,30 @@ test('metadata extraction returns every value, not just the first', () => {
     extractMetadataValues(html, /<meta name="description" content="([^"]*)"/g),
     ['one', 'two']
   );
+});
+
+test('a paragraph inside a paragraph is counted', () => {
+  // The shape MDX emits for an explicit `<p>` whose text spans lines: the
+  // author's paragraph ends up wrapping a Markdown paragraph. Browsers cannot
+  // represent this, repair the tree while parsing, and React then fails
+  // hydration with a server/client mismatch.
+  const html =
+    '<p class="route-card__text"><p class="nx-mt-6 nx-leading-7">For React compatible UI frameworks.</p></p>';
+
+  assert.equal(countNestedParagraphs(html), 1);
+});
+
+test('sibling paragraphs and non-paragraph nesting are not counted', () => {
+  assert.equal(countNestedParagraphs('<p>a</p><p>b</p>'), 0);
+  assert.equal(countNestedParagraphs('<p><img src="x"><br>a</p><p>b</p>'), 0);
+  assert.equal(countNestedParagraphs('<div><p>a</p><p>b</p></div>'), 0);
+  assert.equal(countNestedParagraphs('<p>a</p></p><p>b</p>'), 0);
+  assert.equal(countNestedParagraphs(''), 0);
+});
+
+test('every nested paragraph is counted, not just the first', () => {
+  assert.equal(countNestedParagraphs('<p><p>x</p></p><p><p>y</p></p>'), 2);
+  assert.equal(countNestedParagraphs('<p><p><p>x</p></p></p>'), 2);
 });
 
 test('a healthy export passes every check', async () => {
@@ -566,6 +591,72 @@ test('documentation prose about GraphQL and SSR is not treated as a runtime fail
 
   try {
     assert.deepEqual(await failuresIgnoringRoutes(dir), []);
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
+});
+
+test('an export carrying a nested paragraph is reported', async () => {
+  // The regression this guards: an explicit `<p>` in MDX whose text spans
+  // lines is re-parsed as Markdown, so `getting-started` exported
+  // `<p class="route-card__text"><p class="nx-mt-6">…</p></p>`. The browser
+  // repairs the impossible tree while parsing, and React reports a 418/423
+  // hydration mismatch because its client markup no longer matches.
+  const dir = await makeExport({
+    'index.html': pageMetadata(`${CANONICAL_ROOT}/`),
+    'getting-started/index.html': [
+      pageMetadata(`${CANONICAL_ROOT}/getting-started/`),
+      '<div class="route-cards">',
+      '<p class="route-card__text">',
+      '<p class="nx-mt-6 nx-leading-7 first:nx-mt-0">For React compatible UI frameworks.</p>',
+      '</p>',
+      '</div>',
+    ].join(''),
+    '_next/static/chunks/nextra-data-en-US.json': JSON.stringify({
+      '/': { title: 'Index' },
+    }),
+    'favicon.ico': 'icon',
+  });
+
+  try {
+    const failures = await failuresIgnoringRoutes(dir);
+    assert.ok(
+      failures.some((failure) =>
+        failure.includes(
+          'getting-started/index.html: contains 1 paragraph element(s) nested inside a paragraph'
+        )
+      ),
+      `expected a nested-paragraph failure, got: ${failures.join('; ')}`
+    );
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
+});
+
+test('an export whose paragraphs are all siblings passes the paragraph check', async () => {
+  const dir = await makeExport({
+    'index.html': pageMetadata(`${CANONICAL_ROOT}/`),
+    'getting-started/index.html': [
+      pageMetadata(`${CANONICAL_ROOT}/getting-started/`),
+      '<div class="route-cards">',
+      '<p class="route-card__text">A single-line paragraph renders as text.</p>',
+      '<p class="route-card__text">For React compatible UI frameworks.</p>',
+      '</div>',
+    ].join(''),
+    '_next/static/chunks/nextra-data-en-US.json': JSON.stringify({
+      '/': { title: 'Index' },
+    }),
+    'favicon.ico': 'icon',
+  });
+
+  try {
+    const failures = await failuresIgnoringRoutes(dir);
+    assert.deepEqual(
+      failures.filter((failure) =>
+        failure.includes('nested inside a paragraph')
+      ),
+      []
+    );
   } finally {
     await rm(dir, { recursive: true, force: true });
   }

@@ -10,6 +10,7 @@
  *   - per-page metadata that is missing, duplicated, or not the page's own URL
  *   - search-index routes that would resolve somewhere other than the export
  *   - expired-domain, proprietary-CSS, or build-time-secret assumptions
+ *   - paragraph elements nested inside a paragraph
  *   - responsive layout guards (see `check-layout.mjs`)
  *
  * Nothing here executes the site or talks to the network.
@@ -252,6 +253,42 @@ export function extractAnchorIds(html) {
   return ids;
 }
 
+/**
+ * Finds `<p>` elements opened inside another `<p>`.
+ *
+ * An explicit JSX `<p>` in MDX whose child text is written across lines is
+ * re-parsed as Markdown, so the author's `<p>` ends up wrapping a framework
+ * paragraph: `<p class="author"><p class="markdown">text</p></p>`. The
+ * browser cannot represent that, so it repairs the tree while parsing, and
+ * React fails hydration with a 418/423 mismatch because the server and client
+ * markup disagree.
+ *
+ * `p` cannot nest in HTML at all, so any unclosed `<p>` start tag reached
+ * while another `<p>` is open is a defect rather than a formatting choice.
+ * The scan is a flat walk over start/end tags: HTML void elements
+ * (`<img>`, `<br>`, `<hr>`, …) are ignored because a `<p>` after them is a
+ * sibling, and only `<p>` open/close tags are tracked, so intervening markup
+ * such as the `<a>` and `<h3>` of a route card does not end the enclosing run.
+ *
+ * @param {string} html raw exported markup
+ * @returns {number} how many nested `<p>` elements were found
+ */
+export function countNestedParagraphs(html) {
+  let depth = 0;
+  let nested = 0;
+
+  for (const match of html.matchAll(/<\/?p(?:\s|\/|>)/gi)) {
+    if (match[0].startsWith('</')) {
+      if (depth > 0) depth -= 1;
+      continue;
+    }
+    if (depth > 0) nested += 1;
+    depth += 1;
+  }
+
+  return nested;
+}
+
 /** Reads the route a page file belongs to, as used in canonical URLs. */
 export function routeFromExportFile(rel) {
   const normalized = rel.replaceAll('\\', '/');
@@ -439,6 +476,14 @@ export async function checkExport(outDir) {
         if (html.includes(pattern)) {
           failures.push(`${rel}: contains ${reason} ("${pattern}")`);
         }
+      }
+
+      const nestedParagraphs = countNestedParagraphs(html);
+      if (nestedParagraphs > 0) {
+        failures.push(
+          `${rel}: contains ${nestedParagraphs} paragraph element(s) nested inside a paragraph; ` +
+            'an explicit <p> in MDX whose text spans lines is re-parsed as Markdown'
+        );
       }
 
       const pageRoute = routeFromExportFile(rel);

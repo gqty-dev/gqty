@@ -78,8 +78,14 @@ fetching component!
       />
     </div>
     <h3 className="route-card__title">React</h3>
+    {/* The text is an explicit JSX expression, not bare multiline text:
+        MDX re-parses multiline text inside an author <p> as Markdown and
+        wraps it in a second <p>, producing <p><p>text</p></p>, which the
+        browser repairs at parse time and React then reports as a 418/423
+        hydration mismatch. Keep this as an expression so Prettier also
+        cannot reformat it back into bare text. */}
     <p className="route-card__text">
-      For React compatible UI frameworks, such as Next.js, React and Preact.
+      {'For React compatible UI frameworks, such as Next.js, React and Preact.'}
     </p>
   </Link>
   <Link className="route-card" href="/guides/core/resolve">
