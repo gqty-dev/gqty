@@ -291,9 +291,8 @@
 
 ### Minor Changes
 
-- dd47986: New option `"fetchOptions"`, added to the
-  [`resolved`](https://gqty.dev/docs/client/fetching-data#resolved) client
-  function, that allows for giving extra configurations to the expected
+- dd47986: New option `"fetchOptions"`, added to the `resolved` client function,
+  that allows for giving extra configurations to the expected
   [fetch](https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API) call.
 
   This enables, for example, the customization of the headers sent for a
