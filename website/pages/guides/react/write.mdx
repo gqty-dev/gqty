@@ -1,0 +1,147 @@
+import Alert from "/components/Reshaped/Alert";
+
+# Sending Mutations
+
+Mutations are created via the `useMutation()` hook.
+
+Think of `useMutation()` as a specialized version of `useQuery()`, where queries
+do not immediately trigger upon render, instead you invoke mutations in response
+to user interactions.
+
+```graphql filename="schema.graphql"
+type Mutation {
+  updateProfile(name: String!): User!
+}
+```
+
+```tsx {7,15} filename="src/ProfileEdit.tsx"
+import { useMutation } from "../gqty";
+
+export default function ProfileEdit() {
+  const [updateProfile, { isLoading }] = useMutation((mutation, inputs) => {
+    const user = mutation.updateProfile(inputs);
+
+    user.id; // Don't forget to make selections
+  });
+
+  return (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+
+        await updateProfile({ newName: e.target.name.value });
+      }}
+    >
+      {/* form fields skipped for brevity */}
+    </form>
+  );
+}
+```
+
+<Alert className="mt-5" severity="info" title="Don't forget to make selections">
+  Mutations will not fire if you stop at `updateProfile()` for it is an
+  incomplete GraphQL query, at least select one field.
+</Alert>
+
+## Fragments
+
+**Fragments** is an important concept in GraphQL, they are especially emphasized
+in Relay. It declares reusable units in GraphQL for shared use amongst
+components, while retaining the ability to be combined into one single fetch.
+
+In GQty you enjoy the same benefit without having to manage fragments yourself,
+individual selections are managed and combined automatically while rendering.
+
+See how to reuse the selection function from a related query components below.
+
+```tsx {2,8} filename="src/ProfileEdit.tsx"
+import { useMutation } from "../gqty";
+import { prepare } from "./Profile";
+
+export default function ProfileEdit() {
+  const [updateProfile, { isLoading }] = useMutation((mutation, inputs) => {
+    const user = mutation.updateProfile(inputs);
+
+    prepare(user); // Reuse the same `prepare` function from queries
+  });
+
+  return (
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+
+        await updateProfile({ newName: e.target.name.value });
+      }}
+    >
+      {/* form fields skipped for brevity */}
+    </form>
+  );
+}
+```
+
+## Optimistic Updates
+
+Optimistic updates in GQty is as simple as value assignments.
+
+```tsx
+user.name = newName;
+```
+
+Remember that you are directly interacting with the cache, GQty is managing
+selections on the side and nothing is stopping you from changing cached values.
+
+You may even use `Object.assign()` to perform optimistic update on the whole
+object.
+
+```tsx
+Object.assign(user, {
+  firstName: firstName,
+  lastName: lastName
+  email: newEmail,
+});
+```
+
+This chart shows the flow of data when performing optimistic updates.
+
+```mermaid
+graph LR
+  B(ProfileEdit.tsx) -- optimistic update --> C((Cache))
+  B -- fetch --> D((Server))
+  C -- update --> A(Profile.tsx)
+  D -- update --> C
+```
+
+<Alert className="mt-5" title="Always refetch on errors">
+  Successful mutations will overwrite your changes with new data, while failed
+  mutations leaves the cache as-is. You should always refetch on failure to
+  reflect the current state of data.
+</Alert>
+
+## Refetching
+
+Sometimes it is more convenient to simply refetch a few related queries rather
+than meticulously craft shared components to ensure cache updates are correctly
+propagating through normalized objects.
+
+Post-mutation refetching can be done via `onError()` and `onComplete()` options.
+
+For `onComplete()`, you may return a promise to have the mutation hold on the
+loading state until your refetch is complete.
+
+```tsx filename="src/ProfileEdit.tsx"
+import { resolve, useMutation } from "../gqty";
+import { prepare } from "./Profile";
+
+export default function Component() {
+  const [mutation, { isLoading }] = useMutation({
+    async onComplete() {
+      await resolve(({ query: { me } }) => prepare(me), {
+        cachePolicy: "no-cache",
+      });
+    },
+  });
+}
+```
+
+Due to the imperative nature of such callbacks, the core function `resolve`
+should be used in place of hooks.

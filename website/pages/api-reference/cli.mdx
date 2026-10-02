@@ -1,0 +1,103 @@
+import Alert from "/components/Reshaped/Alert";
+import { Tab, Tabs } from "nextra-theme-docs";
+
+# CLI
+
+<Alert
+  className="mt-5"
+  severity="info"
+  title="You don't need to read this section, unless..."
+  >
+
+1. You are curious
+1. We missed something in the interactive setup
+   [seriously, let us know!](https://github.com/gqty-dev/gqty/issues/new)
+1. You are a devOp or a sysadmin
+
+</Alert>
+
+## Basic Usage
+
+<Tabs items={["npm", "yarn", "pnpm"]}>
+  <Tab>
+
+    ```bash copy
+    > npx @gqty/cli [options] [endpoint...]
+    ```
+
+  </Tab>
+  <Tab>
+
+    ```bash copy
+    > yarn dlx @gqty/cli [options] [endpoint...]
+    ```
+
+  </Tab>
+
+  <Tab>
+
+    ```bash copy
+    > pnpm dlx @gqty/cli [options] [endpoint...]
+    ```
+
+  </Tab>
+</Tabs>
+
+## Options
+
+### `-H`, `--header`
+
+Add custom header during introspection, useful when your endpoint requires
+authentication.
+
+```bash copy
+> npx @gqty/cli -H "Authorization: Bearer <token>"
+```
+
+### `--react`
+
+Forces React client generation regardless if you are using it.
+
+Defaults to `true` if `react` is found in the dependencies in your
+`package.json`, `false` otherwise.
+
+### `--subscriptions`
+
+Initialize a subscription client during code generation.
+
+You may also specify `--subscriptions=graphql-sse` if your GraphQL server uses
+Server Side Events for subscriptions.
+
+Defaults to `graphql-ws` if subscriptions are found during introspection,
+otherwise subscription client will be skipped.
+
+### `--target`
+
+Target path for the generated client.
+
+Client generation will be skipped if target file already exists. To regenerate
+the client, delete your existing one or specify a new target.
+
+You may specify a value as the path target for the generated client, e.g.
+`--target=gqty/client.generated.ts`.
+
+A schema file `schema.generated.ts` will also be generated in the same
+directory, running this command will always regenerate this schema file.
+
+Defaults to `gqty/index.ts`.
+
+### `--typescript`
+
+Forces a TypeScript client to be generated over a JavaScript one.
+
+Defaults to `true` if `typescript` is found in the dependencies in your
+`package.json`.
+
+### `-w`, `--watch`
+
+Watches for changes in specified endpoints, regenerates the schema when changes
+are detected.
+
+URL endpoints will be polled with a dynamic interval derived as a running
+average of the last few regeneration, this prevents hanging up the machine when
+working with huge schemas.

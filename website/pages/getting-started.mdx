@@ -1,0 +1,94 @@
+import { Tabs, View } from "reshaped/bundle";
+import Alert from "/components/Reshaped/Alert";
+import Image from "next/image";
+import Link from "next/link";
+
+# Quickstart
+
+To start using GQty, run `@gqty/cli` with your favourite packager.
+
+<Alert className="mt-5 mb-3" severity="success" title="Even Quicker Start!">
+  Run the following command with your endpoint as an argument to skip the
+  interactive setup and jump right in!
+</Alert>
+
+<Tabs>
+  <View paddingBottom={3}>
+    <Tabs.List>
+      <Tabs.Item value="1">npm</Tabs.Item>
+      <Tabs.Item value="2">yarn</Tabs.Item>
+      <Tabs.Item value="3">pnpm</Tabs.Item>
+    </Tabs.List>
+  </View>
+
+  <Tabs.Panel value="1">
+
+```bash copy
+> npx @gqty/cli
+```
+
+  </Tabs.Panel>
+  <Tabs.Panel value="2">
+
+```bash copy
+> yarn dlx @gqty/cli
+```
+
+  </Tabs.Panel>
+  <Tabs.Panel value="3">
+
+```bash copy
+> pnpm dlx @gqty/cli
+```
+
+  </Tabs.Panel>
+</Tabs>
+
+After the interactive setup, you should now see these files in your project:
+
+```
+.
+├─ gqty
+│ ├─ index.ts
+│ └─ schema.generated.ts
+└─ gqty.config.ts
+
+```
+
+You are all set! Head over to one of the following section to create your first
+fetching component!
+
+<div className="mt-5 grid gap-4 grid-cols(1 lg:2) w-full">
+  <Link
+    className="inline-block rounded-lg border(& neutral) bg(neutral-faded hover:neutral) p-5"
+    href="/guides/react/read"
+  >
+    <div className="flex gap-2 flex-row">
+      <Image width={36} height={36} src="/logo/nextjs.svg" />
+      <Image width={36} height={36} src="/logo/react.svg" />
+      <Image width={36} height={36} src="/logo/preact.svg" />
+    </div>
+    <h3 className="mt-2 text-lg font-bold">React</h3>
+    <p>
+      For React compatible UI frameworks, such as Next.js, React and Preact.
+    </p>
+  </Link>
+  <Link
+    className="inline-block rounded-lg border(& neutral) bg(neutral-faded hover:neutral) p-5"
+    href="/guides/core/resolve"
+  >
+    <div className="flex gap-2 flex-row">
+      <Image width={36} height={36} src="/logo/svelte.svg" />
+      <Image width={36} height={36} src="/logo/astro.svg" />
+      <Image width={36} height={36} src="/logo/solid.svg" />
+      <Image width={36} height={36} src="/logo/vue.svg" />
+    </div>
+    <h3 className="mt-2 text-lg font-bold">Core</h3>
+    <p>A framework agnostic way to use GQty.</p>
+  </Link>
+</div>
+
+<Alert className="mt-5" severity="info" title="Didn't get what you want?">
+  Head over to [configuration](/api-reference/configuration) or
+  [cli](/api-reference/cli) for more options!
+</Alert>

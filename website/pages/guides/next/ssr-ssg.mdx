@@ -1,0 +1,93 @@
+import Alert from "/components/Reshaped/Alert";
+
+# SSR & SSG
+
+GQty handles Server Side Rendering (SSR) and Static Site Generation (SSG) out of
+the box. Although these two concepts differs a little bit in Next.js, data
+fetching in GQty is very much the same thing.
+
+When fetching data at server side, you use `prepareReactRender` and
+`useHydrateCache`.
+
+The following example shows a simple page in Next.js 13.
+
+```tsx filename="pages/user/[id].tsx"
+import { type FC } from "react";
+import { type PropsWithServerCache } from "@gqty/react";
+import { useRouter } from "next/router";
+import { prepareReactRender, useHydrateCache, useQuery } from "../gqty";
+
+type Props = PropsWithServerCache<{
+  // Other page props here.
+}>;
+
+// For SSR, just use `getServerSideProps` instead of `getStaticProps`.
+export const getStaticProps = async (context) => {
+  const { cacheSnapshot } = await prepareReactRender(
+    <UserProfile id={context.params.id} />
+  );
+
+  return {
+    props: {
+      cacheSnapshot,
+    },
+  };
+};
+
+export default function ProfilePage({ cacheSnapshot }: Props) {
+  const router = useRouter();
+
+  useHydrateCache({ cacheSnapshot });
+
+  return <UserProfile id={router.query.id} />;
+}
+
+const UserProfile: FC<{ id: string }> = ({ id }) => {
+  const user = useQuery().user({ id });
+
+  return (
+    <>
+      <img alt={"Avatar of " + user.name} src={user.profileImage} />
+      <p>{user.name}</p>
+    </>
+  );
+};
+```
+
+<Alert title="Suspense is supported">
+  Under the hood, `prepareReactRender` uses `react-dom/server` since React 18,
+  and [`react-ssr-prepass`](https://github.com/FormidableLabs/react-ssr-prepass)
+  on older versions.
+</Alert>
+
+## Performance Optimization
+
+`prepareReactRender` renders your app twice for data fetching, which is
+necessary without a separate selection function.
+
+When your app has grown out of the period of rapid iteration, it is a good idea
+to start factoring out selection functions and skip the first render.
+
+See [Suspense on Data Fetching](/guides/react/read#suspense-on-data-fetching) on
+how to export a reusable selection function.
+
+```tsx filename="pages/user/[id].tsx"
+import { resolve } from "../gqty";
+import { prepare } from "./components/Profile";
+
+export const getStaticProps = async (context) => {
+  const user = await resolve(({ query: { user } }) =>
+    prepare(user({ id: context.params.id }))
+  );
+
+  return {
+    props: {
+      user,
+    },
+  };
+};
+
+export default function Page({ user }) {
+  // ... Skipped for brevity
+}
+```

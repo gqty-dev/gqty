@@ -1,0 +1,135 @@
+# resolve
+
+The `resolve()` method is a promise interface to make GraphQL queries.
+
+```tsx
+// Return types are customizable in your callback
+const { foo, bar } = await resolve(
+  ({ query }) => {
+    return {
+      foo: query.foo,
+      bar: query
+        // Query with arguments
+        .bar({ baz: 1 })
+        // Array types
+        .map((item) => item.field),
+    };
+  },
+  // Optionally override client options per query
+  {
+    cachePolicy: "no-cache",
+    operationName: "FooBarQuery",
+  }
+);
+```
+
+## Options
+
+### `awaitsFetch`
+
+Depending on the cache policy, fetches may happens depending on the "freshness"
+of cache data accessed in your query function.
+
+Setting this to `true` will have the `resolve()` promise wait for the fetch. For
+a complete Stale-While-Revalidate (SWR) experience, you may disable this option
+and serves what is available in the cache, and handles the fetch result
+separately via the `onFetch()` callback.
+
+Defaults to `true`.
+
+### `cachePolicy`
+
+The cache policy to use for the current query, defaults to `default`. You can
+read more about cache policy options in [Concepts](/concepts#cache-policy).
+
+### `extensions`
+
+A query extension object, carrying extra information to your query fetcher.
+
+```tsx
+await resolve(({ query }) => query.foo, {
+  extensions: {
+    authToken: "Bearer ...",
+  },
+});
+```
+
+```tsx {5,10} filename="gqty/index.ts"
+const queryFetcher = async ({
+  query,
+  variables,
+  operationName,
+  extensions,
+}) => {
+  const repsonse = await fetch("/graphql", {
+    method: "POST",
+    headers: {
+      authorization: extensions?.authToken,
+      "content-type": "application/json",
+    },
+    body: JSON.stringify({
+      query,
+      variables,
+      operationName,
+    }),
+  });
+
+  return await response.json();
+};
+```
+
+### `retryPolicy`
+
+Failing queries can be automatically retried, this option allows you to
+customize the retrying behavior, or disabling it altogether.
+
+| Retry Policy                 | Description                                                                  |
+| :--------------------------- | :--------------------------------------------------------------------------- |
+| `true`                       | Enables auto retry with the default options.                                 |
+| `false`                      | Disables auto retry.                                                         |
+| `number`                     | Enables auto retry with the default options and a custom `maxRetries` count. |
+| `{ maxRetries, retryDelay }` | Enables auto retry with custom options.                                      |
+
+When you specify retryPolicy as an object, the following properties are
+available.
+
+#### `maxRetries`
+
+The maximum number of times to retry a failed query, defaults to `3`.
+
+#### `retryDelay`
+
+| Retry Delay                   | Description                                                                                                                                                   |
+| :---------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `number`                      | A fixed number of milliseconds to wait between retries.                                                                                                       |
+| `(attempt: number) => number` | A function that returns the number of milliseconds to wait between retries, the default is an exponential backoff function: $min({2^x}, 30) * 1000\text{ms}$. |
+
+### `onFetch()`
+
+The `onFetch` callback gives you a promise when a fetch happens.
+
+```tsx
+onFetch?: (fetchPromise: Promise<unknown>) => void;
+```
+
+### `onError()`
+
+The `onError` callback is called when a query fails, and the error is passed to
+the callback instead of being thrown.
+
+```tsx
+onError?: (error: Error) => void;
+```
+
+### `onSelect()`
+
+The `onSelect` callback is called when a selection is made by accessing the
+properties of query objects.
+
+```tsx
+onSelect?: (selection: Selection, cache?: CacheDataContainer) => void;
+```
+
+### `operationName`
+
+GraphQL operation name for this query, useful for debugging and testing.

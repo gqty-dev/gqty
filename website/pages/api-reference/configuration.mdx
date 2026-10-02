@@ -1,0 +1,128 @@
+# Configuration
+
+We aim to minimize the necessity of this page, relying on auto-detection and
+interactive setup for most cases.
+
+If you think your use case is possible without a configuration file, tell us on
+Discord or GitHub!
+
+## Where?
+
+GQty looks for its configurations in these locations, stopping on the first one
+found:
+
+1. A `gqty` property in your `package.json`, or
+1. `.gqtyrc` in JSON or YAML format, or
+1. `.gqtyrc.json`, `.gqtyrc.yaml`, `.gqtyrc.yml`, `.gqtyrc.js` or `.gqtyrc.cjs`,
+   or
+1. files above, but inside `.config/`, or
+1. A `gqty.config.js` or `gqty.config.cjs` CommonJS module exporting an object.
+
+## What?
+
+### `introspections` `<object>`
+
+An object specifying additional information for introspection queries.
+
+```ts
+type Introspections = {
+  [endpoint: string]: {
+    headers?: Record<string, string>;
+  };
+};
+```
+
+For example, you may specify an authorization header like this:
+
+```json filename="package.json"
+{
+  // ... other fields skipped for brevity
+  "gqty": {
+    "introspections": {
+      "https://example.com/graphql": {
+        "headers": {
+          "authorization": "Bearer eyJhbGciOiJIUzI..."
+        }
+      }
+    }
+  }
+}
+```
+
+### `destination` `<string>`
+
+Destination path for the generated client, can be overridden by the CLI option
+`--client`.
+
+Defaults to `./gqty/index.ts`
+
+### `scalarTypes` `<object>`
+
+An object mapping custom GraphQL scalars to TypeScript types, for example:
+
+```ts
+{
+  scalarTypes: {
+    DateTime: "string",
+  },
+}
+```
+
+### `preImport` `<string>`
+
+Custom snippet prepended to the generated schema, useful for custom GraphQL
+scalars or custom types in TypeScript that depends on the generated schema.
+
+### `react` `<boolean>`
+
+Includes a react client during code generation, this adds React hooks to the
+exports. Can be overridden by the `--react` flag.
+
+Defaults to `true` if `react` is found in `dependencies`
+
+### `subscriptions` `<boolean> | <string>`
+
+Includes a subscriptions client during code generation, required when using
+subscriptions in your code. Possible values are:
+
+1. `graphql-ws` - Uses `graphql-ws` as the subscriptions client.
+1. `graphql-sse` - Uses `graphql-sse` as the subscriptions client.
+1. `true` - Deprecated, equals to `graphql-ws`.
+
+Defaults to `graphql-ws` if subscription types are found during introspection.
+
+### `javascriptOutput` `<boolean>`
+
+Generate Javascript code instead of TypeScript.
+
+When enabled, `enumStyle` will be set to `string` regardless of the user
+configuration.
+
+Defaults to `true` if `typescript` is not found in `dependencies`.
+
+### `enumStyle` `<string>`
+
+Dictates generated types for enums, the default is `enum`.
+
+| Value       | Description                                            |
+| ----------- | ------------------------------------------------------ |
+| `assertion` | Generates enums as const assertion objects.            |
+| `const`     | Generates enums as TypeScript enums with const prefix. |
+| `enum`      | Generates enums as normal TypeScript enums.            |
+| `string`    | Generates enums as string unions.                      |
+
+### `transformSchema` `<function>`
+
+Transform the GraphQL Schema before client generation.
+
+```ts
+export interface GenerateOptions {
+  /**
+   * Transform the GraphQL Schema before being used to generate the client
+   */
+  transformSchema?: (
+    schema: GraphQLSchema,
+    graphql_js: typeof graphql
+  ) => Promise<GraphQLSchema> | GraphQLSchema;
+}
+```
