@@ -10,6 +10,7 @@
  *   - per-page metadata that is missing, duplicated, or not the page's own URL
  *   - search-index routes that would resolve somewhere other than the export
  *   - expired-domain, proprietary-CSS, or build-time-secret assumptions
+ *   - responsive layout guards (see `check-layout.mjs`)
  *
  * Nothing here executes the site or talks to the network.
  */
@@ -18,6 +19,8 @@ import { access, readFile, readdir } from 'node:fs/promises';
 import { constants } from 'node:fs';
 import { join, relative, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+
+import { checkLayout } from './check-layout.mjs';
 
 const here = fileURLToPath(new URL('.', import.meta.url));
 const siteRoot = resolve(here, '..');
@@ -519,6 +522,8 @@ export async function checkExport(outDir) {
   }
 
   failures.push(...(await checkSearchIndex(outDir)));
+
+  failures.push(...(await checkLayout(outDir)));
 
   return failures;
 }

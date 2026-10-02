@@ -52,6 +52,19 @@ function pageMetadata(url) {
   ].join('');
 }
 
+/**
+ * The responsive-layout guards the landing page depends on, mirroring the
+ * selectors `checkLayout` asserts. A healthy export fixture must carry them,
+ * otherwise the layout check would report a failure for the fixture itself
+ * rather than for the behaviour under test.
+ */
+const layoutGuards = [
+  '.roadmap__anchor{position:relative;top:-5rem;display:block;grid-column:1/-1;height:0}',
+  '.hero__figure img{max-width:100%;min-width:0;height:auto}',
+  '.usp__media,.usp__panel{position:relative;overflow:hidden}',
+  '.usp__media{width:100%}',
+].join('');
+
 /** A small export that passes every check, with the routes a test cares about. */
 async function makeHealthyExport() {
   const dir = await makeExport({
@@ -59,7 +72,7 @@ async function makeHealthyExport() {
       pageMetadata(`${CANONICAL_ROOT}/`),
       `<a href="${BASE_PATH}/getting-started/">start</a>`,
     ].join(''),
-    '_next/static/site.css': `a{background:url(${BASE_PATH}/logo/gqty.svg)}`,
+    '_next/static/site.css': `a{background:url(${BASE_PATH}/logo/gqty.svg)}${layoutGuards}`,
     '_next/static/chunks/nextra-data-en-US.json': JSON.stringify({
       '/getting-started': { title: 'Quickstart' },
       '/': { title: 'Index' },

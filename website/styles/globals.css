@@ -339,6 +339,7 @@ body {
 
 .hero__figure img {
   max-width: 100%;
+  min-width: 0;
   height: auto;
 }
 
@@ -652,9 +653,13 @@ body {
   width: 100%;
 }
 
+/* The decorative hexagons are positioned beyond the media box on purpose
+ * (`right: -5rem` for the wide one). Clipping at the owning container keeps
+ * that decoration from widening the document on small viewports. */
 .usp__media {
   position: relative;
   width: 100%;
+  overflow: hidden;
 }
 
 .usp__panel {
@@ -811,10 +816,15 @@ body {
 
 /* --- Roadmap ----------------------------------------------------------- */
 
+/* The anchor only exists to offset in-page scrolling to the roadmap heading.
+ * It spans the whole grid track so it cannot consume an auto-placement cell:
+ * otherwise it occupies the first column and pushes the heading/groups into
+ * the narrow aside track. */
 .roadmap__anchor {
   position: relative;
   top: -5rem;
   display: block;
+  grid-column: 1 / -1;
   height: 0;
 }
 

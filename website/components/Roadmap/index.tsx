@@ -19,11 +19,20 @@ type Group = {
  * changed: the previous implementation used the proprietary design system's
  * `View`/`Timeline`/`Progress` primitives.
  *
- * The original markup repeated itself: the section commented `Streaming`
- * carried a second `Fetch DX` heading, `Fetch DX` declared two "in progress"
- * columns, and two "to do" lists repeated entries already shown above. Those
- * duplicates were commented out or duplicated in the source and are rendered
- * exactly once here; no roadmap entry was added or removed.
+ * The original markup repeated itself, so this transcription is not a
+ * one-to-one copy of every rendered entry:
+ *   - the section commented `Streaming` in the source carried a second
+ *     `Fetch DX` heading, so it is kept here under its own `Streaming` title;
+ *   - the original `Fetch DX` group declared two "In Progress" columns, which
+ *     would render two overlapping lanes;
+ *   - a handful of task labels appeared in more than one group
+ *     (`Integration examples Grafbase, Hasura, Svelte...`, `Automatic
+ *     Polling`, `Cache with expiry and SWR`, `Directives`, `Custom Scalars`),
+ *     and the repeated copies were folded into a single occurrence rather
+ *     than shown twice.
+ *
+ * No roadmap entry was invented. Where the source repeated an entry across
+ * groups, the first occurrence was kept.
  */
 const groups: Group[] = [
   // /* GraphQL Functionality */
