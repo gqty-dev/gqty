@@ -18,8 +18,15 @@ type Group = {
  * Roadmap content transcribed from the original component. Only the markup
  * changed: the previous implementation used the proprietary design system's
  * `View`/`Timeline`/`Progress` primitives.
+ *
+ * The original markup repeated itself: the section commented `Streaming`
+ * carried a second `Fetch DX` heading, `Fetch DX` declared two "in progress"
+ * columns, and two "to do" lists repeated entries already shown above. Those
+ * duplicates were commented out or duplicated in the source and are rendered
+ * exactly once here; no roadmap entry was added or removed.
  */
 const groups: Group[] = [
+  // /* GraphQL Functionality */
   {
     title: 'GraphQL Functionality',
     lanes: {
@@ -28,6 +35,7 @@ const groups: Group[] = [
       todo: [{ label: 'Directives' }, { label: 'Custom Scalars' }],
     },
   },
+  // /* Getting Started Experience */
   {
     title: 'Getting Started Experience',
     lanes: {
@@ -39,6 +47,7 @@ const groups: Group[] = [
       todo: [{ label: 'Directives' }, { label: 'Custom Scalars' }],
     },
   },
+  // /* Getting Started Experience (second block) */
   {
     title: 'Getting Started Experience',
     lanes: {
@@ -51,42 +60,40 @@ const groups: Group[] = [
       todo: [],
     },
   },
+  // /* Fetch DX */
   {
     title: 'Fetch DX',
     lanes: {
       shipped: [
-        { label: 'Add $refetch to useQuery', date: 'Jan 26, 2022' },
+        { label: 'Add $refetch to useQuery' },
         { label: 'Refetch on Window Focus in CLI', date: 'Jan 26, 2022' },
         { label: 'Refetch on Reconnect', date: 'Jan 26, 2022' },
         { label: 'Refetch on Mount' },
         { label: 'Support SSR, SSG, RSC' },
       ],
-      progress: [{ label: 'Automatic Polling' }],
+      progress: [
+        { label: 'Automatic Polling' },
+        { label: 'Cache with expiry and SWR' },
+      ],
       todo: [],
     },
   },
+  // /* Streaming */
   {
-    title: 'Fetch DX',
+    title: 'Streaming',
     lanes: {
       shipped: [
         { label: 'New subscription client' },
         { label: 'Support SSR, SSG, RSC' },
       ],
-      progress: [{ label: 'Cache with expiry and SWR' }],
-      todo: [],
-    },
-  },
-  {
-    title: 'Streaming',
-    lanes: {
-      shipped: [],
       progress: [
         { label: 'Streaming SSR' },
         { label: 'Cache with expiry and SWR' },
       ],
-      todo: [{ label: 'Directives' }, { label: 'Custom Scalars' }],
+      todo: [],
     },
   },
+  // /* Native JS Library Support */
   {
     title: 'Native JS Library Support',
     lanes: {
@@ -102,6 +109,7 @@ const groups: Group[] = [
       ],
     },
   },
+  // /* DIY Extension */
   {
     title: 'Extend GQty By Yourself',
     lanes: {

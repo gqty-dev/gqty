@@ -1,0 +1,4 @@
+# Prettier rewrites the Svelte `{#if}` block in this page into invalid HTML:
+# it turns `onClick={() => {}}` into `onClick="{()" =""}`, corrupting the
+# example. The file is kept byte-exact instead. See the comment in the page.
+pages/guides/core/resolve.mdx

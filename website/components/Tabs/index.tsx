@@ -1,12 +1,17 @@
 import {
   Children,
   isValidElement,
+  useCallback,
   useId,
+  useRef,
   useState,
   type FunctionComponent,
+  type KeyboardEvent,
   type ReactElement,
   type ReactNode,
 } from 'react';
+
+import { nextTabIndex } from './keyboard.mjs';
 
 export type TabItemProps = {
   label: string;
@@ -33,10 +38,25 @@ export const Tabs: FunctionComponent<TabsProps> & {
 } = ({ children, initialIndex = 0 }) => {
   const [activeIndex, setActiveIndex] = useState(initialIndex);
   const baseId = useId();
+  const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
 
   const items = Children.toArray(children).filter(
     (child): child is ReactElement<TabItemProps> =>
       isValidElement<TabItemProps>(child) && child.type === TabItem
+  );
+
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent<HTMLButtonElement>) => {
+      const next = nextTabIndex(event.key, activeIndex, items.length);
+      if (next === activeIndex) return;
+
+      // Only keys the tablist claims should be swallowed, so Tab still moves
+      // focus out of the list.
+      event.preventDefault();
+      setActiveIndex(next);
+      tabRefs.current[next]?.focus();
+    },
+    [activeIndex, items.length]
   );
 
   if (items.length === 0) return null;
@@ -51,6 +71,9 @@ export const Tabs: FunctionComponent<TabsProps> & {
             <button
               key={`${baseId}-tab-${index}`}
               id={`${baseId}-tab-${index}`}
+              ref={(element) => {
+                tabRefs.current[index] = element;
+              }}
               type="button"
               role="tab"
               className="tabs__tab"
@@ -58,6 +81,7 @@ export const Tabs: FunctionComponent<TabsProps> & {
               aria-controls={`${baseId}-panel-${index}`}
               tabIndex={selected ? 0 : -1}
               onClick={() => setActiveIndex(index)}
+              onKeyDown={handleKeyDown}
             >
               {item.props.label}
             </button>

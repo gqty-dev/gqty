@@ -8,7 +8,7 @@
     "build": "NEXTRA_STATIC_EXPORT=1 next build",
     "check": "tsc --noEmit",
     "check:export": "node scripts/check-export.mjs",
-    "test": "node --test \"scripts/*.test.mjs\"",
+    "test": "node --test \"scripts/*.test.mjs\" \"components/**/*.test.mjs\"",
     "format": "prettier --write \"**/*.{ts,tsx,mdx,json,css,mjs,js}\"",
     "format:check": "prettier --check \"**/*.{ts,tsx,mdx,json,css,mjs,js}\"",
     "serve": "node scripts/serve-export.mjs"

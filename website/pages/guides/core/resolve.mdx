@@ -273,6 +273,9 @@ more sense to create a long-living subscription via
 
   <Tabs.Item label="SvelteKit">
 
+{/* This page is listed in `.prettierignore`: Prettier rewrites the
+`onClick={() => {}}` braces below into invalid HTML. Edit it by hand. */}
+
 ```html filename="src/routes/profile/+page.svelte"
 <script>
   import { onMount } from "svelte";
@@ -292,7 +295,7 @@ more sense to create a long-living subscription via
 <h1>Profile</h1>
 
 {#if updated}
-<button onClick="{()" ="">{}}>Reload</button>
+  <button onClick={() => {}}>Reload</button>
 {/if}
 ```
 

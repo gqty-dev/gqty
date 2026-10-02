@@ -4,23 +4,31 @@ import Image from 'next/image';
 import React from 'react';
 import Copy from '../Icons/Play/Copy';
 import CheckPink from '../Icons/Play/CheckPing';
-
-function copyToClipboard(textToCopy: string): void {
-  navigator.clipboard
-    .writeText(textToCopy)
-    .then(() => {})
-    .catch((error) => {
-      console.error('Failed to copy text: ', error);
-    });
-}
+import { COPY_FEEDBACK_MS, copyFeedbackReducer } from './copy-feedback.mjs';
 
 export default function HeroSection() {
   const npmCommand = 'npx @gqty/cli';
-  const [copied, setCopied] = React.useState(false);
+  const [feedback, dispatch] = React.useReducer(copyFeedbackReducer, {
+    status: 'idle',
+  });
+
+  React.useEffect(() => {
+    if (feedback.status === 'idle') return;
+
+    // Clearing the message is what lets a repeated copy announce again: an
+    // unchanged live-region string is not re-announced.
+    const timer = setTimeout(
+      () => dispatch({ type: 'reset' }),
+      COPY_FEEDBACK_MS
+    );
+    return () => clearTimeout(timer);
+  }, [feedback.status]);
 
   const handleCopyClick = () => {
-    copyToClipboard(npmCommand);
-    setCopied(true);
+    navigator.clipboard
+      .writeText(npmCommand)
+      .then(() => dispatch({ type: 'copy-settled', ok: true }))
+      .catch(() => dispatch({ type: 'copy-settled', ok: false }));
   };
 
   return (
@@ -78,10 +86,15 @@ export default function HeroSection() {
       </div>
 
       <div className="sr-status" role="status" aria-live="polite">
-        {copied ? (
+        {feedback.status === 'copied' ? (
           <span className="toast__bubble">
             <CheckPink aria-hidden="true" />
             Copied to clipboard
+          </span>
+        ) : null}
+        {feedback.status === 'failed' ? (
+          <span className="toast__bubble">
+            Couldn&rsquo;t copy &mdash; select the command manually
           </span>
         ) : null}
       </div>

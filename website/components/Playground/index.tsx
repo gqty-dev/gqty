@@ -20,7 +20,6 @@ const Playground = () => {
         <div className="playground__glow" aria-hidden="true" />
         <div className="playground__viewport">
           <iframe
-            id="playground"
             src={PLAYGROUND_EMBED_URL}
             title="GQty interactive example on StackBlitz"
             loading="lazy"

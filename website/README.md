@@ -86,8 +86,16 @@ Two consequences are worth knowing before editing:
 Documentation prose is exempt: text that merely mentions GraphQL, SSR,
 `getStaticProps`, or `useRouter` is content, not a runtime dependency.
 
-`scripts/*.test.mjs` (run by `pnpm test`) cover the validator itself with
-focused path, reference, and prefixing cases.
+`pnpm test` runs `node --test` over `scripts/*.test.mjs` and
+`components/**/*.test.mjs`. The script tests cover the validator with focused
+path, reference, fragment, metadata, and search-index cases. The component
+tests cover the small pure modules that back the Tabs keyboard interaction and
+the hero copy feedback; there is no React test renderer in this package, so
+the browser-facing wiring of those components is verified by hand instead.
+
+`pages/guides/core/resolve.mdx` is listed in `.prettierignore`. Prettier
+rewrites the Svelte `onClick={() => {}}` braces in that page's example into
+invalid HTML, so the file is kept byte-exact and edited by hand.
 
 ## Provenance
 
