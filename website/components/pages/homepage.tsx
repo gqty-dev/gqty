@@ -16,7 +16,7 @@ const Homepage: NextPage = () => {
     <main>
       <HeroSection />
 
-      <div className="shell shell--center stack stack--xl stack--center">
+      <div className="shell stack stack--xl stack--center">
         <USPRead />
         <USPWrite />
         <Playground />

@@ -291,6 +291,28 @@ the browser-facing wiring of those components is verified by hand instead.
 rewrites the Svelte `onClick={() => {}}` braces in that page's example into
 invalid HTML, so the file is kept byte-exact and edited by hand.
 
+### Hero layout check
+
+Run these inside `website/` (the package is excluded from the root workspace, so
+install and run locally):
+
+```sh
+# one-time browser download for the layout checks
+pnpm exec playwright install chromium
+
+# build the export, then measure the hero at each breakpoint
+pnpm build && pnpm check:hero-layout
+```
+
+`check:hero-layout` is read-only against the hosted site when given a URL. It
+writes screenshots to `HERO_LAYOUT_ARTIFACT_DIR` when one is set:
+
+```sh
+HERO_LAYOUT_URL=https://fix-remove-expired-domain.gqty-preview.pages.dev \
+  HERO_LAYOUT_ARTIFACT_DIR=../.swarm/artifacts/cleanup-local \
+  pnpm check:hero-layout
+```
+
 ## Provenance
 
 This directory began as a **sanitized source import** of the archived website
