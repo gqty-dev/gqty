@@ -265,6 +265,10 @@ body {
   align-items: center;
   gap: var(--space-4);
   padding-block: var(--space-12);
+  padding-inline: max(
+    var(--container-gutter),
+    calc((100% - var(--container-max)) / 2 + var(--container-gutter))
+  );
   text-align: center;
 }
 
@@ -321,6 +325,10 @@ body {
   justify-content: center;
   gap: var(--space-6);
   padding-top: var(--space-10);
+  padding-inline: max(
+    var(--container-gutter),
+    calc((100% - var(--container-max)) / 2 + var(--container-gutter))
+  );
 }
 
 .hero__figure::after {

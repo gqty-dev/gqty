@@ -13,10 +13,10 @@ import USPWrite from './USPWrite';
  */
 const Homepage: NextPage = () => {
   return (
-    <main className="shell shell--center">
+    <main>
       <HeroSection />
 
-      <div className="stack stack--xl stack--center">
+      <div className="shell shell--center stack stack--xl stack--center">
         <USPRead />
         <USPWrite />
         <Playground />
