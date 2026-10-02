@@ -104,9 +104,13 @@ test('internal reference check accepts the base path and rejects root-absolute p
   );
 });
 
-test("internal reference check allows the framework's own root preconnect", () => {
+test('internal reference check allows the framework root preconnect but not root-absolute assets', () => {
   assert.equal(checkInternalReference('/'), undefined);
-  assert.equal(checkInternalReference('/favicon.ico'), undefined);
+  assert.equal(
+    checkInternalReference('/favicon.ico'),
+    `internal reference escapes ${BASE_PATH}: /favicon.ico`
+  );
+  assert.equal(checkInternalReference(`${BASE_PATH}/favicon.ico`), undefined);
 });
 
 test('directory-backed route resolution maps to index.html', () => {
@@ -450,8 +454,11 @@ test('a broken local link is reported', async () => {
 });
 
 test('an expired-domain reference is reported', async () => {
+  // Built the same way as the detector's own pattern, so this fixture does not
+  // reintroduce the expired domain as a literal in the repository.
+  const href = `https://${['gqty', 'dev'].join('.')}/`;
   const dir = await makeExport({
-    'index.html': '<a href="https://gqty.dev/">docs</a>',
+    'index.html': `<a href="${href}">docs</a>`,
   });
 
   try {

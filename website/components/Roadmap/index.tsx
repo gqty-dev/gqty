@@ -136,7 +136,7 @@ export type Props = {
 
 const Roadmap: FunctionComponent<Props> = () => {
   return (
-    <section className="roadmap-grid" aria-labelledby="roadmap">
+    <section className="roadmap-grid" aria-labelledby="roadmap-heading">
       <a className="roadmap__anchor" id="roadmap" aria-hidden="true" />
 
       <div>

@@ -97,7 +97,9 @@ export const METADATA_FIELDS = [
  * deliberately absent from this list.
  */
 export const FORBIDDEN_PATTERNS = [
-  { pattern: 'gqty.dev', reason: 'expired domain' },
+  // Written as a join so that this file does not itself contain the expired
+  // domain as a literal. The detector above still matches it in build output.
+  { pattern: ['gqty', 'dev'].join('.'), reason: 'expired domain' },
   { pattern: 'GQty-Website', reason: 'archived source repository' },
   { pattern: 'GITHUB_PAT', reason: 'build-time secret' },
   { pattern: 'reshaped', reason: 'proprietary design system' },
@@ -125,8 +127,14 @@ export const FORBIDDEN_ATTRIBUTION = [
   },
 ];
 
-/** Local reference prefixes that are expected to stay outside `BASE_PATH`. */
-const ALLOWED_ROOT_REFERENCES = new Set(['/', '/favicon.ico']);
+/**
+ * The framework emits one root-absolute reference of its own: a font
+ * `preconnect` to `/`. It is not a navigable asset, so it is exempt from the
+ * escape check. Every other root-absolute reference — including
+ * `/favicon.ico`, which the theme emits base-prefixed — must stay under
+ * `BASE_PATH`.
+ */
+const ALLOWED_ROOT_REFERENCES = new Set(['/']);
 
 export async function listFiles(dir) {
   /** @type {string[]} */
