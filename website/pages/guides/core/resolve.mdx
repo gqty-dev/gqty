@@ -1,5 +1,5 @@
-import { Tabs, View } from "reshaped/bundle";
-import Alert from "/components/Reshaped/Alert";
+import Tabs from '/components/Tabs';
+import Alert from '/components/Reshaped/Alert';
 
 # `resolve()` - The Promise Interface
 
@@ -33,18 +33,11 @@ type Image {
 We can then construct our query like this:
 
 <Tabs>
-  <View paddingTop={5} paddingBottom={3}>
-    <Tabs.List>
-      <Tabs.Item value="pure">No Framework</Tabs.Item>
-      <Tabs.Item value="rsc">Next.js (Server Components)</Tabs.Item>
-      <Tabs.Item value="svelte">SvelteKit</Tabs.Item>
-    </Tabs.List>
-  </View>
 
-<Tabs.Panel value="pure">
+<Tabs.Item label="No Framework">
 
 ```tsx
-import { resolve } from "~/gqty";
+import { resolve } from '~/gqty';
 
 const data = await resolve(
   ({
@@ -60,12 +53,12 @@ const data = await resolve(
 );
 ```
 
-</Tabs.Panel>
+</Tabs.Item>
 
-  <Tabs.Panel value="rsc">
+  <Tabs.Item label="Next.js (Server Components)">
 
 ```tsx filename="app/profile/Profile.tsx"
-import { resolve } from "~/gqty";
+import { resolve } from '~/gqty';
 
 export default async function Profile() {
   const data = await resolve(
@@ -87,12 +80,12 @@ export default async function Profile() {
 
 Read more about Server Components in our [dedicated page](/guides/next/rsc).
 
-  </Tabs.Panel>
+  </Tabs.Item>
 
-  <Tabs.Panel value="svelte">
+  <Tabs.Item label="SvelteKit">
 
 ```js filename="src/routes/profile/+page.js"
-import { resolve } from "$lib/gqty";
+import { resolve } from '$lib/gqty';
 
 /** @type {import('./$types').PageLoad} */
 export async function load({ params }) {
@@ -115,7 +108,7 @@ export async function load({ params }) {
 }
 ```
 
-  </Tabs.Panel>
+  </Tabs.Item>
 </Tabs>
 
 ### Customizing responses
@@ -124,7 +117,7 @@ You may customize the response object by returning a new object from the
 selection function.
 
 ```tsx {4}
-import { resolve } from "~/gqty";
+import { resolve } from '~/gqty';
 
 const data = await resolve(({ query: { me } }) => ({
   fullName: `${me.firstName} ${me.lastName}`,
@@ -138,7 +131,7 @@ a GraphQL query as possible. But when the query includes arguments, you should
 instead bring it down to the function body.
 
 ```tsx
-import { resolve } from "~/gqty";
+import { resolve } from '~/gqty';
 
 const selectUser = (user: User) => ({
   id: user.id,
@@ -169,48 +162,41 @@ type Mutation {
 ```
 
 <Tabs>
-  <View paddingTop={5} paddingBottom={3}>
-    <Tabs.List>
-      <Tabs.Item value="pure">No Framework</Tabs.Item>
-      <Tabs.Item value="rsa">Next.js (Server Actions)</Tabs.Item>
-      <Tabs.Item value="svelte">SvelteKit</Tabs.Item>
-    </Tabs.List>
-  </View>
 
-  <Tabs.Panel value="pure">
+  <Tabs.Item label="No Framework">
 
 ```tsx filename="updateProfile.ts"
 await resolve(({ mutation }) => {
   const me = mutation.updateProfile({
-    firstName: "John",
-    lastName: "Doe",
+    firstName: 'John',
+    lastName: 'Doe',
   });
 
   return { ...me };
 });
 ```
 
-  </Tabs.Panel>
+  </Tabs.Item>
 
-  <Tabs.Panel value="rsa">
+  <Tabs.Item label="Next.js (Server Actions)">
 
 ```tsx filename="app/profile/update/Form.tsx"
-import { resolve } from "~/gqty";
-import { redirect } from "next/navigation";
+import { resolve } from '~/gqty';
+import { redirect } from 'next/navigation';
 
 async function save(data: FormData) {
-  "use server";
+  'use server';
 
   try {
     await resolve(({ mutation }) => {
       const data = mutation.updateSomething({
-        foo: data.get("bar"),
+        foo: data.get('bar'),
       });
 
       return { ...data };
     });
 
-    redirect("/update-success");
+    redirect('/update-success');
   } catch (e) {
     redirect(`/update-failure?error=${e.message}`);
   }
@@ -220,12 +206,12 @@ async function save(data: FormData) {
 Read more about Server Actions in our
 [dedicated page](/guides/next/rsc#server-actions).
 
-  </Tabs.Panel>
+  </Tabs.Item>
 
-  <Tabs.Panel value="svelte">
+  <Tabs.Item label="SvelteKit">
 
 ```js filename="src/routes/profile/update/+page.server.js"
-import { resolve } from "$lib/gqty";
+import { resolve } from '$lib/gqty';
 
 /** @type {import('./$types').Actions} */
 export const actions = {
@@ -234,8 +220,8 @@ export const actions = {
 
     await resolve(({ mutation }) => {
       const me = mutation.updateProfile({
-        firstName: data.get("firstName"),
-        lastName: data.get("lastName"),
+        firstName: data.get('firstName'),
+        lastName: data.get('lastName'),
       });
 
       return { ...me };
@@ -244,7 +230,7 @@ export const actions = {
 };
 ```
 
-  </Tabs.Panel>
+  </Tabs.Item>
 
 </Tabs>
 
@@ -266,15 +252,8 @@ type Subscription {
 ```
 
 <Tabs>
-  <View paddingTop={5} paddingBottom={3}>
-    <Tabs.List>
-      <Tabs.Item value="pure">No Framework</Tabs.Item>
-      <Tabs.Item value="next">Next.js</Tabs.Item>
-      <Tabs.Item value="svelte">SvelteKit</Tabs.Item>
-    </Tabs.List>
-  </View>
 
-  <Tabs.Panel value="pure">
+  <Tabs.Item label="No Framework">
 
 ```tsx
 const lastUpdatedAt = await resolve(
@@ -282,17 +261,17 @@ const lastUpdatedAt = await resolve(
 );
 ```
 
-  </Tabs.Panel>
+  </Tabs.Item>
 
-  <Tabs.Panel value="next">
+  <Tabs.Item label="Next.js">
 
 In Next.js, rather than waiting for update only once using `resolve`, it makes
 more sense to create a long-living subscription via
 [`useSubscription`](/guides/react/subs) .
 
-  </Tabs.Panel>
+  </Tabs.Item>
 
-  <Tabs.Panel value="svelte">
+  <Tabs.Item label="SvelteKit">
 
 ```html filename="src/routes/profile/+page.svelte"
 <script>
@@ -313,11 +292,11 @@ more sense to create a long-living subscription via
 <h1>Profile</h1>
 
 {#if updated}
-  <button onClick={()=>{}}>Reload</button>
+<button onClick="{()" ="">{}}>Reload</button>
 {/if}
 ```
 
-  </Tabs.Panel>
+  </Tabs.Item>
 
 </Tabs>
 

@@ -1,11 +1,18 @@
-export default function Copy(): JSX.Element {
+import { type SVGProps } from 'react';
+
+export default function Copy({
+  width = 20,
+  height = 20,
+  ...props
+}: SVGProps<SVGSVGElement>): JSX.Element {
   return (
     <svg
-      width="32"
-      height="32"
+      width={width}
+      height={height}
       viewBox="0 0 32 32"
       fill="currentColor"
       xmlns="http://www.w3.org/2000/svg"
+      {...props}
     >
       <path
         d="M24.8714 12.594H16.2774C14.1902 12.594 12.5942 14.19 12.5942 16.2772V24.8712C12.5942 26.9584 14.1902 28.5544 16.2774 28.5544H24.8714C26.9586 28.5544 28.5546 26.9584 28.5546 24.8712V16.2772C28.5546 14.19 26.9586 12.594 24.8714 12.594ZM26.0992 24.8712C26.0992 25.6078 25.6082 26.0988 24.8716 26.0988H16.2776C15.541 26.0988 15.0499 25.6078 15.0499 24.8712V16.2772C15.0499 15.5406 15.541 15.0495 16.2776 15.0495H24.8716C25.6082 15.0495 26.0992 15.5406 26.0992 16.2772V24.8712Z"

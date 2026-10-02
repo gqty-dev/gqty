@@ -1,4 +1,4 @@
-import Alert from "/components/Reshaped/Alert";
+import Alert from '/components/Reshaped/Alert';
 
 # SSR & SSG
 
@@ -12,10 +12,10 @@ When fetching data at server side, you use `prepareReactRender` and
 The following example shows a simple page in Next.js 13.
 
 ```tsx filename="pages/user/[id].tsx"
-import { type FC } from "react";
-import { type PropsWithServerCache } from "@gqty/react";
-import { useRouter } from "next/router";
-import { prepareReactRender, useHydrateCache, useQuery } from "../gqty";
+import { type FC } from 'react';
+import { type PropsWithServerCache } from '@gqty/react';
+import { useRouter } from 'next/router';
+import { prepareReactRender, useHydrateCache, useQuery } from '../gqty';
 
 type Props = PropsWithServerCache<{
   // Other page props here.
@@ -47,7 +47,7 @@ const UserProfile: FC<{ id: string }> = ({ id }) => {
 
   return (
     <>
-      <img alt={"Avatar of " + user.name} src={user.profileImage} />
+      <img alt={'Avatar of ' + user.name} src={user.profileImage} />
       <p>{user.name}</p>
     </>
   );
@@ -72,8 +72,8 @@ See [Suspense on Data Fetching](/guides/react/read#suspense-on-data-fetching) on
 how to export a reusable selection function.
 
 ```tsx filename="pages/user/[id].tsx"
-import { resolve } from "../gqty";
-import { prepare } from "./components/Profile";
+import { resolve } from '../gqty';
+import { prepare } from './components/Profile';
 
 export const getStaticProps = async (context) => {
   const user = await resolve(({ query: { user } }) =>

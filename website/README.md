@@ -1,122 +1,146 @@
-# GQty Website (sanitized source import)
+# GQty Website
+
+Documentation site for GQty. It is a Next.js **Pages Router** application using
+**Nextra 2**, exported as fully static files and served from GitHub Pages at
+<https://gqty-dev.github.io/gqty/>.
+
+This is an independent package. It is **not** a member of the root pnpm
+workspace: it has its own `pnpm-lock.yaml`, and installing or building it must
+not touch the monorepo lockfile.
+
+## Requirements
+
+| Tool    | Version                                      |
+| ------- | -------------------------------------------- |
+| Node.js | 22 or newer (CI uses 22)                     |
+| pnpm    | 10.26.2 (`packageManager` in `package.json`) |
+
+## Commands
+
+Run everything from the repository root so the website stays isolated from the
+monorepo workspace:
+
+```bash
+pnpm --ignore-workspace --dir website install --frozen-lockfile
+pnpm --dir website dev                         # dev server at http://localhost:3000/
+pnpm --dir website check                       # tsc --noEmit
+pnpm --dir website test                        # validator unit tests
+NEXT_TELEMETRY_DISABLED=1 pnpm --dir website build
+pnpm --dir website check:export                # validate out/
+pnpm --dir website serve                       # preview out/ at /gqty/
+pnpm --dir website format:check                # prettier check
+```
+
+`--ignore-workspace` matters for installs: without it pnpm resolves the parent
+monorepo and would run root workspace lifecycle scripts and potentially rewrite
+`pnpm-lock.yaml` at the repository root. It does not affect `dev`, `build`,
+`check`, or `serve`, which only need the installed `node_modules`.
+
+Installs must use `--frozen-lockfile` in CI. The lockfile is committed and is
+the source of truth for the dependency graph.
+
+### Base path
+
+Production builds export under `/gqty`. The dev server does not use a base path,
+so run `pnpm build && pnpm serve` when you need to verify deep links, assets, or
+search behaviour under the real mount point.
+
+`scripts/serve-export.mjs` serves `out/` at `http://localhost:4173/gqty/` and
+returns the exported 404 page for unknown routes.
+
+## Static export notes
+
+`next.config.mjs` sets `output: "export"`, `basePath: "/gqty"`,
+`trailingSlash: true`, and `images.unoptimized: true`.
+
+Two consequences are worth knowing before editing:
+
+1. **`next/image` does not receive the base path.** With image optimization
+   disabled — which static export requires — Next emits the `src` verbatim.
+   Every public asset must therefore go through `asset()` from `lib/asset.ts`.
+   Statically imported images (`import x from "./x.svg"`) already carry the
+   built asset path and are passed through unchanged by the same helper.
+2. **Nextra 2 writes Markdown links without the base path.** A small CSS prefix
+   rule on `.nextra-content` handles those, scoped to the `static-base-path`
+   class that `pages/_document.tsx` emits only for production exports. The
+   exported search index is rewritten separately by
+   `scripts/fix-search-index.mjs`, which runs as part of `pnpm build`.
+
+## Validation
+
+`scripts/check-export.mjs` reads `out/` and asserts:
+
+- every expected route exported to a directory-backed `index.html`
+- no internal `href`, `src`, `srcset`, or CSS `url()` escapes `/gqty/`
+- every local reference resolves to a file in the export
+- canonical and `og:url` metadata stay on the published origin
+- expired-domain, archived-repository, build-time-secret, proprietary design
+  system, and Vercel-telemetry strings are absent
+
+Documentation prose is exempt: text that merely mentions GraphQL, SSR,
+`getStaticProps`, or `useRouter` is content, not a runtime dependency.
+
+`scripts/*.test.mjs` (run by `pnpm test`) cover the validator itself with
+focused path, reference, and prefixing cases.
 
 ## Provenance
 
-This directory is a **sanitized source import** of the GQty website. Upstream
-files were copied from the upstream website repository at a pinned commit, with
-an explicit exclusion allowlist (see below).
+This directory began as a **sanitized source import** of the archived website
+repository. Upstream files were copied at a pinned commit with an explicit
+exclusion allowlist.
 
-No upstream git history was merged and no upstream git objects were fetched.
-The source repository's history is not part of this repository. Note that the
-word "fetched" is precise: copying files and committing them here naturally
-creates *new* git blobs for the copied content. What did not happen is any
-`git fetch`/`git pull` of upstream refs, any history merge, or any import of
-upstream objects into this repository's object database.
+| Field                 | Value                                                              |
+| --------------------- | ------------------------------------------------------------------ |
+| Source repository     | `https://github.com/gqty-dev/GQty-Website`                         |
+| Source commit (main)  | `05c6d604f668b9c4c578622dc13562effa1f5f52`                         |
+| Source commit subject | `fix(deps): update dependency next to ^15.5.27 (#887)`             |
+| Upstream license      | MIT (`LICENSE`, retained verbatim)                                 |
+| Import method         | fresh detached clone at the pinned SHA, explicit file-by-file copy |
 
-| Field | Value |
-| --- | --- |
-| Source repository | `https://github.com/gqty-dev/GQty-Website` |
-| Source commit (main) | `05c6d604f668b9c4c578622dc13562effa1f5f52` |
-| Source commit date | 2026-10-01 |
-| Source commit subject | `fix(deps): update dependency next to ^15.5.27 (#887)` |
-| Import method | fresh detached clone at SHA, explicit file-by-file copy |
-| Upstream license | MIT (`LICENSE` retained verbatim) |
-| Files in this directory | 154 — the 153 copied upstream files plus the newly authored `README.md`. Only the 153 copied files are verbatim.
+No upstream git history was merged and no upstream refs were fetched. Copying
+files and committing them here naturally created **new** git blobs for the
+copied content; what did not happen is any `git fetch` of upstream, any history
+merge, or any import of upstream objects into this repository's object database.
+The archived repository remains the canonical historical record.
 
-## Status: intermediate import, not yet runnable
+The source repository URL above is retained **for provenance only**. Nothing in
+this package builds, deploys, fetches, or links to it at runtime.
 
-This import is an intermediate migration input. It is **not runnable** and
-**not expected to build**. Compatibility work — including replacement of the
-imports listed under "Pending replacement" below — is a separate follow-up
-step and is intentionally out of scope here. No replacement CSS or component
-implementations have been authored yet.
+### Excluded from the import
 
-## Sanitized-import exclusions
+- `node_modules_offline/`, including `reshaped-react-v1.14.0.tgz` — proprietary
+  design system marked `"private": true`; its license prohibits redistribution
+- `reshaped.config.js`, `themes/gqty/theme.css`, `themes/global.css` — Reshaped
+  theme generator input and generated output
+- the upstream `pnpm-lock.yaml` — referenced the proprietary dependency
+- `gqty/index.ts`, `gqty/schema.generated.ts` — generated GitHub GraphQL client
+- `components/USP/`, `components/counters.tsx` — unused
+- `renovate.json`, `.gitpod.yml`, `.vscode/`, `.gitignore`, `.env*` — repository
+  and environment configuration
 
-The following upstream paths were deliberately **not** imported.
+### Replaced during migration
 
-### Proprietary library (licensing blocker)
+- Every Reshaped import (including the two in MDX) was replaced with semantic
+  HTML and project-owned CSS. No design-system stylesheet was copied or bundled.
+- Twind wrappers and the duplicated Tailwind/PostCSS pipeline were removed in
+  favour of one project-owned CSS pipeline (`styles/globals.css` +
+  `postcss.config.js`).
+- The homepage no longer queries the GitHub GraphQL API. `getStaticProps`,
+  `useSSG()`, the generated schema client, and the `GITHUB_PAT` requirement are
+  gone; contributors and sponsorship now appear as stable repository and GitHub
+  Sponsors links without fabricated counts.
+- Vercel Analytics and Speed Insights were removed.
+- The playground iframe is retained: it embeds a third-party StackBlitz example
+  and now also links directly to that project so the feature still works if the
+  embed is blocked.
 
-Upstream depends on the proprietary `reshaped` design system, vendored as
-`node_modules_offline/reshaped-react-v1.14.0.tgz`. That asset is marked
-`"private": true` and its bundled `LICENSE.md` grants use but prohibits
-redistribution. It is not redistributable and is therefore excluded.
+## Design tokens
 
-Excluded on this ground:
+`styles/globals.css` defines the token set before any component styling:
+primitive color, spacing, type, radius, and motion values, then semantic
+aliases, then component classes. Components consume tokens only — there are no
+inline magic values.
 
-- `node_modules_offline/` — including `reshaped-react-v1.14.0.tgz`
-- `pnpm-lock.yaml` — lockfile containing the proprietary dependency
-- `reshaped.config.js` — Reshaped theme generator input
-- `themes/gqty/theme.css` — generated Reshaped theme output
-- `themes/global.css` — a three-line stylesheet that is purely a composition of
-  `@import "tailwindcss"`, `@import "reshaped/bundle.css"` (proprietary), and
-  `@import "./gqty/theme.css"` (generated). It contains no original project
-  stylesheet content, so nothing original was lost by omitting it.
+## License
 
-### Generated content
-
-- `gqty/index.ts` — generated GQty client
-- `gqty/schema.generated.ts` — generated GitHub GraphQL schema client
-
-### Unused or non-migration content
-
-- `components/USP/` (`index.tsx`, `cache.tsx`, `read.tsx`, `outline.tsx`) —
-  unused; the only referencing call site in `components/pages/homepage.tsx` is
-  commented out. Note that `components/pages/USPRead/` and
-  `components/pages/USPWrite/` are **included**: they are distinct, actively
-  used components.
-- `components/counters.tsx`, `components/counters.module.css` — unused
-- `renovate.json` — source repository dependency-automation config
-- `.gitpod.yml`, `.vscode/`, `.gitignore` — editor and environment config
-- `.env*`, `.next`, `out`, `.vercel` — environment and build output (none were
-  present in the source snapshot)
-
-## Included content
-
-- `LICENSE` — upstream MIT license, byte-identical
-- `pages/**` — all MDX documentation, `_meta.json` navigation, `_app.tsx`,
-  `_document.tsx`, `index.mdx`
-- `components/**` — actively used original components, the original Play icon
-  set, contributors/roadmap/member/playground components, and the concepts
-  normalization SVGs referenced by `pages/concepts.mdx`
-- `public/**` — original public assets: logos, hero images, USPs GIFs,
-  favicon, and pronunciation audio
-- `next.config.mjs`, `theme.config.tsx`, `tsconfig.json`, `next-env.d.ts`
-- `postcss.config.js`, `tailwind.config.js`, `package.json` — migration input,
-  see below
-
-## Pending replacement (imports retained, not resolved)
-
-The copied files below are original MIT source that reference the excluded
-proprietary library. The reference lines are retained as migration input
-markers; the library itself is not vendored here. These must be replaced during
-the follow-up compatibility step.
-
-- `pages/_app.tsx` — `reshaped/bundle`, `../themes/global.css`
-- `pages/_document.tsx` — `../tailwind.config`
-- `components/Playground/index.tsx`, `components/Roadmap/index.tsx`,
-  `components/Member/index.tsx`, `components/Contributors/index.tsx`,
-  `components/HeroSection/index.tsx`, `components/Reshaped/Alert.tsx`,
-  `components/pages/homepage.tsx`, `components/pages/USPRead/index.tsx`,
-  `components/pages/USPWrite/index.tsx` — `reshaped/bundle` and Reshaped types
-- `pages/getting-started.mdx`, `pages/guides/core/resolve.mdx` —
-  `reshaped/bundle`
-- `postcss.config.js` — `reshaped/config/postcss`
-- `tailwind.config.js` — `reshaped/config/tailwind`
-- `package.json` — `reshaped` dependency entry pointing at the excluded tarball,
-  and the `build:themes` script that invokes the Reshaped CLI
-- `components/pages/Homepage/getStaticProps.ts` — imports `../../../gqty`, which
-  was excluded as generated content
-
-## Verification performed during import
-
-- Every copied file is byte-identical to the source file at the pinned SHA
-  (`cmp` over all 153 copied files: 0 mismatches). `README.md` is authored
-  here, not copied, and is therefore outside that byte-identity check.
-- `LICENSE` is byte-identical to upstream.
-- Secret scan of all text candidates: no credentials, tokens, or keys found.
-- Absence check: no `node_modules_offline`, lockfile, Reshaped config, generated
-  theme CSS, generated `gqty/`, unused USP/counters components, or environment
-  config present.
-- No upstream git refs were fetched, and no upstream history was merged into
-  this repository.
+MIT. See `LICENSE` (verbatim upstream notice).

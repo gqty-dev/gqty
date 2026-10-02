@@ -1,9 +1,9 @@
-const config = require("reshaped/config/postcss");
-
+/**
+ * Single project-owned CSS pipeline: the stylesheet in `styles/globals.css` is
+ * the only source of site styling. No design-system PostCSS plugin is loaded.
+ */
 module.exports = {
   plugins: {
-    ...config.plugins,
-    "@tailwindcss/postcss": {},
     autoprefixer: {},
   },
 };

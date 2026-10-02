@@ -1,17 +1,18 @@
-import Alert from "/components/Reshaped/Alert";
-import Image from "next/image";
-import svgNormalization1 from "/components/concepts/cache/normalization/pic1.svg";
-import svgNormalization1Dark from "/components/concepts/cache/normalization/pic1d.svg";
-import svgNormalization2 from "/components/concepts/cache/normalization/pic2.svg";
-import svgNormalization2Dark from "/components/concepts/cache/normalization/pic2d.svg";
-import svgNormalization3 from "/components/concepts/cache/normalization/pic3.svg";
-import svgNormalization3Dark from "/components/concepts/cache/normalization/pic3d.svg";
-import svgNormalization4 from "/components/concepts/cache/normalization/pic4.svg";
-import svgNormalization4Dark from "/components/concepts/cache/normalization/pic4d.svg";
+import Alert from '/components/Reshaped/Alert';
+import Image from 'next/image';
+import { asset } from '../lib/asset';
+import svgNormalization1 from '/components/concepts/cache/normalization/pic1.svg';
+import svgNormalization1Dark from '/components/concepts/cache/normalization/pic1d.svg';
+import svgNormalization2 from '/components/concepts/cache/normalization/pic2.svg';
+import svgNormalization2Dark from '/components/concepts/cache/normalization/pic2d.svg';
+import svgNormalization3 from '/components/concepts/cache/normalization/pic3.svg';
+import svgNormalization3Dark from '/components/concepts/cache/normalization/pic3d.svg';
+import svgNormalization4 from '/components/concepts/cache/normalization/pic4.svg';
+import svgNormalization4Dark from '/components/concepts/cache/normalization/pic4d.svg';
 
 # Concepts
 
-<Alert className="mt-3" title="Intended Level: Intermediate">
+<Alert className="space-top-3" title="Intended Level: Intermediate">
   This section explains some thought process and design concepts behind GQty. It
   assumes a certain degree of knowledge across multiple domains, such as the
   experience using other GraphQL clients, Web standards and cache management in
@@ -50,7 +51,7 @@ When making selections by interacting with the cache, GQty captures what is
 being accessed, combine selections with the same context, fetching them with as
 few requests as possible.
 
-<Alert className="mt-5" title="Pass query objects as props">
+<Alert className="space-top-5" title="Pass query objects as props">
   In React, the `useQuery()` hook creates a new scoped context for each
   component. Scoped contexts split up selections which sometimes may not be what
   you wanted. Instead, you should pass query objects down the component tree as
@@ -120,26 +121,26 @@ Cache normalization is best explained with sketches.
 Given two data trees in cache, both containing node "a".
 
 <Image
-  className="dark:hidden"
-  src={svgNormalization1}
+  className="dark-only-hidden"
+  src={asset(svgNormalization1)}
   alt="fig1: Cache Normalization Step 1"
 />
 <Image
-  className="hidden dark:block"
-  src={svgNormalization1Dark}
+  className="dark-only-block"
+  src={asset(svgNormalization1Dark)}
   alt="fig1: Cache Normalization Step 1"
 />
 
 They will be merged into the same object reference, and kept in a global store.
 
 <Image
-  className="dark:hidden"
-  src={svgNormalization2}
+  className="dark-only-hidden"
+  src={asset(svgNormalization2)}
   alt="fig2: Cache Normalization Step 2"
 />
 <Image
-  className="hidden dark:block"
-  src={svgNormalization2Dark}
+  className="dark-only-block"
+  src={asset(svgNormalization2Dark)}
   alt="fig2: Cache Normalization Step 2"
 />
 
@@ -152,13 +153,13 @@ When a node is part of an updating tree, subscribers of other trees referencing
 the same node will also be notified.
 
 <Image
-  className="dark:hidden"
-  src={svgNormalization3}
+  className="dark-only-hidden"
+  src={asset(svgNormalization3)}
   alt="fig3: Cache Normalization Step 3"
 />
 <Image
-  className="hidden dark:block"
-  src={svgNormalization3Dark}
+  className="dark-only-block"
+  src={asset(svgNormalization3Dark)}
   alt="fig3: Cache Normalization Step 3"
 />
 
@@ -171,12 +172,12 @@ When objects are updated or replaced, references to the proxies won't change
 only underlying objects are swapped.
 
 <Image
-  className="dark:hidden"
-  src={svgNormalization4}
+  className="dark-only-hidden"
+  src={asset(svgNormalization4)}
   alt="fig4: Cache Normalization Step 4"
 />
 <Image
-  className="hidden dark:block"
-  src={svgNormalization4Dark}
+  className="dark-only-block"
+  src={asset(svgNormalization4Dark)}
   alt="fig4: Cache Normalization Step 4"
 />

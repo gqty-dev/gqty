@@ -1,4 +1,4 @@
-import Alert from "/components/Reshaped/Alert";
+import Alert from '/components/Reshaped/Alert';
 
 # Sending Mutations
 
@@ -15,7 +15,7 @@ type Mutation {
 ```
 
 ```tsx {7,15} filename="src/ProfileEdit.tsx"
-import { useMutation } from "../gqty";
+import { useMutation } from '../gqty';
 
 export default function ProfileEdit() {
   const [updateProfile, { isLoading }] = useMutation((mutation, inputs) => {
@@ -38,7 +38,11 @@ export default function ProfileEdit() {
 }
 ```
 
-<Alert className="mt-5" severity="info" title="Don't forget to make selections">
+<Alert
+  className="space-top-5"
+  severity="info"
+  title="Don't forget to make selections"
+>
   Mutations will not fire if you stop at `updateProfile()` for it is an
   incomplete GraphQL query, at least select one field.
 </Alert>
@@ -55,8 +59,8 @@ individual selections are managed and combined automatically while rendering.
 See how to reuse the selection function from a related query components below.
 
 ```tsx {2,8} filename="src/ProfileEdit.tsx"
-import { useMutation } from "../gqty";
-import { prepare } from "./Profile";
+import { useMutation } from '../gqty';
+import { prepare } from './Profile';
 
 export default function ProfileEdit() {
   const [updateProfile, { isLoading }] = useMutation((mutation, inputs) => {
@@ -111,7 +115,7 @@ graph LR
   D -- update --> C
 ```
 
-<Alert className="mt-5" title="Always refetch on errors">
+<Alert className="space-top-5" title="Always refetch on errors">
   Successful mutations will overwrite your changes with new data, while failed
   mutations leaves the cache as-is. You should always refetch on failure to
   reflect the current state of data.
@@ -129,14 +133,14 @@ For `onComplete()`, you may return a promise to have the mutation hold on the
 loading state until your refetch is complete.
 
 ```tsx filename="src/ProfileEdit.tsx"
-import { resolve, useMutation } from "../gqty";
-import { prepare } from "./Profile";
+import { resolve, useMutation } from '../gqty';
+import { prepare } from './Profile';
 
 export default function Component() {
   const [mutation, { isLoading }] = useMutation({
     async onComplete() {
       await resolve(({ query: { me } }) => prepare(me), {
-        cachePolicy: "no-cache",
+        cachePolicy: 'no-cache',
       });
     },
   });

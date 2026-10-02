@@ -1,8 +1,8 @@
-import Alert from "/components/Reshaped/Alert";
+import Alert from '/components/Reshaped/Alert';
 
 # Caching
 
-<Alert className="mt-3" title="Avoid premature optimizations">
+<Alert className="space-top-3" title="Avoid premature optimizations">
   The generated client contains sane defaults for new projects, you should start
   tweaking cache settings after initial development is done. Cache expiry
   requires careful tuning and testing, prematurely start working on this may
@@ -38,7 +38,7 @@ cache miss, queries still serves the data, while fetching happens in the
 background. This pattern allows more frequent refetching with little to no
 performance cost.
 
-<Alert className="mt-5" title="Refetch! Refetch! Refetch!">
+<Alert className="space-top-5" title="Refetch! Refetch! Refetch!">
   We recommend enabling all auto-refetch options during development. Until your
   app grows to a certain size where refetching becomes a performance bottleneck,
   you should really not worry about it.
@@ -60,7 +60,7 @@ subscriptions exhaustively. This is convenient for most projects, but may
 introduce performance cost for projects with a lot of tiny pieces of data.
 
 <Alert
-  className="mt-5"
+  className="space-top-5"
   title="Large datasets don't play well with normalization"
 >
   If your project is using virtualized lists or tables, rendering maps or
@@ -122,10 +122,10 @@ The basic data structure for initialization the cache looks like this:
 ```tsx
 const cache = new Cache({
   query: {
-    queryA: "String Value",
+    queryA: 'String Value',
     queryB: {
-      __typename: "B",
-      id: "...",
+      __typename: 'B',
+      id: '...',
     },
     queryC: null,
   },

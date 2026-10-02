@@ -1,4 +1,4 @@
-import Alert from "/components/Reshaped/Alert";
+import Alert from '/components/Reshaped/Alert';
 
 # Server Components
 
@@ -15,8 +15,8 @@ Fetching data from the edge, right where your data is located, may also reduce
 overall latency and safes at least one multi-hop fetch from the client side.
 
 ```tsx filename="app/profile/page.tsx"
-import { GQtyError, resolve, type User } from "../gqty";
-import Profile from "./Profile";
+import { GQtyError, resolve, type User } from '../gqty';
+import Profile from './Profile';
 
 export const prepare = ({
   firstName,
@@ -42,7 +42,7 @@ export default async function ProfilePage() {
 We recommend always exporting your selection function, read more about this in
 [Querying with Suspense](/guides/react/read#suspense);
 
-<Alert className="mt-5" title="Avoid hooks on Server Components">
+<Alert className="space-top-5" title="Avoid hooks on Server Components">
   Hooks and Server Components do not play well together. Until there is a way
   for a seamless implementation for both, we recommend sticking with GQty core
   at the moment.
@@ -54,23 +54,23 @@ You can create seamless post request handlers with your Server Components using
 Server Actions.
 
 ```tsx filename="app/profile/update/page.tsx"
-import { resolve } from "~/gqty";
-import { redirect } from "next/navigation";
+import { resolve } from '~/gqty';
+import { redirect } from 'next/navigation';
 
 async function save(data: FormData) {
-  "use server";
+  'use server';
 
   try {
     await resolve(({ mutation }) => {
       const me = mutation.updateProfile({
-        firstName: data.get("firstName"),
-        lastName: data.get("lastName"),
+        firstName: data.get('firstName'),
+        lastName: data.get('lastName'),
       });
 
       return { ...me };
     });
 
-    redirect("/profile");
+    redirect('/profile');
   } catch (e) {
     redirect(`/profile?error=${e.message}`);
   }

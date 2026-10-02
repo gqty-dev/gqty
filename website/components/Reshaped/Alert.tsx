@@ -1,45 +1,48 @@
 import {
-  type ComponentProps,
   type FunctionComponent,
   type ReactElement,
-} from "react";
-import { AlertOctagon, AlertTriangle, CheckCircle } from "react-feather";
-import { Alert as ReshapedAlert } from "reshaped/bundle";
+  type ReactNode,
+} from 'react';
+import { AlertOctagon, AlertTriangle, CheckCircle } from 'react-feather';
 
-export type Severity = "error" | "warning" | "info" | "success";
-
-const severityColor: Record<Severity, NonNullable<Props["color"]>> = {
-  error: "critical",
-  warning: "neutral",
-  info: "primary",
-  success: "positive",
-};
+export type Severity = 'error' | 'warning' | 'info' | 'success';
 
 const severityIcons: Record<Severity, ReactElement> = {
-  error: <AlertOctagon />,
-  warning: <AlertTriangle />,
+  error: <AlertOctagon size={20} aria-hidden="true" />,
+  warning: <AlertTriangle size={20} aria-hidden="true" />,
   info: (
-    <span className="inline-block h-5 w-5 cursor-default" aria-hidden="true">
+    <span className="alert__emoji" aria-hidden="true">
       💡
     </span>
   ),
-  success: <CheckCircle />,
+  success: <CheckCircle size={20} aria-hidden="true" />,
 };
 
-export type Props = ComponentProps<typeof ReshapedAlert> & {
+export type Props = {
   severity?: Severity;
+  title?: ReactNode;
+  children?: ReactNode;
+  className?: string;
 };
 
 export const Alert: FunctionComponent<Props> = ({
-  severity = "info",
-  ...props
+  severity = 'info',
+  title,
+  children,
+  className,
 }) => {
+  const classes = ['alert', `alert--${severity}`, className]
+    .filter(Boolean)
+    .join(' ');
+
   return (
-    <ReshapedAlert
-      icon={severityIcons[severity]}
-      color={severityColor[severity]}
-      {...props}
-    />
+    <div className={classes} role="note">
+      <span className="alert__icon">{severityIcons[severity]}</span>
+      <div className="alert__body">
+        {title ? <p className="alert__title">{title}</p> : null}
+        <div className="alert__content">{children}</div>
+      </div>
+    </div>
   );
 };
 

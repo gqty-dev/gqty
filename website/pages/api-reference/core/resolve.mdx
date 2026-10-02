@@ -17,8 +17,8 @@ const { foo, bar } = await resolve(
   },
   // Optionally override client options per query
   {
-    cachePolicy: "no-cache",
-    operationName: "FooBarQuery",
+    cachePolicy: 'no-cache',
+    operationName: 'FooBarQuery',
   }
 );
 ```
@@ -49,7 +49,7 @@ A query extension object, carrying extra information to your query fetcher.
 ```tsx
 await resolve(({ query }) => query.foo, {
   extensions: {
-    authToken: "Bearer ...",
+    authToken: 'Bearer ...',
   },
 });
 ```
@@ -61,11 +61,11 @@ const queryFetcher = async ({
   operationName,
   extensions,
 }) => {
-  const repsonse = await fetch("/graphql", {
-    method: "POST",
+  const repsonse = await fetch('/graphql', {
+    method: 'POST',
     headers: {
       authorization: extensions?.authToken,
-      "content-type": "application/json",
+      'content-type': 'application/json',
     },
     body: JSON.stringify({
       query,

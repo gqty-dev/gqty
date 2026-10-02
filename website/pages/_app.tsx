@@ -1,24 +1,12 @@
-import withTwindApp from "@twind/next/shim/app";
-import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from "@vercel/speed-insights/next";
-import App from "next/app";
-import { Reshaped } from "reshaped/bundle";
-import twindConfig from "../tailwind.config.js";
+import type { AppProps } from 'next/app';
 
-import "../themes/global.css";
+import '../styles/globals.css';
 
-export default withTwindApp(
-  twindConfig,
-  class MyApp extends App {
-    render() {
-      const { Component, pageProps } = this.props;
-      return (
-        <Reshaped theme="gqty" defaultColorMode="dark">
-          <Component {...pageProps} />
-          <Analytics />
-          <SpeedInsights />
-        </Reshaped>
-      );
-    }
-  },
-);
+/**
+ * The site runs on a single project-owned CSS pipeline
+ * (`styles/globals.css`, processed by PostCSS). There is no design-system
+ * runtime provider and no analytics or telemetry injected at the app level.
+ */
+export default function App({ Component, pageProps }: AppProps) {
+  return <Component {...pageProps} />;
+}

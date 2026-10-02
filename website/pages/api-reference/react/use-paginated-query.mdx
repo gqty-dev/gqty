@@ -14,7 +14,7 @@ function usePaginatedQuery(
 ## QueryFunction
 
 ```ts
-function queryFunction(query: GeneratedSchema["query"], args?: TArgs): TData;
+function queryFunction(query: GeneratedSchema['query'], args?: TArgs): TData;
 ```
 
 ### `query`
@@ -116,8 +116,7 @@ Whether the query function is currently fetching.
 ```ts
 function fetchMore(
   args:
-    | TArgs
-    | ((existing: { existingData: TData; existingArgs: TArgs }) => TArgs),
+    TArgs | ((existing: { existingData: TData; existingArgs: TArgs }) => TArgs),
   fetchPolicy?: LegacyFetchPolicy
 ): TArgs;
 ```

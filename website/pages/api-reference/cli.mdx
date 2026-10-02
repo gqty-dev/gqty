@@ -1,10 +1,10 @@
-import Alert from "/components/Reshaped/Alert";
-import { Tab, Tabs } from "nextra-theme-docs";
+import Alert from '/components/Reshaped/Alert';
+import Tabs from '/components/Tabs';
 
 # CLI
 
 <Alert
-  className="mt-5"
+  className="space-top-5"
   severity="info"
   title="You don't need to read this section, unless..."
   >
@@ -18,29 +18,29 @@ import { Tab, Tabs } from "nextra-theme-docs";
 
 ## Basic Usage
 
-<Tabs items={["npm", "yarn", "pnpm"]}>
-  <Tab>
+<Tabs>
+  <Tabs.Item label="npm">
 
     ```bash copy
     > npx @gqty/cli [options] [endpoint...]
     ```
 
-  </Tab>
-  <Tab>
+  </Tabs.Item>
+  <Tabs.Item label="yarn">
 
     ```bash copy
     > yarn dlx @gqty/cli [options] [endpoint...]
     ```
 
-  </Tab>
+  </Tabs.Item>
 
-  <Tab>
+  <Tabs.Item label="pnpm">
 
     ```bash copy
     > pnpm dlx @gqty/cli [options] [endpoint...]
     ```
 
-  </Tab>
+  </Tabs.Item>
 </Tabs>
 
 ## Options

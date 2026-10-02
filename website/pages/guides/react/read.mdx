@@ -1,4 +1,4 @@
-import Alert from "/components/Reshaped/Alert";
+import Alert from '/components/Reshaped/Alert';
 
 # Querying Data
 
@@ -19,7 +19,7 @@ type User {
 You can start querying the data like this:
 
 ```tsx filename="src/Profile.tsx"
-import { useQuery } from "../gqty";
+import { useQuery } from '../gqty';
 
 export default function Profile() {
   const { me } = useQuery();
@@ -62,7 +62,7 @@ type User {
 ```
 
 ```tsx {9-13} filename="src/Profile.tsx"
-import { useQuery } from "../gqty";
+import { useQuery } from '../gqty';
 
 export function Profile() {
   const { me } = useQuery();
@@ -72,7 +72,7 @@ export function Profile() {
       <h1>Hello {me.name}!</h1>
       <ol>
         {me.friends.map((user) => (
-          <li key={user.id ?? "0"}>{user.name}</li>
+          <li key={user.id ?? '0'}>{user.name}</li>
         ))}
       </ol>
     </>
@@ -85,7 +85,7 @@ Notice the `user.id ?? "0"` statement. Without Suspense, `user.id` will be
 temporarily give it a `"0"` as the key for React to correctly replace the array
 item when the actual data arrives.
 
-<Alert className="mt-5" title="Keep arrays immutable">
+<Alert className="space-top-5" title="Keep arrays immutable">
   Avoid mutating the arrays directly during rendering, such as `.sort()` and
   `.filter()`, instead fetch the data from your server in the way you need it.
   See the next section on how to send inputs.
@@ -102,7 +102,7 @@ type User {
 ```
 
 ```tsx {10} filename="src/Profile.tsx"
-import { useQuery } from "../gqty";
+import { useQuery } from '../gqty';
 
 export function Profile() {
   const { me } = useQuery();
@@ -112,7 +112,7 @@ export function Profile() {
       <h1>Hello {me.name}!</h1>
       <ol>
         {me.friends({ offset: 10, limit: 20 }).map((user) => (
-          <li key={user.id ?? "0"}>{user.name}</li>
+          <li key={user.id ?? '0'}>{user.name}</li>
         ))}
       </ol>
     </>
@@ -152,7 +152,7 @@ type Dog implements Pet {
 ```
 
 ```tsx {9-17} filename="src/Profile.tsx"
-import { useQuery } from "../gqty";
+import { useQuery } from '../gqty';
 
 export function Profile() {
   const { me } = useQuery();
@@ -162,10 +162,10 @@ export function Profile() {
       <h1>Hello {me.name}, you have these pets:</h1>
       <ol>
         {me.pets.map((pet) => (
-          <li key={pet.id ?? "0"}>
+          <li key={pet.id ?? '0'}>
             {pet.name} is a {pet.__typename}
-            {pet.$on.Cat.meows && " and it meows!"}
-            {pet.$on.Dog.barks && " and it barks!"}
+            {pet.$on.Cat.meows && ' and it meows!'}
+            {pet.$on.Dog.barks && ' and it barks!'}
           </li>
         ))}
       </ol>
@@ -189,7 +189,7 @@ type User {
 ```
 
 ```tsx {9} filename="src/Profile.tsx"
-import { useQuery } from "../gqty";
+import { useQuery } from '../gqty';
 
 export function Profile() {
   const { me } = useQuery();
@@ -220,7 +220,7 @@ type Query {
 ```
 
 ```tsx {3} / ?? nameSkeleton/ filename="src/Profile.tsx"
-import { useQuery } from "../gqty";
+import { useQuery } from '../gqty';
 
 const nameSkeleton = <Skeleton type="text" width={50} />;
 
@@ -232,7 +232,7 @@ export default function Profile() {
       <h1>Hello, {me.name ?? nameSkeleton}!</h1>
       <ol>
         {me.friends().map((user) => (
-          <li key={user.id ?? "0"}>{user.name ?? nameSkeleton}</li>
+          <li key={user.id ?? '0'}>{user.name ?? nameSkeleton}</li>
         ))}
       </ol>
     </>
@@ -246,7 +246,7 @@ GQty supports Suspense for Data Fetching out of the box, you may easily switch
 it on by using settings the `suspense` option to `true` in your `useQuery()`.
 
 ```tsx {4} filename="src/Profile.tsx"
-import { useQuery } from "../gqty";
+import { useQuery } from '../gqty';
 
 export function Profile() {
   const { me } = useQuery({ suspense: true });
@@ -264,7 +264,7 @@ The correct way to use suspense is to tell GQty what to fetch via `prepare`,
 such that suspense happens at first render.
 
 ```tsx {3-10, 15} filename="src/Profile.tsx"
-import { useQuery, type User } from "../gqty";
+import { useQuery, type User } from '../gqty';
 
 export const prepare = ({
   firstName,
@@ -319,7 +319,7 @@ render. This encourages
 where you think of the component tree in terms of layers of Suspense more than
 in conditional rendering.
 
-<Alert className="mt-5" title="The Suspense mindset">
+<Alert className="space-top-5" title="The Suspense mindset">
   Starting from React 18, it is recommended that you structure your app as
   layers of Suspense. Loading states and errors should be handled by React
   instead of repeating these internal states in every single component.
@@ -331,8 +331,8 @@ GQty combines selections made in multiple components into one single GraphQL
 query, allowing query batching without server support.
 
 ```tsx filename="src/Profile.tsx"
-import { type FC } from "react";
-import { useQuery, type User } from "../gqty";
+import { type FC } from 'react';
+import { useQuery, type User } from '../gqty';
 
 export default function Profile() {
   const { me } = useQuery();
@@ -351,7 +351,7 @@ const MyFriendsList: FC = ({ friends }) => {
   return (
     <ol>
       {me.friends().map((user) => (
-        <Avatar key={user.id ?? "0"} id={user.id} />
+        <Avatar key={user.id ?? '0'} id={user.id} />
       ))}
     </ol>
   );

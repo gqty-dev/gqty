@@ -1,65 +1,41 @@
-import { View, Text } from "reshaped/bundle";
-import sdk from "@stackblitz/sdk";
+const PLAYGROUND_EMBED_URL =
+  'https://stackblitz.com/edit/nextjs-2jqmx4?embed=1&file=src%2Fcomponents%2FQuery.tsx&hideExplorer=1&hideNavigation=1';
 
-// sdk.embedProjectId("playground", "nextjs-2jqmx4", {
-//   forceEmbedLayout: true,
-//   openFile: "src/components/Query.tsx",
-//   hideExplorer: true,
-//   hideNavigation: true,
-// });
+const PLAYGROUND_PROJECT_URL = 'https://stackblitz.com/edit/nextjs-2jqmx4';
 
 const Playground = () => {
   return (
-    <View
-      direction="column"
-      align="center"
-      gap={10}
-      width="100%"
-      position="relative"
-    >
-      <View direction="row" className="absolute opacity-50 filter blur-sm">
-        <Text
-          variant="display-3"
-          className="bg-clip-text text-transparent bg-gradient-to-r from-[#AB087A] to-[#F937BF]"
-        >
-          Play
-        </Text>
-        <Text as="span" variant="display-3">
-          ground
-        </Text>
-      </View>
-      <View direction="row">
-        <Text
-          variant="display-3"
-          className="bg-clip-text text-transparent bg-gradient-to-r from-[#AB087A] to-[#F937BF]"
-        >
-          Play
-        </Text>
-        <Text as="span" variant="display-3">
-          ground
-        </Text>
-      </View>
-      <View
-        className="p-px rounded-2xl bg-gradient-to-b  from-[#e82fb147] via-surface-900"
-        width="100%"
-        position="relative"
-      >
-        <div className="absolute rounded-full aspect-square top-[-24px] right-[45%] filter blur-3xl overflow-hidden z-0">
-          <View width={40} height={40} className="bg-[#DA58B3] "></View>
-        </div>
-        <View
-          width="100%"
-          overflow="hidden"
-          className="rounded-2xl bg-surface-900  opacity-[97%] filter backdrop-blur-xl"
-        >
+    <section className="playground" aria-labelledby="playground">
+      <div className="playground__heading-shell">
+        <span className="playground__heading-echo" aria-hidden="true">
+          <span className="playground__heading">Play</span>
+          <span className="playground__heading">ground</span>
+        </span>
+        <h2 className="playground__heading" id="playground">
+          Playground
+        </h2>
+      </div>
+
+      <div className="playground__frame">
+        <div className="playground__glow" aria-hidden="true" />
+        <div className="playground__viewport">
           <iframe
-            src="https://stackblitz.com/edit/nextjs-2jqmx4?embed=1&amp;file=src%2Fcomponents%2FQuery.tsx&amp;hideExplorer=1&amp;hideNavigation=1"
             id="playground"
-            className="h-[600px] w-full rounded border-current filter  mix-blend-lighten"
-          ></iframe>
-        </View>
-      </View>
-    </View>
+            src={PLAYGROUND_EMBED_URL}
+            title="GQty interactive example on StackBlitz"
+            loading="lazy"
+            sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
+          />
+          <p className="playground__fallback">
+            Can&rsquo;t see the playground?{' '}
+            <a href={PLAYGROUND_PROJECT_URL} target="_blank" rel="noreferrer">
+              Open the interactive example
+            </a>
+            .
+          </p>
+        </div>
+      </div>
+    </section>
   );
 };
 

@@ -8,7 +8,7 @@ const notifications = subscribe(
 );
 
 for await (const notification of notifications) {
-  console.log("Got new notification:", notification);
+  console.log('Got new notification:', notification);
 }
 
 // You may unsubscribe at any point
@@ -29,7 +29,7 @@ A query extention object, carrying extra information to your query fetcher.
 ```tsx
 subscribe(({ subscription }) => subscription.newNotification, {
   extentions: {
-    authToken: "Bearer ...",
+    authToken: 'Bearer ...',
   },
 });
 ```
@@ -41,11 +41,11 @@ const queryFetcher = async ({
   operationName,
   extensions,
 }) => {
-  const repsonse = await fetch("/graphql", {
-    method: "POST",
+  const repsonse = await fetch('/graphql', {
+    method: 'POST',
     headers: {
       authorization: extensions?.authToken,
-      "content-type": "application/json",
+      'content-type': 'application/json',
     },
     body: JSON.stringify({
       query,

@@ -1,0 +1,278 @@
+#!/usr/bin/env node
+/**
+ * Deterministic validation of the exported static site.
+ *
+ * The checks read `out/` (produced by `pnpm build`) and fail on:
+ *   - missing expected routes
+ *   - internal references that escape `/gqty/`
+ *   - local references that do not resolve to a file in the export
+ *   - canonical/Open Graph URLs pointing somewhere other than the site origin
+ *   - expired-domain, proprietary-CSS, or build-time-secret assumptions
+ *
+ * Nothing here executes the site or talks to the network.
+ */
+
+import { access, readFile, readdir } from 'node:fs/promises';
+import { constants } from 'node:fs';
+import { join, relative, resolve } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const here = fileURLToPath(new URL('.', import.meta.url));
+const siteRoot = resolve(here, '..');
+
+export const BASE_PATH = '/gqty';
+export const SITE_ORIGIN = 'https://gqty-dev.github.io';
+export const CANONICAL_ROOT = `${SITE_ORIGIN}${BASE_PATH}`;
+
+export const ROUTES = [
+  '/',
+  '/404.html',
+  '/getting-started/',
+  '/concepts/',
+  '/guides/react/read/',
+  '/guides/react/write/',
+  '/guides/react/cache/',
+  '/guides/react/subs/',
+  '/guides/core/resolve/',
+  '/guides/core/subscribe/',
+  '/guides/next/rsc/',
+  '/guides/next/ssr-ssg/',
+  '/api-reference/cli/',
+  '/api-reference/configuration/',
+  '/api-reference/core/resolve/',
+  '/api-reference/core/subscribe/',
+  '/api-reference/react/use-query/',
+  '/api-reference/react/use-transaction-query/',
+  '/api-reference/react/use-lazy-query/',
+  '/api-reference/react/use-paginated-query/',
+  '/api-reference/react/use-mutation/',
+  '/api-reference/react/use-subscription/',
+];
+
+/**
+ * Strings that must not appear in build output. These are provenance or
+ * licensing regressions, not legitimate documentation content.
+ *
+ * Documentation text that merely mentions GraphQL, SSR, `getStaticProps`, or
+ * `useRouter` is content, not a runtime dependency, so those words are
+ * deliberately absent from this list.
+ */
+export const FORBIDDEN_PATTERNS = [
+  { pattern: 'gqty.dev', reason: 'expired domain' },
+  { pattern: 'GQty-Website', reason: 'archived source repository' },
+  { pattern: 'GITHUB_PAT', reason: 'build-time secret' },
+  { pattern: 'reshaped', reason: 'proprietary design system' },
+  { pattern: '@vercel/', reason: 'Vercel telemetry package' },
+  { pattern: 'vercel.com', reason: 'Vercel deployment host' },
+];
+
+/** Local reference prefixes that are expected to stay outside `BASE_PATH`. */
+const ALLOWED_ROOT_REFERENCES = new Set(['/', '/favicon.ico']);
+
+export async function listFiles(dir) {
+  /** @type {string[]} */
+  const found = [];
+  for (const entry of await readdir(dir, { withFileTypes: true })) {
+    const full = join(dir, entry.name);
+    if (entry.isDirectory()) {
+      found.push(...(await listFiles(full)));
+    } else {
+      found.push(full);
+    }
+  }
+  return found;
+}
+
+/** Maps a site-absolute URL path onto a file inside the export directory. */
+export function resolveExportPath(outDir, urlPath) {
+  const withoutQuery = urlPath.split('#')[0].split('?')[0];
+  if (!withoutQuery.startsWith(BASE_PATH)) return undefined;
+
+  const sitePath = withoutQuery.slice(BASE_PATH.length);
+  const relativePath =
+    sitePath === '' || sitePath === '/' ? '/index.html' : sitePath;
+  const candidates = relativePath.endsWith('/')
+    ? [join(outDir, relativePath, 'index.html')]
+    : [
+        join(outDir, relativePath),
+        join(outDir, `${relativePath}.html`),
+        join(outDir, relativePath, 'index.html'),
+      ];
+
+  return candidates;
+}
+
+export function extractReferences(html) {
+  /** @type {Array<{ attr: string, value: string }>} */
+  const refs = [];
+
+  for (const match of html.matchAll(/\s(href|src)="([^"]*)"/g)) {
+    refs.push({ attr: match[1], value: match[2] });
+  }
+
+  for (const match of html.matchAll(/\ssrcset="([^"]*)"/g)) {
+    for (const candidate of match[1].split(',')) {
+      const url = candidate.trim().split(/\s+/)[0];
+      if (url) refs.push({ attr: 'srcset', value: url });
+    }
+  }
+
+  return refs;
+}
+
+export function extractCssUrls(css) {
+  /** @type {string[]} */
+  const urls = [];
+  for (const match of css.matchAll(/url\((['"]?)([^'")]+)\1\)/g)) {
+    urls.push(match[2]);
+  }
+  return urls;
+}
+
+async function exists(path) {
+  try {
+    await access(path, constants.F_OK);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+async function pathExistsAny(candidates) {
+  for (const candidate of candidates) {
+    if (await exists(candidate)) return true;
+  }
+  return false;
+}
+
+export function isInternalReference(value) {
+  return (
+    value.startsWith('/') && !value.startsWith('//') && !value.startsWith('#')
+  );
+}
+
+export function checkInternalReference(value) {
+  if (!isInternalReference(value)) return undefined;
+  if (ALLOWED_ROOT_REFERENCES.has(value)) return undefined;
+  if (value.startsWith(`${BASE_PATH}/`) || value === BASE_PATH)
+    return undefined;
+
+  return `internal reference escapes ${BASE_PATH}: ${value}`;
+}
+
+/**
+ * Runs every check against an export directory.
+ *
+ * @param {string} outDir
+ * @returns {Promise<string[]>} list of failures; empty means success
+ */
+export async function checkExport(outDir) {
+  const failures = [];
+
+  for (const route of ROUTES) {
+    const candidates = resolveExportPath(outDir, `${BASE_PATH}${route}`);
+    if (!candidates || !(await pathExistsAny(candidates))) {
+      failures.push(`missing expected route: ${BASE_PATH}${route}`);
+    }
+  }
+
+  const files = await listFiles(outDir);
+
+  for (const file of files) {
+    const rel = relative(outDir, file);
+
+    if (file.endsWith('.html')) {
+      const html = await readFile(file, 'utf8');
+
+      for (const { value } of extractReferences(html)) {
+        const problem = checkInternalReference(value);
+        if (problem) {
+          failures.push(`${rel}: ${problem}`);
+          continue;
+        }
+
+        if (!isInternalReference(value)) continue;
+        const candidates = resolveExportPath(outDir, value);
+        if (candidates && !(await pathExistsAny(candidates))) {
+          failures.push(`${rel}: local reference does not exist: ${value}`);
+        }
+      }
+
+      for (const { pattern, reason } of FORBIDDEN_PATTERNS) {
+        if (html.includes(pattern)) {
+          failures.push(`${rel}: contains ${reason} ("${pattern}")`);
+        }
+      }
+    }
+
+    if (file.endsWith('.css')) {
+      const css = await readFile(file, 'utf8');
+
+      for (const url of extractCssUrls(css)) {
+        if (url.startsWith('data:') || url.startsWith('http')) continue;
+        const problem = checkInternalReference(url);
+        if (problem) {
+          failures.push(`${rel}: ${problem}`);
+          continue;
+        }
+        if (!isInternalReference(url)) continue;
+        const candidates = resolveExportPath(outDir, url);
+        if (candidates && !(await pathExistsAny(candidates))) {
+          failures.push(`${rel}: local CSS reference does not exist: ${url}`);
+        }
+      }
+    }
+  }
+
+  const home = await readFile(join(outDir, 'index.html'), 'utf8').catch(
+    () => ''
+  );
+  for (const match of home.matchAll(
+    /<link[^>]+rel="canonical"[^>]+href="([^"]+)"/g
+  )) {
+    if (!match[1].startsWith(CANONICAL_ROOT)) {
+      failures.push(`canonical URL outside site origin: ${match[1]}`);
+    }
+  }
+  for (const match of home.matchAll(
+    /property="og:url"[^>]+content="([^"]+)"/g
+  )) {
+    if (!match[1].startsWith(CANONICAL_ROOT)) {
+      failures.push(`og:url outside site origin: ${match[1]}`);
+    }
+  }
+
+  return failures;
+}
+
+async function main() {
+  const outDir = join(siteRoot, 'out');
+
+  if (!(await exists(outDir))) {
+    console.error(
+      `check:export failed: ${outDir} does not exist. Run the build first.`
+    );
+    process.exitCode = 1;
+    return;
+  }
+
+  const failures = await checkExport(outDir);
+
+  if (failures.length > 0) {
+    console.error(`check:export failed with ${failures.length} problem(s):`);
+    for (const failure of failures) console.error(`  - ${failure}`);
+    process.exitCode = 1;
+    return;
+  }
+
+  console.log(
+    `check:export passed: ${ROUTES.length} routes and all local HTML/CSS references resolve under ${BASE_PATH}`
+  );
+}
+
+if (
+  process.argv[1] &&
+  resolve(process.argv[1]) === resolve(fileURLToPath(import.meta.url))
+) {
+  await main();
+}
