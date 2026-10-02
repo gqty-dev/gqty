@@ -1,5 +1,16 @@
 import { type FunctionComponent } from 'react';
 import Check from '../Icons/Play/Check';
+import { laneStatus, roadmapGroups } from './roadmap.mjs';
+
+/**
+ * Visible roadmap content transcribed from the original JSX. Repeated headings
+ * and task entries are intentional. JSX comments are not rendered content.
+ *
+ * Group order, titles, lane placement, and dates come from `./roadmap.mjs`,
+ * which mirrors the rendered content of the original component at commit
+ * `229bd7ad`. Duplicated headings and repeated task labels are preserved
+ * because the original rendered them.
+ */
 
 type Status = 'shipped' | 'progress' | 'todo';
 
@@ -10,130 +21,8 @@ type Task = {
 
 type Group = {
   title: string;
-  /** One entry per column: shipped, in progress, to do. */
   lanes: Record<Status, Task[]>;
 };
-
-/**
- * Roadmap content transcribed from the original component. Only the markup
- * changed: the previous implementation used the proprietary design system's
- * `View`/`Timeline`/`Progress` primitives.
- *
- * The original markup repeated itself, so this transcription is not a
- * one-to-one copy of every rendered entry:
- *   - the section commented `Streaming` in the source carried a second
- *     `Fetch DX` heading, so it is kept here under its own `Streaming` title;
- *   - the original `Fetch DX` group declared two "In Progress" columns, which
- *     would render two overlapping lanes;
- *   - a handful of task labels appeared in more than one group
- *     (`Integration examples Grafbase, Hasura, Svelte...`, `Automatic
- *     Polling`, `Cache with expiry and SWR`, `Directives`, `Custom Scalars`),
- *     and the repeated copies were folded into a single occurrence rather
- *     than shown twice.
- *
- * No roadmap entry was invented. Where the source repeated an entry across
- * groups, the first occurrence was kept.
- */
-const groups: Group[] = [
-  // /* GraphQL Functionality */
-  {
-    title: 'GraphQL Functionality',
-    lanes: {
-      shipped: [{ label: 'Scoped Query', date: 'Jan 26, 2022' }],
-      progress: [],
-      todo: [{ label: 'Directives' }, { label: 'Custom Scalars' }],
-    },
-  },
-  // /* Getting Started Experience */
-  {
-    title: 'Getting Started Experience',
-    lanes: {
-      shipped: [
-        { label: 'Website Relaunch', date: 'Jan 26, 2022' },
-        { label: 'Interactive CLI' },
-      ],
-      progress: [],
-      todo: [{ label: 'Directives' }, { label: 'Custom Scalars' }],
-    },
-  },
-  // /* Getting Started Experience (second block) */
-  {
-    title: 'Getting Started Experience',
-    lanes: {
-      shipped: [
-        { label: 'Website Relaunch' },
-        { label: 'Interactive CLI' },
-        { label: 'Watch mode in CLI' },
-      ],
-      progress: [{ label: 'Integration examples Grafbase, Hasura, Svelte...' }],
-      todo: [],
-    },
-  },
-  // /* Fetch DX */
-  {
-    title: 'Fetch DX',
-    lanes: {
-      shipped: [
-        { label: 'Add $refetch to useQuery' },
-        { label: 'Refetch on Window Focus in CLI', date: 'Jan 26, 2022' },
-        { label: 'Refetch on Reconnect', date: 'Jan 26, 2022' },
-        { label: 'Refetch on Mount' },
-        { label: 'Support SSR, SSG, RSC' },
-      ],
-      progress: [
-        { label: 'Automatic Polling' },
-        { label: 'Cache with expiry and SWR' },
-      ],
-      todo: [],
-    },
-  },
-  // /* Streaming */
-  {
-    title: 'Streaming',
-    lanes: {
-      shipped: [
-        { label: 'New subscription client' },
-        { label: 'Support SSR, SSG, RSC' },
-      ],
-      progress: [
-        { label: 'Streaming SSR' },
-        { label: 'Cache with expiry and SWR' },
-      ],
-      todo: [],
-    },
-  },
-  // /* Native JS Library Support */
-  {
-    title: 'Native JS Library Support',
-    lanes: {
-      shipped: [],
-      progress: [],
-      todo: [
-        { label: 'React Native Hermes' },
-        { label: 'Svelte SvelteKit' },
-        { label: 'Preact with Signals' },
-        { label: 'Vue Nuxt' },
-        { label: 'Fresh' },
-        { label: 'Solid.js' },
-      ],
-    },
-  },
-  // /* DIY Extension */
-  {
-    title: 'Extend GQty By Yourself',
-    lanes: {
-      shipped: [],
-      progress: [],
-      todo: [{ label: 'Plugin System' }],
-    },
-  },
-];
-
-const laneStatus: Array<{ status: Status; heading: string }> = [
-  { status: 'shipped', heading: 'Shipped' },
-  { status: 'progress', heading: 'In Progress' },
-  { status: 'todo', heading: 'To Do' },
-];
 
 export type Props = {
   /** Previously supplied by a GitHub GraphQL query at build time. */
@@ -142,6 +31,8 @@ export type Props = {
     totalRecurringMonthlyPriceInCents?: number;
   };
 };
+
+const groups: Group[] = roadmapGroups;
 
 const Roadmap: FunctionComponent<Props> = () => {
   return (
@@ -176,8 +67,11 @@ const Roadmap: FunctionComponent<Props> = () => {
                     className={`roadmap__lane roadmap__lane--${lane.status}`}
                   >
                     <li className="roadmap__sr-only">{lane.heading}</li>
-                    {group.lanes[lane.status].map((task) => (
-                      <li className="roadmap__task" key={task.label}>
+                    {group.lanes[lane.status].map((task, taskIndex) => (
+                      <li
+                        className="roadmap__task"
+                        key={`${group.title}-${groupIndex}-${lane.status}-${taskIndex}-${task.label}`}
+                      >
                         {lane.status === 'shipped' ? (
                           <Check
                             className="roadmap__task-check"
