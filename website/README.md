@@ -48,6 +48,40 @@ search behaviour under the real mount point.
 `scripts/serve-export.mjs` serves `out/` at `http://localhost:4173/gqty/` and
 returns the exported 404 page for unknown routes.
 
+## Deployment
+
+`.github/workflows/pages.yaml` builds and deploys this package with GitHub
+Pages. It is the only deployment path; nothing here deploys from a local
+machine.
+
+- The build job runs on every pull request that touches `website/**` or the
+  workflow, and on pushes to `main`. It typechecks, tests, checks formatting,
+  builds, runs `check:export`, and uploads `website/out` as the Pages artifact.
+- The `deploy` job publishes that artifact to the **production** URL
+  <https://gqty-dev.github.io/gqty/>. It runs only for pushes and manual runs
+  on `main`, so a pull request can never deploy.
+
+The workflow passes explicit `pnpm --dir website` commands. `--ignore-workspace`
+is required for the install only: `website/` is an independent package with its
+own lockfile, and without the flag pnpm resolves the parent monorepo and may
+rewrite the root `pnpm-lock.yaml`.
+
+### Preview deploys
+
+`deploy-preview` is an opt-in lane for pre-merge verification. It is skipped
+unless the repository variable `WEBSITE_PREVIEW_REF` exactly matches
+`refs/heads/fix/remove-expired-domain` **and** the triggering ref is the same
+branch, so the default — variable unset — publishes nothing but `main`.
+
+When enabled, the preview publishes that branch's content at the production URL
+<https://gqty-dev.github.io/gqty/>, replacing the live site until the next `main`
+deployment. GitHub Pages has no separate preview URL for a project site, so
+preview and production share the same address; that is the intended trade-off
+for testing before merge, not a separate environment.
+
+Nothing in this document claims a deployment has happened. The lanes above
+describe what the committed workflow does when it runs.
+
 ## Static export notes
 
 `next.config.mjs` sets `output: "export"`, `basePath: "/gqty"`,
