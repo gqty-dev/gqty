@@ -15,14 +15,16 @@ import {
 } from './check-export.mjs';
 
 /**
- * Every check in this file runs in both hosting modes.
+ * The shared checks in this file run in both hosting modes.
  *
  * The two modes differ in exactly one visible way — the serving base is
  * `/gqty` on GitHub Pages and the origin root on a Cloudflare preview — while
  * the canonical namespace, the route set, the metadata rules, the reference
- * rules, and the layout guards are identical. A single suite instantiated
- * twice therefore proves the same 78 cases in both, rather than skipping the
- * target-sensitive ones.
+ * rules, and the layout guards are identical. A single suite instantiated per
+ * mode therefore proves every target-sensitive case in both, rather than
+ * skipping them. Checks that describe one host only — the preview header
+ * policy and the preview search-index keys, and the default-mode header
+ * absence — are guarded to their own mode below.
  */
 const MODES = [
   {

@@ -145,8 +145,6 @@ Project settings, exactly as configured:
 | Production branch | `main` |
 | Automatic production deployments | **Off** |
 | Preview deployments | All non-production branches |
-| Preview includes | `*` |
-| Preview excludes | *(empty)* |
 | PR comments | On |
 | Root directory | `website` |
 | Framework preset | None |
@@ -270,10 +268,12 @@ Three consequences are worth knowing before editing:
   system, and Vercel-telemetry strings are absent
 
 The validator is one implementation instantiated per target rather than two
-divergent copies: `createExportValidator(mode)` returns the mode's base path
-and every check bound to it. `pnpm test` therefore runs each case twice — once
-with `/gqty` and once with the origin root — instead of skipping the
-target-sensitive ones. `GQTY_TEST_BUILD_TARGET=github-pages` (or
+divergent copies: `createExportValidator(mode)` returns the mode's base path and
+every check bound to it. `pnpm test` therefore runs the shared target-sensitive
+cases once with `/gqty` and once with the origin root, instead of skipping them.
+Cases that only exist for one host — the preview header policy and the preview
+search-index keys on one side, the default-mode header absence on the other —
+run in their applicable mode only. `GQTY_TEST_BUILD_TARGET=github-pages` (or
 `cloudflare-preview`) narrows the suite to one mode when iterating.
 
 Documentation prose is exempt: text that merely mentions GraphQL, SSR,
