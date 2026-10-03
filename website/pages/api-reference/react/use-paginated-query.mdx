@@ -1,0 +1,132 @@
+# usePaginatedQuery
+
+A query hook designed for paginated data, with helper functions and useful
+callbacks that helps you properly updates the cache and perform next fetch in
+response to the last fetch result.
+
+```ts
+function usePaginatedQuery(
+  fn: QueryFunction,
+  options?: Options
+): PaginatedQueryState;
+```
+
+## QueryFunction
+
+```ts
+function queryFunction(query: GeneratedSchema['query'], args?: TArgs): TData;
+```
+
+### `query`
+
+A cache proxy of the query type from the generated schema.
+
+### `args`
+
+The value provided in `initialArgs` for the first time, and then subsequently
+the last `args` supplied in `fetchMore()`.
+
+## Options
+
+### `fetchPolicy`
+
+| Value               | Description                                   |
+| :------------------ | :-------------------------------------------- |
+| `cache-first`       | Translates to the cache policy `force-cache`. |
+| `cache-and-network` | Translates to the cache policy `default`.     |
+| `network-only`      | Translates to the cache policy `no-cache`.    |
+
+Read more about [Cache Policy](/concepts#cache-policy).
+
+### `initialArgs`
+
+Optional initial arguments to be supplied to the second parameter in the
+selection function.
+
+### `merge`
+
+Optional callback to customize the merging behavior when a new page of data is
+fetched.
+
+```ts
+type MergeFn = (args: {
+  data: {
+    existing: TData;
+    incoming: TData;
+  };
+  sortBy: <T>(arr: T[], fn: (item: T) => any) => T[];
+  uniqBy: <T>(arr: T[], fn: (item: T) => any) => T[];
+}) => TData | undefined;
+```
+
+### `operationName`
+
+Optional GraphQL operation name, useful for debugging and testing.
+
+### `retry`
+
+Failing queries can be automatically retried, this option allows you to
+customize the retrying behavior, or disabling it altogether.
+
+| Retry Policy                 | Description                                                                  |
+| :--------------------------- | :--------------------------------------------------------------------------- |
+| `true`                       | Enables auto retry with the default options.                                 |
+| `false`                      | Disables auto retry.                                                         |
+| `number`                     | Enables auto retry with the default options and a custom `maxRetries` count. |
+| `{ maxRetries, retryDelay }` | Enables auto retry with custom options.                                      |
+
+When you specify retry as an object, the following properties are available.
+
+#### `maxRetries`
+
+The maximum number of times to retry a failed query, defaults to `3`.
+
+#### `retryDelay`
+
+| Retry Delay                   | Description                                                                                                                                                   |
+| :---------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `number`                      | A fixed number of milliseconds to wait between retries.                                                                                                       |
+| `(attempt: number) => number` | A function that returns the number of milliseconds to wait between retries, the default is an exponential backoff function: $min({2^x}, 30) * 1000\text{ms}$. |
+
+### `skip`
+
+Skips the initial call to the query function, defaults to `false`.
+
+### `suspense`
+
+Use `true` to enable
+[Suspense mode](/guides/react/read#suspense-on-data-fetching).
+
+## Return Value
+
+### `data`
+
+Data returned from the query function, will be updated on every successful call
+to `fetchMore`.
+
+### `args`
+
+The latest arguments used in `fetchMore`, defaults to `initialArgs`.
+
+### `isLoading`
+
+Whether the query function is currently fetching.
+
+### `fetchMore`
+
+```ts
+function fetchMore(
+  args:
+    TArgs | ((existing: { existingData: TData; existingArgs: TArgs }) => TArgs),
+  fetchPolicy?: LegacyFetchPolicy
+): TArgs;
+```
+
+#### `args`
+
+Arguments to be supplied to the second parameter in the selection function, or a
+function that returns said arguments.
+
+#### `fetchPolicy`
+
+Optional value, overriding the `fetchPolicy` option.

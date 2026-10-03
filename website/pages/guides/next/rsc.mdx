@@ -1,0 +1,88 @@
+import Alert from '/components/Reshaped/Alert';
+
+# Server Components
+
+React Server Components (RSC) are asynchronous components that renders on the
+server, sending only the generated mark ups to client side with potentially zero
+JavaScript.
+
+With RSC, data fetching from protected backends no longer requires a separate
+API methods that builds only for such purpose. Instead it is fetched right at
+the backend, where you don't have to worry about leaking of backend
+authentication keys.
+
+Fetching data from the edge, right where your data is located, may also reduce
+overall latency and safes at least one multi-hop fetch from the client side.
+
+```tsx filename="app/profile/page.tsx"
+import { GQtyError, resolve, type User } from '../gqty';
+import Profile from './Profile';
+
+export const prepare = ({
+  firstName,
+  middleNames,
+  lastName,
+  image: { alt, src },
+  lastLogin,
+  birthday,
+  friends,
+}: User) => {
+  friends({ first: 10 }).map(
+    ({ firstName, lastName, image: { alt, src } }) => {}
+  );
+};
+
+export default async function ProfilePage() {
+  const user = await resolve(({ query: { me } }) => prepare(me));
+
+  return <Profile user={user} />;
+}
+```
+
+We recommend always exporting your selection function, read more about this in
+[Querying with Suspense](/guides/react/read#suspense-on-data-fetching);
+
+<Alert className="space-top-5" title="Avoid hooks on Server Components">
+  Hooks and Server Components do not play well together. Until there is a way
+  for a seamless implementation for both, we recommend sticking with GQty core
+  at the moment.
+</Alert>
+
+## Server Actions
+
+You can create seamless post request handlers with your Server Components using
+Server Actions.
+
+```tsx filename="app/profile/update/page.tsx"
+import { resolve } from '~/gqty';
+import { redirect } from 'next/navigation';
+
+async function save(data: FormData) {
+  'use server';
+
+  try {
+    await resolve(({ mutation }) => {
+      const me = mutation.updateProfile({
+        firstName: data.get('firstName'),
+        lastName: data.get('lastName'),
+      });
+
+      return { ...me };
+    });
+
+    redirect('/profile');
+  } catch (e) {
+    redirect(`/profile?error=${e.message}`);
+  }
+}
+
+export default function Form() {
+  return (
+    <form action={save}>
+      {/* Form fields skipped for brevity... */}
+
+      <input type="submit" value="save" />
+    </form>
+  );
+}
+```

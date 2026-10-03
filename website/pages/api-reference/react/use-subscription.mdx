@@ -1,0 +1,32 @@
+# useSubscription
+
+```tsx
+export default function MyComponent() {
+  const subscription = useSubscripion({ renderThrottleDelay: 100 });
+
+  return (
+    <>
+      Last updated:
+      <Text>
+        {new Date(subscription.onUserUpdate.timestamp).toLocaleString()}
+      </Text>
+    </>
+  );
+}
+```
+
+## Options
+
+### `onError`
+
+Optional callback to be called when subscription returns an error. If omitted,
+errors will be thrown and active subscriptions will be closed.
+
+### `operationName`
+
+Optional GraphQL operation name, useful for debugging and testing.
+
+### `renderThrottleDelay`
+
+Optional throttle delay for each re-render, prevents busy subscriptions from
+hanging the UI.

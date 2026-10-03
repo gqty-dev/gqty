@@ -1,0 +1,51 @@
+{
+  "name": "gqty-website",
+  "version": "0.0.1",
+  "private": true,
+  "description": "GQty documentation website (static export for GitHub Pages)",
+  "scripts": {
+    "dev": "next dev",
+    "build": "NEXTRA_STATIC_EXPORT=1 next build && node scripts/finalize-export.mjs",
+    "build:cloudflare-preview": "WEBSITE_BUILD_TARGET=cloudflare-preview NEXTRA_STATIC_EXPORT=1 next build && node scripts/finalize-export.mjs",
+    "finalize:export": "node scripts/finalize-export.mjs",
+    "check": "tsc --noEmit",
+    "check:export": "node scripts/check-export.mjs",
+    "check:layout": "node scripts/check-layout.mjs",
+    "check:hero-layout": "node scripts/check-hero-layout.mjs",
+    "test": "node --test \"scripts/*.test.mjs\" \"components/**/*.test.mjs\"",
+    "format": "prettier --write \"**/*.{ts,tsx,mdx,json,css,mjs,js}\"",
+    "format:check": "prettier --check \"**/*.{ts,tsx,mdx,json,css,mjs,js}\"",
+    "serve": "node scripts/serve-export.mjs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gqty-dev/gqty.git",
+    "directory": "website"
+  },
+  "author": "Micha Mailaender <micha@mailaender.me>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/gqty-dev/gqty/issues"
+  },
+  "homepage": "https://gqty-dev.github.io/gqty/",
+  "dependencies": {
+    "next": "15.5.27",
+    "nextra": "2.13.4",
+    "nextra-theme-docs": "2.13.4",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "react-feather": "2.0.10",
+    "remark-mermaid-nextra": "0.0.4"
+  },
+  "devDependencies": {
+    "@types/node": "24.19.0",
+    "@types/react": "18.3.31",
+    "@types/react-dom": "18.3.7",
+    "autoprefixer": "10.4.21",
+    "playwright": "1.57.0",
+    "postcss": "8.5.6",
+    "prettier": "3.9.9",
+    "typescript": "5.9.3"
+  },
+  "packageManager": "pnpm@10.26.2"
+}

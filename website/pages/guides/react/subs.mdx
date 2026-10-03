@@ -1,0 +1,86 @@
+import Alert from '/components/Reshaped/Alert';
+
+# Subscriptions
+
+The basic usage of subscriptions are as easy as queries.
+
+```tsx filename="src/notifications.tsx"
+import { useSubscription } from '../gqty';
+
+export default function Notifications() {
+  const { notification } = useSubscription();
+
+  return (
+    <>
+      <p>{notification.message}</p>
+      <div>
+        Received at: {new Date(notification.createdAt).toLocaleString()}
+      </div>
+    </>
+  );
+}
+```
+
+This creates a long-lived subscription to your endpoint and continues to receive
+backend updates as they happen.
+
+With normalized cache enabled in GQty, object updates received from
+subscriptions are automatically populated to components watching the same object
+via queries.
+
+There are two ways to design your subscriptions, having each of them with its
+own benefits and drawbacks. You should be concise about each and choose the one
+best fits your application.
+
+## Event based Subscriptions (Event Streams)
+
+Subscriptions may represent a stream of events happening on server side, sending
+a replayable history to the client. This enables interesting use cases of live
+collaborations and other real-time interactions.
+
+Event based subscriptions are best suited to trigger further actions, such as
+fetching related updates for currently visible components when an event is
+received. Event payloads should stay small.
+
+<Alert
+  className="space-top-5"
+  severity="warning"
+  title="Busy connections may stall the UI."
+>
+  It is easy to think of Subscriptions as easy data streams. But without
+  backpressure and buffering support, servers have no inherent knowledge about
+  the client state. If subscriptions are hooked to high traffic backend streams,
+  client UI may become unresponsive at best, sometimes even losing messages
+  mid-flight due to WebSockets timing out.
+</Alert>
+
+## Entity based Subscriptions (Live Queries)
+
+One of the drawbacks that event-based subscriptions may introduce is the lack of
+ways to recover lost events after a connection drop. Even with automatic
+reconnection built-in our subscription clients, you are required to manually
+refetch the missing events during periods of blackout.
+
+Instead of event streams, Subscriptions can also send object updates made by
+other clients. This way the backend has more control over when to send updates,
+and how to batch them up without overwhelming the client.
+
+<Alert
+  className="space-top-5"
+  severity="info"
+  title="You may not even need this."
+>
+  Before jumping into subscriptions, an application may usually get away with a
+  carefully controlled query polling. The correct timing to start considering
+  subscriptions is when you try to aggregate a data entity from multiple sources
+  and sending updates in a fanout manner.
+</Alert>
+
+## Conclusion
+
+GQty gives you an easy way to work with Subscriptions, but Subscriptions are not
+easy to get right.
+
+If you are using managed services like Hasura or Supabase, please by all means
+use their Subscriptions because folks at these companies have already done the
+hard work for you.

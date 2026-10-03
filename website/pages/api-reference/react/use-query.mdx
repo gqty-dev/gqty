@@ -1,0 +1,205 @@
+# useQuery
+
+```tsx
+export default function MyComponent() {
+  const query = useQuery({ suspense: true });
+
+  return (
+    <>
+      {query.$state.isLoading && <Spinner />}
+
+      <Avatar user={query.me} />
+      <Button onClick={() => query.$refetch()}>Reload</Button>
+    </>
+  );
+}
+```
+
+## Options
+
+### `cachePolicy`
+
+The cache policy to use for the current query, defaults to `default`. You can
+read more about cache policy options in [Concepts](/concepts#cache-policy).
+
+### `extensions`
+
+A query extention object, carrying extra information to your query fetcher.
+
+```tsx
+export default function MyComponent() {
+  const query = useQuery({
+    extentions: {
+      authToken: 'Bearer ...',
+    },
+  });
+
+  return <>{query.foo}</>;
+}
+```
+
+```tsx {5,10} filename="gqty/index.ts"
+const queryFetcher = async ({
+  query,
+  variables,
+  operationName,
+  extensions,
+}) => {
+  const repsonse = await fetch('/graphql', {
+    method: 'POST',
+    headers: {
+      authorization: extensions?.authToken,
+      'content-type': 'application/json',
+    },
+    body: JSON.stringify({
+      query,
+      variables,
+      operationName,
+    }),
+  });
+
+  return await response.json();
+};
+```
+
+### `fetchInBackground`
+
+Allow GQty fetches to happen when the window is not currently visible.
+
+When disabled, fetch chances will be ignored when the user navigates away,
+`refetchOnWindowVisible` should be used in conjunction to refresh the contents
+when the user is back.
+
+Defaults to `true`.
+
+### `fetchPolicy`
+
+Legacy option kept for backward compatability, ignored when `cachePolicy` is in
+use.
+
+| Value               | Description                                   |
+| :------------------ | :-------------------------------------------- |
+| `cache-first`       | Translates to the cache policy `force-cache`. |
+| `cache-and-network` | Translates to the cache policy `default`.     |
+| `network-only`      | Translates to the cache policy `no-cache`.    |
+| `no-cache`          | Translates to the cache policy `no-store`.    |
+
+### `initialLoadingState`
+
+Specify the default value for `isLoading`, useful for rendering logics that
+depends on the first fetch.
+
+### `notifyOnNetworkStatusChange`
+
+Updates loading state or triggers suspense during refetch, does not affect
+initial fetch.
+
+Defaults to `true`.
+
+### `onError`
+
+Optional error callback, called when a fetch error happens.
+
+### `operationName`
+
+Optional GraphQL operation name, useful for debugging and testing.
+
+### `prepare`
+
+Optional selection function to run before the first render happens, useful to
+skip the first render in Suspense mode. Encourages the isolation of
+[shareable fragments](/guides/react/write#fragments) for mutation, SSR and SSG.
+
+### `refetchInterval`
+
+Attempt a soft [refetch](/concepts#refetching) every X milliseconds, skip this
+option to disable.
+
+Defaults to `undefined`.
+
+### `refetchOnReconnect`
+
+Attempt a soft [refetch](/concepts#refetching) when it is
+[online](https://developer.mozilla.org/en-US/docs/Web/API/Window/online_event).
+
+Defaults to `true`.
+
+### `refetchOnRender`
+
+Attempt a soft [refetch](/concepts#refetching) after each and every render.
+
+Defaults to `true`.
+
+### `refetchOnWindowVisible`
+
+Attempt a soft [refetch](/concepts#refetching) when the window becomes visible
+again.
+
+Defaults to `true`.
+
+### `retryPolicy`
+
+Failing queries can be automatically retried, this option allows you to
+customize the retrying behavior, or disabling it altogether.
+
+| Retry Policy                 | Description                                                                  |
+| :--------------------------- | :--------------------------------------------------------------------------- |
+| `true`                       | Enables auto retry with the default options.                                 |
+| `false`                      | Disables auto retry.                                                         |
+| `number`                     | Enables auto retry with the default options and a custom `maxRetries` count. |
+| `{ maxRetries, retryDelay }` | Enables auto retry with custom options.                                      |
+
+When you specify retryPolicy as an object, the following properties are
+available.
+
+#### `maxRetries`
+
+The maximum number of times to retry a failed query, defaults to `3`.
+
+#### `retryDelay`
+
+| Retry Delay                   | Description                                                                                                                                                   |
+| :---------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `number`                      | A fixed number of milliseconds to wait between retries.                                                                                                       |
+| `(attempt: number) => number` | A function that returns the number of milliseconds to wait between retries, the default is an exponential backoff function: $min({2^x}, 30) * 1000\text{ms}$. |
+
+### `suspense`
+
+Use `true` to enable
+[Suspense mode](/guides/react/read#suspense-on-data-fetching).
+
+## Return Value
+
+The return value is a Proxy of the client cache, typed with the Query type in
+the generated schema.
+
+The following additional properties are also included.
+
+### `$state`
+
+| Property    | Type      | Description                                            |
+| :---------- | :-------- | :----------------------------------------------------- |
+| `error`     | `Error`   | The error that happened during the last fetch, if any. |
+| `isLoading` | `boolean` | Whether the query is currently fetching.               |
+
+### `$refetch`
+
+A function that refetches the query, returns a promise that resolves to the
+query result.
+
+Depending on the freshness of the cache data being accessed, a fetch may or may
+not happen. Read more about refetching [here](/concepts#refetching).
+
+You may force a hard refetch by passing `true` as the first argument.
+
+```tsx
+const { $refetch } = useQuery();
+
+// Hard refetch
+$refetch(true);
+// or
+$refetch();
+
+// Soft refetch
+$refetch(false);
+```

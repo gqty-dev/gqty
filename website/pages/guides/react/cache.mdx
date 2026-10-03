@@ -1,0 +1,158 @@
+import Alert from '/components/Reshaped/Alert';
+
+# Caching
+
+<Alert className="space-top-3" title="Avoid premature optimizations">
+  The generated client contains sane defaults for new projects, you should start
+  tweaking cache settings after initial development is done. Cache expiry
+  requires careful tuning and testing, prematurely start working on this may
+  compound your work load.
+</Alert>
+
+## Basic Usage
+
+```ts
+const cache = new Cache(undefined, {
+  maxAge: 5 * 60 * 1000, // 5 minutes
+  staleWhileRevalidate: 30 * 60 * 1000, // 30 minutes
+  normalization: true,
+});
+```
+
+| Option                 | Default            | Description                                                         |
+| :--------------------- | :----------------- | :------------------------------------------------------------------ |
+| `maxAge`               | `Infinity`         | The maximum age of a cache entry before it is considered stale.     |
+| `staleWhileRevalidate` | 5 minutes          | The duration after `maxAge` where stale data must be kept in cache. |
+| `normalization`        | `true` \| `object` | Enables cache normalization.                                        |
+
+## Cache Expiry
+
+The cache in GQty has expiry built-in. Cache values are held with `WeakRef` with
+a timer, expired data is opened up for Garbage Collection, but they are not
+immediately evicted. In fact, expired data before eviction is really the key of
+SWR.
+
+Refetching on a fresh cash does nothing by default, GQty ignores these requests
+unless you specify another cache policies. On a stale cache or even partial
+cache miss, queries still serves the data, while fetching happens in the
+background. This pattern allows more frequent refetching with little to no
+performance cost.
+
+<Alert className="space-top-5" title="Refetch! Refetch! Refetch!">
+  We recommend enabling all auto-refetch options during development. Until your
+  app grows to a certain size where refetching becomes a performance bottleneck,
+  you should really not worry about it.
+</Alert>
+
+### Stale While Revalidate (SWR)
+
+For stale-while-revalidate to make sense, we should have "stale" caches that
+stays as long as there is no pressure for evictions. Garbage Collection in
+JavaScript engines are doing exactly the same thing, so we can leverage that
+instead of pretending to be stale with strong references.
+
+## Normalization
+
+### Performance Considerations
+
+Normalization in GQty process objects recursively, and iterates through cache
+subscriptions exhaustively. This is convenient for most projects, but may
+introduce performance cost for projects with a lot of tiny pieces of data.
+
+<Alert
+  className="space-top-5"
+  title="Large datasets don't play well with normalization"
+>
+  If your project is using virtualized lists or tables, rendering maps or
+  infinite scrolls, it could be a hint to consider running without
+  normalization.
+</Alert>
+
+### Customization
+
+For power users who really understands their data, it is possible to provide a
+customized normalization function. Useful for large projects where a generic
+recursion lays too much burden on each update.
+
+#### `normalization.identity`
+
+A function that returns a unique identity of the input object, return a falsy
+value if the value is not identifiable.
+
+```ts
+identity(value: CacheNode): string | undefined;
+```
+
+The default function combines the `__typename` and `id`, or `_id`, fields of the
+object.
+
+#### `normalization.onConflict`
+
+A function to resolve object conflicts when new data is being set to the cache.
+
+```ts
+onConflict?(
+  /** Existing value */
+  sourceValue: object,
+  /** Incoming value */
+  targetValue: object
+): object | undefined;
+```
+
+This function will be recursively invoked at all levels of a data tree,
+iterating into both object keys and arrays. It may return a value at any point
+to stop further recursion and use the returned value as the new node, or return
+`undefined` to continue traversing.
+
+| Option                     | Description                                                                                                           |
+| :------------------------- | :-------------------------------------------------------------------------------------------------------------------- |
+| `normalization.identity`   | A function that returns a unique identity of the input object, return a falsy value if the value is not identifiable. |
+| `normalization.onConflict` | A function to resolve object conflicts when new data is being set to the cache.                                       |
+| `normalization.schemaKeys` | An object with GraphQL object type name as keys, and their fields to be used as identity.                             |
+
+## Cache Persistence
+
+### Data Structure
+
+Understanding the data structure is sometimes necessary when debugging SSR
+hydration issues.
+
+The basic data structure for initialization the cache looks like this:
+
+```tsx
+const cache = new Cache({
+  query: {
+    queryA: 'String Value',
+    queryB: {
+      __typename: 'B',
+      id: '...',
+    },
+    queryC: null,
+  },
+});
+```
+
+#### Hydrate with queries and ONLY queries
+
+Although the cache stores mutation and subscription data to survive React
+rendering, persistence should really only care about what is under `query` key.
+
+### Normalization and Circular References
+
+In contrast with a common belief that caches without normalization tend to be
+simpler and less error prone, there is a pitfall of circular references when
+using in tandem with optimistic updates.
+
+Consider the following code segment:
+
+```ts
+const { me } = useQuery();
+
+me.pets[0].owner = me;
+```
+
+While normalization will correctly serialize them into a flat store for
+persistance, having it disabled you are then responsible to properly serialize
+these snapshots.
+
+## State Management (Coming Soon!)

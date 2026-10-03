@@ -1,0 +1,125 @@
+import Alert from '/components/Reshaped/Alert';
+import Tabs from '/components/Tabs';
+import Image from 'next/image';
+import Link from 'next/link';
+import { asset } from '../lib/asset';
+
+# Quickstart
+
+To start using GQty, run `@gqty/cli` with your favourite packager.
+
+<Alert
+  className="space-top-5 space-bottom-3"
+  severity="success"
+  title="Even Quicker Start!"
+>
+  Run the following command with your endpoint as an argument to skip the
+  interactive setup and jump right in!
+</Alert>
+
+<Tabs initialIndex={0}>
+  <Tabs.Item label="npm">
+
+```bash copy
+> npx @gqty/cli
+```
+
+  </Tabs.Item>
+  <Tabs.Item label="yarn">
+
+```bash copy
+> yarn dlx @gqty/cli
+```
+
+  </Tabs.Item>
+  <Tabs.Item label="pnpm">
+
+```bash copy
+> pnpm dlx @gqty/cli
+```
+
+  </Tabs.Item>
+</Tabs>
+
+After the interactive setup, you should now see these files in your project:
+
+```
+.
+├─ gqty
+│ ├─ index.ts
+│ └─ schema.generated.ts
+└─ gqty.config.ts
+
+```
+
+You are all set! Head over to one of the following section to create your first
+fetching component!
+
+<div className="route-cards">
+  <Link className="route-card" href="/guides/react/read">
+    <div className="route-card__logos">
+      <Image
+        width={36}
+        height={36}
+        src={asset('/logo/nextjs.svg')}
+        alt="Next.js"
+      />
+      <Image
+        width={36}
+        height={36}
+        src={asset('/logo/react.svg')}
+        alt="React"
+      />
+      <Image
+        width={36}
+        height={36}
+        src={asset('/logo/preact.svg')}
+        alt="Preact"
+      />
+    </div>
+    <h3 className="route-card__title">React</h3>
+    {/* The text is an explicit JSX expression, not bare multiline text:
+        MDX re-parses multiline text inside an author <p> as Markdown and
+        wraps it in a second <p>, producing <p><p>text</p></p>, which the
+        browser repairs at parse time and React then reports as a 418/423
+        hydration mismatch. Keep this as an expression so Prettier also
+        cannot reformat it back into bare text. */}
+    <p className="route-card__text">
+      {'For React compatible UI frameworks, such as Next.js, React and Preact.'}
+    </p>
+  </Link>
+  <Link className="route-card" href="/guides/core/resolve">
+    <div className="route-card__logos">
+      <Image
+        width={36}
+        height={36}
+        src={asset('/logo/svelte.svg')}
+        alt="Svelte"
+      />
+      <Image
+        width={36}
+        height={36}
+        src={asset('/logo/astro.svg')}
+        alt="Astro"
+      />
+      <Image
+        width={36}
+        height={36}
+        src={asset('/logo/solid.svg')}
+        alt="Solid"
+      />
+      <Image width={36} height={36} src={asset('/logo/vue.svg')} alt="Vue" />
+    </div>
+    <h3 className="route-card__title">Core</h3>
+    <p className="route-card__text">A framework agnostic way to use GQty.</p>
+  </Link>
+</div>
+
+<Alert
+  className="space-top-5"
+  severity="info"
+  title="Didn't get what you want?"
+>
+  Head over to [configuration](/api-reference/configuration) or
+  [cli](/api-reference/cli) for more options!
+</Alert>

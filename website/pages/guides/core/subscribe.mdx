@@ -1,0 +1,82 @@
+import Alert from '/components/Reshaped/Alert';
+
+# `subscribe()` - The Asynchronous Generator
+
+In contrast with the one-off nature of [`resolve()`](/guides/core/resolve),
+`subscribe()` is an asynchronous generator for continuous data streams.
+
+When you call `subscribe()`, it starts subscriptions and fetches for queries and
+mutations depending on the selections made. The generator then yield on relevant
+changes to the cache until it is unsubscribed.
+
+Here is a simple example in SvelteKit:
+
+```html filename="src/routes/index.svelte"
+<script>
+  import { subscribe } from "$lib/gqty";
+
+  let messages = [];
+
+  for await (const newMessage of subscribe(
+    ({ subscription: { onNewMessage } }) => onNewMessage
+  )) {
+    messages = [...messages, newMessage];
+  }
+</script>
+
+<p>Messages</p>
+
+<ol>
+  {#each messages as message}
+  <li>{message}</li>
+  {/each}
+</ol>
+```
+
+<Alert title="Query and Mutation also works">
+  `subscribe` is not only made for subscriptions. It also fetches once on query
+  and mutations, then listening for cache changes made elsewhere in your app.
+  This powers the `useQuery` hook in our React package, triggering re-renders on
+  cache updates.
+</Alert>
+
+## Unsubscribe
+
+`subscribe()` returns an object with an `unsubscribe` method for closing the
+subscription.
+
+```html filename="src/routes/index.svelte"
+<script>
+  import { subscribe } from '$lib/gqty';
+  import { onMount } from 'svelte';
+
+  let messages = [];
+
+  onMount(() => {
+    const subscription = subscribe(
+      ({ subscription: { onNewMessage } }) => onNewMessage
+    );
+
+    doStreamData(subscription);
+
+    return subscription.unsubscribe;
+  });
+
+  async function doStreamData(subscription) {
+    for await (const newMessage of sub) {
+      messages = [...messages, newMessage];
+    }
+  }
+</script>
+
+<p>Messages</p>
+
+<ol>
+  {#each messages as message}
+  <li>{message}</li>
+  {/each}
+</ol>
+```
+
+For a complete list of available options, check out the
+[API Reference](/api-reference/core/subscribe).

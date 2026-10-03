@@ -1,0 +1,144 @@
+# useTransactionQuery
+
+A wrapper hook for `useQuery()`, designed for users familiar with the Apollo
+Client.
+
+```tsx
+export default function MyComponent() {
+  const { data, error, isLoading } = useTransactionQuery(
+    (query) => ({
+      foo: query.foo,
+      bar: query.bar({ baz: 1 }),
+    }),
+    {
+      skip: false,
+    }
+  );
+
+  return (
+    <div>
+      {isLoading && <p>Loading...</p>}
+      {error && <p>Error: {error.message}</p>}
+      {data && (
+        <div>
+          <p>Foo: {data.foo}</p>
+          <p>Bar: {data.bar}</p>
+        </div>
+      )}
+    </div>
+  );
+}
+```
+
+## Options
+
+### `cachePolicy`
+
+The cache policy to use for the current query, defaults to `default`. You can
+read more about cache policy options in [Concepts](/concepts#cache-policy).
+
+### `fetchPolicy`
+
+Legacy option kept for backward compatability, ignored when `cachePolicy` is in
+use.
+
+| Value               | Description                                   |
+| :------------------ | :-------------------------------------------- |
+| `cache-first`       | Translates to the cache policy `force-cache`. |
+| `cache-and-network` | Translates to the cache policy `default`.     |
+| `network-only`      | Translates to the cache policy `no-cache`.    |
+| `no-cache`          | Translates to the cache policy `no-store`.    |
+
+### `skip`
+
+Whether to skip the query, defaults to `false`.
+
+### `pollInterval`
+
+Frequency in milliseconds for refetching the query, skip this option to disable.
+
+### `pollInBackground`
+
+Whether to poll while the app is in background, defaults to `false`.
+
+### `notifyOnNetworkStatusChange`
+
+Updates loading state or triggers suspense during refetch, does not affect
+initial fetch.
+
+Defaults to `true`.
+
+### `variables`
+
+Optional query variables to be supplied to the query function.
+
+### `onCompleted`
+
+Optional callback for when a query fetch is successful.
+
+```ts
+(data: TData) => void;
+```
+
+### `onError`
+
+Optional callback for when a query fetch fails.
+
+```ts
+(error: GQtyError) => void;
+```
+
+### `operationName`
+
+Optional GraphQL operation name, useful for debugging and testing.
+
+### `retry`
+
+Failing queries can be automatically retried, this option allows you to
+customize the retrying behavior, or disabling it altogether.
+
+| Retry Policy                 | Description                                                                  |
+| :--------------------------- | :--------------------------------------------------------------------------- |
+| `true`                       | Enables auto retry with the default options.                                 |
+| `false`                      | Disables auto retry.                                                         |
+| `number`                     | Enables auto retry with the default options and a custom `maxRetries` count. |
+| `{ maxRetries, retryDelay }` | Enables auto retry with custom options.                                      |
+
+When you specify retry as an object, the following properties are available.
+
+#### `maxRetries`
+
+The maximum number of times to retry a failed query, defaults to `3`.
+
+#### `retryDelay`
+
+| Retry Delay                   | Description                                                                                                                                                   |
+| :---------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `number`                      | A fixed number of milliseconds to wait between retries.                                                                                                       |
+| `(attempt: number) => number` | A function that returns the number of milliseconds to wait between retries, the default is an exponential backoff function: $min({2^x}, 30) * 1000\text{ms}$. |
+
+### `suspense`
+
+Use `true` to enable
+[Suspense mode](/guides/react/read#suspense-on-data-fetching).
+
+## Return Value
+
+The return value is an object with the following properties.
+
+### `data`
+
+The data returned by the query function, only available after a successful
+fetch.
+
+### `error`
+
+The error returned by the query function, only available after a failed fetch.
+
+### `isCalled`
+
+Whether the query function has been called.
+
+### `isLoading`
+
+Whether the query function is currently fetching.

@@ -1,0 +1,183 @@
+import Alert from '/components/Reshaped/Alert';
+import Image from 'next/image';
+import { asset } from '../lib/asset';
+import svgNormalization1 from '/components/concepts/cache/normalization/pic1.svg';
+import svgNormalization1Dark from '/components/concepts/cache/normalization/pic1d.svg';
+import svgNormalization2 from '/components/concepts/cache/normalization/pic2.svg';
+import svgNormalization2Dark from '/components/concepts/cache/normalization/pic2d.svg';
+import svgNormalization3 from '/components/concepts/cache/normalization/pic3.svg';
+import svgNormalization3Dark from '/components/concepts/cache/normalization/pic3d.svg';
+import svgNormalization4 from '/components/concepts/cache/normalization/pic4.svg';
+import svgNormalization4Dark from '/components/concepts/cache/normalization/pic4d.svg';
+
+# Concepts
+
+<Alert className="space-top-3" title="Intended Level: Intermediate">
+  This section explains some thought process and design concepts behind GQty. It
+  assumes a certain degree of knowledge across multiple domains, such as the
+  experience using other GraphQL clients, Web standards and cache management in
+  JavaScript.
+</Alert>
+
+## A cache that fetches
+
+The core concept behind GQty is simple, you interact with the cache while it
+automatically fetches missing data on-the-fly.
+
+### Scoped Queries
+
+While it is handy for a centralized group of cache accessors that groups all
+selections and fetches as much as possible in one go, there are use cases where
+separation is necessary.
+
+It is especially important when implementing persisted queries and operation
+names. Selections under these context cannot be mixed up with other queries
+under a different one.
+
+Scoped contexts contain the following elements, which may affect how Selections
+are combined and ultimately fetched.
+
+1. Operation Name
+1. Cache Policy
+1. Suspense
+
+Suspense is the most important consideration point if you have Suspense enabled.
+It determines which level and how many levels in the component tree a query may
+be suspended and fetched, it also decides the error boundaries of your app.
+
+### Selection Batching
+
+When making selections by interacting with the cache, GQty captures what is
+being accessed, combine selections with the same context, fetching them with as
+few requests as possible.
+
+<Alert className="space-top-5" title="Pass query objects as props">
+  In React, the `useQuery()` hook creates a new scoped context for each
+  component. Scoped contexts split up selections which sometimes may not be what
+  you wanted. Instead, you should pass query objects down the component tree as
+  if their data already fetched. This allows selections to be grouped into one
+  single request.
+</Alert>
+
+## All queries are live queries
+
+In React, components create live subscriptions to the current cache even without
+GraphQL Subscriptions involved. This allows most of the normalization magic
+happens when a seemingly unrelated changes or fetch from other components
+arrives, all components reaching such objects will also be updated.
+
+## Refetching
+
+### Soft Refetch
+
+Refetching in GQty does not necessarily means a network request. A refetch first
+checks the cache freshness of accessed data, it fetches only on cache miss AND
+the current cache policy allows it.
+
+Consider soft refetches a cache validity check instead, this allows more
+frequent refetching strategies. Our `useQuery()` hook has options for automatic
+refetches on window focus, network reconnect and even periodic attempts.
+
+To manually trigger a soft refetch, use `useQuery().$refetch(false)` in React.
+
+### Hard Refetch
+
+Users may specify `no-cache` or `no-store` as the cache policy in core, or
+simply use `useQuery().$refetch(true)` in React to bypass a fresh cache and
+forces a network request.
+
+## Cache Policy
+
+When designing an expiring cache with stale-while-revalidate (SWR) support,
+there is an important concept inherited from the Web standards:
+[`Request.cache`](https://developer.mozilla.org/en-US/docs/Web/API/Request/cache).
+
+`Request.cache` is the strategy dealing with the current cache, before fetching
+remote endpoints.
+
+GraphQL servers usually do not hint about cache lifetime for the data, so it is
+up to developers who make correct assumptions on each and every one of their own
+projects.
+
+| Value                         | Description                                                                                                                                                                                                                                                                                                                        |
+| :---------------------------- | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `default`                     | Serves the cached contents when it is fresh, and if they are stale within the stale-while-revalidate (SWR) window, fetches in the background and updates the cache. Always fetches on stale cache or cache miss. <br /><br /> During SWR, a successful fetch will not notify cache updates. New contents are served on next query. |
+| `reload`                      | Always fetch, updates client cache on response.                                                                                                                                                                                                                                                                                    |
+| `no-cache`                    | Same as `reload`, for GraphQL does not support conditional requests.                                                                                                                                                                                                                                                               |
+| `no-store`                    | Always fetch and does not update on response. <br /><br /> GQty creates a temporary cache at query-level which immediately expires.                                                                                                                                                                                                |
+| <nobr>`force-cache`</nobr>    | Serves the cached contents regardless of staleness. It fetches on cache miss or a stale cache, updates the cache on response.                                                                                                                                                                                                      |
+| <nobr>`only-if-cached`</nobr> | Serves the cached contents regardless of staleness, throws a network error on cache miss.                                                                                                                                                                                                                                          |
+
+<Alert title="Cache Policy is not Fetch Policy">
+  Our React package has the option `fetchPolicy` which is heavily inspired by
+  the Apollo Client. But over time, we found the cache option in the Fetch API
+  more concise and easier to understand across multiple APIs.
+</Alert>
+
+## Cache Normalization
+
+Cache normalization is best explained with sketches.
+
+Given two data trees in cache, both containing node "a".
+
+<Image
+  className="dark-only-hidden"
+  src={asset(svgNormalization1)}
+  alt="fig1: Cache Normalization Step 1"
+/>
+<Image
+  className="dark-only-block"
+  src={asset(svgNormalization1Dark)}
+  alt="fig1: Cache Normalization Step 1"
+/>
+
+They will be merged into the same object reference, and kept in a global store.
+
+<Image
+  className="dark-only-hidden"
+  src={asset(svgNormalization2)}
+  alt="fig2: Cache Normalization Step 2"
+/>
+<Image
+  className="dark-only-block"
+  src={asset(svgNormalization2Dark)}
+  alt="fig2: Cache Normalization Step 2"
+/>
+
+This global store will be serialized along with the main data cache during
+persistence and rehydration.
+
+### Normalized, still Reactive.
+
+When a node is part of an updating tree, subscribers of other trees referencing
+the same node will also be notified.
+
+<Image
+  className="dark-only-hidden"
+  src={asset(svgNormalization3)}
+  alt="fig3: Cache Normalization Step 3"
+/>
+<Image
+  className="dark-only-block"
+  src={asset(svgNormalization3Dark)}
+  alt="fig3: Cache Normalization Step 3"
+/>
+
+### Stable Object References
+
+Otherwise maintaining a reverse lookup map, normalized object references inside
+query caches will be a proxy of the actual data inside the global store.
+
+When objects are updated or replaced, references to the proxies won't change
+only underlying objects are swapped.
+
+<Image
+  className="dark-only-hidden"
+  src={asset(svgNormalization4)}
+  alt="fig4: Cache Normalization Step 4"
+/>
+<Image
+  className="dark-only-block"
+  src={asset(svgNormalization4Dark)}
+  alt="fig4: Cache Normalization Step 4"
+/>

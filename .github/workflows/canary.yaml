@@ -5,15 +5,141 @@ on:
     branches:
       - main
 
+# No `paths` filter: the eligibility gate inspects manifest semantics, and a
+# path filter would strand required checks as pending.
+#
+# No top-level `permissions` block: it would constrain the permissions of the
+# reusable release workflow, which posts PR comments (issues: write). Each job
+# below declares only the permissions it actually needs.
 jobs:
+  # Fail-closed detector. Runs the classifier tests, then decides whether this
+  # pull request is eligible for a canary publication. Detector errors exit
+  # nonzero and are surfaced by canary-policy; they never become "ineligible".
+  canary-eligibility:
+    name: Canary eligibility
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    outputs:
+      eligible: ${{ steps.classify.outputs.eligible }}
+    steps:
+      - name: Checkout exact PR head
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Test canary eligibility classifier
+        run: node --test scripts/canary-eligibility.test.mjs
+
+      - name: Classify pull request changes
+        id: classify
+        run:
+          node scripts/canary-eligibility.mjs --base "${{
+          github.event.pull_request.base.sha }}" --head "${{
+          github.event.pull_request.head.sha }}"
+
   release-canary:
-    uses: the-guild-org/shared-config/.github/workflows/release-snapshot.yml@main
+    needs: canary-eligibility
     if:
-      ${{ github.actor != 'dependabot[bot]' && github.actor !=
-      'dependabot-preview[bot]' && github.actor != 'renovate[bot]' }}
+      ${{ needs.canary-eligibility.outputs.eligible == 'true' && github.actor !=
+      'dependabot[bot]' && github.actor != 'dependabot-preview[bot]' &&
+      github.actor != 'renovate[bot]' }}
+    uses: the-guild-org/shared-config/.github/workflows/release-snapshot.yml@main
     with:
       packageManager: pnpm
       npmTag: canary
     secrets:
       githubToken: ${{ secrets.GITHUB_TOKEN }}
       npmToken: ${{ secrets.NPM_TOKEN }}
+
+  # Always-running, secretless policy reporter. Fails on detector errors and on
+  # an allowed-actor publication failure. Otherwise it reports the *truthful*
+  # outcome: published, not eligible by policy, or excluded by existing policy.
+  # A skipped publication is never labelled a success.
+  canary-policy:
+    name: Canary policy
+    needs:
+      - canary-eligibility
+      - release-canary
+    if: ${{ always() }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Report canary policy outcome
+        env:
+          ELIGIBLE: ${{ needs.canary-eligibility.outputs.eligible }}
+          DETECTOR_RESULT: ${{ needs.canary-eligibility.result }}
+          RELEASE_RESULT: ${{ needs.release-canary.result }}
+          ACTOR: ${{ github.actor }}
+          IS_FORK:
+            ${{ github.event.pull_request.head.repo.full_name !=
+            github.repository }}
+        run: |
+          node <<'NODE'
+          const raw = process.env.ELIGIBLE;
+          const detector = process.env.DETECTOR_RESULT;
+          const release = process.env.RELEASE_RESULT;
+          const actor = process.env.ACTOR;
+          const isFork = process.env.IS_FORK === 'true';
+
+          if (detector !== 'success') {
+            console.error(
+              `FAIL: canary eligibility detector did not succeed (result=${detector})`
+            );
+            process.exit(1);
+          }
+
+          // Fail closed: an empty, missing, or garbage eligibility value must
+          // be a detector error, never rounded down to "not eligible".
+          if (raw !== 'true' && raw !== 'false') {
+            console.error(
+              `FAIL: canary eligibility output is not exactly 'true' or 'false' (ELIGIBLE=${JSON.stringify(raw)}).`
+            );
+            process.exit(1);
+          }
+          const eligible = raw === 'true';
+
+          const actorExcluded =
+            actor === 'dependabot[bot]' ||
+            actor === 'dependabot-preview[bot]' ||
+            actor === 'renovate[bot]';
+
+          if (!eligible) {
+            console.log(
+              'SKIPPED (not eligible by policy): no publish-relevant changes in this pull request.'
+            );
+            process.exit(0);
+          }
+
+          if (actorExcluded) {
+            console.log(
+              `SKIPPED (excluded by existing actor policy): actor ${actor} is excluded from canary publication.`
+            );
+            process.exit(0);
+          }
+
+          if (isFork) {
+            console.log(
+              'SKIPPED (publication excluded by fork policy): the reusable release workflow publishes only when the pull request head repository equals the base repository.'
+            );
+            process.exit(0);
+          }
+
+          if (release === 'success') {
+            console.log('PUBLISHED: canary publication succeeded.');
+            process.exit(0);
+          }
+
+          console.error(
+            `FAIL: eligible same-repository canary publication did not succeed (result=${release}).`
+          );
+          process.exit(1);
+          NODE

@@ -1,0 +1,79 @@
+import Alert from '/components/Reshaped/Alert';
+
+# useMutation
+
+```tsx
+export default function MyComponent() {
+  const [login, { isLoading }] = useMutation(
+    (mutation, { username, password }) => {
+      return mutation.login({ username, password });
+    }
+  );
+
+  return (
+    <LoginForm
+      disabled={isLoading}
+      onSubmit={() => {
+        login({ username, password });
+      }}
+    />
+  );
+}
+```
+
+## Options
+
+### `onCompleted`
+
+Optional callback for when a query fetch is successful.
+
+```ts
+(data: TData) => void;
+```
+
+### `onError`
+
+Optional callback for when a query fetch fails.
+
+```ts
+(error: GQtyError) => void;
+```
+
+### `retry`
+
+<Alert className="space-top-5" title="Retrying on Mutations">
+  When a network error is encountered, Mutations may contain side-effects that
+  may or may not happened already on server side. Automatic retrying should be
+  used with caution.
+</Alert>
+
+Failing queries can be automatically retried, this option allows you to
+customize the retrying behavior, or disabling it altogether.
+
+| Retry Policy                 | Description                                                                  |
+| :--------------------------- | :--------------------------------------------------------------------------- |
+| `true`                       | Enables auto retry with the default options.                                 |
+| `false`                      | Disables auto retry.                                                         |
+| `number`                     | Enables auto retry with the default options and a custom `maxRetries` count. |
+| `{ maxRetries, retryDelay }` | Enables auto retry with custom options.                                      |
+
+When you specify retry as an object, the following properties are available.
+
+#### `maxRetries`
+
+The maximum number of times to retry a failed query, defaults to `3`.
+
+#### `retryDelay`
+
+| Retry Delay                   | Description                                                                                                                                                   |
+| :---------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `number`                      | A fixed number of milliseconds to wait between retries.                                                                                                       |
+| `(attempt: number) => number` | A function that returns the number of milliseconds to wait between retries, the default is an exponential backoff function: $min({2^x}, 30) * 1000\text{ms}$. |
+
+### `noCache`
+
+Specify `true` to skip updating the client cache after a successful fetch.
+
+### `suspense`
+
+Use `true` to enable [Suspense mode](/guides/react/write).

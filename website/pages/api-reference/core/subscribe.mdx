@@ -1,0 +1,113 @@
+# subscribe
+
+`subscribe()` is an asynchronous generator for continuous GraphQL data streams.
+
+```tsx
+const notifications = subscribe(
+  ({ subscription }) => subscription.newNotification
+);
+
+for await (const notification of notifications) {
+  console.log('Got new notification:', notification);
+}
+
+// You may unsubscribe at any point
+<button onClick={() => notifications.unsubscribe()}>Unsubscribe</button>;
+```
+
+## Options
+
+### `cachePolicy`
+
+The cache policy to use for queries or mutations, defaults to `default`. You can
+read more about cache policy options in [Concepts](/concepts#cache-policy).
+
+### `extensions`
+
+A query extention object, carrying extra information to your query fetcher.
+
+```tsx
+subscribe(({ subscription }) => subscription.newNotification, {
+  extentions: {
+    authToken: 'Bearer ...',
+  },
+});
+```
+
+```tsx {5,10} filename="gqty/index.ts"
+const queryFetcher = async ({
+  query,
+  variables,
+  operationName,
+  extensions,
+}) => {
+  const repsonse = await fetch('/graphql', {
+    method: 'POST',
+    headers: {
+      authorization: extensions?.authToken,
+      'content-type': 'application/json',
+    },
+    body: JSON.stringify({
+      query,
+      variables,
+      operationName,
+    }),
+  });
+
+  return await response.json();
+};
+```
+
+### `retryPolicy`
+
+Failing queries can be automatically retried, this option allows you to
+customize the retrying behavior, or disabling it altogether.
+
+| Retry Policy                 | Description                                                                  |
+| :--------------------------- | :--------------------------------------------------------------------------- |
+| `true`                       | Enables auto retry with the default options.                                 |
+| `false`                      | Disables auto retry.                                                         |
+| `number`                     | Enables auto retry with the default options and a custom `maxRetries` count. |
+| `{ maxRetries, retryDelay }` | Enables auto retry with custom options.                                      |
+
+When you specify retryPolicy as an object, the following properties are
+available.
+
+#### `maxRetries`
+
+The maximum number of times to retry a failed query, defaults to `3`.
+
+#### `retryDelay`
+
+| Retry Delay                   | Description                                                                                                                                                   |
+| :---------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `number`                      | A fixed number of milliseconds to wait between retries.                                                                                                       |
+| `(attempt: number) => number` | A function that returns the number of milliseconds to wait between retries, the default is an exponential backoff function: $min({2^x}, 30) * 1000\text{ms}$. |
+
+### `onError()`
+
+Called when an error is received for Query, Mutation or Subscription.
+
+If omitted, the error will be thrown and active subscriptions will be closed.
+
+### `onSelect()`
+
+The `onSelect` callback is called when a selection is made by accessing the
+properties of query objects.
+
+```tsx
+onSelect?: (selection: Selection, cache?: CacheDataContainer) => void;
+```
+
+### `onSubscribe()`
+
+Called when a subscription is established, receives an unsubscribe function as
+parameter.
+
+```tsx
+onSubscribe?: (unsubscribe: () => void) => void;
+```
+
+### `operationName`
+
+GraphQL operation name for this query, useful for debugging and testing.

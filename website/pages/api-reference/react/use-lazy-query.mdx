@@ -1,0 +1,127 @@
+# useLazyQuery
+
+A wrapper hook for the core function `resolve`, designed for users who want more
+control over when the query fetches.
+
+```tsx
+export default function MyComponent() {
+  const [loadData, { data, error, isCalled, isLoading }] = useLazyQuery(
+    (query) => ({
+      foo: query.foo,
+      bar: query.bar({ baz: 1 }),
+    })
+  );
+
+  return (
+    <>
+      {!isCalled && <Button onClick={loadData}>Load data</Button>}
+      {isLoading && <Spinner />}
+      {error && <ErrorMessage error={error} />}
+      <div>
+        <div>Foo: {data.foo}</div>
+        <div>Bar: {data.bar}</div>
+      </div>
+    </>
+  );
+}
+```
+
+## Options
+
+### `onCompleted`
+
+Optional callback for when a query fetch is successful.
+
+```ts
+(data: TData) => void;
+```
+
+### `onError`
+
+Optional callback for when a query fetch fails.
+
+```ts
+(error: GQtyError) => void;
+```
+
+### `fetchPolicy`
+
+| Value               | Description                                   |
+| :------------------ | :-------------------------------------------- |
+| `cache-first`       | Translates to the cache policy `force-cache`. |
+| `cache-and-network` | Translates to the cache policy `default`.     |
+| `network-only`      | Translates to the cache policy `no-cache`.    |
+| `no-cache`          | Translates to the cache policy `no-store`.    |
+
+Read more about [Cache Policy](/concepts#cache-policy).
+
+### `operationName`
+
+Optional GraphQL operation name, useful for debugging and testing.
+
+### `retry`
+
+Failing queries can be automatically retried, this option allows you to
+customize the retrying behavior, or disabling it altogether.
+
+| Retry Policy                 | Description                                                                  |
+| :--------------------------- | :--------------------------------------------------------------------------- |
+| `true`                       | Enables auto retry with the default options.                                 |
+| `false`                      | Disables auto retry.                                                         |
+| `number`                     | Enables auto retry with the default options and a custom `maxRetries` count. |
+| `{ maxRetries, retryDelay }` | Enables auto retry with custom options.                                      |
+
+When you specify retry as an object, the following properties are available.
+
+#### `maxRetries`
+
+The maximum number of times to retry a failed query, defaults to `3`.
+
+#### `retryDelay`
+
+| Retry Delay                   | Description                                                                                                                                                   |
+| :---------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `number`                      | A fixed number of milliseconds to wait between retries.                                                                                                       |
+| `(attempt: number) => number` | A function that returns the number of milliseconds to wait between retries, the default is an exponential backoff function: $min({2^x}, 30) * 1000\text{ms}$. |
+
+### `suspense`
+
+Use `true` to enable
+[Suspense mode](/guides/react/read#suspense-on-data-fetching).
+
+## Return Value
+
+### TriggerFunction
+
+The trigger function to start fetching for query data, you may override the
+query function, query variables, fetch policy or operation name in place.
+
+#### Signature
+
+```ts
+function triggerFunction(options?: {
+  fn?: QueryFunction;
+  variables?: TVariables;
+  fetchPolicy?: LegacyFetchPolicy;
+  operationName?: string;
+}): TData;
+```
+
+### QueryState
+
+#### `data`
+
+The data returned by the query function, only available after a successful
+fetch.
+
+#### `error`
+
+The error returned by the query function, only available after a failed fetch.
+
+#### `isCalled`
+
+Whether the query function has been called.
+
+#### `isLoading`
+
+Whether the query function is currently fetching.

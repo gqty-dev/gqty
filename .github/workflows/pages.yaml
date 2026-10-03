@@ -1,0 +1,180 @@
+name: Deploy Documentation to Pages
+
+# Builds the static documentation site in `website/` and deploys it to GitHub
+# Pages (https://gqty-dev.github.io/gqty/). No secrets are used: the build only
+# needs a read-only checkout, and the deployment uses the OIDC token that
+# GitHub Pages issues to the `github-pages` environment.
+#
+# Cloudflare Pages builds its own previews through its native Git integration
+# and that build runs entirely inside Cloudflare, not here. This workflow still
+# validates the cloudflare-preview configuration — root-relative serving base,
+# preview `_headers`, non-indexable metadata — in a separate job, so a change
+# that only breaks the preview cannot reach a branch unverified.
+#
+# The two modes must not share a workspace or an artifact. Each job builds in
+# its own runner, and only the GitHub Pages job uploads an artifact.
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'website/**'
+      - '.github/workflows/pages.yaml'
+  pull_request:
+    # Pull requests only validate the build; they never deploy.
+    paths:
+      - 'website/**'
+      - '.github/workflows/pages.yaml'
+  workflow_dispatch:
+
+env:
+  CI: true
+
+# Read-only by default. The deployment job requests the extra scopes it needs.
+permissions:
+  contents: read
+
+# One deployment at a time. `cancel-in-progress: false` is deliberate: an
+# in-flight production deployment must be allowed to finish rather than being
+# cancelled by the next push.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  # Production build. Produces the GitHub Pages artifact only.
+  build:
+    name: Build documentation site (github-pages)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6.1.0
+        with:
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      # `website/` is not a member of the root pnpm workspace: it has its own
+      # lockfile. `--ignore-workspace` keeps the install from resolving the
+      # parent monorepo and touching the root `pnpm-lock.yaml`.
+      - name: Install dependencies
+        run: pnpm --ignore-workspace --dir website install --frozen-lockfile
+
+      - name: Typecheck
+        run: pnpm --dir website check
+
+      - name: Test
+        run: pnpm --dir website test
+
+      - name: Check formatting
+        run: pnpm --dir website format:check
+
+      # `WEBSITE_BUILD_TARGET` is deliberately unset here: the default target is
+      # github-pages, which is what this artifact must contain.
+      - name: Build
+        run: pnpm --dir website build
+        env:
+          NEXT_TELEMETRY_DISABLED: 1
+
+      - name: Check static export
+        run: pnpm --dir website check:export
+
+      # GitHub Pages runs the export through Jekyll unless `.nojekyll` is
+      # present, which would drop the `_next/` directory. The upload step below
+      # must therefore include hidden files.
+      #
+      # This also proves the export carries no preview `_headers`: the
+      # finalize step removes it in default mode, and leaving it in would
+      # de-index the live site.
+      - name: Disable Jekyll
+        run: touch website/out/.nojekyll
+
+      # Uploading is safe on pull requests: the artifact is produced for
+      # validation only and the deploy job never runs for those events.
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v5
+        with:
+          path: website/out
+          include-hidden-files: true
+
+  # Preview-mode validation. Never uploads a Pages artifact, never deploys, and
+  # runs in its own runner so the root-mode export cannot mix with, or replace,
+  # the production job's output.
+  build-cloudflare-preview:
+    name: Build documentation site (cloudflare-preview)
+    runs-on: ubuntu-latest
+    env:
+      WEBSITE_BUILD_TARGET: cloudflare-preview
+      # Cloudflare injects the real deployment hostname during a Pages build.
+      # CI has no deployment, so a deterministic HTTPS placeholder stands in:
+      # the value only has to satisfy the target's HTTPS validation, because
+      # nothing in the export derives a URL from it.
+      CF_PAGES_URL: https://preview.example.invalid
+      NEXT_TELEMETRY_DISABLED: 1
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6.1.0
+        with:
+          run_install: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: pnpm --ignore-workspace --dir website install --frozen-lockfile
+
+      - name: Typecheck
+        run: pnpm --dir website check
+
+      - name: Test
+        run: pnpm --dir website test
+
+      - name: Check formatting
+        run: pnpm --dir website format:check
+
+      - name: Build
+        run: pnpm --dir website build
+
+      - name: Check static export
+        run: pnpm --dir website check:export
+
+  # Production deployment. Runs only for pushes to `main` and manual runs from
+  # `main`, so a pull request — including one from a fork — can never deploy.
+  # Both build modes must succeed first.
+  deploy:
+    name: Deploy to GitHub Pages
+    needs:
+      - build
+      - build-cloudflare-preview
+    if: >-
+      github.ref == 'refs/heads/main' && (github.event_name == 'push' ||
+      github.event_name == 'workflow_dispatch')
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      # Pages must already be enabled for the repository. `enablement` defaults
+      # to `false`, so this never attempts to enable Pages with the limited
+      # `GITHUB_TOKEN` scopes granted here; it only reads the site metadata.
+      - name: Setup Pages
+        uses: actions/configure-pages@v6
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5

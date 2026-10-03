@@ -1,0 +1,307 @@
+import Tabs from '/components/Tabs';
+import Alert from '/components/Reshaped/Alert';
+
+# `resolve()` - The Promise Interface
+
+In GQty core, the `resolve()` method gives you a promise interface to work with
+all query types. i.e. `Query`, `Mutation` and `Subscription` are supported.
+
+## Query
+
+For example, imagine you have this GraphQL schema at server side:
+
+```graphql filename="schema.graphql"
+type Query {
+  me: User!
+}
+
+type User {
+  firstName: String!
+  lastName: String!
+  email: String!
+  image: Image!
+  friends(first: Int, last: Int): [User!]!
+  updatedAt: Int!
+}
+
+type Image {
+  alt: String!
+  src: String!
+}
+```
+
+We can then construct our query like this:
+
+<Tabs>
+
+<Tabs.Item label="No Framework">
+
+```tsx
+import { resolve } from '~/gqty';
+
+const data = await resolve(
+  ({
+    query: {
+      me: {
+        firstName,
+        lastName,
+        email,
+        image: { src, alt },
+      },
+    },
+  }) => {}
+);
+```
+
+</Tabs.Item>
+
+  <Tabs.Item label="Next.js (Server Components)">
+
+```tsx filename="app/profile/Profile.tsx"
+import { resolve } from '~/gqty';
+
+export default async function Profile() {
+  const data = await resolve(
+    ({
+      query: {
+        me: {
+          firstName,
+          lastName,
+          email,
+          image: { src, alt },
+        },
+      },
+    }) => {}
+  );
+
+  return <Avatar user={data.me} />;
+}
+```
+
+Read more about Server Components in our [dedicated page](/guides/next/rsc).
+
+  </Tabs.Item>
+
+  <Tabs.Item label="SvelteKit">
+
+```js filename="src/routes/profile/+page.js"
+import { resolve } from '$lib/gqty';
+
+/** @type {import('./$types').PageLoad} */
+export async function load({ params }) {
+  const data = await resolve(
+    ({
+      query: {
+        me: {
+          firstName,
+          lastName,
+          email,
+          image: { src, alt },
+        },
+      },
+    }) => {}
+  );
+
+  return {
+    user: data.me,
+  };
+}
+```
+
+  </Tabs.Item>
+</Tabs>
+
+### Customizing responses
+
+You may customize the response object by returning a new object from the
+selection function.
+
+```tsx {4}
+import { resolve } from '~/gqty';
+
+const data = await resolve(({ query: { me } }) => ({
+  fullName: `${me.firstName} ${me.lastName}`,
+}));
+```
+
+### Querying with arguments
+
+In the examples above, destructuring syntax are used to make it look as close to
+a GraphQL query as possible. But when the query includes arguments, you should
+instead bring it down to the function body.
+
+```tsx
+import { resolve } from '~/gqty';
+
+const selectUser = (user: User) => ({
+  id: user.id,
+  fullName: `${user.firstName} ${user.lastName}`,
+});
+
+const data = await resolve(({ query: { me } }) => ({
+  ...selectUser(me),
+  myFriends: friends({ first: 10 }).map(selectUser),
+}));
+```
+
+<Alert title="Arguments are aliased">
+  GQty automatically create alias by hashing the arguments, you can return from
+  the selection function to compose your own data shape without knowing the hash
+  ahead of time.
+</Alert>
+
+## Mutation
+
+Mutations are similar to queries, but you use the `mutation` type instead of
+`query`.
+
+```graphql filename="schema.graphql"
+type Mutation {
+  updateProfile(firstName: String, lastName: String): User!
+}
+```
+
+<Tabs>
+
+  <Tabs.Item label="No Framework">
+
+```tsx filename="updateProfile.ts"
+await resolve(({ mutation }) => {
+  const me = mutation.updateProfile({
+    firstName: 'John',
+    lastName: 'Doe',
+  });
+
+  return { ...me };
+});
+```
+
+  </Tabs.Item>
+
+  <Tabs.Item label="Next.js (Server Actions)">
+
+```tsx filename="app/profile/update/Form.tsx"
+import { resolve } from '~/gqty';
+import { redirect } from 'next/navigation';
+
+async function save(data: FormData) {
+  'use server';
+
+  try {
+    await resolve(({ mutation }) => {
+      const data = mutation.updateSomething({
+        foo: data.get('bar'),
+      });
+
+      return { ...data };
+    });
+
+    redirect('/update-success');
+  } catch (e) {
+    redirect(`/update-failure?error=${e.message}`);
+  }
+}
+```
+
+Read more about Server Actions in our
+[dedicated page](/guides/next/rsc#server-actions).
+
+  </Tabs.Item>
+
+  <Tabs.Item label="SvelteKit">
+
+```js filename="src/routes/profile/update/+page.server.js"
+import { resolve } from '$lib/gqty';
+
+/** @type {import('./$types').Actions} */
+export const actions = {
+  default: async ({ request }) => {
+    const data = await request.formData();
+
+    await resolve(({ mutation }) => {
+      const me = mutation.updateProfile({
+        firstName: data.get('firstName'),
+        lastName: data.get('lastName'),
+      });
+
+      return { ...me };
+    });
+  },
+};
+```
+
+  </Tabs.Item>
+
+</Tabs>
+
+<Alert title="Pure functions only">
+  Input values must not change between invocations, the provided function will
+  be called a second time to access the fetched data from the cache.
+</Alert>
+
+## Subscription
+
+The resolve function wraps GraphQL subscriptions into a promise-like interface.
+Subscriptions created via `resolve()` will be closed upon receiving initial
+data, i.e. the first `next` message.
+
+```graphql filename="schema.graphql"
+type Subscription {
+  onProfileUpdate: User!
+}
+```
+
+<Tabs>
+
+  <Tabs.Item label="No Framework">
+
+```tsx
+const lastUpdatedAt = await resolve(
+  ({ subscription }) => subscription.onProfileUpdate.updatedAt
+);
+```
+
+  </Tabs.Item>
+
+  <Tabs.Item label="Next.js">
+
+In Next.js, rather than waiting for update only once using `resolve`, it makes
+more sense to create a long-living subscription via
+[`useSubscription`](/guides/react/subs) .
+
+  </Tabs.Item>
+
+  <Tabs.Item label="SvelteKit">
+
+{/* This page is listed in `.prettierignore`: Prettier rewrites the
+`onClick={() => {}}` braces below into invalid HTML. Edit it by hand. */}
+
+```html filename="src/routes/profile/+page.svelte"
+<script>
+  import { onMount } from "svelte";
+  import { resolve } from "$lib/gqty";
+
+  let updated: Date | undefined;
+
+  onMount(() => {
+    resolve(
+      ({ subscription }) => subscription.onProfileUpdate.updatedAt
+    ).then((data) => {
+      updated = new Date(data);
+    });
+  });
+</script>
+
+<h1>Profile</h1>
+
+{#if updated}
+  <button onClick={() => {}}>Reload</button>
+{/if}
+```
+
+  </Tabs.Item>
+
+</Tabs>
+
+For a complete list of available options, check out the
+[API Reference](/api-reference/core/resolve).
