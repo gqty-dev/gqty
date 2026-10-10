@@ -24,6 +24,11 @@ import { useOnlineEffect } from '../useOnlineEffect';
 import { useRenderSession } from '../useRenderSession';
 import { useWindowFocusEffect } from '../useWindowFocusEffect';
 import type { ReactClientOptionsWithDefaults } from '../utils';
+import {
+  createSuspenseResourceCache,
+  getSuspenseResource,
+  type SuspenseResource,
+} from './suspense-resource';
 
 export interface UseQueryPrepareHelpers<
   GeneratedSchema extends {
@@ -181,6 +186,20 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
   // other contexts should also be included.
   const resolverStack = new ModifiedSet<ResolverParts>();
 
+  // Suspense Resource Cache, holds the suspense resource for each query.
+  // This is used when `suspense: true` and `prepare` are both active.
+  // We need a stable resource cache to ensure that we throw the same promise
+  // across renders, supporting both CSR and SSR.
+  // While `setState({ error })` might suffice for CSR, it fails on SSR because
+  // the state is lost during the retry, causing an infinite loop if the
+  // promise rejects. The stable cache ensures the error is correctly thrown
+  // and caught by ErrorBoundaries in all environments.
+  // ref: https://github.com/facebook/react/issues/17526
+  const suspenseResourceCache = createSuspenseResourceCache<
+    string,
+    SuspenseResource<any>
+  >();
+
   return ({
     extensions,
     fetchInBackground = false,
@@ -290,11 +309,37 @@ export const createUseQuery = <TSchema extends BaseGeneratedSchema>(
       // When using prepare with suspense, the promise should be thrown
       // immediately.
       if (context.shouldFetch && suspense) {
-        throw client.resolve(({ query }) => prepare({ prepass, query }), {
-          cachePolicy,
-          operationName,
-          retryPolicy,
-        });
+        // We create a unique hash for the current query based on the selections
+        // and operation parameters. This ensures that we can identify if we're
+        // fetching the same data across renders.
+        const queryHash = Array.from(selections)
+          .map((s) => s.cacheKeys.join('.'))
+          .sort()
+          .join('|');
+
+        const suspenseKey = `suspense-${
+          operationName || 'query'
+        }-${cachePolicy}-${queryHash}`;
+
+        // By using a resource cache, we ensure that we throw the same promise
+        // (the "resource") for the same query. This prevents React from
+        // entering an infinite loop of re-renders.
+        // Crucially, the resource tracks the promise state so that if it
+        // rejects, we throw the actual error, allowing it to be caught by
+        // an ErrorBoundary instead of silently failing and retrying forever.
+        const resource = getSuspenseResource(
+          suspenseResourceCache,
+          suspenseKey,
+          () => {
+            return client.resolve(({ query }) => prepare({ prepass, query }), {
+              cachePolicy,
+              operationName,
+              retryPolicy,
+            });
+          }
+        );
+
+        throw resource.read();
       }
     }
 
