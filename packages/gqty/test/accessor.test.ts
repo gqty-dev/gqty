@@ -1,5 +1,6 @@
 import { getArrayFields, GQtyError } from '../src';
 import { $meta, assignSelections, setCache } from '../src/Accessor';
+import { buildQuery } from '../src/QueryBuilder';
 import {
   createTestClient,
   expectConsoleWarn,
@@ -461,18 +462,18 @@ describe('mutate accessors', () => {
     humanHello.dogs = newDogs;
 
     expect(humanHello.dogs).toMatchInlineSnapshot(`
-     [
-       {
-         "__typename": "Dog",
-         "name": "zxc",
-         "owner": {
-           "dogs": [Circular],
-           "father": [Circular],
-           "name": "hello",
-         },
-       },
-     ]
-    `);
+           [
+             {
+               "__typename": "Dog",
+               "name": "zxc",
+               "owner": {
+                 "dogs": [Circular],
+                 "father": [Circular],
+                 "name": "hello",
+               },
+             },
+           ]
+        `);
 
     const dogs = await resolved(() => {
       return getArrayFields(query.dogs, 'name');
@@ -489,49 +490,71 @@ describe('mutate accessors', () => {
     } as unknown as Human);
 
     expect(owner).toMatchInlineSnapshot(`
-     {
-       "__typename": "Human",
-       "dogs": [
-         {
-           "__typename": "Dog",
-           "name": "zxc",
-           "owner": {
-             "dogs": [
-               [Circular],
-             ],
-             "father": [Circular],
-             "name": "hello",
-           },
-         },
-       ],
-       "father": {
-         "dogs": [
            {
-             "__typename": "Dog",
-             "name": "zxc",
-             "owner": [Circular],
-           },
-         ],
-         "father": [Circular],
-         "name": "hello",
-       },
-       "name": "ModifiedOwner",
-       "node": [],
-       "sons": [
-         {
-           "dogs": [
-             {
-               "__typename": "Dog",
-               "name": "zxc",
-               "owner": [Circular],
+             "__typename": "Human",
+             "dogs": [
+               {
+                 "__typename": "Dog",
+                 "name": "zxc",
+                 "owner": {
+                   "dogs": [
+                     [Circular],
+                   ],
+                   "father": [Circular],
+                   "name": "hello",
+                 },
+               },
+             ],
+             "father": {
+               "dogs": [
+                 {
+                   "__typename": "Dog",
+                   "name": "zxc",
+                   "owner": [Circular],
+                 },
+               ],
+               "father": [Circular],
+               "name": "hello",
              },
-           ],
-           "father": [Circular],
-           "name": "hello",
-         },
-       ],
-       "union": [],
-     }
-    `);
+             "name": "ModifiedOwner",
+             "node": [],
+             "sons": [
+               {
+                 "dogs": [
+                   {
+                     "__typename": "Dog",
+                     "name": "zxc",
+                     "owner": [Circular],
+                   },
+                 ],
+                 "father": [Circular],
+                 "name": "hello",
+               },
+             ],
+             "union": [],
+           }
+        `);
+  });
+  test('null object selection generates valid leaf node selection', async () => {
+    const { resolve } = await createTestClient();
+
+    const selections = new Set<any>();
+
+    await resolve(
+      ({ query }) => {
+        query.human({ name: 'A' })?.nullFather;
+      },
+      {
+        onSelect(selection) {
+          selections.add(selection);
+        },
+      }
+    );
+
+    const builtQuery = buildQuery(selections)[0]?.query;
+
+    expect(builtQuery).toMatchInlineSnapshot(
+      `"query($ee49e8:String){eefc62:human(name:$ee49e8){__typename id}}"`
+    );
   });
 });

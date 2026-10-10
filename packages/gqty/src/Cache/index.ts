@@ -271,14 +271,13 @@ export class Cache {
           return node;
         });
 
+        const hasValue = (val: any): boolean => {
+          if (Array.isArray(val)) return val.some(hasValue);
+          return val !== undefined;
+        };
+
         // Notify and breaks when one of the path hits
-        if (
-          Array.isArray(node)
-            ? (node as unknown[])
-                .flat(Infinity)
-                .some((item) => item !== undefined)
-            : node !== undefined
-        ) {
+        if (hasValue(node)) {
           listeners.add(notify);
           break;
         }
