@@ -58,6 +58,8 @@ export interface UsePaginatedQueryOptions<TData, TArgs> {
    * Activate suspense on first call
    */
   suspense?: boolean;
+  /** Custom GraphQL extensions to be exposed to the query fetcher. */
+  extensions?: Record<string, unknown>;
 }
 
 export interface UsePaginatedQueryData<TData, TArgs> {
@@ -135,6 +137,7 @@ export const createUsePaginatedQuery =
       skip = false,
       suspense = defaultSuspense,
       operationName,
+      extensions,
     }
   ) => {
     type TCallback = typeof fn;
@@ -151,6 +154,7 @@ export const createUsePaginatedQuery =
           cachePolicy: translateFetchPolicy(hookFetchPolicy),
           operationName,
           retryPolicy: retry,
+          extensions,
         }),
       [hookFetchPolicy, operationName, retry]
     );
@@ -195,6 +199,7 @@ export const createUsePaginatedQuery =
           onSelect(selection, cache) {
             context.select(selection, cache);
           },
+          extensions,
         }) as Promise<TData>;
 
         if (!context.shouldFetch) {
@@ -226,6 +231,7 @@ export const createUsePaginatedQuery =
         operationName,
         query,
         retry,
+        extensions,
       ]
     );
 
