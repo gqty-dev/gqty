@@ -4,9 +4,9 @@
 
 This document records the planned direction for cache-independent preparation,
 optional static extraction, and persisted queries. It does not authorize a broad
-runtime rewrite or supersede the local Core, React, or Solid architecture notes.
-Record adopted architecture changes in the appropriate architecture documentation
-when implemented.
+runtime rewrite or supersede [CoreDesign](CoreDesign.md),
+[ReactDesign](ReactDesign.md), or [SolidDesign](SolidDesign.md), which describe the
+current architecture. Record adopted architecture changes there when implemented.
 
 “Persisted queries” here means server-recognized GraphQL operation documents or
 hashes, not persistence of the client cache.
