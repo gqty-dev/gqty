@@ -28,11 +28,11 @@ export type FetchSelectionsOptions = {
 export type QueryExtensions = { type: string; hash: string };
 
 export type FetchResult<
-  TData extends Record<string, unknown> = Record<string, unknown>,
+  TData extends Record<string, unknown> = Record<string, unknown>
 > = Omit<ExecutionResult<TData>, 'errors'> & { error?: Error | GQtyError };
 
 export const fetchSelections = <
-  TData extends Record<string, unknown> = Record<string, unknown>,
+  TData extends Record<string, unknown> = Record<string, unknown>
 >(
   selections: Set<Selection>,
   {
@@ -42,8 +42,19 @@ export const fetchSelections = <
     fetchOptions,
     operationName,
   }: FetchSelectionsOptions
-): Promise<FetchResult<TData>[]> =>
-  Promise.all(
+): Promise<FetchResult<TData>[]> => {
+  // Freeze requested aliases before a fetcher can change the selections.
+  const rootAliases = new Map<string, Set<string>>();
+  for (const selection of selections) {
+    const [type, alias] = selection.cacheKeys;
+    if ((type !== 'query' && type !== 'mutation') || !alias) continue;
+
+    const aliases = rootAliases.get(type) ?? new Set<string>();
+    aliases.add(alias);
+    rootAliases.set(type, aliases);
+  }
+
+  return Promise.all(
     buildQuery(selections, operationName).map(
       async ({
         query,
@@ -77,6 +88,18 @@ export const fetchSelections = <
 
           if (errors?.length) {
             result.error = GQtyError.fromGraphQLErrors(errors);
+          } else if (data != null) {
+            for (const alias of rootAliases.get(type) ?? []) {
+              if (!Object.prototype.hasOwnProperty.call(data, alias)) {
+                return {
+                  ...result,
+                  data: undefined,
+                  error: new GQtyError(
+                    `Invalid GraphQL response: expected alias "${alias}" in ${type} data.`
+                  ),
+                };
+              }
+            }
           }
 
           return result;
@@ -93,6 +116,7 @@ export const fetchSelections = <
       }
     )
   );
+};
 
 export type SubscribeSelectionOptions = FetchSelectionsOptions & {
   onComplete?: () => void;
@@ -118,7 +142,7 @@ const subsRef = new WeakMap<
 >();
 
 export const subscribeSelections = <
-  TData extends Record<string, unknown> = Record<string, unknown>,
+  TData extends Record<string, unknown> = Record<string, unknown>
 >(
   selections: Set<Selection>,
   /**
@@ -310,7 +334,7 @@ export const subscribeSelections = <
 };
 
 const doFetch = async <
-  TData extends Record<string, unknown> = Record<string, unknown>,
+  TData extends Record<string, unknown> = Record<string, unknown>
 >(
   payload: QueryPayload,
   {
@@ -368,7 +392,7 @@ const doFetch = async <
 };
 
 const doSubscribeOnce = async <
-  TData extends Record<string, unknown> = Record<string, unknown>,
+  TData extends Record<string, unknown> = Record<string, unknown>
 >(
   { query, variables, operationName }: SubscribePayload,
   { subscriber }: FetchOptions
