@@ -1,6 +1,5 @@
 import { debounceMicrotask } from 'debounce-microtasks';
 import { prepass, type BaseGeneratedSchema, type Client } from 'gqty';
-import createDeferred from 'p-defer';
 import {
   batch,
   createEffect,
@@ -99,8 +98,10 @@ export const createQuery = <Schema extends BaseGeneratedSchema>(
     refetchOnReconnect = true,
     refetchOnWindowVisible = true,
   } = {}) => {
-    let resolvePromise: Promise<Schema> | undefined;
+    let activeFetch: Promise<unknown> | undefined;
     let unsubscribe: (() => void) | undefined;
+    let disposed = false;
+    let preparing = false;
 
     const debouncedSoftRefetch = debounceMicrotask(
       () => $refetch({ skipPrepass: true }),
@@ -113,42 +114,97 @@ export const createQuery = <Schema extends BaseGeneratedSchema>(
       resolve,
       restorePreviousSelections,
       selections,
-      subscribe,
     } = client.createResolver({
       cachePolicy,
       extensions,
       retryPolicy,
       operationName,
       onSelect() {
-        // When new selections are made during an active fetch, we need
-        // to enqueue a new fetch after the current one completes. Detaching
-        // the current promise causes `$refetch()` to call `refetch` from
-        // `createResource` with a pending promise, which in turns cause
-        // the UI to halt indefinitely due to Solid's design.
-
-        // Triggers a soft refetch when selections are made outside of the solid
-        // lifecycle.
-        debouncedSoftRefetch();
-
         // With `prepare`, skip all selections except from the callback.
-        if (prepare) {
+        if (prepare && !preparing) {
           return false;
         }
+
+        debouncedSoftRefetch();
 
         return;
       },
     });
 
-    const [resource, { refetch }] = createResource<Schema | undefined>(
-      () => resolvePromise,
-      { storage: () => createSignal<any>(undefined, { equals: false }) }
-    );
+    const observeCache = (keys: string[]) => {
+      unsubscribe?.();
+      unsubscribe = context.cache.subscribe(keys, () => {
+        if (!activeFetch) enqueueUpdate(publishCache);
+      });
+    };
+    const [fetchVersion, setFetchVersion] = createSignal<number>();
+    const [resource, { mutate }] = createResource(
+      fetchVersion,
+      async () => {
+        const keys = [...selections].map((selection) =>
+          selection.cacheKeys.join('.')
+        );
+        unsubscribe?.();
+        unsubscribe = undefined;
 
-    const $refetch = async (options?: {
+        // The resource owns the actual resolver promise, including errors.
+        // Cache notifications must not settle it before Core has retired this
+        // participation and preserved any selections made during the fetch.
+        const promise = resolve();
+        activeFetch = promise;
+
+        try {
+          await promise;
+          if (!disposed) observeCache(keys);
+          return accessor;
+        } finally {
+          if (activeFetch === promise) {
+            activeFetch = undefined;
+            if (!disposed && context.shouldFetch && selections.size > 0) {
+              debouncedSoftRefetch();
+            }
+          }
+        }
+      },
+      {
+        storage: () =>
+          createSignal<Schema | undefined>(undefined, { equals: false }),
+      }
+    );
+    const publishCache = () => {
+      if (!disposed && !activeFetch) mutate(() => accessor);
+    };
+    const startFetch = () => {
+      if (
+        !disposed &&
+        !activeFetch &&
+        context.shouldFetch &&
+        selections.size > 0
+      ) {
+        setFetchVersion((version = 0) => version + 1);
+      }
+    };
+    const runPrepare = () => {
+      preparing = true;
+      try {
+        prepare?.(accessor, { prepass });
+      } finally {
+        preparing = false;
+      }
+    };
+
+    const $refetch = (options?: {
       ignoreCache?: boolean;
       skipPrepass?: boolean;
     }) => {
-      if (options?.ignoreCache || client.cache !== context.cache) {
+      // Core retains late selections and their flags until this fetch settles.
+      // Neither a soft refetch nor an obsolete completion may reset them.
+      if (disposed || activeFetch) return;
+
+      if (
+        options?.ignoreCache ||
+        (!options?.skipPrepass && client.cache !== context.cache)
+      ) {
         context.shouldFetch = true;
       }
 
@@ -165,7 +221,7 @@ export const createQuery = <Schema extends BaseGeneratedSchema>(
         }
 
         if (prepare) {
-          prepare(accessor, { prepass });
+          runPrepare();
         } else {
           prepass(accessor, selections);
         }
@@ -175,87 +231,34 @@ export const createQuery = <Schema extends BaseGeneratedSchema>(
         return;
       }
 
-      // Release mutex
-      let resetMutex: (() => void) | undefined = () => {
-        resetMutex = undefined;
-        resolvePromise = undefined;
-
-        context.reset();
-      };
-
       if (!context.shouldFetch) {
-        resetMutex?.();
-
-        // Clearing selections to prevent stale inputs.
-        //
-        // Potential pitfall: If $refetch() is called synchronously during a
-        // post-fetch update, selections will be cleared here before it can be
-        // stored into prevSelections.
-        if (!resolvePromise) {
-          selections.clear();
-        }
-
+        observeCache(
+          [...selections].map((selection) => selection.cacheKeys.join('.'))
+        );
+        context.reset();
+        selections.clear();
         return;
       }
 
-      // [ ] cofetch selections for denormalized caches
-
-      const deferred = createDeferred<Schema>();
-
-      resolvePromise = deferred.promise;
-
-      // Note: Do not use `finally` here, it pushes `resetMutex` too far back
-      // the event loop. Users calling `$refetch()` during the next render would
-      // always be mutex-blocked.
-      resolvePromise.then(
-        () => resetMutex?.(),
-        // Catch here to prevent promise leaking (unhandled rejection) from
-        // ErrorBoundary.
-        () => resetMutex?.()
-      );
-
-      unsubscribe?.();
-      unsubscribe = subscribe({
-        onNext() {
-          // Re-render UI when there is no active fetch, i.e. subscriptions.
-          if (!resolvePromise) {
-            enqueueUpdate(refetch);
-          } else {
-            deferred.resolve(accessor);
-          }
-        },
-        onError(error) {
-          deferred.reject(error);
-        },
-        onComplete() {
-          deferred.resolve(accessor);
-        },
-      });
-
-      enqueueUpdate(refetch);
+      enqueueUpdate(startFetch);
     };
 
     // Equivilent to refetchOnRender in React.
     onMount(() => $refetch({ skipPrepass: true }));
 
-    onCleanup(() => unsubscribe?.());
+    onCleanup(() => {
+      disposed = true;
+      pendingUpdates.delete(startFetch);
+      pendingUpdates.delete(publishCache);
+      unsubscribe?.();
+    });
 
     // Collect selections from the `prepare` callback.
     if (prepare) {
       context.shouldFetch = false;
 
-      const prepareFn = prepare;
-
-      // Bypassing prepare lock at the `onSelect()` callback above.
-      prepare = undefined;
-
-      prepareFn(accessor, { prepass });
-
-      prepare = prepareFn;
-
-      if (context.shouldFetch) {
-        resolvePromise = resolve() as Promise<Schema>;
-      }
+      runPrepare();
+      startFetch();
     }
 
     if (refetchInterval) {
@@ -288,7 +291,7 @@ export const createQuery = <Schema extends BaseGeneratedSchema>(
         },
       },
       $refetch: async (ignoreCache = true) => {
-        if (resolvePromise) {
+        if (disposed || activeFetch) {
           return;
         }
 
