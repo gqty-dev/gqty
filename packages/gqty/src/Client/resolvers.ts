@@ -8,7 +8,7 @@ import type { ScalarsEnumsHash, Schema } from '../Schema';
 import type { Selection } from '../Selection';
 import { createDeferredIterator } from '../Utils/deferred';
 import { pick } from '../Utils/pick';
-import { addSelections, delSelectionSet, getSelectionsSet } from './batching';
+import { addSelections, delSelectionSet } from './batching';
 import { createContext, type SchemaContext } from './context';
 import type { Debugger } from './debugger';
 import {
@@ -117,7 +117,7 @@ export type ResolveFn<TSchema extends BaseGeneratedSchema> = <TData = unknown>(
 ) => Promise<TData>;
 
 export type SubscribeFn<TSchema extends BaseGeneratedSchema> = <
-  TData = unknown,
+  TData = unknown
 >(
   fn: DataFn<TSchema, TData>,
   options?: SubscribeOptions
@@ -203,10 +203,20 @@ export type SubscribeOptions = ResolverOptions & {
 /**
  * A module level query batcher.
  */
-const pendingQueries = new WeakMap<
-  Set<Set<Selection>>,
-  () => Promise<Promise<FetchResult<Record<string, unknown>>[]>>
->();
+type Participant = {
+  identity: symbol;
+  contribution: Set<Selection>;
+  completion?: Promise<unknown>;
+};
+
+type PendingQuery = {
+  started: boolean;
+  participants: Map<Set<Selection>, Participant>;
+  schedule: () => Promise<Promise<FetchResult<Record<string, unknown>>[]>>;
+  work?: Promise<Promise<FetchResult<Record<string, unknown>>[]>>;
+};
+
+const pendingQueries = new WeakMap<Set<Set<Selection>>, PendingQuery>();
 
 const getIntersection = <T>(subject: Set<T>, object: Set<T>) => {
   if (typeof subject.intersection === 'function') {
@@ -307,10 +317,11 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
 
     const { accessor } = createSchemaAccessor<TSchema>(context);
 
-    // Calls to `resolve()` during an active fetch results in a new fetch
-    // this variable keeps track of the last active one, i.e. Only the last
-    // fetch should reset selections and context.
-    let activePromise: Promise<unknown> | undefined;
+    // Publication follows the last active batch created by this resolver;
+    // joining another batch must not supersede that creator-owned gate.
+    let activePublisher: Participant | undefined;
+    // Keep only a payload-free identity after the latest participation settles.
+    let latestParticipation: symbol | undefined;
 
     const resolve: ResolverParts<TSchema>['resolve'] = async () => {
       if (selections.size === 0) {
@@ -349,33 +360,36 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
       // Link temporary caches together
       correlatedCaches.set(pendingSelections, context.cache);
 
-      if (!pendingQueries.has(pendingSelections)) {
-        pendingQueries.set(
-          pendingSelections,
-          // Batching happens at the end of microtask queue
-          debounceMicrotaskPromise(
+      let batch = pendingQueries.get(pendingSelections);
+      if (!batch) {
+        const creator: Participant = {
+          identity: Symbol(),
+          contribution: new Set(),
+        };
+        activePublisher = creator;
+        const record: PendingQuery = {
+          started: false,
+          participants: new Map([[selections, creator]]),
+          schedule: debounceMicrotaskPromise(
             async () => {
-              pendingQueries.delete(pendingSelections);
-
-              // Have to skip this await when not set, because a 0 timeout still
-              // unnecessarily pushed it back at least one more mictotask.
+              record.started = true;
               if (batchWindow) {
                 await new Promise((resolve) =>
                   setTimeout(resolve, batchWindow)
                 );
               }
 
-              const uniqueSelections = new Set<Selection>();
-
-              getSelectionsSet(resolverCache, selectionsCacheKey)?.forEach(
-                (selections) => {
-                  selections.forEach((selection) => {
-                    uniqueSelections.add(selection);
-                  });
-                }
-              );
-
+              // Seal both indexes together, then dispatch only this record's
+              // snapshots. New resolves can immediately collect a new batch.
+              pendingQueries.delete(pendingSelections);
               delSelectionSet(resolverCache, selectionsCacheKey);
+              const uniqueSelections = new Set<Selection>();
+              for (const [source, participant] of record.participants) {
+                participant.contribution = new Set(source);
+                for (const selection of participant.contribution) {
+                  uniqueSelections.add(selection);
+                }
+              }
 
               const results = await fetchSelections(uniqueSelections, {
                 cache: context.cache,
@@ -384,77 +398,70 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
                 fetchOptions: { ...fetchOptions, cachePolicy, retryPolicy },
                 operationName,
               });
-
               const targetCaches =
                 correlatedCaches.get(pendingSelections) ?? new Set();
-
               if (cachePolicy !== 'no-store') {
                 targetCaches.add(resolverCache);
               }
-
               updateCaches(results, targetCaches, {
-                skipNotify: promiseDropped() || !context.notifyCacheUpdate,
+                skipNotify:
+                  (activePublisher !== undefined &&
+                    activePublisher !== creator) ||
+                  !context.notifyCacheUpdate,
               });
-
               correlatedCaches.delete(resolverCache);
-
               return results;
             },
-            // When naughty users are adding selections every next microtask, we
-            // forcibly start the fetch after a number of delays. This number is
-            // picked arbitrarily, it should be a number that is large enough to
-            // prevent excessive fetches but small enough to not block the
-            // actual fetch indefinitely.
-            {
-              debounceLimit: 20,
-              limitAction: 'invoke',
-            }
-          )
-        );
-
-        // Post-fetch actions scoped to this context
-        const currentPromise = pendingQueries.get(pendingSelections)!();
-
-        activePromise = currentPromise;
-
-        // When `resolve()` is called again during an active fetch, let the next
-        // promise does post-fetch actions. Cache updates above are fine, also
-        // cancelling the fetch requires checking ALL of the pending contextes
-        // which is too expensive to maintain.
-        const promiseDropped = () =>
-          activePromise !== undefined && currentPromise !== activePromise;
-
-        currentPromise
-          .then(
-            () => {
-              if (promiseDropped()) return;
-              if (selections.size === 0) return;
-
-              // Stores selections for the next batch
-              replaceSet(prevSelections, selections);
-
-              // Clear current selections only on successful fetches to drop
-              // potentially stale inputs.
-              selections.clear();
-            },
-            () => {
-              // Adds a default noop error handler to prevent tests from failing
-              // when running concurrently in CI.
-              //
-              // Exposed API such as `resolve()` still responds to try-catch and
-              // .catch() handlers in userland.
-            }
-          )
-          .finally(() => {
-            if (promiseDropped()) return;
-
-            context.reset();
-
-            activePromise = undefined;
-          });
+            { debounceLimit: 20, limitAction: 'invoke' }
+          ),
+        };
+        batch = record;
+        pendingQueries.set(pendingSelections, record);
       }
 
-      return pendingQueries.get(pendingSelections)!();
+      let participant = batch.participants.get(selections);
+      if (!participant) {
+        participant = { identity: Symbol(), contribution: new Set() };
+        batch.participants.set(selections, participant);
+      }
+
+      // Calling the debouncer after invocation creates a different promise;
+      // window joiners must instead use the original work promise.
+      if (!batch.started) {
+        const work = batch.schedule();
+        batch.work ??= work;
+      }
+      if (!participant.completion) {
+        const current = participant;
+        latestParticipation = current.identity;
+        const finish = (success: boolean) => {
+          // Retire a creator independently of whether its cleanup is obsolete.
+          if (activePublisher === current) activePublisher = undefined;
+          if (latestParticipation !== current.identity) return;
+          const contribution = current.contribution;
+          if (success && contribution.size) {
+            replaceSet(prevSelections, contribution);
+            for (const selection of contribution) selections.delete(selection);
+          }
+          // Failed contributions remain live, but do not themselves count as
+          // late work when deciding whether to reset accumulated flags.
+          const hasLateSelections = [...selections].some(
+            (selection) => !contribution.has(selection)
+          );
+          if (!hasLateSelections) context.reset();
+        };
+        current.completion = batch.work!.then(
+          (results) => {
+            finish(true);
+            return results;
+          },
+          (error: unknown) => {
+            finish(false);
+            throw error;
+          }
+        );
+      }
+      return participant.completion;
     };
 
     const subscribe: ResolverParts<TSchema>['subscribe'] = ({
