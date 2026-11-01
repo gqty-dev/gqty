@@ -6,11 +6,12 @@
 Correct shared query lifecycle ownership and reject malformed response aliases.
 
 Core now settles every resolver participating in a shared batch and preserves
-unfetched selections added while a request is active. Query and mutation
-responses that omit a requested root alias fail with a terminating `GQtyError`
-instead of caching malformed data. Valid null-valued fields, partial GraphQL
-errors and subscription behavior remain unchanged; this is not full schema
-validation.
+unfetched selections added while a request is active. Older batches still update
+the cache but cannot regain notification ownership after a newer batch created
+by the same resolver has settled. Query and mutation responses that omit a
+requested root alias fail with a terminating `GQtyError` instead of caching
+malformed data. Valid null-valued fields, partial GraphQL errors and
+subscription behavior remain unchanged; this is not full schema validation.
 
 The Solid adapter lets native `createResource` own Core resolution and error
 delivery, separates idle cache observation from fetch completion, and guards

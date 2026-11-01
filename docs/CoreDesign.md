@@ -174,9 +174,17 @@ Concrete touch points:
    Successful writes call `cache.set(..., { skipNotify })`; cache subscribers
    receive notifications keyed by the affected cache paths.
 
-After a successful fetch, the resolver replaces its `prevSelections` with the
-just-fetched selections and clears the active `selections` set so the next pass
-starts clean. `context.reset()` clears the per-fetch flags.
+Each batch snapshots its participants' actual dispatch contributions. A current
+participant's successful completion replaces `prevSelections` with that snapshot
+and removes only the fetched selections. Distinct selections added later remain
+live; obsolete completion cannot reset newer participation. `context.reset()`
+clears per-fetch flags only when no unfetched late selections remain.
+
+Cache writes and publication are separate. Older batches still write their data,
+but only the latest batch created by a resolver can publish its notifications.
+That payload-free identity remains after settlement so an older response arriving
+later cannot regain publication ownership. Joining a batch created by another
+resolver does not take over this creator-owned publication gate.
 
 For `subscribe()`, the resolver additionally:
 

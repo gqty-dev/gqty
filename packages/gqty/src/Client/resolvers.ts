@@ -317,9 +317,9 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
 
     const { accessor } = createSchemaAccessor<TSchema>(context);
 
-    // Publication follows the last active batch created by this resolver;
-    // joining another batch must not supersede that creator-owned gate.
-    let activePublisher: Participant | undefined;
+    // Publication belongs to the latest batch created by this resolver, even
+    // after it settles. Joining another batch does not change that ownership.
+    let latestCreatedBatch: symbol | undefined;
     // Keep only a payload-free identity after the latest participation settles.
     let latestParticipation: symbol | undefined;
 
@@ -366,7 +366,7 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
           identity: Symbol(),
           contribution: new Set(),
         };
-        activePublisher = creator;
+        latestCreatedBatch = creator.identity;
         const record: PendingQuery = {
           started: false,
           participants: new Map([[selections, creator]]),
@@ -405,8 +405,7 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
               }
               updateCaches(results, targetCaches, {
                 skipNotify:
-                  (activePublisher !== undefined &&
-                    activePublisher !== creator) ||
+                  latestCreatedBatch !== creator.identity ||
                   !context.notifyCacheUpdate,
               });
               correlatedCaches.delete(resolverCache);
@@ -435,8 +434,6 @@ export const createResolvers = <TSchema extends BaseGeneratedSchema>({
         const current = participant;
         latestParticipation = current.identity;
         const finish = (success: boolean) => {
-          // Retire a creator independently of whether its cleanup is obsolete.
-          if (activePublisher === current) activePublisher = undefined;
           if (latestParticipation !== current.identity) return;
           const contribution = current.contribution;
           if (success && contribution.size) {
