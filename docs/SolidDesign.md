@@ -14,6 +14,9 @@ direction for keeping the Solid adapter a thin wrapper over core.
 
 See also: [Core Design](CoreDesign.md), [React Design](ReactDesign.md).
 
+The adapter requires `solid-js ^1.9.18` and uses stable Solid 1.x resource APIs.
+Solid 2 interfaces are not part of this integration.
+
 ## Package Role In The Monorepo
 
 `packages/solid` is a Solid.js adapter built on top of an existing core client.
@@ -80,23 +83,27 @@ manages all of the following:
    `client.createResolver({...})` once per `createQuery()` call, producing an
    isolated `context`, `accessor`, `selections`, `subscribe`, `resolve`, and
    `restorePreviousSelections`.
-2. **Selection-driven soft refetch.** It passes a custom `onSelect` to the
-   resolver that schedules `$refetch({ skipPrepass: true })` through a debounced
-   microtask whenever selections are made outside of the Solid lifecycle. When
-   `prepare` is provided, `onSelect` returns `false` to suppress all selections
-   that did not come from the `prepare` callback.
-3. **`createResource`-backed render integration.** It owns a
-   `createResource(() => resolvePromise, { storage })` whose `refetch` is
-   enqueued via a microtask-debounced `batch()` so multiple pending updates
-   collapse into a single Solid update.
+2. **Selection-driven soft refetch.** Accepted selections schedule
+   `$refetch({ skipPrepass: true })` through a debounced microtask. When
+   `prepare` is provided, `onSelect` returns `false` for selections outside
+   that callback. Active fetches retain Core's selections and flags rather
+   than resetting them during another selection pass.
+3. **Native resource ownership.** A `fetchVersion` signal drives
+   `createResource`; its async fetcher directly awaits Core's `resolve()` and
+   returns the accessor. Solid owns loading, errors and Suspense. There is no
+   external deferred or resource-action refetch handoff. Cache observation is
+   detached before fetching and restored after success unless disposed. Idle
+   cache notifications enqueue a guarded `mutate(() => accessor)`; they do not
+   settle fetch work. Queued starts and publications are microtask-batched.
 4. **`$refetch` semantics.** The internal
-   `$refetch({ ignoreCache, skipPrepass })` flips `context.shouldFetch` when
-   `ignoreCache` is set or the resolver is using a temporary cache, optionally
-   re-runs `prepass(accessor, selections)` (or the user
-   `prepare(accessor, { prepass })`) to refresh cache freshness against the live
-   cache, then either bails out (selections empty / no `shouldFetch`) or wires a
-   fresh `subscribe(...)` and resolves a `p-defer` deferred from its
-   `onNext`/`onError`/`onComplete` callbacks.
+   `$refetch({ ignoreCache, skipPrepass })` returns while disposed or fetching,
+   marks explicit hard refetches and non-selection-only temporary-cache
+   refreshes as needing a fetch, and optionally re-runs `prepass` or `prepare`
+   to evaluate finite-cache freshness. Fresh cache reads install observation,
+   reset context and clear that selection pass without fetching. Other work
+   advances the resource source. Completion retires only its current
+   `activeFetch`; remaining late-selection intent schedules a soft refetch
+   without resetting Core's preserved flags.
 5. **Refetch triggers.** It schedules an initial
    `$refetch({ skipPrepass: true })` from `onMount` (the equivalent of React's
    `refetchOnRender`), and conditionally registers:
@@ -107,19 +114,21 @@ manages all of the following:
    - A `createEffect` over `createWindowVisibleSignal()` for
      `refetchOnWindowVisible`
      (`packages/solid/src/createWindowVisibleSignal.ts`).
-6. **`prepare` integration.** When `prepare` is supplied, it is invoked once
-   during factory setup with `context.shouldFetch` reset, with the `prepare`
-   lock temporarily released so the callback's selections are recorded; if any
-   of them flip `context.shouldFetch`, an initial `resolve()` is started
-   immediately and its promise becomes the first `resolvePromise`.
-7. **Cleanup.** `onCleanup(() => unsubscribe?.())` releases the active subscribe
-   handle from the resolver when the owning Solid scope disposes.
+6. **`prepare` integration.** During setup, `context.shouldFetch` is reset
+   before `prepare` captures selections under a `preparing` guard. If needed,
+   `startFetch()` advances the same resource source used by later fetches;
+   preparation does not create a separate resolver promise handoff.
+7. **Cleanup.** Disposal marks the instance inactive, removes queued fetch
+   starts and cache publications, and releases cache observation. In-flight
+   completion cannot reinstall observation after disposal. The adapter does
+   not cancel shared Core transport work.
 8. **Public surface.** The returned callable is
    `() => resource()?.query ?? accessor.query`, augmented with:
    - `$state.loading` and `$state.error` proxied from the resource.
-   - `$refetch(ignoreCache = true)` which is mutex-guarded against
-     `resolvePromise`, restores `prevSelections` via
-     `restorePreviousSelections()`, and delegates to internal `$refetch`.
+   - `$refetch(ignoreCache = true)`, which ignores calls while disposed or
+     fetching, restores the last successful selections via
+     `restorePreviousSelections()`, and requests work through internal
+     `$refetch` and the resource source.
 
 The combination of selection-driven soft refetch, `createResource` integration,
 and the `prepare`/`prepass` interaction make `createQuery` the primary
