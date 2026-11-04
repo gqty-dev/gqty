@@ -93,6 +93,55 @@ describe('Cache#persistence', () => {
     `);
   });
 
+  it('should keep imported normalized objects strongly referenced in store', () => {
+    const OriginalWeakRef = globalThis.WeakRef;
+
+    class FakeWeakRef<T extends object> {
+      static instances = new Set<FakeWeakRef<object>>();
+      value?: T;
+
+      constructor(value: T) {
+        this.value = value;
+        FakeWeakRef.instances.add(this as unknown as FakeWeakRef<object>);
+      }
+
+      deref() {
+        return this.value;
+      }
+
+      static collect() {
+        for (const ref of FakeWeakRef.instances) {
+          ref.value = undefined;
+        }
+      }
+    }
+
+    globalThis.WeakRef = FakeWeakRef as unknown as typeof WeakRef;
+
+    try {
+      const cache = importCacheSnapshot(
+        {
+          normalized: {
+            'A:1': { __typename: 'A', id: '1', name: 'persisted' },
+          },
+          query: {
+            a: { __ref: 'A:1' },
+          },
+        },
+        defaultNormalizationHandler
+      );
+
+      expect(cache.normalizedObjects?.has('A:1')).toBe(true);
+
+      cache.query = undefined;
+      FakeWeakRef.collect();
+
+      expect(cache.normalizedObjects?.has('A:1')).toBe(true);
+    } finally {
+      globalThis.WeakRef = OriginalWeakRef;
+    }
+  });
+
   it('should persist data snapshots', () => {
     const snapshot = { query: { __typename: 'a', id: 1 } };
 
