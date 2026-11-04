@@ -22,7 +22,10 @@ export function select(
   }
   // Exit when there are still sub-paths but scalars are reached
   else if (probedNode == null || typeof probedNode !== 'object') {
-    return undefined;
+    // If the parent node is explicitly null, sub-properties are definitively null rather than missing.
+    // Returning `null` rather than `undefined` correctly signals to cache hydration checks that
+    // the value is fully resolved and not a cache miss.
+    return probedNode === null ? null : undefined;
   }
 
   if (Array.isArray(probedNode)) {
