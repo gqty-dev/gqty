@@ -41,6 +41,8 @@ export type UseTransactionQueryOptions<TData, TVariables> = {
   retry?: RetryOptions;
   suspense?: boolean;
   operationName?: string;
+  /** Custom GraphQL extensions to be exposed to the query fetcher. */
+  extensions?: Record<string, unknown>;
 };
 
 export interface UseTransactionQuery<TSchema extends BaseGeneratedSchema> {
@@ -75,6 +77,7 @@ export function createUseTransactionQuery<TSchema extends BaseGeneratedSchema>(
       skip = false,
       suspense = defaultSuspense,
       variables,
+      extensions,
     } = {}
   ) => {
     const query = useQuery({
@@ -89,6 +92,7 @@ export function createUseTransactionQuery<TSchema extends BaseGeneratedSchema>(
       refetchOnWindowVisible: false,
       retry,
       suspense,
+      extensions,
     });
 
     useUpdateEffect(() => {

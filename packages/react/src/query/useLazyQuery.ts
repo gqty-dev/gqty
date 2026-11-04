@@ -21,6 +21,8 @@ export interface UseLazyQueryOptions<TData> {
   retry?: RetryOptions;
   suspense?: boolean;
   operationName?: string;
+  /** Custom GraphQL extensions to be exposed to the query fetcher. */
+  extensions?: Record<string, unknown>;
 }
 
 export interface UseLazyQueryState<TData> {
@@ -97,7 +99,7 @@ export interface UseLazyQuery<GeneratedSchema extends BaseGeneratedSchema> {
               args?: TArgs;
               fetchPolicy?: LazyFetchPolicy;
               operationName?: string;
-            }?
+            }?,
           ]
         : [
             {
@@ -105,10 +107,10 @@ export interface UseLazyQuery<GeneratedSchema extends BaseGeneratedSchema> {
               args: TArgs;
               fetchPolicy?: LazyFetchPolicy;
               opertionName?: string;
-            }
+            },
           ]
     ) => Promise<TData>,
-    UseLazyQueryState<TData>
+    UseLazyQueryState<TData>,
   ];
 }
 
@@ -131,6 +133,7 @@ export function createUseLazyQuery<TSchema extends BaseGeneratedSchema>(
       retry = defaultRetry,
       suspense = defaultSuspense,
       operationName: defaultOperationName,
+      extensions,
     } = {}
   ) => {
     type TCallback = typeof fn;
@@ -149,7 +152,7 @@ export function createUseLazyQuery<TSchema extends BaseGeneratedSchema>(
       InitUseLazyQueryReducer
     ) as [
       UseLazyQueryState<TData>,
-      React.Dispatch<UseLazyQueryReducerAction<TData>>
+      React.Dispatch<UseLazyQueryReducerAction<TData>>,
     ];
 
     if (suspense) {
@@ -177,6 +180,7 @@ export function createUseLazyQuery<TSchema extends BaseGeneratedSchema>(
               },
               retryPolicy: retry,
               operationName,
+              extensions,
             }
           ).then((data) => {
             const typedData = data as TData;
@@ -207,7 +211,7 @@ export function createUseLazyQuery<TSchema extends BaseGeneratedSchema>(
       };
 
       return Object.freeze([fetchQuery, state]);
-    }, [fn, onCompleted, onError, retry]);
+    }, [fn, onCompleted, onError, retry, extensions]);
   };
 
   return useLazyQuery;
